@@ -5,6 +5,7 @@ sudo: required
 dotnet: 1.0.0-preview2-1-003177
 install:
 - dotnet restore
+- cd ./Trappist/src/Promact.Trappist.Web && npm install
 solution: "./Trappist/Trappist.sln"
 before_script:
 notifications:
