@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EE395370-F5A9-4CB8-BDF6-E33D802A3151}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Web", "src\Promact.Trappist.Web\Promact.Trappist.Web.xproj", "{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Core", "src\Promact.Trappist.Core\Promact.Trappist.Core.xproj", "{EFA370F7-640C-43DB-A3BD-2E061421551B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Repository", "src\Promact.Trappist.Repository\Promact.Trappist.Repository.xproj", "{01D27A03-0611-46C9-91C8-F34A4B13338A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.DomainModel", "src\Promact.Trappist.DomainModel\Promact.Trappist.DomainModel.xproj", "{C1C06A3A-F5F6-44FA-9493-8591B2E97730}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Utility", "src\Promact.Trappist.Utility\Promact.Trappist.Utility.xproj", "{3CE6EBF8-16C9-4144-9381-69D60C01859B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA370F7-640C-43DB-A3BD-2E061421551B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA370F7-640C-43DB-A3BD-2E061421551B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA370F7-640C-43DB-A3BD-2E061421551B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA370F7-640C-43DB-A3BD-2E061421551B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01D27A03-0611-46C9-91C8-F34A4B13338A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D27A03-0611-46C9-91C8-F34A4B13338A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D27A03-0611-46C9-91C8-F34A4B13338A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D27A03-0611-46C9-91C8-F34A4B13338A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C06A3A-F5F6-44FA-9493-8591B2E97730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C06A3A-F5F6-44FA-9493-8591B2E97730}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C06A3A-F5F6-44FA-9493-8591B2E97730}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C06A3A-F5F6-44FA-9493-8591B2E97730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CE6EBF8-16C9-4144-9381-69D60C01859B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CE6EBF8-16C9-4144-9381-69D60C01859B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CE6EBF8-16C9-4144-9381-69D60C01859B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CE6EBF8-16C9-4144-9381-69D60C01859B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDA2C532-CC81-462A-AD82-3DF93BDFF74F} = {D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}
+		{EFA370F7-640C-43DB-A3BD-2E061421551B} = {D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}
+		{01D27A03-0611-46C9-91C8-F34A4B13338A} = {D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}
+		{C1C06A3A-F5F6-44FA-9493-8591B2E97730} = {D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}
+		{3CE6EBF8-16C9-4144-9381-69D60C01859B} = {D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}
+	EndGlobalSection
+EndGlobal
