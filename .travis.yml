@@ -13,5 +13,4 @@ notifications:
     on_success: change
     on_failure: always
 script:
-- dotnet build ./Trappist/src/Promact.Trappist.Web -c Release
-- cd ./Trappist/src/Promact.Trappist.Web && npm install
+- dotnet build
