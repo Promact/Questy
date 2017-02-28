@@ -1,5 +1,5 @@
 
-(https://travis-ci.org/Promact/trappist.svg?branch=development)
+[![Build Status](https://travis-ci.org/Promact/trappist.svg?branch=development)](https://travis-ci.org/Promact/trappist)
 
 
 # trappist
