@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.Web.Services;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace Promact.Trappist.Web
 {
@@ -71,7 +72,11 @@ namespace Promact.Trappist.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
+
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {
@@ -91,6 +96,10 @@ namespace Promact.Trappist.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

@@ -252,3 +252,8 @@ paket-files/
 *.sln.iml
 
 _references.js
+**/ClientApp/**/*.js
+**/ClientApp/**/*.js.map
+
+**/wwwroot/dist/*.*
+!**/wwwroot/dist/_placeholder.txt
