@@ -113,13 +113,10 @@ h6, .h6 {
         }
         &.navbar-right {
             margin-right: -25px;
-            li a {
+            li i {
                 padding: 14px 10px;
-                min-width: inherit;
-                line-height: 10px;
-                i {
-                    font-size: 32px;
-                }
+                font-size: 32px;
+                cursor: pointer;
             }
         }
     }
