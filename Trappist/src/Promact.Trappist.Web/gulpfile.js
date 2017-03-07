@@ -8,3 +8,6 @@ gulp.task("sass", function () {
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./wwwroot/css'));
 });
+gulp.task('watch', ['sass'], function () {
+    gulp.watch('./wwwroot/css/*.scss', ['sass']);
+});
