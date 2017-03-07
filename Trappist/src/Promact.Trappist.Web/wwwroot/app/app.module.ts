@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 
 import { SharedModule } from "./shared/shared.module";
 import { QuestionsModule } from "./questions/questions.module";
+import { TestsModule } from "./tests/tests.module";
+import { ProfileModule } from "./profile/profile.module";
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -16,7 +18,9 @@ import { QuestionsModule } from "./questions/questions.module";
         BrowserModule,
         appRouting,
         SharedModule,
-        QuestionsModule
+        QuestionsModule,
+        TestsModule,
+        ProfileModule
     ],
     providers: [
 
