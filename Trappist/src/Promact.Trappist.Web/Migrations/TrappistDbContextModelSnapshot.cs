@@ -132,6 +132,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<DateTime?>("UpdateDateTime");
+
                     b.HasKey("Id");
 
                     b.ToTable("Question");

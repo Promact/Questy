@@ -44,7 +44,8 @@ namespace Promact.Trappist.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

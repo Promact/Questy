@@ -8,7 +8,7 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170307060726_initial")]
+    [Migration("20170307095046_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<string>("Name");
+
+                    b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
