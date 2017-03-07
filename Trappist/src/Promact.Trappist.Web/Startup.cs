@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
-using Promact.Trappist.Web.Services;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Promact.Trappist.Repository.Questions;
 
 namespace Promact.Trappist.Web
 {
@@ -48,18 +44,16 @@ namespace Promact.Trappist.Web
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TrappistDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Promact.Trappist.Web")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,16 +90,6 @@ namespace Promact.Trappist.Web
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "login",
-                    template: "login",
-                    defaults: new { controller="Account", action = "Login"});
-
-                routes.MapRoute(
-                    name: "setup",
-                    template: "setup",
-                    defaults: new { controller = "Home", action = "Setup" });
-
                 routes.MapRoute(
                         name: "Default",
                         template: "{*.}",

@@ -1,16 +1,21 @@
 ﻿import { Injectable } from "@angular/core";
+import { HttpService } from "../core/http.service";
 
 @Injectable()
 
 export class QuestionsService {
 
-    private questionsApiUrl = "api/admin";
+    private questionsApiUrl = "api/questions";
+
+    constructor(private httpService: HttpService) {
+        
+    }
 
     /**
      * get list of questions
      */
     getQuestions() {
-        //code for getting questions from http
+        return this.httpService.get(this.questionsApiUrl);
     }
 
 }

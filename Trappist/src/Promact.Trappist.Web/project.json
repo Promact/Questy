@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Promact.Trappist.Web-c7bf096e-d957-474a-b495-cb046109e062",
 
   "dependencies": {
@@ -44,7 +44,9 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Promact.Trappist.Core": "1.0.0-*",
+    "Promact.Trappist.Repository": "1.0.0-*"
   },
 
   "tools": {
