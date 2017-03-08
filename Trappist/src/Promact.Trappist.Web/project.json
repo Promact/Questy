@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Promact.Trappist.Web-c7bf096e-d957-474a-b495-cb046109e062",
 
   "dependencies": {
@@ -7,7 +7,6 @@
       "type": "platform"
     },
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
-    "Microsoft.AspNetCore.AngularServices": "1.0.0-*",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.0",
@@ -45,7 +44,10 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Promact.Trappist.Core": "1.0.0-*",
+    "Promact.Trappist.Repository": "1.0.0-*",
+    "Microsoft.AspNetCore.SpaServices": "1.0.0-beta-000021"
   },
 
   "tools": {
@@ -92,12 +94,8 @@
   },
 
   "scripts": {
-    "postcompile": [ "node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js" ],
-
     "prepublish": [
-      "npm install",
-      "node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod",
-      "node node_modules/webpack/bin/webpack.js --env.prod"
+      "npm install"
     ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
