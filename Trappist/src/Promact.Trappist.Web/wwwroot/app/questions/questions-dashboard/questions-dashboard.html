@@ -13,23 +13,41 @@
                 <a href="" class="pull-right"><i class="material-icons">add</i></a>
             </div>
             <ul class="category-list">
-                <li class="active">
-                    <a href="" class="h5">All Questions</a>
+                <li class="active h5">All Questions</li>
+                <li class="clearfix h5">Logical Reasoning
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
+                    <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Rename</button>
+                        <button md-menu-item>Delete</button>
+                    </md-menu>
                 </li>
-                <li>
-                    <a href="" class="clearfix h5">Logical Reasoning <i class="material-icons pull-right">more_vert</i></a>
+                <li class="clearfix h5">Quantitative Ability
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
+                    <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Rename</button>
+                        <button md-menu-item>Delete</button>
+                    </md-menu>
                 </li>
-                <li>
-                    <a href="" class="clearfix h5">Quantitative Ability <i class="material-icons pull-right">more_vert</i></a>
+                <li class="clearfix h5">Programming Challenge
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
+                    <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Rename</button>
+                        <button md-menu-item>Delete</button>
+                    </md-menu>
                 </li>
-                <li>
-                    <a href="" class="clearfix h5">Programming Challenge <i class="material-icons pull-right">more_vert</i></a>
+                <li class="clearfix h5">Technical Aptitude
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
+                    <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Rename</button>
+                        <button md-menu-item>Delete</button>
+                    </md-menu>
                 </li>
-                <li>
-                    <a href="" class="clearfix h5">Technical Aptitude <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">General Knowledge <i class="material-icons pull-right">more_vert</i></a>
+                <li class="clearfix h5">General Knowledge
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
+                    <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Rename</button>
+                        <button md-menu-item>Delete</button>
+                    </md-menu>
                 </li>
             </ul>
         </div>
