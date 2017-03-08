@@ -11,10 +11,14 @@ $color_border: #EDEDED;
 $color_white: #FFFFFF;
 
 /* General */
+html {
+    height: 100%;
+}
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     color: $color_base;
+    height: 100%;
 }
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7 {
     margin: 0;
@@ -79,8 +83,65 @@ h6, .h6 {
         border-color: $color_theme;
     }
 }
+.cdk-overlay-pane {
+    .mat-menu-panel {
+        min-width: 100px;
+        .mat-menu-content {
+            padding: 5px 0;
+            .mat-menu-item {
+                font-size: 13px;
+                font-family: 'Open Sans', sans-serif;
+                line-height: inherit;
+                height: inherit;
+                padding: 6px 16px;
+                color: $color_base;
+                &:hover, &:focus {
+                    background-color: $color_theme_hover;
+                }
+            }
+        }
+    }
+    .mat-dialog-container {
+        width: 600px;
+        background-color: $color_bg;
+        border-radius: 5px;
+        padding: 15px 25px 20px;
+        .dialog {
+            .dialog-title {
+                margin: 0 -25px;
+                border-bottom: 1px solid $color_border;
+                padding: 0 14px 12px 25px;
+                button {
+                    padding: 0;
+                    background-color: transparent;
+                    border: 0;
+                    color: $color_base_secondary;
+                    &:focus {
+                        outline: 0;
+                    }
+                }
+            }
+            .dialog-body {
+                padding: 25px 0 36px;
+                .form-group {
+                    label {
+                        font-weight: 400;
+                        padding-bottom: 10px;
+                    }
+                }
+            }
+            .dialog-actions {
+                text-align: right;
+            }
+        }
+    }
+}
 
 /* Layout */
+.main-page {
+    height: 100%;
+    overflow: auto;
+}
 .navbar {
     border: 0;
     border-radius: 0;
@@ -270,7 +331,7 @@ footer {
         }
         .create-test-block {
             margin-bottom: 20px;
-            height: 220px;
+            height: 216px;
             border: 2px dashed;
             padding: 30px 0;
             text-align: center;
@@ -287,9 +348,10 @@ footer {
             padding: 15px;
             margin-bottom: 20px;
             .test-title {
-                a {
+                i {
                     margin-right: -10px;
                     color: $color_base_secondary;
+                    cursor: pointer;
                 }
             }
             .test-details {
@@ -348,26 +410,19 @@ footer {
                 padding-left: 0;
                 margin-top: 5px;
                 li {
-                    a {
-                        display: block;
-                        padding: 8px 6px 8px 12px;
-                        height: 40px;
-                        line-height: 24px;
-                        i {
-                            color: $color_base_secondary;
-                        }
-                        &:hover, &:focus {
-                            text-decoration: none;
-                            color: $color_base;
-                        }
+                    display: block;
+                    padding: 8px 6px 8px 12px;
+                    height: 40px;
+                    line-height: 24px;
+                    cursor: pointer;
+                    i {
+                        color: $color_base_secondary;
                     }
                     &.active {
-                        a {
-                            background-color: $color_theme;
+                        background-color: $color_theme;
+                        color: $color_white;
+                        i {
                             color: $color_white;
-                            i {
-                                color: $color_white;
-                            }
                         }
                     }
                 }
