@@ -26,6 +26,6 @@ namespace Promact.Trappist.Web.Data
         }
 
         public DbSet<Question> Question { get; set; }
-        public DbSet <Catagory> Catagorys { get; set; }
+        public DbSet <Category> Categorys { get; set; }
     }
 }

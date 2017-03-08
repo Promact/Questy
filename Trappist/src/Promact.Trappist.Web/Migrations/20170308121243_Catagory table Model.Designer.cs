@@ -8,9 +8,10 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170308121243_Catagory table Model")]
+    partial class CatagorytableModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

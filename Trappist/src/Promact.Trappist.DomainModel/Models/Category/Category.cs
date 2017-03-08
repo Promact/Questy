@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.Models.Catagory
 {
-    public class Catagory : BaseModel
+    public class Category :BaseModel
     {
+        #region Category Table
+        /// <summary>
+        /// catagory Model 
+        /// Maxlength=150
+        /// </summary>
         [Required]
         [MaxLength(150)]
-        public string CatagoryName { get; set; }
+        public string CategoryName { get; set; }
+        #endregion
     }
 }
