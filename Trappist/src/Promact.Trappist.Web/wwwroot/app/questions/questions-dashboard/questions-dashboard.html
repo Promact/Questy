@@ -10,7 +10,7 @@
         <div class="col-md-3 col-sm-4 category-block">
             <div class="block-title clearfix">
                 <h2 class="pull-left">Sections</h2>
-                <a href="" class="pull-right"><i class="material-icons">add</i></a>
+                <i class="material-icons pull-right" (click)="addCategoryDialog()">add</i>
             </div>
             <ul class="category-list">
                 <li class="active h5">All Questions</li>
@@ -54,6 +54,94 @@
         <div class="col-md-9 col-sm-8 col-md-offset-3 col-sm-offset-4 questions-block">
             <div class="block-title">
                 <h2>All Questions</h2>
+            </div>
+            <div class="block-subtitle clearfix">
+                <ul class="difficulty-levels pull-left">
+                    <li class="h5 active">Total (30)</li>
+                    <li class="h5">Easy (10)</li>
+                    <li class="h5">Medium (10)</li>
+                    <li class="h5">Hard (10)</li>
+                </ul>
+                <button type="button" class="btn-link h5 pull-right" [mdMenuTriggerFor]="questionMenu"><i class="material-icons">add</i> Add New Question</button>
+                <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                    <button md-menu-item><i class="material-icons">radio_button_checked</i> Single Answer</button>
+                    <button md-menu-item><i class="material-icons">check_box</i> Multiple Answer</button>
+                    <button md-menu-item><i class="material-icons">code</i> Programming</button>
+                </md-menu>
+            </div>
+            <div class="questions-area">
+                <div class="qs-block clearfix">
+                    <div class="pull-left">
+                        <div class="qs-container">
+                            <p class="qs-num">Q.1</p>
+                            <div class="qs-text">
+                                <p class="question">What is Git?</p>
+                                <p class="ans-option correct"><span>a.</span> Distributed Source Control System</p>
+                                <p class="ans-option"><span>b.</span> Distributed Project Management System</p>
+                                <p class="ans-option"><span>c.</span> Global Integer Track</p>
+                                <p class="ans-option"><span>d.</span> None of the above</p>
+                            </div>
+                        </div>
+                        <div class="mt10">
+                            <p class="tags">Technical Aptitude</p>
+                            <p class="tags">Easy</p>
+                        </div>
+                    </div>
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</i>
+                    <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Edit</button>
+                        <button md-menu-item>Delete</button>
+                        <button md-menu-item>Duplicate</button>
+                    </md-menu>
+                </div>
+                <div class="qs-block clearfix">
+                    <div class="pull-left">
+                        <div class="qs-container">
+                            <p class="qs-num">Q.1</p>
+                            <div class="qs-text">
+                                <p class="question">Today is Monday, After 61 days, it will be</p>
+                                <p class="ans-option"><span>a.</span> Wednesday</p>
+                                <p class="ans-option correct"><span>b.</span> Saturday</p>
+                                <p class="ans-option"><span>c.</span> Tuesday</p>
+                                <p class="ans-option"><span>d.</span> Thursday</p>
+                            </div>
+                        </div>
+                        <div class="mt10">
+                            <p class="tags">Logical Reasoning</p>
+                            <p class="tags">Easy</p>
+                        </div>
+                    </div>
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</i>
+                    <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Edit</button>
+                        <button md-menu-item>Delete</button>
+                        <button md-menu-item>Duplicate</button>
+                    </md-menu>
+                </div>
+                <div class="qs-block clearfix">
+                    <div class="pull-left">
+                        <div class="qs-container">
+                            <p class="qs-num">Q.1</p>
+                            <div class="qs-text">
+                                <p class="question">Which type of C++ object can have its elements changed, added to, or removed?</p>
+                                <p class="ans-option"><span>a.</span> String</p>
+                                <p class="ans-option correct"><span>b.</span> Mutable</p>
+                                <p class="ans-option"><span>c.</span> MemDev()</p>
+                                <p class="ans-option"><span>d.</span> Immutable</p>
+                            </div>
+                        </div>
+                        <div class="mt10">
+                            <p class="tags">Technical Aptitude</p>
+                            <p class="tags">Medium</p>
+                        </div>
+                    </div>
+                    <i class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</i>
+                    <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <button md-menu-item>Edit</button>
+                        <button md-menu-item>Delete</button>
+                        <button md-menu-item>Duplicate</button>
+                    </md-menu>
+                </div>
             </div>
         </div>
     </div>
