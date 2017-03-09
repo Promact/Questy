@@ -5,6 +5,9 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 
+namespace Promact.Trappist.Web.Data
+{
+    public class TrappistDbContext : IdentityDbContext<ApplicationUser>
 namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Web.DomainModel.DbContext;
+using Promact.Trappist.Web.Data;
 
 namespace Promact.Trappist.Web
 {
