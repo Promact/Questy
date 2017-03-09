@@ -123,6 +123,24 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 150);
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categorys");
+                });
+
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
                 {
                     b.Property<int>("Id")
