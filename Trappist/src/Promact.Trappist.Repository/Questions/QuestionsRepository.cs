@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Data;
+using Promact.Trappist.Web.Models;
 using System.Linq;
 
 namespace Promact.Trappist.Repository.Questions
