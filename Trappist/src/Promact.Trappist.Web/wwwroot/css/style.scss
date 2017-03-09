@@ -42,11 +42,19 @@ h6, .h6 {
     font-style: italic;
 }
 .tags {
+    display: inline-block;
     font-size: 11px;
     color: $color_base_secondary;
+    background-color: $color_theme_hover;
+    padding: 6px 20px;
+    border-radius: 3px;
+    margin: 0 5px;
 }
 .mb0 {
     margin-bottom: 0 !important;
+}
+.mt10 {
+    margin-top: 10px;
 }
 .light-text {
     color: $color_base_secondary;
@@ -93,10 +101,15 @@ h6, .h6 {
                 font-family: 'Open Sans', sans-serif;
                 line-height: inherit;
                 height: inherit;
-                padding: 6px 16px;
+                padding: 6px 30px 6px 16px;
                 color: $color_base;
                 &:hover, &:focus {
                     background-color: $color_theme_hover;
+                }
+                i {
+                    vertical-align: top;
+                    padding-right: 5px;
+                    font-size: 18px;
                 }
             }
         }
@@ -116,6 +129,9 @@ h6, .h6 {
                     background-color: transparent;
                     border: 0;
                     color: $color_base_secondary;
+                    &:hover {
+                        color: $color_base;
+                    }
                     &:focus {
                         outline: 0;
                     }
@@ -163,6 +179,7 @@ h6, .h6 {
                 text-align: center;
                 &:hover, &:focus {
                     color: $color_base;
+                    background-color: $color_theme_hover;
                 }
             }
             &.active {
@@ -280,7 +297,7 @@ footer {
 }
 
 /* Forgot Password */
-.before-login-layout.frgt-pswd .content-container .content-box .form-area form .actions-area a {
+.before-login-layout .content-container .content-box .form-area.frgt-pswd form .actions-area a {
     line-height: 18px;
 }
 
@@ -303,8 +320,13 @@ footer {
                 display: inline-block;
                 width: 180px;
             }
-            &:last-child {
-                margin-bottom: 0;
+            &.cp-dialog-link {
+                display: inline-block;
+                color: $color_theme;
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
         .form-group {
@@ -384,15 +406,17 @@ footer {
         border: 1px solid $color_border;
         position: relative;
         .block-title {
-            padding: 14px 8px 12px 12px;
             h2 {
                 text-transform: uppercase;
                 font-weight: 700;
                 line-height: 24px;
-                height: 28px;
             }
-            a {
+            i {
                 color: $color_base_secondary;
+                cursor: pointer;
+                &:hover, &:focus {
+                    color: $color_base;
+                }
             }
         }
         .category-block {
@@ -403,6 +427,7 @@ footer {
             border-right: 1px solid $color_border;
             padding: 0;
             .block-title {
+                padding: 14px 8px 12px 12px;
                 border-bottom: 1px solid $color_border;
             }
             .category-list {
@@ -417,6 +442,12 @@ footer {
                     cursor: pointer;
                     i {
                         color: $color_base_secondary;
+                        &:hover, &:focus {
+                            color: $color_base;
+                        }
+                    }
+                    &:hover {
+                        background-color: $color_theme_hover;
                     }
                     &.active {
                         background-color: $color_theme;
@@ -429,8 +460,76 @@ footer {
             }
         }
         .questions-block {
-            height: 500px;
+            min-height: 500px;
             padding: 0;
+            .block-title {
+                padding: 14px 25px 12px;
+            }
+            .block-subtitle {
+                border-bottom: 1px solid $color_border;
+                padding: 0 15px 0 10px;
+                .difficulty-levels {
+                    list-style: none;
+                    padding-left: 0;
+                    margin-bottom: 0;
+                    li {
+                        display: inline-block;
+                        padding: 12px 15px;
+                        cursor: pointer;
+                        border-bottom: 3px solid transparent;
+                        &.active {
+                            color: $color_theme;
+                            border-color: $color_theme;
+                        }
+                    }
+                }
+                .btn-link {
+                    padding: 3px 6px 12px 6px;
+                    color: $color_theme;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                    &:focus {
+                        outline: 0;
+                        text-decoration: none;
+                    }
+                    i {
+                        vertical-align: text-bottom;
+                    }
+                }
+            }
+            .questions-area {
+                .qs-block {
+                    padding: 25px 10px 15px 25px;
+                    border-bottom: 1px solid $color_border;
+                    .qs-container {
+                        .qs-num {
+                            display: inline-block;
+                            vertical-align: top;
+                            margin-right: 20px;
+                        }
+                        .qs-text {
+                            display: inline-block;
+                            .ans-option {
+                                margin-bottom: 5px;
+                                span {
+                                    margin-right: 5px;
+                                }
+                                &.correct {
+                                    color: $color_theme;
+                                }
+                            }
+                        }
+                    }
+                }
+                i {
+                    color: $color_base_secondary;
+                    cursor: pointer;
+                    &:hover, &:focus {
+                        color: $color_base;
+                    }
+                }
+            }
         }
     }
 }

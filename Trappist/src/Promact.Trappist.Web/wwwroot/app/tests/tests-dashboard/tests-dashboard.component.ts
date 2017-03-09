@@ -8,6 +8,8 @@ import { MdDialog } from '@angular/material';
 })
 
 export class TestsDashboardComponent{
+
+    // Open Create Test Dialog
     constructor(public dialog: MdDialog) { }
 
     createTestDialog() {
