@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Web.Models;
 using System.Linq;
+using Promact.Trappist.Web.Data;
 
 namespace Promact.Trappist.Repository.Questions
 {
