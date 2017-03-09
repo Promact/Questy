@@ -91,6 +91,16 @@ namespace Promact.Trappist.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "setup",
+                    template: "setup",
+                    defaults: new { controller = "Home", action = "setup" });
+
+                routes.MapRoute(
+                    name: "login",
+                    template: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
