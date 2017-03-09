@@ -27,7 +27,7 @@ namespace Promact.Trappist.Web.Data
         }
 
 
-        public DbSet<SingleMultipleAnswerQuestion> Question { get; set; }
+        public DbSet<Question> Question { get; set; }
         public DbSet<Options> Options { get; set; }
 
         public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
