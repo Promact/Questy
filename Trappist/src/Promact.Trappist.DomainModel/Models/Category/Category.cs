@@ -5,6 +5,6 @@ namespace Promact.Trappist.DomainModel.Models.Category
     {
         [Required]
         [MaxLength(150)]
-        public string categoryName { get; set; }
+        public string CategoryName { get; set; }
     }
 }
