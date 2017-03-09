@@ -10,13 +10,10 @@ namespace Promact.Trappist.DomainModel.Models.Question
     public class Options:BaseModel
     {
         [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public bool Answer { get; set; }
-
+        public string SingleMultipleAnswerOption { get; set; }
+        public bool IsAnswer { get; set; }
         [ForeignKey("Question_Id")]
-        public Question Question { get; set; }
+        public SingleMultipleAnswerQuestion Question { get; set; }
 
     }
 }
