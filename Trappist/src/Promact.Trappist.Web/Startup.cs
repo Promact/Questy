@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.DomainModel.Data;
 
 namespace Promact.Trappist.Web
 {
@@ -99,8 +98,6 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-
-            SeedLanguage.Seed(context);
         }
     }
 }
