@@ -11,7 +11,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.DomainModel.Data;
 
 namespace Promact.Trappist.Web
 {
@@ -52,9 +51,9 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            //services.AddMvc();
 
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            //services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,7 +99,6 @@ namespace Promact.Trappist.Web
                      defaults: new { controller = "Home", action = "Index" });
             });
 
-            SeedLanguage.Seed(context);
         }
     }
 }

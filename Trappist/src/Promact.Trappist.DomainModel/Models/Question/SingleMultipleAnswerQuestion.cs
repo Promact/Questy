@@ -6,7 +6,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
     public class SingleMultipleAnswerQuestion : QuestionBase
     {
         [Required]
-        public ICollection<Options> Options { get; set; }
+        public ICollection<SingleMultipleAnswerQuestionOption> SingleMutipleAnswerQuestionOption { get; set; }
 
     }
 }

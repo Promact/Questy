@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public class Options:BaseModel
+    public class SingleMultipleAnswerQuestionOption:BaseModel
     {
         [Required]
-        public string SingleMultipleAnswerOption { get; set; }
+        public string Option { get; set; }
         public bool IsAnswer { get; set; }
         [ForeignKey("Question_Id")]
-        public SingleMultipleAnswerQuestion Question { get; set; }
+        public SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
 
     }
 }

@@ -12,7 +12,6 @@ namespace Promact.Trappist.DomainModel.Models
         public int Id { get; set; } 
         [Required]
         public DateTime CreatedDateTime { get; set; }   
-        [Required]
         public DateTime? UpdateDateTime { get; set; }
     }
 }
