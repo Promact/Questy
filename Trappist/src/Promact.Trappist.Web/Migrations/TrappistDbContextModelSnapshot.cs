@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Promact.Trappist.Web.Data;
+using Promact.Trappist.Web.DomainModel.DbContext;
 
 namespace Promact.Trappist.Web.Migrations
 {
@@ -121,6 +120,24 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Category.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("categoryName")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 150);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("categorys");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
