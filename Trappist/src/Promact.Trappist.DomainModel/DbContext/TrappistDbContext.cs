@@ -4,7 +4,9 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 
-public class TrappistDbContext : IdentityDbContext<ApplicationUser>
+namespace Promact.Trappist.Web.Data
+{
+    public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
         public TrappistDbContext(DbContextOptions<TrappistDbContext> options)
             : base(options)
@@ -20,4 +22,5 @@ public class TrappistDbContext : IdentityDbContext<ApplicationUser>
         public DbSet<Question> Question { get; set; }
         public DbSet<Category> Category { get; set; }
     }
+}
 
