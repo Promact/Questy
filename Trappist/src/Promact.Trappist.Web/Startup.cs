@@ -10,7 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Web.Data;
+using Promact.Trappist.Web.DomainModel.DbContext;
 
 namespace Promact.Trappist.Web
 {
