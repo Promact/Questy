@@ -16,9 +16,9 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public int LanguageId { get; set; }
 
         [ForeignKey("QuestionId")]
-        public CodeSnippetQuestion codeSnippetQuestion { get; set; }
+        public CodeSnippetQuestion CodeSnippetQuestion { get; set; }
 
         [ForeignKey("LanguageId")]
-        public CodingLanguage codeLanguage { get; set; }
+        public CodingLanguage CodeLanguage { get; set; }
     }
 }

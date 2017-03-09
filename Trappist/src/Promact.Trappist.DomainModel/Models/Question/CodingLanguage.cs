@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public enum language
+    public enum language: int
     {
         java,
         cpp,

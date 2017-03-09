@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Web.Data;
 using System.Linq;
+using System;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -14,6 +15,18 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext = dbContext;
         }
 
+
+        /// <summary>
+        /// Yet to be implemented
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
+        public int AddCodeSnippetQuestion(CodeSnippetQuestion question)
+        {
+            _dbContext.CodeSnippetQuestion.Add(question);
+            return 0;
+        }
+
         /// <summary>
         /// Get all questions
         /// </summary>
@@ -24,5 +37,7 @@ namespace Promact.Trappist.Repository.Questions
             
             return questions;
         }
+
+
     }
 }

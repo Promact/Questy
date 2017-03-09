@@ -100,7 +100,7 @@ namespace Promact.Trappist.Web
                      defaults: new { controller = "Home", action = "Index" });
             });
 
-            SeedLanguage.Seed(context);
+            SeedDatabase.Seed(context);
         }
     }
 }
