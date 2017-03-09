@@ -8,9 +8,10 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170308120613_migration-csq-1")]
+    partial class migrationcsq1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -123,24 +124,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categorys");
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
                 {
                     b.Property<int>("Id")
@@ -180,25 +163,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CodingLanguage");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Catagory", b =>
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categorys");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>

@@ -8,9 +8,10 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170308101336_CatagoryManagement")]
+    partial class CatagoryManagement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -123,72 +124,12 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categorys");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("CheckCodeComplexity");
-
-                    b.Property<bool>("CheckTimeComplexity");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<bool>("RunBasicTestCase");
-
-                    b.Property<bool>("RunCornerTestCase");
-
-                    b.Property<bool>("RunNecessaryTestCase");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CodeSnippetQuestion");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("Language")
-                        .IsRequired();
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CodingLanguage");
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Catagory", b =>
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("CatagoryName")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 150);
 
@@ -198,7 +139,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorys");
+                    b.ToTable("Catagorys");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
@@ -215,28 +156,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Question");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<int>("LanguageId");
-
-                    b.Property<int>("QuestionId");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("QuestionLanguageMapping");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -322,19 +241,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.Web.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "codeLanguage")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "codeSnippetQuestion")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
