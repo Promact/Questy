@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Promact.Trappist.Web.Data;
+using Promact.Trappist.Web.DomainModel.DbContext;
 
 namespace Promact.Trappist.Web.Migrations
 {
