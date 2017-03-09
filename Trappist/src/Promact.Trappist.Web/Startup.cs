@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
