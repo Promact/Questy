@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.Web.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Category;
+using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.Web.Models;
 
-namespace Promact.Trappist.Web.Data
-{
-    public class TrappistDbContext : IdentityDbContext<ApplicationUser>
+public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
         public TrappistDbContext(DbContextOptions<TrappistDbContext> options)
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -24,8 +17,7 @@ namespace Promact.Trappist.Web.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
         public DbSet<Question> Question { get; set; }
-        public DbSet<Category> categorys { get; set; }
+        public DbSet<Category> Category { get; set; }
     }
-}
+
