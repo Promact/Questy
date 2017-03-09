@@ -123,10 +123,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-          
-
-         
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
                 {
                     b.Property<int>("Id")
@@ -145,14 +141,36 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<int>("QuestionType");
 
-                    b.Property<DateTime?>("UpdateDateTime")
-                        .IsRequired();
+                    b.Property<DateTime?>("UpdateDateTime");
 
                     b.Property<string>("UpdatedBy");
 
                     b.HasKey("Id");
 
                     b.ToTable("SingleMultipleAnswerQuestion");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<bool>("IsAnswer");
+
+                    b.Property<string>("Option")
+                        .IsRequired();
+
+                    b.Property<int?>("Question_Id");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Question_Id");
+
+                    b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -241,14 +259,12 @@ namespace Promact.Trappist.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Options", b =>
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
                 {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "Question")
-                        .WithMany("Options")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
+                        .WithMany("SingleMutipleAnswerQuestionOption")
                         .HasForeignKey("Question_Id");
                 });
-
-         
         }
     }
 }

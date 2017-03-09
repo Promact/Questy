@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class AddBaseclass : Migration
+    public partial class modelnamechange : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

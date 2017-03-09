@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class CatagoryModelMIgration : Migration
+    public partial class modelupdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

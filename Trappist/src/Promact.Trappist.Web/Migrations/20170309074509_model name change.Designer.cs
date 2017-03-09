@@ -8,8 +8,8 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170308101336_CatagoryManagement")]
-    partial class CatagoryManagement
+    [Migration("20170309074509_model name change")]
+    partial class modelnamechange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -124,38 +124,54 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Catagory.Catagory", b =>
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CatagoryName")
-                        .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
+                    b.Property<int>("CategoryID");
+
+                    b.Property<int>("CreateBy");
 
                     b.Property<DateTime>("CreatedDateTime");
 
+                    b.Property<int>("DifficultyLevel");
+
+                    b.Property<string>("QuestionDetail")
+                        .IsRequired();
+
+                    b.Property<int>("QuestionType");
+
                     b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("UpdatedBy");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Catagorys");
+                    b.ToTable("SingleMultipleAnswerQuestion");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<string>("Name");
+                    b.Property<bool>("IsAnswer");
+
+                    b.Property<string>("Option")
+                        .IsRequired();
+
+                    b.Property<int?>("Question_Id");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Question");
+                    b.HasIndex("Question_Id");
+
+                    b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -242,6 +258,13 @@ namespace Promact.Trappist.Web.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
+                        .WithMany("SingleMutipleAnswerQuestionOption")
+                        .HasForeignKey("Question_Id");
                 });
         }
     }

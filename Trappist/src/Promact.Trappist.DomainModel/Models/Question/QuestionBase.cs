@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using static Promact.Trappist.DomainModel.Models.Enums.EnumList;
 
 namespace Promact.Trappist.DomainModel.Models.Question
