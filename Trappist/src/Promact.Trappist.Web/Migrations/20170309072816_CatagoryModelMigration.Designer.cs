@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Trappist.Web.Models;
+using Promact.Trappist.Web.Data;
 
 namespace Promact.Trappist.Web.Migrations
 {
