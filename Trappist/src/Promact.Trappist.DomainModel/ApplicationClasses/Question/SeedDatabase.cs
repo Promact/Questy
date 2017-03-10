@@ -1,6 +1,6 @@
-﻿using Promact.Trappist.DomainModel.Enum;
+﻿using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Data;
 using System.Linq;
 
 namespace Promact.Trappist.DomainModel.Data
