@@ -1,25 +1,34 @@
 ﻿@using System.Collections.Generic
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
+@model  Promact.Trappist.Web.Models.ApplicationUser
+<div class="before-login-layout">
+    <div class="content-container">
+        <div class="content-box">
+            <div class="logo-area">
+                <img src="~/images/logo.png" alt="Logo" />
+            </div>
+            <div class="form-area">
+                <div class="titlebar">
+                    <h1>Sign In</h1>
+                </div>
+                       <form asp-controller="Account" asp-action="Login"  method="post">
+                        <div class="form-group">
+                            <input asp-for="Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email"class="text-danger"></span>
+                         </div>
 
-@{
-    Layout = "_BeforeLoginLayout";
-}
-
-<div class="form-area">
-    <div class="titlebar">
-        <h1>Sign In</h1>
+                        <div class="form-group">
+                            <input asp-for="Password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="Password"class="text-danger"></span>
+                        </div>
+                        <div class="actions-area">
+                            <button type="submit" class="btn btn-primary" onclick="">Sign In</button>
+                            <a href="">Forgot Password?</a>
+                        </div>
+                    </form>
+</div>
+        </div>
     </div>
-    <form>
-        <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email" />
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" />
-        </div>
-        <div class="actions-area">
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <a href="">Forgot Password?</a>
-        </div>
-    </form>
+    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
 </div>
