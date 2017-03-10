@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.DomainModel.Models.Category;
 
-namespace Promact.Trappist.Web.Data
+namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -24,6 +25,7 @@ namespace Promact.Trappist.Web.Data
         }
 
         public DbSet<Question> Question { get; set; }
+        public DbSet<Category> Category { get; set; }
 
         #region Overridden Methods
 
