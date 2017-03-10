@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Promact.Trappist.DomainModel.Models.Question
 {
     //To-Do inherit QuestionBaseModel instead of BaseModel once it is created
-    public class CodeSnippetQuestion : BaseModel
+    public class CodeSnippetQuestion : QuestionBase
     {
         [Required]
         public bool CheckCodeComplexity { get; set; }

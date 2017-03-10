@@ -24,9 +24,9 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 
             var Languages = new CodingLanguage[]
             {
-                new CodingLanguage {Language = ProgramingLanguageEnum.Java},
-                new CodingLanguage {Language = ProgramingLanguageEnum.Cpp},
-                new CodingLanguage {Language = ProgramingLanguageEnum.C}
+                new CodingLanguage {Language = ProgramingLanguage.Java},
+                new CodingLanguage {Language = ProgramingLanguage.Cpp},
+                new CodingLanguage {Language = ProgramingLanguage.C}
             };
 
             foreach(CodingLanguage language in Languages)
