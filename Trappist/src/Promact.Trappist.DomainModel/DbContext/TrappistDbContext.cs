@@ -3,11 +3,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.Models.Question;
 using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.Web.Models;
 
-namespace Promact.Trappist.Web.DomainModel.DbContext
+namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
