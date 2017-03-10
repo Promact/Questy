@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
@@ -14,7 +16,6 @@ namespace Promact.Trappist.Web.DomainModel.DbContext
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -22,7 +23,6 @@ namespace Promact.Trappist.Web.DomainModel.DbContext
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
         public DbSet<Question> Question { get; set; }
 
         #region Overridden Methods
