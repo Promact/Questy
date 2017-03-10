@@ -2,11 +2,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
-using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Web.DomainModel.DbContext
 {
@@ -24,6 +23,7 @@ namespace Promact.Trappist.Web.DomainModel.DbContext
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         public DbSet<Question> Question { get; set; }
+        public DbSet<Category> Category { get; set; }
 
         #region Overridden Methods
 
