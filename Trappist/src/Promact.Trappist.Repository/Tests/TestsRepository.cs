@@ -1,5 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.Web.Data;
+﻿using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Test;
 using System.Linq;
 namespace Promact.Trappist.Repository.Tests
 {
