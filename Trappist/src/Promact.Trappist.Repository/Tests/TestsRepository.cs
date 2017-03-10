@@ -14,9 +14,9 @@ namespace Promact.Trappist.Repository.Tests
         /// service for new test
         /// </summary>
         /// <param name="test">a variable of type 'Test'</param>
-        public void CreateTest(Test test)
+        public void CreateTest(Test testObj)
         {
-          _dbContext.Test.Add(test);
+          _dbContext.Test.Add(testObj);
            _dbContext.SaveChangesAsync();
         }
         /// <summary>

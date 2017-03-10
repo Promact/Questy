@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
 namespace Promact.Trappist.DomainModel.Models.Test
 {
     public class Test : BaseModel
