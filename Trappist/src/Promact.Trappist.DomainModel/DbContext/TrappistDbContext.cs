@@ -5,6 +5,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
+using System;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
@@ -23,10 +24,7 @@ namespace Promact.Trappist.DomainModel.DbContext
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-
-        public DbSet<Question> Question { get; set; }
         public DbSet<Category> Category { get; set; }
-
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
         #region Overridden Methods  

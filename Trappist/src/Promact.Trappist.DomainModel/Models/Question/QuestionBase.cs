@@ -17,6 +17,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public string UpdatedBy { get; set; }
         [Required]
         public int CategoryID { get; set; }
+        public virtual Category.Category Category { get; set; }
 
     }
 }
