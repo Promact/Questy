@@ -2,6 +2,8 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Web.Models;
 
 namespace Promact.Trappist.Web.DomainModel.DbContext
@@ -23,4 +25,3 @@ namespace Promact.Trappist.Web.DomainModel.DbContext
         public DbSet<Category> Category { get; set; }
     }
 }
-
