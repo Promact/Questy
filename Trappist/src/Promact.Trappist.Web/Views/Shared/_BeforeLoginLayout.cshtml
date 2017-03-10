@@ -1,8 +1,4 @@
-﻿@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <base href="/">
@@ -22,9 +18,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Additionals -->
-    <link href="../../node_modules/@@angular/material/core/theming/prebuilt/indigo-pink.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="~/css/style.css" rel="stylesheet" />
@@ -38,19 +32,16 @@
 </head>
 
 <body>
-
-    <!-- Polyfill(s) for older browsers -->
-    <script src="node_modules/core-js/client/shim.min.js"></script>
-
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
-
-    <script src="systemjs.config.js"></script>
-    <script>
-        System.import('app/main-setup.js').catch(function (err) { console.error(err); });
-    </script>
-    <setup>
-        loading..
-    </setup>
+    <div class="before-login-layout">
+        <div class="content-container">
+            <div class="content-box">
+                <div class="logo-area">
+                    <img src="~/images/logo.png" alt="Logo" />
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+        <footer>Copyright &copy;@DateTime.Now.Year Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
+    </div>
 </body>
 </html>
