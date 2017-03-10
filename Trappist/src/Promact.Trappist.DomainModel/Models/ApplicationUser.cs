@@ -10,10 +10,14 @@ namespace Promact.Trappist.Web.Models
       [Required]
       [MaxLength(150)]
       public string Name { get; set; }
+
       [MaxLength(150)]
       public string OrganizationName { get; set; }
+
+      [Required]
       [DataType(DataType.DateTime)]
       public DateTime CreateDateTime { get; set; }
+
       [DataType(DataType.DateTime)]
       public DateTime? UpdatedateTime { get; set; }
   }
