@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Trappist.Repository.Questions
