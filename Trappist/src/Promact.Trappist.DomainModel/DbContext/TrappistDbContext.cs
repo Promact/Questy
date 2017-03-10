@@ -4,9 +4,9 @@ using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.Models;
-using System;
+using Promact.Trappist.DomainModel.Models.Category;
 
-namespace Promact.Trappist.Web.Data
+namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -24,6 +24,8 @@ namespace Promact.Trappist.Web.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
+        public DbSet<Question> Question { get; set; }
+        public DbSet<Category> Category { get; set; }
 
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
