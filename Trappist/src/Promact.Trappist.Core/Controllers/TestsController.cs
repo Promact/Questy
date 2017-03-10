@@ -13,26 +13,20 @@ namespace Promact.Trappist.Core.Controllers
         private readonly TrappistDbContext _context;
         public TestsController(ITestsRepository test)
         {
-            _test = test;
-            //_context = context;
-        }
-        [HttpGet]
-        public string test1()
-        {
-            return "test created";
+            _test = test;           
         }
         /// <summary>
-        /// adding a new test after checking unique name
+        /// adding a new test after checking name is unique or not
         /// </summary>
-        /// <param name="test"></param>
+        /// <param name="test">new test will be added to the model</param>
         /// <returns></returns>
         [HttpPost]
-        public string testPost([FromBody] Test test)
+        public string AddTest([FromBody] Test test)
         {
-            if (_test.uniqueName(test) == false)
+            if (_test.UniqueName(test) == false)
                 return "Invalid Test Name";
 
-            _test.createTest(test);
+            _test.CreateTest(test);
             return "succes";
 
         }
