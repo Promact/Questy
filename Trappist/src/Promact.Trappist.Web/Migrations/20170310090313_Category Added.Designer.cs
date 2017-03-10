@@ -8,8 +8,8 @@ using Promact.Trappist.DomainModel.DbContext;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170310075319_Initialcategorymodel")]
-    partial class Initialcategorymodel
+    [Migration("20170310090313_Category Added")]
+    partial class CategoryAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -142,20 +142,62 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionBase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("DifficultyLevel");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("QuestionDetail")
+                        .IsRequired();
+
+                    b.Property<int>("QuestionType");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("QuestionBase");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("QuestionBase");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<string>("Name");
+                    b.Property<bool>("IsAnswer");
+
+                    b.Property<string>("Option")
+                        .IsRequired();
+
+                    b.Property<int>("SingleMultipleAnswerQuestionID");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Question");
+                    b.HasIndex("SingleMultipleAnswerQuestionID");
+
+                    b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -207,6 +249,16 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
+                {
+                    b.HasBaseType("Promact.Trappist.DomainModel.Models.Question.QuestionBase");
+
+
+                    b.ToTable("SingleMultipleAnswerQuestion");
+
+                    b.HasDiscriminator().HasValue("SingleMultipleAnswerQuestion");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -241,6 +293,22 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.Web.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionBase", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
+                        .WithMany("QuestionBase")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
+                        .WithMany("SingleMutipleAnswerQuestionOption")
+                        .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

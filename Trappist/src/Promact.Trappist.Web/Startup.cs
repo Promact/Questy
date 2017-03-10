@@ -51,13 +51,13 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            //services.AddMvc();
 
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            //services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -108,6 +108,7 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+
         }
     }
 }

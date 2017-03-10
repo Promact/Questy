@@ -1,10 +1,11 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
+using System.Linq;
 using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.DomainModel.Models.Category;
+using System;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
@@ -18,10 +19,15 @@ namespace Promact.Trappist.DomainModel.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+          
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
+        public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
+        #region Overridden Methods  
 
         public DbSet<Question> Question { get; set; }
         public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
@@ -40,10 +46,8 @@ namespace Promact.Trappist.DomainModel.DbContext
             {
                 ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
             });
-
             return base.SaveChanges();
         }
-
         #endregion
     }
 }
