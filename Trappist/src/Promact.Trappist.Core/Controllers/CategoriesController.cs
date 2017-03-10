@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -21,9 +22,9 @@ namespace Promact.Trappist.Core.Controllers
         /// /// </summary>
         /// <param name="catagoryname"></param>
         /// <returns></returns>
-        public IActionResult AddCatagoryName([FromBody] Category categoryName)
+        public async Task<IActionResult> AddIntoCategoryAsync([FromBody] Category category)
         {
-            _categoriesRepository.CategoryNameAdd(categoryName);
+            await _categoriesRepository.AddCategoryAsync(category);
             return Ok();
         }
         #endregion
@@ -36,15 +37,15 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="Id"></param>
         /// <param name="catagoryname"></param>
         [HttpPut("{id}")]
-        public IActionResult UpdateCatagoryName(long Id, [FromBody] Category categoryName)
+        public async Task<IActionResult> EditFromCategoryAsync(long Id, [FromBody] Category category)
         {
-            var promise = _categoriesRepository.CatagoryIdFind(Id);
+            var promise = _categoriesRepository.SearchCatagoryId(Id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            promise.CategoryName = categoryName.CategoryName;
-            _categoriesRepository.CategoryRename(promise);
+            promise.CategoryName = category.CategoryName;
+            await _categoriesRepository.CategoryEditAsync(promise);
             return Ok();
         }
         #endregion
