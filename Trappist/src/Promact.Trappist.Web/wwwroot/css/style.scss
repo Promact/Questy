@@ -19,6 +19,7 @@ body {
     font-size: 13px;
     color: $color_base;
     height: 100%;
+    overflow: hidden;
 }
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7 {
     margin: 0;
@@ -55,6 +56,12 @@ h6, .h6 {
 }
 .mt10 {
     margin-top: 10px;
+}
+.p0 {
+    padding: 0;
+}
+.pl0 {
+    padding-left: 0;
 }
 .light-text {
     color: $color_base_secondary;
@@ -105,6 +112,7 @@ h6, .h6 {
                 color: $color_base;
                 &:hover, &:focus {
                     background-color: $color_theme_hover;
+                    text-decoration: none;
                 }
                 i {
                     vertical-align: top;
@@ -500,6 +508,9 @@ footer {
             }
             .questions-area {
                 .qs-block {
+                    .pull-left {
+                        width: 90%;
+                    }
                     padding: 25px 10px 15px 25px;
                     border-bottom: 1px solid $color_border;
                     .qs-container {
@@ -510,10 +521,19 @@ footer {
                         }
                         .qs-text {
                             display: inline-block;
+                            width: 85%;
                             .ans-option {
                                 margin-bottom: 5px;
                                 span {
-                                    margin-right: 5px;
+                                    display: inline-block;
+                                    vertical-align: top;
+                                    &:first-child {
+                                        margin-right: 5px;
+                                        width: 15px;
+                                    }
+                                    &:last-child {
+                                        width: 90%;
+                                    }
                                 }
                                 &.correct {
                                     color: $color_theme;
@@ -531,5 +551,139 @@ footer {
                 }
             }
         }
+    }
+}
+
+/* Single & Multiple Answers */
+.simple-ans {
+    border: 1px solid $color_border;
+    background-color: $color_white;
+    .header {
+        background-color: $color_bg_secondary;
+        border-bottom: 1px solid $color_border;
+        padding: 16px 30px;
+        h2 {
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        h5 {
+
+        }
+    }
+    .form-fields {
+        padding: 20px 30px;
+        .form-group {
+            &.answer-choices {
+                margin: 32px 0;
+                .mat-radio-button {
+                    .mat-ripple-element { 
+                        background-color: rgba(1, 185, 187, 0.1); 
+                    }
+                    &.mat-radio-checked {
+                        .mat-radio-outer-circle {
+                            border-color: $color_theme;
+                        }
+                    }
+                    display: block;
+                    width: 54%;
+                    .mat-radio-label {
+                        align-items: center;
+                        margin-bottom: 15px;
+                        width: 100%;
+                        .mat-radio-container {
+                            top: 0;
+                            height: 16px;
+                            width: 16px;
+                            .mat-radio-outer-circle {
+                                border-color: $color_base_secondary;
+                                height: 16px;
+                                width: 16px;
+                            }
+                            .mat-radio-inner-circle {
+                                background-color: $color_theme;
+                                height: 16px;
+                                width: 16px;
+                            }
+                        }
+                        .mat-radio-label-content {
+                            padding-left: 15px;
+                            width: 100%;
+                            .form-control {
+                                display: inline-block;
+                                font-family: 'Open Sans', sans-serif;
+                                font-weight: 400;
+                                width: 92%;
+                            }
+                            i {
+                                vertical-align: middle;
+                                color: $color_base_secondary;
+                                font-size: 16px;
+                                &:hover {
+                                    color: $color_base;
+                                }
+                            }
+                        }
+                    } 
+                }
+                .mat-checkbox {
+                    .mat-ripple-element { 
+                        background-color: rgba(1, 185, 187, 0.1); 
+                    }
+                    &.mat-checkbox-checked {
+                        .mat-checkbox-background {
+                            background-color: $color_theme;
+                        }
+                    }
+                    display: block;
+                    width: 54%;
+                    .mat-checkbox-layout {
+                        margin-bottom: 15px;
+                        width: 100%;
+                        .mat-checkbox-inner-container {
+                            margin: auto;
+                            width: 16px;
+                            height: 16px;
+                            .mat-checkbox-frame {
+                                border-color: $color_base_secondary;
+                            }
+                        }
+                        .mat-checkbox-label {
+                            width: 100%;
+                            padding-left: 15px;
+                            .form-control {
+                                display: inline-block;
+                                font-family: 'Open Sans', sans-serif;
+                                font-weight: 400;
+                                width: 92%;
+                            }
+                            i {
+                                vertical-align: middle;
+                                color: $color_base_secondary;
+                                font-size: 16px;
+                                &:hover {
+                                    color: $color_base;
+                                }
+                            }
+                        }
+                    }
+                }
+                .tip {
+                    font-weight: 600;
+                    margin-left: 30px;
+                }
+            }
+        }
+        .form-inline {
+            margin-left: 30px;
+            .form-control {
+                width: 100%;
+            }
+        }
+    }
+    .actions-area {
+        padding: 20px 30px;
+        text-align: right;
+        border-top: 1px solid $color_border;
     }
 }

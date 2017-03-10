@@ -56,17 +56,18 @@
                 <h2>All Questions</h2>
             </div>
             <div class="block-subtitle clearfix">
+                <button type="button" class="btn-link h5 hidden-md hidden-lg" [mdMenuTriggerFor]="questionMenu"><i class="material-icons">add</i> Add New Question</button>
                 <ul class="difficulty-levels pull-left">
                     <li class="h5 active">Total (30)</li>
                     <li class="h5">Easy (10)</li>
                     <li class="h5">Medium (10)</li>
                     <li class="h5">Hard (10)</li>
                 </ul>
-                <button type="button" class="btn-link h5 pull-right" [mdMenuTriggerFor]="questionMenu"><i class="material-icons">add</i> Add New Question</button>
+                <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><i class="material-icons">add</i> Add New Question</button>
                 <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                    <button md-menu-item><i class="material-icons">radio_button_checked</i> Single Answer</button>
-                    <button md-menu-item><i class="material-icons">check_box</i> Multiple Answer</button>
-                    <button md-menu-item><i class="material-icons">code</i> Programming</button>
+                    <a md-menu-item [routerLink]="['single-answer']"><i class="material-icons">radio_button_checked</i> Single Answer</a>
+                    <a md-menu-item [routerLink]="['multiple-answers']"><i class="material-icons">check_box</i> Multiple Answer</a>
+                    <a md-menu-item><i class="material-icons">code</i> Programming</a>
                 </md-menu>
             </div>
             <div class="questions-area">
@@ -76,10 +77,10 @@
                             <p class="qs-num">Q.1</p>
                             <div class="qs-text">
                                 <p class="question">What is Git?</p>
-                                <p class="ans-option correct"><span>a.</span> Distributed Source Control System</p>
-                                <p class="ans-option"><span>b.</span> Distributed Project Management System</p>
-                                <p class="ans-option"><span>c.</span> Global Integer Track</p>
-                                <p class="ans-option"><span>d.</span> None of the above</p>
+                                <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
+                                <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
+                                <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
+                                <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
                             </div>
                         </div>
                         <div class="mt10">
@@ -97,13 +98,13 @@
                 <div class="qs-block clearfix">
                     <div class="pull-left">
                         <div class="qs-container">
-                            <p class="qs-num">Q.1</p>
+                            <p class="qs-num">Q.2</p>
                             <div class="qs-text">
                                 <p class="question">Today is Monday, After 61 days, it will be</p>
-                                <p class="ans-option"><span>a.</span> Wednesday</p>
-                                <p class="ans-option correct"><span>b.</span> Saturday</p>
-                                <p class="ans-option"><span>c.</span> Tuesday</p>
-                                <p class="ans-option"><span>d.</span> Thursday</p>
+                                <p class="ans-option"><span>a.</span> <span>Wednesday</span></p>
+                                <p class="ans-option correct"><span>b.</span> <span>Saturday</span></p>
+                                <p class="ans-option"><span>c.</span> <span>Tuesday</span></p>
+                                <p class="ans-option"><span>d.</span> <span>Thursday</span></p>
                             </div>
                         </div>
                         <div class="mt10">
@@ -121,13 +122,13 @@
                 <div class="qs-block clearfix">
                     <div class="pull-left">
                         <div class="qs-container">
-                            <p class="qs-num">Q.1</p>
+                            <p class="qs-num">Q.3</p>
                             <div class="qs-text">
                                 <p class="question">Which type of C++ object can have its elements changed, added to, or removed?</p>
-                                <p class="ans-option"><span>a.</span> String</p>
-                                <p class="ans-option correct"><span>b.</span> Mutable</p>
-                                <p class="ans-option"><span>c.</span> MemDev()</p>
-                                <p class="ans-option"><span>d.</span> Immutable</p>
+                                <p class="ans-option"><span>a.</span> <span>String</span></p>
+                                <p class="ans-option correct"><span>b.</span> <span>Mutable</span></p>
+                                <p class="ans-option"><span>c.</span> <span>MemDev()</span></p>
+                                <p class="ans-option"><span>d.</span> <span>Immutable</span></p>
                             </div>
                         </div>
                         <div class="mt10">
