@@ -3,7 +3,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 
-namespace Promact.Trappist.DomainModel.Data
+namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
 
     /// <summary>
@@ -11,8 +11,6 @@ namespace Promact.Trappist.DomainModel.Data
     /// </summary>
     public class SeedDatabase
     {
-        public static object ProgramingLanguage { get; private set; }
-
         /// <summary>
         /// Seed data into the table
         /// </summary>

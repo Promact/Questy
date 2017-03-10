@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models;
-using Promact.Trappist.DomainModel.Models.Category;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
