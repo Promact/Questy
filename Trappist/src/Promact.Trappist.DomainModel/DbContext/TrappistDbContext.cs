@@ -26,6 +26,7 @@ namespace Promact.Trappist.DomainModel.DbContext
 
         public DbSet<Question> Question { get; set; }
         public DbSet<Category> Category { get; set; }
+  
 
         #region Overridden Methods
 

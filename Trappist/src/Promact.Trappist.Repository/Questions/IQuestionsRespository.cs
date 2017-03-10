@@ -1,8 +1,6 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
-using System;
+﻿using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -13,5 +11,6 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <returns>Question list</returns>
         List<Question> GetAllQuestions();
+		List<Category> GetAllCategories();
     }
 }

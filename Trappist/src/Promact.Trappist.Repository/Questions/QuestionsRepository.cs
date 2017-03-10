@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -23,6 +24,10 @@ namespace Promact.Trappist.Repository.Questions
             var questions = _dbContext.Question.ToList();
             
             return questions;
+        }
+		public List<Category> GetAllCategories()
+        {
+            return (_dbContext.Category.ToList());
         }
     }
 }

@@ -3,7 +3,8 @@
 
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "Promact.Trappist.DomainModel": "1.0.0-*"
+    "Promact.Trappist.DomainModel": "1.0.0-*",
+    "System.Linq": "4.3.0"
   },
 
   "frameworks": {
