@@ -11,6 +11,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Repository.Tests;
 
 namespace Promact.Trappist.Web
 {
@@ -54,6 +55,7 @@ namespace Promact.Trappist.Web
             services.AddMvc();
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<ITestsRepository, TestsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

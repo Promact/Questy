@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Web.Data
 {
@@ -24,7 +25,7 @@ namespace Promact.Trappist.Web.Data
         }
 
         public DbSet<Question> Question { get; set; }
-
+        public DbSet<Test> Test { get; set; }
         #region Overridden Methods
 
         public override int SaveChanges()
