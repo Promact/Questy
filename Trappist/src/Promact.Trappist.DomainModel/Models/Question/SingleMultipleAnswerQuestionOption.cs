@@ -9,6 +9,5 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public bool IsAnswer { get; set; }
         public int SingleMultipleAnswerQuestionID { get; set; }
         public virtual SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
-
-    }
+   }
 }

@@ -28,7 +28,6 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
         #region Overridden Methods  
-
         public override int SaveChanges()
         {
             ChangeTracker.Entries().Where(x => x.Entity is BaseModel && x.State == EntityState.Added).ToList().ForEach(x =>
@@ -39,12 +38,8 @@ namespace Promact.Trappist.DomainModel.DbContext
             {
                 ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
             });
-
             return base.SaveChanges();
         }
-
         #endregion
-
-
     }
 }

@@ -7,6 +7,5 @@ namespace Promact.Trappist.DomainModel.Models.Question
     {
         [Required]
         public virtual ICollection<SingleMultipleAnswerQuestionOption> SingleMutipleAnswerQuestionOption { get; set; }
-
     }
 }
