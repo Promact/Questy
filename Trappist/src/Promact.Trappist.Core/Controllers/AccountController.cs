@@ -28,7 +28,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Login via Get method
+        /// Login via Post method
         /// </summary>
         /// <returns>Invalid login attempt</returns>
         [HttpPost]
