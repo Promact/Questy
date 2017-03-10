@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
     //To-Do inherit QuestionBaseModel instead of BaseModel once it is created
     public class CodeSnippetQuestion : BaseModel
     {
-   
         [Required]
         public bool CheckCodeComplexity { get; set; }
 
@@ -21,6 +21,6 @@ namespace Promact.Trappist.DomainModel.Models.Question
         [Required]
         public bool RunNecessaryTestCase { get; set; }
 
-        public virtual QuestionLanguageMapping QuestionLanguangeMapping { get; set; }
+        public virtual ICollection<QuestionLanguageMapping> QuestionLanguangeMapping { get; set; }
     }
 }
