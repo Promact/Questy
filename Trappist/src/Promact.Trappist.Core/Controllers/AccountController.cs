@@ -14,27 +14,27 @@ namespace Promact.Trappist.Core.Controllers
     public class AccountController : Controller
     { 
         // GET: /Account/Login
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public IActionResult Login(string returnUrl = null)
-        //{
-        //    ViewData["ReturnUrl"] = returnUrl;
-        //    return View();
-        //}
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
 
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //public IActionResult Login(Login model)
-        //{
-        //    if (ModelState.IsValid)
-        //    { }
-        //    else
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //    }
-        //    return View(model);
-        //}
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Login(ApplicationUser model)
+        {
+            if (ModelState.IsValid)
+            { }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+            return View(model);
+        }
 
         public IActionResult ForgotPassword()
         {
