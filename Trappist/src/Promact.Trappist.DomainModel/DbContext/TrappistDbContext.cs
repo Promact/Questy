@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
-
+using System.Linq;
+using Promact.Trappist.DomainModel.Models;
+using System;
 
 namespace Promact.Trappist.Web.Data
 {
@@ -25,6 +27,24 @@ namespace Promact.Trappist.Web.Data
 
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
+        #region Overridden Methods  
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.Entries().Where(x => x.Entity is BaseModel && x.State == EntityState.Added).ToList().ForEach(x =>
+            {
+                ((BaseModel)x.Entity).CreatedDateTime = DateTime.UtcNow;
+            });
+            ChangeTracker.Entries().Where(x => x.Entity is BaseModel && x.State == EntityState.Modified).ToList().ForEach(x =>
+            {
+                ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
+            });
+
+            return base.SaveChanges();
+        }
+
+        #endregion
+
 
     }
 }
