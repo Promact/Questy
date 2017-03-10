@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClass;
+﻿using Promact.Trappist.DomainModel.Enum;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Trappist.DomainModel.Models.Question
@@ -8,7 +9,6 @@ namespace Promact.Trappist.DomainModel.Models.Question
         [Required]
         public ProgramingLanguageEnum Language { get; set; }
 
-        public virtual QuestionLanguageMapping QuestionLanguangeMapping { get; set; }
-
+        public virtual ICollection<QuestionLanguageMapping> QuestionLanguangeMapping { get; set; }
     }
 }
