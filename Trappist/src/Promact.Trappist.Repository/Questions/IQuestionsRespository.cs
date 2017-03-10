@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
+﻿using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.Questions
