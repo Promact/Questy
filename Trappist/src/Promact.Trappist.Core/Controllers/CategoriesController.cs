@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
-using System.Collections.Generic;
 
 namespace Promact.Trappist.Core.Controllers
 {
