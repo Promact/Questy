@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Models.Category;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Categories
 {
@@ -8,17 +9,17 @@ namespace Promact.Trappist.Repository.Categories
         /// For Adding a CategoryName into Category Model
         /// </summary>
         /// <param name="catagoryName"></param>
-        void CategoryNameAdd(Category catagoryName);
+        Task AddCategoryAsync(Category catagory);
         /// <summary>
         /// will Find a Key of a respective CategoryName
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Category CatagoryIdFind(long key);
+        Category SearchCatagoryId(long key);
         /// <summary>
         /// It will Rename a Category Name
         /// </summary>
         /// <param name="catagoryName"></param>
-        void CategoryRename(Category catagoryName);
+        Task CategoryEditAsync(Category catagory);
     }
 }
