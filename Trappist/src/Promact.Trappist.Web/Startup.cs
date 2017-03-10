@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.Repository.Categories;
 
 namespace Promact.Trappist.Web
 {
@@ -54,6 +55,8 @@ namespace Promact.Trappist.Web
             services.AddMvc();
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            //Dependency Injection
+            services.AddScoped<ICategoriesRepository,CategoriesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
