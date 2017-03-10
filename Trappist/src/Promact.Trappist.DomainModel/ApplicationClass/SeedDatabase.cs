@@ -1,18 +1,19 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
+﻿using Promact.Trappist.DomainModel.ApplicationClass;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Web.Data;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.Data
 {
-   
+
     /// <summary>
     /// Polpulates pre-required table
     /// </summary>
     public class SeedDatabase
     {
+        public static object ProgramingLanguage { get; private set; }
+
         /// <summary>
         /// Seed data into the table
         /// </summary>
@@ -27,9 +28,9 @@ namespace Promact.Trappist.DomainModel.Data
 
             var Languages = new CodingLanguage[]
             {
-                new CodingLanguage {Language = language.java,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow },
-                new CodingLanguage {Language = language.cpp,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow  },
-                new CodingLanguage {Language = language.c,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow  }
+                new CodingLanguage {Language = ProgramingLanguageEnum.java,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow },
+                new CodingLanguage {Language = ProgramingLanguageEnum.cpp,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow  },
+                new CodingLanguage {Language = ProgramingLanguageEnum.c,  CreatedDateTime = DateTime.UtcNow, UpdateDateTime = DateTime.UtcNow  }
             };
 
             foreach(CodingLanguage language in Languages)

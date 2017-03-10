@@ -194,9 +194,11 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageId")
+                        .IsUnique();
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId")
+                        .IsUnique();
 
                     b.ToTable("QuestionLanguageMapping");
                 });
@@ -289,14 +291,14 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
                 {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "codeLanguage")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "CodeLanguage")
+                        .WithOne("QuestionLanguangeMapping")
+                        .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", "LanguageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "codeSnippetQuestion")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "CodeSnippetQuestion")
+                        .WithOne("QuestionLanguangeMapping")
+                        .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", "QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

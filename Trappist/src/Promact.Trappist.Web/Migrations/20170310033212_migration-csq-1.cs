@@ -9,6 +9,8 @@ namespace Promact.Trappist.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
+
             migrationBuilder.CreateTable(
                 name: "CodeSnippetQuestion",
                 columns: table => new
@@ -35,7 +37,7 @@ namespace Promact.Trappist.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    Language = table.Column<string>(nullable: false),
+                    Language = table.Column<int>(nullable: false),
                     UpdateDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
@@ -43,6 +45,10 @@ namespace Promact.Trappist.Web.Migrations
                     table.PrimaryKey("PK_CodingLanguage", x => x.Id);
                 });
 
+
+           
+
+           
             migrationBuilder.CreateTable(
                 name: "QuestionLanguageMapping",
                 columns: table => new
@@ -70,20 +76,11 @@ namespace Promact.Trappist.Web.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionLanguageMapping_LanguageId",
-                table: "QuestionLanguageMapping",
-                column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionLanguageMapping_QuestionId",
-                table: "QuestionLanguageMapping",
-                column: "QuestionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.DropTable(
                 name: "QuestionLanguageMapping");
 

@@ -24,5 +24,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         [Required]
         public bool RunNecessaryTestCase { get; set; }
+
+        public virtual QuestionLanguageMapping QuestionLanguangeMapping { get; set; }
     }
 }

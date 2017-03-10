@@ -8,7 +8,7 @@ using Promact.Trappist.Web.Data;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170308120613_migration-csq-1")]
+    [Migration("20170310033212_migration-csq-1")]
     partial class migrationcsq1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,8 +155,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<string>("Language")
-                        .IsRequired();
+                    b.Property<int>("Language");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
@@ -196,9 +195,11 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("LanguageId")
+                        .IsUnique();
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId")
+                        .IsUnique();
 
                     b.ToTable("QuestionLanguageMapping");
                 });
@@ -291,14 +292,14 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
                 {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "codeLanguage")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "CodeLanguage")
+                        .WithOne("QuestionLanguangeMapping")
+                        .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", "LanguageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "codeSnippetQuestion")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "CodeSnippetQuestion")
+                        .WithOne("QuestionLanguangeMapping")
+                        .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", "QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
