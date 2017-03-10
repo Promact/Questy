@@ -25,5 +25,6 @@ namespace Promact.Trappist.Web.Data
 
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
+
     }
 }

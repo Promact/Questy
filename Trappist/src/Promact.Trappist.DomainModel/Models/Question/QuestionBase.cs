@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using static Promact.Trappist.DomainModel.Models.Enums.EnumList;
+﻿using Promact.Trappist.DomainModel.Models.Enums;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
@@ -12,7 +13,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
         [Required]
         public DifficultyLevel DifficultyLevel { get; set; }
         [Required]
-        public int CreateBy { get; set; }
+        public string CreateBy { get; set; }
         public string UpdatedBy { get; set; }
         [Required]
         public int CategoryID { get; set; }

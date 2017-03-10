@@ -130,7 +130,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<int>("CategoryID");
 
-                    b.Property<int>("CreateBy");
+                    b.Property<string>("CreateBy")
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -162,13 +163,13 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("Option")
                         .IsRequired();
 
-                    b.Property<int?>("Question_Id");
+                    b.Property<int>("SingleMultipleAnswerQuestionID");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Question_Id");
+                    b.HasIndex("SingleMultipleAnswerQuestionID");
 
                     b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
@@ -263,7 +264,8 @@ namespace Promact.Trappist.Web.Migrations
                 {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
                         .WithMany("SingleMutipleAnswerQuestionOption")
-                        .HasForeignKey("Question_Id");
+                        .HasForeignKey("SingleMultipleAnswerQuestionID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
