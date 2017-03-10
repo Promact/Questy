@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.Category;
 
 namespace Promact.Trappist.DomainModel.DbContext
@@ -27,6 +28,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<Question> Question { get; set; }
         public DbSet<Category> Category { get; set; }
 
+        public DbSet<Test> Test { get; set; }
         #region Overridden Methods
 
         public override int SaveChanges()
