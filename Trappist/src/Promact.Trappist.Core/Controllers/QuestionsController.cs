@@ -30,7 +30,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             var categoryList = _questionsRepository.GetAllCategories();
 
-            return Json(categoryList);
+            return Ok(categoryList);
         }
     }
 }
