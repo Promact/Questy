@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Account
 {
     public class Login
