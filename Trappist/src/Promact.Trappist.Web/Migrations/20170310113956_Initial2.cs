@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,18 +38,18 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "Category",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryName = table.Column<string>(maxLength: 50, nullable: false),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
                     UpdateDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Question", x => x.Id);
+                    table.PrimaryKey("PK_Category", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,6 +94,32 @@ namespace Promact.Trappist.Web.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SingleMultipleAnswerQuestion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryID = table.Column<int>(nullable: false),
+                    CreateBy = table.Column<string>(nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(nullable: false),
+                    DifficultyLevel = table.Column<int>(nullable: false),
+                    QuestionDetail = table.Column<string>(nullable: false),
+                    QuestionType = table.Column<int>(nullable: false),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true),
+                    UpdatedBy = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SingleMultipleAnswerQuestion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SingleMultipleAnswerQuestion_Category_CategoryID",
+                        column: x => x.CategoryID,
+                        principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -163,6 +189,29 @@ namespace Promact.Trappist.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SingleMultipleAnswerQuestionOption",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedDateTime = table.Column<DateTime>(nullable: false),
+                    IsAnswer = table.Column<bool>(nullable: false),
+                    Option = table.Column<string>(nullable: false),
+                    SingleMultipleAnswerQuestionID = table.Column<int>(nullable: false),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SingleMultipleAnswerQuestionOption", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SingleMultipleAnswerQuestionOption_SingleMultipleAnswerQuestion_SingleMultipleAnswerQuestionID",
+                        column: x => x.SingleMultipleAnswerQuestionID,
+                        principalTable: "SingleMultipleAnswerQuestion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
@@ -194,6 +243,16 @@ namespace Promact.Trappist.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SingleMultipleAnswerQuestion_CategoryID",
+                table: "SingleMultipleAnswerQuestion",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SingleMultipleAnswerQuestionOption_SingleMultipleAnswerQuestionID",
+                table: "SingleMultipleAnswerQuestionOption",
+                column: "SingleMultipleAnswerQuestionID");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -223,13 +282,19 @@ namespace Promact.Trappist.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "SingleMultipleAnswerQuestionOption");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "SingleMultipleAnswerQuestion");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }
