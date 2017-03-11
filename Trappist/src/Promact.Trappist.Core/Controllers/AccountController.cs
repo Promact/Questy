@@ -28,21 +28,22 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Login via Get method
+        /// Login via Post method
         /// </summary>
         /// <returns>Invalid login attempt</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(Login model, string returnUrl = null)
+        public IActionResult Login(Login model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             { }
-            else {
+            else
+            {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
             }
-         
+
             return View(model);
         }
 
