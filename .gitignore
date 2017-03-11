@@ -256,3 +256,6 @@ _references.js
 **/wwwroot/app/**/*.js.map
 
 **/wwwroot/css/*.css
+
+# Migration Folder
+Migrations/
