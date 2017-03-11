@@ -2,6 +2,8 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
+using System;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -12,6 +14,19 @@ namespace Promact.Trappist.Repository.Questions
         public QuestionsRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        /// <summary>
+        /// Add code snippet question to the database
+        /// </summary>
+        /// <returns>
+        /// 0 -> Add operation failed
+        /// 1 -> Add operation successful
+        /// </returns>
+        public int AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestionModel)
+        {
+            //To-Do Implementation of add to db operation
+            return 0;
         }
 
         /// <summary>
