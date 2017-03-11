@@ -11,14 +11,5 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <returns>Question list</returns>
         List<SingleMultipleAnswerQuestion> GetAllQuestions();
-
-        /// <summary>
-        /// Add code snippet question to the database
-        /// </summary>
-        /// <returns>
-        /// 0 -> Add operation failed
-        /// 1 -> Add operation successful
-        /// </returns>
-        int AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestionModel);
     }
 }

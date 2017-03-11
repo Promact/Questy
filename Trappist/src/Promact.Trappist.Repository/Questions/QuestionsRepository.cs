@@ -17,19 +17,6 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        /// Add code snippet question to the database
-        /// </summary>
-        /// <returns>
-        /// 0 -> Add operation failed
-        /// 1 -> Add operation successful
-        /// </returns>
-        public int AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestionModel)
-        {
-            //To-Do Implementation of add to db operation
-            return 0;
-        }
-
-        /// <summary>
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
