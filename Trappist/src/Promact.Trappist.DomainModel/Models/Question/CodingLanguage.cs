@@ -6,7 +6,6 @@ namespace Promact.Trappist.DomainModel.Models.Question
 {
     public class CodingLanguage: BaseModel
     { 
-        [Required]
         public ProgramingLanguage Language { get; set; }
 
         public virtual ICollection<QuestionLanguageMapping> QuestionLanguangeMapping { get; set; }
