@@ -12,7 +12,6 @@ using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.DomainModel.DbContext;
-using Promact.Trappist.Repository.Tests;
 
 namespace Promact.Trappist.Web
 {
