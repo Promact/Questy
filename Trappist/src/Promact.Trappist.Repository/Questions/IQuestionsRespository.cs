@@ -1,4 +1,4 @@
-﻿using Promact.Trappist.DomainModel.Models.Category;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 
@@ -10,8 +10,7 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        List<Question> GetAllQuestions();
-        List<Category> GetAllCategories();
-        List<SingleMultipleAnswerQuestion> GetAllQuestions();
+        IEnumerable<string> GetAllCategories();
+        IEnumerable<SingleMultipleAnswerQuestion> GetAllQuestions();
     }
 }

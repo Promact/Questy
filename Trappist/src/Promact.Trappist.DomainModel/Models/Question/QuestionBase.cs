@@ -1,6 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
@@ -15,7 +15,8 @@ namespace Promact.Trappist.DomainModel.Models.Question
         [Required]
         public string CreateBy { get; set; }
         public string UpdatedBy { get; set; }
-        [Required]
+        //[Required]
+        [ForeignKey("CategoryId")]
         public int CategoryID { get; set; }
         public virtual Category.Category Category { get; set; }
     }
