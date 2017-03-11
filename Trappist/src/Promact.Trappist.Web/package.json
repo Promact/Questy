@@ -21,5 +21,9 @@
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0",
     "typescript": "2.2.1"
+  },
+  "scripts": {
+    "tsc": "cd wwwroot && tsc",
+    "sass": "gulp sass"
   }
 }
