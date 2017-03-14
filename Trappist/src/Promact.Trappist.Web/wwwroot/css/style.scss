@@ -162,7 +162,7 @@ h6, .h6 {
 }
 
 /* Layout */
-.main-page {
+.main-page, .basic-setup {
     height: 100%;
     overflow: auto;
 }
@@ -685,5 +685,139 @@ footer {
         padding: 20px 30px;
         text-align: right;
         border-top: 1px solid $color_border;
+    }
+}
+
+/* Basic Setup */
+.basic-setup {
+    background-color: $color_bg;
+    .setup-content {
+        min-height: 450px;
+        width: 800px;
+        margin: 80px auto;
+        .logo-area {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .wizard-area {
+            .card {
+                .card-header {
+                    background-color: transparent;
+                    .nav {
+                        width: 550px;
+                        margin: auto;
+                        .nav-item {
+                            border: 0;
+                            padding: 0;
+                            cursor: default;
+                            a {
+                                cursor: default;
+                                color: $color_base;
+                                font-size: 15px;
+                                padding: 0;
+                                width: 30px;
+                                height: 30px;
+                                border: 1px solid $color_base_secondary;
+                                line-height: 26px;
+                                border-radius: 50%;
+                                background-color: $color_white;
+                                margin: auto;
+                                position: static;
+                                &:before, &:after {
+                                    display: block;
+                                    position: absolute;
+                                    top: 14px;
+                                    left: 106px;
+                                    width: 100%;
+                                    height: 2px;
+                                    content: '';
+                                    background-color: $color_base_secondary;
+                                }
+                                &:hover, &:focus {
+                                    background-color: $color_white;
+                                }
+                            }
+                            &:last-child {
+                                a:before, a:after {
+                                    display: none;
+                                }
+                            }
+                            &.enabled {
+                                a {
+                                    background-color: $color_theme;
+                                    color: $color_white;
+                                }
+                            }
+                            &.active {
+                                a {
+                                    background-color: $color_base_secondary;
+                                    color: $color_white;
+                                }
+                            }
+                        }
+                    }
+                }
+                .card-block {
+                    margin-top: 30px;
+                    background-color: $color_white;
+                    border: 1px solid $color_border;
+                    border-bottom: 0;
+                    padding: 30px 20px 15px;
+                    h2 {
+                        margin-bottom: 25px;
+                    }
+                    .form-group {
+                        margin-bottom: 30px;
+                        label {
+                            margin-bottom: 10px;
+                        }
+                        .form-control {
+                            width: 74%;
+                            &[type=number] {
+                                width: 22%;
+                            }
+                        }
+                        .help-text {
+                            margin-top: 12px;
+                        }
+                    }
+                }
+                .card-footer {
+                    padding: 0 20px 20px;
+                    text-align: right;
+                    border: 1px solid $color_border;
+                    border-top: 0;
+                    &[hidden] {
+                        display: block;
+                    }
+                    .btn[hidden] {
+                        display: none;
+                    }
+                    .btn {
+                        &:first-child {
+                            
+                        }
+                        &:nth-child(2) {
+                            background-color: $color_theme;
+                            border-color: $color_theme;
+                            color: $color_white;
+                        }
+                        &:last-child {
+                            background-color: $color_theme;
+                            border-color: $color_theme;
+                            color: $color_white;
+                            text-indent: -9999px;
+                            line-height: 0;
+                            &:after {
+                                display: block;
+                                content: 'Finish';
+                                text-indent: 0;
+                                line-height: 1.42857143;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
