@@ -11,6 +11,10 @@ namespace Promact.Trappist.Core.Controllers
         {
             _categoryRepository = categoryRepository;
         }
+        /// <summary>
+        /// Get All Categories
+        /// </summary>
+        /// <returns>Category List</returns>
         [HttpGet]
         public IActionResult GetAllCategories()
         {
