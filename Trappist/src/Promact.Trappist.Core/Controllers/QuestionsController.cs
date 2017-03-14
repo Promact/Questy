@@ -29,14 +29,15 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("CodeSnippetQuestion")]
         public IActionResult PostCodeSnippetQuestion([FromBody]CodeSnippetQuestion codeSnippetQuestion)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest();
-            //}
-            //else
-            //{
-            //    int _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
-            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                int response = _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
+
+            }
             return Ok();
 
         }
