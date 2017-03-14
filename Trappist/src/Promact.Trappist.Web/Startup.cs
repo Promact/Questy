@@ -11,14 +11,6 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
-using Promact.Trappist.DomainModel.Seed;
-using NLog.Extensions.Logging;
-using NLog.Web;
-using Promact.Trappist.Core.ActionFilters;
-using Promact.Trappist.Repository.Categories;
-using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Repository.TestSettings;
 
 namespace Promact.Trappist.Web
 {
