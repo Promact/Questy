@@ -257,5 +257,9 @@ _references.js
 
 **/wwwroot/css/*.css
 
+**/wwwroot/shims.js
+**/wwwroot/app-bundle.js
+**/wwwroot/setup-app-bundle.js
+
 # Migration Folder
 Migrations/

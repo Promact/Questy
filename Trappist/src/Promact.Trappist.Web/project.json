@@ -101,8 +101,7 @@
   "scripts": {
     "prepublish": [
       "npm install",
-      "npm run tsc",
-      "npm run sass"
+      "npm run prod"
     ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
