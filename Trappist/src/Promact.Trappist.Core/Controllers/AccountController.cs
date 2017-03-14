@@ -18,10 +18,6 @@ namespace Promact.Trappist.Core.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger _logger;
 
-        public object SignInStatus { get; private set; }
-
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ILoggerFactory loggerFactory)
-
         /// <summary>
         /// Login via Get method
         /// </summary>
