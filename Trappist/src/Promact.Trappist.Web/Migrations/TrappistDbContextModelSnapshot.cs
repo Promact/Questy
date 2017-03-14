@@ -8,10 +8,9 @@ using Promact.Trappist.DomainModel.DbContext;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170310113956_Initial2")]
-    partial class Initial2
+    partial class TrappistDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -204,6 +203,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime>("CreateDateTime");
+
                     b.Property<string>("Email")
                         .HasAnnotation("MaxLength", 256);
 
@@ -213,11 +214,18 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 150);
+
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedUserName")
                         .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("OrganizationName")
+                        .HasAnnotation("MaxLength", 150);
 
                     b.Property<string>("PasswordHash");
 
@@ -228,6 +236,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<DateTime?>("UpdatedateTime");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
