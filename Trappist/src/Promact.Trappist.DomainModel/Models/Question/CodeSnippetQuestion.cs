@@ -2,7 +2,6 @@
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    //To-Do inherit QuestionBaseModel instead of BaseModel once it is created
     public class CodeSnippetQuestion : QuestionBase
     {
         public bool CheckCodeComplexity { get; set; }

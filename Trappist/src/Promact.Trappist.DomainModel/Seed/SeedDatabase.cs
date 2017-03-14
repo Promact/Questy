@@ -3,9 +3,8 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 
-namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
-{
-
+namespace Promact.Trappist.DomainModel.Seed
+{ 
     /// <summary>
     /// Polpulates pre-required table
     /// </summary>
