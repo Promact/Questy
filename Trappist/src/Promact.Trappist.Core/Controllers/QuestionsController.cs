@@ -18,11 +18,11 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <returns>Questions list</returns>
         [HttpGet]
-        public IActionResult GetQuestions()
+        public IActionResult GetAllQuestions()
         {
             var questions = _questionsRepository.GetAllQuestions();
-
             return Json(questions);
+
         }
     }
 }

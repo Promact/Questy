@@ -9,14 +9,15 @@ import { MdDialog } from '@angular/material';
 })
 
 export class QuestionsDashboardComponent {
-    
+    categoryName: string[] = new Array<string>();
     constructor(private questionsService: QuestionsService, private dialog: MdDialog) {
-        this.getAllQuestions();
+        this.getAllCategories();
+        //fetch all questions
     }
-
-    getAllQuestions() {
-        this.questionsService.getQuestions().subscribe((questionsList) => {
-            console.log(questionsList);
+    //To Get All The categories
+    getAllCategories() {
+        this.questionsService.getAllCategories().subscribe((CategoriesList) => {
+            this.categoryName = CategoriesList
         });
     }
 
@@ -33,3 +34,8 @@ export class QuestionsDashboardComponent {
     templateUrl: "add-category-dialog.html"
 })
 export class AddCategoryDialogComponent { }
+export class Category
+{
+    CategoryName: string;
+
+}
