@@ -5,7 +5,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup
     {
         [Required]
         [StringLength(150)]
-        [EmailAddress]
         [Display(Name = "Name")]
         public string Name { get; set; }
 

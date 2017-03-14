@@ -9,7 +9,6 @@ namespace Promact.Trappist.DomainModel.Models.Category
         [Required]
         [MaxLength(50)]
         public string CategoryName { get; set; }
-        [Required]
         public virtual ICollection<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
     }
 }
