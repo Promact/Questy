@@ -50,7 +50,7 @@
     "Microsoft.AspNetCore.SpaServices": "1.0.0-beta-000021",
     "Promact.Trappist.Utility": "1.0.0-*",
     "Promact.Trappist.DomainModel": "1.0.0-*",
-    "NLog.Extensions.Logging": "1.0.0-rtm-beta4"
+    "NLog.Web.AspNetCore": "4.3.1"
   },
 
   "tools": {
@@ -93,6 +93,7 @@
       "**/*.cshtml",
       "appsettings.json",
       "web.config",
+      "nlog.config"
       "node_modules"
     ]
   },
