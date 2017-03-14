@@ -52,7 +52,7 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddMvc();
+            services.AddMvc();
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();

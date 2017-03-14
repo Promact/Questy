@@ -2,7 +2,6 @@
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
-
 namespace Promact.Trappist.Core.Controllers
 {
     [Produces("application/json")]
