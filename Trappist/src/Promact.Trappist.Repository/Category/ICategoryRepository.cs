@@ -1,5 +1,4 @@
-﻿
-namespace Promact.Trappist.Repository.Category
+﻿namespace Promact.Trappist.Repository.Category
 {
     public interface ICategoryRepository
     {
