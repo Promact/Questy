@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.ComponentModel.DataAnnotations;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.DomainModel.Models.Category
 {
