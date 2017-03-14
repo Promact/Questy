@@ -46,6 +46,10 @@ namespace Promact.Trappist.Core.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+
+            }
+            else
+            {
                 return View(model);
             }
 
