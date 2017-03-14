@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.Questions
             try
             {
                 _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
-                await _dbContext.SaveChangesAsync();
+                _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
