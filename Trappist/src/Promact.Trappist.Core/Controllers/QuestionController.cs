@@ -10,7 +10,6 @@ namespace Promact.Trappist.Core.Controllers
     public class QuestionController : Controller
     {
         private readonly IQuestionRepository _questionsRepository;
-
         public QuestionsController(IQuestionRepository questionsRepository)
         {
             _questionsRepository = questionsRepository;
