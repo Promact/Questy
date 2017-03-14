@@ -9,7 +9,6 @@ namespace Promact.Trappist.Core.Controllers
     public class QuestionsController : Controller
     {
         private readonly IQuestionRepository _questionsRepository;
-
         public QuestionsController(IQuestionRepository questionsRepository)
         {
             _questionsRepository = questionsRepository;
@@ -24,6 +23,27 @@ namespace Promact.Trappist.Core.Controllers
         {
             var questions = _questionsRepository.GetAllQuestions();
             return Json(questions);
+        }
+        [HttpPost]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <returns></returns>
+        public IActionResult AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion)
+        {
+            _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion);
+            return Ok();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <returns></returns>
+        public IActionResult AddSingleMultipleAnswerQuestionOption(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
+        {
+            _questionsRepository.AddSingleMultipleAnswerQuestionOption(singleMultipleAnswerQuestionOption);
+            return Ok();
         }
     }
 }
