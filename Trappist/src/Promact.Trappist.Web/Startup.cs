@@ -51,9 +51,8 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddMvc();
-
-            //services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddMvc();
+           services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
