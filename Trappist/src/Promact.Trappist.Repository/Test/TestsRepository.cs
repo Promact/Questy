@@ -18,7 +18,6 @@ namespace Promact.Trappist.Repository.Tests
         public void CreateTest(Test test)
         {
             _dbContext.Test.Add(test);
-
             _dbContext.SaveChangesAsync();
         }      
         /// <summary>
