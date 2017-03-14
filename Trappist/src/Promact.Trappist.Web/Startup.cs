@@ -60,6 +60,7 @@ namespace Promact.Trappist.Web
             services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
