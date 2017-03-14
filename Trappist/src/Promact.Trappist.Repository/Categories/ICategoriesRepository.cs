@@ -15,7 +15,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Category SearchCatagoryId(long key);
+        Category GetCatagoryId(long key);
         /// <summary>
         /// It will Rename a Category Name
         /// </summary>

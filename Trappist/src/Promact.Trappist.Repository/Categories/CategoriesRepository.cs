@@ -21,6 +21,7 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext.Category.Add(category);
             await _dbContext.SaveChangesAsync();
+
         }
         #endregion
 
@@ -30,7 +31,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="Key"></param>
         /// <returns>Category</returns>
-        public Category SearchCatagoryId(long key)
+        public Category GetCatagoryId(long key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
