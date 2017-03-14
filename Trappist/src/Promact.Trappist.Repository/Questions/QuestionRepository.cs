@@ -52,6 +52,7 @@ namespace Promact.Trappist.Repository.Questions
         /// Add single multiple answer question into SingleMultipleAnswerQuestion model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <param name="singleMultipleAnswerQuestionOption"></param>
         public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
         {
             _dbContext.SingleMultipleAnswerQuestion.Add(singleMultipleAnswerQuestion);
