@@ -6,7 +6,7 @@
         {
             get
             {
-                return "Invalid Test Name "; //string returned when an invalid test name is entered
+                return "Invalid Test Name "; 
             }
         }
 
@@ -14,7 +14,7 @@
         {
             get
             {
-                return "Test Created successfuly"; //string returned when a test is created successfuly
+                return "Test Created successfuly"; 
             }
         }
     }

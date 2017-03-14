@@ -26,7 +26,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
-        public bool UniqueName(Test test)
+        public bool UniqueTestName(Test test)
         {
             var unique = (from s in _dbContext.Test
                           where s.TestName == test.TestName

@@ -10,12 +10,12 @@ namespace Promact.Trappist.Core.Controllers
     public class TestsController : Controller
     {
         private ITestsRepository _test;
-        private IStringConstants _message;
+        private IStringConstants _stringConstant;
             
-        public TestsController(ITestsRepository test,IStringConstants message)
+        public TestsController(ITestsRepository test,IStringConstants stringConstant)
         {
             _test = test;
-            _message = message;
+            _stringConstant = stringConstant;
         }    
         /// <summary>
         /// Method to add a new test 
@@ -23,13 +23,18 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="test">object of the Test</param>
         /// <returns>string</returns>
         [HttpPost]
-        public string TestCreate([FromBody] Test test)
+        public string CreateTest([FromBody] Test test)
         {
-            if (_test.UniqueName(test) == false) //method verifying the test name is unique or not
-             return _message.InvalidTestName;
-
-            _test.CreateTest(test);
-                return _message.Success;
+            if (_test.UniqueTestName(test) == false) // verifying the test name is unique or not
+            {
+                return _stringConstant.InvalidTestName;
+            }
+            else
+            {
+                _test.CreateTest(test);
+                return _stringConstant.Success;
+            }
+            
 
         }
     }

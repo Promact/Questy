@@ -1,8 +1,10 @@
 ﻿namespace Promact.Trappist.Utility.Constants
 {
     public interface IStringConstants
-    {     
-        string InvalidTestName { get; } //this property is called when an invalid test name is entered at the time of test creation
-        string Success { get; } //this property is called when test creation is successfuly done
+    {
+        /// property InvalidTestName is called when an invalid test name is entered at the time of test creation
+        /// property Success is called when test creation is successfuly done
+        string InvalidTestName { get; } 
+        string Success { get; } 
     }
 }
