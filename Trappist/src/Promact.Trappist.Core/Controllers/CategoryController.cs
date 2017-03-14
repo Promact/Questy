@@ -31,7 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         #region PutMethod
         /// <summary>
         /// Put Method
-        /// Will Edit a Existing Category from Category Table
+        /// Will Edit a Existing Category from Category Model
         /// </summary>
         /// <param name="Id">Id is the primary key of Category Model</param>
         /// <param name="catagory">Object of  class Category</param>

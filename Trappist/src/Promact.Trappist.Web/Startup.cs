@@ -15,6 +15,8 @@ using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Web.ExceptionHandler;
+using Promact.Trappist.Repository.Category;
 
 namespace Promact.Trappist.Web
 {
