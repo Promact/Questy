@@ -52,7 +52,6 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
 
