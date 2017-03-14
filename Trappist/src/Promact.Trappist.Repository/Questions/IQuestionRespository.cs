@@ -10,5 +10,8 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <returns>Question list</returns>
         List<SingleMultipleAnswerQuestion> GetAllQuestions();
+        void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion);
+        void AddSingleMultipleAnswerQuestionOption(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption);
     }
+    
 }
