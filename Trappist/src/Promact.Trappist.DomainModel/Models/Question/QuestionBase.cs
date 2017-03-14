@@ -1,4 +1,4 @@
-﻿using Promact.Trappist.DomainModel.Models.Enums;
+﻿using Promact.Trappist.DomainModel.Enum;
 using System.ComponentModel.DataAnnotations;
 
 

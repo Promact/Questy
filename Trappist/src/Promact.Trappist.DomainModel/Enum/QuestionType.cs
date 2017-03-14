@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Promact.Trappist.DomainModel.Models.Enums
+namespace Promact.Trappist.DomainModel.Enum
 {
     public enum QuestionType
     {
