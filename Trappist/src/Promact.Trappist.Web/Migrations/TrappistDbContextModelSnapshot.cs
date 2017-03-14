@@ -141,6 +141,84 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<bool>("CheckCodeComplexity");
+
+                    b.Property<bool>("CheckTimeComplexity");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("DifficultyLevel");
+
+                    b.Property<string>("QuestionDetail")
+                        .IsRequired();
+
+                    b.Property<int>("QuestionType");
+
+                    b.Property<bool>("RunBasicTestCase");
+
+                    b.Property<bool>("RunCornerTestCase");
+
+                    b.Property<bool>("RunNecessaryTestCase");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("CodeSnippetQuestion");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("Language");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CodingLanguage");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("LanguageId");
+
+                    b.Property<int>("QuestionId");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionLanguageMapping");
+                });
+
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
                 {
                     b.Property<int>("Id")
@@ -288,6 +366,27 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.Web.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", "CodeLanguage")
+                        .WithMany("QuestionLanguangeMapping")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "CodeSnippetQuestion")
+                        .WithMany("QuestionLanguangeMapping")
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
