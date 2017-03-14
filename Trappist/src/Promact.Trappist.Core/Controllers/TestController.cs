@@ -27,6 +27,5 @@ namespace Promact.Trappist.Core.Controllers
             return "succes";
 
         }
-
     }
 }

@@ -24,7 +24,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// to check whether test name is unique or not
         /// </summary>
-        /// <param name="t"></param>
+        /// <param name="test"></param>
         /// <returns>boolean</returns>
         public bool UniqueName(Test test)
         {
@@ -38,7 +38,5 @@ namespace Promact.Trappist.Repository.Tests
                 return true;
 
         }
-
-        
     }
 }
