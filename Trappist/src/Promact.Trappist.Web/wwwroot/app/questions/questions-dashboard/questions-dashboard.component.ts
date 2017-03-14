@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { QuestionsService } from "../questions.service";
+import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
 
 @Component({
@@ -9,9 +10,17 @@ import { MdDialog } from '@angular/material';
 })
 
 export class QuestionsDashboardComponent {
-    
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog) {
+
+    categoryName: string[] = new Array<string>();
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
+		this.getAllCategories();
+    }
+	//To Get All The categories
+    getAllCategories() {
+        this.categoryService.getAllCategories().subscribe((CategoriesList) => {
+            this.categoryName = CategoriesList;
+        });
     }
 
     getAllQuestions() {
@@ -33,3 +42,6 @@ export class QuestionsDashboardComponent {
     templateUrl: "add-category-dialog.html"
 })
 export class AddCategoryDialogComponent { }
+export class Category {
+    CategoryName: string;
+}

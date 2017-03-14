@@ -6,9 +6,9 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/Questions")]
     public class QuestionsController : Controller
     {
-        private readonly IQuestionsRespository _questionsRepository;
+        private readonly IQuestionsRepository _questionsRepository;
 
-        public QuestionsController(IQuestionsRespository questionsRepository)
+        public QuestionsController(IQuestionsRepository questionsRepository)
         {
             _questionsRepository = questionsRepository;
         }
