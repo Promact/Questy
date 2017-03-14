@@ -19,7 +19,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <returns>Question list</returns>
         public List<SingleMultipleAnswerQuestion> GetAllQuestions()
         {
-            var questions = _dbContext.SingleMultipleAnswerQuestion.ToList();      
+            var questions = _dbContext.SingleMultipleAnswerQuestion.ToList();
             return questions;
         }
         /// <summary>
