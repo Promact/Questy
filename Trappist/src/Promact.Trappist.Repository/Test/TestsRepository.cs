@@ -6,7 +6,6 @@ namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
-        // List<Test> t_list = new List<Test>();
         private readonly TrappistDbContext _dbContext;
         public TestsRepository(TrappistDbContext dbContext)
         {
