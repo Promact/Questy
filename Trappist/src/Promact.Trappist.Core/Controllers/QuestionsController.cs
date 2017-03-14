@@ -24,13 +24,5 @@ namespace Promact.Trappist.Core.Controllers
             return Json(questions);
 
         }
-		
-        [HttpGet]
-        public IActionResult GetAllCategories()
-        {
-            var categoryList = _questionsRepository.GetAllCategories();
-
-            return Json(categoryList);
-        }
     }
 }
