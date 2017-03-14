@@ -28,7 +28,6 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>boolean</returns>
         public bool UniqueName(Test test)
         {
-
             var unique = (from s in _dbContext.Test
                           where s.TestName == test.TestName
                           select s).FirstOrDefault();
