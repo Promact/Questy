@@ -12,6 +12,8 @@ using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
 using NLog.Extensions.Logging;
+using NLog.Web;
+
 
 namespace Promact.Trappist.Web
 {
@@ -32,6 +34,8 @@ namespace Promact.Trappist.Web
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
+
+            env.ConfigureNLog("nlog.config");
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -63,7 +67,7 @@ namespace Promact.Trappist.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
-
+            app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
