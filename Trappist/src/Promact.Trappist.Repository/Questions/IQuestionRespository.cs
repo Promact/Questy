@@ -1,6 +1,6 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.Models.Question;
+﻿using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -20,6 +20,6 @@ namespace Promact.Trappist.Repository.Questions
         /// returns 0 : When code snippet question is added successfully to the database
         /// returns 1 : When code snippet question failed to add 
         /// </returns>
-        public int AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion);
+        int AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion);
     }
 }
