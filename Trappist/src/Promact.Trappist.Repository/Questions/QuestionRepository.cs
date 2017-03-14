@@ -60,7 +60,6 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOption);
             _dbContext.SaveChanges();
         }
-   
         /// <summary>
         /// Add single multiple answer question into SingleMultipleAnswerQuestion model
         /// </summary>
