@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.Category
         /// </summary>
         /// <param name="Key"></param>
         /// <Returns>will Return respective category from category table</Returns>
-        public DomainModel.Models.Category.Category GetId(int key)
+        public DomainModel.Models.Category.Category Getcategory(int key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
