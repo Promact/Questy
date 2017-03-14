@@ -14,13 +14,14 @@ namespace Promact.Trappist.Core.Controllers
         {
             _questionsRepository = questionsRepository;
         }
-
-        [Route("single-multiple-question")]
-        [HttpPost]
         /// <summary>
         /// Add single multiple answer question into model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <param name="singleMultipleAnswerQuestionOption"></param>
+        /// <returns></returns>
+        [Route("single-multiple-question")]
+        [HttpPost]
         public IActionResult AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
         {
             _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion, singleMultipleAnswerQuestionOption);
