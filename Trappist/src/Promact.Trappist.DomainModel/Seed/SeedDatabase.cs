@@ -8,7 +8,7 @@ namespace Promact.Trappist.DomainModel.Seed
     /// <summary>
     /// Polpulates pre-required table
     /// </summary>
-    public static class SeedDatabase
+    public static class SeedDatabaseExtensions
     {
         /// <summary>
         /// Seed data into the table
