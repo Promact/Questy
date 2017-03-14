@@ -48,5 +48,26 @@ namespace Promact.Trappist.Core.Controllers
             _questionsRepository.AddSingleMultipleAnswerQuestionOption(singleMultipleAnswerQuestionOption);
             return Ok();
         }
+        [HttpPost]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <returns></returns>
+        public IActionResult AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion)
+        {
+            _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion);
+            return Ok();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <returns></returns>
+        public IActionResult AddSingleMultipleAnswerQuestionOption(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
+        {
+            _questionsRepository.AddSingleMultipleAnswerQuestionOption(singleMultipleAnswerQuestionOption);
+            return Ok();
+        }
     }
 }
