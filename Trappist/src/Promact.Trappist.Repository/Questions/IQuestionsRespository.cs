@@ -12,7 +12,7 @@ namespace Promact.Trappist.Repository.Questions
         List<SingleMultipleAnswerQuestion> GetAllQuestions();
 
         /// <summary>
-        /// Add single multiple answer question into SingleMultipleAnswerQuestion model
+        /// Add single multiple answer question into model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
