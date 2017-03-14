@@ -22,20 +22,19 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.SaveChangesAsync();
         }      
         /// <summary>
-        /// to check whether test name is unique or not
+        /// this method is used to check whether test name is unique or not
         /// </summary>
         /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
         public bool UniqueTestName(Test test)
         {
-            var unique = (from s in _dbContext.Test
+            var testObj = (from s in _dbContext.Test
                           where s.TestName == test.TestName
                           select s).FirstOrDefault();
-            if (unique != null)
+            if (testObj != null)
                 return false;
             else
                 return true;
-
         }
     }
 }

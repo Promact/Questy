@@ -5,7 +5,6 @@ namespace Promact.Trappist.DomainModel.Models.Test
 {
     public class Test : BaseModel
     {
-
         [Required] 
         [MaxLength(150, ErrorMessage = "Test Name length Should be less than 150")] 
         public string TestName { get; set; }
@@ -20,7 +19,5 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public string WarningMessage { get; set; }
         public decimal CorrectMarks { get; set; }
         public decimal IncorrectMarks { get; set; }
-
     }
-
 }
