@@ -8,13 +8,13 @@ namespace Promact.Trappist.DomainModel.Seed
     /// <summary>
     /// Polpulates pre-required table
     /// </summary>
-    public class SeedDatabase
+    public static class SeedDatabase
     {
         /// <summary>
         /// Seed data into the table
         /// </summary>
         /// <param name="context">DbContext</param>
-        public void Seed(TrappistDbContext context) {
+        public static void Seed(this TrappistDbContext context) {
 
             if (context.CodingLanguage.Any())
             {
