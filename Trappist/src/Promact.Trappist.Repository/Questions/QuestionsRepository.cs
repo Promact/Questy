@@ -2,8 +2,6 @@
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
-using System;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 
 namespace Promact.Trappist.Repository.Questions
 {

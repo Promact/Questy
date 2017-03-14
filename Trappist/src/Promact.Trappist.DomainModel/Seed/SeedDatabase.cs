@@ -14,7 +14,7 @@ namespace Promact.Trappist.DomainModel.Seed
         /// Seed data into the table
         /// </summary>
         /// <param name="context">DbContext</param>
-        public static void Seed(TrappistDbContext context) {
+        public void Seed(TrappistDbContext context) {
 
             if (context.CodingLanguage.Any())
             {
