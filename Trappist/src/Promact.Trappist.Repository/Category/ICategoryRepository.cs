@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="key">unique key of a table</param>
         /// <returns>if Id match then it will return object</returns>
-        DomainModel.Models.Category.Category GetId(int key);
+        DomainModel.Models.Category.Category Getcategory(int key);
         /// <summary>
         /// Edit category From Category model
         /// </summary>

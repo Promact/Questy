@@ -48,7 +48,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public IActionResult CategoryEdit(int Id,[FromBody] Category category)
         {
-            var promise = _categoriesRepository.GetId(Id);
+            var promise = _categoriesRepository.Getcategory(Id);
             promise.CategoryName = category.CategoryName;
             _categoriesRepository.CategoryEdit(promise);
             return Ok(category);
