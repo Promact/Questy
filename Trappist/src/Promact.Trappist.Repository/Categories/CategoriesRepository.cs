@@ -17,20 +17,18 @@ namespace Promact.Trappist.Repository.Categories
         /// Adding a Category Name Into Category model
         /// </summary>
         /// <param name="catagoryname"></param>
-        public async Task AddCategoryAsync(Category category)
+        public void AddCategory(Category category)
         {
             _dbContext.Category.Add(category);
-            await _dbContext.SaveChangesAsync();
-
+             _dbContext.SaveChanges();
         }
         #endregion
 
-        #region Finding a Id Respective CategoryName
+        #region Finding a Id Respective Category
         /// <summary>
         /// Findind a Respective key from Catagory Table
         /// </summary>
         /// <param name="Key"></param>
-        /// <returns>Category</returns>
         public Category GetCatagoryId(long key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
@@ -41,11 +39,11 @@ namespace Promact.Trappist.Repository.Categories
         // <summary>
         // Updating a Category Name
         // </summary>
-        // <param name="catagoryname"></param>
-        public async Task CategoryEditAsync(Category category)
+        // <param name="catagory">objext of the class Category</param>
+        public void CategoryEdit(Category category)
         {
             _dbContext.Category.Update(category);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
         }
         #endregion
     }

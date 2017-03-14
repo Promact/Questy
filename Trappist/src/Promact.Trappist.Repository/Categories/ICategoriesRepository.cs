@@ -9,7 +9,7 @@ namespace Promact.Trappist.Repository.Categories
         /// For Adding a CategoryName into Category Model
         /// </summary>
         /// <param name="catagoryName"></param>
-        Task AddCategoryAsync(Category catagory);
+        void AddCategory(Category catagory);
         /// <summary>
         /// will Find a Key of a respective CategoryName
         /// </summary>
@@ -20,6 +20,6 @@ namespace Promact.Trappist.Repository.Categories
         /// It will Rename a Category Name
         /// </summary>
         /// <param name="catagoryName"></param>
-        Task CategoryEditAsync(Category catagory);
+        void CategoryEdit(Category catagory);
     }
 }
