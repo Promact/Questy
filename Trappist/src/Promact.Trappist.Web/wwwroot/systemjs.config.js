@@ -24,6 +24,8 @@
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
             '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
 
+            'angular2-wizard': 'npm:angular2-wizard/dist/',
+
             // other libraries
             'rxjs': 'npm:rxjs'
         },
@@ -34,6 +36,11 @@
             },
             rxjs: {
                 defaultExtension: 'js'
+            },
+            'angular2-wizard': {
+                main: 'index.js',
+                defaultExtension: 'js',
+                
             }
         }
     });
