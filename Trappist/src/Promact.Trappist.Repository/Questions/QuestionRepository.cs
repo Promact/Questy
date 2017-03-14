@@ -20,10 +20,10 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
         /// <returns>
-        /// returns 0 : When code snippet question is added successfully to the database
-        /// returns 1 : When code snippet question failed to add 
+        /// returns 1 : When code snippet question is added successfully to the database
+        /// returns 0 : When code snippet question failed to add 
         /// </returns>
-        public async Task<int> AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion)
+        public int AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion)
         {
             try
             {
