@@ -1,8 +1,11 @@
-﻿using Promact.Trappist.DomainModel.Models.Enums;
+﻿using Promact.Trappist.DomainModel.Enum;
 using System.Collections.Generic;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
+    /// <summary>
+    ///Application class for code snippet question 
+    /// </summary>
     public class CodeSnippetQuestionModel
     {
         public QuestionType QuestionType { get; set;}
