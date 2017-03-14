@@ -12,9 +12,9 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext = dbContext;
         }
         /// <summary>
-        /// to create a new test
+        /// this method is used to create a new test
         /// </summary>
-        /// <param name="test">object of Test is passed</param>
+        /// <param name="test">object of Test</param>
         public void CreateTest(Test test)
         {
             _dbContext.Test.Add(test);
@@ -24,7 +24,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// to check whether test name is unique or not
         /// </summary>
-        /// <param name="test"></param>
+        /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
         public bool UniqueName(Test test)
         {
