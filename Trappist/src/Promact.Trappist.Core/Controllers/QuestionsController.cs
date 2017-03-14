@@ -15,11 +15,11 @@ namespace Promact.Trappist.Core.Controllers
             _questionsRepository = questionsRepository;
         }
 
+        [HttpGet]
         /// <summary>
         /// Gets all questions
         /// </summary>
-        /// <returns>Questions list</returns>
-        [HttpGet]
+        /// <returns>Questions list</returns>   
         public IActionResult GetQuestions()
         {
             var questions = _questionsRepository.GetAllQuestions();
