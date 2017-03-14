@@ -17,7 +17,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         /// <summary>
         /// Post Method 
-        /// Will Add a Catagory Name into table
+        /// Will Add a Catagory Name in Category Model
         ///</summary>
         /// <param name="category">Object of  class Category</param>
         /// <returns>object of the class </returns>
