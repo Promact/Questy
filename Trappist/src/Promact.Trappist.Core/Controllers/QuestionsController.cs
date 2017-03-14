@@ -5,7 +5,7 @@ using System;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/question")]
+    [Route("api")]
     public class QuestionsController : Controller
     {
         private readonly IQuestionRepository _questionsRepository;
@@ -15,38 +15,16 @@ namespace Promact.Trappist.Core.Controllers
             _questionsRepository = questionsRepository;
         }
 
-        [HttpGet]
-        /// <summary>
-        /// Gets all questions
-        /// </summary>
-        /// <returns>Questions list</returns>   
-        public IActionResult GetQuestions()
-        {
-            var questions = _questionsRepository.GetAllQuestions();
-            return Json(questions);
-        }
-
+        [Route("single-multiple-question")]
         [HttpPost]
         /// <summary>
-        /// Add single multiple answer question into SingleMultipleAnswerQuestion model
+        /// Add single multiple answer question into model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
-        /// <returns></returns>
-        public IActionResult AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion)
+        public IActionResult AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
         {
-            _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion);
+            _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion, singleMultipleAnswerQuestionOption);
             return Ok();
-        }
-
-        /// <summary>
-        /// Add options of single multiple answer question to SingleMultipleAnswerQuestionOption model
-        /// </summary>
-        /// <param name="singleMultipleAnswerQuestionOption"></param>
-        /// <returns></returns>
-        public IActionResult AddSingleMultipleAnswerQuestionOption(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
-        {
-            _questionsRepository.AddSingleMultipleAnswerQuestionOption(singleMultipleAnswerQuestionOption);
-            return Ok();
-        }
+        }  
     }
 }
