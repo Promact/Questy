@@ -5,7 +5,7 @@ using Promact.Trappist.DomainModel.DbContext;
 
 namespace Promact.Trappist.Repository.Questions
 {
-    public class QuestionsRepository : IQuestionsRespository
+    public class QuestionsRepository : IQuestionsRepository
     {
         private readonly TrappistDbContext _dbContext;
 
