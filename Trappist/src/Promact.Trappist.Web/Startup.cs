@@ -14,7 +14,7 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using Promact.Trappist.Web.ExceptionHandler;
+using Promact.Trappist.Core.ActionFilters;
 
 namespace Promact.Trappist.Web
 {
@@ -57,7 +57,7 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(config => { config.Filters.Add(typeof(CustomExceptionHandler)); });
+            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
         }
