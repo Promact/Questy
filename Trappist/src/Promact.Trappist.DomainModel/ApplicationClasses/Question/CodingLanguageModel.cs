@@ -1,7 +1,9 @@
-﻿namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
+﻿using Promact.Trappist.DomainModel.Enum;
+
+namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class CodingLanguageModel
     {
-        public int Language { get; set; }
+        public ProgramingLanguage Language { get; set; }
     }
 }
