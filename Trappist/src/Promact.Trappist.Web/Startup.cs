@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
+using NLog.Extensions.Logging;
 
 namespace Promact.Trappist.Web
 {
@@ -61,6 +62,7 @@ namespace Promact.Trappist.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddNLog();
 
             app.UseApplicationInsightsRequestTelemetry();
 
