@@ -15,13 +15,7 @@ namespace Promact.Trappist.Repository.Questions
         /// Add single multiple answer question into SingleMultipleAnswerQuestion model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
-        void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion);
-
-        /// <summary>
-        /// Add options of single multiple answer question to SingleMultipleAnswerQuestionOption model
-        /// </summary>
-        /// <param name="singleMultipleAnswerQuestionOption"></param>
-        void AddSingleMultipleAnswerQuestionOption(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption);
+        void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption);
     }
     
 }
