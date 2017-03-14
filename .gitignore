@@ -259,4 +259,4 @@ _references.js
 
 # Migration Folder
 Migrations/
-/Trappist/src/Promact.Trappist.Web/wwwroot/app/questions/questions-dashboard/category-dashboard
+/Trappist/src/Promact.Trappist.Web/wwwroot/app/questions
