@@ -23,7 +23,6 @@ namespace Promact.Trappist.Repository.Questions
             var questions = _dbContext.SingleMultipleAnswerQuestion.ToList();      
             return questions;
         }
-   
         /// <summary>
         /// Add single multiple answer question into SingleMultipleAnswerQuestion model
         /// </summary>
