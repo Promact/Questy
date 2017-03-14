@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Questions;
+using System;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -21,7 +23,6 @@ namespace Promact.Trappist.Core.Controllers
         public IActionResult GetQuestions()
         {
             var questions = _questionsRepository.GetAllQuestions();
-
             return Json(questions);
         }
     }
