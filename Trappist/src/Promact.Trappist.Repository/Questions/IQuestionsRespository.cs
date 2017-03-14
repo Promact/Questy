@@ -10,7 +10,6 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        IEnumerable<string> GetAllCategories();
         IEnumerable<SingleMultipleAnswerQuestion> GetAllQuestions();
     }
 }
