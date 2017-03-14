@@ -15,6 +15,8 @@ using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Web.ExceptionHandler;
+using Promact.Trappist.Repository.Category;
 
 namespace Promact.Trappist.Web
 {
@@ -60,6 +62,7 @@ namespace Promact.Trappist.Web
             services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
             services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

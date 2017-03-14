@@ -130,7 +130,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
+                        .HasAnnotation("MaxLength", 150);
 
                     b.Property<DateTime>("CreatedDateTime");
 
