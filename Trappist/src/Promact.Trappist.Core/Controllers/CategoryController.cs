@@ -32,8 +32,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <returns>object of the class </returns>
         public IActionResult CatagoryAdd([FromBody] Category category)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _categoriesRepository.AddCategory(category);
-            return Ok(category);
+            return NoContent();
         }
         #endregion
 
@@ -46,12 +50,16 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="catagory">Object of  class Category</param>
         /// <returns>object of the class</returns>
         [HttpPut("{id}")]
-        public IActionResult CategoryEdit(int Id,[FromBody] Category category)
+        public IActionResult CategoryEdit(int Id, [FromBody] Category category)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var promise = _categoriesRepository.Getcategory(Id);
             promise.CategoryName = category.CategoryName;
             _categoriesRepository.CategoryEdit(promise);
-            return Ok(category);
+            return NoContent();
         }
         #endregion
     }
