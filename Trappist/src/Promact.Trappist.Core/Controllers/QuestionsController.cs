@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.Repository.Questions;
 
 namespace Promact.Trappist.Core.Controllers
@@ -27,18 +27,20 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         [HttpPost("CodeSnippetQuestion")]
-        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestion codeSnippetQuestion)
+        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionModel codeSnippetQuestion)
         {
+            if(codeSnippetQuestion == null)
+            {
+                return BadRequest();
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            else
-            {
-                _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
 
-            }
-            return Ok();
+            _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
+            
+            return NoContent();
 
         }
     }
