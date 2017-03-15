@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.Repository.Questions;
-using System;
 
 
 namespace Promact.Trappist.Core.Controllers

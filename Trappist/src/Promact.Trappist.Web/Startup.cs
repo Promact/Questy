@@ -62,8 +62,7 @@ namespace Promact.Trappist.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
