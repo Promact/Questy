@@ -1,7 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Questions
 {
