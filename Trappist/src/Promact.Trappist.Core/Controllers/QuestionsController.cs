@@ -26,6 +26,11 @@ namespace Promact.Trappist.Core.Controllers
             return Json(questions);
         }
 
+        /// <summary>
+        /// Adds new code snippet question to the database
+        /// </summary>
+        /// <param name="codeSnippetQuestionModel">Code snippet question model</param>
+        /// <returns></returns>
         [HttpPost("codeSnippetQuestion")]
         public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionModel codeSnippetQuestionModel)
         {
