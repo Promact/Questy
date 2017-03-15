@@ -5,7 +5,7 @@ import { HttpService } from "../core/http.service";
 
 export class CategoryService {
 
-    private categoriesApiUrl = "api/categories";
+    private categoriesApiUrl = "api/category";
 
     constructor(private httpService: HttpService) {
 

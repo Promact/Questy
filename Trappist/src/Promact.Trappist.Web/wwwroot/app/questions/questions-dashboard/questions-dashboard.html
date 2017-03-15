@@ -15,46 +15,15 @@
                 </div>
                 <ul class="category-list">
                     <li class="active h5">All Questions</li>
-                    <li class="clearfix h5">
-                        Logical Reasoning
+                    <li *ngFor="let cat of categoryName"class="clearfix h5">
+                        {{cat}}
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item>Rename</button>
                             <button md-menu-item>Delete</button>
                         </md-menu>
                     </li>
-                    <li class="clearfix h5">
-                        Quantitative Ability
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
-                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Rename</button>
-                            <button md-menu-item>Delete</button>
-                        </md-menu>
-                    </li>
-                    <li class="clearfix h5">
-                        Programming Challenge
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
-                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Rename</button>
-                            <button md-menu-item>Delete</button>
-                        </md-menu>
-                    </li>
-                    <li class="clearfix h5">
-                        Technical Aptitude
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
-                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Rename</button>
-                            <button md-menu-item>Delete</button>
-                        </md-menu>
-                    </li>
-                    <li class="clearfix h5">
-                        General Knowledge
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
-                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Rename</button>
-                            <button md-menu-item>Delete</button>
-                        </md-menu>
-                    </li>
+
                 </ul>
             </div>
             <div class="col-md-9 col-sm-8 col-md-offset-3 col-sm-offset-4 questions-block">

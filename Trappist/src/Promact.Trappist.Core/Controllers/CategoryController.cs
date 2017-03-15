@@ -3,7 +3,7 @@ using Promact.Trappist.Repository.Categories;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/categories")]
+    [Route("api/category")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
