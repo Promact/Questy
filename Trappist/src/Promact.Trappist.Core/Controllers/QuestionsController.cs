@@ -27,7 +27,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         [HttpPost("CodeSnippetQuestion")]
-        public IActionResult PostCodeSnippetQuestion([FromBody]CodeSnippetQuestion codeSnippetQuestion)
+        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestion codeSnippetQuestion)
         {
             if (!ModelState.IsValid)
             {
@@ -35,7 +35,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             else
             {
-                int response = _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
+                _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
 
             }
             return Ok();
