@@ -37,7 +37,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest(ModelState);
             }
             _categoriesRepository.AddCategory(category);
-            return NoContent();
+            return Ok(category);
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace Promact.Trappist.Core.Controllers
             var promise = _categoriesRepository.Getcategory(Id);
             promise.CategoryName = category.CategoryName;
             _categoriesRepository.CategoryEdit(promise);
-            return NoContent();
+            return Ok(category);
         }
         #endregion
     }
