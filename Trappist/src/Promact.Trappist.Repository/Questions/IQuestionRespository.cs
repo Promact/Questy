@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.Questions
 {
-    public interface IQuestionsRespository
+    public interface IQuestionRespository
     {
         /// <summary>
         /// Get all questions
