@@ -62,7 +62,7 @@ namespace Promact.Trappist.Web
 
             services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<IQuestionsRepository, QuestionsRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
