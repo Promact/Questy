@@ -15,7 +15,7 @@
                 </div>
                 <ul class="category-list">
                     <li class="active h5">All Questions</li>
-                    <li *ngFor="let cat of categoryName"class="clearfix h5">
+                    <li *ngFor="let cat of categoryArray"class="clearfix h5">
                         {{cat}}
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">

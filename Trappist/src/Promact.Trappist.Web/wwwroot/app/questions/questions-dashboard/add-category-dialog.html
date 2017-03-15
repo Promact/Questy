@@ -6,11 +6,11 @@
   <md-dialog-content>
     <div class="form-group">
       <label class="h4">Section Name</label>
-      <input type="text" class="form-control" placeholder="Ex. General Knowledge" />
+      <input type="text" class="form-control" [(ngModel)]="category.CategoryName" placeholder="Ex. General Knowledge" />
     </div>
   </md-dialog-content>
   <md-dialog-actions>
     <button type="button" class="btn" md-dialog-close>Cancel</button>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-primary" (click)="CategoryAdd(category)">Create</button>
   </md-dialog-actions>
 </div>

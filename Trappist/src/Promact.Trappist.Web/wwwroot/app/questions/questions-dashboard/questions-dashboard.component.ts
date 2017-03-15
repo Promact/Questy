@@ -1,10 +1,14 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
+import { MdDialog } from '@angular/material';
+import { Category } from "../category.model";
+import { Location } from '@angular/common';
 
 @Component({
     moduleId: module.id,
@@ -12,12 +16,17 @@ import { CategoryService } from "../categories.service";
     templateUrl: "questions-dashboard.html"
 })
 
-export class QuestionsDashboardComponent {
+export class QuestionsDashboardComponent implements OnInit {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
 
-    categoryName: string[] = new Array<string>();
-    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService) {
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+
+    }
+
+    ngOnInit() {
         this.getAllQuestions();
-		this.getAllCategories();
+        this.getAllCategories();
     }
 	//To Get All The categories
     getAllCategories() {
@@ -47,8 +56,21 @@ export class QuestionsDashboardComponent {
       this.dialog.open(DeleteQuestionDialogComponent);
     }
 
-}
+@Component({
+    moduleId: module.id,
+    selector: 'add-category-dialog',
+    templateUrl: "add-category-dialog.html"
+})
+export class AddCategoryDialogComponent {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
+    constructor(private categoryService: CategoryService, private dialog: MdDialog) { }
 
-export class Category {
-    CategoryName: string;
+    CategoryAdd(category: Category) {
+        this.categoryService.addCategory(category).subscribe((response) => {
+                this.categoryArray = response.json;
+                this.dialog.closeAll();
+                //this.category = new Category;
+        });
+    }
 }
