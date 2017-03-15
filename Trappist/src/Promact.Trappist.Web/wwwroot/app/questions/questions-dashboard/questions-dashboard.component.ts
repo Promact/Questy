@@ -35,13 +35,6 @@ export class QuestionsDashboardComponent {
         this.dialog.open(AddCategoryDialogComponent);
     }
 
-    getCategories() {
-        this.categoryService.getCategory().subscribe((Response: category[]) => { this.categoyList = (Response) });
-    }
-    removeCategory(categoryId: number) {
-              this.categoryService.removeCategory(categoryId).subscribe((Response) => Response.json());
-    }
-
 }
 
 @Component({
