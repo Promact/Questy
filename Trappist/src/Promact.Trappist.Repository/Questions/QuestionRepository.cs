@@ -43,10 +43,14 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
-        public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption)
+        public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption[] singleMultipleAnswerQuestionOption)
         {
             _dbContext.SingleMultipleAnswerQuestion.Add(singleMultipleAnswerQuestion);
-            _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOption);
+            foreach(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in singleMultipleAnswerQuestionOption)
+            {
+                singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
+                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
+            }   
             _dbContext.SaveChanges();
         }
         /// <summary>
