@@ -62,7 +62,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-           services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            services.AddScoped<IQuestionRespository, QuestionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,10 +118,8 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-
-            context.Database.Migrate();
-
-            context.Seed();
+			
+	       context.Seed();
 
         }
     }
