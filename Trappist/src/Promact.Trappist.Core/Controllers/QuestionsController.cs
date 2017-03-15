@@ -18,7 +18,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Gets all questions
         /// </summary>
         /// <returns>Questions list</returns>
-        [HttpGet("Questions")]
+        [HttpGet("question")]
         public IActionResult GetQuestions()
         {
             var questions = _questionsRepository.GetAllQuestions();
@@ -26,10 +26,10 @@ namespace Promact.Trappist.Core.Controllers
             return Json(questions);
         }
 
-        [HttpPost("CodeSnippetQuestion")]
-        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionModel codeSnippetQuestion)
+        [HttpPost("codeSnippetQuestion")]
+        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionModel codeSnippetQuestionModel)
         {
-            if(codeSnippetQuestion == null)
+            if(codeSnippetQuestionModel == null)
             {
                 return BadRequest();
             }
@@ -37,10 +37,10 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
-            _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
             
-            return Ok();
+            _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestionModel);
+            
+            return Ok(codeSnippetQuestionModel);
 
         }
     }
