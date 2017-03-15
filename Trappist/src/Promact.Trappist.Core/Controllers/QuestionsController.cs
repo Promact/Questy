@@ -32,7 +32,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="codeSnippetQuestionModel">Code snippet question model</param>
         /// <returns></returns>
         [HttpPost("codeSnippetQuestion")]
-        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionModel codeSnippetQuestionModel)
+        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionDto codeSnippetQuestionModel)
         {
             if(codeSnippetQuestionModel == null)
             {

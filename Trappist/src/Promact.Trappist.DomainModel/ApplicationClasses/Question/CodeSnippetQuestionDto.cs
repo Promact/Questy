@@ -8,7 +8,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
     /// <summary>
     ///Application class for code snippet question 
     /// </summary>
-    public class CodeSnippetQuestionModel: CodeSnippetQuestion
+    public class CodeSnippetQuestionDto: CodeSnippetQuestion
     {
         public ICollection<ProgramingLanguage> LanguageList { get; set; }
     }
