@@ -3,12 +3,12 @@ using Promact.Trappist.Repository.Questions;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/Questions")]
+    [Route("api/question")]
     public class QuestionsController : Controller
     {
-        private readonly IQuestionsRepository _questionsRepository;
+        private readonly IQuestionRepository _questionsRepository;
 
-        public QuestionsController(IQuestionsRepository questionsRepository)
+        public QuestionsController(IQuestionRepository questionsRepository)
         {
             _questionsRepository = questionsRepository;
         }
