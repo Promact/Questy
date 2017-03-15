@@ -27,7 +27,7 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
-        public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, SingleMultipleAnswerQuestionOption[] singleMultipleAnswerQuestionOption)
+        public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, List<SingleMultipleAnswerQuestionOption> singleMultipleAnswerQuestionOption)
         {
             _dbContext.SingleMultipleAnswerQuestion.Add(singleMultipleAnswerQuestion);
             foreach(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in singleMultipleAnswerQuestionOption)
