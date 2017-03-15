@@ -26,33 +26,45 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Adding a Category in Category model
+        /// Method to Add a Category
         /// </summary>
-        /// <param name="catagory">Object of class Category</param>
-        public void AddCategory(Category category)
+        /// <param name="catagory">category object contains category details</param>
+        public async Task AddCategoryAsync(Category category)
         {
             _dbContext.Category.Add(category);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Find a Respective Id from Catagory Table
+        /// Method to Get Category by its Id
         /// </summary>
-        /// <param name="Key"></param>
-        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
-        public Category GetCategory(int key)
+        /// <param name="key">id which will Search Category</param>
+        /// <returns>category object Contains Category Detaiks</returns>
+        public async Task<Category> GetCategoryByIdAsync(int key)
         {
-            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
         }
 
-        // <summary>
-        // Edit a Category from Category Table
-        // </summary>
-        // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(Category category)
+        /// <summary>
+        /// Method to UPdate Category
+        /// </summary>
+        /// <param name="category">category object Contains Category Details</param>
+        public async Task UpdateCategoryAsync(Category category)
         {
-            _dbContext.Category.Update(category);
-            _dbContext.SaveChanges();
+            var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Method to Check Same CategoryName Exists or not
+        /// </summary>
+        /// <param name="categoryName">categoryname will be checked that it is Exists or not</param>
+        /// <returns>true if Exists else false</returns>
+        public async Task<bool> CheckDuplicateCategoryNameAsync(string categoryName)
+        {
+            return await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
         }
     }
 }

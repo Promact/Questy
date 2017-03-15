@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Promact.Trappist.Core.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
+
         public CategoryController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
@@ -26,43 +28,54 @@ namespace Promact.Trappist.Core.Controllers
 
         [HttpPost]
         /// <summary>
-        /// Post Method 
-        /// Will Add a Catagory Name in Category Model
+        /// Method to Add Category
         ///</summary>
-        /// <param name="category">Object of  class Category</param>
-        /// <returns>object of the class </returns>
-        public IActionResult CatagoryAdd([FromBody] Category category)
+        /// <param name="category">category object contains category details</param>
+        /// <returns>category object contains category details</returns>
+        public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _categoryRepository.AddCategory(category);
+            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
+            if (isduplicateCategoryNameExists == true)
+            {
+                ModelState.AddModelError("error", "Category Name Already Exists");
+                return BadRequest(ModelState);
+            }
+            await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
 
         /// <summary>
-        /// Put Method
-        /// Will Edit a Existing Category from Category Table
+        /// Method to Update Existing Category
         /// </summary>
-        /// <param name="Id">Id is the primary key of Category Model</param>
-        /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class if key found or else it will return Bad request</returns>
+        /// <param name="id">Take from Route whose Property to be Update</param>
+        /// <param name="category">category object contains category details</param>
+        /// <returns>Updated category object contains category details</returns>
         [HttpPut("{id}")]
-        public IActionResult CategoryEdit(int Id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.GetCategory(Id);
-            if (previousCategory == null)
+            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
+            if (isduplicateCategoryNameExists == true)
+            {
+                ModelState.AddModelError("error", "Category Name Already Exists");
+                return BadRequest(ModelState);
+            }
+            var existsCategory = await _categoryRepository.GetCategoryByIdAsync(id);
+            if (existsCategory == null)
             {
                 return NotFound();
             }
-            previousCategory.CategoryName = category.CategoryName;
-            _categoryRepository.CategoryEdit(previousCategory);
+            await _categoryRepository.UpdateCategoryAsync(category);
             return Ok(category);
+        }
+    }
         }
         #endregion
     }
