@@ -9,6 +9,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses
     public class SingleMultipleQuestion
     {
         public SingleMultipleAnswerQuestion singleMultipleAnswerQuestion { get; set; }
-        public SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOption { get; set; }
+        public SingleMultipleAnswerQuestionOption[] singleMultipleAnswerQuestionOption { get; set; }
     }
 }
