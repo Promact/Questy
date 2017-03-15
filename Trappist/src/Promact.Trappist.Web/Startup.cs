@@ -12,12 +12,6 @@ using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
-using NLog.Extensions.Logging;
-using NLog.Web;
-using Promact.Trappist.Core.ActionFilters;
-using Promact.Trappist.Repository.Categories;
-using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.Utility.Constants;
 
 namespace Promact.Trappist.Web
 {
@@ -39,8 +33,6 @@ namespace Promact.Trappist.Web
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
-            env.ConfigureNLog("nlog.config");
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -60,11 +52,6 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITestsRepository, TestsRepository>();
-            services.AddScoped<IStringConstants, StringConstants>();
             services.AddMvc();
             services.AddScoped<IQuestionRespository, QuestionRepository>();
         }
@@ -74,8 +61,7 @@ namespace Promact.Trappist.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -122,10 +108,8 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-
-            context.Database.Migrate();
-
-            context.Seed();
+			
+	       context.Seed();
 
         }
     }

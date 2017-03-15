@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.Repository.Questions;
-using System;
 
 
 namespace Promact.Trappist.Core.Controllers
@@ -9,8 +8,8 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api")]
     public class QuestionController : Controller
     {
-        private readonly IQuestionRepository _questionsRepository;
-        public QuestionsController(IQuestionRepository questionsRepository)
+        private readonly IQuestionRespository _questionsRepository;
+        public QuestionController(IQuestionRespository questionsRepository)
         {
             _questionsRepository = questionsRepository;
         }
