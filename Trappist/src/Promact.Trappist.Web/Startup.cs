@@ -18,6 +18,7 @@ using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Repository.Category;
 
 namespace Promact.Trappist.Web
 {
