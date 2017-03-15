@@ -8,9 +8,11 @@ import { MdDialog } from '@angular/material';
 })
 
 export class TestSettingsComponent{
-
+    
     // Open Launch Test Dialog
-    constructor(public dialog: MdDialog) { }
+    constructor(public dialog: MdDialog) {
+       
+    }
 
     launchTestDialog() {
         this.dialog.open(TestLaunchDialogComponent);
@@ -23,3 +25,4 @@ export class TestSettingsComponent{
     templateUrl: "test-launch-dialog.html"
 })
 export class TestLaunchDialogComponent { }
+
