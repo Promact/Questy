@@ -20,24 +20,26 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
         public void AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestion)
         {
-            var question = new CodeSnippetQuestion
+            var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
+            _dbContext.SaveChanges();
+
+            var codingLanguageList = codeSnippetQuestion.LanguageList;
+            var questionId = question.Entity.Id;
+
+            foreach(var language in codingLanguageList)
             {
-                CategoryID = codeSnippetQuestion.CategoryId,
-                QuestionDetail = codeSnippetQuestion.QuestionDetail,
-                CreateBy = codeSnippetQuestion.CreateBy,
-                QuestionType = codeSnippetQuestion.QuestionType,
-                DifficultyLevel = codeSnippetQuestion.DifficultyLevel,
-                CheckCodeComplexity = codeSnippetQuestion.CheckCodeComplexity,
-                RunBasicTestCase = codeSnippetQuestion.RunBasicTestCase,
-                RunCornerTestCase = codeSnippetQuestion.RunCornerTestCase,
-                RunNecessaryTestCase = codeSnippetQuestion.RunNecessaryTestCase,
-                CheckTimeComplexity = codeSnippetQuestion.CheckTimeComplexity,
-                CreatedDateTime = codeSnippetQuestion.CreatedDateTime
+                var languageId = _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
+                _dbContext.QuestionLanguageMapping.Add(new QuestionLanguageMapping
+                {
+                    QuestionId = questionId,
+                    LanguageId = languageId
+                });
+                _dbContext.SaveChanges();                
+            }
 
-            };
 
-           _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
-           _dbContext.SaveChanges();
+
+           
         }
 
         /// <summary>
