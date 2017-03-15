@@ -10,6 +10,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <returns>Category list</returns>
         IEnumerable<string> GetAllCategories();
+        
 
         void AddCategory(Category catagory);
         /// <summary>
@@ -23,5 +24,10 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="catagory"> Object of class Category</param>
         void CategoryEdit(Category catagory);
+        /// <summary>
+        /// delete a Category from Category Table
+        /// </summary>
+        /// <param name="catagoryName">Name of category </param>
+        void removeCategory(string categoryName);
     }
 }
