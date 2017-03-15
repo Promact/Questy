@@ -10,15 +10,20 @@ $color_bg_secondary: #F5F5F5;
 $color_border: #EDEDED;
 $color_white: #FFFFFF;
 
+/* Widths */
+$small_width: 20%;
+$half_width: 50%;
+$full_size: 100%;
+
 /* General */
 html {
-    height: 100%;
+    height: $full_size;
 }
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     color: $color_base;
-    height: 100%;
+    height: $full_size;
     overflow: hidden;
 }
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7 {
@@ -69,8 +74,9 @@ h6, .h6 {
 .btn {
     font-size: 13px;
     font-weight: 600;
-    background-color: transparent;
+    background-color: $color_white;
     border: 1px solid $color_base;
+    color: $color_base;
     min-width: 140px;
     padding: 8px;
     &:focus, &:active:focus {
@@ -79,6 +85,7 @@ h6, .h6 {
     &.btn-primary {
         background-color: $color_theme;
         border-color: $color_theme;
+        color: $color_white;
         font-weight: 400;
         &:active:hover, &:active:focus {
             background-color: $color_theme;
@@ -163,7 +170,7 @@ h6, .h6 {
 
 /* Layout */
 .main-page, .basic-setup {
-    height: 100%;
+    height: $full_size;
     overflow: auto;
 }
 .navbar {
@@ -343,7 +350,7 @@ footer {
                 margin-bottom: 10px;
             }
             .form-control {
-                width: 50%;
+                width: $half_width;
             }
         }
         .actions-area {
@@ -590,7 +597,7 @@ footer {
                     .mat-radio-label {
                         align-items: center;
                         margin-bottom: 15px;
-                        width: 100%;
+                        width: $full_size;
                         .mat-radio-container {
                             top: 0;
                             height: 16px;
@@ -608,7 +615,7 @@ footer {
                         }
                         .mat-radio-label-content {
                             padding-left: 15px;
-                            width: 100%;
+                            width: $full_size;
                             .form-control {
                                 display: inline-block;
                                 font-family: 'Open Sans', sans-serif;
@@ -639,7 +646,7 @@ footer {
                     width: 54%;
                     .mat-checkbox-layout {
                         margin-bottom: 15px;
-                        width: 100%;
+                        width: $full_size;
                         .mat-checkbox-inner-container {
                             margin: auto;
                             width: 16px;
@@ -649,7 +656,7 @@ footer {
                             }
                         }
                         .mat-checkbox-label {
-                            width: 100%;
+                            width: $full_size;
                             padding-left: 15px;
                             .form-control {
                                 display: inline-block;
@@ -677,7 +684,7 @@ footer {
         .form-inline {
             margin-left: 30px;
             .form-control {
-                width: 100%;
+                width: $full_size;
             }
         }
     }
@@ -728,7 +735,7 @@ footer {
                                     position: absolute;
                                     top: 14px;
                                     left: 106px;
-                                    width: 100%;
+                                    width: $full_size;
                                     height: 2px;
                                     content: '';
                                     background-color: $color_base_secondary;
@@ -820,4 +827,133 @@ footer {
             }
         }
     }
+}
+
+/* Test - Settings */
+.test-create-steps {
+  .header-block {
+    padding-bottom: 15px;
+    border-bottom: 1px solid $color_border;
+    margin-bottom: 20px;
+    h1 {
+      span {
+        display: inline-block;
+        min-width: 184px;
+        min-height: 34px;
+        &[hidden] {
+          display: none;
+        }
+      }
+      .form-control {
+        display: inline-block;
+        width: inherit;
+        font-weight: 400;
+        min-width: 184px;
+        &[hidden] {
+          display: none;
+        }
+      }
+      i {
+        vertical-align: middle;
+        color: $color_base_secondary;
+        cursor: pointer;
+        padding-left: 10px;
+      }
+    }
+    .btn {
+      i {
+        vertical-align: top;
+        font-size: 18px;
+        padding-right: 8px;
+      }
+    }
+  }
+  .form-area {
+    margin-top: 20px;
+    padding: 20px 20px 0;
+    border: 1px solid $color_border;
+    background-color: $color_white;
+    .form-group {
+      margin-bottom: 25px;
+      label {
+        margin-bottom: 10px;
+      }
+      .form-control {
+        width: $half_width;
+        &.small-width {
+          width: 220px;
+        }
+      }
+      &.inline-field {
+        display: inline-block;
+        padding-right: 20px;
+      }
+      &.ip-restrictions-field {
+        .form-control {
+          display: inline-block;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+  .footer-block {
+    background-color: $color_footer_secondary;
+    color: $color_base_secondary;
+    position: fixed;
+    bottom: 0;
+    width: $full_size;
+    padding: 12px 0;
+    .steps {
+      list-style: none;
+      padding-left: 0;
+      margin: 6px 0 6px -5px;
+      li {
+        display: inline-block;
+        padding-right: 20px;
+        i {
+          vertical-align: middle;
+        }
+        &.active {
+          color: $color_theme;
+        }
+      }
+    }
+    .buttons-block {
+      margin-right: 8px;
+    }
+  }
+}
+.dialog .url-container {
+  position: relative;
+  i {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    font-size: 20px;
+    color: $color_base_secondary;
+    cursor: pointer;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) { 
+  .test-create-steps {
+    .form-area .form-group .form-control {
+      width: 75%;
+    }
+    .footer-block {
+      .steps {
+        margin-left: 0;
+        li {
+          padding-right: 5px;
+        }
+      }
+      .buttons-block {
+        margin-right: 0;
+        .btn {
+          min-width: 110px;
+        }
+      }
+    }
+  } 
 }

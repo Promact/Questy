@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { testsRouting } from "./tests.routing";
 import { TestsComponent } from "./tests.component";
 import { TestsDashboardComponent, TestCreateDialogComponent } from "./tests-dashboard/tests-dashboard.component";
+import { TestSettingsComponent, TestLaunchDialogComponent } from "./test-settings/test-settings.component";
 
 @NgModule({
     imports: [
@@ -13,10 +14,13 @@ import { TestsDashboardComponent, TestCreateDialogComponent } from "./tests-dash
     declarations: [
         TestsComponent,
         TestsDashboardComponent,
-        TestCreateDialogComponent
+        TestCreateDialogComponent,
+        TestSettingsComponent,
+        TestLaunchDialogComponent
     ],
     entryComponents: [
-        TestCreateDialogComponent
+        TestCreateDialogComponent,
+        TestLaunchDialogComponent
     ],
     providers: [
         
