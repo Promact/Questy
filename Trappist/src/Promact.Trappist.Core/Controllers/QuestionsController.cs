@@ -40,7 +40,7 @@ namespace Promact.Trappist.Core.Controllers
 
             _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestion);
             
-            return NoContent();
+            return Ok();
 
         }
     }
