@@ -36,11 +36,7 @@ namespace Promact.Trappist.Repository.Questions
                     LanguageId = languageId
                 });
                 _dbContext.SaveChanges();                
-            }
-
-
-
-           
+            }                       
         }
 
         /// <summary>
