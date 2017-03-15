@@ -32,8 +32,6 @@ namespace Promact.Trappist.Web
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
-            env.ConfigureNLog("nlog.config");
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
