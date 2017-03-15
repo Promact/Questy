@@ -58,5 +58,15 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
+        /// <summary>
+        /// delete a Category from Category Table
+        /// </summary>
+        /// <param name="catagoryName">Name of category</param>
+        public void removeCategory(string categoryName)
+        {
+            var removeCategoryData = _dbContext.Category.Where(m => m.CategoryName == categoryName).FirstOrDefault();
+            _dbContext.Category.Remove(removeCategoryData);
+            _dbContext.SaveChanges();
+        }
     }
 }

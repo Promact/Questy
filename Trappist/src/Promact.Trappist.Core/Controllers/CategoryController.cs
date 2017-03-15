@@ -66,7 +66,18 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.CategoryEdit(previousCategory);
             return Ok(category);
             #endregion
+
         }
 
+        [HttpDelete("{categoryName}")]
+        public IActionResult CategoryRemove([FromRoute] string categoryName)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _categoryRepository.removeCategory(categoryName);
+            return Ok();
+        }
     }
 }
