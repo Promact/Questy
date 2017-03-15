@@ -6,12 +6,9 @@ dotnet: 1.0.0-preview2-1-003177
 services:
   - docker
 install:
-  - cd ./Trappist/src
-  - dotnet restore
+  - dotnet restore ./Trappist/src
 script:
-  - cd  Promact.Trappist.Web
-  - dotnet build
-  - cd ../../../
+  - dotnet build ./Trappist/src/Promact.Trappist.Web
 deploy:
   - provider: script
     script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
