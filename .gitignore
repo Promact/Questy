@@ -262,4 +262,4 @@ _references.js
 **/wwwroot/setup-app-bundle.js
 
 # Migration Folder
-Migrations/
+**/Migrations/
