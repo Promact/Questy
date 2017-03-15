@@ -1,0 +1,93 @@
+﻿<div class="test-create-steps test-settings">
+    <div class="header-block clearfix">
+        <div class="container">
+            <h1 class="pull-left">
+                <span [hidden]="editName">BBIT 10-08-2017</span>
+                <input type="text" class="form-control" value="BBIT 10-08-2017" [hidden]="!editName" />
+                <i class="material-icons" (click)="editName = !editName">edit</i>
+            </h1>
+            <button type="button" class="btn btn-primary pull-right"><i class="material-icons">remove_red_eye</i> Preview</button>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Settings & Schedule</h2>
+        <form class="form-area">
+            <div class="form-group">
+                <label class="h4">Time Duration (mins)</label>
+                <input type="text" class="form-control small-width" placeholder="00" />
+            </div>
+            <div class="form-group inline-field">
+                <label class="h4">Start Date & Time</label>
+                <input type="datetime-local" class="form-control small-width" />
+            </div>
+            <div class="form-group inline-field">
+                <label class="h4">End Date & Time</label>
+                <input type="datetime-local" class="form-control small-width" />
+            </div>
+            <div class="form-group ip-restrictions-field">
+                <label class="h4">IP Restrictions</label>
+                <br />
+                <input type="text" class="form-control small-width" placeholder="From IP" />
+                <input type="text" class="form-control small-width" placeholder="To IP" />
+            </div>
+            <div class="form-group">
+                <label class="h4">Browser Tolerance</label>
+                <select class="form-control">
+                    <option>Select</option>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                    <option>Option 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="h4">Question Order</label>
+                <select class="form-control">
+                    <option>Random</option>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                    <option>Option 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="h4">Option Order</label>
+                <select class="form-control">
+                    <option>Fixed</option>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                    <option>Option 3</option>
+                </select>
+            </div>
+            <div class="form-group inline-field">
+                <label class="h4">Correct Marks</label>
+                <input type="text" class="form-control small-width" />
+            </div>
+            <div class="form-group inline-field">
+                <label class="h4">Incorrect Marks</label>
+                <input type="text" class="form-control small-width" />
+            </div>
+            <div class="form-group">
+                <label class="h4">Warning Message</label>
+                <textarea class="form-control" rows="3" placeholder="Your message here"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="h4">Warning Time (mins)</label>
+                <input type="text" class="form-control small-width" placeholder="00" />
+            </div>
+        </form>
+    </div>
+    <div class="footer-block clearfix">
+        <div class="container">
+            <ul class="steps pull-left">
+                <li class="h5">Select Sections</li>
+                <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+                <li class="h5">Select Questions</li>
+                <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+                <li class="h5 active">Settings & Schedule</li>
+            </ul>
+            <div class="buttons-block pull-right">
+                <button type="button" class="btn">Save & Exit</button>
+                <button type="button" class="btn btn-primary" (click)="launchTestDialog()">Save & Share</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,170 +1,172 @@
-﻿<div class="tests-dashboard">
-    <div class="title-area clearfix">
-        <h1 class="pull-left">Tests</h1>
-        <div class="search-area pull-right">
-            <input type="text" [hidden]="!showSearchInput" />
-            <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
+﻿<div class="container">
+    <div class="tests-dashboard">
+        <div class="title-area clearfix">
+            <h1 class="pull-left">Tests</h1>
+            <div class="search-area pull-right">
+                <input type="text" [hidden]="!showSearchInput" />
+                <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
+            </div>
         </div>
-    </div>
-    <div class="blocks-area">
-        <div class="row">
-            <div class="col-md-5ths col-sm-4">
-                <div class="create-test-block" (click)="createTestDialog()">
-                    <i class="material-icons">add</i>
-                    <h2>Create New Test</h2>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+        <div class="blocks-area">
+            <div class="row">
+                <div class="col-md-5ths col-sm-4">
+                    <div class="create-test-block" (click)="createTestDialog()">
+                        <i class="material-icons">add</i>
+                        <h2>Create New Test</h2>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
-                        <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Edit</button>
-                            <button md-menu-item>Delete</button>
-                            <button md-menu-item>Duplicate</button>
-                            <button md-menu-item>Settings</button>
-                        </md-menu>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
+                </div>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+                </div>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5ths col-sm-4">
+                    <div class="test-block">
+                        <div class="test-title clearfix">
+                            <h2 class="pull-left">BBIT 10-08-2017</h2>
+                            <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
+                            <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <a md-menu-item>Edit</a>
+                                <a md-menu-item>Delete</a>
+                                <a md-menu-item>Duplicate</a>
+                                <a md-menu-item [routerLink]="['settings']">Settings</a>
+                            </md-menu>
+                        </div>
+                        <div class="test-details">
+                            <p class="light-text">150 Questions</p>
+                            <p class="light-text">3 Sections</p>
+                            <p class="light-text">123 Candidates</p>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary">View Report</button>
+                        </div>
                     </div>
                 </div>
             </div>

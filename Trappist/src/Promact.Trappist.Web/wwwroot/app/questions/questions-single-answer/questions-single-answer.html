@@ -1,58 +1,60 @@
-﻿<div class="simple-ans">
-    <div class="header">
-        <h2>Question</h2>
-        <h5>Single Answer Question</h5>
+﻿<div class="container">
+    <div class="simple-ans">
+        <div class="header">
+            <h2>Question</h2>
+            <h5>Single Answer Question</h5>
+        </div>
+        <form>
+            <div class="form-fields">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Question Test" />
+                </div>
+                <div class="form-group answer-choices">
+                    <md-radio-group>
+                        <md-radio-button value="choice1">
+                            <input type="text" class="form-control" placeholder="Answer Choice 1" />
+                            <i class="material-icons">close</i>
+                        </md-radio-button>
+                        <md-radio-button value="choice2">
+                            <input type="text" class="form-control" placeholder="Answer Choice 2" />
+                            <i class="material-icons">close</i>
+                        </md-radio-button>
+                        <md-radio-button value="choice3">
+                            <input type="text" class="form-control" placeholder="Answer Choice 3" />
+                            <i class="material-icons">close</i>
+                        </md-radio-button>
+                        <md-radio-button value="choice4">
+                            <input type="text" class="form-control" placeholder="Answer Choice 4" />
+                            <i class="material-icons">close</i>
+                        </md-radio-button>
+                        <md-radio-button value="choice5" [disabled]="true">
+                            <input type="text" class="form-control" placeholder="Add Choice" disabled />
+                        </md-radio-button>
+                    </md-radio-group>
+                    <p class="tip">Tip: Click the radio button to mark the correct answer</p>
+                </div>
+                <div class="form-inline clearfix">
+                    <div class="form-group col-md-4 col-sm-4 pl0">
+                        <select class="form-control">
+                            <option>Select Section</option>
+                            <option>Section 1</option>
+                            <option>Section 2</option>
+                            <option>Section 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2 col-sm-2 pl0">
+                        <select class="form-control">
+                            <option>Easy</option>
+                            <option>Medium</option>
+                            <option>Hard</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-area">
+                <button type="button" class="btn">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
-    <form>
-        <div class="form-fields">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Question Test" />
-            </div>
-            <div class="form-group answer-choices">
-                <md-radio-group>
-                    <md-radio-button value="choice1">
-                        <input type="text" class="form-control" placeholder="Answer Choice 1" />
-                        <i class="material-icons">close</i>
-                    </md-radio-button>
-                    <md-radio-button value="choice2">
-                        <input type="text" class="form-control" placeholder="Answer Choice 2" />
-                        <i class="material-icons">close</i>
-                    </md-radio-button>
-                    <md-radio-button value="choice3">
-                        <input type="text" class="form-control" placeholder="Answer Choice 3" />
-                        <i class="material-icons">close</i>
-                    </md-radio-button>
-                    <md-radio-button value="choice4">
-                        <input type="text" class="form-control" placeholder="Answer Choice 4" />
-                        <i class="material-icons">close</i>
-                    </md-radio-button>
-                    <md-radio-button value="choice5" [disabled]="true">
-                        <input type="text" class="form-control" placeholder="Add Choice" disabled />
-                    </md-radio-button>
-                </md-radio-group>
-                <p class="tip">Tip: Click the radio button to mark the correct answer</p>
-            </div>
-            <div class="form-inline clearfix">
-                <div class="form-group col-md-4 col-sm-4 pl0">
-                    <select class="form-control">
-                        <option>Select Section</option>
-                        <option>Section 1</option>
-                        <option>Section 2</option>
-                        <option>Section 3</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2 col-sm-2 pl0">
-                    <select class="form-control">
-                        <option>Easy</option>
-                        <option>Medium</option>
-                        <option>Hard</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="actions-area">
-            <button type="button" class="btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-    </form>
 </div>
