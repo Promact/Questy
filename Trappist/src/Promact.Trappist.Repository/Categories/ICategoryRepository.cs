@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">unique key of a table</param>
         /// <returns>if Id match then it will return object</returns>
-        Category Getcategory(int key);
+        Category GetCategory(int key);
         /// <summary>
         /// Edit category From Category model
         /// </summary>
