@@ -2,7 +2,6 @@
 set -e
 
 cd ./Trappist/src/Promact.Trappist.Web
-dotnet ef migrations add production
 dotnet publish -o published
 cd ../../../
 docker build -t promact/trappist:$TRAVIS_BRANCH .

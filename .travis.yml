@@ -8,6 +8,8 @@ services:
 install:
   - dotnet restore ./Trappist/src
 script:
+  - dotnet ef --version
+  - dotnet ef migrations add production
   - dotnet build ./Trappist/src/Promact.Trappist.Web
 deploy:
   - provider: script
