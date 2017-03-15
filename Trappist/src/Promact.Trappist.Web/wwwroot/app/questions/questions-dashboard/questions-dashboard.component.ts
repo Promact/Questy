@@ -2,7 +2,6 @@
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
-import { CategoriesService } from '../category.service';
 
 @Component({
     moduleId: module.id,
@@ -39,6 +38,10 @@ export class QuestionsDashboardComponent {
     deleteCategoryDialog() {
       this.dialog.open(DeleteCategoryDialogComponent);
     }
+    removeCategory(categoryName: string) {
+        this.categoryService.removeCategory(categoryName).subscribe((Response) => Response.json());
+    }
+}
 
 }
 
