@@ -18,6 +18,12 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
         void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, List<SingleMultipleAnswerQuestionOption> singleMultipleAnswerQuestionOption);
+
+        /// <summary>
+        /// Add new code snippet question to the database
+        /// </summary>
+        /// <param name="codeSnippetQuestionModel">Code Snippet Question Model</param>
+        void AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion);
     }
-    
+
 }
