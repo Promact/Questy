@@ -14,12 +14,13 @@ import { CategoryService } from './categories.service';
 @NgModule({
     imports: [
         SharedModule,
-        questionsRouting,
+        questionsRouting
     ],
     declarations: [
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
+        RenameCategoryDialogComponent,
         QuestionsSingleAnswerComponent,
         QuestionsMultipleAnswersComponent,
         QuestionsProgrammingComponent,
@@ -27,13 +28,14 @@ import { CategoryService } from './categories.service';
         DeleteQuestionDialogComponent
     ],
     entryComponents: [
-      AddCategoryDialogComponent,
-      DeleteCategoryDialogComponent,
-      DeleteQuestionDialogComponent
+        AddCategoryDialogComponent,
+        DeleteCategoryDialogComponent,
+        DeleteQuestionDialogComponent,
+        RenameCategoryDialogComponent
     ],
     providers: [
         QuestionsService,
-		CategoryService
+        CategoryService
     ]
 })
 export class QuestionsModule { }

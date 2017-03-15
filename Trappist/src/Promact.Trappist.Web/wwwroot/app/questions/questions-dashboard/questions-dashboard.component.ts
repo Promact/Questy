@@ -9,21 +9,27 @@ import { Question } from '../../questions/question.model';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
+import { RenameCategoryDialogComponent } from './rename-category-dialog.component';
+
 @Component({
     moduleId: module.id,
     selector: 'questions-dashboard',
     templateUrl: 'questions-dashboard.html'
 })
-export class QuestionsDashboardComponent {
-    showSearchInput: boolean;
+
+export class QuestionsDashboardComponent implements OnInit {
+
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
-    //To enable enum difficultylevel in template
+    private category: Category = new Category();
+    // to enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
-    //To enable enum questiontype in template 
+    // to enable enum questiontype in template 
     QuestionType = QuestionType;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', '...'];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+    }
+    ngOnInit() {
         this.getAllQuestions();
         this.getAllCategories();
     }
@@ -49,7 +55,12 @@ export class QuestionsDashboardComponent {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    // Open delete category dialog
+    // open Rename Category Dialog
+    renameCategoryDialog(category: any) {
+        var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
+        prop.category = JSON.parse(JSON.stringify(category));
+    }
+    // open Delete Category Dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
