@@ -13,6 +13,10 @@ namespace Promact.Trappist.Core.Controllers
             _settingsRepository = settingsRepository;
         }
 
+        /// <summary>
+        /// Get the Settings saved for a particular Test
+        /// </summary>
+        /// <returns>Settings set for that Test</returns>
         [HttpGet]
         public IActionResult GetTestSettings()
         {
@@ -20,6 +24,12 @@ namespace Promact.Trappist.Core.Controllers
             return Json(settings);
         }
 
+        /// <summary>
+        /// Updates the changes made to the Settings of a Test
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="testObject"></param>
+        /// <returns>Updated Settings of that Test</returns>
         [HttpPut("api/put/{id}")]
         public IActionResult UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
         {

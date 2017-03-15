@@ -21,7 +21,7 @@ namespace Promact.Trappist.Repository.TestSettings
         /// </summary>
         /// <param name="id"></param>
         /// <param name="testObject"></param>
-        /// <returns></returns>
+        /// <returns>Updated Setting of that Test</returns>
         public string UpdateTestSettings(int id, Test testObject)
         {
             testObject = new Test();
