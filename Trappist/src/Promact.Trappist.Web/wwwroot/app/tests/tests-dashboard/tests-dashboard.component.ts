@@ -1,5 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
+import { TestService } from "../tests.service";
+import { Test } from "../tests.model";
 
 @Component({
     moduleId: module.id,
@@ -9,13 +11,30 @@ import { MdDialog } from '@angular/material';
 
 export class TestsDashboardComponent{
 
-    // Open Create Test Dialog
-    constructor(public dialog: MdDialog) { }
 
+    Tests: Test[] = new Array<Test>();
+
+   
+    constructor(public dialog: MdDialog, private testService: TestService) {
+
+        this.getAllTests();
+
+    }
+
+    //Get All The Tests From Server
+    getAllTests() {
+        this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+
+    }
+
+     // Open Create Test Dialog
     createTestDialog() {
         this.dialog.open(TestCreateDialogComponent);
     }
 }
+
+
+
 
 @Component({
     moduleId: module.id,
