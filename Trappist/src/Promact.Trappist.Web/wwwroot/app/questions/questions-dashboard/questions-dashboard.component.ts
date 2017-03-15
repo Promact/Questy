@@ -1,7 +1,10 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
+import { Category } from "../category.model";
+import { Location } from '@angular/common';
 
 @Component({
     moduleId: module.id,
@@ -9,17 +12,31 @@ import { MdDialog } from '@angular/material';
     templateUrl: "questions-dashboard.html"
 })
 
-export class QuestionsDashboardComponent {
+export class QuestionsDashboardComponent implements OnInit {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
 
-    categoryName: string[] = new Array<string>();
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+
+    }
+
+    ngOnInit() {
         this.getAllQuestions();
-		this.getAllCategories();
+        this.getAllCategories();
     }
 	//To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
+        });
+    }
+    //add Category
+    CategoryAdd(category: Category) {
+        this.categoryService.addCategory(category).subscribe((response) => {
+            if (response.ok) {
+                this.categoryArray = response.json;
+                //this.category = new Category;
+            }
         });
     }
 
@@ -46,9 +63,18 @@ export class QuestionsDashboardComponent {
     selector: 'add-category-dialog',
     templateUrl: "add-category-dialog.html"
 })
-export class AddCategoryDialogComponent { }
-export class Category {
-    CategoryName: string;
+export class AddCategoryDialogComponent {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
+    constructor(private categoryService: CategoryService, private dialog: MdDialog) { }
+
+    CategoryAdd(category: Category) {
+        this.categoryService.addCategory(category).subscribe((response) => {
+                this.categoryArray = response.json;
+                this.dialog.closeAll();
+                //this.category = new Category;
+        });
+    }
 }
 
 @Component({
