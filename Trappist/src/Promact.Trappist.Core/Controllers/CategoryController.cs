@@ -56,7 +56,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.Getcategory(Id);
+            var previousCategory = _categoryRepository.GetCategory(Id);
             if (previousCategory == null)
             {
                 return NotFound();
