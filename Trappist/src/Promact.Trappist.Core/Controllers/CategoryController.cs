@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
-
-using Promact.Trappist.Repository.CategoryRepository;
+using Promact.Trappist.Repository.Categories;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -20,7 +19,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet]
         public IActionResult GetAllCategories()
         {
-            var categoryList = _categoryRepository.GetAllCategories();
+            var categoryList = _categoriesRepository.GetAllCategories();
             return Ok(categoryList);
         }
         #region post Method 

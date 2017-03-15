@@ -18,7 +18,6 @@ using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Repository.CategoryRepository;
 
 namespace Promact.Trappist.Web
 {
@@ -67,8 +66,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
         }
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-        }
+            
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
