@@ -1,12 +1,14 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
+using System;
 using System.Linq;
 
-namespace Promact.Trappist.Repository.Category
+namespace Promact.Trappist.Repository.CategoryRepository
 {
     public class CategoryRepository : ICategoryRepository
     {
         private readonly TrappistDbContext _dbContext;
-    
+
         public CategoryRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -16,7 +18,7 @@ namespace Promact.Trappist.Repository.Category
         /// Adding a Category in Category model
         /// </summary>
         /// <param name="catagory">Object of class Category</param>
-        public void AddCategory(DomainModel.Models.Category.Category category)
+        public void AddCategory(Category category)
         {
             _dbContext.Category.Add(category);
             _dbContext.SaveChanges();
@@ -28,10 +30,17 @@ namespace Promact.Trappist.Repository.Category
         /// Find a Respective Id from Catagory Table
         /// </summary>
         /// <param name="Key"></param>
-        /// <Returns>will Return respective category from category table</Returns>
-        public DomainModel.Models.Category.Category Getcategory(int key)
+        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
+        public Category Getcategory(int key)
         {
-            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            try
+            {
+                return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
         #endregion
 
@@ -40,11 +49,12 @@ namespace Promact.Trappist.Repository.Category
         // Edit a Category from Category Table
         // </summary>
         // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(DomainModel.Models.Category.Category category)
+        public void CategoryEdit(Category category)
         {
             _dbContext.Category.Update(category);
             _dbContext.SaveChanges();
         }
         #endregion
     }
+
 }

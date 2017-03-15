@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
-using Promact.Trappist.Repository.Category;
+
+using Promact.Trappist.Repository.CategoryRepository;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/Category")]
+    [Route("api/category")]
     public class CategoryController : Controller
     {
         private ICategoryRepository _categoriesRepository;
@@ -48,19 +49,28 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="Id">Id is the primary key of Category Model</param>
         /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class</returns>
+        /// <returns>object of the class if key found or else it will return Bad request</returns>
         [HttpPut("{id}")]
         public IActionResult CategoryEdit(int Id, [FromBody] Category category)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                {
+                    return BadRequest(ModelState);
+                }
             var promise = _categoriesRepository.Getcategory(Id);
-            promise.CategoryName = category.CategoryName;
-            _categoriesRepository.CategoryEdit(promise);
-            return Ok(category);
+            if (promise == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    promise.CategoryName = category.CategoryName;
+                    _categoriesRepository.CategoryEdit(promise);
+                    return Ok(category);
+                }
+                #endregion
+
+            }
         }
-        #endregion
     }
-}
+
