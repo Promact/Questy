@@ -20,22 +20,10 @@ namespace Promact.Trappist.Repository.Questions
         /// Add new code snippet question to the database
         /// </summary>
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
-        /// <returns>
-        /// returns 1 : When code snippet question is added successfully to the database
-        /// returns 0 : When code snippet question failed to add 
-        /// </returns>
-        public int AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion)
+        public void AddCodeSnippetQuestion(CodeSnippetQuestion codeSnippetQuestion)
         {
-            try
-            {
-                _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
-                _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                return 0;
-            }
-            return 1;
+           _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
+           _dbContext.SaveChanges();
         }
 
         /// <summary>
