@@ -41,12 +41,9 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="Key"></param>
         /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
-        public Category GetCategoryById(int key)
+        public Category GetCategory(int key)
         {
-
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
-
-
         }
         #endregion
 
