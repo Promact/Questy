@@ -39,22 +39,27 @@ namespace Promact.Trappist.Repository.Questions
             };
             #endregion
 
-            var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
-            _dbContext.SaveChanges();
-
-            var codingLanguageList = codeSnippetQuestionModel.LanguageList;
-            var questionId = question.Entity.Id;
-
-            foreach(var language in codingLanguageList)
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                var languageId = _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
-                _dbContext.QuestionLanguageMapping.Add(new QuestionLanguageMapping
+                var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
+                _dbContext.SaveChanges();
+
+                var codingLanguageList = codeSnippetQuestionModel.LanguageList;
+                var questionId = question.Entity.Id;
+
+                foreach (var language in codingLanguageList)
                 {
-                    QuestionId = questionId,
-                    LanguageId = languageId
-                });
-                _dbContext.SaveChanges();                
-            }                       
+                    var languageId = _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
+                    _dbContext.QuestionLanguageMapping.Add(new QuestionLanguageMapping
+                    {
+                        QuestionId = questionId,
+                        LanguageId = languageId
+                    });
+                }
+                _dbContext.SaveChanges();
+
+                transaction.Commit();
+            }
         }
 
         /// <summary>
