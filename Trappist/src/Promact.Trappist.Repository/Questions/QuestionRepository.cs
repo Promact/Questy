@@ -21,8 +21,8 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
         public void AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestionModel)
         {
-            #region mapping
-            CodeSnippetQuestion codeSnippetQuestion = new CodeSnippetQuestion
+            #region mapping CodeSnippetQuestion
+            var codeSnippetQuestion = new CodeSnippetQuestion
             {
                 CategoryID = codeSnippetQuestionModel.CategoryID,
                 QuestionDetail = codeSnippetQuestionModel.QuestionDetail,
