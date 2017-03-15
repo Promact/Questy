@@ -1,12 +1,25 @@
-﻿{
+{
   "version": "1.0.0-*",
-
+  "testRunner": "xunit",
   "dependencies": {
-    "NETStandard.Library": "1.6.0"
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "Microsoft.EntityFrameworkCore": "1.1.1",
+    "Microsoft.EntityFrameworkCore.InMemory": "1.1.1",
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.1"
+    },
+    "Moq": "4.7.1",
+    "Promact.Trappist.DomainModel": "1.0.0-*",
+    "Promact.Trappist.Repository": "1.0.0-*",
+    "Promact.Trappist.Utility": "1.0.0-*",
+    "System.ComponentModel": "4.3.0",
+    "xunit": "2.2.0"
   },
 
   "frameworks": {
-    "netstandard1.6": {
+    "netcoreapp1.0": {
       "imports": "dnxcore50"
     }
   }
