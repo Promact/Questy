@@ -27,8 +27,8 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Updates the changes made to the Settings of a Test
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="testObject"></param>
+        /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
+        /// <param name="testObject">The parameter "testObject" is used as an object for the Model Test</param>
         /// <returns>Updated Settings of that Test</returns>
         [HttpPut("api/put/{id}")]
         public IActionResult UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
