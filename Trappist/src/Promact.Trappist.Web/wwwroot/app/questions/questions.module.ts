@@ -7,6 +7,7 @@ import { QuestionsDashboardComponent, AddCategoryDialogComponent } from "./quest
 import { QuestionsSingleAnswerComponent } from "./questions-single-answer/questions-single-answer.component";
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
 import { QuestionsService } from "./questions.service";
+import { CategoriesService } from "./category.service";
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { QuestionsService } from "./questions.service";
         AddCategoryDialogComponent
     ],
     providers: [
-        QuestionsService
+        QuestionsService,
+        CategoriesService
     ]
 })
 export class QuestionsModule { }

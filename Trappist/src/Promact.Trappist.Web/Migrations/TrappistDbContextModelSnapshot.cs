@@ -272,6 +272,46 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BrowserTolerance");
+
+                    b.Property<decimal>("CorrectMarks");
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("Duration");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("FromIpAddress");
+
+                    b.Property<decimal>("IncorrectMarks");
+
+                    b.Property<string>("Link");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("TestName")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 150);
+
+                    b.Property<string>("ToIpAddress");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("WarningMessage");
+
+                    b.Property<int>("WarningTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Test");
+                });
+
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
