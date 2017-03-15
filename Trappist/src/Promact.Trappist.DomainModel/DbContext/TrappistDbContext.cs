@@ -12,8 +12,7 @@ namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
-        public TrappistDbContext(DbContextOptions<TrappistDbContext> options)
-            : base(options)
+        public TrappistDbContext(DbContextOptions<TrappistDbContext> options): base(options)
         {
         }
 
