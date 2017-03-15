@@ -56,17 +56,15 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var promise = _categoryRepository.Getcategory(Id);
-            if (promise == null)
+            var previousCategory = _categoryRepository.Getcategory(Id);
+            if (previousCategory == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            else
-            {
-                promise.CategoryName = category.CategoryName;
-                _categoryRepository.CategoryEdit(promise);
-                return Ok(category);
-            }
+            previousCategory.CategoryName = category.CategoryName;
+            _categoryRepository.CategoryEdit(previousCategory);
+            return Ok(category);
+
             #endregion
         }
 
