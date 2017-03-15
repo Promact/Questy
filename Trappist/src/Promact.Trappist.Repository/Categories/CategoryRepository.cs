@@ -43,14 +43,10 @@ namespace Promact.Trappist.Repository.Categories
         /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
         public Category Getcategory(int key)
         {
-            try
-            {
-                return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+
+            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+
+
         }
         #endregion
 
@@ -65,6 +61,5 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
-
     }
 }
