@@ -1,4 +1,5 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from "@angular/material";
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
