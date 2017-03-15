@@ -22,6 +22,7 @@ namespace Promact.Trappist.Core.Controllers
             var categoryList = _categoryRepository.GetAllCategories();
             return Ok(categoryList);
         }
+
         #region post Method 
         [HttpPost]
         /// <summary>
@@ -56,7 +57,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.GetCategory(Id);
+            var previousCategory = _categoryRepository.GetCategoryById(Id);
             if (previousCategory == null)
             {
                 return NotFound();
