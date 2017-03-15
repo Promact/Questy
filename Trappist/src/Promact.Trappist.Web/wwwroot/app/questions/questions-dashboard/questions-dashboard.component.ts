@@ -2,6 +2,7 @@
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
+import { CategoriesService } from '../category.service';
 
 @Component({
     moduleId: module.id,
@@ -32,6 +33,13 @@ export class QuestionsDashboardComponent {
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
+    }
+
+    getCategories() {
+        this.categoryService.getCategory().subscribe((Response: category[]) => { this.categoyList = (Response) });
+    }
+    removeCategory(categoryId: number) {
+              this.categoryService.removeCategory(categoryId).subscribe((Response) => Response.json());
     }
 
 }
