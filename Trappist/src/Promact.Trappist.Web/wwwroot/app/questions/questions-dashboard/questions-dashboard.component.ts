@@ -1,28 +1,38 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { Question } from "../../questions/question.model"
-import { DifficultyLevel } from "../../questions/enum-difficultylevel"
-import { QuestionType } from "../../questions/enum-questiontype"
-import { Category } from "../../questions/category.model"
+import { MdDialog } from '@angular/material';
+import { Category } from "../category.model";
+import { Location } from '@angular/common';
+
 @Component({
     moduleId: module.id,
     selector: "questions-dashboard",
     templateUrl: "questions-dashboard.html"
 })
-export class QuestionsDashboardComponent {
-    questionDisplay: Question[] = new Array<Question>();
-    categoryArray: Category[] = new Array<Category>();
+
+export class QuestionsDashboardComponent implements OnInit {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
+
+export class QuestionsDashboardComponent implements OnInit {
+    private category: Category = new Category();
+    categoryArray: string[] = new Array<string>();
     //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
     alpha: string[] = ["a", "b", "c", "d", "e", "..."];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+
+    }
+
+    ngOnInit() {
         this.getAllQuestions();
         this.getAllCategories();
     }
