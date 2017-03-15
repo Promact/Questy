@@ -3,7 +3,6 @@ using Promact.Trappist.DomainModel.Models.Test;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Promact.Trappist.Repository.TestDashBoard
 {
     public class TestDashBoardRepository : ITestDashBoardRepository
@@ -20,8 +19,10 @@ namespace Promact.Trappist.Repository.TestDashBoard
         /// <returns>List of Tests</returns>
         public List<Test> GetAllTests()
         {
-             var Tests = _trappistdb.Test.ToList();
-             return Tests;
+                      
+            var Tests = _trappistdb.Test.ToList();
+            return Tests;
+
         }
     }
 }
