@@ -3,6 +3,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using AutoMapper;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -18,27 +19,12 @@ namespace Promact.Trappist.Repository.Questions
         /// Add new code snippet question to the database
         /// </summary>
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
-        public void AddCodeSnippetQuestion(CodeSnippetQuestionModel codeSnippetQuestionModel)
+        public void AddCodeSnippetQuestion(CodeSnippetQuestionDto codeSnippetQuestionModel)
         {
-            #region mapping CodeSnippetQuestion
-            var codeSnippetQuestion = new CodeSnippetQuestion
-            {
-                CategoryID = codeSnippetQuestionModel.CategoryID,
-                QuestionDetail = codeSnippetQuestionModel.QuestionDetail,
-                DifficultyLevel = codeSnippetQuestionModel.DifficultyLevel,
-                QuestionType = codeSnippetQuestionModel.QuestionType,
-                CheckCodeComplexity = codeSnippetQuestionModel.CheckCodeComplexity,
-                CheckTimeComplexity = codeSnippetQuestionModel.CheckTimeComplexity,
-                RunBasicTestCase = codeSnippetQuestionModel.RunBasicTestCase,
-                RunCornerTestCase = codeSnippetQuestionModel.RunCornerTestCase,
-                RunNecessaryTestCase = codeSnippetQuestionModel.RunNecessaryTestCase,
-                CreateBy = codeSnippetQuestionModel.CreateBy,
-                UpdatedBy = codeSnippetQuestionModel.UpdatedBy
-                
-            };
-            #endregion
+            
+            CodeSnippetQuestion codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionDto, CodeSnippetQuestion>(codeSnippetQuestionModel);
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            using(var transaction = _dbContext.Database.BeginTransaction())
             {
                 var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
                 _dbContext.SaveChanges();

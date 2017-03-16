@@ -11,6 +11,17 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Seed;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Repository.TestSettings;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Web
 {
@@ -107,7 +118,18 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-			context.Seed();
+
+            context.Database.Migrate();
+
+            context.Seed();
+
+            #region Automapper configuration
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
+            });
+            #endregion
+
         }
     }
 }
