@@ -16,6 +16,9 @@ using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.TestSettings;
+using Promact.Trappist.DomainModel.Seed;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace Promact.Trappist.Web
 {
@@ -70,7 +73,8 @@ namespace Promact.Trappist.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -117,7 +121,8 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-			
+            context.Database.Migrate();
+            context.Seed();
 
         }
     }
