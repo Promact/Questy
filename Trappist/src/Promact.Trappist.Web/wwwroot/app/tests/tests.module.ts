@@ -26,9 +26,7 @@ import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
         TestLaunchDialogComponent
     ],
     providers: [
-        TestService,
-        FilterPipe
-        
+        TestService       
     ]
 })
 export class TestsModule { }
