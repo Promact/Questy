@@ -20,6 +20,7 @@ using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.Core.ActionFilters;
 
 namespace Promact.Trappist.Web
 {
