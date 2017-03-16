@@ -34,6 +34,11 @@ export class QuestionsDashboardComponent {
         this.dialog.open(AddCategoryDialogComponent);
     }
 
+    // Open Delete Category Dialog
+    deleteCategoryDialog() {
+      this.dialog.open(DeleteCategoryDialogComponent);
+    }
+
 }
 
 @Component({
@@ -45,3 +50,10 @@ export class AddCategoryDialogComponent { }
 export class Category {
     CategoryName: string;
 }
+
+@Component({
+  moduleId: module.id,
+  selector: 'delete-category-dialog',
+  templateUrl: "delete-category-dialog.html"
+})
+export class DeleteCategoryDialogComponent { }
