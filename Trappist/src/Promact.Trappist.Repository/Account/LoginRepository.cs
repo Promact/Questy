@@ -9,13 +9,13 @@ namespace Promact.Trappist.Repository.Account
 {
     public class LoginRepository : ILoginRepository
     {
-        private readonly TrappistDbContext _context;
+        private readonly TrappistDbContext _dbcontext;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public LoginRepository(SignInManager<ApplicationUser> signInManager, TrappistDbContext dbcontext)
         {
             _signInManager = signInManager;
-            _context = dbcontext;
+            _dbcontext = dbcontext;
 
         }
         /// <summary>
@@ -42,10 +42,7 @@ namespace Promact.Trappist.Repository.Account
                 throw exp;
             }
         }
-
     }
-
-
 }
 
 
