@@ -23,5 +23,11 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="catagory"> Object of class Category</param>
         void CategoryEdit(Category catagory);
+        /// <summary>
+        /// Check for Category name is Exists or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>true if Exists else false</returns>
+        bool CheckDuplicateCategoryName(string categoryName);
     }
 }
