@@ -33,9 +33,7 @@ export class QuestionsDashboardComponent {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    removeCategory(categoryName: string) {
-        this.categoryService.removeCategory(categoryName).subscribe((Response) => Response.json());
-    }
+   
 }
 
 @Component({
