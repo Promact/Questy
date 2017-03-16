@@ -3,6 +3,7 @@ import { MdDialog } from '@angular/material';
 import { TestService } from "../tests.service";
 import { Test } from "../tests.model";
 
+
 @Component({
     moduleId: module.id,
     selector: "tests-dashboard",
@@ -24,6 +25,7 @@ export class TestsDashboardComponent{
     //Get All The Tests From Server
     getAllTests() {
         this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+        
 
     }
 

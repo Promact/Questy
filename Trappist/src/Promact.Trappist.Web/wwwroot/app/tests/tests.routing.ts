@@ -12,6 +12,7 @@ const testsRoutes: Routes = [
         children: [
             { path: '', component: TestsDashboardComponent },
             { path: 'settings', component: TestSettingsComponent }
+            
         ]
     }
 ];
