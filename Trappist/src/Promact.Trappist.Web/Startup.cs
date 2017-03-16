@@ -62,7 +62,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
-        }
+        
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
