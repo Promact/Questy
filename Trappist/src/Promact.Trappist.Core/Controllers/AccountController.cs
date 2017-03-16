@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         public ILoginRepository loginInterface { get; set; }
