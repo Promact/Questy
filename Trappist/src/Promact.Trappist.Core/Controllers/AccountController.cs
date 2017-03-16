@@ -15,13 +15,11 @@ namespace Promact.Trappist.Core.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IStringConstants _stringConstant;
-
         public AccountController(IAccountRepository accountRepository, IStringConstants stringConstant)
         {
             _accountRepository = accountRepository;
             _stringConstant = stringConstant;
         }
-
         /// <summary>
         /// this method is used to see the view of login
         /// </summary>
@@ -33,9 +31,8 @@ namespace Promact.Trappist.Core.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
         /// <summary>
-        ///  This method will be called with  credentials to validate user
+        ///  This method will be called with credentials to validate user
         /// </summary>
         /// <returns>succesful login-checking for user and redirect to testdashboard page</returns>
         [HttpPost]
@@ -61,7 +58,7 @@ namespace Promact.Trappist.Core.Controllers
             }
         }
         /// <summary>
-        /// this method is used to rediect to any local url link
+        /// this method is used to redirect to any local url link
         /// </summary>
         /// <param name="returnUrl">string type of url</param>
         /// <returns></returns>
@@ -81,7 +78,6 @@ namespace Promact.Trappist.Core.Controllers
         {
             return View();
         }
-
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();

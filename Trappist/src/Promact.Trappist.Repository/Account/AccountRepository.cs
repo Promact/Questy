@@ -11,14 +11,12 @@ namespace Promact.Trappist.Repository.Account
     {
         private readonly TrappistDbContext _dbcontext;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
         public AccountRepository(SignInManager<ApplicationUser> signInManager, TrappistDbContext dbcontext)
         {
             _signInManager = signInManager;
             _dbcontext = dbcontext;
 
         }
-
         /// <summary>
         /// this method is used to validate user credentials
         /// </summary>
