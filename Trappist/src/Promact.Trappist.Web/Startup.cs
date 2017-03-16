@@ -60,7 +60,7 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
+            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
@@ -84,10 +84,10 @@ namespace Promact.Trappist.Web
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-            else
+            /*else
             {
                 app.UseExceptionHandler("/Home/Error");
-            }
+            }*/
 
             app.UseApplicationInsightsExceptionTelemetry();
 
