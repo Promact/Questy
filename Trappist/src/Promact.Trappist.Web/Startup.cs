@@ -21,6 +21,7 @@ using NLog.Web;
 using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Repository.TestDashBoard;
+using Newtonsoft.Json.Serialization;
 
 namespace Promact.Trappist.Web
 {
