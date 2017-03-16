@@ -14,17 +14,11 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Repository.TestDashBoard;
-using Newtonsoft.Json.Serialization;
-using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
-using Promact.Trappist.Core.ActionFilters;
-
-
 
 namespace Promact.Trappist.Web
 {
@@ -73,20 +67,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-
-            //To make json return in camelcase
-            services.AddMvc()
-           .AddJsonOptions(o => o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)
-           .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
-
-        }
-
-           
-
-
-
-        }
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
