@@ -23,6 +23,7 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
+using Promact.Trappist.Repository.ProfileDetails;
 
 
 namespace Promact.Trappist.Web
@@ -59,9 +60,9 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
-          
-        
-    }
+            services.AddScoped<IProfileRepository, ProfileRepository>();
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
