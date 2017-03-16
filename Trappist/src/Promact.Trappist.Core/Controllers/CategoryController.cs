@@ -68,7 +68,11 @@ namespace Promact.Trappist.Core.Controllers
             #endregion
 
         }
-
+        /// <summary>
+        /// Delete Method 
+        /// delete category from database 
+        ///</summary>
+        /// <param name="categoryName">name of category</param>
         [HttpDelete("{categoryName}")]
         public IActionResult CategoryRemove([FromRoute] string categoryName)
         {
