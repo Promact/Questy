@@ -15,4 +15,5 @@ export class CategoryService {
         return this.httpService.get(this.categoriesApiUrl);
     }
     
+    
 }
