@@ -47,23 +47,18 @@ namespace Promact.Trappist.Core.Controllers
         /// Put Method
         /// Will Edit a Existing Category from Category Table
         /// </summary>
-        /// <param name="Id">Id is the primary key of Category Model</param>
         /// <param name="catagory">Object of  class Category</param>
         /// <returns>object of the class if key found or else it will return Bad request</returns>
         [HttpPut("{id}")]
-        public IActionResult CategoryEdit(int Id, [FromBody] Category category)
+        public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
+            var categoryName = category.CategoryName;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.GetCategory(Id);
-            if (previousCategory == null)
-            {
-                return NotFound();
-            }
-            previousCategory.CategoryName = category.CategoryName;
-            _categoryRepository.CategoryEdit(previousCategory);
+
+            _categoryRepository.CategoryEdit(id, category);
             return Ok(category);
         }
             #endregion
