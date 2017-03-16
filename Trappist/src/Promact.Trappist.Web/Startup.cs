@@ -22,6 +22,8 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Core.ActionFilters;
 
+
+
 namespace Promact.Trappist.Web
 {
     public class Startup
