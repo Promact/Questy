@@ -20,7 +20,7 @@
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item>Rename</button>
-                            <button md-menu-item>Delete</button>
+                            <button md-menu-item (click)="deleteCategoryDialog()">Delete</button>
                         </md-menu>
                     </li>
 
@@ -42,7 +42,7 @@
                     <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                         <a md-menu-item [routerLink]="['single-answer']"><i class="material-icons">radio_button_checked</i> Single Answer</a>
                         <a md-menu-item [routerLink]="['multiple-answers']"><i class="material-icons">check_box</i> Multiple Answer</a>
-                        <a md-menu-item><i class="material-icons">code</i> Programming</a>
+                        <a md-menu-item [routerLink]="['programming']"><i class="material-icons">code</i> Programming</a>
                     </md-menu>
                 </div>
                 <div class="questions-area">
