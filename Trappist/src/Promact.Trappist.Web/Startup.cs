@@ -19,6 +19,7 @@ using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.Repository.Account;
 
 namespace Promact.Trappist.Web
 {
@@ -65,6 +66,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
         
     }
 
