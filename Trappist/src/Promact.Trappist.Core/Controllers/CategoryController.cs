@@ -66,7 +66,6 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.CategoryEdit(previousCategory);
             return Ok(category);
             #endregion
-
         }
         /// <summary>
         /// Delete Method 
