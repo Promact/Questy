@@ -7,15 +7,10 @@ namespace Promact.Trappist.Repository.TestDashBoard
 {
     public class TestDashBoardRepository : ITestDashBoardRepository
     {
-
-        private readonly TrappistDbContext _trappistdb;
         public List<Test> Tests;
-
         public TestDashBoardRepository(TrappistDbContext trappistdb)
         {
             _trappistdb = trappistdb;
-
-
         }
 
         /// <summary>
@@ -23,13 +18,10 @@ namespace Promact.Trappist.Repository.TestDashBoard
         /// </summary>
         /// <returns>List of Tests</returns>
         public List<Test> GetAllTests()
-        {
-                      
+        {                      
             var Tests = _trappistdb.Test.ToList();
             return Tests;
 
         }
-
-
     }
 }
