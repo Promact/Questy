@@ -61,7 +61,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
