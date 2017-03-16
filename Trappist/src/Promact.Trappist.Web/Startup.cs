@@ -20,6 +20,9 @@ using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Web
 {
@@ -123,9 +126,17 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+            
             context.Database.Migrate();
+
             context.Seed();
 
+            #region Automapper configuration
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
+            });
+            #endregion
         }
     }
 }

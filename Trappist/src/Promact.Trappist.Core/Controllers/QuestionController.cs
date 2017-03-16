@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.Repository.Questions;
-using System;
 
 
 namespace Promact.Trappist.Core.Controllers
@@ -26,6 +26,23 @@ namespace Promact.Trappist.Core.Controllers
         {
             _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleQuestion.singleMultipleAnswerQuestion,singleMultipleQuestion.singleMultipleAnswerQuestionOption);
             return Ok(singleMultipleQuestion);
+        }
+
+		[HttpPost("codesnippetquestion")]
+        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionDto codeSnippetQuestionDto)
+        {
+            if(codeSnippetQuestionDto == null)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestionDto);
+
+            return Ok(codeSnippetQuestionDto);
         }  
     }
 }
