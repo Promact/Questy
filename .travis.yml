@@ -8,6 +8,11 @@ services:
 install:
   - dotnet restore ./Trappist/src
 script:
+  - ls /usr/share/dotnet/shared/Microsoft.NETCore.App
+  - cd ./Trappist/src/Promact.Trappist.Web
+  - dotnet ef --version
+  - dotnet ef migrations add production
+  - cd ../../../
   - dotnet build ./Trappist/src/Promact.Trappist.Web
 deploy:
   - provider: script
