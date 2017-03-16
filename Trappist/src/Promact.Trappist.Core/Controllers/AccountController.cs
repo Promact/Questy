@@ -4,9 +4,6 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Account;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
