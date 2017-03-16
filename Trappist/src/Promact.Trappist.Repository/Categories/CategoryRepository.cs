@@ -58,5 +58,18 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
+
+        #region Check Duplicate Category Name Esists or not
+        /// <summary>
+        /// check whether same Category Name Exists Or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>true if Exists else False</returns>
+        public bool CheckDuplicateCategoryName(string categoryName)
+            {
+            var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
+            return isCategoryNameExist;
+        }
+        #endregion
     }
 }

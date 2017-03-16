@@ -30,15 +30,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.categoryArray = CategoriesList;
         });
     }
-    //add Category
-    CategoryAdd(category: Category) {
-        this.categoryService.addCategory(category).subscribe((response) => {
-            if (response.ok) {
-                this.categoryArray = response.json;
-                //this.category = new Category;
-            }
-        });
-    }
 
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
@@ -65,16 +56,29 @@ export class QuestionsDashboardComponent implements OnInit {
 })
 export class AddCategoryDialogComponent {
     private category: Category = new Category();
-    categoryArray: string[] = new Array<string>();
-    constructor(private categoryService: CategoryService, private dialog: MdDialog) { }
+    isNameExist: boolean = false;
+    constructor(private categoryService: CategoryService, private dialog: MdDialog) {
+    }
 
+    /*To a Category
+    *Add category In Cateogry Model
+    */
     CategoryAdd(category: Category) {
         this.categoryService.addCategory(category).subscribe((response) => {
-                this.categoryArray = response.json;
                 this.dialog.closeAll();
-                //this.category = new Category;
         });
     }
+
+    /*To check Whether CategoryName Exists or not
+    *If Exits it will return true and button will be disabled
+    */
+    CheckDuplicateCategoryName(categoryName: string)
+    {
+        this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
+            this.isNameExist = result;
+        });
+    }
+
 }
 
 @Component({
