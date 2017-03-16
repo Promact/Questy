@@ -7,12 +7,10 @@ namespace Promact.Trappist.Core.Controllers
     public class TestSettingsController : Controller
     {
         private readonly ITestSettingsRepository _settingsRepository;
-
         public TestSettingsController(ITestSettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
         }
-
         /// <summary>
         /// Get the Settings saved for a particular Test
         /// </summary>
@@ -23,7 +21,6 @@ namespace Promact.Trappist.Core.Controllers
             var settings = _settingsRepository.GetTestSettings();
             return Json(settings);
         }
-
         /// <summary>
         /// Updates the changes made to the Settings of a Test
         /// </summary>
