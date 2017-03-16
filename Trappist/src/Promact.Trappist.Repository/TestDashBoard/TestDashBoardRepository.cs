@@ -12,7 +12,6 @@ namespace Promact.Trappist.Repository.TestDashBoard
         public TestDashBoardRepository(TrappistDbContext trappistdb)
         {
             _trappistdb = trappistdb;
-
         }
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
@@ -22,7 +21,6 @@ namespace Promact.Trappist.Repository.TestDashBoard
         {                      
             var Tests = _trappistdb.Test.ToList();
             return Tests;
-
         }
     }
 }

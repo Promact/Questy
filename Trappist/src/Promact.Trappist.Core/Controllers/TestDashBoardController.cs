@@ -10,8 +10,7 @@ namespace Promact.Trappist.Core.Controllers
             public ITestDashBoardRepository _testdashboardRepository;  
             public TestDashBoardController(ITestDashBoardRepository testdashboardRepository)
             {
-                 _testdashboardRepository = testdashboardRepository;
-             
+                 _testdashboardRepository = testdashboardRepository;          
             }
             /// <summary>
             /// Get All Tests
