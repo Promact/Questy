@@ -19,6 +19,6 @@ namespace Promact.Trappist.Web.Models
       public DateTime CreateDateTime { get; set; }
 
       [DataType(DataType.DateTime)]
-      public DateTime? UpdatedateTime { get; set; }
+      public DateTime? UpdateDateTime { get; set; }
   }
 }
