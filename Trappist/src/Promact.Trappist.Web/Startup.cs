@@ -51,8 +51,13 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
             services.AddScoped<IQuestionRespository, QuestionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITestsRepository, TestsRepository>();
+            services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
