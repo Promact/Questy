@@ -34,7 +34,7 @@ export class QuestionsDashboardComponent {
     }
     // send request for Remove Category from database
     removeCategory(rCategoryName: string) {
-        this.categoryService.removeCategory(rCategoryName).subscribe((Response) => Response.json();
+        this.categoryService.removeCategory(rCategoryName).subscribe((Response) => Response.json());
         this.categoryName.splice(this.categoryName.indexOf(rCategoryName), 1);
     }
 }
