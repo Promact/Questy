@@ -28,6 +28,14 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(singleMultipleQuestion);
         }
 
+        /// <summary>
+        /// Adds new code snippet question to the database
+        /// </summary>
+        /// <param name="codeSnippetQuestionDto">Code snippet question model</param>
+        /// <returns>
+        /// returns codeSnippetQuestionDto object if model state is valid 
+        /// returns 400 response if model state is invalid
+        /// </returns>
 		[HttpPost("codesnippetquestion")]
         public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionDto codeSnippetQuestionDto)
         {
