@@ -21,6 +21,7 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Repository.TestDashBoard;
+using Promact.Trappist.Repository.ProfileDetails;
 
 namespace Promact.Trappist.Web
 {
@@ -70,7 +71,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
-        
+            services.AddScoped<IProfileRepository, ProfileRepository>();
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
