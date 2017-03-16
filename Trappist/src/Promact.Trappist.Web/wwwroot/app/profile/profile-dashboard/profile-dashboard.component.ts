@@ -36,6 +36,8 @@ export class ProfileDashboardComponent implements OnInit {
    
 }
 
+
+
 @Component({
     moduleId: module.id,
     selector: 'change-password-dialog',
