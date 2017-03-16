@@ -6,10 +6,11 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/TestDashboard")]
     public class TestDashBoardController : Controller
     {
-            public ITestDashBoardRepository _testDashBoardRepository;
-            public TestDashBoardController(ITestDashBoardRepository testDashBoardRepository)
+      
+            public ITestDashBoardRepository _testdashboardRepository;  
+            public TestDashBoardController(ITestDashBoardRepository testdashboardRepository)
             {
-                _testDashBoardRepository = testDashBoardRepository;
+                 _testdashboardRepository = testdashboardRepository;
              
             }
             /// <summary>
@@ -19,7 +20,7 @@ namespace Promact.Trappist.Core.Controllers
             [HttpGet]
             public IActionResult GetAllTest()
             {
-                var Tests = _testDashBoardRepository.GetAllTests();
+                var Tests = _testdashboardRepository.GetAllTests();
                 return Json(Tests);
             }
         }
