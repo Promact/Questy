@@ -76,6 +76,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpDelete("{categoryName}")]
         public IActionResult CategoryRemove([FromRoute] string categoryName)
         {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

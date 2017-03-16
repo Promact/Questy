@@ -15,9 +15,9 @@ export class QuestionsDashboardComponent {
     categoryName: string[] = new Array<string>();
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
-		this.getAllCategories();
+        this.getAllCategories();
     }
-	//To Get All The categories
+    //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryName = CategoriesList;
@@ -29,7 +29,6 @@ export class QuestionsDashboardComponent {
             console.log(questionsList);
         });
     }
-
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
