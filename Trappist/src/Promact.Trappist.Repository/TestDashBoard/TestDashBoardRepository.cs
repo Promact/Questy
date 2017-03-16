@@ -13,7 +13,6 @@ namespace Promact.Trappist.Repository.TestDashBoard
         public TestDashBoardRepository(TrappistDbContext trappistdb)
         {
             _trappistdb = trappistdb;
-
         }
 
         /// <summary>
