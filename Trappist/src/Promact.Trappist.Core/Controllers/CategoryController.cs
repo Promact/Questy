@@ -31,7 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         ///</summary>
         /// <param name="category">Object of  class Category</param>
         /// <returns>object of the class </returns>
-        public IActionResult CatagoryAdd([FromBody] Category category)
+        public IActionResult catagoryAdd([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
@@ -65,8 +65,24 @@ namespace Promact.Trappist.Core.Controllers
             previousCategory.CategoryName = category.CategoryName;
             _categoryRepository.CategoryEdit(previousCategory);
             return Ok(category);
+        }
             #endregion
+
+        #region Check DupliCate Category name
+        /// <summary>
+        /// Check whether Category Name Exists in DataBase or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>
+        /// true if Name Exists in Database
+        /// False if not Exists
+        /// </returns>
+        [HttpPost("check Duplicate Categoryname")]
+        public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
+        {
+            return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
+        }
+        #endregion
         }
 
     }
-}
