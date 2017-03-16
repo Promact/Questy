@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +22,7 @@ using Promact.Trappist.Repository.TestSettings;
 using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
+
 
 namespace Promact.Trappist.Web
 {
@@ -62,10 +63,10 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+
+            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
             #region Scope services 
-            services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
@@ -74,12 +75,17 @@ namespace Promact.Trappist.Web
             #endregion
         }
 
+        
+    
+
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
