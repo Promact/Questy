@@ -21,13 +21,10 @@ namespace Promact.Trappist.Repository.TestDashBoard
         /// </summary>
         /// <returns>List of Tests</returns>
         public List<Test> GetAllTests()
-        {
-                      
+        {                      
             var Tests = _trappistdb.Test.ToList();
             return Tests;
 
         }
-
-
     }
 }
