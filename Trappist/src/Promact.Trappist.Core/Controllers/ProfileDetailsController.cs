@@ -10,7 +10,7 @@ namespace Promact.Trappist.Core.Controllers
   public class ProfileDetailsController : Controller
   {
     private readonly IProfileRepository _profileRepository;
-    private UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
 
     public ProfileDetailsController(IProfileRepository profileRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
