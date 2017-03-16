@@ -22,6 +22,8 @@ using Promact.Trappist.Repository.TestDashBoard;
 using Newtonsoft.Json.Serialization;
 using Promact.Trappist.Repository.TestSettings;
 
+
+
 namespace Promact.Trappist.Web
 {
     public class Startup
@@ -41,8 +43,6 @@ namespace Promact.Trappist.Web
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
-
-            env.ConfigureNLog("nlog.config");
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -64,6 +64,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+
             services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -86,8 +87,7 @@ namespace Promact.Trappist.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
+
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -134,10 +134,7 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-
-            context.Database.Migrate();
-
-            context.Seed();
+			
 
         }
     }

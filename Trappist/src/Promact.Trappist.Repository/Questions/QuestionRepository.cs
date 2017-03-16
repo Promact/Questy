@@ -5,10 +5,9 @@ using Promact.Trappist.DomainModel.DbContext;
 
 namespace Promact.Trappist.Repository.Questions
 {
-    public class QuestionRepository : IQuestionRepository
+    public class QuestionRepository : IQuestionRespository
     {
         private readonly TrappistDbContext _dbContext;
-
         public QuestionRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -20,9 +19,25 @@ namespace Promact.Trappist.Repository.Questions
         /// <returns>Question list</returns>
         public List<SingleMultipleAnswerQuestion> GetAllQuestions()
         {
-            var questions = _dbContext.SingleMultipleAnswerQuestion.ToList();
-            
-            return questions;
+            var question = _dbContext.SingleMultipleAnswerQuestion.ToList();
+            return question;
         }
+        /// <summary>
+        /// Add single multiple answer question into model
+        /// </summary>
+        /// <param name="singleMultipleAnswerQuestion"></param>
+        /// <param name="singleMultipleAnswerQuestionOption"></param>
+        public void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, List<SingleMultipleAnswerQuestionOption> singleMultipleAnswerQuestionOption)
+        {
+            _dbContext.SingleMultipleAnswerQuestion.Add(singleMultipleAnswerQuestion);
+            foreach(SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in singleMultipleAnswerQuestionOption)
+            {
+                singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
+                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
+            }   
+            _dbContext.SaveChanges();
+        }
+   
+   
     }
 }
