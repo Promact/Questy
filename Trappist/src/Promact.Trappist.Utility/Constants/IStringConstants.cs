@@ -16,7 +16,7 @@ namespace Promact.Trappist.Utility.Constants
         /// </summary>
         string InavalidLoginError { get;  }
         /// <summary>
-        /// property InavalidLoginError is used when model state and model binding is not proper
+        /// property InavalidLoginError is used when model state and model binding are not proper
         /// </summary>
         string InavalidModelError { get;  }
         #endregion
