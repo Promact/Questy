@@ -5,6 +5,7 @@ import { QuestionsComponent } from "./questions.component";
 import { QuestionsDashboardComponent } from './questions-dashboard/questions-dashboard.component';
 import { QuestionsSingleAnswerComponent } from './questions-single-answer/questions-single-answer.component';
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
+import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 
 const questionsRoutes: Routes = [
     {
@@ -13,7 +14,8 @@ const questionsRoutes: Routes = [
         children: [
             { path: '', component: QuestionsDashboardComponent },
             { path: 'single-answer', component: QuestionsSingleAnswerComponent },
-            { path: 'multiple-answers', component: QuestionsMultipleAnswersComponent }
+            { path: 'multiple-answers', component: QuestionsMultipleAnswersComponent },
+            { path: 'programming', component: QuestionsProgrammingComponent }
         ]
     }
 ];
