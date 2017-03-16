@@ -19,6 +19,7 @@ using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.Repository.ProfileDetails;
 
 namespace Promact.Trappist.Web
 {
@@ -65,7 +66,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
-        
+            services.AddScoped<IProfileRepository, ProfileRepository>();
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
