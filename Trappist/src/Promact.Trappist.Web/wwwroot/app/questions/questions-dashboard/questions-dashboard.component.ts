@@ -38,8 +38,10 @@ export class QuestionsDashboardComponent {
     deleteCategoryDialog() {
       this.dialog.open(DeleteCategoryDialogComponent);
     }
-    removeCategory(categoryName: string) {
-        this.categoryService.removeCategory(categoryName).subscribe((Response) => Response.json());
+    // send request for Remove Category from database
+    removeCategory(rCategoryName: string) {
+        this.categoryService.removeCategory(rCategoryName).subscribe((Response) => Response.json());
+        this.categoryName.splice(this.categoryName.indexOf(rCategoryName), 1);
     }
 }
 
