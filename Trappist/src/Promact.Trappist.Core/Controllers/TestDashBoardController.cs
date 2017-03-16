@@ -5,8 +5,7 @@ namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/TestDashboard")]
     public class TestDashBoardController : Controller
-    {
-      
+    { 
             public ITestDashBoardRepository _testdashboardRepository;  
             public TestDashBoardController(ITestDashBoardRepository testdashboardRepository)
             {

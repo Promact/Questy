@@ -7,7 +7,6 @@ namespace Promact.Trappist.Repository.TestDashBoard
 {
     public class TestDashBoardRepository : ITestDashBoardRepository
     {
-
         private readonly TrappistDbContext _trappistdb;
 
         public TestDashBoardRepository(TrappistDbContext trappistdb)
