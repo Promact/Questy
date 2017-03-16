@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
 
+@model  Promact.Trappist.DomainModel.ApplicationClasses.Account.Login
 @{
     Layout = "_BeforeLoginLayout";
 }
@@ -10,12 +11,17 @@
     <div class="titlebar">
         <h1>Sign In</h1>
     </div>
-    <form>
+
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <div class="error-msg">@ViewBag.Error</div>
         <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email" />
+            <input asp-for="Email" class="form-control" placeholder="Email" autocomplete="off" required="" />
+            <span asp-validation-for="Email" class="error-msg"></span>
         </div>
+
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" />
+            <input asp-for="Password" class="form-control" placeholder="Password" autocomplete="off" required="" />
+
         </div>
         <div class="actions-area">
             <button type="submit" class="btn btn-primary">Sign In</button>
