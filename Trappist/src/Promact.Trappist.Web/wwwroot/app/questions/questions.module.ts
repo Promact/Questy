@@ -19,6 +19,7 @@ import { CategoryService } from "./categories.service";
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
+        EditCategoryDialogComponent,
         QuestionsSingleAnswerComponent,
         QuestionsMultipleAnswersComponent,
         QuestionsProgrammingComponent,

@@ -18,9 +18,9 @@ namespace Promact.Trappist.Repository.Categories
         /// Get all the names of Categories
         /// </summary>
         /// <returns>Categories list</returns>
-        public IEnumerable<string> GetAllCategories()
+        public IEnumerable<Category> GetAllCategories()
         {
-            var category = _dbContext.Category.Select(x => x.CategoryName).ToList();
+            var category = _dbContext.Category.ToList();
             return (category);
         }
         #region Adding a CategoryName
@@ -35,31 +35,21 @@ namespace Promact.Trappist.Repository.Categories
         }
         #endregion
 
-        #region Finding a Id Respective Category
-        /// <summary>
-        /// Find a Respective Id from Catagory Table
-        /// </summary>
-        /// <param name="Key"></param>
-        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
-        public Category GetCategory(int key)
-        {
-            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
-        }
-        #endregion
-
         #region Edit A Category Name
         // <summary>
         // Edit a Category from Category Table
         // </summary>
         // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(Category category)
+        public void CategoryEdit(int id,Category category)
         {
-            _dbContext.Category.Update(category);
+            var categoryToUpdate = _dbContext.Category.FirstOrDefault(x => x.Id == id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
             _dbContext.SaveChanges();
         }
         #endregion
 
-        #region Check Duplicate Category Name Esists or not
+        #region Check Duplicate Category Name Exists or not
         /// <summary>
         /// check whether same Category Name Exists Or not
         /// </summary>
