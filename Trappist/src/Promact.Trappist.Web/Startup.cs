@@ -19,6 +19,7 @@ using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.Repository.Account;
 
 namespace Promact.Trappist.Web
 {
@@ -65,6 +66,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
         
     }
 
@@ -121,7 +123,17 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+
+            //Delete production db upon every deployment
+            //Temporary fix as we are not including migrations in scm
+            //Will remove after we include migrations in code base
+            if (env.IsProduction())
+            {
+                context.Database.EnsureDeleted();
+            }
+
             context.Database.Migrate();
+
             context.Seed();
 
         }
