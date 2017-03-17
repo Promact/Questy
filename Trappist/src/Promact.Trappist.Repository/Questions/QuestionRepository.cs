@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
+using AutoMapper.QueryableExtensions;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -20,8 +21,13 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        public List<SingleMultipleAnswerQuestion> GetAllQuestions()
+        public ICollection<QuestionFetchingDto> GetAllQuestions()
         {
+            var questions = _dbContext.SingleMultipleAnswerQuestion.ProjectTo<QuestionFetchingDto>().ToList();
+            questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<QuestionFetchingDto>().ToList());
+            return (questions);
+
+        }
             var question = _dbContext.SingleMultipleAnswerQuestion.ToList();
             return question;
         }
