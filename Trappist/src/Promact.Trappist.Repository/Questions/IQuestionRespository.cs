@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
+using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.Questions
@@ -17,6 +18,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
         void AddSingleMultipleAnswerQuestion(SingleMultipleAnswerQuestion singleMultipleAnswerQuestion, List<SingleMultipleAnswerQuestionOption> singleMultipleAnswerQuestionOption);
+        ICollection<QuestionFetchingDto> GetAllQuestions();
     }
     
 }

@@ -22,6 +22,9 @@ using NLog.Web;
 using Promact.Trappist.Repository.Account;
 using Newtonsoft.Json.Serialization;
 using Promact.Trappist.Repository.TestDashBoard;
+using AutoMapper;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
 
 namespace Promact.Trappist.Web
 {
@@ -141,7 +144,13 @@ namespace Promact.Trappist.Web
             context.Database.Migrate();
 
             context.Seed();
-
+            #region Auto Mapper Configuration
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<SingleMultipleAnswerQuestion, QuestionFetchingDto>();
+                cfg.CreateMap<CodeSnippetQuestion, QuestionFetchingDto>();
+            });
+            #endregion
         }
     }
 }
