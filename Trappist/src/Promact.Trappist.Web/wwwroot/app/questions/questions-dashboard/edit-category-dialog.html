@@ -1,0 +1,17 @@
+﻿<div class="dialog">
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left">Update Section</h1>
+        <button type="button" class="pull-right" md-dialog-close><i class="material-icons">close</i></button>
+    </div>
+    <div class="dialog-body">
+        <div class="form-group">
+            <label class="h4">Section Name</label>
+            <input type="text" class="form-control" (keyup)="CheckDuplicateCategoryName(category.categoryName)" [(ngModel)]="category.categoryName" name="" required/>      
+            <span *ngIf="isNameExist" style="color:darkred">*Category Name Already Exists</span>
+        </div>
+    </div>
+    <div class="dialog-actions">
+        <button type="button" class="btn" md-dialog-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isNameExist"  (click)="categoryedit(category)">Update</button>
+    </div>
+</div>
