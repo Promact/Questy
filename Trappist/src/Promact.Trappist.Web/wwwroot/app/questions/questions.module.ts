@@ -22,6 +22,7 @@ import { CategoryService } from "./categories.service";
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
+        EditCategoryDialogComponent,
         QuestionsSingleAnswerComponent,
         QuestionsMultipleAnswersComponent,
         QuestionsProgrammingComponent,
@@ -35,7 +36,7 @@ import { CategoryService } from "./categories.service";
     ],
     providers: [
         QuestionsService,
-		CategoryService
+        CategoryService
     ]
 })
 export class QuestionsModule { }
