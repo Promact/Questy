@@ -44,5 +44,11 @@ namespace Promact.Trappist.Core.Controllers
 
             return Ok(codeSnippetQuestionDto);
         }
+        [HttpGet("question")]
+        public IActionResult GetAllQuestions()
+        {
+            var questionsList = _questionsRepository.GetAllQuestions();
+            return Json(questionsList);
+        }
     }
 }
