@@ -6,14 +6,14 @@ import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 
 const profileRoutes: Routes = [
-    {
-        path: 'profile',
-        component: ProfileComponent,
-        children: [
-            { path: '', component: ProfileDashboardComponent },
-            { path: 'edit', component: ProfileEditComponent }
-        ]
-    }
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    children: [
+      { path: '', component: ProfileDashboardComponent },
+      { path: 'edit', component: ProfileEditComponent }
+    ]
+  }
 ];
 
 export const profileRouting: ModuleWithProviders = RouterModule.forChild(profileRoutes);

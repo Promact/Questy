@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.ProfileDetails
 {
-  public class ProfileRepository :IProfileRepository
-    {
+  public class ProfileRepository : IProfileRepository
+  {
     private readonly TrappistDbContext _dbContext;
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -15,7 +15,11 @@ namespace Promact.Trappist.Repository.ProfileDetails
       _dbContext = dbContext;
       _userManager = userManager;
     }
-
+    /// <summary>
+    /// fetch the profile details of the cureent user 
+    /// </summary>
+    /// <param name="name">takes parameter of string type which has the name of the current user whose details have to be fetched</param>
+    /// <returns>fetch the details from the database by calling the function in the IProfileRepository</returns>
 
     public async Task<ApplicationUser> GetUserDetails(string name)
     {
@@ -27,7 +31,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
     /// Updates current user's details
     /// </summary>
     /// <param name="updateUserDetails"></param>
-    /// <returns>Update user details in database</returns>
+    /// <returns>Update user's profile details in database</returns>
     public void UpdateProfile(ApplicationUser updateUserDetails)
     {
       var user = _dbContext.Users.Update(updateUserDetails);

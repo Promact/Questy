@@ -18,7 +18,7 @@ export class ProfileDashboardComponent implements OnInit {
     this.getUserDetails();
   }
 
-  constructor(public profileService:ProfileService, public dialog: MdDialog) { }
+  constructor(public profileService: ProfileService, public dialog: MdDialog) { }
 
   /**
   * get details of the user
@@ -29,16 +29,16 @@ export class ProfileDashboardComponent implements OnInit {
     });
   }
 
-    // Open Change Password Dialog
-    changePasswordDialog() {
-        this.dialog.open(ChangePasswordDialogComponent);
-    }
-   
+  // Open Change Password Dialog
+  changePasswordDialog() {
+    this.dialog.open(ChangePasswordDialogComponent);
+  }
+
 }
 
 @Component({
-    moduleId: module.id,
-    selector: 'change-password-dialog',
-    templateUrl: "change-password-dialog.html"
+  moduleId: module.id,
+  selector: 'change-password-dialog',
+  templateUrl: "change-password-dialog.html"
 })
 export class ChangePasswordDialogComponent { }
