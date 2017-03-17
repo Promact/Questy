@@ -147,12 +147,6 @@ namespace Promact.Trappist.Web
             {
                 cfg.CreateMap<SingleMultipleAnswerQuestion, QuestionFetchingDto>();
                 cfg.CreateMap<CodeSnippetQuestion, QuestionFetchingDto>();
-            });
-            #endregion
-
-            #region Automapper configuration
-            Mapper.Initialize(cfg =>
-            {
                 cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
             });
             #endregion
