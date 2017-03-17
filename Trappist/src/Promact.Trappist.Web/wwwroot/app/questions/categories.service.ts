@@ -44,7 +44,7 @@ export class CategoryService {
     * for Check whether same CategoryName Exists in Database or not
     */
     checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/check Duplicate Categoryname", categoryName);
+        return this.httpService.post(this.categoriesApiUrl + "/checkDuplicateCategoryname", categoryName);
     }
 
     /*
