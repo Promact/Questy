@@ -2,7 +2,9 @@
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
-
+import { Question } from "../../questions/question.model"
+import { DifficultyLevel } from "../../questions/enum-difficultylevel"
+import { QuestionType } from "../../questions/enum-questiontype"
 @Component({
     moduleId: module.id,
     selector: "questions-dashboard",
@@ -11,10 +13,25 @@ import { MdDialog } from '@angular/material';
 
 export class QuestionsDashboardComponent {
 
+    questionDisplay: Question[] = new Array<Question>();
     categoryName: string[] = new Array<string>();
+     //To enable enum difficultylevel in template
+    DifficultyLevel = DifficultyLevel;
+    //To enable enum questiontype in template 
+    QuestionType = QuestionType;
+
+    alpha: string[] = ["a","b","c","d","e","..."];
+    
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
 		this.getAllCategories();
+    }
+    isCorrectAnswer(isAnswer: boolean)
+    {
+        if (isAnswer)
+        {
+            return "correct";
+        }
     }
 	//To Get All The categories
     getAllCategories() {
@@ -25,7 +42,7 @@ export class QuestionsDashboardComponent {
 
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-            console.log(questionsList);
+            this.questionDisplay = questionsList;
         });
     }
 
