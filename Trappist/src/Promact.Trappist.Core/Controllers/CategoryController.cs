@@ -31,7 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         ///</summary>
         /// <param name="category">Object of  class Category</param>
         /// <returns>object of the class </returns>
-        public IActionResult CatagoryAdd([FromBody] Category category)
+        public IActionResult catagoryAdd([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
@@ -45,28 +45,39 @@ namespace Promact.Trappist.Core.Controllers
         #region PutMethod
         /// <summary>
         /// Put Method
-        /// Will Edit a Existing Category from Category Table
+        /// Will Edit a Existing Category from Category Model
         /// </summary>
-        /// <param name="Id">Id is the primary key of Category Model</param>
         /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class if key found or else it will return Bad request</returns>
+        /// <returns>object of the class after key found </returns>
         [HttpPut("{id}")]
-        public IActionResult CategoryEdit(int Id, [FromBody] Category category)
+        public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
+            var categoryName = category.CategoryName;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.GetCategory(Id);
-            if (previousCategory == null)
-            {
-                return NotFound();
-            }
-            previousCategory.CategoryName = category.CategoryName;
-            _categoryRepository.CategoryEdit(previousCategory);
+
+            _categoryRepository.CategoryEdit(id, category);
             return Ok(category);
+        }
             #endregion
+
+        #region Check DupliCate Category name
+        /// <summary>
+        /// Check whether Category Name Exists in Database or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>
+        /// true if Name Exists in Database
+        /// False if not Exists
+        /// </returns>
+        [HttpPost("check Duplicate Categoryname")]
+        public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
+        {
+            return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
+        }
+        #endregion
         }
 
     }
-}
