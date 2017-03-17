@@ -22,8 +22,8 @@
           <input type="text" class="form-control" name="organizationname" [(ngModel)]="editUser.OrganizationName" />
         </div>
         <div class="actions-area">
-          <button type="button" class="btn" [routerLink]="['/profile']">Cancel</button>
-          <button type="submit" class="btn btn-primary" (click)="UpdateUserDetails()">Save Changes</button>
+          <button type="button" class="btn">Cancel</<button type="button" class="btn" [routerLink]="['/profile']">Cancel</button>
+          <button type="submit" class="btn btn-primary" (click)="updateUserDetails()">Save Changes</button>
         </div>
       </form>
     </div>
