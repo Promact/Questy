@@ -13,6 +13,8 @@ install:
   - dotnet restore ./Trappist/src
 script:
   - dotnet build ./Trappist/src/Promact.Trappist.Web
+  - dotnet build ./Trappist/src/Promact.Trappist.Test
+  - cd Trappist/src/Promact.Trappist.Test && dotnet test && cd ../../..
 deploy:
   - provider: script
     script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
