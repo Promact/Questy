@@ -33,7 +33,7 @@ export class QuestionsDashboardComponent {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-
+   
 }
 
 @Component({
