@@ -44,21 +44,25 @@ namespace Promact.Trappist.Core.Controllers
 
         #region PutMethod
         /// <summary>
-        /// Put Method
-        /// Will Edit a Existing Category from Category Model
+        /// will edit a category
         /// </summary>
-        /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class after key found </returns>
+        /// <param name="id">take from route</param>
+        /// <param name="category">object of category</param>
+        /// <returns>category</returns>
         [HttpPut("{id}")]
         public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
-            var categoryName = category.CategoryName;
+            var key = id;
+            var searchById=_categoryRepository.SearchForCategoryId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _categoryRepository.CategoryEdit(id, category);
+            if (searchById == false)
+            {
+                return NotFound();
+            }
+            _categoryRepository.CategoryUpdate(id, category);
             return Ok(category);
         }
             #endregion
@@ -72,7 +76,7 @@ namespace Promact.Trappist.Core.Controllers
         /// true if Name Exists in Database
         /// False if not Exists
         /// </returns>
-        [HttpPost("check Duplicate Categoryname")]
+        [HttpPost("checkDuplicateCategoryname")]
         public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
         {
             return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
