@@ -14,7 +14,6 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Core.ActionFilters;
 using Promact.Trappist.Repository.TestSettings;
 using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
@@ -22,6 +21,9 @@ using NLog.Web;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Repository.TestDashBoard;
 using Promact.Trappist.Repository.ProfileDetails;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Web
 {
@@ -63,7 +65,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
-                
+
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
@@ -72,7 +74,8 @@ namespace Promact.Trappist.Web
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
-    }
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
@@ -139,6 +142,13 @@ namespace Promact.Trappist.Web
             context.Database.Migrate();
 
             context.Seed();
+
+            #region Automapper configuration
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
+            });
+            #endregion
 
         }
     }
