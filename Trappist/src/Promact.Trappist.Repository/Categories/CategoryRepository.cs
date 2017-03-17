@@ -23,6 +23,7 @@ namespace Promact.Trappist.Repository.Categories
             var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
             return categoryOrderedByCreatedDateTime;
         }
+
         #region Adding a CategoryName
         /// <summary>
         /// Adding a Category in Category model
@@ -50,10 +51,25 @@ namespace Promact.Trappist.Repository.Categories
         // Edit a Category from Category Table
         // </summary>
         // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(Category category)
+        public void CategoryEdit(int id, Category category)
         {
-            _dbContext.Category.Update(category);
+            var categoryToUpdate = GetCategory(id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
             _dbContext.SaveChanges();
+        }
+        #endregion
+
+        #region Check Duplicate Category Name Exists or not
+        /// <summary>
+        /// check whether same Category Name Exists Or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>true if Exists else False</returns>
+        public bool CheckDuplicateCategoryName(string categoryName)
+        {
+            var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
+            return isCategoryNameExist;
         }
         #endregion
     }

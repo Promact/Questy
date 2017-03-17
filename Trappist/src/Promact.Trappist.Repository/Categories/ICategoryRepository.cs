@@ -12,15 +12,22 @@ namespace Promact.Trappist.Repository.Categories
 
         void AddCategory(Category catagory);
         /// <summary>
-        /// it will search Id and corresponding category
-        /// </summary>
-        /// <param name="key">unique key of a table</param>
-        /// <returns>if Id match then it will return object</returns>
-        Category GetCategory(int key);
-        /// <summary>
         /// Edit category From Category model
         /// </summary>
         /// <param name="catagory"> Object of class Category</param>
-        void CategoryEdit(Category catagory);
+        void CategoryEdit(int id, Category catagory);
+        /// <summary>
+        /// Check for Category name is Exists or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>true if Exists else false</returns>
+        bool CheckDuplicateCategoryName(string categoryName);
+        /// <summary>
+        /// will find Category by Resprctive Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Category GetCategory(int id);
+
     }
 }
