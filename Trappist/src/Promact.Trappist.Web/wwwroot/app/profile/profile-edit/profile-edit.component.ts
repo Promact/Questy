@@ -1,5 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { Http } from "@angular/http";
+import { ApplicationUser } from "../profile.model";
+import { ProfileService } from "../profile.service";
 
 @Component({
     moduleId: module.id,
@@ -9,32 +11,30 @@ import { Http } from "@angular/http";
 
 export class ProfileEditComponent implements OnInit{
 
-  editUser: ApplicationUser = new ApplicationUser;
-  constructor(public http: Http) { }
+  editUser: ApplicationUser = new ApplicationUser();
+  constructor(public profileService:ProfileService ) { }
 
   ngOnInit() {
     this.EditUserDetails();
   }
 
+  /**
+  * get details of the user so that the user can edit the details
+  */
   EditUserDetails() {
-    this.http.get("api/Profile").subscribe((response) => {
-      this.editUser = response.json();
-      console.log(this.editUser);
+    this.profileService.EditUserDetails().subscribe((response) => {
+      this.editUser = response;
     });
     }
 
-  //Update User's detailsin the database
+  /**
+  * update the  details of the user
+  */
   UpdateUserDetails() {
-    this.http.put("api/Profile/" + this.editUser.Name, this.editUser).subscribe((response) => {
-      response.json();
+    this.profileService.UpdataeUserDetails(this.editUser).subscribe((response) => {
+
     });
   }
 
 }
 
-class ApplicationUser {
-  Name: string;
-  OrganizationName: string;
-  Email: string;
-  PhoneNumber: string;
-}
