@@ -1,16 +1,16 @@
 ﻿export class Test {
 
-    public TestName: string;
-    public Link: string;
-    public StartDate: string
-    public EndDate: string;
-    public Duration: number;
-    public WarningTime: number
-    public FromIpAddress: string;
-    public ToIpAddress: string;
-    public WarningMessage: string;
-    public CorrectMarks: string;
-    public IncorrectMarks: string;
+    public testName: string;
+    public link: string;
+    public startDate: string
+    public endDate: string;
+    public duration: number;
+    public warningTime: number
+    public fromIpAddress: string;
+    public toIpAddress: string;
+    public warningMessage: string;
+    public correctMarks: string;
+    public incorrectMarks: string;
 
 
 }
