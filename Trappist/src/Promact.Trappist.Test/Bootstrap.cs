@@ -33,7 +33,6 @@ namespace Promact.Trappist.Test
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
-            services.AddTransient<ClearDatabase>();
             return services.BuildServiceProvider();
         }
     }
