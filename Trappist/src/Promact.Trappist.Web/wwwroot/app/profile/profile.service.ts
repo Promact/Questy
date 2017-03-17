@@ -28,7 +28,7 @@ export class ProfileService {
   /**
   * update the  details of the user
   */
-  updataeUserDetails(editUser: ApplicationUser) {
+  updateUserDetails(editUser: ApplicationUser) {
     return this.httpService.put(this.profileApiUrl,editUser);
   }
 
