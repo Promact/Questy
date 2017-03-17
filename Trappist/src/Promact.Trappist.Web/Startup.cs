@@ -20,6 +20,7 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Repository.TestDashBoard;
+using Promact.Trappist.Repository.ProfileDetails;
 using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
@@ -72,6 +73,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
 
         }
 

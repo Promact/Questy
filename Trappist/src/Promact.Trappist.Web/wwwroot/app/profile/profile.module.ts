@@ -5,7 +5,7 @@ import { profileRouting } from "./profile.routing";
 import { ProfileComponent } from "./profile.component";
 import { ProfileDashboardComponent, ChangePasswordDialogComponent } from "./profile-dashboard/profile-dashboard.component";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
-
+import { ProfileService } from "../profile/profile.service";
 @NgModule({
     imports: [
         SharedModule,
@@ -21,7 +21,7 @@ import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
         ChangePasswordDialogComponent
     ],
     providers: [
-        
+      ProfileService
     ]
 })
 export class ProfileModule { }
