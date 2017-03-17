@@ -36,16 +36,43 @@ namespace Promact.Trappist.Repository.Categories
         }
         #endregion
 
+        #region Check Whether Id Exists or not
+        /// <summary>
+        /// will check id Exists in Category Model or not
+        /// </summary>
+        /// <param name="key">take value from Route</param>
+        /// <returns></returns>
+       
+        public bool SearchForCategoryId(int key)
+        {
+
+            var categoryFind = _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            if (categoryFind == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region Find Category of respective Id
+        /// <summary>
+        /// Find category of respective id
+        /// </summary>
+        /// <param name="key">id that will find category</param>
+        /// <returns></returns>
         public Category GetCategory(int key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
+        #endregion
+
         #region Edit A Category Name
         // <summary>
         // Edit a Category from Category Table
         // </summary>
         // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(int id, Category category)
+        public void CategoryUpdate(int id, Category category)
         {
             var categoryToUpdate = GetCategory(id);
             categoryToUpdate.CategoryName = category.CategoryName;

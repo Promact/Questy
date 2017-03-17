@@ -16,7 +16,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Edit category From Category model
         /// </summary>
         /// <param name="catagory"> Object of class Category</param>
-        void CategoryEdit(int id, Category catagory);
+        void CategoryUpdate(int id, Category catagory);
         /// <summary>
         /// Check for Category name is Exists or not
         /// </summary>
@@ -29,6 +29,12 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="id"></param>
         /// <returns></returns>
         Category GetCategory(int id);
+        /// <summary>
+        /// search id is exists in Model or not
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        bool SearchForCategoryId(int key);
 
     }
 }
