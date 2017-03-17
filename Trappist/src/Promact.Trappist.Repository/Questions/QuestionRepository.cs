@@ -22,10 +22,10 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        public ICollection<ApplicationClass> GetAllQuestions()
+        public ICollection<SingleMultipleAnswerQuestionApplicationClass> GetAllQuestions()
         {
-            var questions = _dbContext.SingleMultipleAnswerQuestion.ProjectTo<ApplicationClass>().ToList();
-            questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<ApplicationClass>().ToList());
+            var questions = _dbContext.SingleMultipleAnswerQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList();
+            questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList());
             return questions;
 
         }

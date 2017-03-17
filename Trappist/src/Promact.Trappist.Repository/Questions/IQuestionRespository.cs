@@ -24,7 +24,7 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        ICollection<ApplicationClass> GetAllQuestions();
+        ICollection<SingleMultipleAnswerQuestionApplicationClass> GetAllQuestions();
     }
 
 }
