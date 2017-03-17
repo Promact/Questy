@@ -1,0 +1,35 @@
+﻿import { Injectable } from "@angular/core";
+import { HttpService } from "../core/http.service";
+import { ApplicationUser } from "../profile/profile.model";
+
+@Injectable()
+
+export class ProfileService {
+  private profileApiUrl = "api/profile";
+  editUser: ApplicationUser = new ApplicationUser;
+
+  constructor(public httpService: HttpService) {
+  }
+
+  /**
+  * get details of the user
+  */
+  GetUserDetails() {
+    return this.httpService.get(this.profileApiUrl);
+  }
+
+  /**
+  * get details of the user so that the user can edit the details
+  */
+  EditUserDetails() {
+   return this.httpService.get(this.profileApiUrl);
+  }
+
+  /**
+  * update the  details of the user
+  */
+  UpdataeUserDetails(editUser: ApplicationUser) {
+    return this.httpService.put(this.profileApiUrl,editUser);
+  }
+
+}
