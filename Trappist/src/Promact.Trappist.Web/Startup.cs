@@ -20,7 +20,6 @@ using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
-using Newtonsoft.Json.Serialization;
 using Promact.Trappist.Repository.TestDashBoard;
 using Promact.Trappist.Repository.ProfileDetails;
 
@@ -63,10 +62,8 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/)
-                 .AddJsonOptions(o => o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)
-           .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
-            ;
+            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
+                
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
