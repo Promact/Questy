@@ -260,6 +260,7 @@ _references.js
 **/wwwroot/shims.js
 **/wwwroot/app-bundle.js
 **/wwwroot/setup-app-bundle.js
+**/wwwroot/bundle.css
 
 # Migration Folder
 **/Migrations/

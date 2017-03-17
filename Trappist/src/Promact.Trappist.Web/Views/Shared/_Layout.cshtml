@@ -14,23 +14,20 @@
     <link rel="icon" type="image/x-icon" href="~/favicon.ico">
     <title>Trappist</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--CSS-->
+    <environment names="Development">
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="/node_modules/@@angular/material/core/theming/prebuilt/indigo-pink.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
 
-    <!-- Additionals -->
-    <link href="../../node_modules/@@angular/material/core/theming/prebuilt/indigo-pink.css" rel="stylesheet">
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/bundle.css">
+    </environment>
+
+    <!--TODO: Copy to local maybe-->>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700" rel="stylesheet">
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="~/css/style.css" rel="stylesheet" />
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>

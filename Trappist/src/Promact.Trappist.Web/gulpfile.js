@@ -12,7 +12,7 @@ var runSequence = require('run-sequence');
 
 //production publish task
 gulp.task('prod', function (done) {
-    runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'sass', function () {
+    runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'sass', 'bundle-css', function () {
         done();
     });
 });
@@ -27,6 +27,18 @@ gulp.task("sass", function () {
 //sass to css continuous watch
 gulp.task('watch', ['sass'], function () {
     gulp.watch('./wwwroot/css/*.scss', ['sass']);
+});
+
+//Bundle all css into bundle.css
+//TODO: also minify it, and maybe solve relative import errors if any
+gulp.task("bundle-css", function () {
+    return gulp.src([
+        './node_modules/bootstrap/dist/css/bootstrap.css',
+        './node_modules/@angular/material/core/theming/prebuilt/indigo-pink.css',
+        './wwwroot/css/style.css'
+    ])
+    .pipe(concat('bundle.css'))
+    .pipe(gulp.dest('./wwwroot'));
 });
 
 //Converts ts files to js with html template inline
