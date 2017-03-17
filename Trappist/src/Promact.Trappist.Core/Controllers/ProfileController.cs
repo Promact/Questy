@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.ProfileDetails;
 using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
+  [Authorize]
   [Route("api/profile")]
-  public class ProfileDetailsController : Controller
+  public class ProfileController : Controller
   {
     private readonly IProfileRepository _profileRepository;
 
-    public ProfileDetailsController(IProfileRepository profileRepository)
+    public ProfileController(IProfileRepository profileRepository)
     {
       _profileRepository = profileRepository;
     }
@@ -29,14 +31,18 @@ namespace Promact.Trappist.Core.Controllers
     /// <summary>
     /// Updates current user's details
     /// </summary>
-    /// <param name="name"></param>
     /// <param name="updateUserDetails">takes parameter of type ApplicationUser which comes from the client side(from body)</param>
-    /// <returns>Update user details in database</returns>
+    /// <returns>Update user's profile details in database</returns>
+    
     [HttpPut]
     public IActionResult UpdateProfile([FromBody]ApplicationUser updateUserDetails)
     {
-      _profileRepository.UpdateProfile(updateUserDetails);
-      return Ok();
+      if (ModelState.IsValid)
+      {
+        _profileRepository.UpdateProfile(updateUserDetails);
+        return Ok();
+      }
+      return BadRequest();
     }
 
   }
