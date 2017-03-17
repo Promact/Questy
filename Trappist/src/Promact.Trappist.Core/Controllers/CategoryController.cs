@@ -75,14 +75,21 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="categoryName">name of category</param>
         [HttpDelete("{categoryName}")]
         public IActionResult CategoryRemove([FromRoute] string categoryName)
-        {
-            
+        {   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _categoryRepository.removeCategory(categoryName);
-            return Ok();
+            var checkcategoryname = _categoryRepository.checkCategoryName(categoryName);
+            if(checkcategoryname != null)
+            {
+                _categoryRepository.removeCategory(checkcategoryname);
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }  
         }
     }
 }

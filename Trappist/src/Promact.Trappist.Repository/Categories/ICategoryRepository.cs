@@ -27,7 +27,12 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// delete a Category from Category Table
         /// </summary>
+        /// <param name="catagoryName">object of category class </param>
+        void removeCategory(Category category);
+        /// <summary>
+        ///check category name from Category Table
+        /// </summary>
         /// <param name="catagoryName">Name of category </param>
-        void removeCategory(string categoryName);
+        Category checkCategoryName(string categoryName);
     }
 }
