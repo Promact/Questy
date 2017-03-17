@@ -20,6 +20,10 @@ using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Question;
+using Newtonsoft.Json.Serialization;
 using Promact.Trappist.Repository.TestDashBoard;
 
 namespace Promact.Trappist.Web
@@ -134,11 +138,17 @@ namespace Promact.Trappist.Web
             {
                 context.Database.EnsureDeleted();
             }
-
+          
             context.Database.Migrate();
 
             context.Seed();
 
+            #region Automapper configuration
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
+            });
+            #endregion
         }
     }
 }
