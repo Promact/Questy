@@ -1,7 +1,7 @@
 ﻿export class Category
 {
     categoryName: string;
-    Id: number;
+    id: number;
     createdDateTime: Date;
     updatedDtaeTime: Date;
 }

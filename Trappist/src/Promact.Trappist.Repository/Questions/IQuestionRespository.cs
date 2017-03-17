@@ -8,12 +8,6 @@ namespace Promact.Trappist.Repository.Questions
     public interface IQuestionRespository
     {
         /// <summary>
-        /// Get all questions
-        /// </summary>
-        /// <returns>Question list</returns>
-        List<SingleMultipleAnswerQuestion> GetAllQuestions();
-
-        /// <summary>
         /// Add single multiple answer question into model
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
@@ -25,6 +19,11 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="codeSnippetQuestionModel">Code Snippet Question Model</param>
         void AddCodeSnippetQuestion(CodeSnippetQuestionDto codeSnippetQuestionModel);
+
+        /// <summary>
+        /// Get all questions
+        /// </summary>
+        /// <returns>Question list</returns>
         ICollection<QuestionFetchingDto> GetAllQuestions();
     }
 

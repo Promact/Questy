@@ -9,7 +9,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Get all Categories
         /// </summary>
         /// <returns>Category list</returns>
-        IEnumerable<string> GetAllCategories();
+        IEnumerable<Category> GetAllCategories();
 
         void AddCategory(Category catagory);
         /// <summary>
