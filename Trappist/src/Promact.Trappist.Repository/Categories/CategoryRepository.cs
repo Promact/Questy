@@ -62,5 +62,18 @@ namespace Promact.Trappist.Repository.Categories
             return isCategoryNameExist;
         }
         #endregion
+        #region MyRegion
+        public Category GetCategory(int key)
+        {
+            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+        }
+
+        public void CategoryEdit(Category category)
+        {
+            _dbContext.Category.Update(category);
+            _dbContext.SaveChanges();
+        }
     }
+    #endregion
+
 }

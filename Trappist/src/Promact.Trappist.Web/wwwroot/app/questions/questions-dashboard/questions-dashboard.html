@@ -19,7 +19,7 @@
                         {{cat.categoryName}}
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item>Rename</button>
+                            <button md-menu-item (click)="editCategoryDialog(cat)" >Rename </button>
                             <button md-menu-item (click)="deleteCategoryDialog()">Delete</button>
                         </md-menu>
                     </li>

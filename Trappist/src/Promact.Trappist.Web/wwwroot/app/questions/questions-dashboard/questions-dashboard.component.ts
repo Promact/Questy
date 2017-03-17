@@ -1,5 +1,5 @@
 ﻿
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
@@ -23,7 +23,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.getAllQuestions();
         this.getAllCategories();
     }
-	//To Get All The categories
+    //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
@@ -31,7 +31,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-        console.log(questionsList);
+            console.log(questionsList);
         });
     }
     // Open Add Category Dialog
@@ -43,13 +43,10 @@ export class QuestionsDashboardComponent implements OnInit {
         var prop = this.dialog.open(EditCategoryDialogComponent).componentInstance;
         prop.category = JSON.parse(JSON.stringify(cat));
     }
-}
-
     // Open Delete Category Dialog
     deleteCategoryDialog() {
-      this.dialog.open(DeleteCategoryDialogComponent);
+        this.dialog.open(DeleteCategoryDialogComponent);
     }
-
 }
 
 @Component({
@@ -72,11 +69,10 @@ export class AddCategoryDialogComponent {
         });
     }
 
-    /*To check Whether CategoryName Exists or not
-    *If categoryName Exists it will return true and button will be disabled
+    /* to check Whether CategoryName Exists or not
+    * if categoryName Exists it will return true and button will be disabled
     */
-    CheckDuplicateCategoryName(categoryName: string)
-    {
+    CheckDuplicateCategoryName(categoryName: string) {
         this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
             this.isNameExist = result;
         });
@@ -96,9 +92,9 @@ export class EditCategoryDialogComponent {
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
 
-     /*
-    * edit category from Cateogry Model
-    */
+    /*
+   * edit category from Cateogry Model
+   */
     categoryedit(category: Category) {
         this.categoryService.editCategory(category.id, category).subscribe((response) => {
             this.dialog.closeAll();
@@ -116,8 +112,8 @@ export class EditCategoryDialogComponent {
 }
 
 @Component({
-  moduleId: module.id,
-  selector: 'delete-category-dialog',
-  templateUrl: "delete-category-dialog.html"
+    moduleId: module.id,
+    selector: 'delete-category-dialog',
+    templateUrl: "delete-category-dialog.html"
 })
 export class DeleteCategoryDialogComponent { }
