@@ -13,7 +13,7 @@ export class ProfileDashboardComponent implements OnInit {
   user: ApplicationUser = new ApplicationUser;
 
   ngOnInit() {
-    this.GetUserDetails();
+    this.getUserDetails();
   }
 
   constructor(public profileService:ProfileService, public dialog: MdDialog) { }
@@ -21,8 +21,8 @@ export class ProfileDashboardComponent implements OnInit {
   /**
   * get details of the user
   */
-  GetUserDetails() {
-    this.profileService.GetUserDetails().subscribe((response) => {
+  getUserDetails() {
+    this.profileService.getUserDetails().subscribe((response) => {
       this.user = response;
     });
   }
