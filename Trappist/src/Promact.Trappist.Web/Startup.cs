@@ -140,7 +140,7 @@ namespace Promact.Trappist.Web
             {
                 context.Database.EnsureDeleted();
             }
-
+          
             context.Database.Migrate();
 
             context.Seed();
