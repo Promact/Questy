@@ -1,20 +1,15 @@
 language: csharp
 dist: trusty
 os: linux
-sudo: required
 mono: none
-dotnet: 1.0.0-preview2-1-003177
+dotnet: 1.0.1
 services:
   - docker
-before_install:
-  - sudo apt-get install dotnet-sharedframework-microsoft.netcore.app-1.0.0
-  - sudo apt-get install dotnet-sharedframework-microsoft.netcore.app-1.0.1
 install:
-  - dotnet restore ./Trappist/src
+  - dotnet restore ./Trappist/Trappist.sln
 script:
-  - dotnet build ./Trappist/src/Promact.Trappist.Web
-  - dotnet build ./Trappist/src/Promact.Trappist.Test
-  - cd Trappist/src/Promact.Trappist.Test && dotnet test && cd ../../..
+  - dotnet build ./Trappist/Trappist.sln
+  - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
 deploy:
   - provider: script
     script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
