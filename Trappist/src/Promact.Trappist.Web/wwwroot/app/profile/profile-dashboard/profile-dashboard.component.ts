@@ -1,5 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
+import { ApplicationUser } from "../profile.model";
+import { ProfileService } from "../profile.service";
 import { Http } from '@angular/http';
 import { ChangePasswordDialogComponent } from "./change-password-dialog.component";
 
@@ -12,18 +14,18 @@ export class ProfileDashboardComponent implements OnInit {
 
   user: ApplicationUser = new ApplicationUser;
 
-
-
   ngOnInit() {
     this.GetUserDetails();
   }
 
-  constructor(public http: Http, public dialog: MdDialog) { }
+  constructor(public profileService:ProfileService, public dialog: MdDialog) { }
 
-  // Get's current user's details from the server and displays it
+  /**
+  * get details of the user
+  */
   GetUserDetails() {
-    this.http.get("api/Profile").subscribe((response) => {
-      this.user = response.json();
+    this.profileService.GetUserDetails().subscribe((response) => {
+      this.user = response;
     });
   }
 
@@ -33,15 +35,6 @@ export class ProfileDashboardComponent implements OnInit {
     }
    
 }
-
-class ApplicationUser {
-  Name: string;
-  OrganizationName: string;
-  UserName: string;
-  PhoneNumber: string;
-}
-
-
 
 @Component({
     moduleId: module.id,
