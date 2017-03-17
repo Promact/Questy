@@ -6,7 +6,7 @@ export class Question {
     Id: number;
     questionDetail: string;
     questionType: QuestionType;
-    difficultyLevel: number;
+    difficultyLevel: DifficultyLevel;
     createdBy: string;
     updatedBy: string;
     category: Category;

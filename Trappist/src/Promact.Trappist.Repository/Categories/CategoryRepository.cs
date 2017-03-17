@@ -18,9 +18,9 @@ namespace Promact.Trappist.Repository.Categories
         /// Get all the names of Categories
         /// </summary>
         /// <returns>Categories list</returns>
-        public IEnumerable<string> GetAllCategories()
+        public IEnumerable<Category> GetAllCategories()
         {
-            var category = _dbContext.Category.Select(x => x.CategoryName).ToList();
+            var category = _dbContext.Category.ToList();
             return (category);
         }
         #region Adding a CategoryName

@@ -3,6 +3,7 @@ using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
 using AutoMapper.QueryableExtensions;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -24,9 +25,6 @@ namespace Promact.Trappist.Repository.Questions
             questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<QuestionFetchingDto>().ToList());
             return (questions);
 
-        }
-            var question = _dbContext.SingleMultipleAnswerQuestion.ToList();
-            return question;
         }
         /// <summary>
         /// Add single multiple answer question into model

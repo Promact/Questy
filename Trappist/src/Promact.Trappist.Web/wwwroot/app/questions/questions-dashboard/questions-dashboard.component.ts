@@ -5,6 +5,7 @@ import { MdDialog } from '@angular/material';
 import { Question } from "../../questions/question.model"
 import { DifficultyLevel } from "../../questions/enum-difficultylevel"
 import { QuestionType } from "../../questions/enum-questiontype"
+import { Category } from "../../questions/category.model"
 @Component({
     moduleId: module.id,
     selector: "questions-dashboard",
@@ -14,7 +15,7 @@ import { QuestionType } from "../../questions/enum-questiontype"
 export class QuestionsDashboardComponent {
 
     questionDisplay: Question[] = new Array<Question>();
-    categoryName: string[] = new Array<string>();
+    categoryArray: Category[] = new Array<Category>();
      //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
@@ -36,7 +37,7 @@ export class QuestionsDashboardComponent {
 	//To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
         });
     }
 
@@ -64,13 +65,3 @@ export class QuestionsDashboardComponent {
     templateUrl: "add-category-dialog.html"
 })
 export class AddCategoryDialogComponent { }
-export class Category {
-    CategoryName: string;
-}
-
-@Component({
-  moduleId: module.id,
-  selector: 'delete-category-dialog',
-  templateUrl: "delete-category-dialog.html"
-})
-export class DeleteCategoryDialogComponent { }
