@@ -6,9 +6,7 @@ import { DeleteCategoryDialogComponent } from "./delete-category-dialog.componen
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { MdDialog } from '@angular/material';
 import { Category } from "../category.model";
-import { Location } from '@angular/common';
 
 @Component({
     moduleId: module.id,
@@ -17,8 +15,8 @@ import { Location } from '@angular/common';
 })
 
 export class QuestionsDashboardComponent implements OnInit {
-    private category: Category = new Category();
-    categoryArray: string[] = new Array<string>();
+    category: Category = new Category();
+    categoryArray: Category[] = new Array<Category>();
 
 export class QuestionsDashboardComponent implements OnInit {
     private category: Category = new Category();
@@ -55,6 +53,11 @@ export class QuestionsDashboardComponent implements OnInit {
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
+    }
+    //open Edit Category Dialog
+    editCategoryDialog(cat: any) {
+        var prop = this.dialog.open(EditCategoryDialogComponent).componentInstance;
+        prop.category = JSON.parse(JSON.stringify(cat));
     }
     // Open Delete Category Dialog
     deleteCategoryDialog() {
