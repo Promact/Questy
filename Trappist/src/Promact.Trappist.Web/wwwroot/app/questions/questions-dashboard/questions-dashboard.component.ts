@@ -31,7 +31,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-            console.log(questionsList);
+        console.log(questionsList);
         });
     }
     // Open Add Category Dialog

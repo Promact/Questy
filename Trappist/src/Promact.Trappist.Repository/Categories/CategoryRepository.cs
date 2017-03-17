@@ -70,10 +70,24 @@ namespace Promact.Trappist.Repository.Categories
 
         public void CategoryEdit(Category category)
         {
-            _dbContext.Category.Update(category);
+            var categoryToUpdate = _dbContext.Category.FirstOrDefault(check => check.Id == id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
             _dbContext.SaveChanges();
         }
-    }
-    #endregion
+        #endregion
 
+        #region Check Duplicate Category Name Exists or not
+        /// <summary>
+        /// check whether same Category Name Exists Or not
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns>true if Exists else False</returns>
+        public bool CheckDuplicateCategoryName(string categoryName)
+        {
+            var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
+            return isCategoryNameExist;
+        }
+        #endregion
+    }
 }
