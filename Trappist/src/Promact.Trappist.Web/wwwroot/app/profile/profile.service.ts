@@ -14,21 +14,21 @@ export class ProfileService {
   /**
   * get details of the user
   */
-  GetUserDetails() {
+  getUserDetails() {
     return this.httpService.get(this.profileApiUrl);
   }
 
   /**
   * get details of the user so that the user can edit the details
   */
-  EditUserDetails() {
+  editUserDetails() {
    return this.httpService.get(this.profileApiUrl);
   }
 
   /**
   * update the  details of the user
   */
-  UpdataeUserDetails(editUser: ApplicationUser) {
+  updataeUserDetails(editUser: ApplicationUser) {
     return this.httpService.put(this.profileApiUrl,editUser);
   }
 

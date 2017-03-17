@@ -15,14 +15,14 @@ export class ProfileEditComponent implements OnInit{
   constructor(public profileService:ProfileService ) { }
 
   ngOnInit() {
-    this.EditUserDetails();
+    this.editUserDetails();
   }
 
   /**
   * get details of the user so that the user can edit the details
   */
-  EditUserDetails() {
-    this.profileService.EditUserDetails().subscribe((response) => {
+  editUserDetails() {
+    this.profileService.editUserDetails().subscribe((response) => {
       this.editUser = response;
     });
     }
@@ -30,8 +30,8 @@ export class ProfileEditComponent implements OnInit{
   /**
   * update the  details of the user
   */
-  UpdateUserDetails() {
-    this.profileService.UpdataeUserDetails(this.editUser).subscribe((response) => {
+  updateUserDetails() {
+    this.profileService.updataeUserDetails(this.editUser).subscribe((response) => {
 
     });
   }
