@@ -2,6 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "AutoMapper": "6.0.0",
     "NETStandard.Library": "1.6.0",
     "Promact.Trappist.DomainModel": "1.0.0-*"
   },
