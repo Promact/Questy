@@ -10,20 +10,32 @@ export class CategoryService {
     private categoriesApiUrl = "api/category";
 
     constructor(private httpService: HttpService) {
-
     }
-    //get all categories
+
+    // get all categories
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }
-
-    //add Category
+    /*
+    * post Method
+    * add a Category in Category model
+    */
     addCategory(category:Category) {
         return this.httpService.post(this.categoriesApiUrl,category);
     }
-    ////edit Category
-    //editCategory(category: Category)
-    //{
-    //    return this.httpService.put(this.categoriesApiUrl+"/",Category)
-    //}
+
+    /*
+    * for Check whether same CategoryName Exists in Database or not
+    */
+    checkDuplicateCategoryName(categoryName: string) {
+        return this.httpService.post(this.categoriesApiUrl + "/check Duplicate Categoryname", categoryName);
+    }
+
+    /*
+    * edit a Category
+    */
+    editCategory(id: number, category:Category)
+    {
+        return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
+    }
 }
