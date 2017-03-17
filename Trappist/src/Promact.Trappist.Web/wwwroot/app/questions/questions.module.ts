@@ -16,7 +16,7 @@ import { CategoryService } from "./categories.service";
 @NgModule({
     imports: [
         SharedModule,
-        questionsRouting
+        questionsRouting,
     ],
     declarations: [
         QuestionsComponent,

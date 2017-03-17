@@ -1,6 +1,6 @@
 ﻿export class Option
 {
     option: string;
-    isAnswer: string;
+    isAnswer: Boolean;
     singleMultipleAnswerQuestionID: number;
 }
