@@ -23,6 +23,7 @@ namespace Promact.Trappist.Repository.Categories
             var category = _dbContext.Category.ToList();
             return (category);
         }
+
         #region Adding a CategoryName
         /// <summary>
         /// Adding a Category in Category model
@@ -40,9 +41,9 @@ namespace Promact.Trappist.Repository.Categories
         // Edit a Category from Category Table
         // </summary>
         // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(int id,Category category)
+        public void CategoryEdit(int id, Category category)
         {
-            var categoryToUpdate = _dbContext.Category.FirstOrDefault(x => x.Id == id);
+            var categoryToUpdate = _dbContext.Category.FirstOrDefault(check => check.Id == id);
             categoryToUpdate.CategoryName = category.CategoryName;
             _dbContext.Category.Update(categoryToUpdate);
             _dbContext.SaveChanges();
@@ -56,7 +57,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="categoryName"></param>
         /// <returns>true if Exists else False</returns>
         public bool CheckDuplicateCategoryName(string categoryName)
-            {
+        {
             var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
             return isCategoryNameExist;
         }

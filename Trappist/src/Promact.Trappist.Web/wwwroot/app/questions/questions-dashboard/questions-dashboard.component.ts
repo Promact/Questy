@@ -4,6 +4,7 @@ import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
 import { Category } from "../category.model";
+
 @Component({
     moduleId: module.id,
     selector: "questions-dashboard",
@@ -30,7 +31,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-            //console.log(questionsList);
+        console.log(questionsList);
         });
     }
     // Open Add Category Dialog
@@ -62,7 +63,7 @@ export class AddCategoryDialogComponent {
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
 
-    /*To a Category
+    /*
     *Add category in Cateogry Model
     */
     CategoryAdd(category: Category) {
@@ -93,10 +94,10 @@ export class EditCategoryDialogComponent {
     category: Category = new Category();
     isNameExist: boolean = false;
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
-        }
-    
-    /*edit Category
-    *input : category 
+    }
+
+     /*
+    * edit category from Cateogry Model
     */
     categoryedit(category: Category) {
         this.categoryService.editCategory(category.id, category).subscribe((response) => {
@@ -105,7 +106,7 @@ export class EditCategoryDialogComponent {
     }
 
     /* to check Whether CategoryName Exists or not
-    *If categoryName Exists it will return true and button will be disabled
+    * if categoryName Exists it will return true and button will be disabled
     */
     CheckDuplicateCategoryName(categoryName: string) {
         this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
