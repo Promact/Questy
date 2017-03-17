@@ -10,35 +10,32 @@ import { MdDialog } from '@angular/material';
 })
 
 export class QuestionsDashboardComponent {
-
     categoryName: string[] = new Array<string>();
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
-		this.getAllCategories();
+        this.getAllCategories();
     }
-	//To Get All The categories
+    //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryName = CategoriesList;
         });
     }
-
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             console.log(questionsList);
         });
     }
-
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-
     // Open Delete Category Dialog
-    deleteCategoryDialog() {
-      this.dialog.open(DeleteCategoryDialogComponent);
+    deleteCategoryDialog(categoryNameToDelete: string) {
+        var property = this.dialog.open(DeleteCategoryDialogComponent).componentInstance;
+        property.categoryName = this.categoryName;
+        property.categoryNameToDelete = categoryNameToDelete;
     }
-
 }
 
 @Component({
@@ -47,13 +44,26 @@ export class QuestionsDashboardComponent {
     templateUrl: "add-category-dialog.html"
 })
 export class AddCategoryDialogComponent { }
+
 export class Category {
     CategoryName: string;
 }
 
 @Component({
-  moduleId: module.id,
-  selector: 'delete-category-dialog',
-  templateUrl: "delete-category-dialog.html"
+    moduleId: module.id,
+    selector: 'delete-category-dialog',
+    templateUrl: "delete-category-dialog.html"
 })
-export class DeleteCategoryDialogComponent { }
+export class DeleteCategoryDialogComponent {
+    categoryName: string[] = new Array<string>();
+    categoryNameToDelete: string;
+    constructor(private categoryService: CategoryService, private dialog: MdDialog) {
+    }
+    // send request for Remove a Category from database
+    public removeCategory(deleteCategory: string) {
+        this.categoryService.removeCategory(deleteCategory).subscribe();
+        this.categoryName.splice(this.categoryName.indexOf(deleteCategory), 1);
+        this.dialog.closeAll();
+    }
+}
+
