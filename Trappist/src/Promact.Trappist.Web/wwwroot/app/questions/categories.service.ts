@@ -39,4 +39,19 @@ export class CategoryService {
     updateCategory(id: number, category: Category) {
         return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
     }
+
+    /*
+    * for Check whether same CategoryName Exists in Database or not
+    */
+    checkDuplicateCategoryName(categoryName: string) {
+        return this.httpService.post(this.categoriesApiUrl + "/check Duplicate Categoryname", categoryName);
+    }
+
+    /*
+    * edit a Category
+    */
+    editCategory(id: number, category:Category)
+    {
+        return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
+    }
 }
