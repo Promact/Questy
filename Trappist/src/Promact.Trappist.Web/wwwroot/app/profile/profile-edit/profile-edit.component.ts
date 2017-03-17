@@ -31,7 +31,7 @@ export class ProfileEditComponent implements OnInit{
   * update the  details of the user
   */
   updateUserDetails() {
-    this.profileService.updataeUserDetails(this.editUser).subscribe((response) => {
+    this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
 
     });
   }
