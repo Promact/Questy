@@ -45,10 +45,10 @@ namespace Promact.Trappist.Core.Controllers
         #region PutMethod
         /// <summary>
         /// Put Method
-        /// Will Edit a Existing Category from Category Table
+        /// Will Edit a Existing Category from Category Model
         /// </summary>
         /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class if key found or else it will return Bad request</returns>
+        /// <returns>object of the class after key found </returns>
         [HttpPut("{id}")]
         public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
@@ -65,7 +65,7 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Check DupliCate Category name
         /// <summary>
-        /// Check whether Category Name Exists in DataBase or not
+        /// Check whether Category Name Exists in Database or not
         /// </summary>
         /// <param name="categoryName"></param>
         /// <returns>

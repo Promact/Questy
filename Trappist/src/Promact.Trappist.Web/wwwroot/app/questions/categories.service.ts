@@ -15,16 +15,24 @@ export class CategoryService {
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }
-    // add Category
+    /*
+    * post Method
+    * add a Category in Category model
+    */
     addCategory(category:Category) {
         return this.httpService.post(this.categoriesApiUrl,category);
     }
 
-    // for Check whether same CategoryName Exists in Database or not
+    /*
+    * for Check whether same CategoryName Exists in Database or not
+    */
     checkDuplicateCategoryName(categoryName: string) {
         return this.httpService.post(this.categoriesApiUrl + "/check Duplicate Categoryname", categoryName);
     }
-    // edit a Category 
+
+    /*
+    * edit a Category
+    */
     editCategory(id: number, category:Category)
     {
         return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
