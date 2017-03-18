@@ -4,6 +4,9 @@ import { TestCreateDialogComponent } from "./test-create-dialog.component";
 import { DeleteTestDialogComponent } from "./delete-test-dialog.component";
 import { TestService } from "../tests.service";
 import { Test } from "../tests.model";
+import { TestSettingsComponent } from "../../tests/test-settings/test-settings.component";
+import { TestSettingService } from "../testsetting.service";
+
 
 @Component({
     moduleId: module.id,
@@ -15,6 +18,7 @@ export class TestsDashboardComponent {
 
 
     Tests: Test[] = new Array<Test>();
+    
 
 
     constructor(public dialog: MdDialog, private testService: TestService) {

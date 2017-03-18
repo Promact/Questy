@@ -1,5 +1,5 @@
 ﻿export class Test {
-
+    public id: number;
     public testName: string;
     public link: string;
     public startDate: string
@@ -11,6 +11,5 @@
     public warningMessage: string;
     public correctMarks: string;
     public incorrectMarks: string;
-
-
+    public browserTolerance: number;
 }
