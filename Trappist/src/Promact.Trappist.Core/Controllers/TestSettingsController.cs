@@ -4,6 +4,7 @@ using Promact.Trappist.Repository.TestSettings;
 
 namespace Promact.Trappist.Core.Controllers
 {
+    [Route("api/settings")]
     public class TestSettingsController : Controller
     {
         private readonly ITestSettingsRepository _settingsRepository;
@@ -14,14 +15,15 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Get the Settings saved for a particular Test
+        /// Gets the Settings saved for a particular Test
         /// </summary>
-        /// <returns>Settings set for that Test</returns>
-        [HttpGet]
-        public IActionResult GetTestSettings()
+        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
+        /// <returns>Settings saved for the selected Test</returns>
+        [HttpGet("{id}")]
+        public IActionResult GetTestSettings([FromRoute] int id)
         {
-            var settings = _settingsRepository.GetTestSettings();
-            return Json(settings);
+            var settings = _settingsRepository.GetTestSettings(id);
+            return Ok(settings);
         }
 
         /// <summary>
@@ -30,11 +32,11 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
         /// <param name="testObject">The parameter "testObject" is used as an object for the Model Test</param>
         /// <returns>Updated Settings of that Test</returns>
-        [HttpPut("api/put/{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
         {
             _settingsRepository.UpdateTestSettings(id, testObject);
-            return Json(testObject);
+            return Ok(testObject);
         }
     }
 }
