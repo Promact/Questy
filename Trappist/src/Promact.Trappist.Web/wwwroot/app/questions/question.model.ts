@@ -7,8 +7,6 @@ export class Question {
     questionDetail: string;
     questionType: QuestionType;
     difficultyLevel: DifficultyLevel;
-    createdBy: string;
-    updatedBy: string;
     category: Category;
     singleMultipleAnswerQuestionOption: Option[] = new Array<Option>();
 

@@ -2,6 +2,5 @@
 {
     categoryName: string;
     id: number;
-    createdDateTime: Date;
-    updatedDtaeTime: Date;
+
 }
