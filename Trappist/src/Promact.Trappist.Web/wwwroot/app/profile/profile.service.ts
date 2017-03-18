@@ -7,7 +7,7 @@ import { ApplicationUser } from "../profile/profile.model";
 export class ProfileService {
   private profileApiUrl = "api/profile";
   editUser: ApplicationUser = new ApplicationUser;
-
+  user: ApplicationUser = new ApplicationUser;
   constructor(public httpService: HttpService) {
   }
 
@@ -30,6 +30,10 @@ export class ProfileService {
   */
   updateUserDetails(editUser: ApplicationUser) {
     return this.httpService.put(this.profileApiUrl, editUser);
+  }
+
+  logOut() {
+    return this.httpService.get(this.profileApiUrl+"/logOut");
   }
 
 }
