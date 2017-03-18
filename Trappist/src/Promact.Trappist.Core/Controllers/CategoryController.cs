@@ -52,8 +52,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
-            var key = id;
-            var searchById=_categoryRepository.SearchForCategoryId(id);
+            var searchById = _categoryRepository.SearchForCategoryId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -65,7 +64,7 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.CategoryUpdate(id, category);
             return Ok(category);
         }
-            #endregion
+        #endregion
 
         #region Check DupliCate Category name
         /// <summary>
@@ -82,6 +81,6 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
         }
         #endregion
-        }
-
     }
+
+}
