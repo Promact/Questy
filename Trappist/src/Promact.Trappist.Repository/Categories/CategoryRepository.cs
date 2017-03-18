@@ -42,7 +42,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">take value from Route</param>
         /// <returns></returns>
-       
+
         public bool SearchForCategoryId(int key)
         {
 

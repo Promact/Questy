@@ -1,5 +1,5 @@
 ﻿
-import { Component, OnInit} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
@@ -31,7 +31,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-        console.log(questionsList);
+            console.log(questionsList);
         });
     }
     // Open Add Category Dialog

@@ -1,8 +1,8 @@
 ﻿
 import { Injectable } from "@angular/core";
 import { HttpService } from "../core/http.service";
-import { QuestionsDashboardComponent} from "./questions-dashboard/questions-dashboard.component";
-import { Category} from "./category.model";
+import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
+import { Category } from "./category.model";
 @Injectable()
 
 export class CategoryService {
@@ -20,8 +20,8 @@ export class CategoryService {
     * post Method
     * add a Category in Category model
     */
-    addCategory(category:Category) {
-        return this.httpService.post(this.categoriesApiUrl,category);
+    addCategory(category: Category) {
+        return this.httpService.post(this.categoriesApiUrl, category);
     }
 
     /*
@@ -34,8 +34,7 @@ export class CategoryService {
     /*
     * edit a Category
     */
-    editCategory(id: number, category:Category)
-    {
-        return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
+    editCategory(id: number, category: Category) {
+        return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
     }
 }
