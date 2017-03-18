@@ -1,6 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
-using System.Collections.Generic;
 using System.Linq;
 
 
@@ -24,22 +23,32 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <returns>Updated Setting of that Test</returns>
         public string UpdateTestSettings(int id, Test testObject)
         {
-            testObject = new Test();
-            test = (from s in _dbContext.Test where s.Id == id select s).FirstOrDefault();
-            test = testObject;
-            _dbContext.Test.Update(test);
+            var settingsToUpdate = _dbContext.Test.FirstOrDefault(check => check.Id == id);
+            settingsToUpdate.TestName = testObject.TestName;
+            settingsToUpdate.BrowserTolerance = testObject.BrowserTolerance;
+            settingsToUpdate.StartDate = testObject.StartDate;
+            settingsToUpdate.EndDate = testObject.EndDate;
+            settingsToUpdate.Duration = testObject.Duration;
+            settingsToUpdate.FromIpAddress = testObject.FromIpAddress;
+            settingsToUpdate.ToIpAddress = testObject.ToIpAddress;
+            settingsToUpdate.WarningMessage = testObject.WarningMessage;
+            settingsToUpdate.CorrectMarks = testObject.CorrectMarks;
+            settingsToUpdate.IncorrectMarks = testObject.IncorrectMarks;
+            settingsToUpdate.WarningTime = testObject.WarningTime;
+            _dbContext.Test.Update(settingsToUpdate);
             _dbContext.SaveChanges();
             return "Data Updated";
         }
 
         /// <summary>
-        /// Get the Settings saved for a particular Test
+        /// Gets the Settings saved for a particular Test
         /// </summary>
-        /// <returns>Settings set for that Test</returns>
-        public List<Test> GetTestSettings()
+        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
+        /// <returns>Settings Saved for the selected Test</returns>
+        public Test GetTestSettings(int id)
         {
-            var settings = _dbContext.Test.ToList();
-            return settings;
+            var get = _dbContext.Test.FirstOrDefault(x => x.Id == id);
+            return get;
         }
     }
 }

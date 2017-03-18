@@ -2,8 +2,8 @@
     <div class="header-block clearfix">
         <div class="container">
             <h1 class="pull-left">
-                <span [hidden]="editName">BBIT 10-08-2017</span>
-                <input type="text" class="form-control" value="BBIT 10-08-2017" [hidden]="!editName" />
+                <span [hidden]="editName">{{testsettings.testName}}</span>
+                <input type="text" class="form-control"[(ngModel)]="testsettings.testName" name="Test Name" [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="onBlurMethod(testsettings.id,testsettings)"/>
                 <i class="material-icons" (click)="editName = !editName">edit</i>
             </h1>
             <button type="button" class="btn btn-primary pull-right"><i class="material-icons">remove_red_eye</i> Preview</button>
@@ -14,29 +14,29 @@
         <form class="form-area">
             <div class="form-group">
                 <label class="h4">Time Duration (mins)</label>
-                <input type="text" class="form-control small-width" placeholder="00" />
+                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.duration" name="Duration" placeholder="00" />
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Start Date & Time</label>
-                <input type="datetime-local" class="form-control small-width" />
+                <input type="datetime-local" class="form-control small-width" [(ngModel)]="testsettings.startDate" name="Start Date"/>
             </div>
             <div class="form-group inline-field">
                 <label class="h4">End Date & Time</label>
-                <input type="datetime-local" class="form-control small-width" />
+                <input type="datetime-local" class="form-control small-width" [(ngModel)]="testsettings.endDate" name="End Date"/>
             </div>
             <div class="form-group ip-restrictions-field">
                 <label class="h4">IP Restrictions</label>
                 <br />
-                <input type="text" class="form-control small-width" placeholder="From IP" />
-                <input type="text" class="form-control small-width" placeholder="To IP" />
+                <input type="text" class="form-control small-width" placeholder="From IP" [(ngModel)]="testsettings.fromIpAddress" name="From IP Address"/>
+                <input type="text" class="form-control small-width" placeholder="To IP" [(ngModel)]="testsettings.toIpAddress" name="To Ip Address"/>
             </div>
             <div class="form-group">
                 <label class="h4">Browser Tolerance</label>
-                <select class="form-control half-width">
-                    <option>Select</option>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                <select class="form-control half-width" [(ngModel)]="testsettings.browserTolerance" name="Browser Tolerance">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
                 </select>
             </div>
             <div class="form-group">
@@ -59,19 +59,19 @@
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Correct Marks</label>
-                <input type="text" class="form-control small-width" />
+                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.correctMarks" name="Correct Marks"/>
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Incorrect Marks</label>
-                <input type="text" class="form-control small-width" />
+                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.incorrectMarks" name="Incorrect Marks"/>
             </div>
             <div class="form-group">
                 <label class="h4">Warning Message</label>
-                <textarea class="form-control half-width" rows="3" placeholder="Your message here"></textarea>
+                <textarea class="form-control half-width" rows="3" placeholder="Your message here" [(ngModel)]="testsettings.warningMessage" name="Warning Message"></textarea>
             </div>
             <div class="form-group">
                 <label class="h4">Warning Time (mins)</label>
-                <input type="text" class="form-control small-width" placeholder="00" />
+                <input type="text" class="form-control small-width" placeholder="00" [(ngModel)]="testsettings.warningTime" name="Warning Time"/>
             </div>
         </form>
     </div>
@@ -86,7 +86,7 @@
             </ul>
             <div class="buttons-block pull-right">
                 <button type="button" class="btn">Save & Exit</button>
-                <button type="button" class="btn btn-primary" (click)="launchTestDialog()">Save & Share</button>
+                <button type="button" class="btn btn-primary" (click)="launchTestDialog(testsettings.id,testsettings)">Save & Share</button>
             </div>
         </div>
     </div>
