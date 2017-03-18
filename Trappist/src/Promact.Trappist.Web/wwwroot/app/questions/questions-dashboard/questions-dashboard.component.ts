@@ -61,8 +61,7 @@ export class DeleteCategoryDialogComponent {
     }
     // send request for Remove a Category from database
     public removeCategory(deleteCategory: string) {
-        this.categoryService.removeCategory(deleteCategory).subscribe();
-        this.categoryName.splice(this.categoryName.indexOf(deleteCategory), 1);
+        this.categoryService.removeCategory(deleteCategory).subscribe(response => { this.categoryName.splice(this.categoryName.indexOf(response.categoryName), 1) });        
         this.dialog.closeAll();
     }
 }

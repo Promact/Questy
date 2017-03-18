@@ -18,5 +18,4 @@ export class CategoryService {
     removeCategory(categoryName: string) {
         return this.httpService.delete(this.categoriesApiUrl + "/" + categoryName);
     }
-    
 }

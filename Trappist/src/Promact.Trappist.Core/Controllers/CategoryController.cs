@@ -80,11 +80,11 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var checkcategoryname = _categoryRepository.checkCategoryName(categoryName);
-            if(checkcategoryname != null)
+            var categoryData = _categoryRepository.CheckCategoryName(categoryName);
+            if(categoryData != null)
             {
-                _categoryRepository.removeCategory(checkcategoryname);
-                return Ok();
+               _categoryRepository.RemoveCategory(categoryData);
+                return Ok(categoryData);
             }
             else
             {
