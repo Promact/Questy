@@ -1,16 +1,15 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
-using System.Collections.Generic;
-
 
 namespace Promact.Trappist.Repository.TestSettings
 {
      public interface ITestSettingsRepository
     {
         /// <summary>
-        /// Get the Settings saved for a particular Test
+        /// Gets the Settings saved for a particular Test
         /// </summary>
-        /// <returns>Settings set for that Test</returns>
-        List<Test> GetTestSettings();
+        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
+        /// <returns>Settings Saved for the selected Test</returns>
+        Test GetTestSettings(int id);
 
         /// <summary>
         /// Updates the changes made to the Settings of a Test

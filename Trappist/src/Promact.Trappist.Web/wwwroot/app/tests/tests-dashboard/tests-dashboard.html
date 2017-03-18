@@ -19,13 +19,13 @@
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
                             <div class="test-title clearfix">
-                                <h2 class="pull-left">{{test.TestName}}</h2>
+                                <h2 class="pull-left">{{test.testName}}</h2>
                                 <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                                     <a md-menu-item>Edit</a>
                                     <a md-menu-item (click)="deleteTestDialog()">Delete</a>
                                     <a md-menu-item>Duplicate</a>
-                                    <a md-menu-item [routerLink]="['settings']">Settings</a>
+                                    <a md-menu-item [routerLink]="['settings', test.id]">Settings</a>
                                 </md-menu>
                             </div>
                             <div class="test-details">

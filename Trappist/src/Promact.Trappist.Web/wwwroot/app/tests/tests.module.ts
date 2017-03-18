@@ -9,11 +9,14 @@ import { TestSettingsComponent } from "./test-settings/test-settings.component";
 import { TestLaunchDialogComponent } from "./test-settings/test-launch-dialog.component";
 import { TestService } from "./tests.service";
 import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
+import { TestSettingService } from "./testsetting.service";
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
     imports: [
         SharedModule,
-        testsRouting
+        testsRouting,
+        ClipboardModule
     ],
     declarations: [
         TestsComponent,
@@ -31,7 +34,8 @@ import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
         TestLaunchDialogComponent
     ],
     providers: [
-        TestService
+        TestService,
+        TestSettingService
     ]
 })
 export class TestsModule { }
