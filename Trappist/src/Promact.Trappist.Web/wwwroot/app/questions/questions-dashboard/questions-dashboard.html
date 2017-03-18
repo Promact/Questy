@@ -15,15 +15,14 @@
                 </div>
                 <ul class="category-list">
                     <li class="active h5">All Questions</li>
-                    <li *ngFor="let cat of categoryName"class="clearfix h5">
-                        {{cat}}
+                    <li *ngFor="let category of categoryName"class="clearfix h5">
+                        {{category}}
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item>Rename</button>
-                            <button md-menu-item (click)="deleteCategoryDialog()">Delete</button>
+                            <button md-menu-item  (click)="deleteCategoryDialog(category)">Delete</button>
                         </md-menu>
                     </li>
-
                 </ul>
             </div>
             <div class="col-md-9 col-sm-8 col-md-offset-3 col-sm-offset-4 questions-block">

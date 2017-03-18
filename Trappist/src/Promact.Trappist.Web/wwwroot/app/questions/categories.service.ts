@@ -14,4 +14,8 @@ export class CategoryService {
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }
+    // send request for Remove category from database
+    removeCategory(categoryName: string) {
+        return this.httpService.delete(this.categoriesApiUrl + "/" + categoryName);
+    }
 }

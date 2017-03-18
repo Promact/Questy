@@ -1,6 +1,7 @@
 {
   "name": "Trappist",
   "version": "1.0.0",
+  "private": true,
   "dependencies": {
     "@angular/common": "~2.4.0",
     "@angular/compiler": "~2.4.0",
