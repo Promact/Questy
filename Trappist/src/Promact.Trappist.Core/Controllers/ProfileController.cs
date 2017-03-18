@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.ProfileDetails;
 using Promact.Trappist.Web.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -11,10 +13,12 @@ namespace Promact.Trappist.Core.Controllers
   public class ProfileController : Controller
   {
     private readonly IProfileRepository _profileRepository;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public ProfileController(IProfileRepository profileRepository)
+    public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager)
     {
       _profileRepository = profileRepository;
+      _signInManager = signInManager;
     }
 
     /// <summary>
@@ -43,6 +47,14 @@ namespace Promact.Trappist.Core.Controllers
         return Ok();
       }
       return BadRequest();
+    }
+    [Route("logOut")]
+    [HttpGet]
+    public async Task<IActionResult> LogOut()
+    {
+      await _signInManager.SignOutAsync();
+      Console.Write(User);
+      return Ok();
     }
 
   }
