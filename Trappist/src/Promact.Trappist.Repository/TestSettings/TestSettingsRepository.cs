@@ -47,8 +47,8 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <returns>Settings Saved for the selected Test</returns>
         public Test GetTestSettings(int id)
         {
-            var get = _dbContext.Test.FirstOrDefault(x => x.Id == id);
-            return get;
+            var testSettings = _dbContext.Test.FirstOrDefault(x => x.Id == id);
+            return testSettings;
         }
     }
 }
