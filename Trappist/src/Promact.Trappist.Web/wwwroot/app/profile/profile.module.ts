@@ -1,4 +1,5 @@
-﻿import { NgModule } from '@angular/core';
+﻿/// <reference path="change-password.service.ts" />
+import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { profileRouting } from "./profile.routing";
@@ -6,7 +7,7 @@ import { ProfileComponent } from "./profile.component";
 import { ProfileDashboardComponent } from "./profile-dashboard/profile-dashboard.component";
 import { ChangePasswordDialogComponent } from "./profile-dashboard/change-password-dialog.component";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
-
+import { PasswordService } from "../profile/change-password.service";
 @NgModule({
   imports: [
     SharedModule,
@@ -22,7 +23,7 @@ import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
     ChangePasswordDialogComponent
   ],
   providers: [
-
+    PasswordService
   ]
 })
 export class ProfileModule { }
