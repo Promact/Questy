@@ -23,9 +23,7 @@ using Promact.Trappist.Repository.TestDashBoard;
 using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
-using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
-
 namespace Promact.Trappist.Web
 {
     public class Startup
@@ -36,37 +34,28 @@ namespace Promact.Trappist.Web
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
-
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
         public IConfigurationRoot Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
             services.AddDbContext<TrappistDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Promact.Trappist.Web")));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
-
             services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
-
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
@@ -74,9 +63,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
-
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
         {
@@ -85,7 +72,6 @@ namespace Promact.Trappist.Web
             loggerFactory.AddNLog();
             app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -95,42 +81,32 @@ namespace Promact.Trappist.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }*/
-
             app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.GetFullPath(Path.Combine(env.ContentRootPath, "node_modules"))),
                 RequestPath = new PathString("/node_modules")
             });
-
             app.UseIdentity();
-
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "setup",
                     template: "setup",
                     defaults: new { controller = "Home", action = "setup" });
-
                 routes.MapRoute(
                     name: "login",
                     template: "login",
                     defaults: new { controller = "Account", action = "Login" });
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
                 routes.MapSpaFallbackRoute(
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
-
             //Delete production db upon every deployment
             //Temporary fix as we are not including migrations in scm
             //Will remove after we include migrations in code base
@@ -138,9 +114,7 @@ namespace Promact.Trappist.Web
             {
                 context.Database.EnsureDeleted();
             }
-
             context.Database.Migrate();
-
             context.Seed();
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
@@ -150,7 +124,6 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
             });
             #endregion
-
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-
 import { questionsRouting } from "./questions.routing";
 import { QuestionsComponent } from "./questions.component";
 import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
@@ -12,7 +11,6 @@ import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 import { QuestionsService } from "./questions.service";
 import { CategoryService } from "./categories.service";
-
 @NgModule({
     imports: [
         SharedModule,

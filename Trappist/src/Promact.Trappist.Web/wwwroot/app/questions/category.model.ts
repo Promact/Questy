@@ -1,6 +1,4 @@
-﻿export class Category
-{
+﻿export class Category {
     categoryName: string;
     id: number;
-
 }

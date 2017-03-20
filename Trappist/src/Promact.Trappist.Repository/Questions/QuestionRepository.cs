@@ -6,18 +6,15 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
 using AutoMapper.QueryableExtensions;
 using Promact.Trappist.DomainModel.Models.Question;
-
 namespace Promact.Trappist.Repository.Questions
 {
     public class QuestionRepository : IQuestionRespository
     {
         private readonly TrappistDbContext _dbContext;
-
         public QuestionRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
         /// <summary>
         /// Get all questions
         /// </summary>
@@ -26,8 +23,8 @@ namespace Promact.Trappist.Repository.Questions
         {
             var questions = _dbContext.SingleMultipleAnswerQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList();
             questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList());
-            return questions;
-
+            var questionsOrderedByCreatedDateTime = questions.OrderBy(f => f.CreatedDateTime).ToList();
+            return questionsOrderedByCreatedDateTime;
         }
         /// <summary>
         /// Add single multiple answer question into model
@@ -44,24 +41,19 @@ namespace Promact.Trappist.Repository.Questions
             }
             _dbContext.SaveChanges();
         }
-
         /// <summary>
         /// Add new code snippet question to the database
         /// </summary>
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
         public void AddCodeSnippetQuestion(CodeSnippetQuestionDto codeSnippetQuestionModel)
         {
-
             CodeSnippetQuestion codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionDto, CodeSnippetQuestion>(codeSnippetQuestionModel);
-
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
                 _dbContext.SaveChanges();
-
                 var codingLanguageList = codeSnippetQuestionModel.LanguageList;
                 var questionId = question.Entity.Id;
-
                 foreach (var language in codingLanguageList)
                 {
                     var languageId = _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
@@ -72,10 +64,8 @@ namespace Promact.Trappist.Repository.Questions
                     });
                 }
                 _dbContext.SaveChanges();
-
                 transaction.Commit();
             }
         }
-
     }
 }

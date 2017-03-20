@@ -21,7 +21,8 @@ namespace Promact.Trappist.Repository.Categories
         public IEnumerable<Category> GetAllCategories()
         {
             var category = _dbContext.Category.ToList();
-            return (category);
+            var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
+            return (categoryOrderedByCreatedDateTime);
         }
         #region Adding a CategoryName
         /// <summary>
@@ -34,7 +35,6 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
-
         #region Finding a Id Respective Category
         /// <summary>
         /// Find a Respective Id from Catagory Table
@@ -46,7 +46,6 @@ namespace Promact.Trappist.Repository.Categories
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
         #endregion
-
         #region Edit A Category Name
         // <summary>
         // Edit a Category from Category Table

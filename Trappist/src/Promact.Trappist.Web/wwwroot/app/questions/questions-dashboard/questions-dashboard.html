@@ -15,7 +15,7 @@
                 </div>
                 <ul class="category-list">
                     <li class="active h5">All Questions</li>
-                    <li *ngFor="let category of categoryArray"class="clearfix h5">
+                    <li *ngFor="let category of categoryArray" class="clearfix h5">
                         {{category.categoryName}}
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
@@ -46,15 +46,15 @@
                     </md-menu>
                 </div>
                 <div class="questions-area">
-                    <div *ngFor="let q of questionDisplay;let i = index"class="qs-block clearfix">
+                    <div *ngFor="let q of questionDisplay;let i = index" class="qs-block clearfix">
                         <div class="pull-left">
                             <div class="qs-container">
                                 <p class="qs-num">Q.{{i+1}}</p>
-                                <div class="qs-text" >
+                                <div class="qs-text">
                                     <p class="question">{{q.questionDetail}}</p>
-                                        <div *ngFor="let o of q.singleMultipleAnswerQuestionOption; let j = index">
-                                            <p *ngIf="QuestionType[q.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(o.isAnswer)" class="ans-option "><span>{{alpha[j]}}</span> <span>{{o.option}}</span></p>
-                                        </div>
+                                    <div *ngFor="let o of q.singleMultipleAnswerQuestionOption; let j = index">
+                                        <p *ngIf="QuestionType[q.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(o.isAnswer)" class="ans-option "><span>{{alpha[j]}}</span> <span>{{o.option}}</span></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mt10">
