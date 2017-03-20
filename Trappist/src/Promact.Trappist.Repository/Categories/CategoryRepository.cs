@@ -24,11 +24,11 @@ namespace Promact.Trappist.Repository.Categories
             return categoryOrderedByCreatedDateTime;
         }
 
-        #region Adding a CategoryName
+        #region Add Category
         /// <summary>
-        /// Adding a Category in Category model
+        /// Method to add a Category
         /// </summary>
-        /// <param name="catagory">Object of class Category</param>
+        /// <param name="catagory">category object contains category details</param>
         public void AddCategory(Category category)
         {
             _dbContext.Category.Add(category);
@@ -38,11 +38,10 @@ namespace Promact.Trappist.Repository.Categories
 
         #region Check Whether Id Exists or not
         /// <summary>
-        /// will check id Exists in Category Model or not
+        /// Method to check Whether Id is Exists or not
         /// </summary>
-        /// <param name="key">take value from Route</param>
-        /// <returns></returns>
-       
+        /// <param name="key">id have to search</param>
+        /// <returns>true if key found else false</returns>
         public bool SearchForCategoryId(int key)
         {
 
@@ -55,28 +54,24 @@ namespace Promact.Trappist.Repository.Categories
         }
         #endregion
 
-        #region Find Category of respective Id
+        #region Get Category of respective Id
         /// <summary>
-        /// Find category of respective id
+        /// Method to get category by its Id
         /// </summary>
         /// <param name="key">id that will find category</param>
-        /// <returns></returns>
-        #region Finding a Id Respective Category
-        /// <summary>
-        /// Find a Respective Id from Catagory Table
-        /// </summary>
-        /// <param name="Key"></param>
-        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
+        /// <returns>category object contains category details</returns>
         public Category GetCategory(int key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
         #endregion
-        #region Edit A Category Name
-        // <summary>
-        // Edit a Category from Category Table
-        // </summary>
-        // <param name="catagory">object of the class Category</param>
+
+        #region Update Category
+        /// <summary>
+        /// Method to Update Category
+        /// </summary>
+        /// <param name="id">key whose Property will be Updated</param>
+        /// <param name="category">category object contains category details</param>
         public void CategoryUpdate(int id, Category category)
         {
             var categoryToUpdate = GetCategory(id);
@@ -88,9 +83,9 @@ namespace Promact.Trappist.Repository.Categories
 
         #region Check Duplicate Category Name Exists or not
         /// <summary>
-        /// check whether same Category Name Exists Or not
+        /// Method to Check Same CategoryName Exists or not
         /// </summary>
-        /// <param name="categoryName"></param>
+        /// <param name="categoryName">categoryname will be checked that it is Exists or not</param>
         /// <returns>true if Exists else False</returns>
         public bool CheckDuplicateCategoryName(string categoryName)
         {

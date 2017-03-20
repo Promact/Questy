@@ -12,28 +12,27 @@ namespace Promact.Trappist.Repository.Categories
 
         void AddCategory(Category catagory);
         /// <summary>
-        /// Edit category From Category model
+        /// Method to add a Category
         /// </summary>
-        /// <param name="catagory"> Object of class Category</param>
+        /// <param name="catagory">category object contains category details</param>
         void CategoryUpdate(int id, Category catagory);
         /// <summary>
-        /// Check for Category name is Exists or not
+        /// Method to Check Same CategoryName Exists or not
         /// </summary>
-        /// <param name="categoryName"></param>
-        /// <returns>true if Exists else false</returns>
+        /// <param name="categoryName">CategoryName</param>
+        /// <returns>true if Exists else False</returns>
         bool CheckDuplicateCategoryName(string categoryName);
         /// <summary>
-        /// will find Category by Resprctive Id
+        /// Find category of respective id
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="key">id that will find category</param>
+        /// <returns>category object contains category details</returns>
         Category GetCategory(int id);
         /// <summary>
-        /// search id is exists in Model or not
+        /// Method to check Id is Exists or not
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">take value from Route who id to be search</param>
+        /// <returns>true if key found else false</returns>
         bool SearchForCategoryId(int key);
-
     }
 }

@@ -1,12 +1,15 @@
-﻿
-import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { Category } from "../category.model";
+import { Question } from "../../questions/question.model"
+import { DifficultyLevel } from "../../questions/enum-difficultylevel"
+import { QuestionType } from "../../questions/enum-questiontype"
+import { Category } from "../../questions/category.model"
+import { RenameCategoryDialogComponent } from "./rename-category-dialog.component";
 
 @Component({
     moduleId: module.id,
@@ -15,12 +18,10 @@ import { Category } from "../category.model";
 })
 
 export class QuestionsDashboardComponent implements OnInit {
-    category: Category = new Category();
-    categoryArray: Category[] = new Array<Category>();
 
-export class QuestionsDashboardComponent implements OnInit {
+    questionDisplay: Question[] = new Array<Question>();
+    categoryArray: Category[] = new Array<Category>();
     private category: Category = new Category();
-    categoryArray: string[] = new Array<string>();
     //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
@@ -54,10 +55,10 @@ export class QuestionsDashboardComponent implements OnInit {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    //open Edit Category Dialog
-    editCategoryDialog(cat: any) {
-        var prop = this.dialog.open(EditCategoryDialogComponent).componentInstance;
-        prop.category = JSON.parse(JSON.stringify(cat));
+    //open Rename Category Dialog
+    renameCategoryDialog(category: any) {
+        var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
+        prop.category = JSON.parse(JSON.stringify(category));
     }
     // Open Delete Category Dialog
     deleteCategoryDialog() {

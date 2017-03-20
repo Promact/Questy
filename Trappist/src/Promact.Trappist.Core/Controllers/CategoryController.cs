@@ -27,10 +27,10 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         /// <summary>
         /// Post Method 
-        /// Will Add a Catagory Name in Category Model
+        /// Method to add category
         ///</summary>
-        /// <param name="category">Object of  class Category</param>
-        /// <returns>object of the class </returns>
+        /// <param name="category">category object contains category details</param>
+        /// <returns>category object contains category details</returns>
         public IActionResult catagoryAdd([FromBody] Category category)
         {
             if (!ModelState.IsValid)
@@ -44,16 +44,15 @@ namespace Promact.Trappist.Core.Controllers
 
         #region PutMethod
         /// <summary>
-        /// will edit a category
+        /// Method to Update Existing Category
         /// </summary>
-        /// <param name="id">take from route</param>
-        /// <param name="category">object of category</param>
-        /// <returns>category</returns>
+        /// <param name="id">Take from Route whose Property to be Update</param>
+        /// <param name="category">category object contains category details</param>
+        /// <returns>Updated category object contains category details</returns>
         [HttpPut("{id}")]
         public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
         {
-            var key = id;
-            var searchById=_categoryRepository.SearchForCategoryId(id);
+            var searchById = _categoryRepository.SearchForCategoryId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -65,13 +64,13 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.CategoryUpdate(id, category);
             return Ok(category);
         }
-            #endregion
+        #endregion
 
         #region Check DupliCate Category name
         /// <summary>
         /// Check whether Category Name Exists in Database or not
         /// </summary>
-        /// <param name="categoryName"></param>
+        /// <param name="categoryName">categoryname to check</param>
         /// <returns>
         /// true if Name Exists in Database
         /// False if not Exists
@@ -82,6 +81,6 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
         }
         #endregion
-        }
-
     }
+
+}
