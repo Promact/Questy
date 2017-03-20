@@ -32,7 +32,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.categoryArray = CategoriesList;
         });
     }
-
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             console.log(questionsList);

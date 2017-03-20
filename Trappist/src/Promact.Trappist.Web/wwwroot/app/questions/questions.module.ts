@@ -7,6 +7,7 @@ import { QuestionsDashboardComponent } from "./questions-dashboard/questions-das
 import { AddCategoryDialogComponent } from "./questions-dashboard/add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./questions-dashboard/delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./questions-dashboard/delete-question-dialog.component";
+import { DeleteQuestionDialogComponent } from "./questions-dashboard/delete-question-dialog.component";
 import { QuestionsSingleAnswerComponent } from "./questions-single-answer/questions-single-answer.component";
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
