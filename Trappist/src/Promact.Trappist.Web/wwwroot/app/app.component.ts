@@ -15,10 +15,9 @@ export class AppComponent {
   /**
    * user is logged out and redirected to login page
    */
-  logOut() {
-    this.profileService.logOut().subscribe((response) => {
-      console.log(response);
-      window.location.href = '/login';
-    });
+  logOff() {
+    let logoutForm = <HTMLFormElement>document.getElementById("logoutForm");
+    logoutForm.submit();
   }
+
 }

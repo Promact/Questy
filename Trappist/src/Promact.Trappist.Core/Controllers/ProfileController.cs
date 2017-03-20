@@ -56,12 +56,12 @@ namespace Promact.Trappist.Core.Controllers
     /// user logeed out
     /// </summary>
     /// <returns> user is logged out and the user's session is ended and is redirected to login page</returns>
-    [Route("logOut")]
-    [HttpGet]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut()
     {
       await _signInManager.SignOutAsync();
-      return Ok();
+      return RedirectToAction(nameof(AccountController.Login), "Account");
     }
 
   }
