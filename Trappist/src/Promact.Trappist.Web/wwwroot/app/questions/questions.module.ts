@@ -1,11 +1,12 @@
 ﻿import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-
 import { questionsRouting } from "./questions.routing";
 import { QuestionsComponent } from "./questions.component";
+import { RenameCategoryDialogComponent } from "./questions-dashboard/rename-category-dialog.component";
 import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
 import { AddCategoryDialogComponent } from "./questions-dashboard/add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./questions-dashboard/delete-category-dialog.component";
+import { DeleteQuestionDialogComponent } from "./questions-dashboard/delete-question-dialog.component";
 import { DeleteQuestionDialogComponent } from "./questions-dashboard/delete-question-dialog.component";
 import { QuestionsSingleAnswerComponent } from "./questions-single-answer/questions-single-answer.component";
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
@@ -22,6 +23,7 @@ import { CategoryService } from "./categories.service";
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
+        RenameCategoryDialogComponent,
         QuestionsSingleAnswerComponent,
         QuestionsMultipleAnswersComponent,
         QuestionsProgrammingComponent,
@@ -29,13 +31,14 @@ import { CategoryService } from "./categories.service";
         DeleteQuestionDialogComponent
     ],
     entryComponents: [
-      AddCategoryDialogComponent,
-      DeleteCategoryDialogComponent,
-      DeleteQuestionDialogComponent
+        AddCategoryDialogComponent,
+        DeleteCategoryDialogComponent,
+        DeleteQuestionDialogComponent,
+        RenameCategoryDialogComponent,
     ],
     providers: [
         QuestionsService,
-		CategoryService
+        CategoryService
     ]
 })
 export class QuestionsModule { }

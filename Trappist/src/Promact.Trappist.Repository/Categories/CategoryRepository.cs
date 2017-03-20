@@ -18,16 +18,17 @@ namespace Promact.Trappist.Repository.Categories
         /// Get all the names of Categories
         /// </summary>
         /// <returns>Categories list</returns>
-        public IEnumerable<string> GetAllCategories()
+        public IEnumerable<Category> GetAllCategories()
         {
-            var category = _dbContext.Category.Select(x => x.CategoryName).ToList();
+            var category = _dbContext.Category.ToList();
             return (category);
         }
-        #region Adding a CategoryName
+
+        #region Add Category
         /// <summary>
-        /// Adding a Category in Category model
+        /// Method to add a Category
         /// </summary>
-        /// <param name="catagory">Object of class Category</param>
+        /// <param name="catagory">category object contains category details</param>
         public void AddCategory(Category category)
         {
             _dbContext.Category.Add(category);
@@ -35,27 +36,61 @@ namespace Promact.Trappist.Repository.Categories
         }
         #endregion
 
-        #region Finding a Id Respective Category
+        #region Check Whether Id Exists or not
         /// <summary>
-        /// Find a Respective Id from Catagory Table
+        /// will check id Exists in Category Model or not
         /// </summary>
-        /// <param name="Key"></param>
-        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
+        /// <param name="key">take value from Route</param>
+        /// <returns>true if key found else false</returns>
+        public bool SearchForCategoryId(int key)
+        {
+
+            var categoryFind = _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            if (categoryFind == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region Find Category of respective Id
+        /// <summary>
+        /// Find category of respective id
+        /// </summary>
+        /// <param name="key">id that will find category</param>
+        /// <returns>category object contains category details</returns>
         public Category GetCategory(int key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
         #endregion
 
-        #region Edit A Category Name
-        // <summary>
-        // Edit a Category from Category Table
-        // </summary>
-        // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(Category category)
+        #region Update  Category
+        /// <summary>
+        /// Method to Update Category
+        /// </summary>
+        /// <param name="id">key whose value will be Updated</param>
+        /// <param name="category">category object contains category details</param>
+        public void CategoryUpdate(int id, Category category)
         {
-            _dbContext.Category.Update(category);
+            var categoryToUpdate = GetCategory(id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
             _dbContext.SaveChanges();
+        }
+        #endregion
+
+        #region Check Duplicate Category Name Exists or not
+        /// <summary>
+        /// Method to Check Same CategoryName Exists or not
+        /// </summary>
+        /// <param name="categoryName">CategoryName</param>
+        /// <returns>true if Exists else False</returns>
+        public bool CheckDuplicateCategoryName(string categoryName)
+        {
+            var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
+            return isCategoryNameExist;
         }
         #endregion
     }

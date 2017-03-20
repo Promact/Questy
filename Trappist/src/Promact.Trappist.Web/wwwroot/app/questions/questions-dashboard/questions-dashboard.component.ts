@@ -1,10 +1,12 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
-import { MdDialog } from '@angular/material';
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
+import { MdDialog } from '@angular/material';
+import { Category } from "../category.model";
+import { RenameCategoryDialogComponent } from "./rename-category-dialog.component";
 
 @Component({
     moduleId: module.id,
@@ -12,43 +14,40 @@ import { CategoryService } from "../categories.service";
     templateUrl: "questions-dashboard.html"
 })
 
-export class QuestionsDashboardComponent {
+export class QuestionsDashboardComponent implements OnInit {
+    category: Category = new Category();
+    categoryArray: Category[] = new Array<Category>();
 
-    categoryName: string[] = new Array<string>();
-    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService) {
-        this.getAllQuestions();
-		this.getAllCategories();
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+
     }
-	//To Get All The categories
+
+    ngOnInit() {
+        this.getAllQuestions();
+        this.getAllCategories();
+    }
+    //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
         });
     }
-
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             console.log(questionsList);
         });
     }
-
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-
+    //open Rename Category Dialog
+    renameCategoryDialog(cat: any) {
+        var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
+        prop.category = JSON.parse(JSON.stringify(cat));
+    }
     // Open Delete Category Dialog
     deleteCategoryDialog() {
-      this.dialog.open(DeleteCategoryDialogComponent);
+        this.dialog.open(DeleteCategoryDialogComponent);
     }
-
-    // Open Delete Question Dialog
-    deleteQuestionDialog() {
-      this.dialog.open(DeleteQuestionDialogComponent);
-    }
-
-}
-
-export class Category {
-    CategoryName: string;
 }

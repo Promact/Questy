@@ -40,7 +40,7 @@ namespace Promact.Trappist.Test.Category
             Assert.NotNull(categoryToUpdate);
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
-            _categoryRepository.CategoryEdit(categoryToUpdate);
+            _categoryRepository.CategoryUpdate(category.Id,categoryToUpdate);
             Assert.True(_trappistDbContext.Category.Count(x=>x.CategoryName == "Updated Category") == 1);
         }
 
