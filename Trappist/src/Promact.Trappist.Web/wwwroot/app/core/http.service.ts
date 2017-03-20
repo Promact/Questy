@@ -11,7 +11,16 @@ export class HttpService {
     }
 
     get(url: string) {
-        return this.http.get(url).map(res => res.json());
+        return this.http.get(url).map(res => {
+            // If request fails, throw an Error that will be caught
+            if (res.status === 400) {
+                throw new Error('This request has failed ' + res.status);
+            }
+            // If everything went fine, return the response
+            else {
+                return res.json();
+            }
+        });
     }
 
     post(url: string, body: any) {

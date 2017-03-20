@@ -14,7 +14,7 @@ export class FilterPipe implements PipeTransform {
             return value;
         return value.filter(function (x: any) {
 
-            return x.TestName.toLowerCase().includes(term.toLowerCase());
+            return x.testName.toLowerCase().includes(term.toLowerCase());
         })
 
     }

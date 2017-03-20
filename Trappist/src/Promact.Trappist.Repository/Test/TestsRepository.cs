@@ -1,15 +1,18 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
 using System.Linq;
 using Promact.Trappist.DomainModel.Models.Test;
+using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
         private readonly TrappistDbContext _dbContext;
+        //private readonly TrappistDbContext _trappistdb;
         public TestsRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
+           
         }
         /// <summary>
         /// this method is used to create a new test
@@ -34,6 +37,15 @@ namespace Promact.Trappist.Repository.Tests
                 return false;
             else
                 return true;
+        }
+        /// <summary>
+        /// Fetch all the tests from Test Model,Convert it into List
+        /// </summary>
+        /// <returns>List of Tests</returns>
+        public List<Test> GetAllTests()
+        { 
+            var tests = _dbContext.Test.ToList();
+            return tests;
         }
     }
 }

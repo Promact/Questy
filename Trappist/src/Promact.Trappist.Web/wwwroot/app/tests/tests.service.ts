@@ -5,7 +5,7 @@ import { HttpService } from "../core/http.service";
 
 export class TestService {
 
-    private testsApiUrl = "api/TestDashboard";
+    private testsApiUrl = "api/tests";
 
     constructor(private httpService: HttpService) {
 
