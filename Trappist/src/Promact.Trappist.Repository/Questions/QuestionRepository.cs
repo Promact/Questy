@@ -3,9 +3,10 @@ using System.Linq;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using AutoMapper;
-using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
 using AutoMapper.QueryableExtensions;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
+
 namespace Promact.Trappist.Repository.Questions
 {
     public class QuestionRepository : IQuestionRespository
