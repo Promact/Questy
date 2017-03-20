@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
+using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -14,7 +15,12 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
-        bool UniqueTestName(Test test); 
+        bool UniqueTestName(Test test);
+        /// <summary>
+        /// Method defined to fetch Tests from Test Model
+        /// </summary>
+        /// <returns>List Of Tests</returns>
+        List<Test> GetAllTests();
 
     }
 
