@@ -1,6 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Models.Category;
 using System.Collections.Generic;
-
 namespace Promact.Trappist.Repository.Categories
 {
     public interface ICategoryRepository

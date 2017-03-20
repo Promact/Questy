@@ -2,7 +2,6 @@
 using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-
 namespace Promact.Trappist.Repository.Questions
 {
     public interface IQuestionRespository
