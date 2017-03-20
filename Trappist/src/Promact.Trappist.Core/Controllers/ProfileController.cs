@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.ProfileDetails;
 using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
@@ -13,11 +14,13 @@ namespace Promact.Trappist.Core.Controllers
   {
     private readonly IProfileRepository _profileRepository;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager)
+    public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
       _profileRepository = profileRepository;
       _signInManager = signInManager;
+      _userManager = userManager;
     }
 
     /// <summary>
@@ -53,9 +56,31 @@ namespace Promact.Trappist.Core.Controllers
     }
 
     /// <summary>
+    /// Update user password 
+    /// </summary>
+    /// <param name="model">takes the parameter of type ChangePasswordModel</param>
+    /// <returns>call UpdaetUserPassword() to save the new password in the database</returns>
+    [Route("password")]
+    [HttpPut]
+    public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest();
+      }
+
+      var user = await _userManager.GetUserAsync(User);
+      model.Email = user.Email;
+      return Ok(await _profileRepository.UpdaetUserPassword(model));
+
+    }
+
+
+    /// <summary>
     /// user logeed out
     /// </summary>
     /// <returns> user is logged out and the user's session is ended and is redirected to login page</returns>
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut()

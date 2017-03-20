@@ -1,4 +1,5 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿/// <reference path="change-password-dialog.component.ts" />
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
 import { ApplicationUser } from "../profile.model";
 import { ProfileService } from "../profile.service";
@@ -35,10 +36,3 @@ export class ProfileDashboardComponent implements OnInit {
   }
 
 }
-
-@Component({
-  moduleId: module.id,
-  selector: 'change-password-dialog',
-  templateUrl: "change-password-dialog.html"
-})
-export class ChangePasswordDialogComponent { }

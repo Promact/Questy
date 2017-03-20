@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.Web.Models;
+﻿using Promact.Trappist.DomainModel.Models;
+using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.ProfileDetails
@@ -19,5 +20,13 @@ namespace Promact.Trappist.Repository.ProfileDetails
     /// <param name="name">takes parameter of string type which has the name of the current user whose details have to be fetched</param>
     /// <returns>fetch the details from the database</returns>
     Task<ApplicationUser> GetUserDetails(string name);
+
+    /// <summary>
+    /// changes User's Password
+    /// </summary>
+    /// <param name="model">takes parameter of type ChangePasswordModel</param>
+    /// <returns>save new password of the user in the database</returns>
+    Task<ApplicationUser> UpdaetUserPassword(ChangePasswordModel model);
+
   }
 }
