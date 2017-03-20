@@ -4,28 +4,42 @@
             <h2>Question</h2>
      
         </div>
-        {{value}}
-        <form>
+        <form (ngSubmit)="SingleQuestionAnswerAdd(multipleAnswerQuestion)">
             <div class="form-fields">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.questionDetail" [ngModelOptions]="{standalone: true}" />
+                    <span *ngIf="display">
+                        <span *ngIf="question.invalid" class="alert-danger">Question field is required</span>
+                    </span>
                 </div>
                 <div class="form-group answer-choices">
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" [ngModelOptions]="{standalone: true}" />
-                        <i class="material-icons">close</i>           
+                        <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}" />
+                        <i class="material-icons">close</i> 
+                        <span *ngIf="display">
+                            <span *ngIf="option1.invalid" class="alert-danger">This field is required</span>
+                        </span>          
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" [ngModelOptions]="{standalone: true}" />
+                        <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel"[ngModelOptions]="{standalone: true}" />
                         <i class="material-icons">close</i>
+                        <span *ngIf="display">
+                            <span *ngIf="option2.invalid" class="alert-danger">This field is required</span>
+                        </span>
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel"[ngModelOptions]="{standalone: true}"/>
                         <i class="material-icons">close</i>
+                        <span *ngIf="display">
+                            <span *ngIf="option3.invalid" class="alert-danger">This field is required</span>
+                        </span>
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}"/>
                         <i class="material-icons">close</i>
+                        <span *ngIf="display">
+                            <span *ngIf="option4.invalid" class="alert-danger">This field is required</span>
+                        </span>
                     </md-checkbox>
                     <md-checkbox [disabled]="true">
                         <input type="text" class="form-control" placeholder="Add Choice" disabled />
@@ -37,19 +51,23 @@
                         <select class="form-control" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let category of categoryName">{{category}}</option>
                         </select>
-                        
+                        <span *ngIf="display">
+                            <span *ngIf="!isCategorySelected" class="alert-danger">Select category</span>
+                        </span>      
                     </div>
                     <div class="form-group col-md-2 col-sm-2 pl0">
                         <select class="form-control" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.difficultyLevel" [ngModelOptions]="{standalone: true}">
                             <option *ngFor="let type of questionType">{{type}}</option>
                         </select>
-                        
+                        <span *ngIf="display">
+                            <span *ngIf="!isDifficultyLevelSelected" class="alert-danger">Select difficulty level</span>
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="actions-area">
                 <button type="button" class="btn">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="multipleQuestionAnswerAdd(multipleAnswerQuestion)">Save</button>
+                <button type="submit" class="btn btn-primary" (click)="validate()">Save</button>
             </div>
         </form>
     </div>

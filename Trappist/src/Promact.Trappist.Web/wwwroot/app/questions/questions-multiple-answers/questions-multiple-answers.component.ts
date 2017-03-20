@@ -12,6 +12,10 @@ import { QuestionsService } from "../questions.service";
 })
 
 export class QuestionsMultipleAnswersComponent {
+    display: boolean = false;
+    isOptionSelected: boolean = true;
+    isCategorySelected: boolean = true;
+    isDifficultyLevelSelected: boolean = true;
     categoryName: string[] = new Array<string>();
     questionType: string[] = ["Easy", "Medium", "Hard"];
     multipleAnswerQuestion: SingleMultipleQuestion = new SingleMultipleQuestion();
@@ -24,14 +28,27 @@ export class QuestionsMultipleAnswersComponent {
             this.multipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].isAnswer = false;
         }
     }
+
+    //Return category list
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryName = CategoriesList;
 
         });
     }
+
+    //Validate options,category and difficulty level selection
+    validate() {
+        this.display = true;
+        if (this.multipleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName == undefined) {
+            this.isCategorySelected = false;
+        }
+        if (this.multipleAnswerQuestion.singleMultipleAnswerQuestion.difficultyLevel == undefined) {
+            this.isDifficultyLevelSelected = false;
+        }
+
+    }
     multipleQuestionAnswerAdd(multipleAnswerQuestion: SingleMultipleQuestion) {
-        console.log(multipleAnswerQuestion);
         this.questionService.addSingleAnswerQuestion(multipleAnswerQuestion).subscribe((response) => {
             if (response.ok) {
 
