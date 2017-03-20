@@ -239,6 +239,11 @@ h6, .h6 {
       }
     }
   }
+
+  .mat-simple-snackbar {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+  }
 }
 
 /* Layout */
@@ -1169,6 +1174,7 @@ footer {
         padding: 0 12px;
         cursor: text;
         height: inherit;
+        min-height: 35px;
 
         .mat-chip {
           font-size: 11px;
@@ -1195,7 +1201,7 @@ footer {
           font-family: 'Open Sans', sans-serif;
 
           .mat-input-wrapper {
-            margin: 0;
+            margin: 6px 0;
             padding: 0;
 
             .mat-input-infix {

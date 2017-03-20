@@ -1,7 +1,10 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
+import { MdDialog } from '@angular/material';
+import { AddCategoryDialogComponent } from "./add-category-dialog.component";
+import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
+import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { MdDialog } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -12,7 +15,7 @@ import { MdDialog } from '@angular/material';
 export class QuestionsDashboardComponent {
 
     categoryName: string[] = new Array<string>();
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
 		this.getAllCategories();
     }
@@ -39,21 +42,13 @@ export class QuestionsDashboardComponent {
       this.dialog.open(DeleteCategoryDialogComponent);
     }
 
+    // Open Delete Question Dialog
+    deleteQuestionDialog() {
+      this.dialog.open(DeleteQuestionDialogComponent);
+    }
+
 }
 
-@Component({
-    moduleId: module.id,
-    selector: 'add-category-dialog',
-    templateUrl: "add-category-dialog.html"
-})
-export class AddCategoryDialogComponent { }
 export class Category {
     CategoryName: string;
 }
-
-@Component({
-  moduleId: module.id,
-  selector: 'delete-category-dialog',
-  templateUrl: "delete-category-dialog.html"
-})
-export class DeleteCategoryDialogComponent { }
