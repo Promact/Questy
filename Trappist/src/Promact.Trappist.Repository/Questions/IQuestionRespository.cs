@@ -1,5 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.QuestionFetchingDto;
+using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 namespace Promact.Trappist.Repository.Questions
