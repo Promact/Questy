@@ -1,5 +1,5 @@
 ﻿export enum QuestionType {
-    single = 0,
-    multiple = 1,
-    programming = 2
+    singleAnswer = 0,
+    multipleAnswer = 1,
+    codeSnippetQuestion = 2
 }

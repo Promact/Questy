@@ -21,7 +21,7 @@ namespace Promact.Trappist.Repository.Categories
         {
             var category = _dbContext.Category.ToList();
             var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
-            return (categoryOrderedByCreatedDateTime);
+            return categoryOrderedByCreatedDateTime;
         }
         #region Adding a CategoryName
         /// <summary>
