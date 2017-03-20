@@ -2,32 +2,33 @@
     <div class="question-type">
         <div class="header">
             <h2>Question</h2>
-            <h5>Single Answer Question</h5>
+            <h5>Single Answer Question</h5>          
         </div>
         <form>
             <div class="form-fields">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Question Test" />
+                    <input type="text" class="form-control" placeholder="Question Test"  [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.questionDetail" [ngModelOptions]="{standalone: true}"/>
                 </div>
                 <div class="form-group answer-choices">
-                    <md-radio-group>
-                        <md-radio-button value="choice1">
-                            <input type="text" class="form-control" placeholder="Answer Choice 1" />
+                    <md-radio-group [(ngModel)]="value" name="first">
+                        {{value}}
+                        <md-radio-button value="0">
+                            <input type="text" class="form-control" placeholder="Answer Choice 1"[(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons">close</i>
+                        </md-radio-button>   
+                        <md-radio-button value="1">
+                            <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons">close</i>               
+                        </md-radio-button>
+                        <md-radio-button value="2">
+                            <input type="text" class="form-control" placeholder="Answer Choice 3"  [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" [ngModelOptions]="{standalone: true}" />
                             <i class="material-icons">close</i>
                         </md-radio-button>
-                        <md-radio-button value="choice2">
-                            <input type="text" class="form-control" placeholder="Answer Choice 2" />
+                        <md-radio-button value="3">
+                            <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" [ngModelOptions]="{standalone: true}" />
                             <i class="material-icons">close</i>
                         </md-radio-button>
-                        <md-radio-button value="choice3">
-                            <input type="text" class="form-control" placeholder="Answer Choice 3" />
-                            <i class="material-icons">close</i>
-                        </md-radio-button>
-                        <md-radio-button value="choice4">
-                            <input type="text" class="form-control" placeholder="Answer Choice 4" />
-                            <i class="material-icons">close</i>
-                        </md-radio-button>
-                        <md-radio-button value="choice5" [disabled]="true">
+                        <md-radio-button value="4" [disabled]="true">
                             <input type="text" class="form-control" placeholder="Add Choice" disabled />
                         </md-radio-button>
                     </md-radio-group>
@@ -35,25 +36,21 @@
                 </div>
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
-                        <select class="form-control">
-                            <option>Select Section</option>
-                            <option>Section 1</option>
-                            <option>Section 2</option>
-                            <option>Section 3</option>
+                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let category of categoryName">{{category}}</option>
                         </select>
+                 
                     </div>
                     <div class="form-group col-md-2 col-sm-2 pl0">
-                        <select class="form-control">
-                            <option>Easy</option>
-                            <option>Medium</option>
-                            <option>Hard</option>
-                        </select>
+                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.difficultyLevel" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let type of questionType" [selected]="type =='Easy'">{{type}}</option>
+                        </select>                      
                     </div>
                 </div>
             </div>
             <div class="actions-area">
                 <button type="button" class="btn">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" (click)="SingleQuestionAnswerAdd(singleAnswerQuestion)">Save</button>
             </div>
         </form>
     </div>

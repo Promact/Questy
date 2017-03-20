@@ -22,6 +22,8 @@ export class QuestionsDashboardComponent {
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
     alpha: string[] = ["a", "b", "c", "d", "e", "..."];
+    i: number=0;
+    categoryName: string[] = new Array<string>();
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
         this.getAllCategories();
