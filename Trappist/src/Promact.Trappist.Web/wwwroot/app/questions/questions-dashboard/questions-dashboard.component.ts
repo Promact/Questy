@@ -5,7 +5,6 @@ import { DeleteCategoryDialogComponent } from "./delete-category-dialog.componen
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { MdDialog } from '@angular/material';
 import { Question } from "../../questions/question.model"
 import { DifficultyLevel } from "../../questions/enum-difficultylevel"
 import { QuestionType } from "../../questions/enum-questiontype"
@@ -18,23 +17,21 @@ import { Category } from "../../questions/category.model"
 export class QuestionsDashboardComponent {
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
-     //To enable enum difficultylevel in template
+    //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
-    alpha: string[] = ["a","b","c","d","e","..."];
-        constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+    alpha: string[] = ["a", "b", "c", "d", "e", "..."];
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
         this.getAllCategories();
     }
-    isCorrectAnswer(isAnswer: boolean)
-    {
-        if (isAnswer)
-        {
+    isCorrectAnswer(isAnswer: boolean) {
+        if (isAnswer) {
             return "correct";
         }
     }
-	//To Get All The categories
+    //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
@@ -51,23 +48,11 @@ export class QuestionsDashboardComponent {
     }
     // Open Delete Category Dialog
     deleteCategoryDialog() {
-      this.dialog.open(DeleteCategoryDialogComponent);
+        this.dialog.open(DeleteCategoryDialogComponent);
     }
 
     // Open Delete Question Dialog
     deleteQuestionDialog() {
-      this.dialog.open(DeleteQuestionDialogComponent);
+        this.dialog.open(DeleteQuestionDialogComponent);
     }
-
-@Component({
-    moduleId: module.id,
-    selector: 'add-category-dialog',
-    templateUrl: "add-category-dialog.html"
-})
-export class AddCategoryDialogComponent { }
-@Component({
-    moduleId: module.id,
-    selector: 'delete-category-dialog',
-    templateUrl: "delete-category-dialog.html"
-})
-export class DeleteCategoryDialogComponent { }
+}
