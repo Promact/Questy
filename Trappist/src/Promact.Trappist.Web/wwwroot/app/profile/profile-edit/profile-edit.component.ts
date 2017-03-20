@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
-import { Http } from "@angular/http";
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { ApplicationUser } from "../profile.model";
@@ -34,7 +33,6 @@ export class ProfileEditComponent implements OnInit {
   */
   updateUserDetails() {
     this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
-
     });
 
     // Open Snackbar

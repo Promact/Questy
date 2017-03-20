@@ -32,8 +32,11 @@ export class ProfileService {
     return this.httpService.put(this.profileApiUrl, editUser);
   }
 
+  /**
+   * user is signed out 
+   */
   logOut() {
-    return this.httpService.get(this.profileApiUrl+"/logOut");
+    return this.httpService.get(this.profileApiUrl + "/logOut");
   }
 
 }
