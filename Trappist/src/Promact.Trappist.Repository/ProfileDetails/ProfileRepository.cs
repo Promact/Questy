@@ -15,12 +15,12 @@ namespace Promact.Trappist.Repository.ProfileDetails
       _dbContext = dbContext;
       _userManager = userManager;
     }
+
     /// <summary>
     /// fetch the profile details of the cureent user 
     /// </summary>
     /// <param name="name">takes parameter of string type which has the name of the current user whose details have to be fetched</param>
-    /// <returns>fetch the details from the database by calling the function in the IProfileRepository</returns>
-
+    /// <returns>fetch the details from the database and return those values</returns>
     public async Task<ApplicationUser> GetUserDetails(string name)
     {
       var user = await _userManager.FindByNameAsync(name);
@@ -37,7 +37,5 @@ namespace Promact.Trappist.Repository.ProfileDetails
       var user = _dbContext.Users.Update(updateUserDetails);
       _dbContext.SaveChanges();
     }
-
-
   }
 }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.ProfileDetails;
 using Promact.Trappist.Web.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -22,22 +21,26 @@ namespace Promact.Trappist.Core.Controllers
     }
 
     /// <summary>
-    /// Gets current user's details
+    /// Gets current user's profile details
     /// </summary>
-    /// <returns>User's details</returns>
+    /// <returns>User's profile details</returns>
     [HttpGet]
     public async Task<IActionResult> GetUserDetails()
     {
+      if (!User.Identity.IsAuthenticated)
+      {
+        Response.Redirect("login");
+      }
       var user = await _profileRepository.GetUserDetails(User.Identity.Name);
       return Ok(user);
     }
 
     /// <summary>
-    /// Updates current user's details
+    /// Update current user's profile details
     /// </summary>
     /// <param name="updateUserDetails">takes parameter of type ApplicationUser which comes from the client side(from body)</param>
     /// <returns>Update user's profile details in database</returns>
-    
+
     [HttpPut]
     public IActionResult UpdateProfile([FromBody]ApplicationUser updateUserDetails)
     {
@@ -48,12 +51,16 @@ namespace Promact.Trappist.Core.Controllers
       }
       return BadRequest();
     }
+
+    /// <summary>
+    /// user logeed out
+    /// </summary>
+    /// <returns> user is logged out and the user's session is ended and is redirected to login page</returns>
     [Route("logOut")]
     [HttpGet]
     public async Task<IActionResult> LogOut()
     {
       await _signInManager.SignOutAsync();
-      Console.Write(User);
       return Ok();
     }
 
