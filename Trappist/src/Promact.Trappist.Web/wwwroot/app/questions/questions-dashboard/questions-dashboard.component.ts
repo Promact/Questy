@@ -15,21 +15,17 @@ import { Category } from "../../questions/category.model"
     selector: "questions-dashboard",
     templateUrl: "questions-dashboard.html"
 })
-
 export class QuestionsDashboardComponent {
-
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
      //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
-
     alpha: string[] = ["a","b","c","d","e","..."];
-    
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+        constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
-		this.getAllCategories();
+        this.getAllCategories();
     }
     isCorrectAnswer(isAnswer: boolean)
     {
@@ -44,18 +40,15 @@ export class QuestionsDashboardComponent {
             this.categoryArray = CategoriesList;
         });
     }
-
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.questionDisplay = questionsList;
         });
     }
-
     // Open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-
     // Open Delete Category Dialog
     deleteCategoryDialog() {
       this.dialog.open(DeleteCategoryDialogComponent);

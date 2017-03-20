@@ -9,5 +9,4 @@ export class Question {
     difficultyLevel: DifficultyLevel;
     category: Category;
     singleMultipleAnswerQuestionOption: Option[] = new Array<Option>();
-
 }
