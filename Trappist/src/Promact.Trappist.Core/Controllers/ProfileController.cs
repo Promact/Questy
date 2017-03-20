@@ -72,7 +72,6 @@ namespace Promact.Trappist.Core.Controllers
       var user = await _userManager.GetUserAsync(User);
       model.Email = user.Email;
       return Ok(await _profileRepository.UpdaetUserPassword(model));
-
     }
 
 
@@ -80,7 +79,6 @@ namespace Promact.Trappist.Core.Controllers
     /// user logeed out
     /// </summary>
     /// <returns> user is logged out and the user's session is ended and is redirected to login page</returns>
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut()
