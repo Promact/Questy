@@ -4,6 +4,7 @@ import { CategoryService } from "../categories.service";
 import { QuestionsService } from "../questions.service";
 import { ProgrammingQuestion } from "../question.programming.model";
 import { DifficultyLevel } from "../difficulty.level.enum";
+import { Category } from "../category.model";
 
 @Component({
     moduleId: module.id,
@@ -15,13 +16,14 @@ export class QuestionsProgrammingComponent {
 
     codingLanguages: string[] = ['Java', 'C++', 'C'];
     selectedCodingLanguages: string[] = new Array<string>();
-    categories: string[] = new Array<string>();
+    categories: Category[] = new Array<Category>();
 
     languageInputText: string = "";
     selectedDifficultyLevel: string;
     questionDetail: string;
-    selectedCategory: string;
+    selectedCategory: Category;
     allContentReady: boolean = false;
+    noLanguageSelected: boolean = false;
 
     checkCodeComplexity: boolean = false;
     checkTimeComplexity: boolean = false;
@@ -32,6 +34,8 @@ export class QuestionsProgrammingComponent {
     constructor(private categoryService: CategoryService, private programmingQuestion: ProgrammingQuestion, private questionService: QuestionsService) {
         this.codingLanguages.sort();
         this.getCategories();
+        this.selectedCategory = new Category();
+        this.selectedDifficultyLevel = "Easy";
     }
 
     getCategories() {
@@ -48,6 +52,7 @@ export class QuestionsProgrammingComponent {
             this.selectedCodingLanguages.push(this.codingLanguages[index]);
             this.codingLanguages.splice(index, 1);
             this.languageInputText = null;
+            this.validate();
         }
     }
 
@@ -57,32 +62,52 @@ export class QuestionsProgrammingComponent {
         this.codingLanguages.sort();
     }
 
+    selectCategory(category: string) {
+        this.selectedCategory = this.categories.find((x) => x.categoryName === category);
+    }
+
     convertLanguageStringToEnum() {
         var languageList: CodingLanguage[] = new Array<CodingLanguage>();
-
-        this.selectedCodingLanguages.forEach((x) => languageList.push(CodingLanguage[x]));
-
-        console.log(languageList);
+        this.selectedCodingLanguages.forEach((x) => {
+            languageList.push(CodingLanguage[x]);
+        });
         return languageList;
     }
 
     submitForm() {
-       this.programmingQuestion.questionDetail = this.questionDetail;
-        this.programmingQuestion.questionType = 2; //Type = programming question 
-        this.programmingQuestion.difficultyLevel = DifficultyLevel[this.selectedDifficultyLevel];
-        this.programmingQuestion.createdBy = "USER"; //To-Do Add current user name
-        this.programmingQuestion.categoryId = 1; //To-Do Add category Id from category class when available
-        this.programmingQuestion.checkCodeComplexity = this.checkCodeComplexity;
-        this.programmingQuestion.checkCodeComplexity = this.checkTimeComplexity;
-        this.programmingQuestion.runBasicTestCase = this.runBasicTestCase;
-        this.programmingQuestion.runCornerTestCase = this.runCornerTestCase;
-        this.programmingQuestion.runNecessaryTestCase = this.runNecessaryTestCase;
-        this.programmingQuestion.languageList = this.convertLanguageStringToEnum();
+        if (this.validate()) {
+            //Map question
+            this.programmingQuestion.questionDetail = this.questionDetail;
+            this.programmingQuestion.questionType = 2; //Type = programming question 
+            this.programmingQuestion.difficultyLevel = DifficultyLevel[this.selectedDifficultyLevel];
+            this.programmingQuestion.createdBy = "USER"; //To-Do Add current user name
+            this.programmingQuestion.categoryId = this.selectedCategory.id;
+            this.programmingQuestion.checkCodeComplexity = this.checkCodeComplexity;
+            this.programmingQuestion.checkCodeComplexity = this.checkTimeComplexity;
+            this.programmingQuestion.runBasicTestCase = this.runBasicTestCase;
+            this.programmingQuestion.runCornerTestCase = this.runCornerTestCase;
+            this.programmingQuestion.runNecessaryTestCase = this.runNecessaryTestCase;
+            this.programmingQuestion.languageList = this.convertLanguageStringToEnum();
 
-        this.questionService.postCodeSnippetQuestion(this.programmingQuestion).subscribe((response) => {
-            if (response == this.programmingQuestion) {
-                console.log("Added successfully");
-            }
-         });
+            this.questionService.postCodeSnippetQuestion(this.programmingQuestion).subscribe((response) => {
+                if (response != null || typeof response != 'undefined') {
+                    //To-Do redirect to another page
+                    console.log("Added successful");
+                }
+            });
+        }
+    }
+
+    validate() {
+        if (this.selectedCodingLanguages.length == 0) {
+            this.noLanguageSelected = true;
+
+            let element = document.getElementById('codingLanguage');
+            element.scrollIntoView(true);
+
+            return false;
+        }
+        this.noLanguageSelected = false;
+        return true;
     }
 }

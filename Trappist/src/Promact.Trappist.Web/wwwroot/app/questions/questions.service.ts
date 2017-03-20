@@ -18,6 +18,10 @@ export class QuestionsService {
         return this.httpService.get(this.questionsApiUrl+"/question");
     }
 
+    /**
+     * post code snippet question
+     * @param codeSnippetQuesion
+     */
     postCodeSnippetQuestion(codeSnippetQuesion: ProgrammingQuestion) {
         return this.httpService.post(this.questionsApiUrl + "/codesnippetquestion", codeSnippetQuesion);
     }
