@@ -2,6 +2,8 @@
 using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
+using System;
 
 namespace Promact.Trappist.Repository.ProfileDetails
 {
@@ -36,6 +38,28 @@ namespace Promact.Trappist.Repository.ProfileDetails
     {
       var user = _dbContext.Users.Update(updateUserDetails);
       _dbContext.SaveChanges();
+    }
+
+    /// <summary>
+    /// Update user password 
+    /// </summary>
+    /// <param name="model">take parameter of type ChangePasswordModel</param>
+    /// <returns> save new password in the database</returns>
+    public async Task<ApplicationUser> UpdaetUserPassword(ChangePasswordModel model)
+    {
+      var user = await _userManager.FindByEmailAsync(model.Email);
+
+      if (user != null)
+      {
+        var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+        if (result.Succeeded)
+        {
+          _dbContext.SaveChanges();
+        }
+        return user;
+      }
+
+      throw new NotImplementedException();
     }
   }
 }
