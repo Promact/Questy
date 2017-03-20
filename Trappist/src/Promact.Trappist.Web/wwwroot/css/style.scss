@@ -997,47 +997,15 @@ footer {
               margin-top: 12px;
             }
           }
+
+          .action-buttons {
+            text-align: right;
+            padding: 15px 0 5px;
+          }
         }
 
         .card-footer {
-          padding: 0 20px 20px;
-          text-align: right;
-          border: 1px solid $color_border;
-          border-top: 0;
-
-          &[hidden] {
-            display: block;
-          }
-
-          .btn[hidden] {
-            display: none;
-          }
-
-          .btn {
-            &:first-child {
-            }
-
-            &:nth-child(2) {
-              background-color: $color_theme;
-              border-color: $color_theme;
-              color: $color_white;
-            }
-
-            &:last-child {
-              background-color: $color_theme;
-              border-color: $color_theme;
-              color: $color_white;
-              text-indent: -9999px;
-              line-height: 0;
-
-              &:after {
-                display: block;
-                content: 'Finish';
-                text-indent: 0;
-                line-height: 1.42857143;
-              }
-            }
-          }
+          display: none;
         }
       }
     }
@@ -1115,6 +1083,7 @@ footer {
     background-color: $color_footer_secondary;
     color: $color_base_secondary;
     position: fixed;
+    left: 0;
     bottom: 0;
     width: $full_size;
     padding: 12px 0;
