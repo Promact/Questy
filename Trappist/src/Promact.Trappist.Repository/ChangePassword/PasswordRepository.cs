@@ -34,6 +34,7 @@ namespace Promact.Trappist.Repository.ChangePassword
         {
           _trappistDbContext.SaveChanges();
         }
+        return user;
       }
 
       throw new NotImplementedException();
