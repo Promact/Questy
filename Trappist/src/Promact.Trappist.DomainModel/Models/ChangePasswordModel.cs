@@ -3,8 +3,8 @@
 
 namespace Promact.Trappist.DomainModel.Models
 {
-    public class ChangePasswordModel
-    {
+  public class ChangePasswordModel
+  {
     [Required]
     [DataType(DataType.Password)]
     [Display(Name = "Current password")]
