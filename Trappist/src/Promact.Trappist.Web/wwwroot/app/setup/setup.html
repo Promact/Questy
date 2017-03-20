@@ -1,66 +1,77 @@
 ﻿<div class="basic-setup">
-    <div class="setup-content">
-        <div class="logo-area">
-            <img src="../../images/logo.png" alt="Logo" />
-        </div>
-        <div class="wizard-area">
-            <form-wizard>
-                <wizard-step [title]="1">
-                    <h2>Setup the Database by providing a connection string</h2>
-                    <form>
-                        <div class="form-group">
-                            <label class="h4">Connection String</label>
-                            <input type="text" class="form-control" />
-                            <p class="help-text">format help: server="servername";database="databasename";integrated security="true"</p>
-                        </div>
-                    </form>
-                </wizard-step>
-                <wizard-step [title]="2">
-                    <h2>Configure Email Settings</h2>
-                    <form>
-                        <div class="form-group">
-                            <label class="h4">Server Name</label>
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">Port</label>
-                            <input type="number" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">User Name</label>
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">Password</label>
-                            <input type="password" class="form-control" />
-                        </div>
-                    </form>
-                </wizard-step>
-                <wizard-step [title]="3">
-                    <h2>Set up Administrator user</h2>
-                    <form>
-                        <div class="form-group">
-                            <label class="h4">Name</label>
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">Email/User Name</label>
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">Password</label>
-                            <input type="password" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label class="h4">Confirm Password</label>
-                            <input type="password" class="form-control" />
-                        </div>
-                    </form>
-                </wizard-step>
-            </form-wizard>
-        </div>
+  <div class="setup-content">
+    <div class="logo-area">
+      <img src="../../images/logo.png" alt="Logo" />
     </div>
-    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
+    <div class="wizard-area">
+      <form-wizard #setup>
+        <wizard-step [title]="1">
+          <h2>Setup the Database by providing a connection string</h2>
+          <form>
+            <div class="form-group">
+              <label class="h4">Connection String</label>
+              <input type="text" class="form-control" />
+              <p class="help-text">format help: server="servername";database="databasename";integrated security="true"</p>
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn btn-primary" (click)="nextStep2(setup)">Next</button>
+            </div>
+          </form>
+        </wizard-step>
+        <wizard-step [title]="2">
+          <h2>Configure Email Settings</h2>
+          <form>
+            <div class="form-group">
+              <label class="h4">Server Name</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">Port</label>
+              <input type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">User Name</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">Password</label>
+              <input type="password" class="form-control" />
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
+              <button type="button" class="btn btn-primary" (click)="nextStep3(setup)">Next</button>
+            </div>
+          </form>
+        </wizard-step>
+        <wizard-step [title]="3">
+          <h2>Set up Administrator user</h2>
+          <form>
+            <div class="form-group">
+              <label class="h4">Name</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">Email/User Name</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">Password</label>
+              <input type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="h4">Confirm Password</label>
+              <input type="password" class="form-control" />
+            </div>
+            <div class="action-buttons">
+              <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
+              <button type="button" class="btn btn-primary" (click)="finish(setup)">Finish</button>
+            </div>
+          </form>
+        </wizard-step>
+      </form-wizard>
+    </div>
+  </div>
+  <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
 </div>
 
 <!--<button (click)="navigateToLogin()">Click</button>-->
