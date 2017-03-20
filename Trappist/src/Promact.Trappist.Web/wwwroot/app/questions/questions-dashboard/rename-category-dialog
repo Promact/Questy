@@ -12,6 +12,6 @@
     </div>
     <div class="dialog-actions">
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="isNameExist"  (click)="categoryedit(category)">Update</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isNameExist" (click)="categoryedit(category)">Update</button>
     </div>
 </div>

@@ -1,5 +1,4 @@
-﻿
-import { Injectable } from "@angular/core";
+﻿import { Injectable } from "@angular/core";
 import { HttpService } from "../core/http.service";
 import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
 import { Category } from "./category.model";
@@ -41,17 +40,19 @@ export class CategoryService {
     }
 
     /*
-    * for Check whether same CategoryName Exists in Database or not
+    * Method to check  same categoryName exists or not
+    *<param name="categoryName">categoryName which willl be checked</param>
     */
     checkDuplicateCategoryName(categoryName: string) {
         return this.httpService.post(this.categoriesApiUrl + "/checkDuplicateCategoryname", categoryName);
     }
 
     /*
-    * edit a Category
+    * Update Category
+    *<param name="id">id whose property is to be updated</param>
+    *<param name="category">category object contains Category details </param>
     */
-    editCategory(id: number, category:Category)
-    {
-        return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
+    updateCategory(id: number, category: Category) {
+        return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
     }
 }
