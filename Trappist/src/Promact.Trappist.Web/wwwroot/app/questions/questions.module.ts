@@ -3,7 +3,8 @@ import { SharedModule } from '../shared/shared.module';
 
 import { questionsRouting } from "./questions.routing";
 import { QuestionsComponent } from "./questions.component";
-import { QuestionsDashboardComponent, AddCategoryDialogComponent, DeleteCategoryDialogComponent, EditCategoryDialogComponent } from "./questions-dashboard/questions-dashboard.component";
+import { QuestionsDashboardComponent, AddCategoryDialogComponent, DeleteCategoryDialogComponent } from "./questions-dashboard/questions-dashboard.component";
+import { RenameCategoryDialogComponent } from "./questions-dashboard/rename-category-dialog.component";
 import { QuestionsSingleAnswerComponent } from "./questions-single-answer/questions-single-answer.component";
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
@@ -19,7 +20,7 @@ import { CategoryService } from "./categories.service";
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
-        EditCategoryDialogComponent,
+        RenameCategoryDialogComponent,
         QuestionsSingleAnswerComponent,
         QuestionsMultipleAnswersComponent,
         QuestionsProgrammingComponent,
@@ -27,7 +28,7 @@ import { CategoryService } from "./categories.service";
     ],
     entryComponents: [
         AddCategoryDialogComponent,
-        EditCategoryDialogComponent,
+        RenameCategoryDialogComponent,
         DeleteCategoryDialogComponent
     ],
     providers: [
