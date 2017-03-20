@@ -1,6 +1,4 @@
-﻿
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { MdDialog } from '@angular/material';
+﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
@@ -8,6 +6,7 @@ import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
 import { Category } from "../category.model";
+import { RenameCategoryDialogComponent } from "./rename-category-dialog.component";
 
 @Component({
     moduleId: module.id,
@@ -30,7 +29,7 @@ export class QuestionsDashboardComponent implements OnInit {
     //To Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
         });
     }
 
@@ -43,86 +42,13 @@ export class QuestionsDashboardComponent implements OnInit {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    //open Edit Category Dialog
-    editCategoryDialog(cat: any) {
-        var prop = this.dialog.open(EditCategoryDialogComponent).componentInstance;
+    //open Rename Category Dialog
+    renameCategoryDialog(cat: any) {
+        var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
         prop.category = JSON.parse(JSON.stringify(cat));
     }
     // Open Delete Category Dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
-
-    // Open Delete Question Dialog
-    deleteQuestionDialog() {
-      this.dialog.open(DeleteQuestionDialogComponent);
-    }
-
-@Component({
-    moduleId: module.id,
-    selector: 'add-category-dialog',
-    templateUrl: "add-category-dialog.html"
-})
-export class AddCategoryDialogComponent {
-    private category: Category = new Category();
-    isNameExist: boolean = false;
-    constructor(private categoryService: CategoryService, private dialog: MdDialog) {
-    }
-
-    /*
-    *Add category in Cateogry Model
-    */
-    CategoryAdd(category: Category) {
-        this.categoryService.addCategory(category).subscribe((response) => {
-            this.dialog.closeAll();
-        });
-    }
-
-    /* to check Whether CategoryName Exists or not
-    * if categoryName Exists it will return true and button will be disabled
-    */
-    CheckDuplicateCategoryName(categoryName: string) {
-        this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
-            this.isNameExist = result;
-        });
-    }
-
 }
-
-@Component({
-    moduleId: module.id,
-    selector: 'edit-category-dialog',
-    templateUrl: "edit-category-dialog.html"
-})
-
-export class EditCategoryDialogComponent {
-    category: Category = new Category();
-    isNameExist: boolean = false;
-    constructor(private categoryService: CategoryService, private dialog: MdDialog) {
-    }
-
-    /*
-   * edit category from Cateogry Model
-   */
-    categoryedit(category: Category) {
-        this.categoryService.editCategory(category.id, category).subscribe((response) => {
-            this.dialog.closeAll();
-        });
-    }
-
-    /* to check Whether CategoryName Exists or not
-    * if categoryName Exists it will return true and button will be disabled
-    */
-    CheckDuplicateCategoryName(categoryName: string) {
-        this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
-            this.isNameExist = result;
-        });
-    }
-}
-
-@Component({
-    moduleId: module.id,
-    selector: 'delete-category-dialog',
-    templateUrl: "delete-category-dialog.html"
-})
-export class DeleteCategoryDialogComponent { }

@@ -24,11 +24,11 @@ namespace Promact.Trappist.Repository.Categories
             return (category);
         }
 
-        #region Adding a CategoryName
+        #region Add Category
         /// <summary>
-        /// Adding a Category in Category model
+        /// Method to add a Category
         /// </summary>
-        /// <param name="catagory">Object of class Category</param>
+        /// <param name="catagory">category object contains category details</param>
         public void AddCategory(Category category)
         {
             _dbContext.Category.Add(category);
@@ -41,8 +41,7 @@ namespace Promact.Trappist.Repository.Categories
         /// will check id Exists in Category Model or not
         /// </summary>
         /// <param name="key">take value from Route</param>
-        /// <returns></returns>
-
+        /// <returns>true if key found else false</returns>
         public bool SearchForCategoryId(int key)
         {
 
@@ -60,18 +59,19 @@ namespace Promact.Trappist.Repository.Categories
         /// Find category of respective id
         /// </summary>
         /// <param name="key">id that will find category</param>
-        /// <returns></returns>
+        /// <returns>category object contains category details</returns>
         public Category GetCategory(int key)
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
         #endregion
 
-        #region Edit A Category Name
-        // <summary>
-        // Edit a Category from Category Table
-        // </summary>
-        // <param name="catagory">object of the class Category</param>
+        #region Update  Category
+        /// <summary>
+        /// Method to Update Category
+        /// </summary>
+        /// <param name="id">key whose value will be Updated</param>
+        /// <param name="category">category object contains category details</param>
         public void CategoryUpdate(int id, Category category)
         {
             var categoryToUpdate = GetCategory(id);
@@ -83,9 +83,9 @@ namespace Promact.Trappist.Repository.Categories
 
         #region Check Duplicate Category Name Exists or not
         /// <summary>
-        /// check whether same Category Name Exists Or not
+        /// Method to Check Same CategoryName Exists or not
         /// </summary>
-        /// <param name="categoryName"></param>
+        /// <param name="categoryName">CategoryName</param>
         /// <returns>true if Exists else False</returns>
         public bool CheckDuplicateCategoryName(string categoryName)
         {

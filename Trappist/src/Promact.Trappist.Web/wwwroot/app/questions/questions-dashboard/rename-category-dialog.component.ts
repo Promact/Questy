@@ -1,24 +1,25 @@
 ﻿import { Component } from "@angular/core";
-import { Category } from "../category.model";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
+import { Category } from "../category.model";
 
 @Component({
     moduleId: module.id,
-    selector: 'add-category-dialog',
-    templateUrl: "add-category-dialog.html"
+    selector: 'rename-category-dialog',
+    templateUrl: "rename-category-dialog.html"
 })
-export class AddCategoryDialogComponent {
-    private category: Category = new Category();
+
+export class RenameCategoryDialogComponent {
+    category: Category = new Category();
     isNameExist: boolean = false;
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
 
     /*
-    *Add category in Cateogry Model
-    */
-    CategoryAdd(category: Category) {
-        this.categoryService.addCategory(category).subscribe((response) => {
+   * edit category from Cateogry Model
+   */
+    categoryedit(category: Category) {
+        this.categoryService.editCategory(category.id, category).subscribe((response) => {
             this.dialog.closeAll();
         });
     }
