@@ -8,12 +8,12 @@
             <label class="h4">Global URL</label>
             <div class="url-container">
                 <input type="text" class="form-control" [(ngModel)]="settingObject.link" name="Test Link"/>
-                <i class="material-icons" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="isCopied1 = true">content_copy</i>
+                <i class="material-icons" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">content_copy</i>
             </div>
         </div>
     </div>
     <div class="dialog-actions">
         <button type="button" class="btn" md-dialog-close>Close</button>
-        <button type="submit" class="btn btn-primary" [class.btn-success]="isCopied1" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="isCopied1 = true">Copy</button>
+        <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">Copy</button>
     </div>
 </div>

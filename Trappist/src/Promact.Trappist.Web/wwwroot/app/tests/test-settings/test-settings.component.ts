@@ -3,7 +3,7 @@ import { MdDialog } from '@angular/material';
 import { Test } from "../tests.model";
 import { TestSettingService } from "../testsetting.service";
 import { ActivatedRoute } from '@angular/router';
-import { TestLaunchDialogComponent } from "./test-launch-dialog.component";
+
 
 @Component({
     moduleId: module.id,
@@ -58,7 +58,7 @@ export class TestSettingsComponent{
 })
 
 export class TestLaunchDialogComponent {
-    isCopied1: boolean = true;
+    copiedContent: boolean = true;
     settingObject: Test = new Test();
     isDisplay: string = this.settingObject.link;
 }
