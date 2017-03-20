@@ -56,7 +56,7 @@
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName" [ngModelOptions]="{standalone: true}">
                             <option>Select Category</option>
-                            <option *ngFor="let category of categoryName">{{category}}</option>
+                            <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
                         <span *ngIf="display">
                             <span *ngIf="!isCategorySelected" class="alert-danger">Select category</span>

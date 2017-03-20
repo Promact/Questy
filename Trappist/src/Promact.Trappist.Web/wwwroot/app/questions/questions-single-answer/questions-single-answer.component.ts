@@ -1,6 +1,8 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
+import { MdSnackBar } from '@angular/material';
 import { CategoryService } from "../categories.service";
 import { Category } from "../category.model";
+import { Router } from '@angular/router';
 import { SingleMultipleAnswerQuestionOption } from "../options.model";
 import { SingleMultipleQuestion } from "../single-multiple-question";
 import { QuestionsService } from "../questions.service";
@@ -16,10 +18,10 @@ export class QuestionsSingleAnswerComponent {
     isOptionSelected: boolean = true;
     isCategorySelected: boolean = true;
     isDifficultyLevelSelected: boolean = true;
-    categoryName: string[] = new Array<string>();
+    categoryArray: Category[] = new Array<Category>();
     questionType: string[] = new Array<string>();
     singleAnswerQuestion: SingleMultipleQuestion = new SingleMultipleQuestion();
-    constructor(private categoryService: CategoryService, private questionService: QuestionsService) {
+    constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {
             this.questionType = ["Easy", "Medium", "Hard"];  
             this.getAllCategories();               
             this.singleAnswerQuestion = new SingleMultipleQuestion();
@@ -34,7 +36,7 @@ export class QuestionsSingleAnswerComponent {
     //Return category list
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
             
         });
     }
@@ -43,6 +45,7 @@ export class QuestionsSingleAnswerComponent {
     validate()
     {
         this.display = true;
+     
         if (this.value == 5)
         {
             this.isOptionSelected = false;
@@ -66,6 +69,14 @@ export class QuestionsSingleAnswerComponent {
             if (response.ok) {
                 
                               }  
-                        });     
+        });
+        let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
+            duration: 3000,
+        });
+        snackBarRef.afterDismissed().subscribe(() => {
+            this.router.navigate(['/questions']);
+
+        });      
     }
+    
 }

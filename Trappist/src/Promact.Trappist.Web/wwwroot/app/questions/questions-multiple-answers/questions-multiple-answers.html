@@ -6,36 +6,37 @@
         </div>
         <form (ngSubmit)="SingleQuestionAnswerAdd(multipleAnswerQuestion)">
             <div class="form-fields">
+                {{display}}
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.questionDetail" [ngModelOptions]="{standalone: true}" />
+                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.questionDetail" [ngModelOptions]="{standalone: true}" id="question" #question="ngModel" required/>
                     <span *ngIf="display">
                         <span *ngIf="question.invalid" class="alert-danger">Question field is required</span>
                     </span>
                 </div>
                 <div class="form-group answer-choices">
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}" />
+                        <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}" required />
                         <i class="material-icons">close</i> 
                         <span *ngIf="display">
                             <span *ngIf="option1.invalid" class="alert-danger">This field is required</span>
                         </span>          
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel"[ngModelOptions]="{standalone: true}" />
+                        <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel"[ngModelOptions]="{standalone: true}"required />
                         <i class="material-icons">close</i>
                         <span *ngIf="display">
                             <span *ngIf="option2.invalid" class="alert-danger">This field is required</span>
                         </span>
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel"[ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel"[ngModelOptions]="{standalone: true}" required/>
                         <i class="material-icons">close</i>
                         <span *ngIf="display">
                             <span *ngIf="option3.invalid" class="alert-danger">This field is required</span>
                         </span>
                     </md-checkbox>
                     <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].isAnswer" name="first">
-                        <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}" required/>
                         <i class="material-icons">close</i>
                         <span *ngIf="display">
                             <span *ngIf="option4.invalid" class="alert-danger">This field is required</span>
@@ -44,12 +45,16 @@
                     <md-checkbox [disabled]="true">
                         <input type="text" class="form-control" placeholder="Add Choice" disabled />
                     </md-checkbox>
+                    <span *ngIf="display">
+                        <span *ngIf="!isOptionSelected" class="alert-danger">Please select your answer</span>
+                    </span>
                     <p class="tip">Tip: Click the check boxes to mark the correct answers</p>
                 </div>
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName" [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let category of categoryName">{{category}}</option>
+                            <option>Select Category</option>
+                            <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
                         <span *ngIf="display">
                             <span *ngIf="!isCategorySelected" class="alert-danger">Select category</span>

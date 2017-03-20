@@ -1,6 +1,8 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
+import { MdSnackBar } from '@angular/material';
 import { CategoryService } from "../categories.service";
 import { Category } from "../category.model";
+import { Router } from '@angular/router';
 import { SingleMultipleAnswerQuestionOption } from "../options.model";
 import { SingleMultipleQuestion } from "../single-multiple-question";
 import { QuestionsService } from "../questions.service";
@@ -16,10 +18,10 @@ export class QuestionsMultipleAnswersComponent {
     isOptionSelected: boolean = true;
     isCategorySelected: boolean = true;
     isDifficultyLevelSelected: boolean = true;
-    categoryName: string[] = new Array<string>();
+    categoryArray: Category[] = new Array<Category>();
     questionType: string[] = ["Easy", "Medium", "Hard"];
     multipleAnswerQuestion: SingleMultipleQuestion = new SingleMultipleQuestion();
-    constructor(private categoryService: CategoryService, private questionService: QuestionsService) {
+    constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {
         this.getAllCategories();
         this.multipleAnswerQuestion = new SingleMultipleQuestion();
         this.multipleAnswerQuestion.singleMultipleAnswerQuestion.questionType = 1;
@@ -32,7 +34,7 @@ export class QuestionsMultipleAnswersComponent {
     //Return category list
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
-            this.categoryName = CategoriesList;
+            this.categoryArray = CategoriesList;
 
         });
     }
@@ -40,6 +42,13 @@ export class QuestionsMultipleAnswersComponent {
     //Validate options,category and difficulty level selection
     validate() {
         this.display = true;
+        if (this.multipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer == false &&
+            this.multipleAnswerQuestion.singleMultipleAnswerQuestionOption[1].isAnswer == false &&
+            this.multipleAnswerQuestion.singleMultipleAnswerQuestionOption[2].isAnswer == false &&
+            this.multipleAnswerQuestion.singleMultipleAnswerQuestionOption[3].isAnswer == false)
+        {
+            this.isOptionSelected = false;
+        }
         if (this.multipleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName == undefined) {
             this.isCategorySelected = false;
         }
@@ -54,5 +63,12 @@ export class QuestionsMultipleAnswersComponent {
 
             }
         });
+        let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
+            duration: 3000,
+        });
+        snackBarRef.afterDismissed().subscribe(() => {
+            this.router.navigate(['/questions']);
+
+        });     
     }
 }
