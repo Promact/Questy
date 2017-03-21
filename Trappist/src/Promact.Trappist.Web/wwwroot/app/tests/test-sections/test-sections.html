@@ -1,0 +1,94 @@
+﻿<div class="test-create-steps test-sections">
+  <div class="header-block">
+    <div class="container">
+      <h1>
+        <span [hidden]="editName">BBIT 10-08-2017</span>
+        <input type="text" class="form-control" [hidden]="!editName" />
+        <i class="material-icons" (click)="editName = !editName">edit</i>
+      </h1>
+    </div>
+  </div>
+  <div class="container">
+    <h2>Select sections to add in your test</h2>
+    <ul class="sections-list">
+      <li>
+        <label for="section1">
+          <input type="checkbox" id="section1" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">English Communication</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section2">
+          <input type="checkbox" id="section2" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">Logical Reasoning & Data Interpretation</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section3">
+          <input type="checkbox" id="section3" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">Quantitative Ability</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section4">
+          <input type="checkbox" id="section4" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">Programming</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section5">
+          <input type="checkbox" id="section5" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">English Writing</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section6">
+          <input type="checkbox" id="section6" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">General Awareness</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+      <li>
+        <label for="section7">
+          <input type="checkbox" id="section7" />
+          <span class="section-box clearfix">
+            <span class="h4 pull-left">Physics</span>
+            <i class="material-icons pull-right">check</i>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </div>
+  <div class="footer-block clearfix">
+    <div class="container">
+      <ul class="steps pull-left">
+        <li class="h5 active">Select Sections</li>
+        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+        <li class="h5">Select Questions</li>
+        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+        <li class="h5">Settings & Schedule</li>
+      </ul>
+      <div class="buttons-block pull-right">
+        <button type="button" class="btn" [routerLink]="['/tests']">Save & Exit</button>
+        <button type="button" class="btn btn-primary">Save & Share</button>
+      </div>
+    </div>
+  </div>
+</div>
