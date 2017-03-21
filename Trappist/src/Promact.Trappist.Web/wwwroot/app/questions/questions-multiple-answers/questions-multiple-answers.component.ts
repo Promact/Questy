@@ -3,7 +3,7 @@ import { MdSnackBar } from '@angular/material';
 import { CategoryService } from "../categories.service";
 import { Category } from "../category.model";
 import { Router } from '@angular/router';
-import { SingleMultipleAnswerQuestionOption } from "../options.model";
+import { SingleMultipleAnswerQuestionOption } from "../single-multiple-question-option.model";
 import { SingleMultipleQuestion } from "../single-multiple-question";
 import { QuestionsService } from "../questions.service";
 
@@ -18,8 +18,9 @@ export class QuestionsMultipleAnswersComponent {
     isOptionSelected: boolean = true;
     isCategorySelected: boolean = true;
     isDifficultyLevelSelected: boolean = true;
+    questionType: string[]=new Array<string>();
     categoryArray: Category[] = new Array<Category>();
-    questionType: string[] = ["Easy", "Medium", "Hard"];
+    
     multipleAnswerQuestion: SingleMultipleQuestion = new SingleMultipleQuestion();
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {
         this.getAllCategories();
@@ -35,7 +36,7 @@ export class QuestionsMultipleAnswersComponent {
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
-
+            this.questionType=["Easy", "Medium", "Hard"];
         });
     }
 

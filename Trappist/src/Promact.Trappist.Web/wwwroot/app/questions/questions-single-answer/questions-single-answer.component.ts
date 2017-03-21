@@ -3,7 +3,7 @@ import { MdSnackBar } from '@angular/material';
 import { CategoryService } from "../categories.service";
 import { Category } from "../category.model";
 import { Router } from '@angular/router';
-import { SingleMultipleAnswerQuestionOption } from "../options.model";
+import { SingleMultipleAnswerQuestionOption } from "../single-multiple-question-option.model";
 import { SingleMultipleQuestion } from "../single-multiple-question";
 import { QuestionsService } from "../questions.service";
 @Component({
