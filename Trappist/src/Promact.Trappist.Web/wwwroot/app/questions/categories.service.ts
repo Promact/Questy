@@ -38,21 +38,4 @@ export class CategoryService {
     updateCategory(id: number, category: Category) {
         return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
     }
-
-    /*
-    * Method to check  same categoryName exists or not
-    *<param name="categoryName">categoryName which willl be checked</param>
-    */
-    checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/checkDuplicateCategoryname", categoryName);
-    }
-
-    /*
-    * Update Category
-    *<param name="id">id whose property is to be updated</param>
-    *<param name="category">category object contains Category details </param>
-    */
-    updateCategory(id: number, category: Category) {
-        return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
-    }
 }
