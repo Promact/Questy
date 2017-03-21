@@ -33,7 +33,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
     /// Updates current user's details
     /// </summary>
     /// <param name="updateUserDetails"></param>
-    /// <returns>Update user's profile details in database</returns>
+    /// <returns>Update user profile details in database</returns>
     public void UpdateProfile(ApplicationUser updateUserDetails)
     {
       var user = _dbContext.Users.Update(updateUserDetails);
@@ -48,7 +48,6 @@ namespace Promact.Trappist.Repository.ProfileDetails
     public async Task<ApplicationUser> UpdaetUserPassword(ChangePasswordModel model)
     {
       var user = await _userManager.FindByEmailAsync(model.Email);
-
       if (user != null)
       {
         var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -58,7 +57,6 @@ namespace Promact.Trappist.Repository.ProfileDetails
         }
         return user;
       }
-
       throw new NotImplementedException();
     }
   }

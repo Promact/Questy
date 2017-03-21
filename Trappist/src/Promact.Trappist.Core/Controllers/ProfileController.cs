@@ -26,7 +26,7 @@ namespace Promact.Trappist.Core.Controllers
     /// <summary>
     /// Gets current user's profile details
     /// </summary>
-    /// <returns>User's profile details</returns>
+    /// <returns>User profile details</returns>
     [HttpGet]
     public async Task<IActionResult> GetUserDetails()
     {
@@ -42,8 +42,7 @@ namespace Promact.Trappist.Core.Controllers
     /// Update current user's profile details
     /// </summary>
     /// <param name="updateUserDetails">takes parameter of type ApplicationUser which comes from the client side(from body)</param>
-    /// <returns>Update user's profile details in database</returns>
-
+    /// <returns>Update user profile details in database</returns>
     [HttpPut]
     public IActionResult UpdateProfile([FromBody]ApplicationUser updateUserDetails)
     {
@@ -59,7 +58,7 @@ namespace Promact.Trappist.Core.Controllers
     /// Update user password 
     /// </summary>
     /// <param name="model">takes the parameter of type ChangePasswordModel</param>
-    /// <returns>call UpdaetUserPassword() to save the new password in the database</returns>
+    /// <returns>save the new password in the database</returns>
     [Route("password")]
     [HttpPut]
     public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
@@ -68,17 +67,15 @@ namespace Promact.Trappist.Core.Controllers
       {
         return BadRequest();
       }
-
       var user = await _userManager.GetUserAsync(User);
       model.Email = user.Email;
       return Ok(await _profileRepository.UpdaetUserPassword(model));
     }
 
-
     /// <summary>
     /// user logeed out
     /// </summary>
-    /// <returns> user is logged out and the user's session is ended and is redirected to login page</returns>
+    /// <returns> user is logged outS and is redirected to login page</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut()

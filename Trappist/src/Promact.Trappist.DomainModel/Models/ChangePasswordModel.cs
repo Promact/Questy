@@ -21,6 +21,7 @@ namespace Promact.Trappist.DomainModel.Models
     [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; }
 
+    [EmailAddress]
     public string Email { get; set; }
   }
 }

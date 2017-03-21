@@ -9,9 +9,7 @@ import { ProfileService } from "../profile.service";
   selector: "profile-edit",
   templateUrl: "profile-edit.html"
 })
-
 export class ProfileEditComponent implements OnInit {
-
   editUser: ApplicationUser = new ApplicationUser();
   constructor(public profileService: ProfileService, private router: Router, public snackBar: MdSnackBar) { }
 
@@ -42,8 +40,6 @@ export class ProfileEditComponent implements OnInit {
     snackBarRef.afterDismissed().subscribe(() => {
       this.router.navigate(['/profile']);
     });
-
   }
-
 }
 

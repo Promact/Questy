@@ -6,7 +6,6 @@ namespace Promact.Trappist.Repository.ProfileDetails
 {
   public interface IProfileRepository
   {
-
     /// <summary>
     /// Updates current user's profile details
     /// </summary>
@@ -27,6 +26,5 @@ namespace Promact.Trappist.Repository.ProfileDetails
     /// <param name="model">takes parameter of type ChangePasswordModel</param>
     /// <returns>save new password of the user in the database</returns>
     Task<ApplicationUser> UpdaetUserPassword(ChangePasswordModel model);
-
   }
 }
