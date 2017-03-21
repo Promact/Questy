@@ -31,7 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         ///</summary>
         /// <param name="category">category object contains category details</param>
         /// <returns>category object contains category details</returns>
-        public IActionResult catagoryAdd([FromBody] Category category)
+        public IActionResult CatagoryAdd([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace Promact.Trappist.Core.Controllers
         /// true if Name Exists in Database
         /// False if not Exists
         /// </returns>
-        [HttpPost("checkDuplicateCategoryname")]
+        [HttpPost("checkduplicatecategoryname")]
         public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
         {
             return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));

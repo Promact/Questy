@@ -1,14 +1,14 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
-import { MdDialog } from '@angular/material';
+import { MdDialog } from "@angular/material";
 import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
 import { CategoryService } from "../categories.service";
-import { Question } from "../../questions/question.model"
-import { DifficultyLevel } from "../../questions/enum-difficultylevel"
-import { QuestionType } from "../../questions/enum-questiontype"
-import { Category } from "../../questions/category.model"
+import { Question } from "../../questions/question.model";
+import { DifficultyLevel } from "../../questions/enum-difficultylevel";
+import { QuestionType } from "../../questions/enum-questiontype";
+import { Category } from "../../questions/category.model";
 import { RenameCategoryDialogComponent } from "./rename-category-dialog.component";
 
 @Component({
@@ -22,15 +22,13 @@ export class QuestionsDashboardComponent implements OnInit {
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
     private category: Category = new Category();
-    //To enable enum difficultylevel in template
+    // to enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
-    //To enable enum questiontype in template 
+    // to enable enum questiontype in template 
     QuestionType = QuestionType;
     alpha: string[] = ["a", "b", "c", "d", "e", "..."];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
-
     }
-
     ngOnInit() {
         this.getAllQuestions();
         this.getAllCategories();
@@ -40,7 +38,7 @@ export class QuestionsDashboardComponent implements OnInit {
             return "correct";
         }
     }
-    //To Get All The categories
+    // to Get All The categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
@@ -51,21 +49,21 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = questionsList;
         });
     }
-    // Open Add Category Dialog
+    // open Add Category Dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    //open Rename Category Dialog
+    // open Rename Category Dialog
     renameCategoryDialog(category: any) {
         var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
         prop.category = JSON.parse(JSON.stringify(category));
     }
-    // Open Delete Category Dialog
+    // open Delete Category Dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
 
-    // Open Delete Question Dialog
+    // open Delete Question Dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);
     }

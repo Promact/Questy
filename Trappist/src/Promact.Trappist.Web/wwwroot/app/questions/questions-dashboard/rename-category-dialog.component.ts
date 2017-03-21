@@ -20,7 +20,7 @@ export class RenameCategoryDialogComponent {
    *<param name="category">category object cobtains Category details </param>
    *after sucessful adding rename-category-diaalog will be closed
    */
-    categoryUpdate(category: Category) {
+    updateCategory(category: Category) {
         this.categoryService.updateCategory(category.id, category).subscribe((response) => {
             this.dialog.closeAll();
         });
@@ -30,7 +30,7 @@ export class RenameCategoryDialogComponent {
     *<param name="categoryName">categoryName </param>
     * if categoryName Exists it will return true and button will be disabled
     */
-    CheckDuplicateCategoryName(categoryName: string) {
+    checkDuplicateCategoryName(categoryName: string) {
         this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
             this.isNameExist = result;
         });

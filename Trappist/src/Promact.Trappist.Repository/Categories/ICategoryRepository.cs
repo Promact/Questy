@@ -9,11 +9,15 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <returns>Category list</returns>
         IEnumerable<Category> GetAllCategories();
-
-        void AddCategory(Category catagory);
         /// <summary>
         /// Method to add a Category
         /// </summary>
+        /// <param name="catagory">category object contains category details</param>
+        void AddCategory(Category catagory);
+        /// <summary>
+        /// Method to Update Category
+        /// </summary>
+        /// <param name="id">id whose property will be Updated</param>
         /// <param name="catagory">category object contains category details</param>
         void CategoryUpdate(int id, Category catagory);
         /// <summary>
@@ -23,7 +27,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <returns>true if Exists else False</returns>
         bool CheckDuplicateCategoryName(string categoryName);
         /// <summary>
-        /// Find category of respective id
+        /// Method to Find category of respective id
         /// </summary>
         /// <param name="key">id that will find category</param>
         /// <returns>category object contains category details</returns>

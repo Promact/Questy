@@ -40,11 +40,10 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to check Whether Id is Exists or not
         /// </summary>
-        /// <param name="key">id have to search</param>
+        /// <param name="key">id which have to search</param>
         /// <returns>true if key found else false</returns>
         public bool SearchForCategoryId(int key)
         {
-
             var categoryFind = _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
             if (categoryFind == null)
             {

@@ -13,23 +13,21 @@ export class AddCategoryDialogComponent {
     isNameExist: boolean = false;
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
-
     /*
     * method to add Category
     *<param name="category">category object contains Category details</param>
     *After Sucessful Addition it will Close add-category-dialog
     */
-    CategoryAdd(category: Category) {
+    addCategory(category: Category) {
         this.categoryService.addCategory(category).subscribe((response) => {
             this.dialog.closeAll();
         });
     }
-
     /* method to check Whether same CategoryName Exists or not
     *<param name="categoryName">categoryname to check it Exists or not</param>
     * if categoryName Exists it will return true and button will be disabled
     */
-    CheckDuplicateCategoryName(categoryName: string) {
+    checkDuplicateCategoryName(categoryName: string) {
         this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
             this.isNameExist = result;
         });

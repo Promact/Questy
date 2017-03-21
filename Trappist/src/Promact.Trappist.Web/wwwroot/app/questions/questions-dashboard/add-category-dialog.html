@@ -6,12 +6,12 @@
     <md-dialog-content>
         <div class="form-group">
             <label class="h4">Section Name</label>
-            <input type="text" class="form-control" (keyup)="CheckDuplicateCategoryName(category.categoryName)" [(ngModel)]="category.categoryName" placeholder="Ex. General Knowledge" />
-            <span *ngIf="isNameExist" style="color:darkred">*Category Name Already Exists</span>
+            <input type="text" class="form-control" (keyup)="checkDuplicateCategoryName(category.categoryName)" [(ngModel)]="category.categoryName" placeholder="Ex. General Knowledge" />
+            <span *ngIf="isNameExist" style="color:red">*Category Name Already Exists</span>
         </div>
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="isNameExist" (click)="CategoryAdd(category)">Create</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isNameExist" (click)="addCategory(category)">Create</button>
     </md-dialog-actions>
 </div>
