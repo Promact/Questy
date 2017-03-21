@@ -1,8 +1,10 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -26,13 +28,13 @@ namespace Promact.Trappist.Repository.Categories
 
         #region Add Category
         /// <summary>
-        /// Method to add a Category
+        /// Method to Add a Category
         /// </summary>
         /// <param name="catagory">category object contains category details</param>
-        public void AddCategory(Category category)
+        public async Task AddCategoryAsync(Category category)
         {
             _dbContext.Category.Add(category);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
         #endregion
 
@@ -42,9 +44,9 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">id which have to search</param>
         /// <returns>true if key found else false</returns>
-        public bool SearchForCategoryId(int key)
+        public async Task<bool> SearchForCategoryIdAsync(int key)
         {
-            var categoryFind = _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            var categoryFind = await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
             if (categoryFind == null)
             {
                 return false;
@@ -59,9 +61,9 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">id that will find category</param>
         /// <returns>category object contains category details</returns>
-        public Category GetCategory(int key)
+        public async Task<Category> GetCategoryAsync(int key)
         {
-            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
         }
         #endregion
 
@@ -71,12 +73,12 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="id">key whose Property will be Updated</param>
         /// <param name="category">category object contains category details</param>
-        public void CategoryUpdate(int id, Category category)
+        public async Task CategoryUpdateAsync(int id, Category category)
         {
-            var categoryToUpdate = GetCategory(id);
-            categoryToUpdate.CategoryName = category.CategoryName;
-            _dbContext.Category.Update(categoryToUpdate);
-            _dbContext.SaveChanges();
+            var categoryToUpdate = GetCategoryAsync(id);
+            categoryToUpdate.Result.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate.Result);
+            await _dbContext.SaveChangesAsync();
         }
         #endregion
 
@@ -85,11 +87,15 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to Check Same CategoryName Exists or not
         /// </summary>
         /// <param name="categoryName">categoryname will be checked that it is Exists or not</param>
-        /// <returns>true if Exists else False</returns>
-        public bool CheckDuplicateCategoryName(string categoryName)
+        /// <returns>true if Exists else false</returns>
+        public async Task<bool> CheckDuplicateCategoryNameAsync(string categoryName)
         {
-            var isCategoryNameExist = _dbContext.Category.Any(check => check.CategoryName == categoryName);
-            return isCategoryNameExist;
+            var isCategoryNameExist = await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
+            if (isCategoryNameExist == false)
+            {
+                return false;
+            }
+            return true;
         }
         #endregion
     }

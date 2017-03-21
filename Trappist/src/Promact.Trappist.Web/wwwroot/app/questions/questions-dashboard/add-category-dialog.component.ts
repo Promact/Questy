@@ -20,8 +20,8 @@ export class AddCategoryDialogComponent {
     */
     addCategory(category: Category) {
         this.categoryService.addCategory(category).subscribe((response) => {
-            this.dialog.closeAll();
         });
+        this.dialog.closeAll();
     }
     /* method to check Whether same CategoryName Exists or not
     *<param name="categoryName">categoryname to check it Exists or not</param>

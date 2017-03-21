@@ -22,8 +22,8 @@ export class RenameCategoryDialogComponent {
    */
     updateCategory(category: Category) {
         this.categoryService.updateCategory(category.id, category).subscribe((response) => {
-            this.dialog.closeAll();
         });
+        this.dialog.closeAll();
     }
 
     /* to check Whether same CategoryName Exists or not

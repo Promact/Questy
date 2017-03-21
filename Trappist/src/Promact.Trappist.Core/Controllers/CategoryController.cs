@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/category")]
+    [Route("api")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -16,6 +17,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Get All Categories
         /// </summary>
         /// <returns>Category List</returns>
+        [Route("category")]
         [HttpGet]
         public IActionResult GetAllCategories()
         {
@@ -24,20 +26,21 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         #region post Method 
+        [Route("category")]
         [HttpPost]
         /// <summary>
         /// Post Method 
-        /// Method to add category
+        /// Method to Add Category
         ///</summary>
         /// <param name="category">category object contains category details</param>
         /// <returns>category object contains category details</returns>
-        public IActionResult CatagoryAdd([FromBody] Category category)
+        public async Task<IActionResult> CategoryAddAsync([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _categoryRepository.AddCategory(category);
+            await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
         #endregion
@@ -49,19 +52,20 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">Take from Route whose Property to be Update</param>
         /// <param name="category">category object contains category details</param>
         /// <returns>Updated category object contains category details</returns>
-        [HttpPut("{id}")]
-        public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
+        [Route("category/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> CategoryUpdateAsync([FromRoute] int id, [FromBody] Category category)
         {
-            var searchById = _categoryRepository.SearchForCategoryId(id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (searchById == false)
+            var searchById = await _categoryRepository.SearchForCategoryIdAsync(id);
+            if (!searchById)
             {
                 return NotFound();
             }
-            _categoryRepository.CategoryUpdate(id, category);
+            await _categoryRepository.CategoryUpdateAsync(id, category);
             return Ok(category);
         }
         #endregion
@@ -75,10 +79,11 @@ namespace Promact.Trappist.Core.Controllers
         /// true if Name Exists in Database
         /// False if not Exists
         /// </returns>
-        [HttpPost("checkduplicatecategoryname")]
-        public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
+        [Route("category/checkduplicatecategoryname")]
+        [HttpPost]
+        public async Task<IActionResult> CheckDuplicateCategoryNameAsync([FromBody]string categoryName)
         {
-            return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
+            return Ok(await _categoryRepository.CheckDuplicateCategoryNameAsync(categoryName));
         }
         #endregion
     }
