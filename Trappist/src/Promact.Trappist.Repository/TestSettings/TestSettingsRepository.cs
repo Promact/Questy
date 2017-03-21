@@ -9,7 +9,7 @@ namespace Promact.Trappist.Repository.TestSettings
     public class TestSettingsRepository : ITestSettingsRepository
     {
         private readonly TrappistDbContext _dbContext;
-        Test test = new Test();
+        
 
         public TestSettingsRepository(TrappistDbContext dbContext)
         {
@@ -48,6 +48,7 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <returns>Settings Saved for the selected Test</returns>
         public Test GetTestSettings(int id)
         {
+            Test test = new Test();
             DateTime date = DateTime.Now;
             string currentDate = date.ToString("MM/dd/yyyy HH:mm");
             test.StartDate = Convert.ToDateTime(currentDate);
