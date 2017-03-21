@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Promact.Trappist.Web.Controllers
 {
@@ -10,6 +10,7 @@ namespace Promact.Trappist.Web.Controllers
             
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
