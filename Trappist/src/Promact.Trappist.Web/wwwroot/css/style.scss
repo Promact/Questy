@@ -1111,6 +1111,40 @@ footer {
       margin-right: 8px;
     }
   }
+
+  .sections-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 20px 0;
+    li {
+      label {
+        display: block;
+        margin-bottom: 0;
+        input {
+          display: none;
+          &:checked + .section-box {
+            background-color: $color_theme;
+            border-color: $color_theme_secondary;
+            color: $color_white;
+          }
+        }
+        .section-box {
+          display: block;
+          border: 1px solid $color_border;
+          background-color: $color_white;
+          padding: 12px 20px;
+          margin-bottom: 6px;
+          cursor: pointer;
+          span {
+            line-height: 24px;
+          }
+          i {
+            color: $color_white;
+          }
+        }
+      }
+    }
+  }
 }
 
 .dialog .url-container {
