@@ -12,9 +12,9 @@ namespace Promact.Trappist.Core.Controllers
         private readonly ITestsRepository _testRepository;
         private readonly IStringConstants _stringConstant;
   
-        public TestsController(ITestsRepository test,IStringConstants stringConstant)
+        public TestsController(ITestsRepository testRepository, IStringConstants stringConstant)
         {
-            _testRepository = test;
+            _testRepository = testRepository;
           _stringConstant = stringConstant;
         }    
         /// <summary>
@@ -43,7 +43,7 @@ namespace Promact.Trappist.Core.Controllers
         public IActionResult GetAllTest()
         {
             var tests = _testRepository.GetAllTests();
-            return Json(tests);
+            return Ok(tests);
         }
 
     }
