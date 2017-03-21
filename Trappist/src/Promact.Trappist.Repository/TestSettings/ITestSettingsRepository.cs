@@ -2,7 +2,7 @@
 
 namespace Promact.Trappist.Repository.TestSettings
 {
-     public interface ITestSettingsRepository
+    public interface ITestSettingsRepository
     {
         /// <summary>
         /// Gets the Settings saved for a particular Test
