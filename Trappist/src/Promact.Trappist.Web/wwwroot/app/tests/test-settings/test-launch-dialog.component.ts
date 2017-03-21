@@ -7,8 +7,12 @@ import { Test } from "../tests.model";
     templateUrl: "test-launch-dialog.html"
 })
 export class TestLaunchDialogComponent {
-    copiedContent: boolean = true;
-    settingObject: Test = new Test();
-    isDisplay: string = this.settingObject.link;
+    copiedContent: boolean;
+    settingObject: Test;
+
+    constructor() {
+        this.settingObject = new Test();
+        this.copiedContent = true;
+    }
 }
 
