@@ -69,7 +69,7 @@ namespace Promact.Trappist.Core.Controllers
       }
       var user = await _userManager.GetUserAsync(User);
       model.Email = user.Email;
-      return Ok(await _profileRepository.UpdaetUserPassword(model));
+      return Ok(await _profileRepository.UpdateUserPassword(model));
     }
 
     /// <summary>

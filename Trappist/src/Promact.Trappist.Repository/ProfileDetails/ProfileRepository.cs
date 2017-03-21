@@ -45,7 +45,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
     /// </summary>
     /// <param name="model">take parameter of type ChangePasswordModel</param>
     /// <returns> save new password in the database</returns>
-    public async Task<ApplicationUser> UpdaetUserPassword(ChangePasswordModel model)
+    public async Task<ApplicationUser> UpdateUserPassword(ChangePasswordModel model)
     {
       var user = await _userManager.FindByEmailAsync(model.Email);
       if (user != null)
