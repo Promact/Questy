@@ -1,6 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { ProfileService } from "./profile/profile.service";
-import { ApplicationUser } from "./profile/profile.model";
+
 @Component({
   moduleId: module.id,
   selector: 'app',
@@ -8,8 +7,7 @@ import { ApplicationUser } from "./profile/profile.model";
 })
 export class AppComponent {
   name = 'Angular';
-  user: ApplicationUser = new ApplicationUser();
-  constructor(private profileService: ProfileService) {
+  constructor() {
   }
 
   /**

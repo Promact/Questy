@@ -1,11 +1,9 @@
-﻿/// <reference path="password.model.ts" />
-import { Injectable } from "@angular/core";
+﻿import { Injectable } from "@angular/core";
 import { HttpService } from "../core/http.service";
 import { ApplicationUser } from "../profile/profile.model";
 import { ChangePasswordModel } from "./password.model";
 
 @Injectable()
-
 export class ProfileService {
   private profileApiUrl = "api/profile";
   editUser: ApplicationUser = new ApplicationUser;
@@ -35,14 +33,10 @@ export class ProfileService {
   }
 
   /**
-   * user is signed out 
+   * Update user Password 
+   * @param userPassword
    */
-  logOut() {
-    return this.httpService.get(this.profileApiUrl + "/logOut");
-  }
-
   updateUserPassword(userPassword: ChangePasswordModel) {
     return this.httpService.put(this.profileApiUrl + "/password", userPassword);
   }
-
 }

@@ -1,9 +1,7 @@
-﻿/// <reference path="change-password-dialog.component.ts" />
-import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { MdDialog } from '@angular/material';
 import { ApplicationUser } from "../profile.model";
 import { ProfileService } from "../profile.service";
-import { Http } from '@angular/http';
 import { ChangePasswordDialogComponent } from "./change-password-dialog.component";
 
 @Component({
