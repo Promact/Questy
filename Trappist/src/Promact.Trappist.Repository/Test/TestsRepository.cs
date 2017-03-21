@@ -8,7 +8,6 @@ namespace Promact.Trappist.Repository.Tests
     public class TestsRepository : ITestsRepository
     {
         private readonly TrappistDbContext _dbContext;
-        //private readonly TrappistDbContext _trappistdb;
         public TestsRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -43,7 +42,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <returns>List of Tests</returns>
         public List<Test> GetAllTests()
-        { 
+        {
             var tests = _dbContext.Test.ToList();
             return tests;
         }

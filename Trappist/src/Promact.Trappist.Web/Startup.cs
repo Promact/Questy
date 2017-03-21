@@ -63,7 +63,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
-            //services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
+          
         
     }
 

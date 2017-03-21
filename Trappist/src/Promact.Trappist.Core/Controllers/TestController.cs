@@ -9,13 +9,12 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/tests")]
     public class TestsController : Controller
     {
-        private ITestsRepository _test;
-        private IStringConstants _stringConstant;
-        //public ITestsRepository _testdashboardRepository;
-
+        private readonly ITestsRepository _testRepository;
+        private readonly IStringConstants _stringConstant;
+  
         public TestsController(ITestsRepository test,IStringConstants stringConstant)
         {
-            _test = test;
+            _testRepository = test;
           _stringConstant = stringConstant;
         }    
         /// <summary>
@@ -26,9 +25,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         public string CreateTest([FromBody] Test test)
         {
-            if (_test.UniqueTestName(test)) // verifying the test name is unique or not
+            if (_testRepository.UniqueTestName(test)) // verifying the test name is unique or not
             {
-                _test.CreateTest(test);
+                _testRepository.CreateTest(test);
                 return _stringConstant.Success;              
             }
             else
@@ -43,7 +42,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet]
         public IActionResult GetAllTest()
         {
-            var tests = _test.GetAllTests();
+            var tests = _testRepository.GetAllTests();
             return Json(tests);
         }
 
