@@ -1,5 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
+using System;
 using System.Linq;
 
 
@@ -47,6 +48,11 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <returns>Settings Saved for the selected Test</returns>
         public Test GetTestSettings(int id)
         {
+            DateTime date = DateTime.Now;
+            string currentDate = date.ToString("MM/dd/yyyy HH:mm");
+            test.StartDate = Convert.ToDateTime(currentDate);
+            test.EndDate = Convert.ToDateTime(currentDate);
+            test.BrowserTolerance = 0;
             var testSettings = _dbContext.Test.FirstOrDefault(x => x.Id == id);
             return testSettings;
         }
