@@ -3,6 +3,7 @@ using Promact.Trappist.Repository.TestSettings;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Xunit;
+using System.Collections.Generic;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -22,19 +23,22 @@ namespace Promact.Trappist.Test.Tests
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
-        private void AddNewTest()
+        private List<DomainModel.Models.Test.Test> AddNewTest()
         {
             _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "AOT 669" });
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "MCKVIE 142" });
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "IEM 336" });
+            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "MCKVIE 142"});
+            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "IEM 336"});
             _trappistDbContext.SaveChanges();
+
+            return _trappistDbContext.Test.ToList();
+                
         }
 
         [Fact]
         public void GetTestSettingsById()
         {
-            AddNewTest();
-            var testSettings = _settingsRepository.GetTestSettings(1);
+            var list = AddNewTest();
+            var testSettings = _settingsRepository.GetTestSettings(list[0].Id);
             var testName = testSettings.TestName;
             Assert.Equal(testName, "AOT 669");
         }
@@ -42,10 +46,10 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public void UpdateTestSettingsById()
         {
-            AddNewTest();
-            var settingsToUpdate = _settingsRepository.GetTestSettings(2);
+            var list=AddNewTest();
+            var settingsToUpdate = _settingsRepository.GetTestSettings(list[0].Id);
             settingsToUpdate.TestName = "IIT BANGALORE";
-            _settingsRepository.UpdateTestSettings(2, settingsToUpdate);
+            _settingsRepository.UpdateTestSettings(list[0].Id, settingsToUpdate);
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == "IIT BANGALORE") == 1);
         }
     }
