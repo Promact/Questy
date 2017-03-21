@@ -76,9 +76,12 @@ namespace Promact.Trappist.Repository.Categories
         public async Task CategoryUpdateAsync(int id, Category category)
         {
             var categoryToUpdate = GetCategoryAsync(id);
-            categoryToUpdate.Result.CategoryName = category.CategoryName;
-            _dbContext.Category.Update(categoryToUpdate.Result);
-            await _dbContext.SaveChangesAsync();
+            if (categoryToUpdate != null)
+            {
+                categoryToUpdate.Result.CategoryName = category.CategoryName;
+                _dbContext.Category.Update(categoryToUpdate.Result);
+                await _dbContext.SaveChangesAsync();
+            }
         }
         #endregion
 
