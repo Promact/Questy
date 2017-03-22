@@ -1,6 +1,6 @@
-**Fixed Issues **
+**Fixed Issues**
 
-#123, #234, ….
+#issuenumber, #issuenumber
 
 **Files Changed**
 
