@@ -37,7 +37,7 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.SingleMultipleAnswerQuestion.Add(singleMultipleAnswerQuestion);
             foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in singleMultipleAnswerQuestionOption)
             {
-                singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
+                //To-Do Change according to new model singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
                 _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
             }
             _dbContext.SaveChanges();
@@ -54,13 +54,13 @@ namespace Promact.Trappist.Repository.Questions
                 var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
                 _dbContext.SaveChanges();
                 var codingLanguageList = codeSnippetQuestionModel.LanguageList;
-                var questionId = question.Entity.Id;
+                //To-Do Change according to new model var questionId = question.Entity.Id; 
                 foreach (var language in codingLanguageList)
                 {
                     var languageId = _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
                     _dbContext.QuestionLanguageMapping.Add(new QuestionLanguageMapping
                     {
-                        QuestionId = questionId,
+                        //To-Do Change according to new model QuestionId = questionId,
                         LanguageId = languageId
                     });
                 }
