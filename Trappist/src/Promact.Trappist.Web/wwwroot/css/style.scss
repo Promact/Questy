@@ -121,7 +121,7 @@ h6, .h6 {
 }
 
 .form-group {
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   position: relative;
 
   label {
@@ -148,13 +148,21 @@ h6, .h6 {
     }
   }
 
-  .error-msg {
-    position: absolute;
-    bottom: -15px;
-    left: 5px;
-    color: $color_red;
-    font-size: 11px;
-    font-weight: 600;
+  .errors-container {
+    display: inline-block;
+    min-height: 20px;
+
+    .error-msg {
+      display: block;
+      color: $color_red;
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 600;
+      padding: 4px;
+      &:not(:first-child) {
+        margin-top: -4px;
+      }
+    }
   }
 }
 
@@ -1116,18 +1124,22 @@ footer {
     list-style: none;
     padding-left: 0;
     margin: 20px 0;
+
     li {
       label {
         display: block;
         margin-bottom: 0;
+
         input {
           display: none;
+
           &:checked + .section-box {
             background-color: $color_theme;
             border-color: $color_theme_secondary;
             color: $color_white;
           }
         }
+
         .section-box {
           display: block;
           border: 1px solid $color_border;
@@ -1135,9 +1147,11 @@ footer {
           padding: 12px 20px;
           margin-bottom: 6px;
           cursor: pointer;
+
           span {
             line-height: 24px;
           }
+
           i {
             color: $color_white;
           }
