@@ -67,5 +67,6 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(category);
             #endregion
         }
+
     }
 }
