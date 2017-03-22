@@ -29,7 +29,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<Category> Category { get; set; }
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
         public DbSet<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
-
+        public DbSet<Question> Question { get; set; }
         public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
         public DbSet<CodingLanguage> CodingLanguage { get; set; }
         public DbSet<QuestionLanguageMapping> QuestionLanguageMapping { get; set; }
