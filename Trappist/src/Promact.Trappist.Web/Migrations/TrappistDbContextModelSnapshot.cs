@@ -441,7 +441,7 @@ namespace Promact.Trappist.Web.Migrations
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
                 {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
-                        .WithMany("SingleMutipleAnswerQuestionOption")
+                        .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
