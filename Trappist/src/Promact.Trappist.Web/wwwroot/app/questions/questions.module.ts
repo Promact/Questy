@@ -11,6 +11,8 @@ import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 import { QuestionsService } from "./questions.service";
 import { CategoryService } from "./categories.service";
+import { ProgrammingQuestion } from "./question.programming.model";
+
 @NgModule({
     imports: [
         SharedModule,
@@ -33,7 +35,8 @@ import { CategoryService } from "./categories.service";
     ],
     providers: [
         QuestionsService,
-		CategoryService
+        CategoryService,
+        ProgrammingQuestion
     ]
 })
 export class QuestionsModule { }

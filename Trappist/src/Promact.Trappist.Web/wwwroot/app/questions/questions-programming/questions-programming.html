@@ -4,20 +4,22 @@
       <h2>Question</h2>
       <h5>Programming</h5>
     </div>
-    <form>
+
+      <div class="text-center" [hidden]="allContentReady">
+          <h3>LOADING...</h3>
+      </div>
+
+    <form (ngSubmit)="submitForm()" [hidden]="!allContentReady">
       <div class="form-fields">
         <div class="form-group">
           <label class="h4">Section</label>
-          <select class="form-control half-width">
-            <option>Logical Ability</option>
-            <option>Option 1</option>
-            <option>Option 2</option>
-            <option>Option 3</option>
+          <select class="form-control half-width" name="categories" (change)="selectCategory($event.target.value)" required>
+            <option *ngFor="let category of categories">{{category.categoryName}}</option>
           </select>
         </div>
         <div class="form-group">
           <label class="h4">Difficulty Level</label>
-          <select class="form-control small-width">
+          <select class="form-control small-width" [(ngModel)]="selectedDifficultyLevel" name="difficulty" required>
             <option>Easy</option>
             <option>Medium</option>
             <option>Hard</option>
@@ -25,32 +27,30 @@
         </div>
         <div class="form-group">
           <label class="h4">Question Details</label>
-          <textarea class="form-control half-width" placeholder="Question details here" rows="3"></textarea>
+          <textarea class="form-control half-width" placeholder="Question details here" rows="3" [(ngModel)]="questionDetail" name="detail" required maxlength="1000"></textarea>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="codingLanguage">
           <label class="h4">Code Languages</label>
           <md-chip-list class="form-control half-width" (click)="autocomplete.focus()">
-            <md-chip>Objective C <i class="material-icons">close</i></md-chip>
-            <md-chip>C++ <i class="material-icons">close</i></md-chip>
+            <md-chip *ngFor="let selectedLanguage of selectedCodingLanguages">{{selectedLanguage}}<i class="material-icons" (click)="removeSelectedLanguage(selectedLanguage)">close</i></md-chip>
             <md-input-container>
-              <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete>
+              <input mdInput placeholder="Code Languages" [(ngModel)]="languageInputText" name="languageInput" [mdAutocomplete]="code" #autocomplete>
             </md-input-container>
             <md-autocomplete #code="mdAutocomplete">
-              <md-option value="Objective C">Objective C</md-option>
-              <md-option value="C++">C++</md-option>
-              <md-option value="Option 1">Option 1</md-option>
-              <md-option value="Option 2">Option 2</md-option>
-              <md-option value="Option 3">Option 3</md-option>
+              <md-option *ngFor="let language of codingLanguages" value="{{language}}" (click)="selectLanguage(language)">{{language}}</md-option>
             </md-autocomplete>
           </md-chip-list>
         </div>
+        <div *ngIf="noLanguageSelected" class="alert alert-danger">
+            *Please select atleast one language
+        </div>
         <div class="form-group">
           <label class="h4">Score Settings</label>
-          <md-checkbox>Check code complexity</md-checkbox>
-          <md-checkbox>Check time complexity</md-checkbox>
-          <md-checkbox>Run basic test cases</md-checkbox>
-          <md-checkbox>Run corner test cases</md-checkbox>
-          <md-checkbox>Run necessary test cases</md-checkbox>
+          <md-checkbox [checked]="checkCodeComplexity" (change)="checkCodeComplexity = !checkCodeComplexity">Check code complexity</md-checkbox>
+          <md-checkbox [checked]="checkTimeComplexity" (change)="checkTimeComplexity = !checkTimeComplexity">Check time complexity</md-checkbox>
+          <md-checkbox [checked]="runBasicTestCase" (change)="runBasicTestCase = !runBasicTestCase">Run basic test cases</md-checkbox>
+          <md-checkbox [checked]="runCornerTestCase" (change)="runCornerTestCase = !runCornerTestCase">Run corner test cases</md-checkbox>
+          <md-checkbox [checked]="runNecessaryTestCase" (change)="runNecessaryTestCase = !runNecessaryTestCase">Run necessary test cases</md-checkbox>
         </div>
         <div class="form-group">
           <label class="h4">Test Case(s)</label>
@@ -153,7 +153,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary" >Save</button>
       </div>
     </form>
   </div>
