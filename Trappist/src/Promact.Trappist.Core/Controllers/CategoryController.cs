@@ -75,8 +75,32 @@ namespace Promact.Trappist.Core.Controllers
             categoryToUpdate.CategoryName = category.CategoryName;
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             return Ok(category);
+            #endregion
         }
-        #endregion
+
+        /// <summary>
+        /// Delete Method 
+        ///this method control the delete operation for category and return a category Id
+        ///</summary>
+        /// <param name="categoryId">Id of category</param>
+        [HttpDelete("{categoryId}")]
+        public IActionResult CategoryRemove([FromRoute] int categoryId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var categoryData = _categoryRepository.GetCategory(categoryId);
+            if (categoryData != null)
+            {
+                _categoryRepository.RemoveCategoryToDatabase(categoryData);
+                return Ok(categoryId);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
 
