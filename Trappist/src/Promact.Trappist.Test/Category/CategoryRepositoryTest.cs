@@ -50,10 +50,10 @@ namespace Promact.Trappist.Test.Category
         public void DaleteCategory()
         {
             var category = CreateCategory();
-            var categoryToDelete = _categoryRepository.GetCategory(category.Id);
-            if (categoryToDelete != null)
+            var deleteCategory = _categoryRepository.GetCategory(category.Id);
+            if (deleteCategory != null)
             {
-                _categoryRepository.RemoveCategory(categoryToDelete);
+                _categoryRepository.RemoveCategoryToDatabase(deleteCategory);
                 Assert.Equal(0, _trappistDbContext.Category.Count());
             }
         }

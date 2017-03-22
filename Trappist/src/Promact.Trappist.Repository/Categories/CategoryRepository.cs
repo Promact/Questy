@@ -60,7 +60,7 @@ namespace Promact.Trappist.Repository.Categories
         /// delete a Category from Category model
         /// </summary>
         /// <param name="category"> object of category model</param>
-        public void RemoveCategory(Category category)
+        public void RemoveCategoryToDatabase(Category category)
         {
             _dbContext.Category.Remove(category);
             _dbContext.SaveChanges();            

@@ -83,7 +83,7 @@ namespace Promact.Trappist.Core.Controllers
             var categoryData = _categoryRepository.GetCategory(categoryId);
             if (categoryData != null)
             {
-                _categoryRepository.RemoveCategory(categoryData);
+                _categoryRepository.RemoveCategoryToDatabase(categoryData);
                 return Ok(categoryData);
             }
             else
