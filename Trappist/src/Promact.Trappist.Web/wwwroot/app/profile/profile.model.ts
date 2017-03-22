@@ -1,6 +1,6 @@
 ﻿export class ApplicationUser {
-  name: string;
-  organizationName: string;
-  email: string;
-  phoneNumber: string;
+    name: string;
+    organizationName: string;
+    email: string;
+    phoneNumber: string;
 }
