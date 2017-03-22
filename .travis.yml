@@ -3,10 +3,11 @@ dist: trusty
 os: linux
 mono: none
 dotnet: 1.0.1
-node_js:
-  - "6"
 services:
   - docker
+before_install:
+  - nvm use 6.9.1
+  - npm install -g npm
 install:
   - dotnet restore ./Trappist/Trappist.sln
 script:
