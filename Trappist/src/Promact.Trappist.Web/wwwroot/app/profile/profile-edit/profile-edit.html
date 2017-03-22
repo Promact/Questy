@@ -1,31 +1,35 @@
 ﻿<div class="container">
-    <div class="userprofile">
-        <div class="title-area">
-            <h1>Profile</h1>
-        </div>
-        <div class="fields-box">
-            <form>
-                <div class="form-group">
-                    <label class="h4">Name</label>
-                    <input type="text" class="form-control half-width" value="John Doe" />
-                </div>
-                <div class="form-group">
-                    <label class="h4">Email</label>
-                    <input type="email" class="form-control half-width" value="john.doe@gmail.com" disabled />
-                </div>
-                <div class="form-group">
-                    <label class="h4">Contact Number</label>
-                    <input type="text" class="form-control half-width" value="9274826475" />
-                </div>
-                <div class="form-group">
-                    <label class="h4">Organization</label>
-                    <input type="text" class="form-control half-width" value="Promact Infotech Pvt Ltd" />
-                </div>
-                <div class="actions-area">
-                    <button type="button" class="btn" [routerLink]="['/profile']">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
+  <div class="userprofile">
+    <div class="title-area">
+      <h1>Profile</h1>
     </div>
+    <div class="fields-box">
+      <form>
+        <div class="form-group">
+          <label class="h4">Name</label>
+          <input type="text" class="form-control half-width" value="John Doe" />
+          <div class="errors-container"></div>
+        </div>
+        <div class="form-group">
+          <label class="h4">Email</label>
+          <input type="email" class="form-control half-width" value="john.doe@gmail.com" disabled />
+          <div class="errors-container"></div>
+        </div>
+        <div class="form-group">
+          <label class="h4">Contact Number</label>
+          <input type="text" class="form-control half-width" value="9274826475" />
+          <div class="errors-container"></div>
+        </div>
+        <div class="form-group">
+          <label class="h4">Organization</label>
+          <input type="text" class="form-control half-width" value="Promact Infotech Pvt Ltd" />
+          <div class="errors-container"></div>
+        </div>
+        <div class="actions-area">
+          <button type="button" class="btn" [routerLink]="['/profile']">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
