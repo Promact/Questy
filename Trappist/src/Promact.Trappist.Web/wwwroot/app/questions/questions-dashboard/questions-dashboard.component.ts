@@ -4,7 +4,7 @@ import { AddCategoryDialogComponent } from "./add-category-dialog.component";
 import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
 import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
 import { QuestionsService } from "../questions.service";
-import { CategoryService } from "../categories.service";
+import { CategoryService } from "../category.service";
 import { Question } from "../../questions/question.model"
 import { DifficultyLevel } from "../../questions/enum-difficultylevel"
 import { QuestionType } from "../../questions/enum-questiontype"
@@ -46,9 +46,10 @@ export class QuestionsDashboardComponent {
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    // Open Delete Category Dialog
-    deleteCategoryDialog() {
-        this.dialog.open(DeleteCategoryDialogComponent);
+    // Open Delete Category Dialog and set the propert of DeleteCategoryDialogComponent class
+    deleteCategoryDialog(categoryIdToDelete: number) {
+        var property = this.dialog.open(DeleteCategoryDialogComponent).componentInstance;
+        property.categoryIdToDelete = categoryIdToDelete;
     }
 
     // Open Delete Question Dialog
@@ -56,3 +57,4 @@ export class QuestionsDashboardComponent {
         this.dialog.open(DeleteQuestionDialogComponent);
     }
 }
+

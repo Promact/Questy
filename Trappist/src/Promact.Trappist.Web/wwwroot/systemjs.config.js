@@ -44,7 +44,7 @@
             },
             'ngx-clipboard': {
                 main: 'dist/index.umd.js',
-              //  defaultExtension: 'js'
+               // defaultExtension: 'js'
             },
             'clipboard': {
                 defaultExtension: 'js'

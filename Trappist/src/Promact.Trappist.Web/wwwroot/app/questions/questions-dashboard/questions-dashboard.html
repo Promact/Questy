@@ -20,7 +20,7 @@
                         <i class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</i>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item>Rename</button>
-                            <button md-menu-item (click)="deleteCategoryDialog()">Delete</button>
+                            <button md-menu-item  (click)="deleteCategoryDialog(category.id)">Delete</button>
                         </md-menu>
                     </li>
                 </ul>
