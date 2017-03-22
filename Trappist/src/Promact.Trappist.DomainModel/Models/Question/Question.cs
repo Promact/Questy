@@ -19,6 +19,5 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         [ForeignKey("CategoryID")]
         public virtual Category.Category Category { get; set; }
-
     }
 }
