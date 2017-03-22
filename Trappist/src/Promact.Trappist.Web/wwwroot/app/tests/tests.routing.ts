@@ -7,15 +7,15 @@ import { TestSettingsComponent } from './test-settings/test-settings.component';
 import { TestSectionsComponent } from './test-sections/test-sections.component';
 
 const testsRoutes: Routes = [
-    {
-        path: 'tests',
-        component: TestsComponent,
-        children: [
-            { path: '', component: TestsDashboardComponent },
-            { path: 'settings/:id', component: TestSettingsComponent },
-            { path: 'sections', component: TestSectionsComponent }
-        ]
-    }
+  {
+    path: 'tests',
+    component: TestsComponent,
+    children: [
+      { path: '', component: TestsDashboardComponent },
+      { path: 'settings/:id', component: TestSettingsComponent },
+      { path: 'sections', component: TestSectionsComponent }
+    ]
+  }
 ];
 
 export const testsRouting: ModuleWithProviders = RouterModule.forChild(testsRoutes);

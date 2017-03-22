@@ -14,30 +14,30 @@ import { TestSettingService } from "./testsetting.service";
 import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
-    imports: [
-        SharedModule,
-        testsRouting,
-        ClipboardModule
-    ],
-    declarations: [
-        TestsComponent,
-        TestsDashboardComponent,
-        TestCreateDialogComponent,
-        DeleteTestDialogComponent,
-        TestSettingsComponent,
-        TestLaunchDialogComponent,
-        TestSectionsComponent,
-        FilterPipe
+  imports: [
+    SharedModule,
+    testsRouting,
+    ClipboardModule
+  ],
+  declarations: [
+    TestsComponent,
+    TestsDashboardComponent,
+    TestCreateDialogComponent,
+    DeleteTestDialogComponent,
+    TestSettingsComponent,
+    TestLaunchDialogComponent,
+    TestSectionsComponent,
+    FilterPipe
 
-    ],
-    entryComponents: [
-        TestCreateDialogComponent,
-        DeleteTestDialogComponent,
-        TestLaunchDialogComponent
-    ],
-    providers: [
-        TestService,
-        TestSettingService
-    ]
+  ],
+  entryComponents: [
+    TestCreateDialogComponent,
+    DeleteTestDialogComponent,
+    TestLaunchDialogComponent
+  ],
+  providers: [
+    TestService,
+    TestSettingService
+  ]
 })
 export class TestsModule { }
