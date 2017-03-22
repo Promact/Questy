@@ -6,8 +6,6 @@
 
 File1.cs - Reason for change/add
 
-File2.cs - Reason for delete
-
 **Checks**
 
 - [ ] Naming Conventions
@@ -16,4 +14,5 @@ File2.cs - Reason for delete
 - [ ] Unused variables, methods, blank spaces and name spaces. 
 - [ ] Optimal Code and code formatting
 - [ ] Commit History is proper, no merge is done. 
+- [ ] Commit/pull request messages should be proper to justify your feature
 - [ ] All test cases are executed provided by tester.
