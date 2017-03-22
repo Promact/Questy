@@ -93,12 +93,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <returns>true if Exists else false</returns>
         public async Task<bool> CheckDuplicateCategoryNameAsync(string categoryName)
         {
-            var isCategoryNameExist = await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
-            if (isCategoryNameExist == false)
-            {
-                return false;
-            }
-            return true;
+            return await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
         }
         #endregion
     }
