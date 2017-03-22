@@ -43,14 +43,13 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Returns The List Of Questions
+        /// The undermentioned controller calls the GetAllQuestions method implemented in the QuestionRepository
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Questions List</returns>
         [HttpGet("question")]
-        public IActionResult GetAllQuestions()
+        public async Task<IActionResult> GetAllQuestions()
         {
-            var questionsList = _questionsRepository.GetAllQuestions();
-            return Ok(questionsList);
+            return Ok(await _questionsRepository.GetAllQuestions()); 
         }
         #endregion
     }

@@ -1,5 +1,7 @@
 ﻿using Promact.Trappist.DomainModel.Models.Category;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public interface ICategoryRepository
@@ -8,7 +10,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Get all Categories
         /// </summary>
         /// <returns>Category list</returns>
-        IEnumerable<Category> GetAllCategories();
+        Task <IEnumerable<Category>> GetAllCategories();
 
         void AddCategory(Category catagory);
         /// <summary>

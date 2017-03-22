@@ -1,8 +1,11 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -13,16 +16,18 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext = dbContext;
         }
+        #region GetAllCategories
         /// <summary>
-        /// Get all the names of Categories
+        /// The undermentioned method fetches all the categories from the database
         /// </summary>
         /// <returns>Categories list</returns>
-        public IEnumerable<Category> GetAllCategories()
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            var category = _dbContext.Category.ToList();
+            var category = await _dbContext.Category.ToListAsync();
             var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
             return categoryOrderedByCreatedDateTime;
         }
+        #endregion
         #region Adding a CategoryName
         /// <summary>
         /// Adding a Category in Category model

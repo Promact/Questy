@@ -21,11 +21,12 @@ export class QuestionsDashboardComponent {
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
-    alpha: string[] = ["a", "b", "c", "d", "e", "..."];
+    optionName: string[] = ["a", "b", "c", "d", "e", "..."];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
         this.getAllCategories();
     }
+    //To Check Whether The Option Is Correct Or Not
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return "correct";
