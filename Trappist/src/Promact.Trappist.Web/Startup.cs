@@ -145,8 +145,8 @@ namespace Promact.Trappist.Web
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionApplicationClass>();
-                cfg.CreateMap<CodeSnippetQuestion, SingleMultipleAnswerQuestionApplicationClass>();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<CodeSnippetQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
             });
             #endregion

@@ -17,17 +17,19 @@ namespace Promact.Trappist.Repository.Questions
         {
             _dbContext = dbContext;
         }
+        #region GetAllQuestions
         /// <summary>
-        /// Get all questions
+        ///The undermentioned method fetches all the questions from the database
         /// </summary>
         /// <returns>Question list</returns>
-        public ICollection<SingleMultipleAnswerQuestionApplicationClass> GetAllQuestions()
+        public async Task<ICollection<SingleMultipleAnswerQuestionAC>> GetAllQuestions()
         {
-            var questions = _dbContext.SingleMultipleAnswerQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList();
-            questions.AddRange(_dbContext.CodeSnippetQuestion.ProjectTo<SingleMultipleAnswerQuestionApplicationClass>().ToList());
+            var questions =await _dbContext.SingleMultipleAnswerQuestion.ProjectTo<SingleMultipleAnswerQuestionAC>().ToListAsync();
+            questions.AddRange(await _dbContext.CodeSnippetQuestion.ProjectTo<SingleMultipleAnswerQuestionAC>().ToListAsync());
             var questionsOrderedByCreatedDateTime = questions.OrderBy(f => f.CreatedDateTime).ToList();
             return questionsOrderedByCreatedDateTime;
         }
+        #endregion
         /// <summary>
         /// A method to add single multiple answer question.
         /// </summary>

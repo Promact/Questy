@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -12,17 +13,17 @@ namespace Promact.Trappist.Core.Controllers
         {
             _categoryRepository = categoryRepository;
         }
+        #region GetAllCategories
         /// <summary>
-        /// Get All Categories
+        /// The undermentioned controller calls the GetAllCategories method which is implemented in the CategoryRepository
         /// </summary>
         /// <returns>Category List</returns>
         [HttpGet]
-        public IActionResult GetAllCategories()
+        public async Task<IActionResult> GetAllCategories()
         {
-            var categoryList = _categoryRepository.GetAllCategories();
-            return Ok(categoryList);
+            return Ok(await _categoryRepository.GetAllCategories());
         }
-
+#endregion
         #region post Method 
         [HttpPost]
         /// <summary>
@@ -41,7 +42,6 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(category);
         }
         #endregion
-
         #region PutMethod
         /// <summary>
         /// Put Method
