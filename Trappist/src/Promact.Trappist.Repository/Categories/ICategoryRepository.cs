@@ -33,7 +33,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">id that will find category</param>
         /// <returns>category object contains category details</returns>
-        Task<Category> GetCategoryAsync(int id);
+        Task<Category> GetCategoryByIdAsync(int id);
         /// <summary>
         /// Method to check Id is Exists or not
         /// </summary>

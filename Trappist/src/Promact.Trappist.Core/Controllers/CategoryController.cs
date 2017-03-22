@@ -60,8 +60,8 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var searchById = await _categoryRepository.SearchForCategoryIdAsync(id);
-            if (!searchById)
+            var searchCategoryId = await _categoryRepository.SearchForCategoryIdAsync(id);
+            if (!searchCategoryId)
             {
                 return NotFound();
             }

@@ -46,8 +46,8 @@ namespace Promact.Trappist.Repository.Categories
         /// <returns>true if key found else false</returns>
         public async Task<bool> SearchForCategoryIdAsync(int key)
         {
-            var categoryFind = await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
-            if (categoryFind == null)
+            var category = await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
+            if (category == null)
             {
                 return false;
             }
@@ -61,7 +61,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="key">id that will find category</param>
         /// <returns>category object contains category details</returns>
-        public async Task<Category> GetCategoryAsync(int key)
+        public async Task<Category> GetCategoryByIdAsync(int key)
         {
             return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
         }
@@ -75,7 +75,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="category">category object contains category details</param>
         public async Task CategoryUpdateAsync(int id, Category category)
         {
-            var categoryToUpdate = GetCategoryAsync(id);
+            var categoryToUpdate = GetCategoryByIdAsync(id);
             if (categoryToUpdate != null)
             {
                 categoryToUpdate.Result.CategoryName = category.CategoryName;
