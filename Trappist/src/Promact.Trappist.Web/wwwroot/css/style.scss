@@ -9,6 +9,7 @@ $color_bg: #F9F9F9;
 $color_bg_secondary: #F5F5F5;
 $color_border: #EDEDED;
 $color_white: #FFFFFF;
+$color_white_opacity: rgba(255, 255, 255, 0.8);
 $color_red: #DD2C00;
 
 /* Size */
@@ -204,6 +205,8 @@ h6, .h6 {
     padding: 15px 0 20px;
 
     .dialog {
+      position: relative;
+
       .dialog-title {
         border-bottom: 1px solid $color_border;
         padding: 0 14px 12px 25px;
@@ -240,6 +243,13 @@ h6, .h6 {
         text-align: right;
         padding: 25px 25px 0 25px;
         margin: 0;
+      }
+
+      .loader-container .spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 6px;
+        top: 36%;
       }
     }
   }
@@ -360,6 +370,40 @@ footer {
         }
       }
     }
+  }
+}
+
+.loader-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
+  background-color: $color_white_opacity;
+
+  .spinner {
+    height: 68px;
+    width: 68px;
+    animation: rotate 1s infinite linear;
+    border: 8px solid $color_theme;
+    border-right-color: transparent;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: absolute;
+    top: 40%;
+    left: 0px;
+    right: 0px;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -986,7 +1030,6 @@ footer {
           margin-top: 30px;
           background-color: $color_white;
           border: 1px solid $color_border;
-          border-bottom: 0;
           padding: 30px 20px 15px;
 
           h2 {
@@ -1000,10 +1043,6 @@ footer {
               &[type=number] {
                 width: 22%;
               }
-            }
-
-            .help-text {
-              margin-top: 12px;
             }
           }
 
@@ -1068,7 +1107,7 @@ footer {
   }
 
   .form-area {
-    margin-top: 20px;
+    margin: 20px 0;
     padding: 20px 20px 0;
     border: 1px solid $color_border;
     background-color: $color_white;
