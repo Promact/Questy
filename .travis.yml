@@ -3,6 +3,8 @@ dist: trusty
 os: linux
 mono: none
 dotnet: 1.0.1
+node_js:
+  - "6"
 services:
   - docker
 install:
