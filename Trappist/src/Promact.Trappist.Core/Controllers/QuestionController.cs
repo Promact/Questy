@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
-
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api")]
+    [Route("api/question")]
     public class QuestionController : Controller
     {
         private readonly IQuestionRespository _questionsRepository;
@@ -15,23 +14,19 @@ namespace Promact.Trappist.Core.Controllers
             _questionsRepository = questionsRepository;
         }
 
+        #region Question API
         /// <summary>
-        /// Add single multiple answer question into model
+        /// Adds question to the database
         /// </summary>
-        /// <param name="singleMultipleQuestion"></param>
-        /// <returns></returns>   
-        [Route("singlemultiplequestion")]
+        /// <param name="questionAC">QuestionAC object</param>
+        /// <returns>
+        /// Returns status 200(Ok) with QuestionAC object passed if question is added successfully
+        /// Returns Status 400(BadRequest) if model state is invalid or null
+        /// </returns>
         [HttpPost]
-        public IActionResult AddSingleMultipleAnswerQuestion([FromBody]SingleMultipleQuestion singleMultipleQuestion)
+        public IActionResult AddQuestion([FromBody]QuestionAC questionAC)
         {
-            _questionsRepository.AddSingleMultipleAnswerQuestion(singleMultipleQuestion.singleMultipleAnswerQuestion, singleMultipleQuestion.singleMultipleAnswerQuestionOption);
-            return Ok(singleMultipleQuestion);
-        }
-
-        [HttpPost("codesnippetquestion")]
-        public IActionResult AddCodeSnippetQuestion([FromBody]CodeSnippetQuestionDto codeSnippetQuestionDto)
-        {
-            if (codeSnippetQuestionDto == null)
+            if(questionAC == null )
             {
                 return BadRequest();
             }
@@ -39,11 +34,18 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
-            _questionsRepository.AddCodeSnippetQuestion(codeSnippetQuestionDto);
-
-            return Ok(codeSnippetQuestionDto);
+            if(questionAC.question.QuestionType == QuestionType.Single || questionAC.question.QuestionType == QuestionType.Multiple)
+            {
+                _questionsRepository.AddSingleMultipleAnswerQuestion(questionAC.singleMultipleQuestion.singleMultipleAnswerQuestion, questionAC.singleMultipleQuestion.singleMultipleAnswerQuestionOption);
+                return Ok(questionAC);
+            }
+            else
+            {
+                //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
+                return Ok(questionAC);
+            }          
         }
+
         /// <summary>
         /// Returns The List Of Questions
         /// </summary>
@@ -54,5 +56,6 @@ namespace Promact.Trappist.Core.Controllers
             var questionsList = _questionsRepository.GetAllQuestions();
             return Ok(questionsList);
         }
+        #endregion
     }
 }
