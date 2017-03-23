@@ -47,7 +47,7 @@ namespace Promact.Trappist.Test.Category
         /// This is unit testing method. aim of this method is check a category remove from database or not
         /// </summary>
         [Fact]
-        public void DaleteCategory()
+        public void DeleteCategory()
         {
             var category = CreateCategory();
             var deleteCategory = _categoryRepository.GetCategory(category.Id);
