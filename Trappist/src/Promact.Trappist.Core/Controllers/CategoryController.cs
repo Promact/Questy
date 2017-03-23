@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/category")]
+    [Route("api")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -16,6 +17,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Get All Categories
         /// </summary>
         /// <returns>Category List</returns>
+        [Route("category")]
         [HttpGet]
         public IActionResult GetAllCategories()
         {
@@ -24,49 +26,66 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         #region post Method 
+        [Route("category")]
         [HttpPost]
         /// <summary>
         /// Post Method 
-        /// Will Add a Catagory Name in Category Model
+        /// Method to Add Category
         ///</summary>
-        /// <param name="category">Object of  class Category</param>
-        /// <returns>object of the class </returns>
-        public IActionResult CatagoryAdd([FromBody] Category category)
+        /// <param name="category">category object contains category details</param>
+        /// <returns>category object contains category details</returns>
+        public async Task<IActionResult> CategoryAddAsync([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _categoryRepository.AddCategory(category);
+            await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
         #endregion
 
         #region PutMethod
         /// <summary>
-        /// Put Method
-        /// Will Edit a Existing Category from Category Table
+        /// Method to Update Existing Category
         /// </summary>
-        /// <param name="Id">Id is the primary key of Category Model</param>
-        /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class if key found or else it will return Bad request</returns>
-        [HttpPut("{id}")]
-        public IActionResult CategoryEdit(int Id, [FromBody] Category category)
+        /// <param name="id">Take from Route whose Property to be Update</param>
+        /// <param name="category">category object contains category details</param>
+        /// <returns>Updated category object contains category details</returns>
+        [Route("category/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> CategoryUpdateAsync([FromRoute] int id, [FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var previousCategory = _categoryRepository.GetCategory(Id);
-            if (previousCategory == null)
+            var searchCategoryId = await _categoryRepository.SearchForCategoryIdAsync(id);
+            if (!searchCategoryId)
             {
                 return NotFound();
             }
-            previousCategory.CategoryName = category.CategoryName;
-            _categoryRepository.CategoryEdit(previousCategory);
+            await _categoryRepository.CategoryUpdateAsync(id, category);
             return Ok(category);
-            #endregion
         }
+        #endregion
 
+        #region Check DupliCate Category name
+        /// <summary>
+        /// Check whether Category Name Exists in Database or not
+        /// </summary>
+        /// <param name="categoryName">categoryname to check</param>
+        /// <returns>
+        /// true if Name Exists in Database
+        /// False if not Exists
+        /// </returns>
+        [Route("category/checkduplicatecategoryname")]
+        [HttpPost]
+        public async Task<IActionResult> CheckDuplicateCategoryNameAsync([FromBody]string categoryName)
+        {
+            return Ok(await _categoryRepository.CheckDuplicateCategoryNameAsync(categoryName));
+        }
+        #endregion
     }
+
 }
