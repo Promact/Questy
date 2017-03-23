@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -9,13 +8,13 @@ using Promact.Trappist.Web.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Repository.BasicSetup;
+using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Repository.TestSettings;
-using Promact.Trappist.DomainModel.Seed;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.Repository.Account;
@@ -23,7 +22,8 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
-
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Microsoft.Extensions.Options;
 
 namespace Promact.Trappist.Web
 {
@@ -34,7 +34,10 @@ namespace Promact.Trappist.Web
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile($"setup.json", optional: false, reloadOnChange: true);
+
+
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
@@ -47,21 +50,32 @@ namespace Promact.Trappist.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TrappistDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Promact.Trappist.Web")));
+            // Add framework services.           
+            services.AddDbContext<TrappistDbContext>();
+            //setup classes to access connectionstring
+            services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
+            //setup classes to access emailsettings
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSetting"));
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddMvc();
+            services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IStringConstants, StringConstants>();
+            services.AddDirectoryBrowser();
             services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
-            services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
-          
-        
-    }
+
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
@@ -99,6 +113,7 @@ namespace Promact.Trappist.Web
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "setup",
                     template: "setup",
@@ -121,8 +136,8 @@ namespace Promact.Trappist.Web
             {
                 context.Database.EnsureDeleted();
             }
-            context.Database.Migrate();
-            context.Seed();
+            //context.Database.Migrate();
+            //context.Seed();
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {

@@ -1,0 +1,17 @@
+{
+  "EmailSettings": {
+    "Server": "",
+    "Port": "",
+    "UserName": "",
+    "Password": "",
+    "ConnectionSecurityOption": ""
+  },
+  "ConnectionString": {
+    "Value": "",
+    "Server": null,
+    "Database": null,
+    "UserId": null,
+    "Password": null,
+    "IsTrustedConnection": null
+  }
+}

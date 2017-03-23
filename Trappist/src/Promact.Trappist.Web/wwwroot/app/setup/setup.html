@@ -1,85 +1,102 @@
 ﻿<div class="basic-setup">
-  <div class="setup-content">
-    <div class="logo-area">
-      <img src="../../images/logo.png" alt="Logo" />
+    <div class="setup-content">
+        <div class="logo-area">
+            <img src="../../images/logo.png" alt="Logo" />
+        </div>
+        <div class="wizard-area">
+            <form-wizard #setup>
+                <wizard-step [title]="1">
+                    <h2>Setup the Database by providing a connection string</h2>
+                    <form>
+                        <div class="form-group">
+                            <label class="h4">Connection String</label>
+                            <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionStringName" />
+                            <p class="help-text">format help: server="servername";database="databasename";integrated security="true"</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-primary" (click)="validateConnectionString(setup)">Next</button>
+                            <span class="error-msg" *ngIf="errorMessage">Invalid ConnectionString</span>
+                        </div>
+                    </form>
+                </wizard-step>
+                <wizard-step [title]="2">
+                    <h2>Configure Email Settings</h2>
+                    <form #EmailSettingsForm="ngForm">
+                        <div class="form-group">
+                            <label class="h4">Server Name</label>
+                            <input required type="text" class="form-control" [(ngModel)]="server" name="nameOfServer" #nameOfServer="ngModel" />
+                            <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Port</label>
+                            <input required type="number" class="form-control" [(ngModel)]="port" name="portNumber" #portNumber="ngModel" />
+                            <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">User Name</label>
+                            <input required type="text" class="form-control" [(ngModel)]="userName" name="usersName" #usersName="ngModel" />
+                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Password</label>
+                            <input required type="password" class="form-control" [(ngModel)]="password" name="userPassword" #userPassword="ngModel" />
+                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Connection Security</label>
+                            <select class="from-control" [(ngModel)]="connectionSecurityOption" name="connectionSecurity">
+                                <option value="None">None</option>
+                                <option value="SslOnConnect">SSL/TLS</option>
+                                <option value="StartTls">STARTTLS</option>
+                            </select><br />
+                            <span class="error-msg" *ngIf="errorMessage">Invalid EmailSettings</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
+                            <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button><br />
+                        </div>
+                    </form>
+                </wizard-step>
+                <wizard-step [title]="3">
+                    <h2>Set up Administrator user</h2>
+                    <form #CreateUserForm="ngForm">
+                        <div class="form-group">
+                            <label class="h4">Name</label>
+                            <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="nameOfUser" name="usersName" #usersName="ngModel" maxlength="150" />
+                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
+                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Email/User Name</label>
+                            <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="text" class="form-control" [(ngModel)]="email" name="userEmail" #userEmail="ngModel" maxlength="255" />
+                            <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
+                            <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Password</label>
+                            <input required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,14}$" type="password" class="form-control"
+                                   [(ngModel)]="passwordOfUser" name="userPassword" #userPassword="ngModel" />
+                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Invalid Password</span>
+                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="h4">Confirm Password</label>
+                            <input required type="password" class="form-control" [(ngModel)]="confirmPassword"
+                                   name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
+                            <span class="error-msg" *ngIf="errorMessage && errorMessage.touched">Invalid User Credential</span>
+                            <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">*required</span><br />
+                            <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">Password and ConfirmPassword mismatched</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
+                            <button type="button" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
+                        </div>
+                    </form>
+                </wizard-step>
+            </form-wizard>
+        </div>
     </div>
-    <div class="wizard-area">
-      <form-wizard #setup>
-        <wizard-step [title]="1">
-          <h2>Setup the Database by providing a connection string</h2>
-          <form>
-            <div class="form-group">
-              <label class="h4">Connection String</label>
-              <input type="text" class="form-control" />
-              <div class="errors-container"></div>
-              <p class="help-text">format help: server="servername";database="databasename";integrated security="true"</p>
-            </div>
-            <div class="action-buttons">
-              <button type="button" class="btn btn-primary" (click)="nextStep2(setup)">Next</button>
-            </div>
-          </form>
-        </wizard-step>
-        <wizard-step [title]="2">
-          <h2>Configure Email Settings</h2>
-          <form>
-            <div class="form-group">
-              <label class="h4">Server Name</label>
-              <input type="text" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">Port</label>
-              <input type="number" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">User Name</label>
-              <input type="text" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">Password</label>
-              <input type="password" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="action-buttons">
-              <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
-              <button type="button" class="btn btn-primary" (click)="nextStep3(setup)">Next</button>
-            </div>
-          </form>
-        </wizard-step>
-        <wizard-step [title]="3">
-          <h2>Set up Administrator user</h2>
-          <form>
-            <div class="form-group">
-              <label class="h4">Name</label>
-              <input type="text" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">Email/User Name</label>
-              <input type="text" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">Password</label>
-              <input type="password" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="form-group">
-              <label class="h4">Confirm Password</label>
-              <input type="password" class="form-control" />
-              <div class="errors-container"></div>
-            </div>
-            <div class="action-buttons">
-              <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
-              <button type="button" class="btn btn-primary" (click)="finish(setup)">Finish</button>
-            </div>
-          </form>
-        </wizard-step>
-      </form-wizard>
-    </div>
-  </div>
+    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
 </div>
 
 <!--<button (click)="navigateToLogin()">Click</button>-->

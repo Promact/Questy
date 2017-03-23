@@ -1,16 +1,12 @@
-﻿using System;
-
-namespace Promact.Trappist.Utility.Constants
+﻿namespace Promact.Trappist.Utility.Constants
 {
     public class StringConstants : IStringConstants
     {
-     
-
         public string InvalidTestName
         {
             get
             {
-                return "Invalid Test Name "; 
+                return "Invalid Test Name ";
             }
         }
 
@@ -18,9 +14,22 @@ namespace Promact.Trappist.Utility.Constants
         {
             get
             {
-                return "Test Created successfuly"; 
+                return "Test Created successfuly";
             }
         }
+
+        #region Setup Constants
+        /// <summary>
+        /// property setup.json Filename is called whenever required setup.json file name
+        /// </summary>
+        public string SetupConfigFileName
+        {
+            get
+            {
+                return "setup.json";
+            }
+        }
+        #endregion
 
         #region "Account Constants"
 
