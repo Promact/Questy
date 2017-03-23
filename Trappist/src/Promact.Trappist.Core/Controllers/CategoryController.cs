@@ -70,7 +70,7 @@ namespace Promact.Trappist.Core.Controllers
         }
         /// <summary>
         /// Delete Method 
-        /// delete a category from database 
+        ///this method control the delete operation for category and return the removable Data
         ///</summary>
         /// <param name="categoryId">Id of category</param>
         [HttpDelete("{categoryId}")]

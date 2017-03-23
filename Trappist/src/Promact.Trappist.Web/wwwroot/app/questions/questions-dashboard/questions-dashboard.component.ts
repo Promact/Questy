@@ -51,7 +51,6 @@ export class QuestionsDashboardComponent {
         var property = this.dialog.open(DeleteCategoryDialogComponent).componentInstance;
         property.categoryIdToDelete = categoryIdToDelete;
     }
-
     // Open Delete Question Dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);

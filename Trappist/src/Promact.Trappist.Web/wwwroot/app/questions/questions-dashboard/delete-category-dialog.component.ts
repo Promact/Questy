@@ -1,9 +1,6 @@
 ﻿import { Component } from "@angular/core";
 import { CategoryService } from "../category.service";
 import { MdDialog } from '@angular/material';
-import { Category } from "../../questions/category.model"
-import { QuestionsDashboardComponent } from "./questions-dashboard.component"
-
 @Component({
     moduleId: module.id,
     selector: 'delete-category-dialog',
@@ -15,7 +12,7 @@ export class DeleteCategoryDialogComponent {
     }
     // call removeCategory() method of categoryService class 
     removeCategoryData(deleteCategory: number) {
-        this.categoryService.removeCategory(deleteCategory).subscribe((response) => response.json());
+        this.categoryService.removeCategory(deleteCategory).subscribe((response: any) => response);
         this.dialog.closeAll();
     }
 }

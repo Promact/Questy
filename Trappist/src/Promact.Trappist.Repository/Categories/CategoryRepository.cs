@@ -1,6 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace Promact.Trappist.Repository.Categories
