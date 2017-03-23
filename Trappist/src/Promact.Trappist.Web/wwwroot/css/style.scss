@@ -151,19 +151,17 @@ h6, .h6 {
 
   .errors-container {
     display: inline-block;
+    vertical-align: top;
     min-height: 20px;
+    min-width: 1px;
 
     .error-msg {
       display: block;
       color: $color_red;
       font-size: 11px;
-      line-height: 16px;
+      line-height: 14px;
       font-weight: 600;
-      padding: 4px;
-
-      &:not(:first-child) {
-        margin-top: -4px;
-      }
+      padding-top: 5px;
     }
   }
 }
@@ -394,6 +392,13 @@ footer {
     top: 40%;
     left: 0px;
     right: 0px;
+  }
+
+  h1 {
+    position: absolute;
+    top: 52%;
+    width: 100%;
+    text-align: center;
   }
 }
 
