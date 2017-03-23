@@ -11,6 +11,8 @@
     </div>
     <div class="dialog-actions">
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="isNameExist" (click)="CategoryAdd(category)">Create</button>
-    </div>
+        <button type="submit" class="btn btn-primary" [disabled]="isCategoryNameExist||lengthOfCategoryName" (click)="addCategory(category)">Create</button>
+    </md-dialog-actions>
 </div>
+
+
