@@ -1,8 +1,14 @@
 ﻿import { Component } from "@angular/core";
+import { Test } from "../tests.model";
 
 @Component({
     moduleId: module.id,
     selector: 'test-launch-dialog',
     templateUrl: "test-launch-dialog.html"
 })
-export class TestLaunchDialogComponent { }
+export class TestLaunchDialogComponent {
+    copiedContent: boolean = true;
+    settingObject: Test = new Test();
+    isDisplay: string = this.settingObject.link;
+}
+

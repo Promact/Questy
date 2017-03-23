@@ -3,7 +3,12 @@
         <div class="container">
             <h1 class="pull-left">
                 <span [hidden]="editName">{{testsettings.testName}}</span>
-                <input type="text" class="form-control"[(ngModel)]="testsettings.testName" name="Test Name" [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="onBlurMethod(testsettings.id,testsettings)"/>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test"
+                       [(ngModel)]="testsettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150"
+                       [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="onBlurMethod(testsettings.id,testsettings)" />
+                <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
+                <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>
+
                 <i class="material-icons" (click)="editName = !editName">edit</i>
             </h1>
             <button type="button" class="btn btn-primary pull-right"><i class="material-icons">remove_red_eye</i> Preview</button>
@@ -14,7 +19,7 @@
         <form class="form-area">
             <div class="form-group">
                 <label class="h4">Time Duration (mins)</label>
-                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.duration" name="Duration" placeholder="00" />
+                <input type="number" class="form-control small-width" [(ngModel)]="testsettings.duration" name="Duration" placeholder="00" max="180" min="0"/>
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Start Date & Time</label>
@@ -27,8 +32,8 @@
             <div class="form-group ip-restrictions-field">
                 <label class="h4">IP Restrictions</label>
                 <br />
-                <input type="text" class="form-control small-width" placeholder="From IP" [(ngModel)]="testsettings.fromIpAddress" name="From IP Address"/>
-                <input type="text" class="form-control small-width" placeholder="To IP" [(ngModel)]="testsettings.toIpAddress" name="To Ip Address"/>
+                <input type="text" class="form-control small-width" placeholder="From IP" [(ngModel)]="testsettings.fromIpAddress" name="From IP Address" required pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$"/>
+                <input type="text" class="form-control small-width" placeholder="To IP" [(ngModel)]="testsettings.toIpAddress" name="To Ip Address" required pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$"/>
             </div>
             <div class="form-group">
                 <label class="h4">Browser Tolerance</label>
@@ -59,35 +64,36 @@
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Correct Marks</label>
-                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.correctMarks" name="Correct Marks"/>
+                <input type="number" class="form-control small-width" [(ngModel)]="testsettings.correctMarks" name="Correct Marks" min="0"/>
             </div>
             <div class="form-group inline-field">
                 <label class="h4">Incorrect Marks</label>
-                <input type="text" class="form-control small-width" [(ngModel)]="testsettings.incorrectMarks" name="Incorrect Marks"/>
+                <input type="number" class="form-control small-width" [(ngModel)]="testsettings.incorrectMarks" name="Incorrect Marks" min="0"/>
             </div>
             <div class="form-group">
                 <label class="h4">Warning Message</label>
                 <textarea class="form-control half-width" rows="3" placeholder="Your message here" [(ngModel)]="testsettings.warningMessage" name="Warning Message"></textarea>
+                <span class="error-msg">Message cannot contain more than 255 characters</span>
             </div>
             <div class="form-group">
                 <label class="h4">Warning Time (mins)</label>
-                <input type="text" class="form-control small-width" placeholder="00" [(ngModel)]="testsettings.warningTime" name="Warning Time"/>
+                <input type="number" class="form-control small-width" placeholder="00" [(ngModel)]="testsettings.warningTime" name="Warning Time" min="0"/>
             </div>
-        </form>
-    </div>
-    <div class="footer-block clearfix">
-        <div class="container">
-            <ul class="steps pull-left">
-                <li class="h5">Select Sections</li>
-                <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
-                <li class="h5">Select Questions</li>
-                <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
-                <li class="h5 active">Settings & Schedule</li>
-            </ul>
-            <div class="buttons-block pull-right">
-                <button type="button" class="btn">Save & Exit</button>
-                <button type="button" class="btn btn-primary" (click)="launchTestDialog(testsettings.id,testsettings)">Save & Share</button>
+            <div class="footer-block clearfix">
+                <div class="container">
+                    <ul class="steps pull-left">
+                        <li class="h5">Select Sections</li>
+                        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+                        <li class="h5">Select Questions</li>
+                        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
+                        <li class="h5 active">Settings & Schedule</li>
+                    </ul>
+                    <div class="buttons-block pull-right">
+                        <button type="button" class="btn">Save & Exit</button>
+                        <button type="submit" class="btn btn-primary" (click)="launchTestDialog(testsettings.id,testsettings)">Save & Share</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </form>       
+    </div>   
 </div>
