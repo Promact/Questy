@@ -2,6 +2,8 @@
 using System.Linq;
 using Promact.Trappist.DomainModel.Models.Test;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -41,9 +43,9 @@ namespace Promact.Trappist.Repository.Tests
         /// Fetch all the tests from Test Model,Convert it into List
         /// </summary>
         /// <returns>List of Tests</returns>
-        public List<Test> GetAllTests()
-        {
-            var tests = _dbContext.Test.ToList();
+        public async Task<List<Test>> GetAllTests()
+        {     
+            List<Test> tests = await Task.Run(() => _dbContext.Test.ToList());
             return tests;
         }
     }
