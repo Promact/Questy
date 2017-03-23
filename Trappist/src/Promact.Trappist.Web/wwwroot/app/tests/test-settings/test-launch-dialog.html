@@ -1,0 +1,19 @@
+﻿<div class="dialog">
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left">Share Test</h1>
+        <button type="button" class="pull-right" md-dialog-close><i class="material-icons">close</i></button>
+    </div>
+    <div class="dialog-body">
+        <div class="form-group">
+            <label class="h4">Global URL</label>
+            <div class="url-container">
+                <input type="text" class="form-control" [(ngModel)]="settingObject.link" name="Test Link"/>
+                <i class="material-icons" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">content_copy</i>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-actions">
+        <button type="button" class="btn" md-dialog-close>Close</button>
+        <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">Copy</button>
+    </div>
+</div>

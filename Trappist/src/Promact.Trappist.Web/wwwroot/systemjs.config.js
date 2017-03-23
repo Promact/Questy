@@ -23,9 +23,12 @@
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
             '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
-
             // other libraries
-            'rxjs': 'npm:rxjs'
+            'rxjs': 'npm:rxjs',
+            'angular2-wizard': 'npm:angular2-wizard/dist/',
+             'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+            'clipboard': 'npm:clipboard/dist/clipboard.js',
+            'ngx-clipboard': 'npm:ngx-clipboard'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -34,7 +37,19 @@
             },
             rxjs: {
                 defaultExtension: 'js'
-            }
+            },
+            'angular2-wizard': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'ngx-clipboard': {
+                main: 'dist/index.umd.js',
+               // defaultExtension: 'js'
+            },
+            'clipboard': {
+                defaultExtension: 'js'
+            },
+            '.': { defaultExtension: 'js' }
         }
     });
 })(this);

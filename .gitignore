@@ -256,3 +256,11 @@ _references.js
 **/wwwroot/app/**/*.js.map
 
 **/wwwroot/css/*.css
+
+**/wwwroot/shims.js
+**/wwwroot/app-bundle.js
+**/wwwroot/setup-app-bundle.js
+**/wwwroot/bundle.css
+
+# Migration Folder
+**/Migrations/
