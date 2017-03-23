@@ -7,7 +7,7 @@ namespace Promact.Trappist.DomainModel.Models.Category
     public class Category : BaseModel
     {
         [Required]
-        [MaxLength(50)]
+        [MaxLength(150)]
         public string CategoryName { get; set; }
         public virtual ICollection<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
     }

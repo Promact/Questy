@@ -1,8 +1,7 @@
-﻿
-import { Injectable } from "@angular/core";
+﻿import { Injectable } from "@angular/core";
 import { HttpService } from "../core/http.service";
-import { QuestionsDashboardComponent} from "./questions-dashboard/questions-dashboard.component";
-import { Category} from "./category.model";
+import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
+import { Category } from "./category.model";
 @Injectable()
 export class CategoryService {
     private categoriesApiUrl = "api/category";
@@ -13,26 +12,29 @@ export class CategoryService {
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }
-    /*
-    * post Method
-    * add a Category in Category model
-    */
-    addCategory(category:Category) {
-        return this.httpService.post(this.categoriesApiUrl,category);
+
+    /**
+     * Method to Add Category
+     * @param category category object contains Category details
+     */
+    addCategory(category: Category) {
+        return this.httpService.post(this.categoriesApiUrl, category);
     }
 
-    /*
-    * for Check whether same CategoryName Exists in Database or not
-    */
+    /**
+     * Method to Check DupliCate Category Name
+     * @param categoryName :Category Name
+     */
     checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/check Duplicate Categoryname", categoryName);
+        return this.httpService.post(this.categoriesApiUrl + "/checkduplicatecategoryname", categoryName);
     }
 
-    /*
-    * edit a Category
-    */
-    editCategory(id: number, category:Category)
-    {
-        return this.httpService.put(this.categoriesApiUrl+"/"+id, category);
+    /**
+     * Method to Update Category
+     * @param id:primary key of the Category whose Value will be Changed
+     * @param category:Category object contains Category Object
+     */
+    updateCategory(id: number, category: Category) {
+        return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
     }
 }
