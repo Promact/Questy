@@ -1,8 +1,9 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
+using System;
 
 namespace Promact.Trappist.Repository.TestSettings
 {
-    public interface ITestSettingsRepository
+    public interface ITestSettingsRepository : IDisposable
     {
         /// <summary>
         /// Gets the Settings saved for a particular Test

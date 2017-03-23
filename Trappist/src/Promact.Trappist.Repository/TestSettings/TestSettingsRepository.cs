@@ -54,5 +54,13 @@ namespace Promact.Trappist.Repository.TestSettings
             testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate;
             return testSettings;
         }
+
+        /// <summary>
+        /// Eliminates need of calling Garbage Collector more than one time
+        /// </summary>
+        public void Dispose()
+        {
+            _dbContext.Dispose();
+        }
     }
 }

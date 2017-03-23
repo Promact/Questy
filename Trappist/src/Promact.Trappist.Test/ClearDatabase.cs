@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
+using System.Linq;
 
 namespace Promact.Trappist.Test
 {
