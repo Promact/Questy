@@ -1,18 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Promact.Trappist.Repository.BasicSetup;
 
 namespace Promact.Trappist.Web.Controllers
 {
     public class HomeController : Controller
-    {      
-        public HomeController()
+    {
+        #region Private variables
+        #region Dependencies
+        private readonly IBasicSetupRepository _basicSetup;
+        #endregion
+        #endregion
+
+        #region Constructor
+        public HomeController(IBasicSetupRepository basicSetup)
         {
-            
+            _basicSetup = basicSetup;
         }
+        #endregion
 
         public IActionResult Index()
         {
-            return View();
+            if (_basicSetup.IsFirstTimeUser())
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Setup), "Home");
+            }
         }
 
         public IActionResult Error()
@@ -22,7 +38,15 @@ namespace Promact.Trappist.Web.Controllers
 
         public IActionResult Setup(string returnUrl = null)
         {
-            return View();
+            if (_basicSetup.IsFirstTimeUser())
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
+
     }
 }

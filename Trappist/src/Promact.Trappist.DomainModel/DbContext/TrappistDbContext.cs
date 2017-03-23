@@ -7,18 +7,34 @@ using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
 using System;
 using Promact.Trappist.DomainModel.Models.Test;
-using System.Threading;
+using Microsoft.AspNetCore.Hosting;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
     public class TrappistDbContext : IdentityDbContext<ApplicationUser>
     {
-        public TrappistDbContext(DbContextOptions<TrappistDbContext> options)
-            : base(options)
-        {
-        }
+        #region Private variables
+        #region Dependencies
+        private readonly IHostingEnvironment _environment;
+        private readonly IStringConstants _stringConstants;
+        private readonly ConnectionString _connectionString;
+        #endregion
+        #endregion
 
+        #region Constructors
+        public TrappistDbContext(DbContextOptions<TrappistDbContext> options, IStringConstants stringConstants, ConnectionString connectionString)
+             : base(options)
+        {
+            _stringConstants = stringConstants;
+            _connectionString = connectionString;
+        }
+        #endregion
+
+        #region Protected Methods
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,6 +43,18 @@ namespace Promact.Trappist.DomainModel.DbContext
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        /// <summary>
+        /// This method used for providing dynamic connection string from user at runtime
+        /// </summary>
+        /// <param name="optionBuilder"></param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        {
+            optionBuilder.UseSqlServer(_connectionString.Value);
+            base.OnConfiguring(optionBuilder);
+        }
+        #endregion
+
         public DbSet<Test> Test { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }

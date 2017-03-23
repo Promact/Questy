@@ -6,7 +6,8 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Options;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 
 namespace Promact.Trappist.Test
 {
@@ -30,6 +31,17 @@ namespace Promact.Trappist.Test
                 },ServiceLifetime.Transient);
 
             //Register all dependencies here
+            services.Configure<ConnectionString>(x => x.Value = string.Empty);
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
+            services.Configure<EmailSettings>(x =>
+            {
+                x.Server = string.Empty;
+                x.UserName = string.Empty;
+                x.Port = 0;
+                x.Password = string.Empty;
+                x.ConnectionSecurityOption = string.Empty;
+            });
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
