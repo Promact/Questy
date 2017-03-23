@@ -66,8 +66,8 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.CategoryEdit(previousCategory);
             return Ok(category);
             #endregion
-
         }
+
         /// <summary>
         /// Delete Method 
         ///this method control the delete operation for category and return the removable Data
@@ -84,13 +84,12 @@ namespace Promact.Trappist.Core.Controllers
             if (categoryData != null)
             {
                 _categoryRepository.RemoveCategoryToDatabase(categoryData);
-                return Ok(categoryData);
+                return Ok(categoryId);
             }
             else
             {
                 return NotFound();
             }
         }
-
     }
 }

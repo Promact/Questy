@@ -12,6 +12,7 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext = dbContext;
         }
+
         /// <summary>
         /// Get all the names of Categories
         /// </summary>
@@ -22,6 +23,7 @@ namespace Promact.Trappist.Repository.Categories
             var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
             return categoryOrderedByCreatedDateTime;
         }
+
         #region Adding a CategoryName
         /// <summary>
         /// Adding a Category in Category model
@@ -33,6 +35,7 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
+
         #region Finding a Id Respective Category
         /// <summary>
         /// Find a Respective Id from Catagory Table
@@ -44,6 +47,7 @@ namespace Promact.Trappist.Repository.Categories
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
         #endregion
+
         #region Edit A Category Name
         // <summary>
         // Edit a Category from Category Table
@@ -55,14 +59,15 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.SaveChanges();
         }
         #endregion
+
         /// <summary>
-        /// delete a Category from Category model
+        /// Delete a Category from Category model
         /// </summary>
         /// <param name="category"> object of category model</param>
         public void RemoveCategoryToDatabase(Category category)
         {
             _dbContext.Category.Remove(category);
-            _dbContext.SaveChanges();            
+            _dbContext.SaveChanges();
         }
     }
 }

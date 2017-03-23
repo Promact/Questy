@@ -43,6 +43,7 @@ namespace Promact.Trappist.Test.Category
             _categoryRepository.CategoryEdit(categoryToUpdate);
             Assert.True(_trappistDbContext.Category.Count(x=>x.CategoryName == "Updated Category") == 1);
         }
+
         /// <summary>
         /// This is unit testing method. aim of this method is check a category remove from database or not
         /// </summary>
