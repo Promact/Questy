@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/category")]
+    [Route("api")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -12,10 +13,12 @@ namespace Promact.Trappist.Core.Controllers
         {
             _categoryRepository = categoryRepository;
         }
+
         /// <summary>
         /// Get All Categories
         /// </summary>
         /// <returns>Category List</returns>
+        [Route("category")]
         [HttpGet]
         public IActionResult GetAllCategories()
         {
@@ -23,61 +26,60 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(categoryList);
         }
 
-        #region post Method 
+        [Route("category")]
         [HttpPost]
         /// <summary>
         /// Post Method 
-        /// Will Add a Catagory Name in Category Model
+        /// Method to Add Category
         ///</summary>
-        /// <param name="category">Object of  class Category</param>
-        /// <returns>object of the class </returns>
-        public IActionResult catagoryAdd([FromBody] Category category)
+        /// <param name="category">category object contains category details</param>
+        /// <returns>category object contains category details</returns>
+        public async Task<IActionResult> CategoryAddAsync([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _categoryRepository.AddCategory(category);
+            await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
-        #endregion
 
-        #region PutMethod
         /// <summary>
-        /// Put Method
-        /// Will Edit a Existing Category from Category Model
+        /// Method to Update Existing Category
         /// </summary>
-        /// <param name="catagory">Object of  class Category</param>
-        /// <returns>object of the class after key found </returns>
-        [HttpPut("{id}")]
-        public IActionResult CategoryEdit([FromRoute] int id, [FromBody] Category category)
+        /// <param name="id">Take from Route whose Property to be Update</param>
+        /// <param name="category">category object contains category details</param>
+        /// <returns>Updated category object contains category details</returns>
+        [Route("category/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> CategoryUpdateAsync([FromRoute] int id, [FromBody] Category category)
         {
-            var categoryName = category.CategoryName;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _categoryRepository.CategoryEdit(id, category);
+            var searchCategoryId = await _categoryRepository.SearchForCategoryIdAsync(id);
+            if (!searchCategoryId)
+            {
+                return NotFound();
+            }
+            await _categoryRepository.CategoryUpdateAsync(id, category);
             return Ok(category);
         }
-            #endregion
 
-        #region Check DupliCate Category name
         /// <summary>
         /// Check whether Category Name Exists in Database or not
         /// </summary>
-        /// <param name="categoryName"></param>
+        /// <param name="categoryName">categoryname to check</param>
         /// <returns>
         /// true if Name Exists in Database
         /// False if not Exists
         /// </returns>
-        [HttpPost("check Duplicate Categoryname")]
-        public IActionResult CheckDuplicateCategoryName([FromBody]string categoryName)
+        [Route("category/checkduplicatecategoryname")]
+        [HttpPost]
+        public async Task<IActionResult> CheckDuplicateCategoryNameAsync([FromBody]string categoryName)
         {
-            return Ok(_categoryRepository.CheckDuplicateCategoryName(categoryName));
+            return Ok(await _categoryRepository.CheckDuplicateCategoryNameAsync(categoryName));
         }
-        #endregion
-        }
-
     }
+}
