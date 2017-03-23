@@ -70,7 +70,7 @@ export class TestSettingsComponent {
      * @param value contains the Test Name of the Test which is to be edited 
      */
     onBlurMethod(id: number, testObject: Test, value: string) {
-        if (value.length <= 150 && value != "" && value.match(RegExp("^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$"))) {
+        if (value.length <= 150 && value != "" && value.match(RegExp("^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$"))) {
             this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
             });
         }
@@ -105,7 +105,7 @@ export class TestSettingsComponent {
      * @param value contains the warning message
      */
     messageLengthChecking(value: string) {
-        if (this.testsettings.warningMessage.length > 10)
+        if (this.testsettings.warningMessage.length > 255)
             this.messageLength = true;
         else
             this.messageLength = false;

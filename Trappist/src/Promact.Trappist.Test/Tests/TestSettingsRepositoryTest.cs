@@ -2,8 +2,8 @@
 using Promact.Trappist.Repository.TestSettings;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using Promact.Trappist.Repository.Tests;
 using Xunit;
-using System.Collections.Generic;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -13,6 +13,7 @@ namespace Promact.Trappist.Test.Tests
         private readonly Bootstrap _bootstrap;
         private readonly TrappistDbContext _trappistDbContext;
         private readonly ITestSettingsRepository _settingsRepository;
+        private readonly ITestsRepository _testRepository;
 
         public TestSettingsRepositoryTest(Bootstrap bootstrap)
         {
@@ -20,25 +21,17 @@ namespace Promact.Trappist.Test.Tests
             //resolve dependencies to be used in tests
             _trappistDbContext = _bootstrap.ServiceProvider.GetService<TrappistDbContext>();
             _settingsRepository = _bootstrap.ServiceProvider.GetService<ITestSettingsRepository>();
+            _testRepository = _bootstrap.ServiceProvider.GetService<ITestsRepository>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
-        private List<DomainModel.Models.Test.Test> AddNewTest()
-        {
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "AOT 669" });
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "MCKVIE 142"});
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "IEM 336"});
-            _trappistDbContext.SaveChanges();
-
-            return _trappistDbContext.Test.ToList();
-                
-        }
-
         [Fact]
-        public void GetTestSettingsById()
+        public void GetSettingsById()
         {
-            var list = AddNewTest();
-            var testSettings = _settingsRepository.GetTestSettings(list[0].Id);
+            var test = AddNewTest();
+            _testRepository.CreateTest(test);
+            Assert.NotNull(test);
+            var testSettings = _settingsRepository.GetTestSettings(test.Id);
             var testName = testSettings.TestName;
             Assert.Equal(testName, "AOT 669");
         }
@@ -46,11 +39,22 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public void UpdateTestSettingsById()
         {
-            var list=AddNewTest();
-            var settingsToUpdate = _settingsRepository.GetTestSettings(list[0].Id);
+            var test = AddNewTest();
+            _testRepository.CreateTest(test);
+            var settingsToUpdate = _settingsRepository.GetTestSettings(test.Id);
             settingsToUpdate.TestName = "IIT BANGALORE";
-            _settingsRepository.UpdateTestSettings(list[0].Id, settingsToUpdate);
+            _trappistDbContext.Test.Update(settingsToUpdate);
+            _trappistDbContext.SaveChanges();
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == "IIT BANGALORE") == 1);
+        }
+
+        public DomainModel.Models.Test.Test AddNewTest()
+        {
+            var test = new DomainModel.Models.Test.Test()
+            {
+                TestName = "AOT 669"
+            };
+            return test;
         }
     }
 }
