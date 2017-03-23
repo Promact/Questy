@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -24,7 +25,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns Status 400(BadRequest) if model state is invalid or null
         /// </returns>
         [HttpPost]
-        public IActionResult AddQuestion([FromBody]QuestionAC questionAC)
+        public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
             if(questionAC == null )
             {
@@ -36,7 +37,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             if(questionAC.question.QuestionType == QuestionType.Single || questionAC.question.QuestionType == QuestionType.Multiple)
             {
-                _questionsRepository.AddSingleMultipleAnswerQuestion(questionAC.singleMultipleQuestion.singleMultipleAnswerQuestion, questionAC.singleMultipleQuestion.singleMultipleAnswerQuestionOption);
+                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC.singleMultipleQuestion.singleMultipleAnswerQuestion, questionAC.singleMultipleQuestion.singleMultipleAnswerQuestionOption);
                 return Ok(questionAC);
             }
             else
