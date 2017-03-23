@@ -9,11 +9,13 @@ import { Question } from "../../questions/question.model"
 import { DifficultyLevel } from "../../questions/enum-difficultylevel"
 import { QuestionType } from "../../questions/enum-questiontype"
 import { Category } from "../../questions/category.model"
+
 @Component({
     moduleId: module.id,
     selector: "questions-dashboard",
     templateUrl: "questions-dashboard.html"
 })
+
 export class QuestionsDashboardComponent {
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
