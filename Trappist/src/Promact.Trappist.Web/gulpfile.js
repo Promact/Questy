@@ -38,7 +38,7 @@ gulp.task("bundle-css", function () {
         './wwwroot/css/style.css'
     ])
     .pipe(concat('bundle.css'))
-    .pipe(gulp.dest('./wwwroot'));
+    .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //Converts ts files to js with html template inline
@@ -55,7 +55,7 @@ gulp.task('bundle-shims', function () {
         './node_modules/zone.js/dist/zone.js'])
     .pipe(concat('shims.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('./wwwroot/'));
+    .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //bundle main dashboard app
@@ -64,7 +64,7 @@ gulp.task('bundle-app', function (done) {
     var builder = new Builder('./', './wwwroot/systemjs.config.js');
 
     builder
-      .buildStatic('./wwwroot/app/main.js', './wwwroot/app-bundle.js', {
+      .buildStatic('./wwwroot/app/main.js', './wwwroot/dist/app-bundle.js', {
           runtime: false
           /*minify: true,
           mangle: false*/
@@ -79,7 +79,7 @@ gulp.task('bundle-setup-app', function (done) {
     var builder = new Builder('./', './wwwroot/systemjs.config.js');
 
     builder
-      .buildStatic('./wwwroot/app/main-setup.js', './wwwroot/setup-app-bundle.js', {
+      .buildStatic('./wwwroot/app/main-setup.js', './wwwroot/dist/setup-app-bundle.js', {
           runtime: false
           /*minify: true,
           mangle: false*/

@@ -257,10 +257,10 @@ _references.js
 
 **/wwwroot/css/*.css
 
-**/wwwroot/shims.js
-**/wwwroot/app-bundle.js
-**/wwwroot/setup-app-bundle.js
-**/wwwroot/bundle.css
+**/wwwroot/dist/
 
 # Migration Folder
 **/Migrations/
+
+# published output
+**/published/
