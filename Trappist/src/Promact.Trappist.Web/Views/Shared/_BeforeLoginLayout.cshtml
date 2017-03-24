@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <base href="/">
@@ -22,13 +23,6 @@
 
     <!-- Custom CSS -->
     <link href="~/css/style.css" rel="stylesheet" />
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -41,7 +35,20 @@
                 @RenderBody()
             </div>
         </div>
-        <footer>Copyright &copy;@DateTime.Now.Year Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
+        <footer>
+            <div class="container-fluid">
+                <span>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</span>
+                @{
+                    var revisionFilePath = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, ".revision");
+                    if (System.IO.File.Exists(revisionFilePath))
+                    {
+                        var commitId = System.IO.File.ReadAllText(revisionFilePath);
+                        <span class="pull-right"><a target="_blank" href='https://github.com/Promact/trappist/commit/@commitId'>Buid - @commitId</a></span>
+                    }
+
+                }
+            </div>
+        </footer>
     </div>
 </body>
 </html>

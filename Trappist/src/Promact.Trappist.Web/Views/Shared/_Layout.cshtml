@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <base href="/">
@@ -32,6 +33,19 @@
 
 <body>
     @RenderBody()
-    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
+    <footer>
+        <div class="container-fluid">
+            <span>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</span>
+            @{
+                var revisionFilePath = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, ".revision");
+                if (System.IO.File.Exists(revisionFilePath))
+                {
+                    var commitId = System.IO.File.ReadAllText(revisionFilePath);
+                    <span class="pull-right"><a target="_blank" href='https://github.com/Promact/trappist/commit/@commitId'>Buid - @commitId</a></span>
+                }
+
+            }
+        </div>
+    </footer>
 </body>
 </html>
