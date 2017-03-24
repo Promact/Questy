@@ -4,8 +4,8 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class QuestionAC
     {
-        public Models.Question.Question question { get; set; }
-        public SingleMultipleQuestionAC singleMultipleQuestion { get; set; }
-        public CodeSnippetQuestion codeSnippetQuestion { get; set; }
+        public Models.Question.Question Question { get; set; }
+        public SingleMultipleQuestionAC SingleMultipleQuestion { get; set; }
+        public CodeSnippetQuestion CodeSnippetQuestion { get; set; }
     }
 }
