@@ -26,7 +26,7 @@ export class CategoryService {
      * @param categoryName :Category Name
      */
     checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/checkduplicatecategoryname", categoryName);
+        return this.httpService.post(this.categoriesApiUrl + "/checkduplicatecategory", categoryName);
     }
 
     /**
