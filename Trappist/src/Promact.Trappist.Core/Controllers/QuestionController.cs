@@ -36,7 +36,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            if(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Programming)
+            if(questionAC.Question.QuestionType == QuestionType.Programming)
             {
                 //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
                 return Ok(questionAC);
