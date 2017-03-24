@@ -25,6 +25,9 @@ namespace Promact.Trappist.Test.Tests
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
+        /// <summary>
+        /// Gets Settings of Test selected by Id
+        /// </summary>
         [Fact]
         public void GetSettingsById()
         {
@@ -36,6 +39,9 @@ namespace Promact.Trappist.Test.Tests
             Assert.Equal(testName, "AOT 669");
         }
 
+        /// <summary>
+        /// Updates settings of a particular test with the help of Id
+        /// </summary>
         [Fact]
         public void UpdateTestSettingsById()
         {
@@ -48,6 +54,10 @@ namespace Promact.Trappist.Test.Tests
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == "IIT BANGALORE") == 1);
         }
 
+        /// <summary>
+        /// Adds new Test in the database
+        /// </summary>
+        /// <returns>The data added in the database</returns>
         public DomainModel.Models.Test.Test AddNewTest()
         {
             var test = new DomainModel.Models.Test.Test()
