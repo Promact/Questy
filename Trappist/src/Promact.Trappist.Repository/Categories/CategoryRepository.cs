@@ -9,6 +9,7 @@ namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
     {
+
         private readonly TrappistDbContext _dbContext;
 
         public CategoryRepository(TrappistDbContext dbContext)
@@ -73,7 +74,8 @@ namespace Promact.Trappist.Repository.Categories
         /// Delete a Category from Category model
         /// </summary>
         /// <param name="category"> object of category model</param>
-        public async Task RemoveCategoryToDatabaseAsync(Category category)
+        
+        public async Task RemoveCategoryAsync(Category category)
         {
             _dbContext.Category.Remove(category);
             await _dbContext.SaveChangesAsync();
