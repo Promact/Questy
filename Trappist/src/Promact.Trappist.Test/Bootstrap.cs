@@ -27,7 +27,7 @@ namespace Promact.Trappist.Test
                 {
                     options.UseInMemoryDatabase()
                            .UseInternalServiceProvider(serviceProvider);
-                });
+                }, ServiceLifetime.Transient);
 
             //Register all dependencies here
             services.AddScoped<IQuestionRespository, QuestionRepository>();
