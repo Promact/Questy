@@ -22,7 +22,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="questionAC">QuestionAC object</param>
         /// <returns>
-        /// Returns question list
+        /// Returns added question
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
