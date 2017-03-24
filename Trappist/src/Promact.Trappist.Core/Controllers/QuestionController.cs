@@ -28,18 +28,22 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
-            if(questionAC == null || !ModelState.IsValid)
+            if(questionAC == null)
             {
                 return BadRequest();
             }
-            if(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Single || questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Multiple)
+            if (!ModelState.IsValid)
             {
-                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
+                return BadRequest();
+            }
+            if(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Programming)
+            {
+                //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
                 return Ok(questionAC);
             }
             else
             {
-                //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
+                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
                 return Ok(questionAC);
             }          
         }
