@@ -7,6 +7,8 @@ using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
 using System;
 using Promact.Trappist.DomainModel.Models.Test;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
@@ -46,6 +48,23 @@ namespace Promact.Trappist.DomainModel.DbContext
                 ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
             });
             return base.SaveChanges();
+        }
+        /// <summary>
+        /// override savechangesasync method
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ChangeTracker.Entries().Where(x => x.Entity is BaseModel && x.State == EntityState.Added).ToList().ForEach(x =>
+            {
+                ((BaseModel)x.Entity).CreatedDateTime = DateTime.UtcNow;
+            });
+            ChangeTracker.Entries().Where(x => x.Entity is BaseModel && x.State == EntityState.Modified).ToList().ForEach(x =>
+            {
+                ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
+            });
+            return base.SaveChangesAsync(cancellationToken);
         }
         #endregion
     }
