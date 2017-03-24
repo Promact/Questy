@@ -8,7 +8,6 @@
             <label class="h4">Section Name</label>
             <input type="text" class="form-control" id="CategoryName" [(ngModel)]="category.categoryName" (change)="changeErrorMessage()" name="CategoryName" #CategoryName="ngModel" placeholder="Ex. General Knowledge" maxlength="150" required />
             <span *ngIf="isCategoryNameExist" class="error-msg">{{errormesseage}}</span>
-            <span *ngIf="lengthOfCategoryName" class="error-msg">CategoryName Cannot be more than 150 characters long</span>
             <span *ngIf="CategoryName.errors && (CategoryName.dirty || CategoryName.touched)" [hidden]="!CategoryName.errors.required" class="error-msg">Category Name Required</span>
         </div>
     </md-dialog-content>
