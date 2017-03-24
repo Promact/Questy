@@ -24,5 +24,9 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         [ForeignKey("CategoryID")]
         public virtual Category.Category Category { get; set; }
+
+        public virtual SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
+
+        public virtual CodeSnippetQuestion CodeSnippetQuestion { get; set; }
     }
 }
