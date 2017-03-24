@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.Models.Category;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -72,10 +73,10 @@ namespace Promact.Trappist.Repository.Categories
         /// Delete a Category from Category model
         /// </summary>
         /// <param name="category"> object of category model</param>
-        public void RemoveCategoryToDatabase(Category category)
+        public async Task RemoveCategoryToDatabaseAsync(Category category)
         {
             _dbContext.Category.Remove(category);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
