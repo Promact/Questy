@@ -26,7 +26,6 @@ body {
   font-size: 13px;
   color: $color_base;
   height: $full_size;
-  overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7 {
@@ -273,11 +272,6 @@ h6, .h6 {
 }
 
 /* Layout */
-.main-page, .basic-setup {
-  height: $full_size;
-  overflow: auto;
-}
-
 .navbar {
   border: 0;
   border-radius: 0;
@@ -334,7 +328,7 @@ footer {
 }
 
 .main-content {
-  min-height: 520px;
+  min-height: 550px;
   padding: 20px 0;
   background-color: $color_bg;
 
@@ -394,11 +388,23 @@ footer {
     right: 0px;
   }
 
-  h1 {
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    text-align: center;
+  &.main-loader {
+    background-color: $color_white;
+
+    .loader-block {
+      position: absolute;
+      top: 35%;
+      width: 100%;
+      text-align: center;
+
+      .spinner {
+        position: static;
+      }
+
+      h1 {
+        margin-top: 15px;
+      }
+    }
   }
 }
 
@@ -955,9 +961,10 @@ footer {
   background-color: $color_bg;
 
   .setup-content {
-    min-height: 450px;
+    min-height: 610px;
     width: 800px;
-    margin: 80px auto;
+    margin: 0 auto;
+    padding: 80px 0;
 
     .logo-area {
       text-align: center;
