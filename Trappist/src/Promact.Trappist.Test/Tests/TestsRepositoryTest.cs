@@ -31,7 +31,7 @@ namespace Promact.Trappist.Test.Tests
             AddTest();
             var list = _testRepository.GetAllTests();
             Assert.NotNull(list);
-            Assert.Equal(3, list.Count);
+            Assert.Equal(3, list.Result.Count);
         }
         /// <summary>
         /// Test Case For Emtpty Test Model
@@ -40,7 +40,7 @@ namespace Promact.Trappist.Test.Tests
         public void GetAllTestEmpty()
         {
             var list = _testRepository.GetAllTests();
-            Assert.Equal(0, list.Count);
+            Assert.Equal(0, list.Result.Count);
         }
         private void AddTest()
         {
