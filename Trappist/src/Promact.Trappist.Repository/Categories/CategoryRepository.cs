@@ -38,44 +38,25 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Method to check Whether Id is Exists or not
+        /// Method to Get Category by its Id
         /// </summary>
-        /// <param name="key">id which have to search</param>
-        /// <returns>true if key found else false</returns>
-        public async Task<bool> SearchForCategoryIdAsync(int key)
-        {
-            var category = await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
-            if (category == null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Method to get category by its Id
-        /// </summary>
-        /// <param name="key">id that will find category</param>
-        /// <returns>category object contains category details</returns>
+        /// <param name="key">id which will Search Category</param>
+        /// <returns>category object Contains Category Detaiks</returns>
         public async Task<Category> GetCategoryByIdAsync(int key)
         {
             return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
         }
 
         /// <summary>
-        /// Method to Update Category
+        /// Method to UPdate Category
         /// </summary>
-        /// <param name="id">key whose Property will be Updated</param>
-        /// <param name="category">category object contains category details</param>
-        public async Task CategoryUpdateAsync(int id, Category category)
+        /// <param name="category">category object Contains Category Details</param>
+        public async Task UpdateCategoryAsync(Category category)
         {
-            var categoryToUpdate = GetCategoryByIdAsync(id);
-            if (categoryToUpdate != null)
-            {
-                categoryToUpdate.Result.CategoryName = category.CategoryName;
-                _dbContext.Category.Update(categoryToUpdate.Result);
-                await _dbContext.SaveChangesAsync();
-            }
+            var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
+            await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>

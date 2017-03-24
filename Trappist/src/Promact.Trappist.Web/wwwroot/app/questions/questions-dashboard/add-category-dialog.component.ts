@@ -29,7 +29,7 @@ export class AddCategoryDialogComponent {
 
     /**
      * Method to Check Duplicate Category Name and Character Length
-     * @param categoryName:ctegoryName
+     * @param categoryName:categoryName
      */
     checkDuplicateCategoryName(categoryName: string) {
         this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {

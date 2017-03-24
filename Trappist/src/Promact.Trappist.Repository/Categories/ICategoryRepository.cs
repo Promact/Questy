@@ -11,34 +11,32 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <returns>Category list</returns>
         IEnumerable<Category> GetAllCategories();
+
         /// <summary>
         /// Method to add a Category
         /// </summary>
         /// <param name="catagory">category object contains category details</param>
         Task AddCategoryAsync(Category catagory);
+
         /// <summary>
         /// Method to Update Category
         /// </summary>
-        /// <param name="id">id whose property will be Updated</param>
-        /// <param name="catagory">category object contains category details</param>
-        Task CategoryUpdateAsync(int id, Category catagory);
+        /// <param name="catagory">category object contains Category details</param>
+        /// <returns>category object Contains Category details</returns>
+        Task UpdateCategoryAsync(Category categoryToUpdate);
+
         /// <summary>
         /// Method to Check Same CategoryName Exists or not
         /// </summary>
         /// <param name="categoryName">CategoryName</param>
         /// <returns>true if Exists else False</returns>
         Task<bool> CheckDuplicateCategoryNameAsync(string categoryName);
+
         /// <summary>
-        /// Method to Find category of respective id
+        /// Method to Get Category By its Id
         /// </summary>
-        /// <param name="key">id that will find category</param>
-        /// <returns>category object contains category details</returns>
-        Task<Category> GetCategoryByIdAsync(int id);
-        /// <summary>
-        /// Method to check Id is Exists or not
-        /// </summary>
-        /// <param name="key">take value from Route who id to be search</param>
-        /// <returns>true if key found else false</returns>
-        Task<bool> SearchForCategoryIdAsync(int key);
+        /// <param name="key">id to fing Category</param>
+        /// <returns>Category object Contains Category Details</returns>
+        Task<Category> GetCategoryByIdAsync(int key);
     }
 }
