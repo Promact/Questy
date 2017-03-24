@@ -9,12 +9,19 @@ var inlineNg2Template = require("gulp-inline-ng2-template");
 var ts = require("gulp-typescript");
 var tsProject = ts.createProject("./wwwroot/tsconfig.json");
 var runSequence = require('run-sequence');
+var tslint = require('gulp-tslint');
 
 //production publish task
 gulp.task('prod', function (done) {
     runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'sass', 'bundle-css', function () {
         done();
     });
+});
+
+gulp.task('lint', function (done) {
+    gulp.src("./wwwroot/app/**/*.ts")
+        .pipe(tslint({formatter:"stylish"}))
+        .pipe(tslint.report());
 });
 
 //sass to css
