@@ -18,30 +18,29 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Question API
         /// <summary>
-        /// Adds question to the database
+        /// Post API to save the question
         /// </summary>
         /// <param name="questionAC">QuestionAC object</param>
         /// <returns>
-        /// Returns status 200(Ok) with QuestionAC object passed if question is added successfully
-        /// Returns Status 400(BadRequest) if model state is invalid or null
+        /// Returns QuestionAC object passed if question is added successfully
+        /// Returns BadRequest if model state is invalid or null
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
-            if(questionAC == null || !ModelState.IsValid)
+            if (questionAC == null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
-            if(questionAC.Question.QuestionType == QuestionType.Programming)
+            if (questionAC.Question.QuestionType == QuestionType.Programming)
             {
                 //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
-                return Ok(questionAC);
             }
             else
             {
                 await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
-                return Ok(questionAC);
-            }          
+            }
+            return Ok(questionAC);
         }
 
         /// <summary>
