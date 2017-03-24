@@ -12,8 +12,7 @@ namespace Promact.Trappist.Repository.Tests
         private readonly TrappistDbContext _dbContext;
         public TestsRepository(TrappistDbContext dbContext)
         {
-            _dbContext = dbContext;
-           
+            _dbContext = dbContext;         
         }
         /// <summary>
         /// this method is used to create a new test
