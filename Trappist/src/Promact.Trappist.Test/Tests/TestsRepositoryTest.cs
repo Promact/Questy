@@ -29,7 +29,7 @@ namespace Promact.Trappist.Test.Tests
         public void GetAllTest()
         {
             AddTest();
-            var list = _testRepository.GetAllTests();
+            var list = _testRepository.GetAllTestsAsync();
             Assert.NotNull(list);
             Assert.Equal(3, list.Result.Count);
         }
@@ -39,7 +39,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public void GetAllTestEmpty()
         {
-            var list = _testRepository.GetAllTests();
+            var list = _testRepository.GetAllTestsAsync();
             Assert.Equal(0, list.Result.Count);
         }
         private void AddTest()

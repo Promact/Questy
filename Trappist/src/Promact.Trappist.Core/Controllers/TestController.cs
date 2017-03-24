@@ -44,7 +44,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllTest()
         {
-            var tests = await _testRepository.GetAllTests();           
+            var tests = await _testRepository.GetAllTestsAsync();           
             return Ok(tests);
         }
     }
