@@ -22,8 +22,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="questionAC">QuestionAC object</param>
         /// <returns>
-        /// Returns QuestionAC object passed if question is added successfully
-        /// Returns BadRequest if model state is invalid or null
+        /// Returns question list
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
