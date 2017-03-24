@@ -124,7 +124,7 @@ export class TestSettingsComponent {
             this.validIpAddress = true;
         else
             this.validIpAddress = false;
-        if (this.warningMessage.length < 10 && this.endDate > this.testsettings.startDate && this.validIpAddress === true) {
+        if (this.warningMessage.length < 255 && this.endDate > this.testsettings.startDate && this.validIpAddress === true) {
             this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
             });
             var instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
