@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses
 {
-    public class SingleMultipleQuestionAC
+    public class SingleMultipleAnswerQuestionAC
     {
         public SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
         public List<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }

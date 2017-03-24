@@ -10,6 +10,7 @@ namespace Promact.Trappist.Core.Controllers
     public class QuestionController : Controller
     {
         private readonly IQuestionRespository _questionsRepository;
+
         public QuestionController(IQuestionRespository questionsRepository)
         {
             _questionsRepository = questionsRepository;
@@ -35,7 +36,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            if(questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Single || questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Multiple)
+            if(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Single || questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Multiple)
             {
                 await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
                 return Ok(questionAC);

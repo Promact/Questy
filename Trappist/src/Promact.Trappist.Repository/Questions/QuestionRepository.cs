@@ -35,8 +35,8 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="singleMultipleAnswerQuestionOption"></param>
         public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
         {
-            await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestion);
-            foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestionOption)
+            await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion);
+            foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestionOption)
             {
                 //To-Do Change according to new model singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
                 await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(singleMultipleAnswerQuestionOptionElement);
