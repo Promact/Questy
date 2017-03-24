@@ -1,10 +1,10 @@
-﻿import { Injectable } from "@angular/core";
-import { HttpService } from "../core/http.service";
-import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
-import { Category } from "./category.model";
+﻿import { Injectable } from '@angular/core';
+import { HttpService} from '../core/http.service';
+import { QuestionsDashboardComponent } from './questions-dashboard/questions-dashboard.component';
+import { Category } from './category.model';
 @Injectable()
 export class CategoryService {
-    private categoriesApiUrl = "api/category";
+    private categoriesApiUrl = 'api/category';
     constructor(private httpService: HttpService) {
     }
 
@@ -22,19 +22,11 @@ export class CategoryService {
     }
 
     /**
-     * Method to Check DupliCate Category Name
-     * @param categoryName :Category Name
-     */
-    checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/checkduplicatecategoryname", categoryName);
-    }
-
-    /**
      * Method to Update Category
      * @param id:primary key of the Category whose Value will be Changed
      * @param category:Category object contains Category Object
      */
     updateCategory(id: number, category: Category) {
-        return this.httpService.put(this.categoriesApiUrl + "/" + id, category);
+        return this.httpService.put(this.categoriesApiUrl + '/' + id, category);
     }
 }
