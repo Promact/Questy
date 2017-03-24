@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.Questions
             return questionsOrderedByCreatedDateTime;
         }
         /// <summary>
-        /// Add single multiple answer question into model
+        /// A method to add single multiple answer question.
         /// </summary>
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
