@@ -9,6 +9,7 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/category")]
     public class CategoryController : Controller
     {
+
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStringConstants _stringConstants;
 
@@ -23,6 +24,7 @@ namespace Promact.Trappist.Core.Controllers
         ///API to get all the Categories
         /// </summary>
         /// <returns>Category List</returns>
+        
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
@@ -80,10 +82,10 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Delete Method 
-        ///this method control the delete operation for category and return a category Id
+        /// action to delete a category
         ///</summary>
         /// <param name="categoryId">Id of category</param>
+        
         [HttpDelete("{categoryId}")]
         public async Task<IActionResult> CategoryRemove([FromRoute] int categoryId)
         {
@@ -94,14 +96,14 @@ namespace Promact.Trappist.Core.Controllers
             var categoryData = await _categoryRepository.GetCategory(categoryId);
             if (categoryData != null)
             {
-                await _categoryRepository.RemoveCategoryToDatabaseAsync(categoryData);
-                return Ok(categoryId);
+                await _categoryRepository.RemoveCategoryAsync(categoryData);
+                return Ok();
             }
             else
             {
                 return NotFound();
             }
         }
+
     }
 }
-

@@ -12,19 +12,22 @@ import { Category } from "../../questions/category.model"
 export class DeleteCategoryDialogComponent {
     categoryIdToDelete: number;
     categoryArray: Category[] = new Array<Category>();
-
+    msg: any;
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
 
     // call removeCategory() method of categoryService class 
     removeCategoryData(deleteCategory: number) {
-        this.categoryService.removeCategory(deleteCategory).subscribe((response) => {
-            for (var i = 0; i < this.categoryArray.length; i++) {
-                if (response === this.categoryArray[i].id) {
-                    this.categoryArray.splice(this.categoryArray.indexOf(this.categoryArray[i]), 1);
+        this.categoryService.removeCategory(deleteCategory).subscribe((response: any) => {
+            if (response.status >= 200 && response.status <= 299) {
+                for (var i = 0; i < this.categoryArray.length; i++) {
+                    if (deleteCategory == this.categoryArray[i].id) {
+                        this.categoryArray.splice(this.categoryArray.indexOf(this.categoryArray[i]), 1);
+                    }
                 }
             }
         });
         this.dialog.closeAll();
     }
+
 }
