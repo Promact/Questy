@@ -35,9 +35,9 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            if(questionAC.question.QuestionType == QuestionType.Single || questionAC.question.QuestionType == QuestionType.Multiple)
+            if(questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Single || questionAC.SingleMultipleQuestion.SingleMultipleAnswerQuestion.Question.QuestionType == QuestionType.Multiple)
             {
-                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC.singleMultipleQuestion.singleMultipleAnswerQuestion, questionAC.singleMultipleQuestion.singleMultipleAnswerQuestionOption);
+                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
                 return Ok(questionAC);
             }
             else
