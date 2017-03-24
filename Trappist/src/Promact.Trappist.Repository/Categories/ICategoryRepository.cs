@@ -49,5 +49,6 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="catagoryName">object of category model </param>
         
         Task RemoveCategoryAsync(Category category);
+
     }
 }
