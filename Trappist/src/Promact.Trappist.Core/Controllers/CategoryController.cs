@@ -3,6 +3,7 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/category")]
@@ -84,16 +85,16 @@ namespace Promact.Trappist.Core.Controllers
         ///</summary>
         /// <param name="categoryId">Id of category</param>
         [HttpDelete("{categoryId}")]
-        public IActionResult CategoryRemove([FromRoute] int categoryId)
+        public async Task<IActionResult> CategoryRemove([FromRoute] int categoryId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var categoryData = _categoryRepository.GetCategory(categoryId);
+            var categoryData = await _categoryRepository.GetCategory(categoryId);
             if (categoryData != null)
             {
-                _categoryRepository.RemoveCategoryToDatabase(categoryData);
+                await _categoryRepository.RemoveCategoryToDatabaseAsync(categoryData);
                 return Ok(categoryId);
             }
             else
