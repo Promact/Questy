@@ -28,11 +28,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
-            if(questionAC == null)
-            {
-                return BadRequest();
-            }
-            if (!ModelState.IsValid)
+            if(questionAC == null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
