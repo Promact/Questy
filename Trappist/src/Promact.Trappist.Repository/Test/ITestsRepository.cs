@@ -21,7 +21,7 @@ namespace Promact.Trappist.Repository.Tests
         /// Method defined to fetch Tests from Test Model
         /// </summary>
         /// <returns>List Of Tests</returns>
-       Task<List<Test>> GetAllTests();
+       Task<List<Test>> GetAllTestsAsync();
 
     }
 

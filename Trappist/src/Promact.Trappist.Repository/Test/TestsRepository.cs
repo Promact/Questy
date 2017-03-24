@@ -3,6 +3,7 @@ using System.Linq;
 using Promact.Trappist.DomainModel.Models.Test;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Promact.Trappist.Repository.Tests
@@ -41,11 +42,10 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
         /// </summary>
-        /// <returns>List of Tests</returns>
-        public async Task<List<Test>> GetAllTests()
-        {     
-            List<Test> tests = await Task.Run(() => _dbContext.Test.ToList());
-            return tests;
+        /// <returns>List of Testsby decreasing order of there created Date</returns>
+        public async Task<List<Test>> GetAllTestsAsync()
+        {          
+            return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();      
         }
     }
 }
