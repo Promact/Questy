@@ -9,10 +9,15 @@ import { MdDialog } from '@angular/material';
     templateUrl: "add-category-dialog.html"
 })
 export class AddCategoryDialogComponent {
-    private category: Category = new Category();
+    private response: any;
+
+    category: Category = new Category();
     isCategoryNameExist: boolean = false;
-    lengthOfCategoryName: boolean = false;
+    errormesseage: any;
+    showButton: boolean;
+
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
+        this.showButton = false;
     }
 
     /**
@@ -21,26 +26,22 @@ export class AddCategoryDialogComponent {
      */
     addCategory(category: Category) {
         if (category.categoryName !== "" && category.categoryName !== null && category.categoryName !== undefined) {
-            this.categoryService.addCategory(category).subscribe((response) => {
-            });
-            this.dialog.closeAll();
+            this.categoryService.addCategory(category).subscribe(
+                result => {
+                    this.dialog.closeAll();
+                },
+                err => {
+                    this.isCategoryNameExist = true;
+                    this.response = (err.json());
+                    this.errormesseage = this.response["error"][0];
+                });
         }
     }
 
     /**
-     * Method to Check Duplicate Category Name and Character Length
-     * @param categoryName:ctegoryName
+     *Method to change Error Message when change will made in text box  
      */
-    checkDuplicateCategoryName(categoryName: string) {
-        this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
-            this.isCategoryNameExist = result;
-        });
-        //check for Character Length
-        if (categoryName.length > 150) {
-            this.lengthOfCategoryName = true;
-        }
-        else {
-            this.lengthOfCategoryName = false;
-        }
+    changeErrorMessage() {
+        this.isCategoryNameExist = false;
     }
 }

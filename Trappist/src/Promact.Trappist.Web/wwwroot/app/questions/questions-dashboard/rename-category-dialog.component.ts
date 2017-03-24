@@ -1,7 +1,8 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, Injectable } from "@angular/core";
 import { CategoryService } from "../categories.service";
 import { MdDialog } from '@angular/material';
 import { Category } from "../category.model";
+@Injectable()
 
 @Component({
     moduleId: module.id,
@@ -10,10 +11,14 @@ import { Category } from "../category.model";
 })
 
 export class RenameCategoryDialogComponent {
+    private response: any;
+
+    showButton: boolean;
     category: Category = new Category();
     isCategoryNameExist: boolean = false;
-    lengthOfCategoryName: boolean = false;
+    errormessage: any;
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
+        this.showButton = false;
     }
 
     /**
@@ -22,26 +27,23 @@ export class RenameCategoryDialogComponent {
      */
     updateCategory(category: Category) {
         if (category.categoryName !== "") {
-            this.categoryService.updateCategory(category.id, category).subscribe((response) => {
-            });
-            this.dialog.closeAll();
+            this.categoryService.updateCategory(category.id, category).subscribe(
+                result => {
+                    this.dialog.closeAll();
+                },
+                err => {
+                    this.isCategoryNameExist = true;
+                    this.response = (err.json());
+                    this.errormessage = this.response["error"][0];
+                    this.showButton = false;
+                });
         }
     }
 
     /**
-     * Method to Check Duplicate Category Name and Character length
-     * @param categoryName:Category Name
+     *Method to change Error Message when change will made in text box  
      */
-    checkDuplicateCategoryName(categoryName: string) {
-        this.categoryService.checkDuplicateCategoryName(categoryName).subscribe((result) => {
-            this.isCategoryNameExist = result;
-        });
-        //check for Charcter length
-        if (categoryName.length > 150) {
-            this.lengthOfCategoryName = true;
-        }
-        else {
-            this.lengthOfCategoryName = false;
-        }
+    changeErrorMessage() {
+        this.isCategoryNameExist = false;
     }
 }
