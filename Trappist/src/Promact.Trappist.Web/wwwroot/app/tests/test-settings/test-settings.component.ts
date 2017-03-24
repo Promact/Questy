@@ -69,7 +69,7 @@ export class TestSettingsComponent {
      * @param testObject is an object of class Test
      * @param value contains the Test Name of the Test which is to be edited 
      */
-    onBlurMethod(id: number, testObject: Test, value: string) {
+    testNameUpdation(id: number, testObject: Test, value: string) {
         if (value.length <= 150 && value != "" && value.match(RegExp("^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$"))) {
             this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
             });
