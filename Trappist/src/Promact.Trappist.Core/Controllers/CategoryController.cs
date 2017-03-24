@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Promact.Trappist.Core.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
+
         public CategoryController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
@@ -37,6 +39,12 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
+            if (isduplicateCategoryNameExists == true)
+            {
+                ModelState.AddModelError("error", "Category Name Already Exists");
+                return BadRequest(ModelState);
+            }
             await _categoryRepository.AddCategoryAsync(category);
             return Ok(category);
         }
@@ -54,6 +62,12 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
+            if (isduplicateCategoryNameExists == true)
+            {
+                ModelState.AddModelError("error", "Category Name Already Exists");
+                return BadRequest(ModelState);
+            }
             var existsCategory = await _categoryRepository.GetCategoryByIdAsync(id);
             if (existsCategory == null)
             {
@@ -61,20 +75,6 @@ namespace Promact.Trappist.Core.Controllers
             }
             await _categoryRepository.UpdateCategoryAsync(category);
             return Ok(category);
-        }
-
-        /// <summary>
-        /// Check whether Category Name Exists in Database or not
-        /// </summary>
-        /// <param name="categoryName">categoryname to check</param>
-        /// <returns>
-        /// true if Name Exists in Database
-        /// False if not Exists
-        /// </returns>
-        [HttpPost("checkduplicatecategory")]
-        public async Task<IActionResult> CheckDuplicateCategoryName([FromBody]string categoryName)
-        {
-            return Ok(await _categoryRepository.CheckDuplicateCategoryNameAsync(categoryName));
         }
     }
 }

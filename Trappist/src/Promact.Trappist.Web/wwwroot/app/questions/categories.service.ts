@@ -1,5 +1,5 @@
 ﻿import { Injectable } from "@angular/core";
-import { HttpService } from "../core/http.service";
+import { HttpService} from "../core/http.service";
 import { QuestionsDashboardComponent } from "./questions-dashboard/questions-dashboard.component";
 import { Category } from "./category.model";
 @Injectable()
@@ -19,14 +19,6 @@ export class CategoryService {
      */
     addCategory(category: Category) {
         return this.httpService.post(this.categoriesApiUrl, category);
-    }
-
-    /**
-     * Method to Check DupliCate Category Name
-     * @param categoryName :Category Name
-     */
-    checkDuplicateCategoryName(categoryName: string) {
-        return this.httpService.post(this.categoriesApiUrl + "/checkduplicatecategory", categoryName);
     }
 
     /**
