@@ -40,7 +40,7 @@ export class HttpService {
     }
 
     delete(url: string) {
-        return this.http.delete(url).map((res) => { return res });
+        return this.http.delete(url).map((res)=>res);
     }
 
 }
