@@ -1,32 +1,27 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { Test } from "../tests.model";
-import { TestSettingService } from "../testsetting.service";
+import { Test } from '../tests.model';
+import { TestSettingService } from '../testsetting.service';
 import { ActivatedRoute } from '@angular/router';
-import { TestLaunchDialogComponent } from "./test-launch-dialog.component";
+import { TestLaunchDialogComponent } from './test-launch-dialog.component';
 
 
 
 @Component({
     moduleId: module.id,
-    selector: "test-settings",
-    templateUrl: "test-settings.html"
+    selector: 'test-settings',
+    templateUrl: 'test-settings.html'
 })
 
 export class TestSettingsComponent {
     testsettings: Test = new Test();
     testId: number;
-    testLength: boolean = false;
-    validEndDate: boolean = false;
-    validIpAddress: boolean = false;
-    messageLength: boolean = false;
-    testPattern: boolean = false;
-    testNameEmpty: boolean = false;
-    warningMessage: string;
+    validEndDate: boolean = false;  
     endDate: string;
-    ipAddressPattern: string;
+    validTime: boolean = false;
+    validStartDate: boolean = false;
+    currentDate = new Date();
     editName: string;
-
 
     /**
      * Open Launch Test Dialog
@@ -70,30 +65,15 @@ export class TestSettingsComponent {
      * @param value contains the Test Name of the Test which is to be edited 
      */
     testNameUpdation(id: number, testObject: Test, value: string) {
-        if (value.length <= 150 && value != "" && value.match(RegExp("^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$"))) {
-            this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
-            });
-        }
-        else
-            this.testNameEmpty = true;
-    }
-
-    /**
-     * Checks the Test Name Length
-     * @param value contains the Test Name
-     */
-    testNameLengthChecking(value: string) {
-        if (value.length >= 150)
-            this.testLength = true;
-        else
-            this.testLength = false;
+        this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+        });
     }
 
     /**
      * Checks the End Date and Time is valid or not
      * @param endDate contains ths the value of the field End Date and Time
      */
-    validEndDateChecking(endDate: string) {
+    validEndDateChecking(endDate: Date) {
         if (this.testsettings.startDate > endDate)
             this.validEndDate = true;
         else
@@ -101,14 +81,23 @@ export class TestSettingsComponent {
     }
 
     /**
-     * Checks whether the length of the warning message is within the defined limit or not
-     * @param value contains the warning message
+     * Checks whether the Start Date selected is valid or not
      */
-    messageLengthChecking(value: string) {
-        if (this.testsettings.warningMessage.length > 255)
-            this.messageLength = true;
+    validStartDateChecking() {
+        if (new Date(this.testsettings.startDate) < this.currentDate || this.testsettings.startDate > this.testsettings.endDate)
+            this.validStartDate = true;
         else
-            this.messageLength = false;
+            this.validStartDate = false;
+    }
+
+    /**
+     * Checks whether the Warning Time set is valid
+     */
+    validWarningTimeChecking() {
+        if (this.testsettings.warningTime >= this.testsettings.duration)
+            this.validTime = true;
+        else
+            this.validTime = false;
     }
 
     /**
@@ -117,20 +106,11 @@ export class TestSettingsComponent {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.ipAddressPattern = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-        this.warningMessage = this.testsettings.warningMessage;
-        this.endDate = this.testsettings.endDate;
-        if (this.testsettings.toIpAddress.match(RegExp(this.ipAddressPattern)) && this.testsettings.fromIpAddress.match(RegExp(this.ipAddressPattern)))
-            this.validIpAddress = true;
-        else
-            this.validIpAddress = false;
-        if (this.warningMessage.length < 255 && this.endDate > this.testsettings.startDate && this.validIpAddress === true) {
-            this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
-            });
-            var instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-            instance.settingObject = testObject;
-        }
+        this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+        });
+        var instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
+        instance.settingObject = testObject;
     }
-
 }
+
 

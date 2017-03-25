@@ -2,8 +2,8 @@
     public id: number;
     public testName: string;
     public link: string;
-    public startDate: string;
-    public endDate: string;
+    public startDate: Date;
+    public endDate: Date;
     public duration: number;
     public warningTime: number;
     public fromIpAddress: string;

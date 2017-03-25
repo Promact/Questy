@@ -23,6 +23,15 @@ using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Repository.TestSettings;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using Promact.Trappist.Repository.Account;
+using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
+using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.GlobalUtil;
@@ -148,6 +157,7 @@ namespace Promact.Trappist.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
+                cfg.CreateMap<TestSettingsAC, Test>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
             });

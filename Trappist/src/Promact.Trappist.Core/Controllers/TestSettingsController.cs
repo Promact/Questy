@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.Repository.TestSettings;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -20,23 +21,28 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
         /// <returns>Settings saved for the selected Test</returns>
         [HttpGet("{id}")]
-        public IActionResult GetTestSettings([FromRoute] int id)
+        public async Task<IActionResult> GetTestSettings([FromRoute] int id)
         {
-            var settings = _settingsRepository.GetTestSettings(id);
+            var settings = await _settingsRepository.GetTestSettingsAsync(id);
             return Ok(settings);
         }
 
         /// <summary>
-        /// Updates the changes made to the Settings of a Test
+        /// Updates the changes made to the settings of a Test
         /// </summary>
         /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
-        /// <param name="testObject">The parameter "testObject" is used as an object for the Model Test</param>
-        /// <returns>Updated Settings of that Test</returns>
+        /// <param name="testSettingsAC">The parameter "testSettingsAC" is an object of TestSettingsAC</param>
+        /// <returns>Updated Settings of that Test</returns>     
         [HttpPut("{id}")]
-        public IActionResult UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
+        public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] TestSettingsAC testSettingsAC)
         {
-            _settingsRepository.UpdateTestSettings(id, testObject);
-            return Ok(testObject);
+            if (ModelState.IsValid)
+            {
+                await _settingsRepository.UpdateTestSettingsAsync(testSettingsAC);
+                return Ok(testSettingsAC);
+            }
+            else
+                return BadRequest();
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿import { Component } from "@angular/core";
-import { Test } from "../tests.model";
+﻿import { Component } from '@angular/core';
+import { Test } from '../tests.model';
 
 @Component({
     moduleId: module.id,
     selector: 'test-launch-dialog',
-    templateUrl: "test-launch-dialog.html"
+    templateUrl: 'test-launch-dialog.html'
 })
 export class TestLaunchDialogComponent {
     copiedContent: boolean;
