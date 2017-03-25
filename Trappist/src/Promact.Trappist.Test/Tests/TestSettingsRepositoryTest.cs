@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Promact.Trappist.Repository.Tests;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -29,12 +30,12 @@ namespace Promact.Trappist.Test.Tests
         /// Gets Settings of Test selected by Id
         /// </summary>
         [Fact]
-        public void GetSettingsById()
+        public async Task GetSettingsById()
         {
             var test = AddNewTest();
             _testRepository.CreateTest(test);
             Assert.NotNull(test);
-            var testSettings = _settingsRepository.GetTestSettings(test.Id);
+            var testSettings = await _settingsRepository.GetTestSettingsAsync(test.Id);
             var testName = testSettings.TestName;
             Assert.Equal(testName, "AOT 669");
         }
@@ -43,11 +44,11 @@ namespace Promact.Trappist.Test.Tests
         /// Updates settings of a particular test with the help of Id
         /// </summary>
         [Fact]
-        public void UpdateTestSettingsById()
+        public async Task UpdateTestSettingsById()
         {
             var test = AddNewTest();
             _testRepository.CreateTest(test);
-            var settingsToUpdate = _settingsRepository.GetTestSettings(test.Id);
+            var settingsToUpdate = await _settingsRepository.GetTestSettingsAsync(test.Id);
             settingsToUpdate.TestName = "IIT BANGALORE";
             _trappistDbContext.Test.Update(settingsToUpdate);
             _trappistDbContext.SaveChanges();
