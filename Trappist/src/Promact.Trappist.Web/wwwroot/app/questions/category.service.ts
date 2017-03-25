@@ -1,9 +1,9 @@
-﻿import { Injectable } from "@angular/core";
-import { HttpService } from "../core/http.service";
+﻿import { Injectable } from '@angular/core';
+import { HttpService } from '../core/http.service';
 
 @Injectable()
 export class CategoryService {
-    private categoriesApiUrl = "api/category";
+    private categoriesApiUrl = 'api/category';
 
     constructor(private httpService: HttpService) {
     }
@@ -15,6 +15,6 @@ export class CategoryService {
 
     // Send delete request for Remove a category
     removeCategory(categoryId: number) {
-        return this.httpService.delete(this.categoriesApiUrl + "/" + categoryId);
+        return this.httpService.delete(this.categoriesApiUrl + '/' + categoryId);
     }
 }   
