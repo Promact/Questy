@@ -6,15 +6,14 @@
     <md-dialog-content>
         <div class="form-group">
             <label class="h4">Section Name</label>
-            <input type="text" class="form-control" id="CategoryName" (keyup)="checkDuplicateCategoryName(category.categoryName)" [(ngModel)]="category.categoryName" name="CategoryName" #CategoryName="ngModel" placeholder="Ex. General Knowledge" required />
-            <span *ngIf="isCategoryNameExist" class="error-msg">Category Name Already Exists</span>
-            <span *ngIf="lengthOfCategoryName" class="error-msg">CategoryName Cannot be more than 150 characters long</span>
+            <input type="text" class="form-control" id="CategoryName" [(ngModel)]="category.categoryName" (change)="changeErrorMessage()" name="CategoryName" #CategoryName="ngModel" placeholder="Ex. General Knowledge" maxlength="150" required />
+            <span *ngIf="isCategoryNameExist" class="error-msg">{{errormesseage}}</span>
             <span *ngIf="CategoryName.errors && (CategoryName.dirty || CategoryName.touched)" [hidden]="!CategoryName.errors.required" class="error-msg">Category Name Required</span>
         </div>
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="isCategoryNameExist||lengthOfCategoryName" (click)="addCategory(category)">Create</button>
+        <button type="submit" class="btn btn-primary" (click)="addCategory(category)">Create</button>
     </md-dialog-actions>
 </div>
 

@@ -24,6 +24,10 @@ namespace Promact.Trappist.Test.Category
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
+        /// <summary>
+        ///Method to test AddCategory Method 
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task AddCategoryAsync()
         {
@@ -32,6 +36,10 @@ namespace Promact.Trappist.Test.Category
             Assert.True(_trappistDbContext.Category.Count() == 1);
         }
 
+        /// <summary>
+        /// Method to test UpdateCategory Method
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task UpdateCategoryAsync()
         {
@@ -41,9 +49,14 @@ namespace Promact.Trappist.Test.Category
             Assert.NotNull(categoryToUpdate);
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
-            await _categoryRepository.CategoryUpdateAsync(category.Id,categoryToUpdate);
+            await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             Assert.True(_trappistDbContext.Category.Count(x=>x.CategoryName == "Updated Category") == 1);
         }
+
+        /// <summary>
+        /// Method to Create a Mock object for Test
+        /// </summary>
+        /// <returns></returns>
         private DomainModel.Models.Category.Category CreateCategory()
         {
             var category = new DomainModel.Models.Category.Category
