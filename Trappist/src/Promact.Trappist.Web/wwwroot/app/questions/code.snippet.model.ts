@@ -1,4 +1,9 @@
-﻿
+﻿import { CodingLanguage } from './coding.language.model';
 export class CodeSnippetQuestion {
-    //To-Do:Declare variable here
+    checkCodeComplexity: boolean;
+    checkTimeComplexity: boolean;
+    runBasicTestCase: boolean;
+    runCornerTestCase: boolean;
+    runNecessaryTestCase: boolean;
+    languageList: CodingLanguage[];
 }

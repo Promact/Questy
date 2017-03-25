@@ -24,6 +24,12 @@ namespace Promact.Trappist.Repository.Questions
         /// Method to get all the Questions
         /// </summary>
         /// <returns>Question list</returns>
-       Task <ICollection<Question>> GetAllQuestionsAsync();
+        Task <ICollection<Question>> GetAllQuestionsAsync();
+
+        /// <summary>
+        /// Gets all the coding languages from database
+        /// </summary>
+        /// <returns></returns>
+        Task<ICollection<CodingLanguageAC>> GetAllCodingLanguageAsync();
     }
 }
