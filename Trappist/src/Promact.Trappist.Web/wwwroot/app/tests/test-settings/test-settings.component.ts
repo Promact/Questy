@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TestSettingsComponent{
     testsettings: Test = new Test();
     testId: number;
+    editName: string;
 
     // Open Launch Test Dialog
     constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute) { }
