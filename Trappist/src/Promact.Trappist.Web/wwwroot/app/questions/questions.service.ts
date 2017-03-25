@@ -25,4 +25,15 @@ export class QuestionsService {
     getQuestions() {
         return this.httpService.get(this.questionsApiUrl);
     }
+
+    /**
+     * gets list of coding languages
+     */
+    getCodingLanguage() {
+        return this.httpService.get(this.questionsApiUrl + "/codinglanguage");
+    }
+
+    postCodingQuestion() {
+
+    }
 }

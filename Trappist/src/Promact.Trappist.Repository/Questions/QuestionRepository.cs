@@ -92,5 +92,25 @@ namespace Promact.Trappist.Repository.Questions
                 transaction.Commit();
             }
         }
+
+        /// <summary>
+        /// Gets all the coding languages int the database
+        /// </summary>
+        /// <returns>coding language in CodingLanguageAC</returns>
+        public async Task<ICollection<CodingLanguageAC>> GetAllCodingLanguageAsync()
+        {
+            var codingLanguage = await _dbContext.CodingLanguage.ToListAsync();
+
+            ICollection<CodingLanguageAC> codingLanguageAC = new List<CodingLanguageAC>();
+            codingLanguage.ForEach(x =>
+            {
+                codingLanguageAC.Add(new CodingLanguageAC
+                {
+                    LanguageCode = x.Language,
+                    LanguageName = (x.Language).ToString()
+                });
+            });
+            return codingLanguageAC;
+        }
     }
 }

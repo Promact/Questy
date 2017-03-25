@@ -6,6 +6,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class CodeSnippetQuestionAC : CodeSnippetQuestion
     {
-        public ICollection<ProgramingLanguage> LanguageList { get; set; }
+        public ICollection<ProgrammingLanguage> LanguageList { get; set; }
     }
 }
