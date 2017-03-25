@@ -1,8 +1,10 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
 using System;
-using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestSettings
 {
@@ -17,27 +19,19 @@ namespace Promact.Trappist.Repository.TestSettings
         }
 
         /// <summary>
-        /// Updates the changes made to the Settings of a Test
+        /// Updates the changes made to the settings of a Test
         /// </summary>
-        /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
-        /// <param name="testObject">The parameter "testObject" is used as an object of the Model Test</param>
-        /// <returns>Updated Setting of that Test</returns>
-        public string UpdateTestSettings(int id, Test testObject)
+        /// <param name="testACObject">The parameter "testACObject" is an object of TestSettingsAC</param>
+        /// <returns>Updated Settings of that Test</returns>
+        public async Task<string> UpdateTestSettingsAsync(TestSettingsAC testACObject)
         {
-            var settingsToUpdate = _dbContext.Test.FirstOrDefault(check => check.Id == id);
-            settingsToUpdate.TestName = testObject.TestName;
-            settingsToUpdate.BrowserTolerance = testObject.BrowserTolerance;
-            settingsToUpdate.StartDate = testObject.StartDate;
-            settingsToUpdate.EndDate = testObject.EndDate;
-            settingsToUpdate.Duration = testObject.Duration;
-            settingsToUpdate.FromIpAddress = testObject.FromIpAddress;
-            settingsToUpdate.ToIpAddress = testObject.ToIpAddress;
-            settingsToUpdate.WarningMessage = testObject.WarningMessage;
-            settingsToUpdate.CorrectMarks = testObject.CorrectMarks;
-            settingsToUpdate.IncorrectMarks = testObject.IncorrectMarks;
-            settingsToUpdate.WarningTime = testObject.WarningTime;
-            _dbContext.Test.Update(settingsToUpdate);
-            _dbContext.SaveChanges();
+            Test settings = Mapper.Map<TestSettingsAC, Test>(testACObject);
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                var settingsToUpdate = _dbContext.Test.Update(settings);
+                await _dbContext.SaveChangesAsync();
+                transaction.Commit();
+            }
             return "Data Updated";
         }
 
@@ -46,10 +40,10 @@ namespace Promact.Trappist.Repository.TestSettings
         /// </summary>
         /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
         /// <returns>Settings Saved for the selected Test</returns>
-        public Test GetTestSettings(int id)
+        public async Task<Test> GetTestSettingsAsync(int id)
         {
             string currentDate = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-            var testSettings = _dbContext.Test.FirstOrDefault(x => x.Id == id);
+            var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate;
             testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate;
             return testSettings;

@@ -18,13 +18,21 @@ namespace Promact.Trappist.Repository.Tests
             _util = util;
         }
 
-        public async Task CreateTestAsync(Test test)
+        /// <summary>
+        /// this method is used to create a new test
+        /// </summary>
+        /// <param name="test">object of Test</param>
+        public void CreateTestAsync(Test test)
         {
             test.Link = _util.GenerateRandomString(10);
             _dbContext.Test.Add(test);
             await _dbContext.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// this method is used to check whether test name is unique or not
+        /// </summary>
+        /// <param name="test">object of Test</param>
+        /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName, int id)
         {
             var isTestExists = await (_dbContext.Test.AnyAsync(x =>
@@ -33,6 +41,10 @@ namespace Promact.Trappist.Repository.Tests
             return !isTestExists;
         }
 
+        /// <summary>
+        /// Fetch all the tests from Test Model,Convert it into List
+        /// </summary>
+        /// <returns>List of Testsby decreasing order of there created Date</returns>
         public async Task<List<Test>> GetAllTestsAsync()
         {
             return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
