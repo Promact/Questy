@@ -9,7 +9,6 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/category")]
     public class CategoryController : Controller
     {
-
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStringConstants _stringConstants;
 
@@ -23,15 +22,13 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         ///API to get all the Categories
         /// </summary>
-        /// <returns>Category List</returns>
-        
+        /// <returns>Category List</returns>        
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
             return Ok(await _categoryRepository.GetAllCategoriesAsync());
         }
-
-        [HttpPost]
+      
         /// <summary>
         /// API to add Category
         ///</summary>
@@ -78,32 +75,27 @@ namespace Promact.Trappist.Core.Controllers
             categoryToUpdate.CategoryName = category.CategoryName;
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             return Ok(category);
-            #endregion
         }
 
         /// <summary>
-        /// action to delete a category
+        /// will remove a category from category model
         ///</summary>
-        /// <param name="categoryId">Id of category</param>
-        
+        /// <param name="categoryId">Id of category</param>        
         [HttpDelete("{categoryId}")]
-        public async Task<IActionResult> CategoryRemove([FromRoute] int categoryId)
+        public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var categoryData = await _categoryRepository.GetCategory(categoryId);
-            if (categoryData != null)
+            Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category != null)
             {
-                await _categoryRepository.RemoveCategoryAsync(categoryData);
-                return Ok();
+                await _categoryRepository.RemoveCategoryAsync(category);
+                return NoContent();
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
-
+        #endregion
     }
 }

@@ -9,9 +9,7 @@ namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
     {
-
         private readonly TrappistDbContext _dbContext;
-
         public CategoryRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -68,18 +66,15 @@ namespace Promact.Trappist.Repository.Categories
         {
             return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant().Equals(categoryName.ToLowerInvariant()) && x.Id != id);
         }
-        #endregion
 
         /// <summary>
-        /// Delete a Category from Category model
+        /// get the category object to remove a category
         /// </summary>
         /// <param name="category"> object of category model</param>
-        
         public async Task RemoveCategoryAsync(Category category)
         {
             _dbContext.Category.Remove(category);
             await _dbContext.SaveChangesAsync();
         }
-
     }
 }

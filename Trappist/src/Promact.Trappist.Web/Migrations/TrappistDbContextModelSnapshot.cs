@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
 
 namespace Promact.Trappist.Web.Migrations
 {
@@ -13,25 +14,27 @@ namespace Promact.Trappist.Web.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
+                .HasAnnotation("ProductVersion", "1.1.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
+                        .IsUnique()
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
@@ -103,8 +106,6 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("AspNetUserRoles");
                 });
 
@@ -130,7 +131,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 50);
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -146,23 +147,13 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CategoryID");
-
                     b.Property<bool>("CheckCodeComplexity");
 
                     b.Property<bool>("CheckTimeComplexity");
 
-                    b.Property<string>("CreateBy")
-                        .IsRequired();
-
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<int>("DifficultyLevel");
-
-                    b.Property<string>("QuestionDetail")
-                        .IsRequired();
-
-                    b.Property<int>("QuestionType");
+                    b.Property<int>("QuestionId");
 
                     b.Property<bool>("RunBasicTestCase");
 
@@ -172,11 +163,9 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime?>("UpdateDateTime");
 
-                    b.Property<string>("UpdatedBy");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("CodeSnippetQuestion");
                 });
@@ -195,6 +184,31 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CodingLanguage");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("DifficultyLevel");
+
+                    b.Property<string>("QuestionDetail")
+                        .IsRequired();
+
+                    b.Property<int>("QuestionType");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.QuestionLanguageMapping", b =>
@@ -224,27 +238,19 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CategoryID");
-
-                    b.Property<string>("CreateBy")
-                        .IsRequired();
+                    b.Property<int?>("CategoryId");
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<int>("DifficultyLevel");
-
-                    b.Property<string>("QuestionDetail")
-                        .IsRequired();
-
-                    b.Property<int>("QuestionType");
+                    b.Property<int>("QuestionId");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
-                    b.Property<string>("UpdatedBy");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryID");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("SingleMultipleAnswerQuestion");
                 });
@@ -297,7 +303,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("TestName")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
+                        .HasMaxLength(150);
 
                     b.Property<string>("ToIpAddress");
 
@@ -314,7 +320,8 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -324,7 +331,7 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<DateTime>("CreateDateTime");
 
                     b.Property<string>("Email")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
@@ -334,16 +341,16 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 150);
+                        .HasMaxLength(150);
 
                     b.Property<string>("NormalizedEmail")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.Property<string>("OrganizationName")
-                        .HasAnnotation("MaxLength", 150);
+                        .HasMaxLength(150);
 
                     b.Property<string>("PasswordHash");
 
@@ -358,7 +365,7 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<DateTime?>("UpdatedateTime");
 
                     b.Property<string>("UserName")
-                        .HasAnnotation("MaxLength", 256);
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
@@ -411,6 +418,14 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", b =>
                 {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
+                {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
@@ -432,9 +447,13 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
                 {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category")
                         .WithMany("SingleMultipleAnswerQuestion")
-                        .HasForeignKey("CategoryID")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

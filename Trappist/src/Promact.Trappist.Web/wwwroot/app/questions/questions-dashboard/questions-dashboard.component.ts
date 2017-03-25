@@ -76,10 +76,10 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open Delete Category Dialog and set the propert of DeleteCategoryDialogComponent class
-    deleteCategoryDialog(categoryIdToDelete: number) {
+    // Open Delete Category Dialog and set the property of DeleteCategoryDialogComponent
+    deleteCategoryDialog(categoryToDelete: Category) {
         var property = this.dialog.open(DeleteCategoryDialogComponent).componentInstance;
-        property.categoryIdToDelete = categoryIdToDelete;
+        property.categoryToDelete = categoryToDelete;
         property.categoryArray = this.categoryArray;
     }
 
