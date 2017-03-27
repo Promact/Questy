@@ -10,7 +10,8 @@ import { QuestionsSingleAnswerComponent } from "./questions-single-answer/questi
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 import { QuestionsService } from "./questions.service";
-import { CategoryService } from "./categories.service";
+import { CategoryService } from "./category.service";
+
 @NgModule({
     imports: [
         SharedModule,
