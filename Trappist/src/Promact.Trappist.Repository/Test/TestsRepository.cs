@@ -24,10 +24,10 @@ namespace Promact.Trappist.Repository.Tests
         /// this method is used to create a new test
         /// </summary>
         /// <param name="test">object of Test</param>
-        public async void CreateTest(Test test)
+        public async Task CreateTestAsync(Test test)
         {
             _dbContext.Test.Add(test);
-             await _dbContext.SaveChangesAsync(); 
+             await _dbContext.SaveChangesAsync();            
         }
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
@@ -47,8 +47,7 @@ namespace Promact.Trappist.Repository.Tests
         public void RandomLinkString(Test test, int length)
         {
             string charactersForRandomString = _stringConstants.CharactersForLink;
-            test.Link = new string(Enumerable.Repeat(charactersForRandomString, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            test.Link = new string(Enumerable.Repeat(charactersForRandomString, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         /// <summary>
@@ -56,19 +55,10 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
-        public async Task<Response> IsTestNameUnique(string testName)
+        public async Task<bool> IsTestNameUniqueAsync(string testName)
         {
-            Response response = new Response();
-            response.ResponseValue = false;
-            var testnameCheck = await _dbContext.Test.FirstOrDefaultAsync(x => x.TestName == testName);
-            if (testnameCheck != null)
-                return response;
-            else
-            {
-                response.ResponseValue = true;
-                return response;
-            }
-                
+            bool testNameCheck = await _dbContext.Test.AnyAsync(x => x.TestName.ToLower() == testName.ToLower());
+            return testNameCheck;            
         }
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
