@@ -23,6 +23,10 @@
         string TestMailSubject { get; }
 
         #endregion
+        /// <summary>
+        /// property to store characters for random link generation
+        /// </summary>
+        string CharactersForLink { get; }
 
         #region "Account Constants"
         /// <summary>
