@@ -6,15 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Promact.Trappist.Repository.BasicSetup;
+using Promact.Trappist.Utility.EmailServices;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.Account;
-using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
@@ -51,15 +52,12 @@ namespace Promact.Trappist.Web
         {
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
+            services.AddMvc( ).AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
-
-            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
-
             #region Dependencies
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
