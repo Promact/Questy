@@ -24,6 +24,8 @@ using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Seed;
 
 namespace Promact.Trappist.Web
 {
@@ -78,7 +80,7 @@ namespace Promact.Trappist.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -132,12 +134,15 @@ namespace Promact.Trappist.Web
             //Delete production db upon every deployment
             //Temporary fix as we are not including migrations in scm
             //Will remove after we include migrations in code base
-            if (env.IsProduction())
+            if (!string.IsNullOrEmpty(connectionString.Value))
             {
-                context.Database.EnsureDeleted();
+                if (env.IsProduction())
+                {
+                    context.Database.EnsureDeleted();
+                }
+                context.Database.Migrate();
+                context.Seed();
             }
-            //context.Database.Migrate();
-            //context.Seed();
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {

@@ -14,21 +14,13 @@ export class SetupComponent {
     private basicSetup: BasicSetup = new BasicSetup();
     private emailSettings: EmailSettings = new EmailSettings();
     private connectionString: ConnectionString = new ConnectionString();
+    private registrationFields: RegistrationFields = new RegistrationFields();
     confirmPasswordValid: boolean;
-    connectionSecurityOption: string = 'None';
-    connectionStringName: string;
-    server: string;
-    port: number;
-    userName: string;
-    password: string;
-    nameOfUser: string;
-    email: string;
-    passwordOfUser: string;
-    confirmPassword: string;
     errorMessage: boolean;
     loader: boolean = false;
-
+    
     constructor(private setupService: SetupService) {
+        this.emailSettings.connectionSecurityOption = 'None';
     }
 
     /**
@@ -38,8 +30,7 @@ export class SetupComponent {
      */
     validateConnectionString(setup: any) {
         this.loader = true;
-        this.connectionString.value = this.connectionStringName;
-        this.setupService.validateConnectionString('api/setup/connectionstring', this.connectionString).subscribe(response => {
+        this.setupService.validateConnectionString(this.connectionString).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
@@ -53,22 +44,12 @@ export class SetupComponent {
     }
 
     /**
-     *This method used for verifying email Settings 
+     * This method used for verifying email Settings
      * @param setup
-     * @param server
-     * @param port
-     * @param username
-     * @param password
-     * @param connectionSecurityOption
      */
     validateEmailSettings(setup: any) {
-        this.loader = true;
-        this.emailSettings.server = this.server;
-        this.emailSettings.port = this.port;
-        this.emailSettings.userName = this.userName;
-        this.emailSettings.password = this.password;
-        this.emailSettings.connectionSecurityOption = this.connectionSecurityOption;
-        this.setupService.validateEmailSettings('api/setup/mailsettings', this.emailSettings).subscribe(response => {
+        this.loader = true;        
+        this.setupService.validateEmailSettings(this.emailSettings).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
@@ -83,11 +64,9 @@ export class SetupComponent {
 
     /**
      * This method used for validating Password and Confirm Password matched or not.
-     * @param password
-     * @param confirmPassword
      */
     isValidPassword() {
-        if (this.confirmPassword === this.passwordOfUser)
+        if (this.registrationFields.confirmPassword === this.registrationFields.password)
             this.confirmPasswordValid = true;
         else
             this.confirmPasswordValid = false;
@@ -96,21 +75,13 @@ export class SetupComponent {
     /**
      * This method used for Creating user
      * @param setup
-     * @param name
-     * @param email
-     * @param password
-     * @param confirmPassword
      */
     createUser(setup: any) {
         this.loader = true;
         this.basicSetup.emailSettings = this.emailSettings;
         this.basicSetup.connectionString = this.connectionString;
-        this.basicSetup.registrationFields = new RegistrationFields();
-        this.basicSetup.registrationFields.name = this.nameOfUser;
-        this.basicSetup.registrationFields.email = this.email;
-        this.basicSetup.registrationFields.password = this.passwordOfUser;
-        this.basicSetup.registrationFields.confirmPassword = this.confirmPassword;
-        this.setupService.createUser('api/setup/createuser', this.basicSetup).subscribe(response => {
+        this.basicSetup.registrationFields = this.registrationFields;
+        this.setupService.createUser(this.basicSetup).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.complete();
