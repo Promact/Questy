@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
+import { QuestionModel } from './question.application.model';
 import { Question } from './question.model';
 import { QuestionBase } from './question';
 
@@ -33,7 +34,7 @@ export class QuestionsService {
         return this.httpService.get(this.questionsApiUrl + '/codinglanguage');
     }
 
-    postCodingQuestion() {
-
+    postCodingQuestion(questionModel: QuestionModel) {
+        return this.httpService.post(this.questionsApiUrl, questionModel);
     }
 }

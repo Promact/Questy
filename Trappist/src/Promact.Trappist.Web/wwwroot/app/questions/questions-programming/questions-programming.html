@@ -8,26 +8,25 @@
       <div class="form-fields" >
         <div class="form-group">
           <label class="h4">Section</label>
-          <select class="form-control half-width" id="category" ngModel required name="category" #category="ngModel">
-            <option></option>
-            <option *ngFor="let category of categoryList" (click)="selectCategory(category)">{{category.categoryName}}</option>
+          <select class="form-control half-width" id="categorySelect" (change)="selectCategory($event.target.value)" ngModel required name="categorySelect" #categorySelect="ngModel">
+            <option selected></option>
+            <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
           </select>
-          <div *ngIf="category.errors" class="errors-container">
+          <div *ngIf="categorySelect.errors && (categorySelect.dirty || categorySelect.touched)" class="errors-container">
               <p class="text-danger">Please select a category</p>
           </div>
         </div>
         <div class="form-group">
           <label class="h4">Difficulty Level</label>
-          <select class="form-control small-width" name="difficulty" [(ngModel)]="difficulty" (change)="selectDifficulty(difficulty)">
-            <option>Easy</option>
+          <select class="form-control small-width" name="difficulty" (change)="selectDifficulty($event.target.value)">
+            <option selected>Easy</option>
             <option>Medium</option>
             <option>Hard</option>
           </select>
-          <!--<div class="errors-container"></div>-->
         </div>
         <div class="form-group">
           <label class="h4">Question Details</label>
-          <ckeditor placeholder="Question details here" rows="3" ngModel id="detail" name="detail" #detail="ngModel" required minlength="10"></ckeditor>
+          <ckeditor placeholder="Question details here" rows="3" [(ngModel)]="QuestionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required minlength="10"></ckeditor>
           <div class="errors-container" *ngIf="detail.errors && (detail.dirty || detail.touched)" >
               <div [hidden]="!detail.errors.minlength">
                   <p class="text-danger">Question detail should be minimum of 10 character</p>
@@ -40,27 +39,27 @@
         <div class="form-group">
           <label class="h4">Code Languages</label>
           <md-chip-list class="form-control half-width" (click)="autocomplete.focus()">
-            <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage.languageName}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
+            <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
             <md-input-container>
-              <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete>
+              <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete ngModel name="languageInput" #languageInput="ngModel">
             </md-input-container>
             <md-autocomplete #code="mdAutocomplete">
-              <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)" value="{{language.languageName}}">{{language.languageName}}</md-option>
+              <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)" value="{{language}}">{{language}}</md-option>
             </md-autocomplete>
           </md-chip-list>
           <div class="errors-container">
-              <div *ngIf="nolanguageSelected">
+              <div *ngIf="nolanguageSelected  && (languageInput.dirty || languageInput.touched)">
                   <p class="text-danger">Please select atleast one programming language</p>
               </div>
           </div>
         </div>
         <div class="form-group">
           <label class="h4">Score Settings</label>
-          <md-checkbox [checked]="question.codeSnippetQuestion.checkCodeComplexity" (change)="question.codeSnippetQuestion.checkCodeComplexity = !question.codeSnippetQuestion.checkCodeComplexity">Check code complexity</md-checkbox>
-          <md-checkbox [checked]="question.codeSnippetQuestion.checkTimeComplexity" (change)="question.codeSnippetQuestion.checkTimeComplexity = !question.codeSnippetQuestion.checkTimeComplexity">Check time complexity</md-checkbox>
-          <md-checkbox [checked]="question.codeSnippetQuestion.runBasicTestCase" (change)="question.codeSnippetQuestion.runBasicTestCase = !question.codeSnippetQuestion.runBasicTestCase">Run basic test cases</md-checkbox>
-          <md-checkbox [checked]="question.codeSnippetQuestion.runCornerTestCase" (change)="question.codeSnippetQuestion.runCornerTestCase = !question.codeSnippetQuestion.runCornerTestCase">Run corner test cases</md-checkbox>
-          <md-checkbox [checked]="question.codeSnippetQuestion.runNecessaryTestCase" (change)="question.codeSnippetQuestion.runNecessaryTestCase = !question.codeSnippetQuestion.runNecessaryTestCase">Run necessary test cases</md-checkbox>
+          <md-checkbox [checked]="QuestionModel.codeSnippetQuestion.checkCodeComplexity" (change)="QuestionModel.codeSnippetQuestion.checkCodeComplexity = !QuestionModel.codeSnippetQuestion.checkCodeComplexity">Check code complexity</md-checkbox>
+          <md-checkbox [checked]="QuestionModel.codeSnippetQuestion.checkTimeComplexity" (change)="QuestionModel.codeSnippetQuestion.checkTimeComplexity = !QuestionModel.codeSnippetQuestion.checkTimeComplexity">Check time complexity</md-checkbox>
+          <md-checkbox [checked]="QuestionModel.codeSnippetQuestion.runBasicTestCase" (change)="QuestionModel.codeSnippetQuestion.runBasicTestCase = !QuestionModel.codeSnippetQuestion.runBasicTestCase">Run basic test cases</md-checkbox>
+          <md-checkbox [checked]="QuestionModel.codeSnippetQuestion.runCornerTestCase" (change)="questionModel.codeSnippetQuestion.runCornerTestCase = !questionModel.codeSnippetQuestion.runCornerTestCase">Run corner test cases</md-checkbox>
+          <md-checkbox [checked]="questionModel.codeSnippetQuestion.runNecessaryTestCase" (change)="questionModel.codeSnippetQuestion.runNecessaryTestCase = !questionModel.codeSnippetQuestion.runNecessaryTestCase">Run necessary test cases</md-checkbox>
         </div>
         <div class="form-group">
           <label class="h4">Test Case(s)</label>
@@ -176,7 +175,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected">Save</button>
       </div>
     </form>
   </div>
