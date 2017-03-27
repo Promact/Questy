@@ -2,7 +2,6 @@
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using System.Threading.Tasks;
-
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/category")]
@@ -13,18 +12,18 @@ namespace Promact.Trappist.Core.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        #region GetAllCategories
+
+        #region Category API
         /// <summary>
-        /// The undermentioned controller calls the GetAllCategories method which is implemented in the CategoryRepository
+        ///Get All Categories
         /// </summary>
         /// <returns>Category List</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            return Ok(await _categoryRepository.GetAllCategories());
+            return Ok(await _categoryRepository.GetAllCategoriesAsync());
         }
-#endregion
-        #region post Method 
+
         [HttpPost]
         /// <summary>
         /// Post Method 
@@ -41,8 +40,7 @@ namespace Promact.Trappist.Core.Controllers
             _categoryRepository.AddCategory(category);
             return Ok(category);
         }
-        #endregion
-        #region PutMethod
+
         /// <summary>
         /// Put Method
         /// Will Edit a Existing Category from Category Table
@@ -65,8 +63,7 @@ namespace Promact.Trappist.Core.Controllers
             previousCategory.CategoryName = category.CategoryName;
             _categoryRepository.CategoryEdit(previousCategory);
             return Ok(category);
-            #endregion
         }
-
+        #endregion
     }
 }

@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Promact.Trappist.DomainModel.DbContext;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
 namespace Promact.Trappist.Repository.Questions
 {
     public class QuestionRepository : IQuestionRespository
@@ -17,19 +16,17 @@ namespace Promact.Trappist.Repository.Questions
         {
             _dbContext = dbContext;
         }
-        #region GetAllQuestions
+
         /// <summary>
-        ///The undermentioned method fetches all the questions from the database
+        ///Get All Questions
         /// </summary>
         /// <returns>Question list</returns>
-        public async Task<ICollection<SingleMultipleAnswerQuestionAC>> GetAllQuestions()
+        /// The function name ends with Async
+        public async Task<ICollection<Question>> GetAllQuestionsAsync()
         {
-            var questions =await _dbContext.SingleMultipleAnswerQuestion.ProjectTo<SingleMultipleAnswerQuestionAC>().ToListAsync();
-            questions.AddRange(await _dbContext.CodeSnippetQuestion.ProjectTo<SingleMultipleAnswerQuestionAC>().ToListAsync());
-            var questionsOrderedByCreatedDateTime = questions.OrderBy(f => f.CreatedDateTime).ToList();
-            return questionsOrderedByCreatedDateTime;
+            return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
         }
-        #endregion
+
         /// <summary>
         /// A method to add single multiple answer question.
         /// </summary>
@@ -46,6 +43,7 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.SaveChanges();
             return(questionAC);
         }
+
         /// <summary>
         /// Add new code snippet question to the database
         /// </summary>

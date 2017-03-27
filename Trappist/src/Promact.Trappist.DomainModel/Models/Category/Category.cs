@@ -1,4 +1,4 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
+﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +9,6 @@ namespace Promact.Trappist.DomainModel.Models.Category
         [Required]
         [MaxLength(50)]
         public string CategoryName { get; set; }
-        public virtual ICollection<SingleMultipleAnswerQuestion> SingleMultipleAnswerQuestion { get; set; }
+        public virtual ICollection<Question.Question> Question { get; set; }
     }
 }
