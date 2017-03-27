@@ -46,7 +46,7 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Method to UPdate Category
+        /// Method to Update Category
         /// </summary>
         /// <param name="category">category object Contains Category Details</param>
         public async Task UpdateCategoryAsync(Category category)
