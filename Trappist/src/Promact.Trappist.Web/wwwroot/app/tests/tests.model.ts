@@ -13,3 +13,7 @@
     public incorrectMarks: string;
     public browserTolerance: number;
 }
+
+export class Response {
+    public responseValue: boolean;
+}

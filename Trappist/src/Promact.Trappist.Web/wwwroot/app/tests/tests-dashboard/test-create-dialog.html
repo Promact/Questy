@@ -1,17 +1,20 @@
 ﻿<div class="dialog">
-  <div class="dialog-title clearfix">
-    <h1 class="pull-left" md-dialog-title>Create New Test</h1>
-    <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
-  </div>
-  <md-dialog-content>
-    <div class="form-group">
-      <label class="h4">Test Name</label>
-      <input type="text" class="form-control" placeholder="Ex. Software Developer Recruitment Test" />
-      <div class="errors-container"></div>
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left" md-dialog-title>Create New Test</h1>
+        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
     </div>
-  </md-dialog-content>
-  <md-dialog-actions>
-    <button type="button" class="btn" md-dialog-close>Cancel</button>
-    <button type="submit" class="btn btn-primary">Create Test</button>
-  </md-dialog-actions>
+    <md-dialog-content>
+        <div class="form-group">
+            <label class="h4">Test Name</label>
+            <input type="text" id="name" name="name" class="form-control" (blur)="ChangeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$" maxlength="150" />
+            <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
+            <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>
+            <span class="error-msg" *ngIf="errorMessage" [hidden]="(name.errors && (name.dirty || name.touched)) || name.pristine">Already a test with this name exists</span>
+
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button type="button" class="btn" md-dialog-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="AddTest(testNameReference)">Create Test</button>
+    </md-dialog-actions>
 </div>
