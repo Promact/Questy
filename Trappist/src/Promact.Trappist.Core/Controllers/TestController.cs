@@ -50,7 +50,7 @@ namespace Promact.Trappist.Core.Controllers
             if (ModelState.IsValid)
             {
                 _testRepository.RandomLinkString(test, 10);
-                var response = await _testRepository.CreateTest(test);
+                _testRepository.CreateTest(test);
                 return Ok(test);
             }
             else
