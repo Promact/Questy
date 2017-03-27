@@ -50,14 +50,14 @@
               <div class="qs-container">
                 <p class="qs-num">Q.{{i+1}}</p>
                 <div class="qs-text">
-                  <p class="question">{{q.questionDetail}}</p>
+                  <p class="question">{{question.questionDetail}}</p>
                   <div *ngFor="let o of q.singleMultipleAnswerQuestionOption; let j = index">
-                    <p *ngIf="QuestionType[q.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(o.isAnswer)" class="ans-option "><span>{{optionName[j]}}</span> <span>{{o.option}}</span></p>
+                    <p *ngIf="QuestionType[q.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
                   </div>
                 </div>
               </div>
               <div class="mt10">
-                <p class="tags">{{q.category.categoryName}}</p>
+                <p class="tags">{{question.category.categoryName}}</p>
                 <p class="tags">{{DifficultyLevel[q.difficultyLevel]}}</p>
               </div>
             </div>

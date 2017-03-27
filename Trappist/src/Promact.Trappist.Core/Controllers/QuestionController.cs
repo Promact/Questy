@@ -3,7 +3,6 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
 using System.Threading.Tasks;
-
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/question")]
@@ -43,13 +42,13 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// The undermentioned controller calls the GetAllQuestions method implemented in the QuestionRepository
+        /// Get All The Questions
         /// </summary>
         /// <returns>Questions List</returns>
         [HttpGet("question")]
         public async Task<IActionResult> GetAllQuestions()
         {
-            return Ok(await _questionsRepository.GetAllQuestions()); 
+            return Ok(await _questionsRepository.GetAllQuestionsAsync()); 
         }
         #endregion
     }

@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -16,19 +14,17 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext = dbContext;
         }
-        #region GetAllCategories
+
         /// <summary>
-        /// The undermentioned method fetches all the categories from the database
+        /// Get All Categories
         /// </summary>
         /// <returns>Categories list</returns>
-        public async Task<IEnumerable<Category>> GetAllCategories()
+        /// The function name ends with Async
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            var category = await _dbContext.Category.ToListAsync();
-            var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
-            return categoryOrderedByCreatedDateTime;
+            return (await _dbContext.Category.OrderByDescending(g => g.CreatedDateTime).ToListAsync());
         }
-        #endregion
-        #region Adding a CategoryName
+
         /// <summary>
         /// Adding a Category in Category model
         /// </summary>
@@ -38,8 +34,7 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.Category.Add(category);
             _dbContext.SaveChanges();
         }
-        #endregion
-        #region Finding a Id Respective Category
+
         /// <summary>
         /// Find a Respective Id from Catagory Table
         /// </summary>
@@ -49,8 +44,7 @@ namespace Promact.Trappist.Repository.Categories
         {
             return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
         }
-        #endregion
-        #region Edit A Category Name
+
         // <summary>
         // Edit a Category from Category Table
         // </summary>
@@ -60,6 +54,5 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.Category.Update(category);
             _dbContext.SaveChanges();
         }
-        #endregion
     }
 }

@@ -1,27 +1,28 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { AddCategoryDialogComponent } from "./add-category-dialog.component";
-import { DeleteCategoryDialogComponent } from "./delete-category-dialog.component";
-import { DeleteQuestionDialogComponent } from "./delete-question-dialog.component";
-import { QuestionsService } from "../questions.service";
-import { CategoryService } from "../categories.service";
-import { Question } from "../../questions/question.model"
-import { DifficultyLevel } from "../../questions/enum-difficultylevel"
-import { QuestionType } from "../../questions/enum-questiontype"
-import { Category } from "../../questions/category.model"
+import { AddCategoryDialogComponent } from './add-category-dialog.component';
+import { DeleteCategoryDialogComponent } from './delete-category-dialog.component';
+import { DeleteQuestionDialogComponent } from './delete-question-dialog.component';
+import { QuestionsService } from '../questions.service';
+import { CategoryService } from '../categories.service';
+import { Question } from '../../questions/question.model';
+import { DifficultyLevel } from '../../questions/enum-difficultylevel';
+import { QuestionType } from '../../questions/enum-questiontype';
+import { Category } from '../../questions/category.model';
 @Component({
     moduleId: module.id,
-    selector: "questions-dashboard",
-    templateUrl: "questions-dashboard.html"
+    selector: 'questions-dashboard',
+    templateUrl: 'questions-dashboard.html'
 })
 export class QuestionsDashboardComponent {
+    showSearchInput: boolean;
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
     //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     //To enable enum questiontype in template 
     QuestionType = QuestionType;
-    optionName: string[] = ["a", "b", "c", "d", "e", "..."];
+    optionName: string[] = ['a', 'b', 'c', 'd', 'e', '...'];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.getAllQuestions();
         this.getAllCategories();
@@ -29,15 +30,16 @@ export class QuestionsDashboardComponent {
     //To Check Whether The Option Is Correct Or Not
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
-            return "correct";
+            return 'correct';
         }
     }
-    //To Get All The categories
+    //To Get All The Categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
         });
     }
+    //To Get ALL Questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.questionDisplay = questionsList;
@@ -51,7 +53,6 @@ export class QuestionsDashboardComponent {
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
-
     // Open Delete Question Dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);
