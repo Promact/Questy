@@ -46,7 +46,7 @@ namespace Promact.Trappist.Test.Tests
             var list = await _testRepository.GetAllTestsAsync();
             Assert.Equal(0, list.Count);
         }
-        private void AddTests()
+        public void AddTests()
         {
             _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "BBIT 123" });
             _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "MCKV 123" });
@@ -59,7 +59,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         private void AddTest()
         {
-            var test = CreateTest();
+            var test = CreateTests();
             _testRepository.CreateTest(test);
             Assert.True(_trappistDbContext.Test.Count() == 1);
         }
@@ -69,11 +69,11 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async void UniqueNameTest()
         {
-            var test = CreateTest();
-            var responseValue = await _testRepository.CreateTest(test);
+            var test = CreateTests();
+            _testRepository.CreateTest(test);
             Response response = new Response();
             var name = "nameOfTest";
-            var newTest = CreateTest();
+            var newTest = CreateTests();
             response = await _testRepository.IsTestNameUnique(name);
             Assert.True(response.ResponseValue);
         }
@@ -83,12 +83,12 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async void IsNotUniqueNameTest()
         {
-            var test = CreateTest();
-            var responseValue = await _testRepository.CreateTest(test);
+            var test = CreateTests();
+             _testRepository.CreateTest(test);
             Response response = new Response();
             var name = "Test name";
             response = await _testRepository.IsTestNameUnique(name);
-            Assert.True(response.ResponseValue);
+            Assert.False(response.ResponseValue);
         }
         /// <summary>
         /// Test Case for random link creation
@@ -96,12 +96,12 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public void RandomLinkStringTest()
         {
-            var test = CreateTest();
+            var test = CreateTests();
             _testRepository.CreateTest(test);
             _testRepository.RandomLinkString(test, 10);
             Assert.True(_trappistDbContext.Test.Count() == 1);
         }
-        private DomainModel.Models.Test.Test CreateTest()
+        private DomainModel.Models.Test.Test CreateTests()
         {
             var test = new DomainModel.Models.Test.Test
             {

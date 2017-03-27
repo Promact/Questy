@@ -24,11 +24,10 @@ namespace Promact.Trappist.Repository.Tests
         /// this method is used to create a new test
         /// </summary>
         /// <param name="test">object of Test</param>
-        public async Task<int> CreateTest(Test test)
+        public async void CreateTest(Test test)
         {
             _dbContext.Test.Add(test);
-            var response = await _dbContext.SaveChangesAsync();
-            return response;
+             await _dbContext.SaveChangesAsync(); 
         }
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
