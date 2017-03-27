@@ -1,6 +1,5 @@
 ﻿import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { SetupComponent } from './setup.component';
 const appRoutes: Routes = [
     {

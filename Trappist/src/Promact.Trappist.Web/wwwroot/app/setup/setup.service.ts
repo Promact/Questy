@@ -10,10 +10,10 @@ export class SetupService {
     constructor(private httpService: HttpService) {
     }
 
-   /**
-    * This method used for validating connection string
-    * @param model
-    */
+    /**
+     * This method used for validating connection string
+     * @param model
+     */
     validateConnectionString(model: any) {
         return this.httpService.post(this.connectionStringUrl, model);
     }

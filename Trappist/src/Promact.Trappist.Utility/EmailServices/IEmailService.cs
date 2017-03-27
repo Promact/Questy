@@ -14,6 +14,6 @@ namespace Promact.Trappist.Utility.EmailServices
         /// <param name="body"></param>
         /// <param name="to"></param>
         /// <returns>It return true if mail sent else return false.</returns>
-        Task<bool> SendMail(string userName,string password,string server,int port,string security,string body,string to);
+        Task<bool> SendMailAsync(string userName, string password, string server, int port, string security, string body, string to);
     }
 }

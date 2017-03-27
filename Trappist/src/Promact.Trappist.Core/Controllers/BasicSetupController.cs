@@ -29,10 +29,10 @@ namespace Promact.Trappist.Core.Controllers
         /// <returns>If valid then return true else return false in reponse object</returns>
         [Route("connectionstring")]
         [HttpPost]
-        public IActionResult ValidateConnectionString([FromBody] ConnectionString model)
+        public async Task<IActionResult> ValidateConnectionString([FromBody] ConnectionString model)
         {
             if (ModelState.IsValid)
-                return Ok(_basicSetup.ValidateConnectionString(model));
+                return Ok(await _basicSetup.ValidateConnectionString(model));
             return Ok(false);
         }
 
