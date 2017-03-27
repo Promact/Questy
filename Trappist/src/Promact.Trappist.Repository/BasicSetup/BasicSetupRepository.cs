@@ -42,12 +42,7 @@ namespace Promact.Trappist.Repository.BasicSetup
         }
         #endregion
 
-        #region IBasicSetupRepository methods
-        /// <summary>
-        /// This method used for creating the user, save setup parameter and initialize database.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>if a result succeeded then return true else return false</returns>
+        #region IBasicSetupRepository methods      
         public async Task<bool> CreateAdminUser(BasicSetupModel model)
         {
             var user = new ApplicationUser()
@@ -60,9 +55,7 @@ namespace Promact.Trappist.Repository.BasicSetup
             bool response = SaveSetupParameter(model);
             _connectionString.Value = model.ConnectionString.Value;
             bool createdUser = await CreateUserAndInitializeDb(user, model.RegistrationFields.Password);
-            if (response && createdUser)
-                return true;
-            return false;
+            return response && createdUser;
         }
 
         /// <summary>
@@ -79,9 +72,7 @@ namespace Promact.Trappist.Repository.BasicSetup
                 _trappistDbContext.Database.Migrate();
                 _trappistDbContext.Seed();
                 var result = await _userManager.CreateAsync(user, password);
-                if (result.Succeeded)
-                    return true;
-                return false;
+                return result.Succeeded;
             }
             catch (Exception)
             {
@@ -89,12 +80,7 @@ namespace Promact.Trappist.Repository.BasicSetup
             }
         }
 
-        /// <summary>
-        /// This method used for validating connection string
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>If valid then return true else return false</returns>
-        public bool ValidateConnectionString(ConnectionString model)
+        public async Task<bool> ValidateConnectionString(ConnectionString model)
         {
             try
             {
@@ -104,7 +90,7 @@ namespace Promact.Trappist.Repository.BasicSetup
                 {
                     try
                     {
-                        conn.Open();
+                        await conn.OpenAsync();
                         return true;
                     }
                     catch (Exception)
@@ -132,14 +118,9 @@ namespace Promact.Trappist.Repository.BasicSetup
                 return string.Format("Data Source={0};User Id={1};Password={2}", connectionString.DataSource, connectionString.UserID, connectionString.Password);
         }
 
-        /// <summary>
-        /// This method used for verifying Email settings
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns>if valid email settings then return true else false</returns>
-        public Task<bool> ValidateEmailSetting(EmailSettings model)
+        public async Task<bool> ValidateEmailSetting(EmailSettings model)
         {
-            return _emailService.SendMail(model.UserName, model.Password, model.Server, model.Port, model.ConnectionSecurityOption, _stringConstants.BodyOfMail , model.UserName);
+            return await _emailService.SendMailAsync(model.UserName, model.Password, model.Server, model.Port, model.ConnectionSecurityOption, _stringConstants.BodyOfMail, model.UserName);
         }
 
         /// <summary>
@@ -160,10 +141,6 @@ namespace Promact.Trappist.Repository.BasicSetup
             return true;
         }
 
-        /// <summary>
-        /// This method used for checking user first time entered or not.
-        /// </summary>
-        /// <returns>If user first time enter then return true else return false</returns>
         public bool IsFirstTimeUser()
         {
             return !string.IsNullOrWhiteSpace(_connectionString.Value);

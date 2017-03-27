@@ -12,7 +12,7 @@ import { SetupService } from './setup.service';
         BrowserModule,
         SharedModule,
         CoreModule,
-        FormWizardModule    
+        FormWizardModule
     ],
     providers: [
         SetupService

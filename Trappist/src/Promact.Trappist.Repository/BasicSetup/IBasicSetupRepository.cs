@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.BasicSetup
         /// </summary>
         /// <param name="model"></param>
         /// <returns>If valid then return true else return false</returns>
-        bool ValidateConnectionString(ConnectionString model);
+        Task<bool> ValidateConnectionString(ConnectionString model);
 
         /// <summary>
         /// This method used for verifying Email settings

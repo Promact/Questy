@@ -11,14 +11,14 @@ import { RegistrationFields } from './setup.model';
 })
 
 export class SetupComponent {
-    private basicSetup: BasicSetup = new BasicSetup();
-    private emailSettings: EmailSettings = new EmailSettings();
-    private connectionString: ConnectionString = new ConnectionString();
-    private registrationFields: RegistrationFields = new RegistrationFields();
+    basicSetup: BasicSetup = new BasicSetup();
+    emailSettings: EmailSettings = new EmailSettings();
+    connectionString: ConnectionString = new ConnectionString();
+    registrationFields: RegistrationFields = new RegistrationFields();
     confirmPasswordValid: boolean;
     errorMessage: boolean;
     loader: boolean = false;
-    
+
     constructor(private setupService: SetupService) {
         this.emailSettings.connectionSecurityOption = 'None';
     }
@@ -26,7 +26,6 @@ export class SetupComponent {
     /**
      * This method used for validating connection string.
      * @param setup
-     * @param connectionStringName
      */
     validateConnectionString(setup: any) {
         this.loader = true;
@@ -48,7 +47,7 @@ export class SetupComponent {
      * @param setup
      */
     validateEmailSettings(setup: any) {
-        this.loader = true;        
+        this.loader = true;
         this.setupService.validateEmailSettings(this.emailSettings).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
