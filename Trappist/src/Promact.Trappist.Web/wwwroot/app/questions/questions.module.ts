@@ -11,10 +11,12 @@ import { SingleMultipleAnswerQuestionComponent } from './questions-single-multip
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 import { QuestionsService } from './questions.service';
 import { CategoryService } from './categories.service';
+import { CKEditorModule } from 'ng2-ckeditor';
 @NgModule({
     imports: [
         SharedModule,
-        questionsRouting
+        questionsRouting,
+        CKEditorModule
     ],
     declarations: [
         QuestionsComponent,
