@@ -13,11 +13,10 @@ import { MdSnackBar } from '@angular/material';
 })
 
 export class TestCreateDialogComponent {
-    test: Test = new Test();
     responseObj: boolean;
     errorMessage: boolean;
     testNameReference: string;
-    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, public snackBar: MdSnackBar) {
+    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, public test: Test = new Test()) {
     }
     /**
      * this method is used to add a new test
