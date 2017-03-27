@@ -59,7 +59,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>if a user created then return true else return false</returns>
-        [Route("validateuser")]
+        [Route("createuser")]
         [HttpPost]
         public async Task<IActionResult> CreateAdminUser([FromBody] BasicSetupModel model)
         {

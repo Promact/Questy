@@ -13,6 +13,10 @@
         /// property SetupConfigFilename is called whenever required SetupConfig file name
         /// </summary>
         string SetupConfigFileName { get; }
+        /// <summary>
+        /// this property used for provide body constant in mail.
+        /// </summary>
+        string BodyOfMail { get; }
         #endregion
 
         #region "Account Constants"

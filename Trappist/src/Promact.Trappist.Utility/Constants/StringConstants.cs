@@ -29,6 +29,16 @@
                 return "setup.json";
             }
         }
+        /// <summary>
+        ///  this property used for provide body constant in mail.
+        /// </summary>
+        public string BodyOfMail
+        {
+            get
+            {
+                return "Test Mail Settings";
+            }
+        }
         #endregion
 
         #region "Account Constants"
