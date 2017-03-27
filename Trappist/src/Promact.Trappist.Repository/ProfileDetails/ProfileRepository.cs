@@ -32,7 +32,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
         /// <summary>
         /// Updates current user details
         /// </summary>
-        /// <param name="updateUserDetails"></param>
+        /// <param name="updateUserDetails">parameter of type ApplicationUser which has the updated details of the user profile</param>
         /// <returns>Update user profile details in database</returns>
         public void UpdateProfile(ApplicationUser updateUserDetails)
         {
@@ -43,7 +43,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
         /// <summary>
         /// Update user password 
         /// </summary>
-        /// <param name="model">take parameter of type ChangePasswordModel</param>
+        /// <param name="model">take parameter of type ChangePasswordModel which has the new password of the user</param>
         /// <returns>save new password in the database</returns>
         public async Task<ApplicationUser> UpdateUserPassword(ChangePasswordModel model)
         {
