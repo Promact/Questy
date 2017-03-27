@@ -31,7 +31,7 @@ export class SetupComponent {
     }
 
     /**
-     * This method used for validating connection string
+     * This method used for validating connection string.
      * @param setup
      * @param connectionStringName
      */
