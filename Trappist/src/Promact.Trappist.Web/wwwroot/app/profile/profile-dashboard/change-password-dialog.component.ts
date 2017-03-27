@@ -20,14 +20,14 @@ export class ChangePasswordDialogComponent {
      * @param userPassword of type ChangePasswordModel which has the new password of the user
      */
     changePassword(userPassword: ChangePasswordModel) {
-        if (userPassword.oldPassword == null && userPassword.newPassword == null && userPassword.confirmPassword == null) {
+        if (userPassword.oldPassword === null && userPassword.newPassword === null && userPassword.confirmPassword === null) {
             this.message = 'Please enter the details';
         }
         else {
             if (userPassword.oldPassword !== null && userPassword.oldPassword !== ' ' && userPassword.oldPassword !== undefined) {
                 if (userPassword.newPassword !== null && userPassword.newPassword !== ' ' && userPassword.newPassword !== undefined) {
                     if (userPassword.confirmPassword !== null && userPassword.confirmPassword !== ' ' && userPassword.confirmPassword !== undefined) {
-                        if (userPassword.newPassword == userPassword.confirmPassword && userPassword.confirmPassword == userPassword.newPassword) {
+                        if (userPassword.newPassword === userPassword.confirmPassword && userPassword.confirmPassword === userPassword.newPassword) {
                             this.isRequired = false;
                             this.profileService.updateUserPassword(userPassword).subscribe((response) => {
                                 console.log(response);
