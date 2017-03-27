@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.Constants;
-
+using System.Globalization;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -57,7 +57,8 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName)
         {
-            bool testNameCheck = await _dbContext.Test.AnyAsync(x => x.TestName.ToLower() == testName.ToLower());
+            bool testNameCheck;
+            testNameCheck = await _dbContext.Test.AnyAsync(x => x.TestName.ToLowerInvariant() == testName.ToLowerInvariant());
             return testNameCheck;            
         }
         /// <summary>

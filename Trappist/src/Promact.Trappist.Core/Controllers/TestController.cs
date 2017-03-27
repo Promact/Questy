@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -11,12 +10,10 @@ namespace Promact.Trappist.Core.Controllers
     public class TestsController : Controller
     {
         private readonly ITestsRepository _testRepository;
-        private readonly IStringConstants _stringConstant;
 
-        public TestsController(ITestsRepository testRepository, IStringConstants stringConstant)
+        public TestsController(ITestsRepository testRepository)
         {
             _testRepository = testRepository;
-            _stringConstant = stringConstant;
         }
         /// <summary>
         /// this method is to verify unique name of a test
