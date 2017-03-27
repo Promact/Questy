@@ -32,7 +32,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             if (questionAC.Question.QuestionType == QuestionType.Programming)
             {
-                //To-Do Modify parameter accordingly _questionsRepository.AddCodeSnippetQuestion(questionAC);
+                await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC);
             }
             else
             {
