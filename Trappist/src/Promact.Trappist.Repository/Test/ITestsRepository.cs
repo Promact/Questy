@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,8 +18,13 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="test">object of Test</param>
         /// <returns>boolean</returns>
-        bool UniqueTestName(Test test);
-
+        Task<Response> IsTestNameUnique(string TestName);
+        /// <summary>
+        /// this method is used to generate a random string which is unique for every test
+        /// </summary>
+        /// <param name="test">object of Test</param>
+        /// <param name="length">length of the random string</param>
+        void RandomLinkString(Test test, int length);
         /// <summary>
         /// Method defined to fetch Tests from Test Model
         /// </summary>

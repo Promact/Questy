@@ -6,9 +6,9 @@ namespace Promact.Trappist.DomainModel.Models.Test
     public class Test : BaseModel
     {
         [Required] 
-        [MaxLength(150, ErrorMessage = "Test Name length Should be less than 150")] 
+        [MaxLength(150, ErrorMessage = "Test Name length Should be less than 150")]
         //Test Name Should be alpha-numeric and should accept some special characters as defined
-        [RegularExpression("^[a - zA - Z0 - 9_@ $#%&*^{}+;:<>()-]*$",ErrorMessage ="Enter A Valid Test Name")]
+        [RegularExpression("^[a-zA-Z0-9@#$%^&*()_+-{}<>;: ]*$", ErrorMessage = "Enter A Valid Test Name")]
         public string TestName { get; set; }
         public string Link { get; set; }
         public int BrowserTolerance { get; set; }

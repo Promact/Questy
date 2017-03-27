@@ -44,6 +44,14 @@
         }
         #endregion
 
+        public string CharactersForLink
+        {
+            get
+            {
+                return "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            }
+        }
+
         #region "Account Constants"
 
         public string InvalidLoginError
