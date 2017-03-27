@@ -1,4 +1,7 @@
 ﻿<div class="basic-setup">
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
     <div class="setup-content">
         <div class="logo-area">
             <img src="../../images/logo.png" alt="Logo" />
@@ -96,7 +99,6 @@
             </form-wizard>
         </div>
     </div>
-    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
 </div>
 
 <!--<button (click)="navigateToLogin()">Click</button>-->

@@ -56,6 +56,7 @@ namespace Promact.Trappist.Repository.BasicSetup
                 CreateDateTime = DateTime.UtcNow
             };
             bool response = SaveSetupParameter(model);
+            _connectionString.Value = model.ConnectionString.Value;
             bool createdUser = await CreateUserAndInitializeDb(user, model.RegistrationFields.Password);
             if (response == true && createdUser == true)
                 return true;
@@ -138,7 +139,7 @@ namespace Promact.Trappist.Repository.BasicSetup
         /// <returns>if valid email settings then return true else false</returns>
         public Task<bool> ValidateEmailSetting(EmailSettings model)
         {
-            return _emailService.SendMail(model.UserName, model.Password, model.Server, model.Port, model.ConnectionSecurityOption, "", "");
+            return _emailService.SendMail(model.UserName, model.Password, model.Server, model.Port, model.ConnectionSecurityOption, _stringConstants.BodyOfMail , model.UserName);
         }
 
         /// <summary>
@@ -148,12 +149,12 @@ namespace Promact.Trappist.Repository.BasicSetup
         /// <returns>It return true or false</returns>
         private bool SaveSetupParameter(BasicSetupModel model)
         {
-            var setUpParameter = new Setup()
+            var setupParameter = new Setup()
             {
                 ConnectionString = model.ConnectionString,
                 EmailSettings = model.EmailSettings
             };
-            string jsonData = JsonConvert.SerializeObject(setUpParameter, Formatting.Indented);
+            string jsonData = JsonConvert.SerializeObject(setupParameter, Formatting.Indented);
             string path = GetSetupFilePath();
             File.WriteAllText(path, jsonData);
             return true;

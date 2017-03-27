@@ -26,6 +26,7 @@ export class SetupComponent {
     passwordOfUser: string;
     confirmPassword: string;
     errorMessage: boolean;
+    loader: boolean = false;
 
     constructor(private setupService: SetupService) {
     }
@@ -36,14 +37,18 @@ export class SetupComponent {
      * @param connectionStringName
      */
     validateConnectionString(setup: any) {
+        this.loader = true;
         this.connectionString.value = this.connectionStringName;
         this.setupService.validateConnectionString('api/setup/connectionstring', this.connectionString).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
+                this.loader = false;
             }
-            else
+            else {
                 this.errorMessage = true;
+                this.loader = false;
+            }
         });
     }
 
@@ -57,6 +62,7 @@ export class SetupComponent {
      * @param connectionSecurityOption
      */
     validateEmailSettings(setup: any) {
+        this.loader = true;
         this.emailSettings.server = this.server;
         this.emailSettings.port = this.port;
         this.emailSettings.userName = this.userName;
@@ -66,9 +72,12 @@ export class SetupComponent {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
+                this.loader = false;
             }
-            else
+            else {
                 this.errorMessage = true;
+                this.loader = false;
+            }
         });
     }
 
@@ -78,7 +87,7 @@ export class SetupComponent {
      * @param confirmPassword
      */
     isValidPassword() {
-        if (this.confirmPassword === this.password)
+        if (this.confirmPassword === this.passwordOfUser)
             this.confirmPasswordValid = true;
         else
             this.confirmPasswordValid = false;
@@ -93,21 +102,25 @@ export class SetupComponent {
      * @param confirmPassword
      */
     createUser(setup: any) {
+        this.loader = true;
         this.basicSetup.emailSettings = this.emailSettings;
         this.basicSetup.connectionString = this.connectionString;
         this.basicSetup.registrationFields = new RegistrationFields();
         this.basicSetup.registrationFields.name = this.nameOfUser;
         this.basicSetup.registrationFields.email = this.email;
-        this.basicSetup.registrationFields.password = this.password;
+        this.basicSetup.registrationFields.password = this.passwordOfUser;
         this.basicSetup.registrationFields.confirmPassword = this.confirmPassword;
-        this.setupService.createUser('api/setup/validateuser', this.basicSetup).subscribe(response => {
+        this.setupService.createUser('api/setup/createuser', this.basicSetup).subscribe(response => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.complete();
                 this.navigateToLogin();
+                this.loader = false;
             }
-            else
+            else {
                 this.errorMessage = true;
+                this.loader = false;
+            }
         });
     }
 
