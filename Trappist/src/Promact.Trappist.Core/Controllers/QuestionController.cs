@@ -45,7 +45,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Get All The Questions
         /// </summary>
         /// <returns>Questions List</returns>
-        [HttpGet("question")]
+        [HttpGet]
         public async Task<IActionResult> GetAllQuestions()
         {
             return Ok(await _questionsRepository.GetAllQuestionsAsync()); 
