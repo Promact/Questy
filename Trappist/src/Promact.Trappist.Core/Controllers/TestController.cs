@@ -2,6 +2,8 @@
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -40,11 +42,10 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <returns>List of Tests</returns>
         [HttpGet]
-        public IActionResult GetAllTest()
+        public async Task<ActionResult> GetAllTest()
         {
-            var tests = _testRepository.GetAllTests();
+            var tests = await _testRepository.GetAllTests();           
             return Ok(tests);
         }
-
     }
 }
