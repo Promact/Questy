@@ -5,6 +5,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
 {
     public class CodeSnippetQuestion: BaseModel
     {
+        [ForeignKey("QuestionId")]
         public int QuestionId { get; set; }
 
         public bool CheckCodeComplexity { get; set; }
@@ -18,8 +19,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public bool RunNecessaryTestCase { get; set; }
 
         public virtual ICollection<QuestionLanguageMapping> QuestionLanguangeMapping { get; set; }
-
-        [ForeignKey("QuestionId")]
+        
         public virtual Question Question { get; set; }
     }
 }
