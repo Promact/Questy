@@ -20,16 +20,14 @@ namespace Promact.Trappist.DomainModel.DbContext
         #region Private variables
         #region Dependencies
         private readonly IHostingEnvironment _environment;
-        private readonly IStringConstants _stringConstants;
         private readonly ConnectionString _connectionString;
         #endregion
         #endregion
 
         #region Constructors
-        public TrappistDbContext(DbContextOptions<TrappistDbContext> options, IStringConstants stringConstants, ConnectionString connectionString)
+        public TrappistDbContext(DbContextOptions<TrappistDbContext> options, ConnectionString connectionString)
              : base(options)
         {
-            _stringConstants = stringConstants;
             _connectionString = connectionString;
         }
         #endregion
