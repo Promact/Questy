@@ -13,7 +13,7 @@ namespace Promact.Trappist.Repository.Tests
         private readonly TrappistDbContext _dbContext;
         public TestsRepository(TrappistDbContext dbContext)
         {
-            _dbContext = dbContext;         
+            _dbContext = dbContext;
         }
         /// <summary>
         /// this method is used to create a new test
@@ -23,7 +23,7 @@ namespace Promact.Trappist.Repository.Tests
         {
             _dbContext.Test.Add(test);
             _dbContext.SaveChangesAsync();
-        }      
+        }
         /// <summary>
         /// this method is used to check whether test name is unique or not
         /// </summary>
@@ -32,8 +32,8 @@ namespace Promact.Trappist.Repository.Tests
         public bool UniqueTestName(Test test)
         {
             var testObj = (from s in _dbContext.Test
-                          where s.TestName == test.TestName
-                          select s).FirstOrDefault();
+                           where s.TestName == test.TestName
+                           select s).FirstOrDefault();
             if (testObj != null)
                 return false;
             else
@@ -44,8 +44,8 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <returns>List of Testsby decreasing order of there created Date</returns>
         public async Task<List<Test>> GetAllTestsAsync()
-        {          
-            return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();      
+        {
+            return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
         }
     }
 }
