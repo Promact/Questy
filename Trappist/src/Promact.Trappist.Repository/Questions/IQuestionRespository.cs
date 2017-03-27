@@ -7,10 +7,10 @@ namespace Promact.Trappist.Repository.Questions
     public interface IQuestionRespository
     {
         /// <summary>
-        /// Add single multiple answer question into model
+        /// A method to add single multiple answer question.
         /// </summary>
-        /// <param name="singleMultipleAnswerQuestion"></param>
-        /// <param name="singleMultipleAnswerQuestionOption"></param>
+        /// <param name="questionAC"></param>
+        /// <returns>Returns object of QuestionAC</returns>
         Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC);
 
         /// <summary>

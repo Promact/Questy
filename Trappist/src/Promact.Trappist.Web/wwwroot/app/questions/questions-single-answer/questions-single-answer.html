@@ -1,57 +1,64 @@
-﻿<div class="container">
+﻿
+<div class="container">
     <div class="question-type">
         <div class="header">
             <h2>Question</h2>
-            <h5>Single Answer Question</h5>          
+            <h5>Single Answer Question</h5>
         </div>
-        <form>
+        <form (ngSubmit)="singleQuestionAnswerAdd(singleAnswerQuestion)" #singleAnswerQuestionForm="ngForm">
             <div class="form-fields">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Question Test"  [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.questionDetail" [ngModelOptions]="{standalone: true}"/>
+                <div>
+                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" [ngModelOptions]="{standalone: true}" required/>
+                    <span *ngIf="question.invalid && question.touched" class="alert-danger">Question field is required</span>
                 </div>
                 <div class="form-group answer-choices">
-                    <md-radio-group [(ngModel)]="value" name="first">
-                        {{value}}
-                        <md-radio-button value="0">
-                            <input type="text" class="form-control" placeholder="Answer Choice 1"[(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons">close</i>
-                        </md-radio-button>   
-                        <md-radio-button value="1">
-                            <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[1].option" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons">close</i>               
+                    <md-radio-group [(ngModel)]="value" name="first"  id="option" #option="ngModel" required>
+                        <md-radio-button value="0" [disabled]="option1.pristine" *ngIf="showFirstOption">
+                            <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons" (click)="showFirstOption=false; removeOption()" *ngIf="!isClose">close</i><br />
+                            <span *ngIf="option1.invalid && option1.touched" class="alert-danger">This field is required</span>                 
                         </md-radio-button>
-                        <md-radio-button value="2">
-                            <input type="text" class="form-control" placeholder="Answer Choice 3"  [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[2].option" [ngModelOptions]="{standalone: true}" />
-                            <i class="material-icons">close</i>
+                        <md-radio-button value="1" [disabled]="option2.pristine"  *ngIf="showSecondOption">
+                            <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons" (click)="showSecondOption=false; removeOption()" *ngIf="!isClose">close</i><br />
+                            <span *ngIf="option2.invalid && option2.touched" class="alert-danger">This field is required</span>
                         </md-radio-button>
-                        <md-radio-button value="3">
-                            <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionOption[3].option" [ngModelOptions]="{standalone: true}" />
-                            <i class="material-icons">close</i>
-                        </md-radio-button>
+                        <md-radio-button value="2" [disabled]="option3.pristine"  *ngIf="showThirdOption">
+                            <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons"(click)="showThirdOption=false; removeOption()" *ngIf="!isClose">close</i><br />
+                            <span *ngIf="option3.invalid && option3.touched" class="alert-danger">This field is required</span>
+                       </md-radio-button>
+                        <md-radio-button value="3" [disabled]="option4.pristine"  *ngIf="showFourthOption">
+                            <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}"/>
+                            <i class="material-icons" (click)="showFourthOption=false; removeOption()" *ngIf="!isClose">close</i><br />
+                            <span *ngIf="option4.invalid && option4.touched" class="alert-danger">This field is required</span>
+                       </md-radio-button>
                         <md-radio-button value="4" [disabled]="true">
                             <input type="text" class="form-control" placeholder="Add Choice" disabled />
                         </md-radio-button>
                     </md-radio-group>
                     <p class="tip">Tip: Click the radio button to mark the correct answer</p>
                 </div>
-                <div class="form-inline clearfix">
+                <div class="form-fields">
                     <div class="form-group col-md-4 col-sm-4 pl0">
-                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.category.categoryName" [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let category of categoryName">{{category}}</option>
+                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.question.category.categoryName" [ngModelOptions]="{standalone: true}" required id="category" #category="ngModel">
+                            <option [disabled]="category.dirty">Select Category</option>
+                            <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
-                 
-                    </div>
+                    </div> 
                     <div class="form-group col-md-2 col-sm-2 pl0">
-                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestion.difficultyLevel" [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let type of questionType" [selected]="type =='Easy'">{{type}}</option>
-                        </select>                      
+                        <select name="difficulty" class="form-control" [(ngModel)]="singleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" required  #difficulty="ngModel">
+                            <option  [disabled]="difficulty.dirty">Select Difficulty</option>
+                            <option *ngFor="let level of difficultyLevel">{{level}}</option>
+                        </select>                       
                     </div>
                 </div>
             </div>
             <div class="actions-area">
-                <button type="button" class="btn">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="SingleQuestionAnswerAdd(singleAnswerQuestion)">Save</button>
+                <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="singleAnswerQuestionForm.invalid || category.pristine || difficulty.pristine">Save</button>
             </div>
         </form>
+
     </div>
 </div>

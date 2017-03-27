@@ -11,6 +11,7 @@ namespace Promact.Trappist.Repository.Questions
     public class QuestionRepository : IQuestionRespository
     {
         private readonly TrappistDbContext _dbContext;
+
         public QuestionRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -28,15 +29,23 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// A method to add single multiple answer question.
         /// </summary>
-        /// <param name="singleMultipleAnswerQuestion"></param>
-        /// <param name="singleMultipleAnswerQuestionOption"></param>
+        /// <param name="questionAC">Object of QuestionAC</param>
+        /// <returns>Returns object of QuestionAC</returns>
         public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
         {
+            var CategoryObject = _dbContext.Category.First(check => check.CategoryName == questionAC.Question.Category.CategoryName);
+            questionAC.Question.CategoryID = CategoryObject.Id;
+            await _dbContext.Question.AddAsync(questionAC.Question);
+            questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.QuestionId = questionAC.Question.Id;
             await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion);
             foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestionOption)
             {
-                //To-Do Change according to new model singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = singleMultipleAnswerQuestion.Id;
-                await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(singleMultipleAnswerQuestionOptionElement);
+                singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Id;
+                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
+                if (singleMultipleAnswerQuestionOptionElement.Option!=null)
+                {
+                    _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
+                }            
             }
             _dbContext.SaveChanges();
             return(questionAC);

@@ -1,8 +1,7 @@
-﻿import { DifficultyLevel } from '../questions/enum-difficultylevel';
-import { QuestionType } from '../questions/enum-questiontype';
-import { Category } from '../questions/category.model';
-import { SingleMultipleAnswerQuestion } from '../questions/single-multiple-answer-question.model'; 
-import { CodeSnippetQuestion } from './code.snippet.model';
+﻿import { DifficultyLevel } from "../questions/enum-difficultylevel"
+import { QuestionType } from "../questions/enum-questiontype"
+import { Option } from "../questions/option.model";
+import{Category} from "../questions/category.model"
 export class Question {
     id: number;
     questionDetail: string;
@@ -12,5 +11,4 @@ export class Question {
     singleMultipleAnswerQuestion: SingleMultipleAnswerQuestion;
     codeSnippetQuestion: CodeSnippetQuestion;
 }
-
 
