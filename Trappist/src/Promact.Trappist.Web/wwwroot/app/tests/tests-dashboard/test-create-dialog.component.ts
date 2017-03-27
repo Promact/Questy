@@ -14,8 +14,8 @@ import { MdSnackBar } from '@angular/material';
 
 export class TestCreateDialogComponent {
     test: Test = new Test();
-    responseObj: Response = new Response;
-    errorMessage: boolean = false;
+    responseObj: boolean;
+    errorMessage: boolean;
     testNameReference: string;
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, public snackBar: MdSnackBar) {
     }
@@ -27,8 +27,7 @@ export class TestCreateDialogComponent {
         this.test.testName = testNameRef;
         this.testService.getTest(this.test.testName).subscribe((response) => {
             this.responseObj = response;
-            console.log(response);
-            if (this.responseObj.responseValue) {
+            if (!this.responseObj) {
                 this.testService.addTests('api/tests', this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
                 });
