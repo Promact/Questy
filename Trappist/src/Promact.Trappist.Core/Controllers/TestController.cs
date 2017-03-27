@@ -10,7 +10,6 @@ namespace Promact.Trappist.Core.Controllers
     public class TestsController : Controller
     {
         private readonly ITestsRepository _testRepository;
-
         public TestsController(ITestsRepository testRepository)
         {
             _testRepository = testRepository;
