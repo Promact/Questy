@@ -1,7 +1,6 @@
 ﻿import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { ProfileComponent } from "./profile.component";
+import { ProfileComponent } from './profile.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 

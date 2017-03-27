@@ -1,13 +1,13 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { ApplicationUser } from "../profile.model";
-import { ProfileService } from "../profile.service";
-import { ChangePasswordDialogComponent } from "./change-password-dialog.component";
+import { ApplicationUser } from '../profile.model';
+import { ProfileService } from '../profile.service';
+import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: "profile-dashboard",
-    templateUrl: "profile-dashboard.html"
+    selector: 'profile-dashboard',
+    templateUrl: 'profile-dashboard.html'
 })
 export class ProfileDashboardComponent implements OnInit {
     user: ApplicationUser = new ApplicationUser;
@@ -15,7 +15,6 @@ export class ProfileDashboardComponent implements OnInit {
     ngOnInit() {
         this.getUserDetails();
     }
-
     constructor(public profileService: ProfileService, public dialog: MdDialog) { }
 
     /**

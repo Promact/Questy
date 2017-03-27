@@ -6,7 +6,9 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Microsoft.EntityFrameworkCore;
-
+using Promact.Trappist.Repository.ProfileDetails;
+using Promact.Trappist.Web.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Promact.Trappist.Test
 {
@@ -22,6 +24,7 @@ namespace Promact.Trappist.Test
         private IServiceProvider BuildServiceProvider()
         {
             var services = new ServiceCollection();
+            var randomString = Guid.NewGuid().ToString();
             services.AddEntityFrameworkInMemoryDatabase().
                 AddDbContext<TrappistDbContext>((serviceProvider, options) =>
                 {
@@ -30,10 +33,15 @@ namespace Promact.Trappist.Test
                 },ServiceLifetime.Transient);
 
             //Register all dependencies here
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+               .AddEntityFrameworkStores<TrappistDbContext>()
+               .AddDefaultTokenProviders();
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddDbContext<TrappistDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
             return services.BuildServiceProvider();
         }
     }

@@ -1,16 +1,17 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { ApplicationUser } from "../profile.model";
-import { ProfileService } from "../profile.service";
+import { ApplicationUser } from '../profile.model';
+import { ProfileService } from '../profile.service';
 
 @Component({
     moduleId: module.id,
-    selector: "profile-edit",
-    templateUrl: "profile-edit.html"
+    selector: 'profile-edit',
+    templateUrl: 'profile-edit.html'
 })
 export class ProfileEditComponent implements OnInit {
     editUser: ApplicationUser = new ApplicationUser();
+    nameLength: boolean = false;
     constructor(public profileService: ProfileService, private router: Router, public snackBar: MdSnackBar) { }
 
     ngOnInit() {
@@ -29,10 +30,9 @@ export class ProfileEditComponent implements OnInit {
     /**
     * update the  details of the user
     */
-    updateUserDetails() {
+    updateUserDetails(userEdit: ApplicationUser) {
         this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
         });
-
         // Open Snackbar
         let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
             duration: 3000,

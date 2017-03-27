@@ -1,11 +1,11 @@
-﻿import { Injectable } from "@angular/core";
-import { HttpService } from "../core/http.service";
-import { ApplicationUser } from "../profile/profile.model";
-import { ChangePasswordModel } from "./password.model";
+﻿import { Injectable } from '@angular/core';
+import { HttpService } from '../core/http.service';
+import { ApplicationUser } from '../profile/profile.model';
+import { ChangePasswordModel } from './password.model';
 
 @Injectable()
 export class ProfileService {
-    private profileApiUrl = "api/profile";
+    private profileApiUrl = 'api/profile';
     editUser: ApplicationUser = new ApplicationUser;
     user: ApplicationUser = new ApplicationUser;
 
@@ -26,17 +26,18 @@ export class ProfileService {
     }
 
     /**
-    * update the  details of the user
-    */
+     *  update the  details of the user
+     * @param editUser of type ApplicationUser which has the updated details of the user profile
+     */
     updateUserDetails(editUser: ApplicationUser) {
         return this.httpService.put(this.profileApiUrl, editUser);
     }
 
     /**
      * Update user Password 
-     * @param userPassword
+     * @param updatedPassword of type ChangePasswordModel which has the new password of the user
      */
-    updateUserPassword(userPassword: ChangePasswordModel) {
-        return this.httpService.put(this.profileApiUrl + "/password", userPassword);
+    updateUserPassword(updatedPassword: ChangePasswordModel) {
+        return this.httpService.put(this.profileApiUrl + '/password', updatedPassword);
     }
 }

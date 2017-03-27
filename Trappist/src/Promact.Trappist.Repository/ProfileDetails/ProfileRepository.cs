@@ -54,8 +54,8 @@ namespace Promact.Trappist.Repository.ProfileDetails
                 if (result.Succeeded)
                 {
                     _dbContext.SaveChanges();
+                    return user;
                 }
-                return user;
             }
             throw new NotImplementedException();
         }
