@@ -9,7 +9,6 @@ using System;
 using Promact.Trappist.DomainModel.Models.Test;
 using Microsoft.AspNetCore.Hosting;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -19,7 +18,6 @@ namespace Promact.Trappist.DomainModel.DbContext
     {
         #region Private variables
         #region Dependencies
-        private readonly IHostingEnvironment _environment;
         private readonly ConnectionString _connectionString;
         #endregion
         #endregion

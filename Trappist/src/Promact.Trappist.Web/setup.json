@@ -1,13 +1,13 @@
 {
   "EmailSettings": {
-    "Server": "webmail.promactinfo.com",
-    "Port": 587,
-    "UserName": "hardik.patel@promactinfo.com",
-    "Password": "rEhe8ECRawaD",
-    "ConnectionSecurityOption": "None"
+    "Server": "",
+    "Port": "",
+    "UserName": "",
+    "Password": "",
+    "ConnectionSecurityOption": ""
   },
   "ConnectionString": {
-    "Value": "Server=(localdb)\\mssqllocaldb;Database=Tdsdsrappist;Trusted_Connection=True;MultipleActiveResultSets=true",
+    "Value": "",
     "Server": null,
     "Database": null,
     "UserId": null,
