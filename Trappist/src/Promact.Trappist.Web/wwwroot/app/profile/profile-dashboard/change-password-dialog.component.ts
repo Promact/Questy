@@ -16,6 +16,10 @@ export class ChangePasswordDialogComponent {
     isMessageMismatch: boolean = true;
     requiredMessage: string;
     messageMismatch: string;
+    response: any;
+    errorMesseage: any;
+    errorCorrection: boolean = true;
+
 
     /**
      * update the database with new password
@@ -28,11 +32,17 @@ export class ChangePasswordDialogComponent {
                 this.isMessageMismatch = false;
                 this.profileService.updateUserPassword(userPassword).subscribe((response) => {
                     console.log(response);
-                });
-                this.dialog.close();
-                let snackBarRef = this.snackBar.open('Your Password has been changed', 'Dismiss', {
-                    duration: 3000,
-                });
+                    this.dialog.close();
+                    let snackBarRef = this.snackBar.open('Your Password has been changed', 'Dismiss', {
+                        duration: 3000,
+                    });
+                },
+                    err => {
+                        this.errorCorrection = true;
+                        this.response = (err.json());
+                        this.errorMesseage = this.response['error'][0];
+                    });
+
             }
             else {
                 this.isMessageMismatch = true;

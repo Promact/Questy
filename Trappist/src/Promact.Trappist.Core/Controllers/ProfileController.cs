@@ -61,7 +61,9 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                
+                ModelState.AddModelError("error", "Enter details Correctly");
+                return BadRequest(ModelState);
             }
             var user = await _userManager.GetUserAsync(User);
             model.Email = user.Email;
