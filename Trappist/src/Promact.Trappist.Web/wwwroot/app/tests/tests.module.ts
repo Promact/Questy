@@ -17,8 +17,7 @@ import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
 import { TestSettingService } from "./testsetting.service";
 import { TestViewComponent } from './test-view/test-view.component';
 import { ClipboardModule } from 'ngx-clipboard';
-
-
+import { Test } from './tests.model';
 @NgModule({
   imports: [
     SharedModule,
@@ -45,7 +44,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     ],
     providers: [
         TestService,
-        TestSettingService
+        TestSettingService,
+        Test
     ]
 })
 export class TestsModule { }
