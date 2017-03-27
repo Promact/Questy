@@ -20,9 +20,8 @@ class SingleMultipleAnswerQuestionOption {
 
 class SingleMultipleAnswerQuestion {
     singleMultipleAnswerQuestionOption: SingleMultipleAnswerQuestionOption[];
+    id: number;
     constructor() {
         this.singleMultipleAnswerQuestionOption = new Array<SingleMultipleAnswerQuestionOption>();
-    }
-    id: number;
-   
+    }  
 }
