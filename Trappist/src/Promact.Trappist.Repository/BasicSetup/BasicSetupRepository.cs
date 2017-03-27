@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Utility.Constants;
+using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Seed;
 
 namespace Promact.Trappist.Repository.BasicSetup
 {
@@ -58,7 +60,7 @@ namespace Promact.Trappist.Repository.BasicSetup
             bool response = SaveSetupParameter(model);
             _connectionString.Value = model.ConnectionString.Value;
             bool createdUser = await CreateUserAndInitializeDb(user, model.RegistrationFields.Password);
-            if (response == true && createdUser == true)
+            if (response && createdUser)
                 return true;
             return false;
         }
@@ -74,6 +76,8 @@ namespace Promact.Trappist.Repository.BasicSetup
             try
             {
                 _trappistDbContext.Database.EnsureCreated();
+                _trappistDbContext.Database.Migrate();
+                _trappistDbContext.Seed();
                 var result = await _userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                     return true;
@@ -123,13 +127,9 @@ namespace Promact.Trappist.Repository.BasicSetup
         private string GetConnectionString(SqlConnectionStringBuilder connectionString)
         {
             if (connectionString.IntegratedSecurity)
-            {
                 return string.Format("Data Source={0};Trusted_Connection={1}", connectionString.DataSource, connectionString.IntegratedSecurity);
-            }
             else
-            {
                 return string.Format("Data Source={0};User Id={1};Password={2}", connectionString.DataSource, connectionString.UserID, connectionString.Password);
-            }
         }
 
         /// <summary>

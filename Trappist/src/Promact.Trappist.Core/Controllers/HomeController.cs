@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.Repository.BasicSetup;
 
 namespace Promact.Trappist.Web.Controllers
@@ -22,13 +21,9 @@ namespace Promact.Trappist.Web.Controllers
         public IActionResult Index()
         {
             if (_basicSetup.IsFirstTimeUser())
-            {
                 return View();
-            }
             else
-            {
                 return RedirectToAction(nameof(HomeController.Setup), "Home");
-            }
         }
 
         public IActionResult Error()
@@ -39,13 +34,9 @@ namespace Promact.Trappist.Web.Controllers
         public IActionResult Setup(string returnUrl = null)
         {
             if (_basicSetup.IsFirstTimeUser())
-            {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
             else
-            {
                 return View();
-            }
         }
 
     }
