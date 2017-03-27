@@ -1,11 +1,11 @@
-﻿import { Injectable } from '@angular/core';
-import { HttpService } from '../core/http.service';
+﻿import { Injectable } from "@angular/core";
+import { HttpService } from "../core/http.service";
 
 @Injectable()
 
 export class TestService {
 
-    private testsApiUrl = 'api/tests';
+    private testsApiUrl = "api/tests";
 
     constructor(private httpService: HttpService) {
 
