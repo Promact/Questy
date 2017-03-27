@@ -12,14 +12,17 @@ export class Question {
     singleMultipleAnswerQuestion: SingleMultipleAnswerQuestion;
     codeSnippetQuestion: CodeSnippetQuestion;
 }
-//import { SingleMultipleAnswerQuestion } from '../questions/single-multiple-answer-question.model';
+
 class SingleMultipleAnswerQuestionOption {
     option: string;
     isAnswer: boolean;
 }
-//import { Question } from '../questions/question.model';
-//import { SingleMultipleAnswerQuestionOption } from '../questions/single-multiple-answer-question-option.model';
+
 class SingleMultipleAnswerQuestion {
+    singleMultipleAnswerQuestionOption: SingleMultipleAnswerQuestionOption[];
+    constructor() {
+        this.singleMultipleAnswerQuestionOption = new Array<SingleMultipleAnswerQuestionOption>();
+    }
     id: number;
-    singleMultipleAnswerQuestionOption: SingleMultipleAnswerQuestionOption[] = new Array<SingleMultipleAnswerQuestionOption>();
+   
 }
