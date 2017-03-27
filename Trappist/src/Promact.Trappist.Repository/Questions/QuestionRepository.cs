@@ -47,9 +47,9 @@ namespace Promact.Trappist.Repository.Questions
         /// Add new code snippet question to the database
         /// </summary>
         /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
-        public void AddCodeSnippetQuestion(CodeSnippetQuestionDto codeSnippetQuestionModel)
+        public void AddCodeSnippetQuestion(CodeSnippetQuestionAC codeSnippetQuestionModel)
         {
-            CodeSnippetQuestion codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionDto, CodeSnippetQuestion>(codeSnippetQuestionModel);
+            CodeSnippetQuestion codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(codeSnippetQuestionModel);
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 var question = _dbContext.CodeSnippetQuestion.Add(codeSnippetQuestion);
