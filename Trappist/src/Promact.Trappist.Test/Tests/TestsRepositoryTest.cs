@@ -67,30 +67,28 @@ namespace Promact.Trappist.Test.Tests
         /// Test  Case to create a new test when the test name given is unique
         /// </summary>
         [Fact]
-        public void UniqueNameTest()
+        public async void UniqueNameTest()
         {
             var test = CreateTest();
-            _testRepository.CreateTest(test);
-            var newTest = CreateTest();
-            var name = "nameOfTest";
+            var responseValue = await _testRepository.CreateTest(test);
             Response response = new Response();
-            _testRepository.IsTestNameUnique(name);
-            _testRepository.CreateTest(newTest);
-            Assert.True(_trappistDbContext.Test.Count() == 2);
+            var name = "nameOfTest";
+            var newTest = CreateTest();
+            response = await _testRepository.IsTestNameUnique(name);
+            Assert.True(response.ResponseValue);
         }
         /// <summary>
         /// Test Case to check when test name is not unique, new test is not added .
         /// </summary>
         [Fact]
-        public void IsNotUniqueNameTest()
+        public async void IsNotUniqueNameTest()
         {
             var test = CreateTest();
-            _testRepository.CreateTest(test);
+            var responseValue = await _testRepository.CreateTest(test);
+            Response response = new Response();
             var name = "Test name";
-            _testRepository.IsTestNameUnique(name);
-            var testObj = CreateTest();
-            _testRepository.CreateTest(testObj);
-            Assert.True(_trappistDbContext.Test.Count() == 1);
+            response = await _testRepository.IsTestNameUnique(name);
+            Assert.True(response.ResponseValue);
         }
         /// <summary>
         /// Test Case for random link creation
