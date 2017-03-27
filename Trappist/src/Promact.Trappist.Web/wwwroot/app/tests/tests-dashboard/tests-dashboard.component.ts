@@ -15,26 +15,18 @@ import { TestSettingService } from '../testsetting.service';
 })
 
 export class TestsDashboardComponent {
-
-
     Tests: Test[] = new Array<Test>();
     term: string;
     showSearchInput: boolean;
     test: string;
     
-
-
     constructor(public dialog: MdDialog, private testService: TestService) {
-
         this.getAllTests();
-
     }
 
     //Get All The Tests From Server
     getAllTests() {
-        this.testService.getTests().subscribe((response) => { this.Tests = (response); console.log(this.Tests); });
-
-
+        this.testService.getTests().subscribe((response) => { this.Tests = (response);});
     }
 
     // Open Create Test Dialog

@@ -26,21 +26,21 @@ namespace Promact.Trappist.Test.Tests
         /// Test Case For Not Empty Test Model
         /// </summary>
         [Fact]
-        public void GetAllTest()
+        public async  void GetAllTest()
         {
             AddTest();
-            var list = _testRepository.GetAllTestsAsync();
+            var list = await _testRepository.GetAllTestsAsync();
             Assert.NotNull(list);
-            Assert.Equal(3, list.Result.Count);
+            Assert.Equal(3, list.Count);
         }
         /// <summary>
         /// Test Case For Emtpty Test Model
         /// </summary>
         [Fact]
-        public void GetAllTestEmpty()
+        public async void GetAllTestEmpty()
         {
-            var list = _testRepository.GetAllTestsAsync();
-            Assert.Equal(0, list.Result.Count);
+            var list = await _testRepository.GetAllTestsAsync();
+            Assert.Equal(0, list.Count);
         }
         private void AddTest()
         {
