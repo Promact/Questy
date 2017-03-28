@@ -31,7 +31,7 @@ namespace Promact.Trappist.Test
                 },ServiceLifetime.Transient);
 
             //Register all dependencies here
-            services.Configure<ConnectionString>(x => x.Value = string.Empty);
+            services.Configure<ConnectionString>(x => x.Value = "connectionstring");
             services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
             services.Configure<EmailSettings>(x =>
             {
