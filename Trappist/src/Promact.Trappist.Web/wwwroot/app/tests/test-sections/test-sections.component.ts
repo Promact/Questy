@@ -7,5 +7,5 @@
 })
 
 export class TestSectionsComponent {
-
+    editName: boolean;
 }
