@@ -69,8 +69,9 @@ namespace Promact.Trappist.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<IUtil, Util>();
+            services.AddScoped<ITestsRepository, TestsRepository>();           
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             #endregion
