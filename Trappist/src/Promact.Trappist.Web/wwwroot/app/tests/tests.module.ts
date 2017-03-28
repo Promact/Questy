@@ -27,7 +27,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     TestSettingsComponent,
     TestLaunchDialogComponent,
     TestSectionsComponent,
-    TestQuestionsComponent,
     FilterPipe
 
   ],
