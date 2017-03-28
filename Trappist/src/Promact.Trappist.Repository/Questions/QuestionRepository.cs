@@ -46,7 +46,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Add new code snippet question to the database
         /// </summary>
-        /// <param name="codeSnippetQuestion">Code Snippet Question Model</param>
+        /// <param name="questionAC">Question data transfer object</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC)
         {
             var codeSnippetQuestionModel = questionAC.CodeSnippetQuestionAC;
@@ -56,27 +56,23 @@ namespace Promact.Trappist.Repository.Questions
             {
                 //Add common question details
                 var question = await _dbContext.Question.AddAsync(questionAC.Question);
-                await _dbContext.SaveChangesAsync();
 
                 //Add codeSnippet part of question
-                codeSnippetQuestion.QuestionId = question.Entity.Id; ;
+                codeSnippetQuestion.QuestionId = question.Entity.Id;
                 var codingQuestion = await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
-                await _dbContext.SaveChangesAsync();
+
+                var languageIdList = await _dbContext.CodingLanguage.Select(x => x.Id).ToListAsync();
 
                 //Map language to codeSnippetQuestion
-                foreach (var language in codeSnippetQuestionModel.LanguageList)
+                foreach (var languageId in languageIdList)
                 {
-                    var languageId = await _dbContext.CodingLanguage
-                        .Where(x => x.Language == language)
-                        .Select(x => x.Id)
-                        .FirstOrDefaultAsync();
-
                     await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
                     {
                         QuestionId = codingQuestion.Entity.Id,
                         LanguageId = languageId
                     });
                 }
+
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }

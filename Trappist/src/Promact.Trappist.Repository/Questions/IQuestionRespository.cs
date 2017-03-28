@@ -12,12 +12,13 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="singleMultipleAnswerQuestion"></param>
         /// <param name="singleMultipleAnswerQuestionOption"></param>
         Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC);
-       
+
         /// <summary>
         /// Add new code snippet question to the database
         /// </summary>
-        /// <param name="codeSnippetQuestionModel">Code Snippet Question Model</param>
+        /// <param name="questionAC">Question data transfer object</param>
         Task AddCodeSnippetQuestionAsync(QuestionAC questionAC);
+
         /// <summary>
         /// Get all questions
         /// </summary>
