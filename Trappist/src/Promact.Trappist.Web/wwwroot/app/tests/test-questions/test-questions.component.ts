@@ -7,5 +7,5 @@
 })
 
 export class TestQuestionsComponent {
-
+    editName: boolean;
 }
