@@ -4,9 +4,9 @@
     runBasicTestCase: boolean;
     runCornerTestCase: boolean;
     runNecessaryTestCase: boolean;
-    languageList: number[];
+    languageList: string[];
 
     constructor() {
-        this.languageList = new Array<number>();
+        this.languageList = new Array<string>();
     }
 }

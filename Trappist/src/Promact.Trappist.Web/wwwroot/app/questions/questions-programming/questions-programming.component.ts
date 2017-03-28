@@ -5,7 +5,8 @@ import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
 import { QuestionModel } from '../question.application.model';
 import { DifficultyLevel } from '../enum-difficultylevel';
-import { CodingLanguageModel } from '../coding-language-model';
+import { MdSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -15,24 +16,35 @@ import { CodingLanguageModel } from '../coding-language-model';
 
 export class QuestionsProgrammingComponent implements OnInit {
 
-    selectedLanguageList: CodingLanguageModel[];
-    codingLanguageList: CodingLanguageModel[];
+    selectedLanguageList: string[];
+    codingLanguageList: string[];
     categoryList: Category[];
     questionModel: QuestionModel;
+    formControlModel: FormControlModel;
 
     nolanguageSelected: boolean;
-    showTestCase: boolean;
-    collapseTestCase: boolean;
-    collapseNewTestCase: boolean;
-    showNewTestCase: boolean;
+    isCategoryReady: boolean;
+    isLanguageReady: boolean;
+    isFormSubmitted: boolean;
     code: any;
 
-    constructor(private questionsService: QuestionsService, private categoryService: CategoryService) {
+    private successMessage: string = 'Question saved successfully';
+    private failedMessage: string = 'Question failed to save';
+    private routeToDashboard = '/questions';
+
+    constructor(private questionsService: QuestionsService,
+        private categoryService: CategoryService,
+        private snackBar: MdSnackBar,
+        private router: Router) {
+
         this.nolanguageSelected = true;
-        this.selectedLanguageList = new Array<CodingLanguageModel>();
-        this.codingLanguageList = new Array<CodingLanguageModel>();
+        this.isCategoryReady = false;
+        this.isLanguageReady = false;
+        this.selectedLanguageList = new Array<string>();
+        this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionModel();
+        this.formControlModel = new FormControlModel();
     }
 
     ngOnInit() {
@@ -46,7 +58,8 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCodingLanguage() {
         this.questionsService.getCodingLanguage().subscribe((response) => {
             this.codingLanguageList = response;
-            this.sortCodingLanguage();
+            this.codingLanguageList.sort();
+            this.isLanguageReady = true;
         });
     }
 
@@ -56,6 +69,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCategory() {
         this.categoryService.getAllCategories().subscribe((response) => {
             this.categoryList = response;
+            this.isCategoryReady = true;
         });
     }
 
@@ -63,7 +77,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * Adds language to the selectedLanguageList
      * @param language : language to add
      */
-    selectLanguage(language: CodingLanguageModel) {
+    selectLanguage(language: string) {
         let index = this.selectedLanguageList.indexOf(language);
         if (index === -1) {
             this.selectedLanguageList.push(language);
@@ -76,11 +90,11 @@ export class QuestionsProgrammingComponent implements OnInit {
      * Removes language from selectedLanguageList 
      * @param language : Language to remove
      */
-    removeLanguage(language: CodingLanguageModel) {
+    removeLanguage(language: string) {
         this.selectedLanguageList.splice(this.selectedLanguageList.indexOf(language), 1);
         this.codingLanguageList.push(language);
         this.checkIfNoLanguageSelected();
-        this.sortCodingLanguage();
+        this.codingLanguageList.sort();
     }
 
     /**
@@ -95,7 +109,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param category : category to be added
      */
     selectCategory(category: string) {
-        this.questionModel.question.category = this.categoryList.find(x => x.categoryName === category);
+        this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === category).id;
     }
 
     /**
@@ -107,24 +121,52 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     /**
-     * Sorts codingLanguageList
+     * Opens snack bar
+     * @param message: message to display
+     * @param enableRouting: enable routing after snack bar dismissed
+     * @param routeTo: routing path 
      */
-    private sortCodingLanguage() {
-        this.codingLanguageList.sort((a, b) => a.languageCode - b.languageCode);
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: string = '') {
+        let snackBarAction = this.snackBar.open(message, 'Dismiss', {
+            duration: 3000
+        });
+
+        if (enableRouting) {
+            snackBarAction.afterDismissed().subscribe(() => {
+                this.router.navigate([routeTo]);
+            });
+        }
     }
 
     /**
      * Sends post request to add code snippet question
      * @param codeSnippetQuestionForm : code snippet form of type ngForm
      */
-    onSubmit(codeSnippetQuestionForm: NgForm) {
-        if (codeSnippetQuestionForm.valid && !this.nolanguageSelected) {
+    addCodingQuestion(isCodeSnippetFormValid: boolean) {
+        if (isCodeSnippetFormValid && !this.nolanguageSelected) {
+            //Lock the form. Load spinner.
+            this.isFormSubmitted = true;
+
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
             this.selectedLanguageList.forEach(language => {
-                this.questionModel.codeSnippetQuestion.languageList.push(language.languageCode);
+                this.questionModel.codeSnippetQuestion.languageList.push(language);
             });
-            this.questionsService.postCodingQuestion(this.questionModel).subscribe((response) => {
-            });
+            this.questionsService.addCodingQuestion(this.questionModel).subscribe(
+                (response) => {
+                    this.openSnackBar(this.successMessage, true, this.routeToDashboard);
+                },
+                err => {
+                    this.openSnackBar(this.failedMessage);
+                    //Release the form for user to retry
+                    this.isFormSubmitted = false;
+                }
+            );
         }
     }
+}
+
+class FormControlModel {
+    showTestCase: boolean;
+    collapseTestCase: boolean;
+    showNewTestCase: boolean;
 }

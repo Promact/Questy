@@ -9,9 +9,10 @@ using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Questions
 {
-    public class QuestionRepository : IQuestionRespository
+    public class QuestionRepository : IQuestionRepository
     {
         private readonly TrappistDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -59,10 +60,11 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        /// Add new code snippet Question to the database
+        /// Adds new code snippet question to the database
         /// </summary>
         /// <param name="questionAC">Question data transfer object</param>
-        public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC)
+        /// <param name="userEmail">Email of current user</param>
+        public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail)
         {
             var codeSnippetQuestion = questionAC.CodeSnippetQuestion;
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
@@ -97,20 +99,16 @@ namespace Promact.Trappist.Repository.Questions
         /// Gets all the coding languages as string from the database
         /// </summary>
         /// <returns>coding language in CodingLanguageAC</returns>
-        public async Task<ICollection<CodingLanguageAC>> GetAllCodingLanguagesAsync()
+        public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
         {
             var codingLanguageList = await _dbContext.CodingLanguage.ToListAsync();
 
-            var languageNameList = new List<CodingLanguageAC>();
+            var languageNameList = new List<string>();
 
             //Converting Enum value to string and adding it to languageNameList
             codingLanguageList.ForEach(codingLanguage =>
             {
-                languageNameList.Add(new CodingLanguageAC()
-                {
-                    LanguageCode = codingLanguage.Language,
-                    LanguageName = codingLanguage.Language.ToString()
-                });
+                languageNameList.Add(codingLanguage.Language);
             });
             return languageNameList;
         }

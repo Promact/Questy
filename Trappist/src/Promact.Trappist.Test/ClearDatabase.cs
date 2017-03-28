@@ -13,9 +13,9 @@ namespace Promact.Trappist.Test
             //seed data will go here.
             var Languages = new CodingLanguage[]
             {
-                new CodingLanguage {Language = ProgrammingLanguage.Java},
-                new CodingLanguage {Language = ProgrammingLanguage.Cpp},
-                new CodingLanguage {Language = ProgrammingLanguage.C}
+                new CodingLanguage {Language = ProgrammingLanguage.Java.ToString()},
+                new CodingLanguage {Language = ProgrammingLanguage.Cpp.ToString()},
+                new CodingLanguage {Language = ProgrammingLanguage.C.ToString()}
             };
 
             foreach (CodingLanguage language in Languages)

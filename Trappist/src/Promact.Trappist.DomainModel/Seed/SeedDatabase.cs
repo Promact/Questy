@@ -23,9 +23,9 @@ namespace Promact.Trappist.DomainModel.Seed
 
             var Languages = new CodingLanguage[]
             {
-                new CodingLanguage {Language = ProgrammingLanguage.Java},
-                new CodingLanguage {Language = ProgrammingLanguage.Cpp},
-                new CodingLanguage {Language = ProgrammingLanguage.C}
+                new CodingLanguage {Language = ProgrammingLanguage.Java.ToString()},
+                new CodingLanguage {Language = ProgrammingLanguage.Cpp.ToString()},
+                new CodingLanguage {Language = ProgrammingLanguage.C.ToString()}
             };
 
             foreach(CodingLanguage language in Languages)

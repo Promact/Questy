@@ -34,7 +34,11 @@ export class QuestionsService {
         return this.httpService.get(this.questionsApiUrl + '/codinglanguage');
     }
 
-    postCodingQuestion(questionModel: QuestionModel) {
+    /**
+     * Calls API to post code snippet question
+     * @param questionModel: Coding question data transfer object
+     */
+    addCodingQuestion(questionModel: QuestionModel) {
         return this.httpService.post(this.questionsApiUrl, questionModel);
     }
 }
