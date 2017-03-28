@@ -19,6 +19,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="testName">name of the test</param>
         /// <returns>boolean</returns>
+        [Route("isUnique")]
         [HttpGet("{testName}")]
         public async Task<IActionResult> IsUniqueTestName([FromRoute] string testName)
         {
@@ -35,9 +36,8 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> CreateTest([FromBody] Test test)
         {
             if (ModelState.IsValid)
-            {
-                _testRepository.RandomLinkString(test, 10);
-               await _testRepository.CreateTestAsync(test);
+            {              
+                await _testRepository.CreateTestAsync(test);
                 return Ok(test);
             }
             else

@@ -46,7 +46,7 @@ namespace Promact.Trappist.Test.Tests
             var list = await _testRepository.GetAllTestsAsync();
             Assert.Equal(0, list.Count);
         }
-       
+
         /// <summary>
         /// Test Case for adding a new test
         /// </summary>
@@ -65,7 +65,7 @@ namespace Promact.Trappist.Test.Tests
         public async Task UniqueNameTest()
         {
             var test = CreateTests("testname");
-            await _testRepository.CreateTestAsync(test);            
+            await _testRepository.CreateTestAsync(test);
             var name = "nameOfTest";
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
             Assert.False(isExist);
@@ -90,16 +90,7 @@ namespace Promact.Trappist.Test.Tests
             _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "CU 123" });
             _trappistDbContext.SaveChanges();
         }
-        /// <summary>
-        /// Test Case for random link creation
-        /// </summary>
-        [Fact]
-        public void RandomLinkStringTest()
-        {
-            var test = new DomainModel.Models.Test.Test();
-            _testRepository.RandomLinkString(test, 10);
-            Assert.NotNull(test.Link);
-        }
+       
         private DomainModel.Models.Test.Test CreateTests(string testName)
         {
             var test = new DomainModel.Models.Test.Test

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.Repository.Profile;
 
+using Promact.Trappist.Utility.GlobalUtil;
+
 namespace Promact.Trappist.Test
 {
     public class Bootstrap
@@ -48,6 +50,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IUtil, Util>();
             return services.BuildServiceProvider();
         }
     }
