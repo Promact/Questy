@@ -137,9 +137,7 @@ namespace Promact.Trappist.Web
             if (!string.IsNullOrEmpty(connectionString.Value))
             {
                 if (env.IsProduction())
-                {
                     context.Database.EnsureDeleted();
-                }
                 context.Database.Migrate();
                 context.Seed();
             }
