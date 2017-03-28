@@ -11,18 +11,16 @@ namespace Promact.Trappist.Test.Tests
     [Collection("Register Dependency")]
     public class TestSettingsRepositoryTest
     {
-        private readonly Bootstrap _bootstrap;
         private readonly TrappistDbContext _trappistDbContext;
         private readonly ITestSettingsRepository _settingsRepository;
         private readonly ITestsRepository _testRepository;
 
         public TestSettingsRepositoryTest(Bootstrap bootstrap)
         {
-            _bootstrap = bootstrap;
             //resolve dependencies to be used in tests
-            _trappistDbContext = _bootstrap.ServiceProvider.GetService<TrappistDbContext>();
-            _settingsRepository = _bootstrap.ServiceProvider.GetService<ITestSettingsRepository>();
-            _testRepository = _bootstrap.ServiceProvider.GetService<ITestsRepository>();
+            _trappistDbContext = bootstrap.ServiceProvider.GetService<TrappistDbContext>();
+            _settingsRepository = bootstrap.ServiceProvider.GetService<ITestSettingsRepository>();
+            _testRepository = bootstrap.ServiceProvider.GetService<ITestsRepository>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
