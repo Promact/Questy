@@ -17,7 +17,7 @@ export class SetupComponent {
     registrationFields: RegistrationFields = new RegistrationFields();
     confirmPasswordValid: boolean;
     errorMessage: boolean;
-    loader: boolean = false;
+    loader: boolean;
 
     constructor(private setupService: SetupService) {
         this.emailSettings.connectionSecurityOption = 'None';
@@ -29,16 +29,17 @@ export class SetupComponent {
      */
     validateConnectionString(setup: any) {
         this.loader = true;
-        this.setupService.validateConnectionString(this.connectionString).subscribe(response => {
+        this.setupService.validateConnectionString(this.connectionString).subscribe((response) => {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
-                this.loader = false;
             }
-            else {
+            else
                 this.errorMessage = true;
-                this.loader = false;
-            }
+            this.loader = false;
+        }, err => {
+            this.errorMessage = true;
+            this.loader = false;
         });
     }
 
@@ -52,12 +53,13 @@ export class SetupComponent {
             if (response === true) {
                 this.errorMessage = false;
                 setup.next();
-                this.loader = false;
             }
-            else {
+            else
                 this.errorMessage = true;
-                this.loader = false;
-            }
+            this.loader = false;
+        }, err => {
+            this.errorMessage = true;
+            this.loader = false;
         });
     }
 
@@ -85,12 +87,13 @@ export class SetupComponent {
                 this.errorMessage = false;
                 setup.complete();
                 this.navigateToLogin();
-                this.loader = false;
             }
-            else {
+            else
                 this.errorMessage = true;
-                this.loader = false;
-            }
+            this.loader = false;
+        }, err => {
+            this.errorMessage = true;
+            this.loader = false;
         });
     }
 

@@ -1,7 +1,10 @@
-﻿namespace Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup
 {
     public class ConnectionString
     {
+        [Required]
         public string Value { get; set; }
         public string Server { get; set; }
         public string Database { get; set; }
