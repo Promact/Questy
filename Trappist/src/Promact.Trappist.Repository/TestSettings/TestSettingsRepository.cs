@@ -28,7 +28,7 @@ namespace Promact.Trappist.Repository.TestSettings
             Test settings = Mapper.Map<TestSettingsAC, Test>(testACObject);
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                var settingsToUpdate = _dbContext.Test.Update(settings);
+                _dbContext.Test.Update(settings);
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
