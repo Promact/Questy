@@ -1,22 +1,23 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { TestCreateDialogComponent } from "./test-create-dialog.component";
-import { DeleteTestDialogComponent } from "./delete-test-dialog.component";
-import { TestService } from "../tests.service";
-import { Test } from "../tests.model";
-import { TestSettingsComponent } from "../../tests/test-settings/test-settings.component";
-import { TestSettingService } from "../testsetting.service";
+import { TestCreateDialogComponent } from './test-create-dialog.component';
+import { DeleteTestDialogComponent } from './delete-test-dialog.component';
+import { TestService } from '../tests.service';
+import { Test } from '../tests.model';
+import { TestSettingsComponent } from '../../tests/test-settings/test-settings.component';
+import { TestSettingService } from '../testsetting.service';
 
 
 @Component({
     moduleId: module.id,
-    selector: "tests-dashboard",
-    templateUrl: "tests-dashboard.html"
+    selector: 'tests-dashboard',
+    templateUrl: 'tests-dashboard.html'
 })
 
 export class TestsDashboardComponent {
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
+    searchTest: string;
     
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.getAllTests();
