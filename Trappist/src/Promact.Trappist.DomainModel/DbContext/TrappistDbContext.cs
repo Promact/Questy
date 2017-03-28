@@ -7,7 +7,6 @@ using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
 using System;
 using Promact.Trappist.DomainModel.Models.Test;
-using Microsoft.AspNetCore.Hosting;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using System.Threading.Tasks;
 using System.Threading;
@@ -37,7 +36,6 @@ namespace Promact.Trappist.DomainModel.DbContext
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
 
         /// <summary>

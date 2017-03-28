@@ -31,7 +31,7 @@ namespace Promact.Trappist.Web.Controllers
             return View();
         }
 
-        public IActionResult Setup(string returnUrl = null)
+        public IActionResult Setup()
         {
             if (_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Index), "Home");

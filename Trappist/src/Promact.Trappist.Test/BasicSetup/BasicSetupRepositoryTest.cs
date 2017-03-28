@@ -5,11 +5,8 @@ namespace Promact.Trappist.Test.BasicSetup
     [Collection("Register Dependency")]
     public class BasicSetupRepositoryTest
     {
-        private readonly Bootstrap _bootstrap;
-
-        public BasicSetupRepositoryTest(Bootstrap bootstrap)
+        public BasicSetupRepositoryTest()
         {
-            _bootstrap = bootstrap;
         }
     }
 }
