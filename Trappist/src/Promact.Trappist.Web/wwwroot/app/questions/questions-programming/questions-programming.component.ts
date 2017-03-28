@@ -5,6 +5,7 @@ import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
 import { QuestionModel } from '../question.application.model';
 import { DifficultyLevel } from '../enum-difficultylevel';
+import { CodingLanguageModel } from '../coding-language-model';
 
 @Component({
     moduleId: module.id,
@@ -14,8 +15,8 @@ import { DifficultyLevel } from '../enum-difficultylevel';
 
 export class QuestionsProgrammingComponent implements OnInit {
 
-    selectedLanguageList: string[];
-    codingLanguageList: string[];
+    selectedLanguageList: CodingLanguageModel[];
+    codingLanguageList: CodingLanguageModel[];
     categoryList: Category[];
     questionModel: QuestionModel;
 
@@ -28,10 +29,10 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     constructor(private questionsService: QuestionsService, private categoryService: CategoryService) {
         this.nolanguageSelected = true;
-        this.selectedLanguageList = new Array<string>();
-        this.codingLanguageList = new Array<string>();
+        this.selectedLanguageList = new Array<CodingLanguageModel>();
+        this.codingLanguageList = new Array<CodingLanguageModel>();
         this.categoryList = new Array<Category>();
-        this.questionModel = new QuestionModel(); 
+        this.questionModel = new QuestionModel();
     }
 
     ngOnInit() {
@@ -45,7 +46,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCodingLanguage() {
         this.questionsService.getCodingLanguage().subscribe((response) => {
             this.codingLanguageList = response;
-            this.codingLanguageList.sort();
+            this.sortCodingLanguage();
         });
     }
 
@@ -62,12 +63,11 @@ export class QuestionsProgrammingComponent implements OnInit {
      * Adds language to the selectedLanguageList
      * @param language : language to add
      */
-    selectLanguage(language: string) {
+    selectLanguage(language: CodingLanguageModel) {
         let index = this.selectedLanguageList.indexOf(language);
         if (index === -1) {
             this.selectedLanguageList.push(language);
             this.codingLanguageList.splice(this.codingLanguageList.indexOf(language), 1);
-            this.questionModel.codeSnippetQuestion.languageList = this.selectedLanguageList;
         }
         this.checkIfNoLanguageSelected();
     }
@@ -76,11 +76,11 @@ export class QuestionsProgrammingComponent implements OnInit {
      * Removes language from selectedLanguageList 
      * @param language : Language to remove
      */
-    removeLanguage(language: string) {
+    removeLanguage(language: CodingLanguageModel) {
         this.selectedLanguageList.splice(this.selectedLanguageList.indexOf(language), 1);
         this.codingLanguageList.push(language);
         this.checkIfNoLanguageSelected();
-        this.codingLanguageList.sort();
+        this.sortCodingLanguage();
     }
 
     /**
@@ -107,12 +107,22 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     /**
+     * Sorts codingLanguageList
+     */
+    private sortCodingLanguage() {
+        this.codingLanguageList.sort((a, b) => a.languageCode - b.languageCode);
+    }
+
+    /**
      * Sends post request to add code snippet question
      * @param codeSnippetQuestionForm : code snippet form of type ngForm
      */
     onSubmit(codeSnippetQuestionForm: NgForm) {
         if (codeSnippetQuestionForm.valid && !this.nolanguageSelected) {
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            this.selectedLanguageList.forEach(language => {
+                this.questionModel.codeSnippetQuestion.languageList.push(language.languageCode);
+            });
             this.questionsService.postCodingQuestion(this.questionModel).subscribe((response) => {
             });
         }

@@ -1,14 +1,14 @@
 ﻿import { Question } from './question.model';
-import { SingleMultipleAnswerQuestionAC } from './single-multiple-question';
+import { SingleMultipleAnswerQuestion } from './single-multiple-question';
 import { CodeSnippetQuestion } from './code.snippet.model';
 export class QuestionModel {
     question: Question;
-    singleMultipleAnswerQuestionAC: SingleMultipleAnswerQuestionAC;
+    singleMultipleAnswerQuestion: SingleMultipleAnswerQuestion;
     codeSnippetQuestion: CodeSnippetQuestion;
 
     constructor() {
         this.question = new Question();
-        this.singleMultipleAnswerQuestionAC = new SingleMultipleAnswerQuestionAC();
+        this.singleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion();
         this.codeSnippetQuestion = new CodeSnippetQuestion();
     }
 }
