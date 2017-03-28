@@ -3,6 +3,7 @@ using Promact.Trappist.Repository.Tests;
 using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -26,7 +27,7 @@ namespace Promact.Trappist.Test.Tests
         /// Test Case For Not Empty Test Model
         /// </summary>
         [Fact]
-        public async  void GetAllTest()
+        public async Task GetAllTest()
         {
             AddTest();
             var list = await _testRepository.GetAllTestsAsync();
@@ -37,7 +38,7 @@ namespace Promact.Trappist.Test.Tests
         /// Test Case For Emtpty Test Model
         /// </summary>
         [Fact]
-        public async void GetAllTestEmpty()
+        public async Task GetAllTestEmpty()
         {
             var list = await _testRepository.GetAllTestsAsync();
             Assert.Equal(0, list.Count);
