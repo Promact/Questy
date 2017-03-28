@@ -8,7 +8,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Include="wwwroot\app\tests\test-questions\test-questions.component.js" />
     <Content Include="wwwroot\app\tests\test-questions\test-questions.component.js.map" />
     <Content Include="wwwroot\app\tests\test-questions\test-questions.component.ts" />
@@ -25,7 +25,7 @@
     <Content Include="wwwroot\app\tests\test-questions\test-sections.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.Core\Promact.Trappist.Core.csproj" />
