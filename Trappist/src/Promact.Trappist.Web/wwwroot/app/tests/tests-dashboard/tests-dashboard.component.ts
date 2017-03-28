@@ -17,7 +17,6 @@ import { TestSettingService } from '../testsetting.service';
 export class TestsDashboardComponent {
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
-    showSearchInput: boolean;
     searchTest: string;
     
     constructor(public dialog: MdDialog, private testService: TestService) {
