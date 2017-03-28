@@ -1,6 +1,5 @@
 ﻿import { DifficultyLevel } from '../questions/enum-difficultylevel';
 import { QuestionType } from '../questions/enum-questiontype';
-//import { SingleMultipleAnswerQuestion } from '../questions/single-multiple-answer-question.model';
 import { Category } from '../questions/category.model';
 import { CodeSnippetQuestion } from './code.snippet.model';
 export class Question {
