@@ -1,13 +1,13 @@
 {
   "EmailSettings": {
-    "Server": "",
-    "Port": "",
-    "UserName": "",
-    "Password": "",
-    "ConnectionSecurityOption": ""
+    "Server": "webmail.promactinfo.com",
+    "Port": 587,
+    "UserName": "support@promactinfo.com",
+    "Password": "Promact2016",
+    "ConnectionSecurityOption": "None"
   },
   "ConnectionString": {
-    "Value": "",
+    "Value": "Server=(localdb)\\mssqllocaldb;Database=Trappist;Trusted_Connection=True",
     "Server": null,
     "Database": null,
     "UserId": null,

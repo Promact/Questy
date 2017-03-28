@@ -2,34 +2,27 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Promact.Trappist.Repository.BasicSetup;
-using Promact.Trappist.Utility.EmailServices;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.Account;
+using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Repository.TestSettings;
-using NLog.Extensions.Logging;
-using NLog.Web;
-using Promact.Trappist.Repository.Account;
-using AutoMapper;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
-using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.DomainModel.Seed;
+using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Utility.EmailServices;
+using Promact.Trappist.Web.Models;
+using System.IO;
 
 namespace Promact.Trappist.Web
 {
@@ -69,7 +62,6 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
             services.AddMvc( ).AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<IQuestionRespository, QuestionRepository>();
-
             services.AddMvc();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IEmailService, EmailService>();
@@ -137,15 +129,6 @@ namespace Promact.Trappist.Web
                 context.Database.Migrate();
                 context.Seed();
             }
-
-            #region Auto Mapper Configuration
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
-                cfg.CreateMap<CodeSnippetQuestion, SingleMultipleAnswerQuestionAC>();
-                cfg.CreateMap<CodeSnippetQuestionDto, CodeSnippetQuestion>();
-            });
-            #endregion
         }
     }
 }
