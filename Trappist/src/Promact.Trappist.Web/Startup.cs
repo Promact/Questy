@@ -67,7 +67,7 @@ namespace Promact.Trappist.Web
 
             services.AddDirectoryBrowser();
             #region Dependencies
-            services.AddScoped<IQuestionRespository, QuestionRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IStringConstants, StringConstants>();

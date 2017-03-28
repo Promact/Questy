@@ -54,11 +54,10 @@
             '.': {
                 defaultExtension: 'js'
             },
-            "ng2-ckeditor": {
-                "main": "lib/index.js",
-                "defaultExtension": "js",
+            'ng2-ckeditor': {
+                'main': 'lib/index.js',
+                'defaultExtension': 'js',
             }
-
         }
     });
 })(this);

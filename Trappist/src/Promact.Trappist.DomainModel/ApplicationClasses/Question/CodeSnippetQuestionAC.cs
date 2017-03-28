@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
-    public class CodeSnippetQuestionAC : CodeSnippetQuestion
+    public class CodeSnippetQuestionAC: CodeSnippetQuestion
     {
-        public ICollection<ProgrammingLanguage> LanguageList { get; set; }
+        public ICollection<string> LanguageList { get; set; }
     }
 }

@@ -8,9 +8,4 @@ export class Question {
     questionType: QuestionType;
     difficultyLevel: DifficultyLevel;
     categoryID: number;
-    codeSnippetQuestion: CodeSnippetQuestion;
-
-    constructor() {
-        this.codeSnippetQuestion = new CodeSnippetQuestion();
-    }
 }

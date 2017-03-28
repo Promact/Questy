@@ -10,9 +10,9 @@ namespace Promact.Trappist.Core.Controllers
     [Authorize]
     public class QuestionController : Controller
     {
-        private readonly IQuestionRespository _questionsRepository;
+        private readonly IQuestionRepository _questionsRepository;
 
-        public QuestionController(IQuestionRespository questionsRepository)
+        public QuestionController(IQuestionRepository questionsRepository)
         {
             _questionsRepository = questionsRepository;
         }
@@ -23,18 +23,20 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="questionAC">QuestionAC object</param>
         /// <returns>
-        /// Returns added question
+        /// Returns added Question
         /// </returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid)
             {
                 return BadRequest();
             }
+
             if (questionAC.Question.QuestionType == QuestionType.Programming)
             {
-                await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC);
+                await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, User.Identity.Name);
             }
             else
             {
@@ -50,14 +52,14 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllQuestions()
         {
-            return Ok(await _questionsRepository.GetAllQuestionsAsync()); 
+            return Ok(await _questionsRepository.GetAllQuestionsAsync());
         }
 
         /// <summary>
         /// Returns all the coding languages
         /// </summary>
         /// <returns>
-        /// coding language object of type CodingLanguageAC
+        /// Coding language object of type CodingLanguageAC
         /// </returns>
         [HttpGet("codinglanguage")]
         public async Task<IActionResult> GetAllCodingLanguages()
