@@ -29,6 +29,7 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.Test.Add(test);
              await _dbContext.SaveChangesAsync();            
         }
+
         /// <summary>
         /// Fetch all the tests from Test Model,Convert it into List
         /// </summary>
