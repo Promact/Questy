@@ -4,6 +4,7 @@ using Xunit;
 using System;
 using System.Linq;
 using Promact.Trappist.Repository.Categories;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Test.Category
 {
@@ -23,27 +24,39 @@ namespace Promact.Trappist.Test.Category
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
+        /// <summary>
+        ///Method to test AddCategory Method 
+        /// </summary>
+        /// <returns></returns>
         [Fact]
-        public void AddCategory()
+        public async Task AddCategoryAsync()
         {
             var category = CreateCategory();
-            _categoryRepository.AddCategory(category);
+            await _categoryRepository.AddCategoryAsync(category);
             Assert.True(_trappistDbContext.Category.Count() == 1);
         }
 
+        /// <summary>
+        /// Method to test UpdateCategory Method
+        /// </summary>
+        /// <returns></returns>
         [Fact]
-        public void UpdateCategory()
+        public async Task UpdateCategoryAsync()
         {
             var category = CreateCategory();
-            _categoryRepository.AddCategory(category);
-            var categoryToUpdate = _categoryRepository.GetCategory(category.Id);
+            await _categoryRepository.AddCategoryAsync(category);
+            var categoryToUpdate = await _categoryRepository.GetCategoryByIdAsync(category.Id);
             Assert.NotNull(categoryToUpdate);
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
-            _categoryRepository.CategoryEdit(categoryToUpdate);
+            await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             Assert.True(_trappistDbContext.Category.Count(x=>x.CategoryName == "Updated Category") == 1);
         }
 
+        /// <summary>
+        /// Method to Create a Mock object for Test
+        /// </summary>
+        /// <returns></returns>
         private DomainModel.Models.Category.Category CreateCategory()
         {
             var category = new DomainModel.Models.Category.Category

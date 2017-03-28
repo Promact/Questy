@@ -1,8 +1,10 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -13,6 +15,7 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext = dbContext;
         }
+
         /// <summary>
         /// Get all the names of Categories
         /// </summary>
@@ -23,38 +26,47 @@ namespace Promact.Trappist.Repository.Categories
             var categoryOrderedByCreatedDateTime = category.OrderBy(g => g.CreatedDateTime).ToList();
             return categoryOrderedByCreatedDateTime;
         }
-        #region Adding a CategoryName
+
         /// <summary>
-        /// Adding a Category in Category model
+        /// Method to Add a Category
         /// </summary>
-        /// <param name="catagory">Object of class Category</param>
-        public void AddCategory(Category category)
+        /// <param name="catagory">category object contains category details</param>
+        public async Task AddCategoryAsync(Category category)
         {
             _dbContext.Category.Add(category);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
-        #endregion
-        #region Finding a Id Respective Category
+
         /// <summary>
-        /// Find a Respective Id from Catagory Table
+        /// Method to Get Category by its Id
         /// </summary>
-        /// <param name="Key"></param>
-        /// <Returns>if key foundthen Return respective category from category table or will return Null</Returns>
-        public Category GetCategory(int key)
+        /// <param name="key">id which will Search Category</param>
+        /// <returns>category object Contains Category Detaiks</returns>
+        public async Task<Category> GetCategoryByIdAsync(int key)
         {
-            return _dbContext.Category.FirstOrDefault(Check => Check.Id == key);
+            return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
         }
-        #endregion
-        #region Edit A Category Name
-        // <summary>
-        // Edit a Category from Category Table
-        // </summary>
-        // <param name="catagory">object of the class Category</param>
-        public void CategoryEdit(Category category)
+
+        /// <summary>
+        /// Method to UPdate Category
+        /// </summary>
+        /// <param name="category">category object Contains Category Details</param>
+        public async Task UpdateCategoryAsync(Category category)
         {
-            _dbContext.Category.Update(category);
-            _dbContext.SaveChanges();
+            var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            _dbContext.Category.Update(categoryToUpdate);
+            await _dbContext.SaveChangesAsync();
         }
-        #endregion
+
+        /// <summary>
+        /// Method to Check Same CategoryName Exists or not
+        /// </summary>
+        /// <param name="categoryName">categoryname will be checked that it is Exists or not</param>
+        /// <returns>true if Exists else false</returns>
+        public async Task<bool> CheckDuplicateCategoryNameAsync(string categoryName)
+        {
+            return await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
+        }
     }
 }
