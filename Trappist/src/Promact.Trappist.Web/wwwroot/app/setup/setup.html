@@ -37,13 +37,13 @@
                         </div>
                         <div class="form-group">
                             <label class="h4">User Name</label>
-                            <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersName" #usersName="ngModel" />
-                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                            <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersEmailAddress" #usersEmailAddress="ngModel" />
+                            <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">*required</span>
                         </div>
                         <div class="form-group">
                             <label class="h4">Password</label>
-                            <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userPassword" #userPassword="ngModel" />
-                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                            <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userMailPassword" #userMailPassword="ngModel" />
+                            <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">*required</span>
                         </div>
                         <div class="form-group">
                             <label class="h4">Connection Security</label>

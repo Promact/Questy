@@ -27,13 +27,12 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>If valid then return true else return false in reponse object</returns>
-        [Route("connectionstring")]
-        [HttpPost]
+        [HttpPost("connectionstring")]
         public async Task<IActionResult> ValidateConnectionString([FromBody] ConnectionString model)
         {
             if (ModelState.IsValid)
                 return Ok(await _basicSetup.ValidateConnectionString(model));
-            return Ok(false);
+            return BadRequest();
         }
 
         /// <summary>
@@ -41,17 +40,12 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>if valid email settings then return true else false in response object</returns>
-        [Route("mailsettings")]
-        [HttpPost]
+        [HttpPost("mailsettings")]
         public async Task<IActionResult> ValidateEmailSettings([FromBody] EmailSettings model)
         {
             if (ModelState.IsValid)
-            {
-                if (await _basicSetup.ValidateEmailSetting(model))
-                    return Ok(true);
-                return Ok(false);
-            }
-            return Ok(false);
+                return Ok(await _basicSetup.ValidateEmailSetting(model));
+            return BadRequest();
         }
 
         /// <summary>
@@ -59,13 +53,12 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns>if a user created then return true else return false</returns>
-        [Route("createuser")]
-        [HttpPost]
+        [HttpPost("createuser")]
         public async Task<IActionResult> CreateAdminUser([FromBody] BasicSetupModel model)
         {
             if (ModelState.IsValid)
                 return Ok(await _basicSetup.CreateAdminUser(model));
-            return Ok(false);
+            return BadRequest();
         }
         #endregion
     }
