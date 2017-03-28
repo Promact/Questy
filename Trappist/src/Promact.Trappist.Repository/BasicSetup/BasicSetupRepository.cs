@@ -25,13 +25,14 @@ namespace Promact.Trappist.Repository.BasicSetup
         private readonly TrappistDbContext _trappistDbContext;
         private readonly IStringConstants _stringConstants;
         private readonly ConnectionString _connectionString;
+        private readonly EmailSettings _emailSettings;
         #endregion
         #endregion
 
         #region Constructor
         public BasicSetupRepository(UserManager<ApplicationUser> userManager, IEmailService emailService,
             IHostingEnvironment environment, TrappistDbContext trappistDbContext, IStringConstants stringConstants,
-            ConnectionString connectionString)
+            ConnectionString connectionString, EmailSettings emailSettings)
         {
             _userManager = userManager;
             _emailService = emailService;
@@ -39,6 +40,7 @@ namespace Promact.Trappist.Repository.BasicSetup
             _trappistDbContext = trappistDbContext;
             _stringConstants = stringConstants;
             _connectionString = connectionString;
+            _emailSettings = emailSettings;
         }
         #endregion
 
@@ -120,7 +122,12 @@ namespace Promact.Trappist.Repository.BasicSetup
 
         public async Task<bool> ValidateEmailSetting(EmailSettings model)
         {
-            return await _emailService.SendMailAsync(model.UserName, model.Password, model.Server, model.Port, model.ConnectionSecurityOption, _stringConstants.BodyOfMail, model.UserName);
+            _emailSettings.UserName = model.UserName;
+            _emailSettings.Password = model.Password;
+            _emailSettings.Server = model.Server;
+            _emailSettings.Port = model.Port;
+            _emailSettings.ConnectionSecurityOption = model.ConnectionSecurityOption;
+            return await _emailService.SendMailAsync(_emailSettings.UserName, _emailSettings.UserName, _stringConstants.TestMailBody, _stringConstants.TestMailSubject);
         }
 
         /// <summary>

@@ -19,9 +19,6 @@
         }
 
         #region Setup Constants
-        /// <summary>
-        /// property setup.json Filename is called whenever required setup.json file name
-        /// </summary>
         public string SetupConfigFileName
         {
             get
@@ -29,14 +26,20 @@
                 return "setup.json";
             }
         }
-        /// <summary>
-        ///  this property used for provide body constant in mail.
-        /// </summary>
-        public string BodyOfMail
+
+        public string TestMailBody
         {
             get
             {
                 return "Test Mail Settings";
+            }
+        }
+
+        public string TestMailSubject
+        {
+            get
+            {
+                return "Test mail Subject";
             }
         }
         #endregion

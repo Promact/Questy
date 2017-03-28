@@ -16,7 +16,12 @@
         /// <summary>
         /// this property used for provide body constant in mail.
         /// </summary>
-        string BodyOfMail { get; }
+        string TestMailBody { get; }
+        /// <summary>
+        /// this property used for provide subject constant in mail.
+        /// </summary>
+        string TestMailSubject { get; }
+
         #endregion
 
         #region "Account Constants"

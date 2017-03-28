@@ -141,6 +141,7 @@ namespace Promact.Trappist.Web
                 context.Database.Migrate();
                 context.Seed();
             }
+
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
