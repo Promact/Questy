@@ -30,7 +30,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserDetails()
         {
-            var user = await _profileRepository.GetUserDetails(User.Identity.Name);
+            var user = await _profileRepository.GetUserDetailsAsync(User.Identity.Name);
             return Ok(user);
         }
 
@@ -44,7 +44,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                _profileRepository.UpdateProfile(updateUserDetails);
+                _profileRepository.UpdateUserProfile(updateUserDetails);
                 return Ok();
             }
             return BadRequest();
@@ -61,13 +61,12 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!ModelState.IsValid)
             {
-                
                 ModelState.AddModelError("error", "Enter details Correctly");
                 return BadRequest(ModelState);
             }
             var user = await _userManager.GetUserAsync(User);
             model.Email = user.Email;
-            return Ok(await _profileRepository.UpdateUserPassword(model));
+            return Ok(await _profileRepository.UpdateUserPasswordAsync(model));
         }
 
         /// <summary>

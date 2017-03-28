@@ -23,7 +23,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
         /// </summary>
         /// <param name="name">takes parameter of string type which has the name of the current user whose details have to be fetched</param>
         /// <returns>details of the current user</returns>
-        public async Task<ApplicationUser> GetUserDetails(string name)
+        public async Task<ApplicationUser> GetUserDetailsAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
             return user;
@@ -34,7 +34,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
         /// </summary>
         /// <param name="updateUserDetails">parameter of type ApplicationUser which has the updated details of the user profile</param>
         /// <returns>Update user profile details in database</returns>
-        public void UpdateProfile(ApplicationUser updateUserDetails)
+        public void UpdateUserProfile(ApplicationUser updateUserDetails)
         {
             var user = _dbContext.Users.Update(updateUserDetails);
             _dbContext.SaveChanges();
@@ -45,7 +45,7 @@ namespace Promact.Trappist.Repository.ProfileDetails
         /// </summary>
         /// <param name="model">take parameter of type ChangePasswordModel which has the new password of the user</param>
         /// <returns>save new password in the database</returns>
-        public async Task<ApplicationUser> UpdateUserPassword(ChangePasswordModel model)
+        public async Task<ApplicationUser> UpdateUserPasswordAsync(ChangePasswordModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)

@@ -24,7 +24,6 @@ namespace Promact.Trappist.Test
         private IServiceProvider BuildServiceProvider()
         {
             var services = new ServiceCollection();
-            var randomString = Guid.NewGuid().ToString();
             services.AddEntityFrameworkInMemoryDatabase().
                 AddDbContext<TrappistDbContext>((serviceProvider, options) =>
                 {
@@ -41,7 +40,6 @@ namespace Promact.Trappist.Test
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
-            services.AddDbContext<TrappistDbContext>(options => options.UseInMemoryDatabase(randomString), ServiceLifetime.Transient);
             return services.BuildServiceProvider();
         }
     }
