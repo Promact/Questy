@@ -4,7 +4,7 @@
       <h1>
         <span [hidden]="editName">BBIT 10-08-2017</span>
         <input type="text" class="form-control" [hidden]="!editName" />
-        <i class="material-icons" (click)="editName = !editName">edit</i>
+        <em class="material-icons" (click)="editName = !editName">edit</em>
       </h1>
     </div>
   </div>
@@ -16,7 +16,7 @@
           <input type="checkbox" id="section1" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">English Communication</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -25,7 +25,7 @@
           <input type="checkbox" id="section2" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">Logical Reasoning & Data Interpretation</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -34,7 +34,7 @@
           <input type="checkbox" id="section3" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">Quantitative Ability</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -43,7 +43,7 @@
           <input type="checkbox" id="section4" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">Programming</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -52,7 +52,7 @@
           <input type="checkbox" id="section5" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">English Writing</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -61,7 +61,7 @@
           <input type="checkbox" id="section6" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">General Awareness</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -70,7 +70,7 @@
           <input type="checkbox" id="section7" />
           <span class="section-box clearfix">
             <span class="h4 pull-left">Physics</span>
-            <i class="material-icons pull-right">check</i>
+            <em class="material-icons pull-right">check</em>
           </span>
         </label>
       </li>
@@ -79,11 +79,11 @@
   <div class="footer-block clearfix">
     <div class="container">
       <ul class="steps pull-left">
-        <li class="h5 active">Select Sections</li>
-        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
-        <li class="h5">Select Questions</li>
-        <li class="h5"><i class="material-icons">keyboard_arrow_right</i></li>
-        <li class="h5">Settings & Schedule</li>
+        <li class="h5 active"><a [routerLink]="['/tests/sections']">Select Sections</a></li>
+        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+        <li class="h5"><a [routerLink]="['/tests/questions']">Select Questions</a></li>
+        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+        <li class="h5"><a [routerLink]="['/tests/settings']">Settings & Schedule</a></li>
       </ul>
       <div class="buttons-block pull-right">
         <button type="button" class="btn" [routerLink]="['/tests']">Save & Exit</button>
