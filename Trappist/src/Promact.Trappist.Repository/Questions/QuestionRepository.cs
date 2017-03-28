@@ -97,16 +97,20 @@ namespace Promact.Trappist.Repository.Questions
         /// Gets all the coding languages as string from the database
         /// </summary>
         /// <returns>coding language in CodingLanguageAC</returns>
-        public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
+        public async Task<ICollection<CodingLanguageAC>> GetAllCodingLanguagesAsync()
         {
             var codingLanguageList = await _dbContext.CodingLanguage.ToListAsync();
 
-            var languageNameList = new List<string>();
+            var languageNameList = new List<CodingLanguageAC>();
 
             //Converting Enum value to string and adding it to languageNameList
             codingLanguageList.ForEach(codingLanguage =>
             {
-                languageNameList.Add(codingLanguage.Language.ToString());
+                languageNameList.Add(new CodingLanguageAC()
+                {
+                    LanguageCode = codingLanguage.Language,
+                    LanguageName = codingLanguage.Language.ToString()
+                });
             });
             return languageNameList;
         }
