@@ -1,9 +1,9 @@
 ﻿import { Question } from './question.model';
-import { SingleMultipleAnswerQuestionAC } from './single-multiple-question';
+import { SingleMultipleQuestion } from './single-multiple-question';
 import { CodeSnippetAC } from './code-snippet';
 
-export class QuestionAC {
+export class Questions {
     question: Question = new Question();
-    singleMultipleAnswerQuestionAC: SingleMultipleAnswerQuestionAC = new SingleMultipleAnswerQuestionAC();
+    singleMultipleAnswerQuestionAC: SingleMultipleQuestion = new SingleMultipleQuestion();
     codeSnippetQuestion: CodeSnippetAC = null;
 }

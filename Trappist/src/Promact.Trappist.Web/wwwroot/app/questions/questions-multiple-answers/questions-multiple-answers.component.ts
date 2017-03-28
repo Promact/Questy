@@ -2,7 +2,7 @@
 import { MdSnackBar } from '@angular/material';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
-import { QuestionAC } from '../question';
+import { Questions } from '../question';
 import { Router } from '@angular/router';
 import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
@@ -14,20 +14,15 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 })
 
 export class QuestionsMultipleAnswersComponent {
-    isSelected = true;
     isOptionSelected:boolean=false;
-    showFirstOption: boolean = true;
-    showSecondOption: boolean = true;
-    showThirdOption: boolean = true;
-    showFourthOption: boolean = true;
     noOfOptionShown: number = 4;
     isClose: boolean = false;
     categoryArray: Category[] = new Array<Category>();
     difficultyLevel: string[] = ['Easy', 'Medium', 'Hard'];
-    multipleAnswerQuestion: QuestionAC;
+    multipleAnswerQuestion: Questions;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {
         this.getAllCategories();
-        this.multipleAnswerQuestion = new QuestionAC();
+        this.multipleAnswerQuestion = new Questions();
         this.multipleAnswerQuestion.question.difficultyLevel = 0;
         this.multipleAnswerQuestion.question.questionType = 1;
         for (let i = 0; i < this.noOfOptionShown; i++) {
@@ -55,7 +50,8 @@ export class QuestionsMultipleAnswersComponent {
     /**
      * Remove extra option 
      */
-    removeOption() {
+    removeOption(optionIndex: number) {
+        this.multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption.splice(optionIndex,1);
         this.noOfOptionShown = this.noOfOptionShown - 1;
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
@@ -66,7 +62,7 @@ export class QuestionsMultipleAnswersComponent {
      * Add multiple answer question and redirect to question dashboard page
      * @param multipleAnswerQuestion
      */
-    multipleQuestionAnswerAdd(multipleAnswerQuestion: QuestionAC) {
+    multipleQuestionAnswerAdd(multipleAnswerQuestion: Questions) {
         this.questionService.addSingleAnswerQuestion(multipleAnswerQuestion).subscribe((response) => {
             if (response.ok) {
 

@@ -12,43 +12,25 @@
                     <span *ngIf="question.invalid && question.touched" class="alert-danger">Question field is required</span>
                 </div>
                 <div class="form-group answer-choices">
-                    <md-radio-group [(ngModel)]="value" name="first"  id="option" #option="ngModel" required>
-                        <md-radio-button value="0" [disabled]="option1.pristine" *ngIf="showFirstOption">
-                            <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons" (click)="showFirstOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                            <span *ngIf="option1.invalid && option1.touched" class="alert-danger">This field is required</span>                 
-                        </md-radio-button>
-                        <md-radio-button value="1" [disabled]="option2.pristine"  *ngIf="showSecondOption">
-                            <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons" (click)="showSecondOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                            <span *ngIf="option2.invalid && option2.touched" class="alert-danger">This field is required</span>
-                        </md-radio-button>
-                        <md-radio-button value="2" [disabled]="option3.pristine"  *ngIf="showThirdOption">
-                            <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons"(click)="showThirdOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                            <span *ngIf="option3.invalid && option3.touched" class="alert-danger">This field is required</span>
-                       </md-radio-button>
-                        <md-radio-button value="3" [disabled]="option4.pristine"  *ngIf="showFourthOption">
-                            <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}"/>
-                            <i class="material-icons" (click)="showFourthOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                            <span *ngIf="option4.invalid && option4.touched" class="alert-danger">This field is required</span>
-                       </md-radio-button>
-                        <md-radio-button value="4" [disabled]="true">
-                            <input type="text" class="form-control" placeholder="Add Choice" disabled />
-                        </md-radio-button>
+                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
+                        <md-radio-button  value="{{i}}" [disabled]="choice.pristine">
+                            <input type="text" class="form-control" placeholder="Answer Choice" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required/>
+                            <i class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</i><br />
+                            <span *ngIf="choice.invalid && choice.touched" class="alert-danger">This field is required</span>                 
+                        </md-radio-button> 
                     </md-radio-group>
                     <p class="tip">Tip: Click the radio button to mark the correct answer</p>
                 </div>
                 <div class="form-fields">
                     <div class="form-group col-md-4 col-sm-4 pl0">
-                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.question.category.categoryName" [ngModelOptions]="{standalone: true}" required id="category" #category="ngModel">
+                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.question.category.categoryName" [ngModelOptions]="{standalone: true}" id="category" #category="ngModel">
                             <option [disabled]="category.dirty">Select Category</option>
                             <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
                     </div> 
                     <div class="form-group col-md-2 col-sm-2 pl0">
-                        <select name="difficulty" class="form-control" [(ngModel)]="singleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" required  #difficulty="ngModel">
-                            <option  [disabled]="difficulty.dirty">Select Difficulty</option>
+                        <select name="difficulty" class="form-control" [(ngModel)]="singleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" #difficulty="ngModel">
+                            <option  [disabled]="difficulty.dirty" value="0">Select Difficulty</option>
                             <option *ngFor="let level of difficultyLevel">{{level}}</option>
                         </select>                       
                     </div>

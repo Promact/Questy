@@ -11,30 +11,13 @@
                     <input type="text" class="form-control" placeholder="Question Test"  [(ngModel)]="multipleAnswerQuestion.question.questionDetail" [ngModelOptions]="{standalone: true}"  id="question" #question="ngModel"  required/>
                     <span *ngIf="question.invalid && question.touched" class="alert-danger">Question field is required</span>
                 </div>
-                <div class="form-group answer-choices">
-                    <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[0].isAnswer" name="first" [disabled]="option1.pristine" *ngIf="showFirstOption" (ngModelChange)="isOptionSelected=true">
-                        <input type="text" class="form-control" placeholder="Answer Choice 1" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[0].option" id="option1" #option1="ngModel" [ngModelOptions]="{standalone: true}"/>
-                        <i class="material-icons" (click)="showFirstOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                        <span *ngIf="option1.invalid && option1.touched" class="alert-danger">This field is required</span> 
+                <div class="form-group answer-choices" >
+                    <md-checkbox *ngFor="let option of multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first" [disabled]="choice.pristine">
+                        <input type="text" class="form-control" placeholder="Write Your Answer" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required/>
+                        <i class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</i><br />
+                        <span *ngIf="choice.invalid && choice.touched" class="alert-danger">This field is required</span> 
                     </md-checkbox>
-                    <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[1].isAnswer" name="first" [disabled]="option2.pristine" *ngIf="showSecondOption"  (ngModelChange)="isOptionSelected=true">
-                        <input type="text" class="form-control" placeholder="Answer Choice 2" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[1].option" id="option2" #option2="ngModel"[ngModelOptions]="{standalone: true}"/>
-                        <i class="material-icons" (click)="showSecondOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                        <span *ngIf="option2.invalid && option2.touched" class="alert-danger">This field is required</span>
-                    </md-checkbox>
-                    <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[2].isAnswer" name="first" [disabled]="option3.pristine" *ngIf="showThirdOption"  (ngModelChange)="isOptionSelected=true">
-                        <input type="text" class="form-control" placeholder="Answer Choice 3" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[2].option" id="option3" #option3="ngModel"[ngModelOptions]="{standalone: true}"/>
-                        <i class="material-icons" (click)="showThirdOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                        <span *ngIf="option3.invalid && option3.touched" class="alert-danger">This field is required</span>
-                    </md-checkbox>
-                    <md-checkbox [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[3].isAnswer" name="first" [disabled]="option4.pristine" *ngIf="showFourthOption"  (ngModelChange)="isOptionSelected=true">
-                        <input type="text" class="form-control" placeholder="Answer Choice 4" [(ngModel)]="multipleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[3].option" id="option4" #option4="ngModel" [ngModelOptions]="{standalone: true}"/>
-                        <i class="material-icons" (click)="showFourthOption=false; removeOption()" *ngIf="!isClose">close</i><br />
-                        <span *ngIf="option4.invalid && option4.touched" class="alert-danger">This field is required</span>
-                    </md-checkbox>
-                    <md-checkbox [disabled]="true">
-                        <input type="text" class="form-control" placeholder="Add Choice" disabled />
-                    </md-checkbox>
+                    {{isOptionSelected}}
                     <p class="tip">Tip: Click the check boxes to mark the correct answers</p>
                 </div>
                 <div class="form-fields">
@@ -46,7 +29,7 @@
                     </div>
                     <div class="form-group col-md-2 col-sm-2 pl0">
                         <select name="difficulty" class="form-control" [(ngModel)]="multipleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" required #difficulty="ngModel" ng-selected="selected">
-                            <option [disabled]="difficulty.dirty" >Select Difficulty</option>
+                            <option [disabled]="difficulty.dirty" value="0">Select Difficulty</option>
                             <option *ngFor="let level of difficultyLevel">{{level}}</option>
                         </select>
                     </div>
@@ -54,7 +37,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="multipleAnswerQuestionForm.invalid || category.pristine || difficulty.pristine || !isOptionSelected">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="multipleAnswerQuestionForm.invalid || category.pristine || difficulty.pristine || isOptionSelected">Save</button>
             </div>
         </form>
     </div>

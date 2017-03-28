@@ -33,7 +33,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <returns>Returns object of QuestionAC</returns>
         public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
         {
-            var CategoryObject = _dbContext.Category.First(check => check.CategoryName == questionAC.Question.Category.CategoryName);
+            var CategoryObject = _dbContext.Category.First(check => check.CategoryName == questionAC.Question.Category.CategoryName); //Used to get category object base on categoryname
             questionAC.Question.CategoryID = CategoryObject.Id;
             await _dbContext.Question.AddAsync(questionAC.Question);
             questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.QuestionId = questionAC.Question.Id;
@@ -41,11 +41,7 @@ namespace Promact.Trappist.Repository.Questions
             foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestionOption)
             {
                 singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Id;
-                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
-                if (singleMultipleAnswerQuestionOptionElement.Option!=null)
-                {
-                    _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);
-                }            
+                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);       
             }
             _dbContext.SaveChanges();
             return(questionAC);
