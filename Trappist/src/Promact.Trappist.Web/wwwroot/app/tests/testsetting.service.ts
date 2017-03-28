@@ -1,12 +1,12 @@
-﻿import { Injectable } from "@angular/core";
-import { HttpService } from "../core/http.service";
-import { Test } from "./tests.model";
+﻿import { Injectable } from '@angular/core';
+import { HttpService } from '../core/http.service';
+import { Test } from './tests.model';
 
 @Injectable()
 
 export class TestSettingService {
 
-    private settingsApiUrl = "api/settings";
+    private settingsApiUrl = 'api/settings';
 
     constructor(private httpService: HttpService) {
 
@@ -17,7 +17,7 @@ export class TestSettingService {
      * @param id is used to get the Settings of a Test by its Id
      */
     getSettings(id : number) {
-        return this.httpService.get(this.settingsApiUrl+"/"+id);
+        return this.httpService.get(this.settingsApiUrl+'/'+id);
     }
 
     /**
@@ -26,6 +26,6 @@ export class TestSettingService {
      * @param body is used as an object for the Model Test
      */
     updateSettings(id: number, body: Test) {
-        return this.httpService.put(this.settingsApiUrl + "/" + id, body);
+        return this.httpService.put(this.settingsApiUrl + '/' + id, body);
     }
 }

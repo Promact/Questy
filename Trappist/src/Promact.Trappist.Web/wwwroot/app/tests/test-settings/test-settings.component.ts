@@ -5,18 +5,16 @@ import { TestSettingService } from '../testsetting.service';
 import { ActivatedRoute } from '@angular/router';
 import { TestLaunchDialogComponent } from './test-launch-dialog.component';
 
-
-
 @Component({
     moduleId: module.id,
     selector: 'test-settings',
     templateUrl: 'test-settings.html'
 })
 
-export class TestSettingsComponent {
+export class TestSettingsComponent implements OnInit {
     testsettings: Test = new Test();
     testId: number;
-    validEndDate: boolean = false;  
+    validEndDate: boolean = false;
     endDate: string;
     validTime: boolean = false;
     validStartDate: boolean = false;
@@ -108,7 +106,7 @@ export class TestSettingsComponent {
     launchTestDialog(id: number, testObject: Test) {
         this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
         });
-        var instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
+        let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
         instance.settingObject = testObject;
     }
 }
