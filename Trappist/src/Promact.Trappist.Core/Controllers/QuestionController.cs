@@ -5,7 +5,7 @@ using Promact.Trappist.Repository.Questions;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
-    [Route("api/question")]
+    [Route("api")]
     public class QuestionController : Controller
     {
         private readonly IQuestionRespository _questionsRepository;
