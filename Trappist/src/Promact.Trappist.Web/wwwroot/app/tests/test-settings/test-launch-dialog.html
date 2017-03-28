@@ -1,9 +1,9 @@
 ﻿<div class="dialog">
   <div class="dialog-title clearfix">
-    <h1 class="pull-left">Share Test</h1>
+    <h1 class="pull-left" md-dialog-title>Share Test</h1>
     <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
   </div>
-  <div class="dialog-body">
+  <md-dialog-content>
     <div class="form-group">
       <label class="h4">Global URL</label>
       <div class="url-container">
@@ -12,9 +12,9 @@
       </div>
       <div class="errors-container"></div>
     </div>
-  </div>
-  <div class="dialog-actions">
+  </md-dialog-content>
+  <md-dialog-actions>
     <button type="button" class="btn" md-dialog-close>Close</button>
     <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">Copy</button>
-  </div>
+  </md-dialog-actions>
 </div>
