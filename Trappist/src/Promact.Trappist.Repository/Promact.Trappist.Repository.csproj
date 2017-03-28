@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.DomainModel\Promact.Trappist.DomainModel.csproj" />
+    <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />
   </ItemGroup>
 
 </Project>

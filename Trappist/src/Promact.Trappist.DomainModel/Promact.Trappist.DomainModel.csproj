@@ -17,8 +17,4 @@
     <PackageReference Include="System.IO" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />
-  </ItemGroup>
-
 </Project>
