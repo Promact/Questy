@@ -12,6 +12,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         [Required]
         public DateTime CreatedDateTime { get; set; }
+
         public DateTime? UpdateDateTime { get; set; }
 
         public bool CheckCodeComplexity { get; set; }

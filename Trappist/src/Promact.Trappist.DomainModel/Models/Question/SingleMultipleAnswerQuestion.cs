@@ -9,8 +9,10 @@ namespace Promact.Trappist.DomainModel.Models.Question
     {
         [ForeignKey("Question")]
         public int Id { get; set; }
+
         [Required]
         public DateTime CreatedDateTime { get; set; }
+
         public DateTime? UpdateDateTime { get; set; }
 
         public virtual ICollection<SingleMultipleAnswerQuestionOption> SingleMultipleAnswerQuestionOption { get; set; }
