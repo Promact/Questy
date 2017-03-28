@@ -14,6 +14,7 @@ import { TestService } from "./tests.service";
 import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
 import { TestSettingService } from "./testsetting.service";
 import { ClipboardModule } from 'ngx-clipboard';
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 @NgModule({
   imports: [
