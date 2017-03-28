@@ -9,6 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\app\tests\test-questions\test-questions.component.js" />
+    <Content Include="wwwroot\app\tests\test-questions\test-questions.component.js.map" />
+    <Content Include="wwwroot\app\tests\test-questions\test-questions.component.ts" />
+    <Content Include="wwwroot\app\tests\test-questions\test-questions.html" />
+    <Content Include="wwwroot\app\tests\test-questions\test-sections.component.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\app\tests\test-questions\test-sections.component.js.map">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\app\tests\test-questions\test-sections.component.ts">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\app\tests\test-questions\test-sections.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.Core\Promact.Trappist.Core.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Repository\Promact.Trappist.Repository.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />

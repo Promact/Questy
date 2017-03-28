@@ -19,6 +19,7 @@
     "gulp-inline-ng2-template": "^4.0.0",
     "gulp-typescript": "^3.1.5",
     "gulp-uglify": "^2.1.0",
+    "md2": "0.0.17",
     "ngx-clipboard": "^3.0.7",
     "run-sequence": "^1.2.2",
     "rxjs": "5.0.1",

@@ -26,9 +26,10 @@
             // other libraries
             'rxjs': 'npm:rxjs',
             'angular2-wizard': 'npm:angular2-wizard/dist/',
-             'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
             'clipboard': 'npm:clipboard/dist/clipboard.js',
-            'ngx-clipboard': 'npm:ngx-clipboard'
+            'ngx-clipboard': 'npm:ngx-clipboard',
+            'md2': 'npm:md2/bundles/md2.umd.js'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -44,7 +45,7 @@
             },
             'ngx-clipboard': {
                 main: 'dist/index.umd.js',
-              //  defaultExtension: 'js'
+                //  defaultExtension: 'js'
             },
             'clipboard': {
                 defaultExtension: 'js'
