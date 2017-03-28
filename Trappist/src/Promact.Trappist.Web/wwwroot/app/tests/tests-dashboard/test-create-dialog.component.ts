@@ -37,7 +37,7 @@ export class TestCreateDialogComponent {
     }
 
     //this method is used to disable the errorMessage
-    changeError() {
+    ChangeError() {
         this.errorMessage = false;
     }
 }
