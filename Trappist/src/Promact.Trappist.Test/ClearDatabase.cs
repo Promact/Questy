@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Promact.Trappist.Test
 {
-    public class ClearDatabase
+    public static class ClearDatabase
     {
         public static void ClearDatabaseAndSeed(TrappistDbContext dbContext)
         {
