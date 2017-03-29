@@ -9,6 +9,7 @@ import { TestSettingsComponent } from "./test-settings/test-settings.component";
 import { TestLaunchDialogComponent } from "./test-settings/test-launch-dialog.component";
 import { TestSectionsComponent } from './test-sections/test-sections.component';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { TestViewComponent } from './test-view/test-view.component';
 import { TestService } from "./tests.service";
 import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
 import { TestSettingService } from "./testsetting.service";
@@ -29,6 +30,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     TestLaunchDialogComponent,
     TestSectionsComponent,
     TestQuestionsComponent,
+    TestViewComponent,
     FilterPipe
 
   ],

@@ -1155,7 +1155,7 @@ footer {
   }
 }
 
-/* Test - Settings */
+/* Test Create Steps */
 .test-create-steps {
   .header-block {
     padding-bottom: 15px;
@@ -1199,6 +1199,17 @@ footer {
         padding-right: 8px;
       }
     }
+
+    .settings-menu {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 10px;
+      cursor: pointer;
+
+      .material-icons:last-child {
+        margin-left: -10px;
+      }
+    }
   }
 
   .form-area {
@@ -1230,6 +1241,7 @@ footer {
     bottom: 0;
     width: $full_size;
     padding: 12px 0;
+    z-index: 99;
 
     .steps {
       list-style: none;
@@ -1305,6 +1317,7 @@ footer {
     .mat-checkbox {
       display: inline-block;
       width: inherit;
+      margin-right: 10px;
 
       .mat-checkbox-layout {
         margin-bottom: 0;
@@ -1322,7 +1335,7 @@ footer {
       h5 {
         display: inline-block;
         vertical-align: middle;
-        margin: 0 15px 0 10px;
+        margin-right: 15px;
       }
 
       .h7 {
@@ -1344,8 +1357,22 @@ footer {
 
       .mat-checkbox {
         vertical-align: top;
-        margin-right: 10px;
       }
+    }
+  }
+
+  .back-link {
+    color: $color_theme;
+    text-decoration: none;
+  }
+
+  .bottom-info {
+    text-align: right;
+
+    span {
+      vertical-align: middle;
+      margin-right: 15px;
+      color: $color_base_secondary;
     }
   }
 }
