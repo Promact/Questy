@@ -11,7 +11,6 @@ namespace Promact.Trappist.Test.Category
     [Collection("Register Dependency")]
     public class CategoryRepositoryTest : BaseTest
     {
-
         private readonly Bootstrap _bootstrap;
         private readonly TrappistDbContext _trappistDbContext;
         private readonly ICategoryRepository _categoryRepository;
@@ -86,7 +85,7 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// This is unit testing method. aim of this method is check a category remove from database or not
+        /// Test method for removing category
         /// </summary>        
         [Fact]
         public async Task DeleteCategory()

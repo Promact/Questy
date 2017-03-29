@@ -16,7 +16,7 @@ export class DeleteCategoryDialogComponent {
     constructor(private categoryService: CategoryService, private dialog: MdDialog) {
     }
 
-    //the removeCategory method of CategoryService is call and perform base on the response.
+    // A method to remove a category from dashboard
     removeCategoryOperation() {
         this.categoryService.removeCategory(this.categoryToDelete.id).subscribe((response: any) => {
             if (response.status === 204) {

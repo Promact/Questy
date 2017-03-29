@@ -68,7 +68,7 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// get the category object to remove a category
+        /// A method to remove category
         /// </summary>
         /// <param name="category"> object of category model</param>
         public async Task RemoveCategoryAsync(Category category)
