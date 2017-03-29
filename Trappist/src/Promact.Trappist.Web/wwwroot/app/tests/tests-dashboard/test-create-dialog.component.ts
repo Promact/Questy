@@ -16,7 +16,7 @@ export class TestCreateDialogComponent {
     responseObj: boolean;
     errorMessage: boolean;
     testNameReference: string;
-    public test: Test = new Test()
+    test: Test = new Test()
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService) {
     }
     /**
