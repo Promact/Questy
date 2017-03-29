@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.BasicSetup;
 
 namespace Promact.Trappist.Web.Controllers
@@ -17,7 +18,7 @@ namespace Promact.Trappist.Web.Controllers
             _basicSetup = basicSetup;
         }
         #endregion
-
+        [Authorize]
         public IActionResult Index()
         {
             if (_basicSetup.IsFirstTimeUser())
@@ -31,6 +32,7 @@ namespace Promact.Trappist.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Setup()
         {
             if (_basicSetup.IsFirstTimeUser())

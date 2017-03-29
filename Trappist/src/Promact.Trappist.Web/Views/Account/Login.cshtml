@@ -16,16 +16,20 @@
         <div class="error-msg">@ViewBag.Error</div>
         <div class="form-group">
             <input asp-for="Email" class="form-control" placeholder="Email" autocomplete="off" required="" />
-            <span asp-validation-for="Email" class="error-msg"></span>
+            <div class="errors-container">
+                <span asp-validation-for="Email" class="error-msg"></span>
+            </div>
         </div>
 
         <div class="form-group">
-            <input asp-for="Password" class="form-control" placeholder="Password" autocomplete="off" required="" />
-
+            <input asp-for="Password" class="form-control" placeholder="Password" autocomplete="off" required="" onpaste="return false;" />
+            <div class="errors-container">
+                <span asp-validation-for="Password" class="error-msg"></span>
+            </div>
         </div>
         <div class="actions-area">
             <button type="submit" class="btn btn-primary">Sign In</button>
-            <a href="">Forgot Password?</a>
+            <a asp-action="ForgotPassword">Forgot Password?</a>
         </div>
     </form>
 </div>

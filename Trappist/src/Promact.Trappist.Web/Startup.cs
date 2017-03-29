@@ -51,28 +51,32 @@ namespace Promact.Trappist.Web
         {
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
-            //setup classes to access connectionstring
-            services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
-            //setup classes to access emailsettings
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSetting"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
-            services.AddMvc( ).AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddDirectoryBrowser();
+
+            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
+
+            #region Dependencies
             services.AddScoped<IQuestionRespository, QuestionRepository>();
-            services.AddMvc();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IStringConstants, StringConstants>();
-            services.AddDirectoryBrowser();
-            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
-            services.AddScoped<IAccountRepository, AccountRepository>();       
+            #endregion
+
+            #region "options configuration"
+            services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
+            #endregion
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString)
