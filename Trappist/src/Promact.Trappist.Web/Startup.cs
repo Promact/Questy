@@ -18,6 +18,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Repository.TestSettings;
@@ -71,6 +72,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
             #endregion
 
             #region "options configuration"

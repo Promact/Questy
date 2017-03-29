@@ -13,4 +13,12 @@ export class AppComponent {
     constructor(private http: Http) {
 
     }
+
+    /**
+     * user is logged out and redirected to login page
+     */
+    logOff() {
+        let logoutForm = <HTMLFormElement>document.getElementById('logoutForm');
+        logoutForm.submit();
+    }
 }
