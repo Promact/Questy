@@ -12,7 +12,7 @@ import { MdSnackBar } from '@angular/material';
 export class ChangePasswordDialogComponent {
     constructor(public profileService: ProfileService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) { }
     user: ChangePasswordModel = new ChangePasswordModel();
-    isPasswordSame: boolean;
+    isPasswordSame: boolean = true;
     response: any;
     errorMesseage: any;
     errorCorrection: boolean = true;
@@ -40,5 +40,9 @@ export class ChangePasswordDialogComponent {
         else {
             this.isPasswordSame = false;
         }
+    }
+    changeCurrentPassword() {
+        this.isPasswordSame = true;
+        this.errorCorrection = false;
     }
 }
