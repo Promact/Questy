@@ -46,7 +46,7 @@ namespace Promact.Trappist.Core.Controllers
             if (ModelState.IsValid)
             {
                 _profileRepository.UpdateUserProfile(updateUserDetails);
-                return Ok();
+                return Ok(updateUserDetails);
             }
             return BadRequest();
         }
