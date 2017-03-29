@@ -45,7 +45,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             if (!string.IsNullOrEmpty(_connectionString.Value))
-                optionBuilder.UseSqlServer(_connectionString.Value);
+                optionBuilder.UseSqlServer(_connectionString.Value,x=>x.MigrationsAssembly("Promact.Trappist.Web"));
             base.OnConfiguring(optionBuilder);
         }
         #endregion
