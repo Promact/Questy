@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Profile;
+using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
@@ -14,13 +15,13 @@ namespace Promact.Trappist.Core.Controllers
     {
         private readonly IProfileRepository _profileRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IStringConstants _stringConstant;
 
-        public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager, IStringConstants stringConstant)
         {
             _profileRepository = profileRepository;
             _signInManager = signInManager;
-            _userManager = userManager;
+            _stringConstant = stringConstant;
         }
 
         /// <summary>
@@ -61,12 +62,16 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("error", "Enter details Correctly");
+                ModelState.AddModelError("error", _stringConstant.InvalidPasswordFormatError);
                 return BadRequest(ModelState);
             }
-            var user = await _userManager.GetUserAsync(User);
-            model.Email = user.Email;
-            return Ok(await _profileRepository.UpdateUserPasswordAsync(model));
+            var result=await _profileRepository.UpdateUserPasswordAsync(User.Identity.Name,model);
+            if (!result)
+            {
+                ModelState.AddModelError("error", _stringConstant.InvalidOldPasswordError);
+                return BadRequest(ModelState);
+            }
+            return Ok(result);
         }
 
         /// <summary>

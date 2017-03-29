@@ -69,5 +69,22 @@
             }
         }
         #endregion
+
+        #region Profile Constants
+        public string InvalidOldPasswordError
+        {
+            get
+            {
+                return "Your current password is wrong";
+            }
+        }
+        public string InvalidPasswordFormatError
+        {
+            get
+            {
+                return "Password must be alphanumeric including at least 1 uppercase letter and a special character";
+            }
+        }
+        #endregion
     }
 }
