@@ -58,7 +58,7 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Add codeSnippet part of question
-                codeSnippetQuestion.QuestionId = question.Entity.Id;
+                codeSnippetQuestion.Id = question.Entity.Id;
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
 
