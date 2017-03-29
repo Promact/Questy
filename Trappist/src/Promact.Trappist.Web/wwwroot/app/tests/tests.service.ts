@@ -4,9 +4,8 @@ import { HttpService } from '../core/http.service';
 @Injectable()
 
 export class TestService {
-
-    private testsApiUrl = 'api/tests';
-
+    private testApiUrl = 'api/tests';
+    private testNameApiUrl = 'api/tests/isUnique';
     constructor(private httpService: HttpService) {
     }
     /**
@@ -27,7 +26,7 @@ export class TestService {
      * get response whether test name is unique or not
      * @param testName is name of the test
      */
-    getTest(testName: string) {
-        return this.httpService.get(this.testApiUrl + '/' + testName);
+    getTestName(testName: string) {
+        return this.httpService.get(this.testNameApiUrl + '/' + testName);
     }
 }

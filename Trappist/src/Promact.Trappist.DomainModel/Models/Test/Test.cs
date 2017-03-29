@@ -13,7 +13,7 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public string Link { get; set; }
         public int BrowserTolerance { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime EndDate { get; set; }
         public int Duration { get; set; }
         public int WarningTime { get; set; }
         public string FromIpAddress { get; set; }
