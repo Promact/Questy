@@ -6,6 +6,7 @@ import { TestsDashboardComponent } from './tests-dashboard/tests-dashboard.compo
 import { TestSettingsComponent } from './test-settings/test-settings.component';
 import { TestSectionsComponent } from './test-sections/test-sections.component';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { TestViewComponent } from './test-view/test-view.component';
 
 const testsRoutes: Routes = [
   {
@@ -15,7 +16,8 @@ const testsRoutes: Routes = [
       { path: '', component: TestsDashboardComponent },
       { path: 'settings/:id', component: TestSettingsComponent },
       { path: 'sections', component: TestSectionsComponent },
-      { path: 'questions', component: TestQuestionsComponent }
+      { path: 'questions', component: TestQuestionsComponent },
+      { path: 'view', component: TestViewComponent }
     ]
   }
 ];
