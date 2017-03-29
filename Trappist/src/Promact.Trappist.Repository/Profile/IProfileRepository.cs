@@ -23,8 +23,9 @@ namespace Promact.Trappist.Repository.Profile
         /// <summary>
         /// changes User Password
         /// </summary>
-        /// <param name="model">takes parameter of type ChangePasswordModel</param>
+        /// <param name="name">stores the name of the current user</param>
+        /// <param name="model">take parameter of type ChangePasswordModel which has the new password of the user</param>
         /// <returns>save new password of the user in the database</returns>
-        Task<ApplicationUser> UpdateUserPasswordAsync(ChangePasswordModel model);
+        Task<bool> UpdateUserPasswordAsync(string name,ChangePasswordModel model);
     }
 }

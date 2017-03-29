@@ -36,7 +36,19 @@
         /// <summary>
         /// property InvalidEmailError is used when emailid does not match with databse id
         /// </summary>
-        string InvalidEmailError { get; }       
+        string InvalidEmailError { get; }
+        #endregion
+
+        #region Profile Constants
+        /// <summary>
+        /// property is used when the old passowrd given by the user doesnot match with the password in the database
+        /// </summary>
+        string InvalidOldPasswordError { get; }
+
+        /// <summary>
+        /// property is used when the format of the password is wrong
+        /// </summary>
+        string InvalidPasswordFormatError { get; }
         #endregion
     }
 }
