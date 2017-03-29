@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,9 +12,10 @@ using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Seed;
-using Promact.Trappist.Repository.Account;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
@@ -136,8 +138,6 @@ namespace Promact.Trappist.Web
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionApplicationClass>();
-                cfg.CreateMap<CodeSnippetQuestion, SingleMultipleAnswerQuestionApplicationClass>();
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
             });
             #endregion
