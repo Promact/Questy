@@ -61,6 +61,13 @@
                 return "Invalid Login Attempt!";
             }
         }
+        public string InvalidEmailError
+        {
+            get
+            {
+                return "Incorrect Input! Please Enter Proper Email Id";
+            }
+        }
         #endregion
     }
 }

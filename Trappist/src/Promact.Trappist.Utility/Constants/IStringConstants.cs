@@ -28,11 +28,15 @@
         /// <summary>
         /// property InavalidLoginError is used when input credentials are not matched with database at the time of login
         /// </summary>
-        string InavalidLoginError { get;  }
+        string InavalidLoginError { get; }
         /// <summary>
         /// property InavalidLoginError is used when model state and model binding are not proper
         /// </summary>
-        string InavalidModelError { get;  }
+        string InavalidModelError { get; }
+        /// <summary>
+        /// property InvalidEmailError is used when emailid does not match with databse id
+        /// </summary>
+        string InvalidEmailError { get; }       
         #endregion
     }
 }
