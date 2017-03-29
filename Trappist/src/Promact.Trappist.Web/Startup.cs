@@ -51,9 +51,12 @@ namespace Promact.Trappist.Web
         {
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddDirectoryBrowser();
             services.AddMvc( ).AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
