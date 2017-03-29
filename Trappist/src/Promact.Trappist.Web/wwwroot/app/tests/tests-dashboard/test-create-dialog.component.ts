@@ -25,7 +25,7 @@ export class TestCreateDialogComponent {
      */
     AddTest(testNameRef: string) {
         this.test.testName = testNameRef;
-        this.testService.getTestName(this.test.testName).subscribe((response) => {
+        this.testService.getTestNameCheck(this.test.testName).subscribe((response) => {
             this.responseObj = response;
             if (!this.responseObj) {
                 this.testService.addTests('api/tests', this.test).subscribe((responses) => {
