@@ -2,8 +2,8 @@
   "EmailSettings": {
     "Server": "webmail.promactinfo.com",
     "Port": 587,
-    "UserName": "suparna@promactinfo.com",
-    "Password": "6UBracHAju",
+    "UserName": "",
+    "Password": "",
     "ConnectionSecurityOption": "None"
   },
   "ConnectionString": {
