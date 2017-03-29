@@ -14,7 +14,8 @@
                         <div class="form-group">
                             <label class="h4">Connection String</label>
                             <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" />
-                            <p class="help-text">format help: server="servername";database="databasename";integrated security="true"</p>
+                            <p class="help-text">format 1: server=servername;database=databasename;integrated security=true</p>
+                            <p class="help-text">format 2: server="servername";database="databasename";user id=user id;password=password</p>
                         </div>
                         <div class="action-buttons">
                             <button type="button" class="btn btn-primary" (click)="validateConnectionString(setup)">Next</button>

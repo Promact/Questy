@@ -18,13 +18,14 @@ namespace Promact.Trappist.Web.Controllers
             _basicSetup = basicSetup;
         }
         #endregion
+
         [Authorize]
         public IActionResult Index()
         {
             if (_basicSetup.IsFirstTimeUser())
-                return View();
-            else
                 return RedirectToAction(nameof(HomeController.Setup), "Home");
+            else
+                return View();
         }
 
         public IActionResult Error()
@@ -35,7 +36,7 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public IActionResult Setup()
         {
-            if (_basicSetup.IsFirstTimeUser())
+            if (!_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             else
                 return View();

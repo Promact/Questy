@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Account;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Web.Controllers;
@@ -11,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
         private readonly IStringConstants _stringConstant;
@@ -19,14 +19,16 @@ namespace Promact.Trappist.Core.Controllers
         private readonly IEmailService _emailService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly EmailSettings _emailSettings;
+        private readonly IBasicSetupRepository _basicSetupRepository;
 
-        public AccountController(IStringConstants stringConstant, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService,EmailSettings emailSettings)
+        public AccountController(IStringConstants stringConstant, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService, EmailSettings emailSettings, IBasicSetupRepository basicSetupRepository)
         {
             _stringConstant = stringConstant;
             _userManager = userManager;
             _emailService = emailService;
             _signInManager = signInManager;
             _emailSettings = emailSettings;
+            _basicSetupRepository = basicSetupRepository;
         }
 
         /// <summary>
@@ -37,6 +39,10 @@ namespace Promact.Trappist.Core.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
+            //-added by roshni
+            if (_basicSetupRepository.IsFirstTimeUser())
+                return RedirectToAction(nameof(HomeController.Setup), "Home");
+
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -117,8 +123,8 @@ namespace Promact.Trappist.Core.Controllers
                 }
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName, 
-                     body: $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>", 
+                await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName,
+                     body: $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>",
                     subject: "Reset Password");
                 return View("ForgotPasswordConfirmation");
             }

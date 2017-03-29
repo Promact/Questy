@@ -70,13 +70,14 @@ namespace Promact.Trappist.Repository.BasicSetup
         {
             try
             {
-                _trappistDbContext.Database.EnsureCreated();
-                _trappistDbContext.Database.Migrate();
-                _trappistDbContext.Seed();
+                _trappistDbContext.Database.EnsureDeleted(); //delete if already there -added by roshni
+                _trappistDbContext.Database.EnsureCreated(); //create database -added by roshni
+                _trappistDbContext.Seed(); //seed -added by roshni
+
                 var result = await _userManager.CreateAsync(user, password);
                 return result.Succeeded;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -150,7 +151,7 @@ namespace Promact.Trappist.Repository.BasicSetup
 
         public bool IsFirstTimeUser()
         {
-            return !string.IsNullOrWhiteSpace(_connectionString.Value);
+            return string.IsNullOrWhiteSpace(_connectionString.Value);
         }
 
         /// <summary>
