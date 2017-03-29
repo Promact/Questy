@@ -16,7 +16,8 @@ export class TestCreateDialogComponent {
     responseObj: boolean;
     errorMessage: boolean;
     testNameReference: string;
-    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, public test: Test = new Test()) {
+    public test: Test = new Test()
+    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService) {
     }
     /**
      * this method is used to add a new test
@@ -24,7 +25,7 @@ export class TestCreateDialogComponent {
      */
     AddTest(testNameRef: string) {
         this.test.testName = testNameRef;
-        this.testService.getTest(this.test.testName).subscribe((response) => {
+        this.testService.getTestName(this.test.testName).subscribe((response) => {
             this.responseObj = response;
             if (!this.responseObj) {
                 this.testService.addTests('api/tests', this.test).subscribe((responses) => {
