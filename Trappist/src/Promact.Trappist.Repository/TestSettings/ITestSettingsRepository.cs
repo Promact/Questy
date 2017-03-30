@@ -19,5 +19,12 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <param name="testACObject">The parameter "testACObject" is an object of TestSettingsAC</param>
         /// <returns>Updated Settings of that Test</returns>
         Task<string> UpdateTestSettingsAsync(TestSettingsAC testACObject);
+
+        /// <summary>
+        /// Checks if the Test Settings Exists or not
+        /// </summary>
+        /// <param name="id">The parameter "id" is taken from the route</param>
+        /// <returns>A bool value based on the condition is satisfied or not</returns>
+        Task<bool> TestSettingsExists(int id);
     }
 }

@@ -50,5 +50,15 @@ namespace Promact.Trappist.Repository.TestSettings
             else
                 return null;
         }
+
+        /// <summary>
+        /// Checks if the Test Settings Exists or not
+        /// </summary>
+        /// <param name="id">The parameter "id" is taken from the route</param>
+        /// <returns>A bool value based on the condition is satisfied or not</returns>
+        public async Task<bool> TestSettingsExists(int id)
+        {
+            return await _dbContext.Test.AnyAsync(check => check.Id != id);
+        }
     }
 }
