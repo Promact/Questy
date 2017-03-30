@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
+import { Observable } from 'rxjs';
 @Component({
     moduleId: module.id,
     selector: 'questions-multiple-answers',
@@ -58,7 +59,7 @@ export class QuestionsMultipleAnswersComponent {
      */
     removeOption(optionIndex: number) {
         this.multipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.splice(optionIndex,1);
-        this.noOfOptionShown = this.noOfOptionShown - 1;
+        this.noOfOptionShown--;
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
@@ -74,12 +75,14 @@ export class QuestionsMultipleAnswersComponent {
 
             }
         });
+        this.questionService.addSingleAnswerQuestion(multipleAnswerQuestion).catch((error: any) => {
+                return Observable.throw(new Error(error.status));
+        });
         let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
             duration: 3000,
         });
         snackBarRef.afterDismissed().subscribe(() => {
             this.router.navigate(['/questions']);
-
         });     
     }
 
@@ -88,6 +91,6 @@ export class QuestionsMultipleAnswersComponent {
     * @param category
     */
     getCategoryId() {
-        this.multipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName).id;
+        this.multipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName && x.categoryName !== null).id;
     }
 }

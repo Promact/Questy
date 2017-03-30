@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Question;
@@ -34,6 +35,7 @@ namespace Promact.Trappist.Repository.Questions
         public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+            var singleMultipleQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC,SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
             question.CreatedBy = "Admin";
 
             using (var transaction = _dbContext.Database.BeginTransaction())
@@ -42,17 +44,9 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.Question.AddAsync(question);
                 await _dbContext.SaveChangesAsync();
 
-                //Add single/multiple question 
-                questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestion.Id = question.Id;
-                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestion);
-                await _dbContext.SaveChangesAsync();
-
-                //Add single/multiple answer question option 
-                foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption)
-                {
-                    singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = question.Id;
-                    await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(singleMultipleAnswerQuestionOptionElement);
-                }
+                //Add single/multiple question and option
+                singleMultipleQuestion.Id = question.Id;
+                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleQuestion);
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }            

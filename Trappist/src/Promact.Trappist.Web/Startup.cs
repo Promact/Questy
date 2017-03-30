@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
@@ -26,6 +27,7 @@ using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -146,6 +148,8 @@ namespace Promact.Trappist.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC,List<SingleMultipleAnswerQuestionOption>>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
             });
             #endregion

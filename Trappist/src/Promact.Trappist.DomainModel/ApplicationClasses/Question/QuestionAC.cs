@@ -1,5 +1,4 @@
 ﻿using Promact.Trappist.DomainModel.Models.Question;
-
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class QuestionAC
