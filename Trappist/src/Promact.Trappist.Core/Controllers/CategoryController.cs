@@ -78,7 +78,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Delete API to Remove category
+        /// Delete API to Remove a category
         ///</summary>
         /// <param name="categoryId">Id of category</param>        
         [HttpDelete("{categoryId}")]
