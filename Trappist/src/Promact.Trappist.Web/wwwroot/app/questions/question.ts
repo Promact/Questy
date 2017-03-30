@@ -5,7 +5,7 @@ import { CodeSnippetAC } from './code-snippet';
 export class QuestionBase {
     question: Question;
     singleMultipleAnswerQuestion: SingleMultipleQuestion;
-    codeSnippetQuestion: CodeSnippetAC = null;
+    codeSnippetQuestion: CodeSnippetAC;
     constructor() {
         this.question = new Question();
         this.singleMultipleAnswerQuestion = new SingleMultipleQuestion();
