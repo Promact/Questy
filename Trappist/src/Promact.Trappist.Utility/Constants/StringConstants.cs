@@ -46,7 +46,7 @@
 
         #region "Account Constants"
 
-        public string InavalidLoginError
+        public string InvalidLoginError
         {
             get
             {
@@ -54,7 +54,7 @@
             }
         }
 
-        public string InavalidModelError
+        public string InvalidModelError
         {
             get
             {

@@ -26,13 +26,13 @@
 
         #region "Account Constants"
         /// <summary>
-        /// property InavalidLoginError is used when input credentials are not matched with database at the time of login
+        /// property InvalidLoginError is used when input credentials are not matched with database at the time of login
         /// </summary>
-        string InavalidLoginError { get; }
+        string InvalidLoginError { get; }
         /// <summary>
-        /// property InavalidLoginError is used when model state and model binding are not proper
+        /// property InvalidLoginError is used when model state and model binding are not proper
         /// </summary>
-        string InavalidModelError { get; }
+        string InvalidModelError { get; }
         /// <summary>
         /// property InvalidEmailError is used when emailid does not match with databse id
         /// </summary>
