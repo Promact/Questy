@@ -111,7 +111,7 @@ h6, .h6 {
     color: $color_white;
     font-weight: 400;
 
-    &:active:hover, &:active:focus {
+    &:active:hover, &:active:focus, &[disabled]:hover {
       background-color: $color_theme;
       border-color: $color_theme;
     }
@@ -149,22 +149,28 @@ h6, .h6 {
       width: 220px;
     }
   }
+}
 
-  .errors-container {
-    display: inline-block;
-    vertical-align: top;
-    min-height: 20px;
-    min-width: 1px;
+.errors-container {
+  display: inline-block;
+  vertical-align: top;
+  min-height: 20px;
+  min-width: 1px;
 
-    .error-msg {
-      display: block;
-      color: $color_red;
-      font-size: 11px;
-      line-height: 14px;
-      font-weight: 600;
-      padding-top: 5px;
-    }
+  .error-msg {
+    display: block;
+    color: $color_red;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 600;
+    padding-top: 5px;
   }
+}
+
+.general-error-msg {
+  font-weight: 700;
+  color: $color_red;
+  margin-top: 8px;
 }
 
 .cdk-overlay-pane {
@@ -248,7 +254,7 @@ h6, .h6 {
         width: 50px;
         height: 50px;
         border-width: 6px;
-        top: 36%;
+        margin-top: -25px;
       }
     }
   }
@@ -492,7 +498,7 @@ footer {
 }
 
 .loader-container {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -509,9 +515,10 @@ footer {
     border-radius: 50%;
     margin: 0 auto;
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 0px;
     right: 0px;
+    margin-top: -34px;
   }
 
   &.main-loader {
@@ -519,9 +526,10 @@ footer {
 
     .loader-block {
       position: absolute;
-      top: 35%;
+      top: 50%;
       width: 100%;
       text-align: center;
+      margin-top: -38px;
 
       .spinner {
         position: static;
@@ -547,14 +555,10 @@ footer {
 /* Before Login Layout */
 .before-login-layout {
   .content-container {
-    height: 100vh;
-    padding-bottom: 80px;
+    padding: 80px 0;
     background-color: $color_bg;
 
     .content-box {
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
       text-align: center;
       width: 600px;
       margin: 0 auto;
@@ -574,6 +578,7 @@ footer {
 
         form {
           padding: 36px 20px;
+          position: relative;
 
           .actions-area {
             .btn {
@@ -584,7 +589,6 @@ footer {
 
             a {
               color: $color_theme;
-              line-height: 19px;
             }
           }
         }
@@ -605,17 +609,17 @@ footer {
     }
   }
 
-  footer {
-    position: fixed;
-    bottom: 0;
+  .general-error-msg {
+    position: absolute;
+    top: 0;
     left: 0;
     right: 0;
   }
-}
 
-/* Forgot Password */
-.before-login-layout .content-container .content-box .form-area.frgt-pswd form .actions-area a {
-  line-height: 18px;
+  .errors-container {
+    display: block;
+    text-align: left;
+  }
 }
 
 /* User Profile */
@@ -1081,6 +1085,7 @@ footer {
                 background-color: $color_white;
                 margin: auto;
                 position: static;
+                pointer-events: none;
 
                 &:before, &:after {
                   display: block;

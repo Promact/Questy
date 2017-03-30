@@ -14,12 +14,14 @@
                         <div class="form-group">
                             <label class="h4">Connection String</label>
                             <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" />
-                            <p class="help-text">format 1: server=servername;database=databasename;integrated security=true</p>
-                            <p class="help-text">format 2: server="servername";database="databasename";user id=user id;password=password</p>
+                            <div class="errors-container">
+                                <span class="error-msg" *ngIf="errorMessage">Invalid ConnectionString</span>
+                            </div>
                         </div>
+                        <p class="help-text">format 1: server=servername;database=databasename;integrated security=true</p>
+                        <p class="help-text">format 2: server=servername;database=databasename;user id=user id;password=password</p>
                         <div class="action-buttons">
                             <button type="button" class="btn btn-primary" (click)="validateConnectionString(setup)">Next</button>
-                            <span class="error-msg" *ngIf="errorMessage">Invalid ConnectionString</span>
                         </div>
                     </form>
                 </wizard-step>
@@ -29,33 +31,42 @@
                         <div class="form-group">
                             <label class="h4">Server Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.server" name="nameOfServer" #nameOfServer="ngModel" />
-                            <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Port</label>
                             <input required type="number" class="form-control" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
-                            <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">User Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersEmailAddress" #usersEmailAddress="ngModel" />
-                            <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Password</label>
                             <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userMailPassword" #userMailPassword="ngModel" />
-                            <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Connection Security</label>
-                            <select class="from-control" [(ngModel)]="emailSettings.connectionSecurityOption" name="connectionSecurity">
+                            <select class="form-control" [(ngModel)]="emailSettings.connectionSecurityOption" name="connectionSecurity">
                                 <option value="None">None</option>
                                 <option value="SslOnConnect">SSL/TLS</option>
                                 <option value="StartTls">STARTTLS</option>
-                            </select><br />
-                            <span class="error-msg" *ngIf="errorMessage">Invalid EmailSettings</span>
+                            </select>
+                            <div class="errors-container"></div>
                         </div>
                         <div class="action-buttons">
+                            <span class="general-error-msg pull-left" *ngIf="errorMessage">Invalid Email Settings</span>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button><br />
                         </div>
@@ -67,31 +78,39 @@
                         <div class="form-group">
                             <label class="h4">Name</label>
                             <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="registrationFields.name" name="usersName" #usersName="ngModel" maxlength="150" />
-                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
-                            <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
+                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Email/User Name</label>
                             <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="text" class="form-control" [(ngModel)]="registrationFields.email" name="userEmail" #userEmail="ngModel" maxlength="255" />
-                            <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
-                            <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
+                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Password</label>
                             <input required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,14}$" type="password" class="form-control"
                                    [(ngModel)]="registrationFields.password" name="userPassword" #userPassword="ngModel" />
-                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Invalid Password</span>
-                            <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                            <div class="errors-container">
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Invalid Password</span>
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Confirm Password</label>
                             <input required type="password" class="form-control" [(ngModel)]="registrationFields.confirmPassword"
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
-                            <span class="error-msg" *ngIf="errorMessage && errorMessage.touched">Invalid User Credential</span>
-                            <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">*required</span><br />
-                            <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">Password and ConfirmPassword mismatched</span>
+                            <div class="errors-container">
+                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">*required</span>
+                                <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">Password and ConfirmPassword mismatched</span>
+                            </div>
                         </div>
                         <div class="action-buttons">
+                            <span class="general-error-msg" *ngIf="errorMessage && errorMessage.touched">Invalid User Credentials</span>
                             <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
                         </div>

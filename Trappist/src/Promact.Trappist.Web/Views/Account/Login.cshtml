@@ -13,7 +13,7 @@
     </div>
 
     <form asp-controller="Account" asp-action="Login" method="post">
-        <div class="error-msg">@ViewBag.Error</div>
+        <span class="general-error-msg">@ViewBag.Error</span>
         <div class="form-group">
             <input asp-for="Email" class="form-control" placeholder="Email" autocomplete="off" required="" />
             <div class="errors-container">
