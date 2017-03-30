@@ -2,8 +2,12 @@
 import { SingleMultipleQuestion } from './single-multiple-question';
 import { CodeSnippetAC } from './code-snippet';
 
-export class Questions {
-    question: Question = new Question();
-    singleMultipleAnswerQuestionAC: SingleMultipleQuestion = new SingleMultipleQuestion();
+export class QuestionBase {
+    question: Question;
+    singleMultipleAnswerQuestion: SingleMultipleQuestion;
     codeSnippetQuestion: CodeSnippetAC = null;
+    constructor() {
+        this.question = new Question();
+        this.singleMultipleAnswerQuestion = new SingleMultipleQuestion();
+    }
 }

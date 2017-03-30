@@ -12,7 +12,7 @@
                     <span *ngIf="question.invalid && question.touched" class="alert-danger">Question field is required</span>
                 </div>
                 <div class="form-group answer-choices">
-                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
+                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
                         <md-radio-button  value="{{i}}" [disabled]="choice.pristine">
                             <input type="text" class="form-control" placeholder="Answer Choice" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required/>
                             <i class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</i><br />
@@ -23,7 +23,7 @@
                 </div>
                 <div class="form-fields">
                     <div class="form-group col-md-4 col-sm-4 pl0">
-                        <select class="form-control" [(ngModel)]="singleAnswerQuestion.question.category.categoryName" [ngModelOptions]="{standalone: true}" id="category" #category="ngModel">
+                        <select class="form-control" [(ngModel)]="categoryName" (change)="getCategoryId()" id="category" #category="ngModel" [ngModelOptions]="{standalone: true}">
                             <option [disabled]="category.dirty">Select Category</option>
                             <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
@@ -38,7 +38,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="singleAnswerQuestionForm.invalid || category.pristine || difficulty.pristine">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="singleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
             </div>
         </form>
 

@@ -2,7 +2,7 @@
 import { MdSnackBar } from '@angular/material';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
-import { Questions } from '../question';
+import { QuestionBase } from '../question';
 import { Router } from '@angular/router';
 import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
@@ -15,21 +15,24 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 
 export class QuestionsSingleAnswerComponent {
     value: number;
-    noOfOptionShown: number = 4;
-    isClose: boolean = false;
-    categoryArray: Category[] = new Array<Category>();
-    difficultyLevel: string[] = new Array<string>();
-    singleAnswerQuestion: Questions;
+    categoryName: string;
+    noOfOptionShown: number;
+    isClose: boolean;
+    categoryArray: Category[];
+    difficultyLevel: string[];
+    singleAnswerQuestion: QuestionBase;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {          
-            this.getAllCategories();        
-            this.singleAnswerQuestion = new Questions();
+            this.getAllCategories();
+            this.noOfOptionShown = 4;
+            this.isClose = false;
+            this.categoryArray = new Array<Category>();
+            this.singleAnswerQuestion = new QuestionBase();
             this.singleAnswerQuestion.question.questionType = 0;
             this.difficultyLevel = ['Easy', 'Medium', 'Hard'];
             this.singleAnswerQuestion.question.difficultyLevel = 0;
-            this.singleAnswerQuestion.question.createdBy = 'Admin';
             for (let i = 0; i < this.noOfOptionShown; i++) {
-                this.singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
-                this.singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[i].isAnswer = false;
+                this.singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
+                this.singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].isAnswer = false;
             }         
     }
 
@@ -52,8 +55,8 @@ export class QuestionsSingleAnswerComponent {
     /**
      * Remove option from display page
      */
-    removeOption(optionIndex: number){
-        this.singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption.splice(optionIndex,1);
+    removeOption(optionIndex: number) {
+        this.singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.splice(optionIndex,1);
         this.noOfOptionShown = this.noOfOptionShown - 1;
         if (this.noOfOptionShown === 2) {
             this.isClose= true;
@@ -64,8 +67,8 @@ export class QuestionsSingleAnswerComponent {
      * Added single answer question and redirect to question dashboard page
      * @param singleAnswerQuestion
      */
-    singleQuestionAnswerAdd(singleAnswerQuestion: Questions) {
-            singleAnswerQuestion.singleMultipleAnswerQuestionAC.singleMultipleAnswerQuestionOption[this.value].isAnswer = true;
+    singleQuestionAnswerAdd(singleAnswerQuestion: QuestionBase) {
+            singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.value].isAnswer = true;
             this.questionService.addSingleAnswerQuestion(singleAnswerQuestion).subscribe((response) => {
                 if (response.ok) {
 
@@ -77,5 +80,13 @@ export class QuestionsSingleAnswerComponent {
             snackBarRef.afterDismissed().subscribe(() => {
                 this.router.navigate(['/questions']);
             });
+    }
+
+    /**
+    * Get category id base on category name
+    * @param category
+    */
+    getCategoryId() {
+        this.singleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName).id;
     }
  }
