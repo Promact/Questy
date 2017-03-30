@@ -1,7 +1,7 @@
 ﻿import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { QuestionsComponent } from "./questions.component";
+import { QuestionsComponent } from './questions.component';
 import { QuestionsDashboardComponent } from './questions-dashboard/questions-dashboard.component';
 import { QuestionsSingleAnswerComponent } from './questions-single-answer/questions-single-answer.component';
 import { QuestionsMultipleAnswersComponent } from './questions-multiple-answers/questions-multiple-answers.component';
