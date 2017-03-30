@@ -2,7 +2,7 @@
 import { QuestionType } from './enum-questiontype';
 import { Category } from './category.model';
 import { SingleMultipleAnswerQuestionOption } from './single-multiple-answer-question-option.model';
-import { SingleMultipleAnswerQuestion } from './single-mutiple-answer-question.model';
+import { SingleMultipleAnswerQuestion } from './single-multiple-answer-question.model';
 
 export class SingleMultipleQuestion {
     singleMultipleAnswerQuestion: SingleMultipleAnswerQuestion;
