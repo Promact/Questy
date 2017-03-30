@@ -10,6 +10,7 @@ namespace Promact.Trappist.Core.Controllers
     {
         private readonly ITestSettingsRepository _settingsRepository;
 
+
         public TestSettingsController(ITestSettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
@@ -24,7 +25,12 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> GetTestSettings([FromRoute] int id)
         {
             var settings = await _settingsRepository.GetTestSettingsAsync(id);
-            return Ok(settings);
+            if (settings == null)
+            {
+                return NotFound();
+            }
+            else
+                return Ok(settings);
         }
 
         /// <summary>

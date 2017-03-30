@@ -12,13 +12,13 @@ import { TestLaunchDialogComponent } from './test-launch-dialog.component';
 })
 
 export class TestSettingsComponent implements OnInit {
-    testsettings: Test = new Test();
+    testsettings: Test;
     testId: number;
-    validEndDate: boolean = false;
+    validEndDate: boolean;
     endDate: string;
-    validTime: boolean = false;
-    validStartDate: boolean = false;
-    currentDate = new Date();
+    validTime: boolean;
+    validStartDate: boolean;
+    currentDate: Date;
     editName: string;
 
     /**
@@ -27,7 +27,13 @@ export class TestSettingsComponent implements OnInit {
      * @param testSettingService is used to get the Url from the testsettings.service file
      * @param route is used to take the value of Id from the active route
      */
-    constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute) { }
+    constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute) {
+        this.testsettings = new Test();
+        this.validEndDate = false;
+        this.validTime = false;
+        this.validStartDate = false;
+        this.currentDate = new Date();
+    }
 
     /**
      * Gets the Id of the Test from the route and fills the Settings saved for the selected Test in their respective fields

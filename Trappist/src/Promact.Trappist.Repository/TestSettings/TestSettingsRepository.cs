@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestSettings
@@ -26,12 +27,8 @@ namespace Promact.Trappist.Repository.TestSettings
         public async Task<string> UpdateTestSettingsAsync(TestSettingsAC testACObject)
         {
             Test settings = Mapper.Map<TestSettingsAC, Test>(testACObject);
-            using (var transaction = _dbContext.Database.BeginTransaction())
-            {
-                _dbContext.Test.Update(settings);
-                await _dbContext.SaveChangesAsync();
-                transaction.Commit();
-            }
+            _dbContext.Test.Update(settings);
+            await _dbContext.SaveChangesAsync();
             return "Data Updated";
         }
 
@@ -44,9 +41,14 @@ namespace Promact.Trappist.Repository.TestSettings
         {
             string currentDate = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
-            testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate;
-            testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate;
-            return testSettings;
+            if (testSettings != null)
+            {
+                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate;
+                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate;
+                return testSettings;
+            }
+            else
+                return null;
         }
     }
 }
