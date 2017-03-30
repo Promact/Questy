@@ -10,7 +10,6 @@ export class FilterPipe implements PipeTransform {
 
         if (!searchedTest || !searchedTest.trim())
             return allTests;
-        console.log(searchedTest);
         return allTests.filter(function (currentTest: Test) {
             let searchedTestLower = searchedTest.toLowerCase();
             let currentTestName = currentTest.testName.toLowerCase();
