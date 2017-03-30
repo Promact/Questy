@@ -24,12 +24,11 @@ namespace Promact.Trappist.Repository.TestSettings
         /// </summary>
         /// <param name="testACObject">The parameter "testACObject" is an object of TestSettingsAC</param>
         /// <returns>Updated Settings of that Test</returns>
-        public async Task<string> UpdateTestSettingsAsync(TestSettingsAC testACObject)
+        public async Task UpdateTestSettingsAsync(TestSettingsAC testACObject)
         {
             Test settings = Mapper.Map<TestSettingsAC, Test>(testACObject);
             _dbContext.Test.Update(settings);
             await _dbContext.SaveChangesAsync();
-            return "Data Updated";
         }
 
         /// <summary>
@@ -43,8 +42,8 @@ namespace Promact.Trappist.Repository.TestSettings
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             if (testSettings != null)
             {
-                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate;
-                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate;
+                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 return testSettings;
             }
             else
