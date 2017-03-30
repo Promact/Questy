@@ -11,8 +11,8 @@ export class FilterPipe implements PipeTransform {
         if (!searchedTest || !searchedTest.trim())
             return allTests;
         return allTests.filter(function (currentTest: Test) {
-            let searchedTestLower = searchedTest.toLowerCase();
-            let currentTestName = currentTest.testName.toLowerCase();
+            let searchedTestLower = searchedTest.toLowerCase().trim();
+            let currentTestName = currentTest.testName.toLowerCase().trim();
             if (!currentTest.link)
                 return (currentTestName.includes(searchedTestLower));
             else
