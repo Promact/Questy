@@ -20,20 +20,38 @@ import { RenameCategoryDialogComponent } from './rename-category-dialog.componen
 export class QuestionsDashboardComponent implements OnInit {
     category: Category;
     showSearchInput: boolean;
-    questionDisplay: QuestionDisplay[] = new Array<QuestionDisplay>();
-    categoryArray: Category[] = new Array<Category>();
-    // to enable enum difficultylevel in template
+    easy: number;
+    medium: number;
+    hard: number;
+    selectedCategory: Category;
+    questionDisplay: Question[];
+    question: Question[];
+    categoryArray: Category[];
+    //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     // to enable enum questiontype in template 
     QuestionType = QuestionType;
-    optionName: string[] = ['a', 'b', 'c', 'd', 'e','f','g','h','i','j'];
+    optionName: string[];
+    selectedDifficulty: DifficultyLevel;
+    matchString: string;
+    isAllQuestionsSelected: boolean;
+
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.category = new Category();
+        this.selectedCategory = new Category;
+        this.optionName = ['a', 'b', 'c', 'd', 'e','f','g','h','i','j'];
+        this.categoryArray = new Array<Category>();
+        this.question = new Array<Question>();
+        this.questionDisplay = new Array<Question>();
+        this.matchString = '';
+        this.easy = 0;
+        this.medium = 0;
+        this.hard = 0;
     }
 
     ngOnInit() {
         this.getAllQuestions();
-        this.getAllCategories();
+        this.getAllCategories();   
     }
 
     //To check whether the option is correct or not
@@ -51,11 +69,56 @@ export class QuestionsDashboardComponent implements OnInit {
     //To get all the Questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
-            this.questionDisplay = questionsList;
+            this.question = questionsList;
+            this.selectedCategory = new Category;
+            this.isAllQuestionsSelected = true;
+            this.countQuestion();
+            this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
         });
     }
 
-    // Open add category dialog
+    /**
+     * To set the Category active
+     * @param category
+     */
+    isCategorySelected(category: Category) {
+        this.isAllQuestionsSelected = false;
+        if (category.categoryName === this.selectedCategory.categoryName)
+            return 'active';
+    }
+
+    /**
+     * To select the Category
+     * @param category
+     */
+    categoryWiseFilter(category: Category) {
+        this.selectedCategory = category;
+        this.countQuestion();
+        this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
+    }
+
+    /**
+     * To select the DifficultyLevel
+     * @param difficulty
+     */
+    difficultyWiseSearch(difficulty: string) {
+        this.selectedDifficulty = DifficultyLevel[difficulty];
+        this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
+    }
+
+    /**
+     * To get the Search criteria from the user
+     * @param matchString
+     */
+    getQuestionsMatchingSearchCriteria(matchString: string) {
+        if (matchString.length > 2 || matchString.length === 0) {
+            this.matchString = matchString;
+            this.countQuestion();
+            this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
+        }
+    }
+
+    // Open Add Category Dialog
     addCategoryDialog() {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
@@ -64,7 +127,7 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open rename category dialog
+    // Open rename Category Dialog
     renameCategoryDialog(category: Category) {
         let categoryToUpdate = this.categoryArray.find(x => x.id === category.id);
         let renameDialogRef = this.dialog.open(RenameCategoryDialogComponent);
@@ -95,4 +158,64 @@ export class QuestionsDashboardComponent implements OnInit {
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);
     }
+
+    /**
+     * Filter Questions depending on DifficultyLevel, Category and QuestionDetails. 
+     * @param question
+     * @param category
+     * @param difficultyLevel
+     * @param matchString
+     */
+    filterQuestion(question: Question[], category: Category = null, difficultyLevel: DifficultyLevel = null, matchString: string = null): Question[] {
+        let tempQuestion: Question[] = [];
+
+        if (category !== {} && category !== null) {
+            question.forEach(x => {
+                if (x.categoryID === category.id || category.id === undefined) {
+                    tempQuestion.push(x);
+                }
+            });
+            return this.filterQuestion(tempQuestion, null, difficultyLevel, matchString);
+        }
+
+        if (difficultyLevel !== null && difficultyLevel !== undefined) {
+            question.forEach(x => {
+                if (x.difficultyLevel === difficultyLevel) {
+                    tempQuestion.push(x);
+                }
+            });
+            return this.filterQuestion(tempQuestion, category, null, matchString);
+        }
+
+        if (matchString.length > 0) {
+            question.forEach(x => {
+                if (x.questionDetail.toLowerCase().includes(matchString.toLowerCase())) {
+                    tempQuestion.push(x);
+                }
+            });
+            return this.filterQuestion(tempQuestion, category, difficultyLevel, '');
+        }
+        return question;
+    }
+    /**
+     * To count the number of Questions
+     */
+    countQuestion() {
+        this.easy = this.medium = this.hard = 0;
+        let questionList = this.filterQuestion(this.question, this.selectedCategory, null, this.matchString);
+        questionList.forEach(x => {
+            switch (x.difficultyLevel) {
+                case 0:
+                    return this.easy++;
+                case 1:
+                    return this.medium++;
+                case 2:
+                    return this.hard++;
+            }
+        });
+    }
+
 }
+
+
+

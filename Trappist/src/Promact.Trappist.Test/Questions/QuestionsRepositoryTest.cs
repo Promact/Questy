@@ -48,7 +48,7 @@ namespace Promact.Trappist.Test.Questions
             var result = await _questionRepository.GetAllQuestionsAsync();
             Assert.True(result.Count() == 1);
         }
-
+        
         /// <summary>
         /// Test to add single answer Question
         /// </summary>
