@@ -66,13 +66,13 @@ namespace Promact.Trappist.Core.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = _stringConstant.InavalidLoginError;
+                    ViewBag.Error = _stringConstant.InvalidLoginError;
                     return View(loginModel);
                 }
             }
             else
             {
-                ModelState.AddModelError(string.Empty, _stringConstant.InavalidModelError);
+                ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
                 return View(loginModel);
             }
         }
@@ -185,7 +185,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, _stringConstant.InavalidModelError);
+                ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
                 return View(resetPasswordModel);
             }
         }
