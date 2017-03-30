@@ -10,10 +10,12 @@ export class FilterPipe implements PipeTransform {
         if (searchedTest === undefined)
             return allTests;
         return allTests.filter(function (currentTest: Test) {
+            let searchedTestLower = searchedTest.toLowerCase();
+            let currentTestName = currentTest.testName.toLowerCase();
             if (currentTest.link === null)
-                return (currentTest.testName.toLowerCase().includes(searchedTest.toLowerCase()));
+                return (currentTestName.includes(searchedTestLower));
             else
-            return (currentTest.testName.toLowerCase().includes(searchedTest.toLowerCase()) || currentTest.link.toLowerCase().includes(searchedTest.toLowerCase()));
+                return (currentTestName.includes(searchedTestLower) || currentTest.link.toLowerCase().includes(searchedTestLower));
         });
     }
 }
