@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
 import { TestSettingService } from '../testsetting.service';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +20,8 @@ export class TestSettingsComponent implements OnInit {
     validStartDate: boolean;
     currentDate: Date;
     editName: string;
+    testNameUpdationMessage: string;
+    settingsUpdationMessage: string;
 
     /**
      * Open Launch Test Dialog
@@ -27,12 +29,14 @@ export class TestSettingsComponent implements OnInit {
      * @param testSettingService is used to get the Url from the testsettings.service file
      * @param route is used to take the value of Id from the active route
      */
-    constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute) {
+    constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testsettings = new Test();
         this.validEndDate = false;
         this.validTime = false;
         this.validStartDate = false;
         this.currentDate = new Date();
+        this.testNameUpdationMessage = "Test Name has been successfully updated";
+        this.settingsUpdationMessage = "Data has been updated successfully";
     }
 
     /**
@@ -41,6 +45,16 @@ export class TestSettingsComponent implements OnInit {
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
         this.getTestSettings(this.testId);
+    }
+
+    /**
+     * Open snackbar
+     * @param message contains the message to be displayed when the snackbar gets opened
+     */
+    openSnackBar(message: string) {
+        let snackBarRef = this.snackbarRef.open(message, 'Dismiss', {
+            duration: 4000,
+        });
     }
 
     //Gets the Settings saved for a particular Test
@@ -70,6 +84,7 @@ export class TestSettingsComponent implements OnInit {
      */
     testNameUpdation(id: number, testObject: Test, value: string) {
         this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+            this.openSnackBar(this.testNameUpdationMessage);
         });
     }
 
@@ -78,30 +93,21 @@ export class TestSettingsComponent implements OnInit {
      * @param endDate contains ths the value of the field End Date and Time
      */
     validEndDateChecking(endDate: Date) {
-        if (this.testsettings.startDate > endDate)
-            this.validEndDate = true;
-        else
-            this.validEndDate = false;
+        this.testsettings.startDate > endDate ? this.validEndDate = true : this.validEndDate = false;
     }
 
     /**
      * Checks whether the Start Date selected is valid or not
      */
     validStartDateChecking() {
-        if (new Date(this.testsettings.startDate) < this.currentDate || this.testsettings.startDate > this.testsettings.endDate)
-            this.validStartDate = true;
-        else
-            this.validStartDate = false;
+        new Date(this.testsettings.startDate) < this.currentDate || this.testsettings.startDate > this.testsettings.endDate ? this.validStartDate = true : this.validStartDate = false;
     }
 
     /**
      * Checks whether the Warning Time set is valid
      */
     validWarningTimeChecking() {
-        if (this.testsettings.warningTime >= this.testsettings.duration)
-            this.validTime = true;
-        else
-            this.validTime = false;
+        this.testsettings.warningTime >= this.testsettings.duration ? this.validTime = true : this.validTime = false;
     }
 
     /**
@@ -111,6 +117,7 @@ export class TestSettingsComponent implements OnInit {
      */
     launchTestDialog(id: number, testObject: Test) {
         this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+            this.openSnackBar(this.settingsUpdationMessage);
         });
         let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
         instance.settingObject = testObject;
