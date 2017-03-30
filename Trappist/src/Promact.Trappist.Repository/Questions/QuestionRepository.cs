@@ -33,17 +33,29 @@ namespace Promact.Trappist.Repository.Questions
         /// <returns>Returns object of QuestionAC</returns>
         public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
         {
-            var CategoryObject = _dbContext.Category.First(check => check.CategoryName == questionAC.Question.Category.CategoryName); //Used to get category object base on categoryname
-            questionAC.Question.CategoryID = CategoryObject.Id;
-            await _dbContext.Question.AddAsync(questionAC.Question);
-            questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.QuestionId = questionAC.Question.Id;
-            await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion);
-            foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestionOption)
+            var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+            question.CreatedBy = "Admin";
+
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = questionAC.SingleMultipleAnswerQuestionAC.SingleMultipleAnswerQuestion.Id;
-                _dbContext.SingleMultipleAnswerQuestionOption.Add(singleMultipleAnswerQuestionOptionElement);       
-            }
-            _dbContext.SaveChanges();
+                //Add common question details
+                await _dbContext.Question.AddAsync(question);
+                await _dbContext.SaveChangesAsync();
+
+                //Add single/multiple question 
+                questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestion.Id = question.Id;
+                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestion);
+                await _dbContext.SaveChangesAsync();
+
+                //Add single/multiple answer question option 
+                foreach (SingleMultipleAnswerQuestionOption singleMultipleAnswerQuestionOptionElement in questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption)
+                {
+                    singleMultipleAnswerQuestionOptionElement.SingleMultipleAnswerQuestionID = question.Id;
+                    await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(singleMultipleAnswerQuestionOptionElement);
+                }
+                await _dbContext.SaveChangesAsync();
+                transaction.Commit();
+            }            
             return(questionAC);
         }
 
@@ -53,17 +65,18 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="questionAC">Question data transfer object</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC)
         {
-            var codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestionAC);
+            var codeSnippetQuestion =questionAC.CodeSnippetQuestion;
+            var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 //Add common question details
-                var question = await _dbContext.Question.AddAsync(questionAC.Question);
+                await _dbContext.Question.AddAsync(question);
                 await _dbContext.SaveChangesAsync();
 
                 //Add codeSnippet part of question
-                codeSnippetQuestion.Id = question.Entity.Id;
-                await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
+                codeSnippetQuestion.Id = question.Id;
+                await _dbContext.CodeSnippetQuestion.AddAsync(questionAC.CodeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
 
                 var languageIdList = await _dbContext.CodingLanguage.Select(x => x.Id).ToListAsync();

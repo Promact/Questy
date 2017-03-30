@@ -146,6 +146,7 @@ namespace Promact.Trappist.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
+                cfg.CreateMap<QuestionDetailAC, Question>();
             });
             #endregion
         }

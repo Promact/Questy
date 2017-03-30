@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Question } from './question.model';
-import { Questions } from './question';
+import { QuestionBase } from './question';
 
 @Injectable()
 export class QuestionsService {
@@ -15,8 +15,7 @@ export class QuestionsService {
      * Add question
      * @param question
      */
-    addSingleAnswerQuestion(question: Questions) {
-        console.log(question);
+    addSingleAnswerQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
     }
 
