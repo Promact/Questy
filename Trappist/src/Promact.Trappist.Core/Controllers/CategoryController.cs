@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
@@ -9,10 +9,12 @@ namespace Promact.Trappist.Core.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IStringConstants _stringConstants;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository,IStringConstants stringConstants)
         {
             _categoryRepository = categoryRepository;
+            _stringConstants = stringConstants;
         }
 
         #region Category API
@@ -28,20 +30,19 @@ namespace Promact.Trappist.Core.Controllers
 
         [HttpPost]
         /// <summary>
-        /// Method to Add Category
+        /// Api to add Category
         ///</summary>
-        /// <param name="category">category object contains category details</param>
-        /// <returns>category object contains category details</returns>
+        /// <param name="category">category object contains Category details</param>
+        /// <returns>Task</returns>
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
-            if (isduplicateCategoryNameExists == true)
+            if (await _categoryRepository.IsCategoryNameExistsAsync(category))
             {
-                ModelState.AddModelError("error", "Category Name Already Exists");
+                ModelState.AddModelError("error", _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
             }
             await _categoryRepository.AddCategoryAsync(category);
@@ -49,11 +50,11 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Method to Update Existing Category
+        /// Api to update Category
         /// </summary>
-        /// <param name="id">Take from Route whose Property to be Update</param>
-        /// <param name="category">category object contains category details</param>
-        /// <returns>Updated category object contains category details</returns>
+        /// <param name="id">Id of the Category to be update</param>
+        /// <param name="category">category object contains Category details</param>
+        /// <returns>Task</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] Category category)
         {
@@ -61,22 +62,15 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var isduplicateCategoryNameExists = await _categoryRepository.CheckDuplicateCategoryNameAsync(category.CategoryName);
-            if (isduplicateCategoryNameExists == true)
+            if (await _categoryRepository.IsCategoryNameExistsAsync(category))
             {
-                ModelState.AddModelError("error", "Category Name Already Exists");
+                ModelState.AddModelError("error", _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
-            }
-            var existsCategory = await _categoryRepository.GetCategoryByIdAsync(id);
-            if (existsCategory == null)
-            {
-                return NotFound();
             }
             await _categoryRepository.UpdateCategoryAsync(category);
             return Ok(category);
         }
-    }
-        }
         #endregion
     }
 }
+

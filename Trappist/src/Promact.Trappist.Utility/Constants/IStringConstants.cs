@@ -58,5 +58,12 @@
         /// </summary>
         string InvalidPasswordFormatError { get; }
         #endregion
+
+        #region "Category Constants"
+        /// <summary>
+        /// Property CatehoryNameError is used when CategoryName exists in database
+        /// </summary>
+        string CategoryNameExistsError { get; }
+        #endregion
     }
 }

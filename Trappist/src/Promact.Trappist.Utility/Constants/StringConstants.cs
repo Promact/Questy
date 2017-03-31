@@ -101,5 +101,15 @@
             }
         }
         #endregion
+
+        #region "Category Constants"
+        public string CategoryNameExistsError
+        {
+            get
+            {
+                return "Category Name Alredy Exists";
+            }
+        }
+        #endregion
     }
 }

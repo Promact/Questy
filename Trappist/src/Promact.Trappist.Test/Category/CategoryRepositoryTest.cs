@@ -19,11 +19,10 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        ///Method to test AddCategory Method 
+        /// Method to Test AddCategoryAsync
         /// </summary>
-        /// <returns></returns>
         [Fact]
-        public async Task AddCategoryAsync()
+        public async Task AddCategoryTest()
         {
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
@@ -31,11 +30,21 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Method to test UpdateCategory Method
+        /// Method to test GetCategoryByIdAsync 
         /// </summary>
-        /// <returns></returns>
         [Fact]
-        public async Task UpdateCategoryAsync()
+        public async Task GetCategoryByIdTest()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            Assert.NotNull(await _categoryRepository.GetCategoryByIdAsync(category.Id));
+        }
+
+        /// <summary>
+        /// Method to test UpdateCategoryAsync
+        /// </summary>
+        [Fact]
+        public async Task UpdateCategoryTest()
         {
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
@@ -44,13 +53,24 @@ namespace Promact.Trappist.Test.Category
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
-            Assert.True(_trappistDbContext.Category.Count(x=>x.CategoryName == "Updated Category") == 1);
+            Assert.True(_trappistDbContext.Category.Count(x => x.CategoryName == "Updated Category") == 1);
         }
 
         /// <summary>
-        /// Method to Create a Mock object for Test
+        /// Method to test IsCategoryNameExistsAsync
         /// </summary>
-        /// <returns></returns>
+        [Fact]
+        public async Task IsCategoryNameExistsTest()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            Assert.False(await _categoryRepository.IsCategoryNameExistsAsync(category));
+        }
+
+        /// <summary>
+        /// Method to create a Category object for test
+        /// </summary>
+        /// <returns>category object contains Category details</returns>
         private DomainModel.Models.Category.Category CreateCategory()
         {
             var category = new DomainModel.Models.Category.Category
