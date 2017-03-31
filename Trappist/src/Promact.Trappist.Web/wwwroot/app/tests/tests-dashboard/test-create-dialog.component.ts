@@ -12,11 +12,8 @@ import { TestsDashboardComponent } from './tests-dashboard.component';
 })
 
 export class TestCreateDialogComponent {
-    responseObj: boolean;
     errorMessage: boolean;
-    testNameReference: string;
     test: Test;
-    errorStatus: any;
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar ) {
         this.test = new Test();
     }
@@ -26,9 +23,8 @@ export class TestCreateDialogComponent {
      */
     AddTest(testNameRef: string) {
         this.test.testName = testNameRef;
-        this.testService.getTestNameCheck(this.test.testName).subscribe((response) => {
-            this.responseObj = (response); 
-            if (!this.responseObj) {
+        this.testService.getTestNameCheck(testNameRef).subscribe((response) => {          
+            if (response) {
                 this.testService.addTests('api/tests', this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
                 });
@@ -36,15 +32,19 @@ export class TestCreateDialogComponent {
             else
                 this.errorMessage = true;
         },          
-            errorHandling => {
-                this.errorStatus = errorHandling;
-                this.snackbar.open(this.errorStatus);                
+            errorHandling => {                
+                this.snackbar.open(errorHandling);                
             });
     }
-    //this method is used to disable the errorMessage
+    /**
+    this method is used to disable the errorMessage
+    */
     ChangeError() {
         this.errorMessage = false;
     }
+    /**
+    to display error message in snackbar when any  error is caught from server
+    */
     open(message: string)
     {
     let config = this.snackbar.open(message, 'Dismiss', {

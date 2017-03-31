@@ -67,7 +67,7 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTests("testname");
             await _testRepository.CreateTestAsync(test);
             var name = "nameOfTest";
-            bool isExist = await _testRepository.IsTestNameNotUniqueAsync(name);
+            bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
             Assert.False(isExist);
         }
         /// <summary>
@@ -79,7 +79,7 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTests("test name");
             await _testRepository.CreateTestAsync(test);
             var name = "Test name";
-            bool isExist = await _testRepository.IsTestNameNotUniqueAsync(name);
+            bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
             Assert.True(isExist);
         }
 
