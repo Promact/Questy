@@ -18,17 +18,19 @@ import { RenameCategoryDialogComponent } from './rename-category-dialog.componen
 })
 
 export class QuestionsDashboardComponent implements OnInit {
+    private category: Category;
 
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
-    private category: Category = new Category();
     // to enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
     // to enable enum questiontype in template 
     QuestionType = QuestionType;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', '...'];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+        this.category = new Category();
     }
+
     ngOnInit() {
         this.getAllQuestions();
         this.getAllCategories();
@@ -51,15 +53,28 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = questionsList;
         });
     }
-    // Open add category dialog
+
+    // Open add Category dialog
     addCategoryDialog() {
-        this.dialog.open(AddCategoryDialogComponent);
+        let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
+        adddialogRef.afterClosed().subscribe(categoryToAdd => {
+            if (categoryToAdd != null)
+                this.categoryArray.push(categoryToAdd);
+        });
     }
-    // open Rename Category Dialog
-    renameCategoryDialog(category: any) {
-        var prop = this.dialog.open(RenameCategoryDialogComponent).componentInstance;
-        prop.category = JSON.parse(JSON.stringify(category));
+
+    // Open rename Category dialog
+    renameCategoryDialog(category: Category) {
+        let categoryToUpdate = this.categoryArray.find(x => x.id == category.id);
+        let renameDialogRef = this.dialog.open(RenameCategoryDialogComponent);
+        renameDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
+        renameDialogRef.afterClosed().subscribe(updatedCategory => {
+            if (updatedCategory != null) {
+                categoryToUpdate.categoryName = updatedCategory.categoryName;
+            }
+        });
     }
+
     // open Delete Category Dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);

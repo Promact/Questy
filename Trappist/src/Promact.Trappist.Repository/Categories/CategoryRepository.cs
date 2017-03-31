@@ -26,29 +26,31 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Method to Add a Category
+        /// Method to add Category
         /// </summary>
-        /// <param name="catagory">category object contains category details</param>
+        /// <param name="category">category object contains Category details</param>
+        /// <returns>Task</returns>
         public async Task AddCategoryAsync(Category category)
         {
-            _dbContext.Category.Add(category);
+            await _dbContext.Category.AddAsync(category);
             await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Method to Get Category by its Id
+        /// Method to get Category by id
         /// </summary>
-        /// <param name="key">id which will Search Category</param>
-        /// <returns>category object Contains Category Detaiks</returns>
+        /// <param name="key">Id which will get Category</param>
+        /// <returns>Task</returns>
         public async Task<Category> GetCategoryByIdAsync(int key)
         {
-            return await _dbContext.Category.FirstOrDefaultAsync(Check => Check.Id == key);
+            return await _dbContext.Category.FindAsync(key);
         }
 
         /// <summary>
-        /// Method to Update Category
+        /// Method to update Category
         /// </summary>
-        /// <param name="category">category object Contains Category Details</param>
+        /// <param name="category">category object contains Category details</param>
+        /// <returns>Task</returns>
         public async Task UpdateCategoryAsync(Category category)
         {
             var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
@@ -58,13 +60,13 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Method to Check Same CategoryName Exists or not
+        /// Method to check CategoryName exists or not
         /// </summary>
-        /// <param name="categoryName">categoryname will be checked that it is Exists or not</param>
-        /// <returns>true if Exists else false</returns>
-        public async Task<bool> CheckDuplicateCategoryNameAsync(string categoryName)
+        /// <param name="category">category object contains Category details</param>
+        /// <returns>True if exists else false</returns>
+        public async Task<bool> IsCategoryNameExistsAsync(Category category)
         {
-            return await _dbContext.Category.AnyAsync(check => check.CategoryName == categoryName);
+            return await _dbContext.Category.AnyAsync(check => check.CategoryName == category.CategoryName && check.Id != category.Id);
         }
     }
 }

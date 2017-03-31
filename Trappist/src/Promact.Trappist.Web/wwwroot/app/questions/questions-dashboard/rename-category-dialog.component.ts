@@ -1,9 +1,10 @@
 ﻿import { Component, Injectable } from '@angular/core';
 import { CategoryService } from '../categories.service';
-import { MdDialog } from '@angular/material';
+import { MdDialogRef } from '@angular/material';
 import { Category } from '../category.model';
-@Injectable()
+import { MdSnackBar } from '@angular/material';
 
+@Injectable()
 @Component({
     moduleId: module.id,
     selector: 'rename-category-dialog',
@@ -12,36 +13,49 @@ import { Category } from '../category.model';
 
 export class RenameCategoryDialogComponent {
     private response: any;
+    private successMessage: string;
 
-    showButton: boolean;
-    category: Category = new Category();
-    isCategoryNameExist: boolean = false;
-    errormessage: any;
-    constructor(private categoryService: CategoryService, private dialog: MdDialog) {
-        this.showButton = false;
+    isCategoryNameExist: boolean;
+    errormessage: string;
+    category: Category;
+    responseobject: Category;
+
+    constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<RenameCategoryDialogComponent>, public snackBar: MdSnackBar) {
+        this.isCategoryNameExist = false;
+        this.successMessage = 'Category Name Updated Sucessfully';
     }
 
     /**
-     *Method to Add Category 
-     * @param category category object contains Category details
+     * Open snackbar
+     */
+    openSnackBar(message: string) {
+        let snackBarRef = this.snackBar.open(message, '', {
+            duration: 3000,
+        });
+    }
+
+    /**
+     *Method to update Category 
+     * @param category  object contains Category details
      */
     updateCategory(category: Category) {
-        if (category.categoryName !== '') {
+        if (typeof category.categoryName !== 'undefined') {
             this.categoryService.updateCategory(category.id, category).subscribe(
                 result => {
-                    this.dialog.closeAll();
+                    this.responseobject = result;
+                    this.dialogRef.close(this.responseobject);
+                    this.openSnackBar(this.successMessage);
                 },
                 err => {
                     this.isCategoryNameExist = true;
                     this.response = (err.json());
                     this.errormessage = this.response['error'][0];
-                    this.showButton = false;
                 });
         }
     }
 
     /**
-     *Method to change Error Message when change will made in text box  
+     *Method to change error message when change will made in text box  
      */
     changeErrorMessage() {
         this.isCategoryNameExist = false;

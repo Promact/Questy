@@ -10,33 +10,34 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to get all the Categories
         /// </summary>
         /// <returns>Category list</returns>
-        Task <IEnumerable<Category>> GetAllCategoriesAsync();
+        Task<IEnumerable<Category>> GetAllCategoriesAsync();
 
         /// <summary>
-        /// Method to add a Category
+        /// Method to add Category
         /// </summary>
-        /// <param name="catagory">category object contains category details</param>
+        /// <param name="catagory">category object contains Category details</param>
+        /// <returns>Task</returns>
         Task AddCategoryAsync(Category catagory);
 
         /// <summary>
-        /// Method to Update Category
+        /// Method to update Category
         /// </summary>
-        /// <param name="catagory">category object contains Category details</param>
-        /// <returns>category object Contains Category details</returns>
+        /// <param name="categoryToUpdate">category object contains Category details</param>
+        /// <returns>Task</returns>
         Task UpdateCategoryAsync(Category categoryToUpdate);
 
         /// <summary>
-        /// Method to Check Same CategoryName Exists or not
+        /// Method to check CategoryName exists or not
         /// </summary>
-        /// <param name="categoryName">CategoryName</param>
-        /// <returns>true if Exists else False</returns>
-        Task<bool> CheckDuplicateCategoryNameAsync(string categoryName);
+        /// <param name="category">Category object contains Category details</param>
+        /// <returns>True If Exists Else False</returns>
+        Task<bool> IsCategoryNameExistsAsync(Category category);
 
         /// <summary>
-        /// Method to Get Category By its Id
+        /// Method to get Category by id
         /// </summary>
-        /// <param name="key">id to fing Category</param>
-        /// <returns>Category object Contains Category Details</returns>
+        /// <param name="key">Id which will get Category</param>
+        /// <returns>Task</returns>
         Task<Category> GetCategoryByIdAsync(int key);
     }
 }
