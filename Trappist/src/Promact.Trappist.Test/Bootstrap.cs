@@ -50,7 +50,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
-            services.AddScoped<IUtil, Util>();
+            services.AddScoped<IGlobalUtil, GlobalUtil>();
             return services.BuildServiceProvider();
         }
     }

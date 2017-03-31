@@ -5,11 +5,12 @@
     </div>
     <md-dialog-content>
         <div class="form-group">
-            <label class="h4">Test Name</label>
+            <label class="h4">Test Name {{errorStatus}}</label>
             <input type="text" id="name" name="name" class="form-control" (blur)="ChangeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$" maxlength="150" />
             <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
             <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>
             <span class="error-msg" *ngIf="errorMessage" [hidden]="(name.errors && (name.dirty || name.touched)) || name.pristine">Already a test with this name exists</span>
+            <!--<span class="error-msg" *ngIf="errorStatusMessage">Bad Request</span>-->
 
         </div>
     </md-dialog-content>

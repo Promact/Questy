@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="testName">name of the test</param>
         /// <returns>boolean</returns>
-        Task<bool> IsTestNameUniqueAsync(string testName);    
+        Task<bool> IsTestNameNotUniqueAsync(string testName);    
         
         /// <summary>
         /// Method defined to fetch Tests from Test Model
