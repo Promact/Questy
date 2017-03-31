@@ -7,7 +7,6 @@ import { ActivatedRoute, Router, provideRoutes } from '@angular/router';
 import { Http } from '@angular/http';
 import { TestSettingsComponent } from '../../tests/test-settings/test-settings.component';
 import { TestSettingService } from '../testsetting.service';
-import { Response } from '../tests.model';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 
 @Component({

@@ -19,8 +19,8 @@ export class TestService {
      * @param url
      * @param test
      */
-    addTests(url: string, test: any) {
-        return this.httpService.post(url, test);
+    addTests(test: any) {
+        return this.httpService.post(this.testApiUrl, test);
     }
     /**
      * get response whether test name is unique or not

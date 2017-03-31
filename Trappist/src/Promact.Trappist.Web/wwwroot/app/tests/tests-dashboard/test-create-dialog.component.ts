@@ -2,7 +2,6 @@
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
-import { Response } from '../tests.model';
 import { TestsDashboardComponent } from './tests-dashboard.component';
 
 @Component({
@@ -14,6 +13,7 @@ import { TestsDashboardComponent } from './tests-dashboard.component';
 export class TestCreateDialogComponent {
     errorMessage: boolean;
     test: Test;
+    testNameReference: string;
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar) {
         this.test = new Test();
     }
@@ -22,9 +22,10 @@ export class TestCreateDialogComponent {
      * @param testNameRef is name of the test
      */
     AddTest(testNameRef: string) {
+        this.test.testName = testNameRef;
         this.testService.IsTestNameUnique(testNameRef).subscribe((response) => {
             if (response) {
-                this.testService.addTests('api/tests', this.test).subscribe((responses) => {
+                this.testService.addTests( this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
                 });
             }
