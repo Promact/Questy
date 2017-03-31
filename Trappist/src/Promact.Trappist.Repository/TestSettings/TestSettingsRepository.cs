@@ -4,7 +4,6 @@ using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Test;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestSettings
@@ -38,7 +37,7 @@ namespace Promact.Trappist.Repository.TestSettings
         /// <returns>Settings Saved for the selected Test</returns>
         public async Task<Test> GetTestSettingsAsync(int id)
         {
-            string currentDate = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+            string currentDate = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm");
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             if (testSettings != null)
             {
