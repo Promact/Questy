@@ -14,7 +14,7 @@ import { TestsDashboardComponent } from './tests-dashboard.component';
 export class TestCreateDialogComponent {
     errorMessage: boolean;
     test: Test;
-    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar ) {
+    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar) {
         this.test = new Test();
     }
     /**
@@ -22,8 +22,7 @@ export class TestCreateDialogComponent {
      * @param testNameRef is name of the test
      */
     AddTest(testNameRef: string) {
-        this.test.testName = testNameRef;
-        this.testService.getTestNameCheck(testNameRef).subscribe((response) => {          
+        this.testService.IsTestNameUnique(testNameRef).subscribe((response) => {
             if (response) {
                 this.testService.addTests('api/tests', this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
@@ -31,9 +30,9 @@ export class TestCreateDialogComponent {
             }
             else
                 this.errorMessage = true;
-        },          
-            errorHandling => {                
-                this.snackbar.open(errorHandling);                
+        },
+            errorHandling => {
+                this.snackbar.open(errorHandling);
             });
     }
     /**
@@ -45,11 +44,10 @@ export class TestCreateDialogComponent {
     /**
     to display error message in snackbar when any  error is caught from server
     */
-    open(message: string)
-    {
-    let config = this.snackbar.open(message, 'Dismiss', {
-        duration: 4000,
-    });
-            }
+    open(message: string) {
+        let config = this.snackbar.open(message, 'Dismiss', {
+            duration: 4000,
+        });
+    }
 }
 

@@ -20,8 +20,8 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task CreateTestAsync(Test test)
         {
-            _dbContext.Test.Add(test);
             test.Link = _util.GenerateRandomString(10);
+            _dbContext.Test.Add(test);
             await _dbContext.SaveChangesAsync();
         }
 
