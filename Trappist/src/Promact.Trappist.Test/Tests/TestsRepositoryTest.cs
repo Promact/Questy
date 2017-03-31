@@ -13,18 +13,15 @@ namespace Promact.Trappist.Test.Tests
     [Collection("Register Dependency")]
     public class TestsRepositoryTest
     {
-        private readonly Bootstrap _bootstrap;
         private readonly ITestsRepository _testRepository;
         private readonly TrappistDbContext _trappistDbContext;
 
         public TestsRepositoryTest(Bootstrap bootstrap)
         {
-            _bootstrap = bootstrap;
             //resolve dependency to be used in tests
-            _trappistDbContext = _bootstrap.ServiceProvider.GetService<TrappistDbContext>();
-            _testRepository = _bootstrap.ServiceProvider.GetService<ITestsRepository>();
+            _trappistDbContext = bootstrap.ServiceProvider.GetService<TrappistDbContext>();
+            _testRepository = bootstrap.ServiceProvider.GetService<ITestsRepository>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
-
         }
         /// <summary>
         /// Test Case For Not Empty Test Model
@@ -90,7 +87,7 @@ namespace Promact.Trappist.Test.Tests
             _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "CU 123" });
             _trappistDbContext.SaveChanges();
         }
-       
+
         private DomainModel.Models.Test.Test CreateTests(string testName)
         {
             var test = new DomainModel.Models.Test.Test
