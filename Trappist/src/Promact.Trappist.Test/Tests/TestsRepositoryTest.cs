@@ -5,9 +5,6 @@ using Promact.Trappist.Repository.Tests;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Xunit;
-using System.Threading.Tasks;
-
 namespace Promact.Trappist.Test.Tests
 {
     [Collection("Register Dependency")]
