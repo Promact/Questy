@@ -8,6 +8,7 @@ using Promact.Trappist.Utility.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
+using Promact.Trappist.Repository.Profile;
 
 namespace Promact.Trappist.Test
 {
@@ -46,6 +47,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
             return services.BuildServiceProvider();
         }
     }

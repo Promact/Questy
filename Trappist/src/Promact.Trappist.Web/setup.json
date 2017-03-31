@@ -7,7 +7,7 @@
     "ConnectionSecurityOption": "None"
   },
   "ConnectionString": {
-    "Value": "server=(localdb)\\mssqllocaldb;database=sandipandB;integrated security=true",
+    "Value": "Server=(localdb)\\mssqllocaldb;Database=Trappist;Trusted_Connection=True",
     "Server": null,
     "Database": null,
     "UserId": null,
