@@ -11,7 +11,7 @@ namespace Promact.Trappist.Core.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStringConstants _stringConstants;
 
-        public CategoryController(ICategoryRepository categoryRepository,IStringConstants stringConstants)
+        public CategoryController(ICategoryRepository categoryRepository, IStringConstants stringConstants)
         {
             _categoryRepository = categoryRepository;
             _stringConstants = stringConstants;
@@ -33,7 +33,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Api to add Category
         ///</summary>
         /// <param name="category">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="id">Id of the Category to be update</param>
         /// <param name="category">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] Category category)
         {

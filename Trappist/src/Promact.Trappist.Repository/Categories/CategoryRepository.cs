@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to add Category
         /// </summary>
         /// <param name="category">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category object contains Category details </returns>
         public async Task AddCategoryAsync(Category category)
         {
             await _dbContext.Category.AddAsync(category);
@@ -40,7 +40,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to get Category by id
         /// </summary>
         /// <param name="key">Id which will get Category</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         public async Task<Category> GetCategoryByIdAsync(int key)
         {
             return await _dbContext.Category.FindAsync(key);
@@ -50,7 +50,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to update Category
         /// </summary>
         /// <param name="category">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         public async Task UpdateCategoryAsync(Category category)
         {
             var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
@@ -66,7 +66,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <returns>True if exists else false</returns>
         public async Task<bool> IsCategoryNameExistsAsync(Category category)
         {
-            return await _dbContext.Category.AnyAsync(check => check.CategoryName == category.CategoryName && check.Id != category.Id);
+            return await _dbContext.Category.AnyAsync(check => check.CategoryName.ToLowerInvariant() == category.CategoryName.ToLowerInvariant() && check.Id != category.Id);
         }
     }
 }
