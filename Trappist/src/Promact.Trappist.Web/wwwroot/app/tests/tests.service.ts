@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
-
+import { Test } from './tests.model';
 @Injectable()
 
 export class TestService {
@@ -27,6 +27,9 @@ export class TestService {
      * @param testName is name of the test
      */
     getTestNameCheck(testName: string) {
-        return this.httpService.get(this.testNameApiUrl + '/' + testName);
+        return this.httpService.get(this.testNameApiUrl + '/' + testName)
+
     }
 }
+
+

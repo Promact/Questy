@@ -21,10 +21,10 @@ namespace Promact.Trappist.Core.Controllers
         /// <returns>boolean</returns>
    
         [HttpGet ("isUnique/{testName}")]
-        public async Task<IActionResult> IsUniqueTestName([FromRoute] string testName)
+        public async Task<IActionResult> IsTestNameNotUnique([FromRoute] string testName)
         {
             // verifying the test name is unique or not
-            bool isExist = await _testRepository.IsTestNameUniqueAsync(testName);
+            bool isExist = await _testRepository.IsTestNameNotUniqueAsync(testName);
             return Ok(isExist);          
         }
         /// <summary>

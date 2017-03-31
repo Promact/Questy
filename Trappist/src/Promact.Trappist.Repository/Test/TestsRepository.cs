@@ -11,8 +11,8 @@ namespace Promact.Trappist.Repository.Tests
     public class TestsRepository : ITestsRepository
     {
         private readonly TrappistDbContext _dbContext;
-        private readonly IUtil _util;
-        public TestsRepository(TrappistDbContext dbContext, IUtil util)
+        private readonly IGlobalUtil _util;
+        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
         {
             _dbContext = dbContext;
             _util = util;
@@ -21,15 +21,15 @@ namespace Promact.Trappist.Repository.Tests
         public async Task CreateTestAsync(Test test)
         {           
             _dbContext.Test.Add(test);
-            test.Link = _util.RandomLinkGenerator(10);
+            test.Link = _util.GenerateRandomString(10);
             await _dbContext.SaveChangesAsync();
         }                       
         
-        public async Task<bool> IsTestNameUniqueAsync(string testName)
+        public async Task<bool> IsTestNameNotUniqueAsync(string testName)
         {
-            bool testNameCheck;
-            testNameCheck = await _dbContext.Test.AnyAsync(x => x.TestName.ToLowerInvariant() == testName.ToLowerInvariant());
-            return testNameCheck;
+            bool testNameIsUnique;
+            testNameIsUnique = await _dbContext.Test.AnyAsync(x => x.TestName.ToLowerInvariant() == testName.ToLowerInvariant());
+            return testNameIsUnique;
         }
         
         public async Task<List<Test>> GetAllTestsAsync()
