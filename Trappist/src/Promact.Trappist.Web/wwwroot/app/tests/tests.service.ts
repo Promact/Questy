@@ -26,7 +26,7 @@ export class TestService {
      * get response whether test name is unique or not
      * @param testName is name of the test
      */
-    getTestNameCheck(testName: string) {
+    IsTestNameUnique(testName: string) {
         return this.httpService.get(this.testNameApiUrl + '/' + testName)
 
     }
