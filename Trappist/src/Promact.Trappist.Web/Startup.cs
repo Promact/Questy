@@ -60,7 +60,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddDirectoryBrowser();
-            services.AddMvc( ).AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
             #region Dependencies
@@ -111,11 +111,14 @@ namespace Promact.Trappist.Web
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc(routes =>
             {
-
+                routes.MapRoute(
+                 name: "conduct",
+                 template: "conduct/{link}",
+                 defaults: new { controller = "Home", action = "Conduct" });
                 routes.MapRoute(
                     name: "setup",
                     template: "setup",
-                    defaults: new { controller = "Home", action = "setup" });
+                    defaults: new { controller = "Home", action = "Setup" });
                 routes.MapRoute(
                     name: "login",
                     template: "login",
