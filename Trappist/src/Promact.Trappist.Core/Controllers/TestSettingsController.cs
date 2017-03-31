@@ -8,12 +8,12 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/settings")]
     public class TestSettingsController : Controller
     {
-        private readonly ITestSettingsRepository _settingsRepository;
+        private readonly ITestSettingsRepository _testSettingsRepository;
 
 
-        public TestSettingsController(ITestSettingsRepository settingsRepository)
+        public TestSettingsController(ITestSettingsRepository testSettingsRepository)
         {
-            _settingsRepository = settingsRepository;
+            _testSettingsRepository = testSettingsRepository;
         }
 
         /// <summary>
@@ -24,11 +24,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTestSettings([FromRoute] int id)
         {
-            var settings = await _settingsRepository.GetTestSettingsAsync(id);
+            var settings = await _testSettingsRepository.GetTestSettingsAsync(id);
             if (settings == null)
-            {
                 return NotFound();
-            }
             else
                 return Ok(settings);
         }
@@ -42,13 +40,11 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] TestSettingsAC testSettingsAC)
         {
-            if (await _settingsRepository.TestSettingsExists(id))
-            {
+            if (await _testSettingsRepository.TestSettingsExists(id))   
                 return NotFound();
-            }
             if (ModelState.IsValid)
             {
-                await _settingsRepository.UpdateTestSettingsAsync(testSettingsAC);
+                await _testSettingsRepository.UpdateTestSettingsAsync(testSettingsAC);
                 return Ok(testSettingsAC);
             }
             else
