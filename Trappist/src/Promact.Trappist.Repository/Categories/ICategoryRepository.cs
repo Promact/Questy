@@ -16,14 +16,14 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to add Category
         /// </summary>
         /// <param name="catagory">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         Task AddCategoryAsync(Category catagory);
 
         /// <summary>
         /// Method to update Category
         /// </summary>
         /// <param name="categoryToUpdate">category object contains Category details</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         Task UpdateCategoryAsync(Category categoryToUpdate);
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Promact.Trappist.Repository.Categories
         /// Method to get Category by id
         /// </summary>
         /// <param name="key">Id which will get Category</param>
-        /// <returns>Task</returns>
+        /// <returns>category objects contains Category details</returns>
         Task<Category> GetCategoryByIdAsync(int key);
     }
 }

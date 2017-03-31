@@ -1,8 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { Category } from '../category.model';
 import { CategoryService } from '../categories.service';
-import { MdDialogRef } from '@angular/material';
-import { MdSnackBar } from '@angular/material';
+import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { QuestionsDashboardComponent } from './questions-dashboard.component'
 
 @Component({
@@ -10,6 +9,7 @@ import { QuestionsDashboardComponent } from './questions-dashboard.component'
     selector: 'add-category-dialog',
     templateUrl: 'add-category-dialog.html'
 })
+
 export class AddCategoryDialogComponent {
     private response: any;
     private successMessage: string;

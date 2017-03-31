@@ -61,7 +61,7 @@
 
         #region "Category Constants"
         /// <summary>
-        /// Property CatehoryNameError is used when CategoryName exists in database
+        /// Property CatehoryNameError is used to check  CategoryName unquiness 
         /// </summary>
         string CategoryNameExistsError { get; }
         #endregion

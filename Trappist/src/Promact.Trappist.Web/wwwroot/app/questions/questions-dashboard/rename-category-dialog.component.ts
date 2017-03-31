@@ -1,8 +1,7 @@
 ﻿import { Component, Injectable } from '@angular/core';
 import { CategoryService } from '../categories.service';
-import { MdDialogRef } from '@angular/material';
+import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { Category } from '../category.model';
-import { MdSnackBar } from '@angular/material';
 
 @Injectable()
 @Component({
