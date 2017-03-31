@@ -42,5 +42,16 @@ namespace Promact.Trappist.Web.Controllers
                 return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult Conduct(string link)
+        {
+            if (!string.IsNullOrWhiteSpace(link))
+            {
+                //logic will go here
+                return View();
+            }
+            return View();
+        }
+
     }
 }
