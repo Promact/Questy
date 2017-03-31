@@ -47,7 +47,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task AddTest()
         {
-            var test = CreateTests("testname");
+            var test = CreateTest("testname");
             await _testRepository.CreateTestAsync(test);
             Assert.True(_trappistDbContext.Test.Count() == 1);
         }
@@ -58,7 +58,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task UniqueNameTest()
         {
-            var test = CreateTests("testname");
+            var test = CreateTest("testname");
             await _testRepository.CreateTestAsync(test);
             var name = "nameOfTest";
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
@@ -70,7 +70,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task IsNotUniqueNameTest()
         {
-            var test = CreateTests("test name");
+            var test = CreateTest("test name");
             await _testRepository.CreateTestAsync(test);
             var name = "Test name";
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
@@ -85,7 +85,7 @@ namespace Promact.Trappist.Test.Tests
             _trappistDbContext.SaveChanges();
         }
 
-        private DomainModel.Models.Test.Test CreateTests(string testName)
+        private DomainModel.Models.Test.Test CreateTest(string testName)
         {
             var test = new DomainModel.Models.Test.Test
             {
