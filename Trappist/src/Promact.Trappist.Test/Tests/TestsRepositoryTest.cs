@@ -68,7 +68,7 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             var name = "nameOfTest";
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
-            Assert.False(isExist);
+            Assert.True(isExist);
         }
         /// <summary>
         /// Test Case to check when test name is not unique, new test is not added .
@@ -80,7 +80,7 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             var name = "Test name";
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name);
-            Assert.True(isExist);
+            Assert.False(isExist);
         }
 
         public void AddTests()
