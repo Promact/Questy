@@ -27,33 +27,33 @@ export class QuestionsDashboardComponent {
         this.getAllQuestions();
         this.getAllCategories();
     }
-    //To Check Whether The Option Is Correct Or Not
+    //To check whether the option is correct or not
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return 'correct';
         }
     }
-    //To Get All The Categories
+    //To get all the categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
         });
     }
-    //To Get ALL Questions
+    //To get aLL questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.questionDisplay = questionsList;
         });
     }
-    // Open Add Category Dialog
+    // Open add category dialog
     addCategoryDialog() {
         this.dialog.open(AddCategoryDialogComponent);
     }
-    // Open Delete Category Dialog
+    // Open delete category dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
-    // Open Delete Question Dialog
+    // Open delete question dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);
     }

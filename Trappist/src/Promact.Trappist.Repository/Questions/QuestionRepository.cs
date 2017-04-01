@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        ///Get All Questions
+        ///Get all questions
         /// </summary>
         /// <returns>Question list</returns>
         /// The function name ends with Async

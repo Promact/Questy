@@ -5,7 +5,7 @@ export class QuestionsService {
     private questionsApiUrl = 'api/question';
     constructor(private httpService: HttpService) {}
     /**
-     * get list of questions
+     *To get list of questions
      */
     getQuestions() {
         return this.httpService.get(this.questionsApiUrl);
