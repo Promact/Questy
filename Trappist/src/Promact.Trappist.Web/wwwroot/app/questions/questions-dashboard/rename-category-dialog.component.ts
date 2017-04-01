@@ -15,13 +15,13 @@ export class RenameCategoryDialogComponent {
     private successMessage: string;
 
     isCategoryNameExist: boolean;
-    errormessage: string;
+    errorMessage: string;
     category: Category;
-    responseobject: Category;
+    responseObject: Category;
 
     constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<RenameCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
-        this.successMessage = 'Category Name Updated Sucessfully';
+        this.successMessage = 'Category Name Updated Successfully';
     }
 
     /**
@@ -35,26 +35,26 @@ export class RenameCategoryDialogComponent {
 
     /**
      *Method to update Category 
-     * @param category  object contains Category details
+     * @param category: Category object
      */
     updateCategory(category: Category) {
-        if (typeof category.categoryName !== 'undefined') {
+        if (category.categoryName) {
             this.categoryService.updateCategory(category.id, category).subscribe(
                 result => {
-                    this.responseobject = result;
-                    this.dialogRef.close(this.responseobject);
+                    this.responseObject = result;
+                    this.dialogRef.close(this.responseObject);
                     this.openSnackBar(this.successMessage);
                 },
                 err => {
                     this.isCategoryNameExist = true;
                     this.response = (err.json());
-                    this.errormessage = this.response['error'][0];
+                    this.errorMessage = this.response['error'][0];
                 });
         }
     }
 
     /**
-     *Method to change error message when change will made in text box  
+     *Method to toggle error message
      */
     changeErrorMessage() {
         this.isCategoryNameExist = false;

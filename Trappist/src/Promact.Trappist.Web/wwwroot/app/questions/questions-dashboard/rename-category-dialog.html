@@ -8,7 +8,7 @@
             <label class="h4">Section Name</label>
             <input type="text" class="form-control" id="CategoryName" [(ngModel)]="category.categoryName" (change)="changeErrorMessage()" name="CategoryName" #CategoryName="ngModel" maxlength="150" required />
             <div class="errors-container">
-                <span *ngIf="isCategoryNameExist" class="error-msg">{{errormessage}}</span>
+                <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
                 <span *ngIf="CategoryName.errors && (CategoryName.dirty || CategoryName.touched)" [hidden]="!CategoryName.errors.required" class="error-msg">Category Name Required</span>
             </div>
         </div>

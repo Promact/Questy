@@ -15,7 +15,7 @@ export class CategoryService {
 
     /**
      *Api to add Category
-     * @param category category object contains ategory details
+     * @param category: Category object
      */
     addCategory(category: Category) {
         return this.httpService.post(this.categoriesApiUrl, category);
@@ -24,7 +24,7 @@ export class CategoryService {
     /**
      * Api to update Category
      * @param id: Category whose value will be changed
-     * @param category:category object contains Category details
+     * @param category:Category object
      */
     updateCategory(id: number, category: Category) {
         return this.httpService.put(this.categoriesApiUrl + '/' + id, category);
