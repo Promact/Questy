@@ -179,7 +179,7 @@ namespace Promact.Trappist.Core.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = _stringConstant.InvalidEmailError;
+                    ViewBag.LinkError = _stringConstant.InvalidTokenError;
                     return View(resetPasswordModel);
                 }
             }

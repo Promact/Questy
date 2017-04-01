@@ -68,6 +68,13 @@
                 return "Incorrect Input! Please Enter Proper Email Id";
             }
         }
+        public string InvalidTokenError
+        {
+            get
+            {
+                return "Invalid Link To Reset The Password!";
+            }
+        }
         #endregion
 
         #region Profile Constants
