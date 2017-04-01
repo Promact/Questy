@@ -37,6 +37,10 @@
         /// property InvalidEmailError is used when emailid does not match with databse id
         /// </summary>
         string InvalidEmailError { get; }
+        /// <summary>
+        /// property InvalidTokenError is used when user will try to reset password with already used link
+        /// </summary>
+        string InvalidTokenError { get; }
         #endregion
 
         #region Profile Constants

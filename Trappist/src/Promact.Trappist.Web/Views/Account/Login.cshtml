@@ -15,7 +15,7 @@
     <form asp-controller="Account" asp-action="Login" method="post">
         <span class="general-error-msg">@ViewBag.Error</span>
         <div class="form-group">
-            <input asp-for="Email" class="form-control" placeholder="Email" autocomplete="off"/>
+            <input asp-for="Email" class="form-control" placeholder="Email"/>
             <div class="errors-container">
                 <span asp-validation-for="Email" class="error-msg"></span>
             </div>

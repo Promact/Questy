@@ -9,12 +9,13 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Account
         public string Email { get; set; }
 
         [Required]
-        [StringLength(14, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 8)]
+
+        [RegularExpression(@"^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,14})+$", ErrorMessage = "Password must have atleast 1 uppercase,1 lowercase,1 digit & 1special character of length at min 8 and at max 14)")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-
-        [Compare("Password", ErrorMessage = "The Password and Confirmation Password do not match")]
+        [Required]
+        [Compare("Password", ErrorMessage = "Password and Confirmation Password do not match")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 
