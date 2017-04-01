@@ -12,10 +12,10 @@ export class QuestionsService {
     }
 
     /**
-     * Add question
+     * Add single multiple answer question
      * @param question
      */
-    addSingleAnswerQuestion(question: QuestionBase) {
+    addSingleMultipleAnswerQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
     }
 
