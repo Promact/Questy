@@ -30,10 +30,10 @@ namespace Promact.Trappist.Core.Controllers
 
         [HttpPost]
         /// <summary>
-        /// Api to add Category
+        /// API to add Category
         ///</summary>
-        /// <param name="category">category object contains Category details</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="category">Category object</param>
+        /// <returns>Category object</returns>
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
@@ -50,11 +50,11 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Api to update Category
+        /// API to update Category
         /// </summary>
         /// <param name="id">Id of the Category to be update</param>
-        /// <param name="category">category object contains Category details</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="category">Category object</param>
+        /// <returns>Category object</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] Category category)
         {

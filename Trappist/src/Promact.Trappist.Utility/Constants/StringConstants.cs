@@ -107,7 +107,7 @@
         {
             get
             {
-                return "Category Name Alredy Exists";
+                return "Category Name Already Exists";
             }
         }
         #endregion

@@ -15,29 +15,29 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to add Category
         /// </summary>
-        /// <param name="catagory">category object contains Category details</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="catagory">Category object</param>
+        /// <returns>Category object</returns>
         Task AddCategoryAsync(Category catagory);
 
         /// <summary>
         /// Method to update Category
         /// </summary>
-        /// <param name="categoryToUpdate">category object contains Category details</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="categoryToUpdate">Category object</param>
+        /// <returns>Category object</returns>
         Task UpdateCategoryAsync(Category categoryToUpdate);
 
         /// <summary>
-        /// Method to check CategoryName exists or not
+        /// Method to check Category Name exists or not
         /// </summary>
-        /// <param name="category">Category object contains Category details</param>
-        /// <returns>True If Exists Else False</returns>
+        /// <param name="category">Category object</param>
+        /// <returns>True if exists else flase</returns>
         Task<bool> IsCategoryNameExistsAsync(Category category);
 
         /// <summary>
         /// Method to get Category by id
         /// </summary>
-        /// <param name="key">Id which will get Category</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="key">Id to get Category</param>
+        /// <returns>Category object</returns>
         Task<Category> GetCategoryByIdAsync(int key);
     }
 }

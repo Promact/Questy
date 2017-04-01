@@ -19,7 +19,7 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Method to Test AddCategoryAsync
+        /// Method to test add Category
         /// </summary>
         [Fact]
         public async Task AddCategoryTest()
@@ -30,7 +30,7 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Method to test GetCategoryByIdAsync 
+        /// Method to test get Category by id 
         /// </summary>
         [Fact]
         public async Task GetCategoryByIdTest()
@@ -41,7 +41,7 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Method to test UpdateCategoryAsync
+        /// Method to test update Category
         /// </summary>
         [Fact]
         public async Task UpdateCategoryTest()
@@ -53,24 +53,27 @@ namespace Promact.Trappist.Test.Category
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
-            Assert.True(_trappistDbContext.Category.Count(x => x.CategoryName == "Updated Category") == 1);
+            Assert.True(_trappistDbContext.Category.Count(x => x.CategoryName == categoryToUpdate.CategoryName) == 1);
         }
 
         /// <summary>
-        /// Method to test IsCategoryNameExistsAsync
+        /// Method to test Category Name exists or not
         /// </summary>
         [Fact]
         public async Task IsCategoryNameExistsTest()
         {
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
-            Assert.False(await _categoryRepository.IsCategoryNameExistsAsync(category));
+            var isCategoryExist = CreateCategory();
+            isCategoryExist.CategoryName = "Test Category";
+            isCategoryExist.CreatedDateTime = DateTime.UtcNow;
+            Assert.True(await _categoryRepository.IsCategoryNameExistsAsync(isCategoryExist));
         }
 
         /// <summary>
         /// Method to create a Category object for test
         /// </summary>
-        /// <returns>category object contains Category details</returns>
+        /// <returns>Category object</returns>
         private DomainModel.Models.Category.Category CreateCategory()
         {
             var category = new DomainModel.Models.Category.Category

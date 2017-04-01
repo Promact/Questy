@@ -28,8 +28,8 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to add Category
         /// </summary>
-        /// <param name="category">category object contains Category details</param>
-        /// <returns>category object contains Category details </returns>
+        /// <param name="category">Category object</param>
+        /// <returns>Category object</returns>
         public async Task AddCategoryAsync(Category category)
         {
             await _dbContext.Category.AddAsync(category);
@@ -39,8 +39,8 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to get Category by id
         /// </summary>
-        /// <param name="key">Id which will get Category</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="key">Id to get Category</param>
+        /// <returns>Category object</returns>
         public async Task<Category> GetCategoryByIdAsync(int key)
         {
             return await _dbContext.Category.FindAsync(key);
@@ -49,8 +49,8 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to update Category
         /// </summary>
-        /// <param name="category">category object contains Category details</param>
-        /// <returns>category objects contains Category details</returns>
+        /// <param name="category">Category object</param>
+        /// <returns>Category object</returns>
         public async Task UpdateCategoryAsync(Category category)
         {
             var categoryToUpdate = await GetCategoryByIdAsync(category.Id);
@@ -62,11 +62,11 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to check CategoryName exists or not
         /// </summary>
-        /// <param name="category">category object contains Category details</param>
-        /// <returns>True if exists else false</returns>
+        /// <param name="category">Category object</param>
+        /// <returns>True if exists else flase</returns>
         public async Task<bool> IsCategoryNameExistsAsync(Category category)
         {
-            return await _dbContext.Category.AnyAsync(check => check.CategoryName.ToLowerInvariant() == category.CategoryName.ToLowerInvariant() && check.Id != category.Id);
+            return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant() == category.CategoryName.ToLowerInvariant() && x.Id != category.Id);
         }
     }
 }
