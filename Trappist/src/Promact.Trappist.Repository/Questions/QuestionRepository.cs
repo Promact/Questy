@@ -17,10 +17,9 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        ///Get all questions
+        ///Get all Questions
         /// </summary>
         /// <returns>Question list</returns>
-        /// The function name ends with Async
         public async Task<ICollection<Question>> GetAllQuestionsAsync()
         {
             return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
