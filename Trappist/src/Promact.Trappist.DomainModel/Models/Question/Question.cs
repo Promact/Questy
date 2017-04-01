@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Promact.Trappist.DomainModel.Models.Question
@@ -27,5 +28,8 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public virtual SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
 
         public virtual CodeSnippetQuestion CodeSnippetQuestion { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

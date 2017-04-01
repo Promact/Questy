@@ -3,16 +3,17 @@
     <div class="question-type">
         <div class="header">
             <h2>Question</h2>
-            <h5>Single Answer Question</h5>
+            <h5 *ngIf="isSingleAnswerQuestion">Single Answer Question</h5>
+            <h5 *ngIf="!isSingleAnswerQuestion">Multiple Answer Question</h5>
         </div>
-        <form (ngSubmit)="singleQuestionAnswerAdd(singleAnswerQuestion)" #singleAnswerQuestionForm="ngForm">
+        <form (ngSubmit)="singleMultipleQuestionAnswerAdd(singleMultipleQuestion)" #singleMultipleQuestionForm="ngForm">
             <div class="form-fields">
                 <div>
-                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" [ngModelOptions]="{standalone: true}" required/>
+                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleMultipleQuestion.question.questionDetail" id="question" #question="ngModel" [ngModelOptions]="{standalone: true}" required/>
                     <span *ngIf="question.invalid && question.touched" class="alert-danger">Question field is required</span>
                 </div>
-                <div class="form-group answer-choices">
-                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
+                <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
+                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
                         <md-radio-button  value="{{i}}" [disabled]="choice.pristine">
                             <input type="text" class="form-control" placeholder="Answer Choice" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required/>
                             <i class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</i><br />
@@ -20,6 +21,14 @@
                         </md-radio-button> 
                     </md-radio-group>
                     <p class="tip">Tip: Click the radio button to mark the correct answer</p>
+                </div>
+                <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
+                    <md-checkbox *ngFor="let option of singleMultipleQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first" [disabled]="choice.pristine" (ngModelChange)="isOptionSelected=true">
+                        <input type="text" class="form-control" placeholder="Write Your Answer" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
+                        <i class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</i><br />
+                        <span *ngIf="choice.invalid && choice.touched" class="alert-danger">This field is required</span>
+                    </md-checkbox>
+                    <p class="tip">Tip: Click the check boxes to mark the correct answers</p>
                 </div>
                 <div class="form-fields">
                     <div class="form-group col-md-4 col-sm-4 pl0">
@@ -29,7 +38,7 @@
                         </select>
                     </div> 
                     <div class="form-group col-md-2 col-sm-2 pl0">
-                        <select name="difficulty" class="form-control" [(ngModel)]="singleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" #difficulty="ngModel">
+                        <select name="difficulty" class="form-control" [(ngModel)]="singleMultipleQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" #difficulty="ngModel">
                             <option  [disabled]="difficulty.dirty" value="0">Select Difficulty</option>
                             <option *ngFor="let level of difficultyLevel">{{level}}</option>
                         </select>                       
@@ -38,7 +47,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="singleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="singleMultipleQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
             </div>
         </form>
 

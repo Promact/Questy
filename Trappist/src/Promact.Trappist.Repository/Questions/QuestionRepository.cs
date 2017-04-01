@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +14,12 @@ namespace Promact.Trappist.Repository.Questions
     public class QuestionRepository : IQuestionRespository
     {
         private readonly TrappistDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public QuestionRepository(TrappistDbContext dbContext)
+        public QuestionRepository(TrappistDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -32,11 +36,11 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="questionAC">Object of QuestionAC</param>
         /// <returns>Returns object of QuestionAC</returns>
-        public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC)
+        public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
             var singleMultipleQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC,SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
-            question.CreatedBy = "Admin";
+            question.ApplicationUser = await _userManager.FindByEmailAsync(userEmail);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
@@ -45,7 +49,7 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Add single/multiple question and option
-                singleMultipleQuestion.Id = question.Id;
+                singleMultipleQuestion.Question = question;
                 await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleQuestion);
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();

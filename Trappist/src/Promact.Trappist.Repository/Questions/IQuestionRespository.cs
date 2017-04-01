@@ -11,7 +11,7 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="questionAC"></param>
         /// <returns>Returns object of QuestionAC</returns>
-        Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC);
+        Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail);
 
         /// <summary>
         /// Add new code snippet question to the database

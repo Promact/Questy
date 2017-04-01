@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
@@ -24,6 +25,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns added question
         /// </returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid)
@@ -36,7 +38,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             else
             {
-                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC);
+                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, User.Identity.Name);
             }
             return Ok(questionAC);
         }
