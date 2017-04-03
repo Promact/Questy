@@ -4,7 +4,7 @@
       <h1 class="pull-left">
         <span [hidden]="editName">{{testsettings.testName}}</span>
         <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test"
-               [(ngModel)]="testsettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150"
+               [(ngModel)]="testsettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focusout)="editName = !editName"
                [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="testNameUpdation(testsettings.id,testsettings,testsettings.testName)" />
         <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
         <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>
