@@ -1508,6 +1508,7 @@ footer {
 
   .trappist-logo {
     margin-top: 40px;
+
     p {
       font-size: 11px;
       color: $color_base_secondary;
@@ -1516,6 +1517,57 @@ footer {
 
     img {
       width: 70px;
+    }
+  }
+
+  .content-block {
+    width: 800px;
+    margin: 0 auto;
+    background-color: $color_white;
+    border: 1px solid $color_border;
+    padding: 40px;
+
+    .tc-subtitle {
+      color: $color_base_secondary;
+      margin: 8px 0 30px;
+    }
+
+    .test-info {
+      margin-bottom: 12px;
+
+      span.h4 {
+        display: inline-block;
+        width: 160px;
+        vertical-align: top;
+      }
+    }
+
+    table {
+      margin-bottom: 50px;
+      width: 100%;
+      border: 1px solid $color_border;
+
+      tr {
+        th,
+        td {
+          padding: 15px 30px;
+          text-align: center;
+        }
+
+        th {
+          background-color: $color_bg_secondary;
+          border-bottom: 1px solid $color_border;
+        }
+      }
+    }
+
+    ul {
+      margin: 15px 0 30px;
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 10px;
+      }
     }
   }
 }
