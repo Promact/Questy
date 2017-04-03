@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.Repository.Profile;
+using Promact.Trappist.Web.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 using Promact.Trappist.Utility.GlobalUtil;
 
@@ -44,6 +46,9 @@ namespace Promact.Trappist.Test
                 x.Password = string.Empty;
                 x.ConnectionSecurityOption = string.Empty;
             });
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<TrappistDbContext>()
+                .AddDefaultTokenProviders();
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
