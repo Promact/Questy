@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        ///Get all Questions
+        ///Method to get all Questions
         /// </summary>
         /// <returns>Question list</returns>
         public async Task<ICollection<Question>> GetAllQuestionsAsync()
