@@ -110,6 +110,14 @@
                 return "Category Name Already Exists";
             }
         }
+
+        public string ErrorKey
+        {
+            get
+            {
+                return "error";
+            }
+        }
         #endregion
     }
 }

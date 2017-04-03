@@ -40,9 +40,9 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (await _categoryRepository.IsCategoryNameExistsAsync(category))
+            if (await _categoryRepository.IsCategoryNameExistsAsync(category.CategoryName, category.Id))
             {
-                ModelState.AddModelError("error", _stringConstants.CategoryNameExistsError);
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
             }
             await _categoryRepository.AddCategoryAsync(category);
@@ -62,12 +62,18 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (await _categoryRepository.IsCategoryNameExistsAsync(category))
+            var categoryToUpdate = await _categoryRepository.GetCategoryByIdAsync(category.Id);
+            if (categoryToUpdate == null)
             {
-                ModelState.AddModelError("error", _stringConstants.CategoryNameExistsError);
+                return NotFound();
+            }
+            if (await _categoryRepository.IsCategoryNameExistsAsync(category.CategoryName, id))
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
             }
-            await _categoryRepository.UpdateCategoryAsync(category);
+            categoryToUpdate.CategoryName = category.CategoryName;
+            await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             return Ok(category);
         }
         #endregion
