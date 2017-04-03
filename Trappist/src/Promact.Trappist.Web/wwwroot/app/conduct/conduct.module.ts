@@ -2,14 +2,18 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import 'rxjs/Rx';
-import { ConductComponent } from './conduct.component';
 import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
+import { conductRouting } from './conduct.routing';
+import { ConductComponent } from './conduct.component';
+import { RegisterComponent } from './register/register.component';
+import { InstructionsComponent } from './instructions/instructions.component';
 
 @NgModule({
     bootstrap: [ConductComponent],
     imports: [
         BrowserModule,
+        conductRouting,
         SharedModule,
         CoreModule
     ],
@@ -17,7 +21,9 @@ import { CoreModule } from '../core/core.module';
 
     ],
     declarations: [
-        ConductComponent
+        ConductComponent,
+        RegisterComponent,
+        InstructionsComponent
     ]
 })
 export class ConductModule { }
