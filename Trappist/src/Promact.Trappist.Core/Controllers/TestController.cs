@@ -19,13 +19,12 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="testName">name of the test</param>
         /// <returns>boolean</returns>
-   
-        [HttpGet ("isUnique/{testName}")]
-        public async Task<IActionResult> IsTestNameUnique([FromRoute] string testName)
+
+        [HttpGet("isUnique/{testName}/{id}")]
+        public async Task<bool> IsTestNameUnique([FromRoute] string testName, [FromRoute] int id)
         {
             // verifying the test name is unique or not
-            bool isExist = await _testRepository.IsTestNameUniqueAsync(testName);
-            return Ok(isExist);          
+            return await _testRepository.IsTestNameUniqueAsync(testName, id);
         }
         /// <summary>
         /// this method is used to add a new test 
@@ -36,7 +35,7 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> CreateTest([FromBody] Test test)
         {
             if (ModelState.IsValid)
-            {              
+            {
                 await _testRepository.CreateTestAsync(test);
                 return Ok(test);
             }
