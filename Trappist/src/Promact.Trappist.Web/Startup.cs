@@ -22,10 +22,6 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.Repository.TestSettings;
-using AutoMapper;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.Repository.Account;
@@ -41,6 +37,7 @@ using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.IO;
+using Promact.Trappist.Utility.GlobalUtil;
 
 namespace Promact.Trappist.Web
 {
@@ -87,7 +84,6 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestsRepository, TestsRepository>();           
-            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             #endregion
 
