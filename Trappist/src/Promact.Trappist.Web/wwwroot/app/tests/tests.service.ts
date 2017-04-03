@@ -27,6 +27,6 @@ export class TestService {
      * @param testName is name of the test
      */
     IsTestNameUnique(testName: string, id: number) {
-        return this.httpService.get(this.testNameApiUrl + '/' + testName + '/' + id)
+        return this.httpService.get(this.testNameApiUrl + '/' + testName + '/' + id);
     }
 }
