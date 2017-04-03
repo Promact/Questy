@@ -264,3 +264,6 @@ _references.js
 
 # published output
 **/published/
+
+# ignored setup file 
+**/setup.json

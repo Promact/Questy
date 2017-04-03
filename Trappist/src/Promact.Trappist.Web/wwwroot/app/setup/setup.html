@@ -10,18 +10,19 @@
             <form-wizard #setup>
                 <wizard-step [title]="1">
                     <h2>Setup the Database by providing a connection string</h2>
-                    <form>
+                    <form #ConnectionStringForm="ngForm">
                         <div class="form-group">
                             <label class="h4">Connection String</label>
-                            <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" />
+                            <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" #connectionStringName="ngModel" />
                             <div class="errors-container">
-                                <span class="error-msg" *ngIf="errorMessage">Invalid ConnectionString</span>
+                                <span *ngIf="connectionStringName.touched && !connectionStringName.valid && connectionStringName.errors.required" class="error-msg">required</span>
+                                <span class="error-msg" *ngIf="stepOneErrorMessage">Invalid ConnectionString</span>
                             </div>
                         </div>
                         <p class="help-text">format 1: server=servername;database=databasename;integrated security=true</p>
                         <p class="help-text">format 2: server=servername;database=databasename;user id=user id;password=password</p>
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-primary" (click)="validateConnectionString(setup)">Next</button>
+                            <button type="button" class="btn btn-primary" [disabled]="!ConnectionStringForm.form.valid" (click)="validateConnectionString(setup)">Next</button>
                         </div>
                     </form>
                 </wizard-step>
@@ -32,28 +33,29 @@
                             <label class="h4">Server Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.server" name="nameOfServer" #nameOfServer="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Port</label>
-                            <input required type="number" class="form-control" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
+                            <input required pattern="[0-9]*" type="text" class="form-control" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">required</span>
+                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.pattern" class="error-msg">Invalid port number</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">User Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersEmailAddress" #usersEmailAddress="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Password</label>
                             <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userMailPassword" #userMailPassword="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -66,7 +68,8 @@
                             <div class="errors-container"></div>
                         </div>
                         <div class="action-buttons">
-                            <span class="general-error-msg pull-left" *ngIf="errorMessage">Invalid Email Settings</span>
+                            <a *ngIf="stepTwoErrorMessage" (click)="proccedFurtherWithoutEmailSettings(setup)">Click me to proceed further without email settings</a>
+                            <span class="general-error-msg pull-left" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button><br />
                         </div>
@@ -80,7 +83,7 @@
                             <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="registrationFields.name" name="usersName" #usersName="ngModel" maxlength="150" />
                             <div class="errors-container">
                                 <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
-                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -88,16 +91,16 @@
                             <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="text" class="form-control" [(ngModel)]="registrationFields.email" name="userEmail" #userEmail="ngModel" maxlength="255" />
                             <div class="errors-container">
                                 <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
-                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="h4">Password</label>
-                            <input required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,14}$" type="password" class="form-control"
+                            <input required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_])[A-Za-z\d@$!%*#?&_]{8,14}$" type="password" class="form-control"
                                    [(ngModel)]="registrationFields.password" name="userPassword" #userPassword="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Invalid Password</span>
-                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">*required</span>
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Password must be alphanumeric including at least 1 uppercase letter and a special character with 8 to 14 characters</span>
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -105,12 +108,12 @@
                             <input required type="password" class="form-control" [(ngModel)]="registrationFields.confirmPassword"
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
                             <div class="errors-container">
-                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">*required</span>
-                                <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">Password and ConfirmPassword mismatched</span>
+                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">required</span><br />
+                                <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">New password and Confirm password do not match</span>
                             </div>
                         </div>
                         <div class="action-buttons">
-                            <span class="general-error-msg" *ngIf="errorMessage && errorMessage.touched">Invalid User Credentials</span>
+                            <span class="general-error-msg pull-left" *ngIf="stepThreeErrorMessage">{{exceptionMessage}}</span>
                             <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
                         </div>

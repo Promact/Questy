@@ -22,3 +22,8 @@ export class BasicSetup {
     registrationFields: RegistrationFields;
     emailSettings: EmailSettings;
 }
+
+export class ServiceResponse {
+    isSuccess: boolean;
+    exceptionMessage: string;
+}

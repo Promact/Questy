@@ -2,16 +2,14 @@
 using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 using System;
-using System.Data.SqlClient;
 using Promact.Trappist.Utility.EmailServices;
 using System.IO;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Utility.Constants;
-using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.DomainModel.Seed;
+using Promact.Trappist.Utility.DbUtil;
+using Promact.Trappist.Utility.FileUtil;
 
 namespace Promact.Trappist.Repository.BasicSetup
 {
@@ -22,30 +20,32 @@ namespace Promact.Trappist.Repository.BasicSetup
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
         private readonly IHostingEnvironment _environment;
-        private readonly TrappistDbContext _trappistDbContext;
         private readonly IStringConstants _stringConstants;
         private readonly ConnectionString _connectionString;
         private readonly EmailSettings _emailSettings;
+        private readonly IDbUtility _dbUtility;
+        private readonly IFileUtility _fileUtility;
         #endregion
         #endregion
 
         #region Constructor
         public BasicSetupRepository(UserManager<ApplicationUser> userManager, IEmailService emailService,
-            IHostingEnvironment environment, TrappistDbContext trappistDbContext, IStringConstants stringConstants,
-            ConnectionString connectionString, EmailSettings emailSettings)
+            IHostingEnvironment environment, IStringConstants stringConstants,
+            ConnectionString connectionString, EmailSettings emailSettings, IDbUtility dbUtility, IFileUtility fileUtility)
         {
             _userManager = userManager;
             _emailService = emailService;
             _environment = environment;
-            _trappistDbContext = trappistDbContext;
             _stringConstants = stringConstants;
             _connectionString = connectionString;
             _emailSettings = emailSettings;
+            _dbUtility = dbUtility;
+            _fileUtility = fileUtility;
         }
         #endregion
 
         #region IBasicSetupRepository methods      
-        public async Task<bool> CreateAdminUser(BasicSetupModel model)
+        public async Task<ServiceResponse> CreateAdminUser(BasicSetupModel model)
         {
             var user = new ApplicationUser()
             {
@@ -54,10 +54,18 @@ namespace Promact.Trappist.Repository.BasicSetup
                 Email = model.RegistrationFields.Email,
                 CreatedDateTime = DateTime.UtcNow
             };
-            bool response = SaveSetupParameter(model);
             _connectionString.Value = model.ConnectionString.Value;
-            bool createdUser = await CreateUserAndInitializeDb(user, model.RegistrationFields.Password);
-            return response && createdUser;
+            var response = await CreateUserAndInitializeDb(user, model.RegistrationFields.Password);
+            if (response.IsSuccess)
+            {
+                response.IsSuccess = SaveSetupParameter(model);
+                return response;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                return response;
+            }
         }
 
         /// <summary>
@@ -65,60 +73,34 @@ namespace Promact.Trappist.Repository.BasicSetup
         /// </summary>
         /// <param name="user"></param>
         /// <param name="password"></param>
-        /// <returns>if result succeeded than return true else false</returns>
-        private async Task<bool> CreateUserAndInitializeDb(ApplicationUser user, string password)
+        /// <returns>It return true or false or error message in response object.</returns>
+        private async Task<ServiceResponse> CreateUserAndInitializeDb(ApplicationUser user, string password)
         {
+            var response = new ServiceResponse();
             try
             {
-                _trappistDbContext.Database.EnsureDeleted(); //delete if already there -added by roshni
-                _trappistDbContext.Database.EnsureCreated(); //create database -added by roshni
-                _trappistDbContext.Seed(); //seed -added by roshni
-
+                _dbUtility.MigrateAndSeedDb(); //Seed and migrate database.
                 var result = await _userManager.CreateAsync(user, password);
-                return result.Succeeded;
+                if (!result.Succeeded)
+                {
+                    response.ExceptionMessage = _stringConstants.UserAlreadyExistErrorMessage;
+                    response.IsSuccess = false;
+                }
+                else
+                    response.IsSuccess = true;
+                return response;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return false;
+                response.IsSuccess = false;
+                response.ExceptionMessage = _stringConstants.DatabaseRelatedIssue;
+                return response;
             }
         }
 
         public async Task<bool> ValidateConnectionString(ConnectionString model)
         {
-            try
-            {
-                //build connction string
-                var builder = new SqlConnectionStringBuilder(model.Value);
-                using (var conn = new SqlConnection(GetConnectionString(builder)))
-                {
-                    try
-                    {
-                        await conn.OpenAsync();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// This method used for removing database parameter from the connection string.
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns>It returns the connection string without database </returns>
-        private string GetConnectionString(SqlConnectionStringBuilder connectionString)
-        {
-            if (connectionString.IntegratedSecurity)
-                return string.Format("Data Source={0};Trusted_Connection={1}", connectionString.DataSource, connectionString.IntegratedSecurity);
-            else
-                return string.Format("Data Source={0};User Id={1};Password={2}", connectionString.DataSource, connectionString.UserID, connectionString.Password);
+            return await _dbUtility.TryOpenSqlConnection(model);
         }
 
         public async Task<bool> ValidateEmailSetting(EmailSettings model)
@@ -145,8 +127,7 @@ namespace Promact.Trappist.Repository.BasicSetup
             };
             string jsonData = JsonConvert.SerializeObject(setupParameter, Formatting.Indented);
             string path = GetSetupFilePath();
-            File.WriteAllText(path, jsonData);
-            return true;
+            return _fileUtility.WriteJson(path, jsonData);
         }
 
         public bool IsFirstTimeUser()
@@ -155,9 +136,9 @@ namespace Promact.Trappist.Repository.BasicSetup
         }
 
         /// <summary>
-        /// This method is used to retrive setup.json file path.
+        /// This method is used to retrieve setup.json file path.
         /// </summary>
-        /// <returns>return path as a string</returns>
+        /// <returns>It return path as a string</returns>
         private string GetSetupFilePath()
         {
             return Path.Combine(_environment.ContentRootPath.ToString(), _stringConstants.SetupConfigFileName);

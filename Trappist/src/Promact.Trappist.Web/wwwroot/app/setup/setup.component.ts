@@ -4,6 +4,7 @@ import { SetupService } from './setup.service';
 import { EmailSettings } from './setup.model';
 import { BasicSetup } from './setup.model';
 import { RegistrationFields } from './setup.model';
+import { ServiceResponse } from './setup.model';
 @Component({
     moduleId: module.id,
     selector: 'setup',
@@ -16,8 +17,11 @@ export class SetupComponent {
     connectionString: ConnectionString = new ConnectionString();
     registrationFields: RegistrationFields = new RegistrationFields();
     confirmPasswordValid: boolean;
-    errorMessage: boolean;
+    stepOneErrorMessage: boolean = false;
+    stepTwoErrorMessage: boolean = false;
+    stepThreeErrorMessage: boolean = false;
     loader: boolean;
+    exceptionMessage: string;
 
     constructor(private setupService: SetupService) {
         this.emailSettings.connectionSecurityOption = 'None';
@@ -30,15 +34,13 @@ export class SetupComponent {
     validateConnectionString(setup: any) {
         this.loader = true;
         this.setupService.validateConnectionString(this.connectionString).subscribe((response) => {
-            if (response === true) {
-                this.errorMessage = false;
+            if (response === true)
                 setup.next();
-            }
             else
-                this.errorMessage = true;
+                this.stepOneErrorMessage = true;
             this.loader = false;
         }, err => {
-            this.errorMessage = true;
+            this.stepOneErrorMessage = true;
             this.loader = false;
         });
     }
@@ -50,27 +52,31 @@ export class SetupComponent {
     validateEmailSettings(setup: any) {
         this.loader = true;
         this.setupService.validateEmailSettings(this.emailSettings).subscribe(response => {
-            if (response === true) {
-                this.errorMessage = false;
+            if (response === true)
                 setup.next();
-            }
             else
-                this.errorMessage = true;
+                this.stepTwoErrorMessage = true;
             this.loader = false;
         }, err => {
-            this.errorMessage = true;
+            this.stepTwoErrorMessage = true;
             this.loader = false;
         });
+    }
+
+    /**
+     * This method used to redirect user to admin registration page if admin want to
+       proceed further in case of email setting are invalid due to the server or any issue.
+     * @param setup
+     */
+    proccedFurtherWithoutEmailSettings(setup: any) {
+        setup.next();
     }
 
     /**
      * This method used for validating Password and Confirm Password matched or not.
      */
     isValidPassword() {
-        if (this.registrationFields.confirmPassword === this.registrationFields.password)
-            this.confirmPasswordValid = true;
-        else
-            this.confirmPasswordValid = false;
+        this.confirmPasswordValid = this.registrationFields.confirmPassword === this.registrationFields.password;
     }
 
     /**
@@ -82,17 +88,18 @@ export class SetupComponent {
         this.basicSetup.emailSettings = this.emailSettings;
         this.basicSetup.connectionString = this.connectionString;
         this.basicSetup.registrationFields = this.registrationFields;
-        this.setupService.createUser(this.basicSetup).subscribe(response => {
-            if (response === true) {
-                this.errorMessage = false;
+        this.setupService.createUser(this.basicSetup).subscribe((serviceResponse: ServiceResponse) => {
+            if (serviceResponse.isSuccess === true) {
                 setup.complete();
                 this.navigateToLogin();
             }
-            else
-                this.errorMessage = true;
+            else {
+                this.stepThreeErrorMessage = true;
+                this.exceptionMessage = serviceResponse.exceptionMessage;
+            }
             this.loader = false;
         }, err => {
-            this.errorMessage = true;
+            this.stepThreeErrorMessage = true;
             this.loader = false;
         });
     }
@@ -102,10 +109,14 @@ export class SetupComponent {
     }
 
     previousStep1(setup: any) {
+        this.stepOneErrorMessage = false;
+        this.stepTwoErrorMessage = false;
         setup.previous();
     }
 
     previousStep2(setup: any) {
+        this.stepTwoErrorMessage = false;
+        this.stepThreeErrorMessage = false;
         setup.previous();
     }
 }

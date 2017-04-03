@@ -26,7 +26,7 @@ namespace Promact.Trappist.Core.Controllers
         /// This method used for validating connection string
         /// </summary>
         /// <param name="model"></param>
-        /// <returns>If valid then return true else return false in reponse object</returns>
+        /// <returns>If valid then return true else return false.</returns>
         [HttpPost("connectionstring")]
         public async Task<IActionResult> ValidateConnectionString([FromBody] ConnectionString model)
         {
@@ -39,7 +39,7 @@ namespace Promact.Trappist.Core.Controllers
         /// This method used for verifying Email settings
         /// </summary>
         /// <param name="model"></param>
-        /// <returns>if valid email settings then return true else false in response object</returns>
+        /// <returns>If valid email settings then return true else false.</returns>
         [HttpPost("mailsettings")]
         public async Task<IActionResult> ValidateEmailSettings([FromBody] EmailSettings model)
         {
@@ -52,7 +52,7 @@ namespace Promact.Trappist.Core.Controllers
         /// This method used for creating the user, save setup parameter and initialize database.
         /// </summary>
         /// <param name="model"></param>
-        /// <returns>if a user created then return true else return false</returns>
+        /// <returns>It returns true or false or errors message in the response object.</returns>
         [HttpPost("createuser")]
         public async Task<IActionResult> CreateAdminUser([FromBody] BasicSetupModel model)
         {
