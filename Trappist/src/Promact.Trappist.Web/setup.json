@@ -7,7 +7,7 @@
     "ConnectionSecurityOption": "None"
   },
   "ConnectionString": {
-    "Value": "server=(localdb)\\mssqllocaldb;database=trappist;trusted_connection=true",
+    "Value": "Server=(localdb)\\mssqllocaldb;Database=Trappist;Trusted_Connection=True",
     "Server": null,
     "Database": null,
     "UserId": null,
