@@ -35,4 +35,8 @@ export class TestsDashboardComponent {
                 this.Tests.push(test);
         });
     }
+    // Open Delete Test Dialog
+    deleteTestDialog() {
+        this.dialog.open(DeleteTestDialogComponent);
+    }
 }
