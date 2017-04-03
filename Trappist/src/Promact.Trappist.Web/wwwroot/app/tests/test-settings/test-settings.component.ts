@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
-import { TestSettingService } from '../testsetting.service';
+import { TestService } from '../tests.service';
 import { ActivatedRoute } from '@angular/router';
 import { TestLaunchDialogComponent } from './test-launch-dialog.component';
 
@@ -29,7 +29,7 @@ export class TestSettingsComponent implements OnInit {
      * @param testSettingService is used to get the Url from the testsettings.service file
      * @param route is used to take the value of Id from the active route
      */
-    constructor(public dialog: MdDialog, private testSettingService: TestSettingService, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
+    constructor(public dialog: MdDialog, private testService: TestService, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testsettings = new Test();
         this.validEndDate = false;
         this.validTime = false;
@@ -63,7 +63,7 @@ export class TestSettingsComponent implements OnInit {
      * @param id contains the value of the Id from the route
      */
     getTestSettings(id: number) {
-        this.testSettingService.getSettings(id).subscribe((response) => {
+        this.testService.getSettings(id).subscribe((response) => {
             this.testsettings = (response);
         });
     }
@@ -83,7 +83,7 @@ export class TestSettingsComponent implements OnInit {
      * @param value contains the Test Name of the Test which is to be edited 
      */
     testNameUpdation(id: number, testObject: Test, value: string) {
-        this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+        this.testService.updateSettings(id, testObject).subscribe((response) => {
             this.openSnackBar(this.testNameUpdationMessage);
         });
     }
@@ -116,7 +116,7 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.testSettingService.updateSettings(id, testObject).subscribe((response) => {
+        this.testService.updateSettings(id, testObject).subscribe((response) => {
             this.openSnackBar(this.settingsUpdationMessage);
         });
         let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;

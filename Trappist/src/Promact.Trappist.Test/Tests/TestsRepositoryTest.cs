@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.Tests;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
+using AutoMapper;
+using System;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -16,17 +19,7 @@ namespace Promact.Trappist.Test.Tests
         {   
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
         }
-        /// <summary>
-        /// Test Case For Not Empty Test Model
-        /// </summary>
-        [Fact]
-        public async Task GetAllTest()
-        {
-            AddTests();
-            var list = await _testRepository.GetAllTestsAsync();
-            Assert.NotNull(list);
-            Assert.Equal(3, list.Count);
-        }
+
         /// <summary>
         /// Test Case For Emtpty Test Model
         /// </summary>
@@ -61,6 +54,7 @@ namespace Promact.Trappist.Test.Tests
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name, id);
             Assert.True(isExist);
         }
+
         /// <summary>
         /// Test Case to check when test name is not unique, new test is not added .
         /// </summary>
@@ -75,12 +69,42 @@ namespace Promact.Trappist.Test.Tests
             Assert.False(isExist);
         }
 
-        public void AddTests()
+        /// <summary>
+        /// Gets Settings of Test selected by Id
+        /// </summary>
+        [Fact]
+        public async Task GetSettingsById()
         {
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "BBIT 123" });
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "MCKV 123" });
-            _trappistDbContext.Test.Add(new DomainModel.Models.Test.Test() { TestName = "CU 123" });
-            _trappistDbContext.SaveChanges();
+            var test = AddNewTest();
+            await _testRepository.CreateTestAsync(test);
+            Assert.NotNull(test);
+            var testSettings = await _testRepository.GetTestSettingsAsync(test.Id);
+            var testName = testSettings.TestName;
+            Assert.Equal(testName, "AOT 669");
+        }
+
+        /// <summary>
+        /// Updates settings of a particular test with the help of Id
+        /// </summary>
+        [Fact]
+        public async Task UpdateTestSettingsById()
+        {
+            try
+            {
+                var test = AddNewTest();
+                await _testRepository.CreateTestAsync(test);
+                var settingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+                settingsToUpdate.TestName = "IIT BANGALORE";
+                var testObject = Mapper.Map<DomainModel.Models.Test.Test, TestSettingsAC>(settingsToUpdate);
+                await _testRepository.UpdateTestSettingsAsync(testObject);
+                var TestName = "IIT BANGALORE";
+                await _trappistDbContext.SaveChangesAsync();
+                Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred", e);
+            }
         }
 
         private DomainModel.Models.Test.Test CreateTest(string testName)
@@ -88,6 +112,19 @@ namespace Promact.Trappist.Test.Tests
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName
+            };
+            return test;
+        }
+
+        /// <summary>
+        /// Adds new Test in the database
+        /// </summary>
+        /// <returns>The data added in the database</returns>
+        public DomainModel.Models.Test.Test AddNewTest()
+        {
+            var test = new DomainModel.Models.Test.Test()
+            {
+                TestName = "AOT 669"
             };
             return test;
         }
