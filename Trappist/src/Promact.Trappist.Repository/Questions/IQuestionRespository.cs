@@ -20,7 +20,7 @@ namespace Promact.Trappist.Repository.Questions
         Task AddCodeSnippetQuestionAsync(QuestionAC questionAC);
 
         /// <summary>
-        /// Method to get all Questions
+        /// Method to get all the Questions
         /// </summary>
         /// <returns>Question list</returns>
        Task <ICollection<Question>> GetAllQuestionsAsync();
