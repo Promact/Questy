@@ -42,6 +42,20 @@
                 return "Test mail Subject";
             }
         }
+        public string UserAlreadyExistErrorMessage
+        {
+            get
+            {
+                return "User already Exists.";
+            }
+        }
+        public string DatabaseRelatedIssue
+        {
+            get
+            {
+                return "There is some issue in existing database or you don't have permission to access database.";
+            }
+        }
         #endregion
 
         public string CharactersForLink

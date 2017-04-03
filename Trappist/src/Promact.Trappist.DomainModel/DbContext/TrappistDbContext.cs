@@ -44,8 +44,18 @@ namespace Promact.Trappist.DomainModel.DbContext
         /// <param name="optionBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
+            /*
+            While adding migrations, it checks for configured database, but
+            at that time, we would be having empty connection string as database is 
+            not yet setup. While adding migration, it does not check for any specific connectionstring
+            but non empty string. So for that purpose, we are adding fake string. Once db is setup
+            it will take connectionstring provided by user
+            */
+            var fakeConnectionStringToAddMigrations = "fakeConnectionString";
             if (!string.IsNullOrEmpty(_connectionString.Value))
-                optionBuilder.UseSqlServer(_connectionString.Value,x=>x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionBuilder.UseSqlServer(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+            else
+                optionBuilder.UseSqlServer(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             base.OnConfiguring(optionBuilder);
         }
         #endregion

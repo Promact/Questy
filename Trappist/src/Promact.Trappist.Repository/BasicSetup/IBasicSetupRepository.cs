@@ -9,8 +9,8 @@ namespace Promact.Trappist.Repository.BasicSetup
         /// This method used for creating the user, save setup parameter and initialize database.
         /// </summary>
         /// <param name="model"></param>
-        /// <returns>return true else return false</returns>
-        Task<bool> CreateAdminUser(BasicSetupModel model);
+        /// <returns>It return response object which has true or false or error message.</returns>
+        Task<ServiceResponse> CreateAdminUser(BasicSetupModel model);
 
         /// <summary>
         /// This method used for validating connection string

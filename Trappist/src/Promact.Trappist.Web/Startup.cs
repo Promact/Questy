@@ -23,8 +23,9 @@ using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.EmailServices;
-using Promact.Trappist.Utility.GlobalUtil;
+using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.IO;
@@ -39,7 +40,7 @@ namespace Promact.Trappist.Web
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"setup.json", optional: false, reloadOnChange: true);
+                .AddJsonFile($"setup.json", optional: true, reloadOnChange: true);
 
 
             if (env.IsDevelopment())
@@ -74,6 +75,9 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestsRepository, TestsRepository>();           
+            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IDbUtility, DbUtility>();
+            services.AddScoped<IFileUtility, FileUtility>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             #endregion
 

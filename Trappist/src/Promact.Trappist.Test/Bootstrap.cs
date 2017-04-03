@@ -18,9 +18,14 @@ using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
+using Promact.Trappist.Utility.FileUtil;
+using Promact.Trappist.Utility.DbUtil;
+using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
+using Microsoft.AspNetCore.Hosting;
+using Moq;
 
 namespace Promact.Trappist.Test
 {
@@ -36,6 +41,8 @@ namespace Promact.Trappist.Test
         private IServiceProvider BuildServiceProvider()
         {
             var services = new ServiceCollection();
+
+            #region Context and Identity setup
             services.AddEntityFrameworkInMemoryDatabase().
                 AddDbContext<TrappistDbContext>((serviceProvider, options) =>
                 {
@@ -43,8 +50,12 @@ namespace Promact.Trappist.Test
                            .UseInternalServiceProvider(serviceProvider)
                            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                 }, ServiceLifetime.Transient);
-
-            //Register all dependencies here
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+               .AddEntityFrameworkStores<TrappistDbContext>()
+               .AddDefaultTokenProviders();
+            #endregion
+            
+            #region Setup parameters
             services.Configure<ConnectionString>(x => x.Value = "connectionstring");
             services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
             services.Configure<EmailSettings>(x =>
@@ -55,25 +66,44 @@ namespace Promact.Trappist.Test
                 x.Password = string.Empty;
                 x.ConnectionSecurityOption = string.Empty;
             });
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<TrappistDbContext>()
-                .AddDefaultTokenProviders();
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            #endregion
+
+            #region Dependencies       
+            services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
-            services.AddScoped<IGlobalUtil, GlobalUtil>();
-            var emailSettingsMock = new Mock<IEmailService>();
-            var emailSettingsMockObject = emailSettingsMock.Object;
-            services.AddScoped(x => emailSettingsMock);
-            services.AddScoped(x => emailSettingsMockObject);
+            #endregion
+
+            #region Mocking
+            //Mock IHostingEnvironment
             var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
             var environmentMockObject = hostingEnvironmentMock.Object;
             services.AddScoped(x => hostingEnvironmentMock);
             services.AddScoped(x => environmentMockObject);
+
+            //Mock SqlConnection
+            var sqlConnectionMock = new Mock<IDbUtility>();
+            var sqlConnectionObject = sqlConnectionMock.Object;
+            services.AddScoped(x => sqlConnectionMock);
+            services.AddScoped(x => sqlConnectionObject);
+
+            //Mock write json file
+            var wrtieJsonFileMock = new Mock<IFileUtility>();
+            var wrtieJsonFileMockObject = wrtieJsonFileMock.Object;
+            services.AddScoped(x => wrtieJsonFileMock);
+            services.AddScoped(x => wrtieJsonFileMockObject);
+
+            //Mock email settings
+            var emailSettingsMock = new Mock<IEmailService>();
+            var emailSettingsMockObject = emailSettingsMock.Object;
+            services.AddScoped(x => emailSettingsMock);
+            services.AddScoped(x => emailSettingsMockObject);
+            #endregion
 
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>

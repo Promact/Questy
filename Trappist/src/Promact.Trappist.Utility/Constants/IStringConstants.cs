@@ -10,18 +10,25 @@
 
         #region BasicSetup Constants        
         /// <summary>
-        /// property SetupConfigFilename is called whenever required SetupConfig file name
+        /// Property SetupConfigFilename is called whenever required SetupConfig file name
         /// </summary>
         string SetupConfigFileName { get; }
         /// <summary>
-        /// this property used for provide body constant in mail.
+        /// This property used for provide body constant in mail.
         /// </summary>
         string TestMailBody { get; }
         /// <summary>
-        /// this property used for provide subject constant in mail.
+        /// This property used for provide subject constant in mail.
         /// </summary>
         string TestMailSubject { get; }
-
+        /// <summary>
+        /// This property used for providing error message if a user already exists.
+        /// </summary>
+        string UserAlreadyExistErrorMessage { get; }
+        /// <summary>
+        /// This property used for providing error message if any issues in the database.
+        /// </summary>
+        string DatabaseRelatedIssue { get; }
         #endregion
         /// <summary>
         /// property to store characters for random link generation
