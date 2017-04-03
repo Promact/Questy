@@ -28,7 +28,8 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         public virtual CodeSnippetQuestion CodeSnippetQuestion { get; set; }
 
-        [ForeignKey("CreatedBy")]
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser CreatedByUser { get; set; }
+
+        public virtual ApplicationUser UpdatedByUser { get; set; }
     }
 }

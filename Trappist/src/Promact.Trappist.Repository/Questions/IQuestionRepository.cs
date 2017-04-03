@@ -18,8 +18,8 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Adds new code snippet question to the database
         /// </summary>
-        /// <param name="questionAC">Question data transfer object</param>
-        /// <param name="userEmail">Email of current user</param>
+        /// <param name="questionAC">QuestionAC class object</param>
+        /// <param name="userEmail">Email of logged in user</param>
         Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail);
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Gets all the coding languages as string from database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CodingLanguageAC class object</returns>
         Task<ICollection<string>> GetAllCodingLanguagesAsync();
     }
 }

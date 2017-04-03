@@ -62,12 +62,13 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Adds new code snippet question to the database
         /// </summary>
-        /// <param name="questionAC">Question data transfer object</param>
-        /// <param name="userEmail">Email of current user</param>
+        /// <param name="questionAC">QuestionAC class object</param>
+        /// <param name="userEmail">Email of logged in user</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail)
         {
             var codeSnippetQuestion = questionAC.CodeSnippetQuestion;
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+            question.CreatedByUser = await _userManager.FindByEmailAsync(userEmail);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
@@ -98,7 +99,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Gets all the coding languages as string from the database
         /// </summary>
-        /// <returns>coding language in CodingLanguageAC</returns>
+        /// <returns>CodingLanguageAC class object</returns>
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
         {
             var codingLanguageList = await _dbContext.CodingLanguage.ToListAsync();
