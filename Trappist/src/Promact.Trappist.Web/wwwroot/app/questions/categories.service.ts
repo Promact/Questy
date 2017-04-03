@@ -5,7 +5,7 @@ export class CategoryService {
     private categoriesApiUrl = 'api/category';
     constructor(private httpService: HttpService) {
     }
-    //get all categories
+    //To get all the Categories
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }

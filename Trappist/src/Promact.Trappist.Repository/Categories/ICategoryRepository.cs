@@ -6,7 +6,7 @@ namespace Promact.Trappist.Repository.Categories
     public interface ICategoryRepository
     {
         /// <summary>
-        /// Get all Categories
+        /// Method to get all the Categories
         /// </summary>
         /// <returns>Category list</returns>
         Task <IEnumerable<Category>> GetAllCategoriesAsync();

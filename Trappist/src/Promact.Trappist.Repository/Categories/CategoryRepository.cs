@@ -16,7 +16,7 @@ namespace Promact.Trappist.Repository.Categories
         }
 
         /// <summary>
-        /// Get All Categories
+        /// Method to get all the Categories
         /// </summary>
         /// <returns>Categories list</returns>
         /// The function name ends with Async
