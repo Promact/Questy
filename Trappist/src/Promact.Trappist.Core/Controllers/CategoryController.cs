@@ -15,7 +15,7 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Category API
         /// <summary>
-        ///Get All Categories
+        ///API to get all the Categories
         /// </summary>
         /// <returns>Category List</returns>
         [HttpGet]

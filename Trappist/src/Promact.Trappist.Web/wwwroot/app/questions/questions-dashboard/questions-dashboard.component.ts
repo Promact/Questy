@@ -33,13 +33,13 @@ export class QuestionsDashboardComponent {
             return 'correct';
         }
     }
-    //To get all the categories
+    //To get all the Categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
         });
     }
-    //To get all the questions
+    //To get all the Questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.questionDisplay = questionsList;
