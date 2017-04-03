@@ -31,13 +31,13 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="category">Category object</param>
         /// <returns>True if exists else flase</returns>
-        Task<bool> IsCategoryNameExistsAsync(Category category);
+        Task<bool> IsCategoryNameExistsAsync(string categoryName, int id);
 
         /// <summary>
         /// Method to get Category by id
         /// </summary>
-        /// <param name="key">Id to get Category</param>
+        /// <param name="id">Id to get Category</param>
         /// <returns>Category object</returns>
-        Task<Category> GetCategoryByIdAsync(int key);
+        Task<Category> GetCategoryByIdAsync(int id);
     }
 }

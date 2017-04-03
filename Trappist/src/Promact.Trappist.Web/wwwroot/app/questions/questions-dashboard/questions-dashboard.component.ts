@@ -35,6 +35,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.getAllQuestions();
         this.getAllCategories();
     }
+
     //To check whether the option is correct or not
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
@@ -54,7 +55,7 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open add Category dialog
+    // Open add category dialog
     addCategoryDialog() {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
@@ -63,9 +64,9 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open rename Category dialog
+    // Open rename category dialog
     renameCategoryDialog(category: Category) {
-        let categoryToUpdate = this.categoryArray.find(x => x.id == category.id);
+        let categoryToUpdate = this.categoryArray.find(x => x.id === category.id);
         let renameDialogRef = this.dialog.open(RenameCategoryDialogComponent);
         renameDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
         renameDialogRef.afterClosed().subscribe(updatedCategory => {
@@ -75,10 +76,11 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // open Delete Category Dialog
+    // open delete category Dialog
     deleteCategoryDialog() {
         this.dialog.open(DeleteCategoryDialogComponent);
     }
+
     // Open delete question dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);

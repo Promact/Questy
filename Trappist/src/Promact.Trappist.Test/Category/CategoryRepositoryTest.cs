@@ -53,7 +53,7 @@ namespace Promact.Trappist.Test.Category
             if (categoryToUpdate != null)
                 categoryToUpdate.CategoryName = "Updated Category";
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
-            Assert.True(_trappistDbContext.Category.Count(x => x.CategoryName == categoryToUpdate.CategoryName) == 1);
+            Assert.True(_trappistDbContext.Category.Count(x => x.CategoryName.ToLowerInvariant().Equals(categoryToUpdate.CategoryName.ToLowerInvariant())) == 1);
         }
 
         /// <summary>
@@ -66,8 +66,7 @@ namespace Promact.Trappist.Test.Category
             await _categoryRepository.AddCategoryAsync(category);
             var isCategoryExist = CreateCategory();
             isCategoryExist.CategoryName = "Test Category";
-            isCategoryExist.CreatedDateTime = DateTime.UtcNow;
-            Assert.True(await _categoryRepository.IsCategoryNameExistsAsync(isCategoryExist));
+            Assert.True(await _categoryRepository.IsCategoryNameExistsAsync(isCategoryExist.CategoryName, isCategoryExist.Id));
         }
 
         /// <summary>

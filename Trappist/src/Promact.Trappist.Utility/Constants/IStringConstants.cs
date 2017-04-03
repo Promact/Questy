@@ -60,8 +60,14 @@
         #endregion
 
         #region "Category Constants"
+
         /// <summary>
-        /// Property CategoryNameExistsError is used to check Category Name unquiness 
+        /// Property ErrorKey is key of error message
+        /// </summary>
+        string ErrorKey { get; }
+
+        /// <summary>
+        /// Property CategoryNameExistsError is used to check Category Name uniqueness
         /// </summary>
         string CategoryNameExistsError { get; }
         #endregion
