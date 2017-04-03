@@ -39,7 +39,7 @@ export class QuestionsDashboardComponent {
             this.categoryArray = CategoriesList;
         });
     }
-    //To get aLL questions
+    //To get all the questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.questionDisplay = questionsList;
