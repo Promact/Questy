@@ -42,7 +42,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Get all the Questions
+        /// API to get all the Questions
         /// </summary>
         /// <returns>Questions List</returns>
         [HttpGet]
