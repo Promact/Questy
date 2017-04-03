@@ -1,4 +1,5 @@
-﻿import { Component } from '@angular/core';
+﻿
+import { Component } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
@@ -21,11 +22,12 @@ export class TestCreateDialogComponent {
      * this method is used to add a new test
      * @param testNameRef is name of the test
      */
-    AddTest(testNameRef: string) {
+    AddTest(testNameRef: string, id: number) {
         this.test.testName = testNameRef;
-        this.testService.IsTestNameUnique(testNameRef).subscribe((response) => {
-            if (response) {
-                this.testService.addTests( this.test).subscribe((responses) => {
+        this.test.id = id;
+        this.testService.IsTestNameUnique(testNameRef, id).subscribe((isTestNameUnique) => {
+            if (isTestNameUnique) {
+                this.testService.addTests(this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
                 });
             }
@@ -51,4 +53,3 @@ export class TestCreateDialogComponent {
         });
     }
 }
-
