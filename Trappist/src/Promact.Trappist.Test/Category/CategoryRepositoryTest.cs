@@ -14,8 +14,21 @@ namespace Promact.Trappist.Test.Category
         private readonly ICategoryRepository _categoryRepository;
 
         public CategoryRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
-        {   
+        {
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
+        }
+
+        /// <summary>
+        /// Method to test get all Categories
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task GetAllCategoriesTest()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            var result = await _categoryRepository.GetAllCategoriesAsync();
+            Assert.True(result.Count() == 1);
         }
 
         /// <summary>
