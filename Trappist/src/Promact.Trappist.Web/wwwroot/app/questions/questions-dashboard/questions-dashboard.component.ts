@@ -26,7 +26,7 @@ export class QuestionsDashboardComponent implements OnInit {
     DifficultyLevel = DifficultyLevel;
     // to enable enum questiontype in template 
     QuestionType = QuestionType;
-    optionName: string[] = ['a', 'b', 'c', 'd', 'e', '...'];
+    optionName: string[] = ['a', 'b', 'c', 'd', 'e'];
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.category = new Category();
     }
