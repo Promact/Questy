@@ -3,13 +3,11 @@
 namespace Promact.Trappist.Test.TestConduct
 {
     [Collection("Register Dependency")]
-    public class TestConductRepositoryTest
+    public class TestConductRepositoryTest : BaseTest
     {
-        private readonly Bootstrap _bootstrap;
-
-        public TestConductRepositoryTest(Bootstrap bootstrap)
+        public TestConductRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
-            _bootstrap = bootstrap;
+            
         }
     }
 }

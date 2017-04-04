@@ -3,13 +3,11 @@
 namespace Promact.Trappist.Test.Reports
 {
     [Collection("Register Dependency")]
-    public class ReportsRepositoryTest
+    public class ReportsRepositoryTest : BaseTest
     {
-        private readonly Bootstrap _bootstrap;
-
-        public ReportsRepositoryTest(Bootstrap bootstrap)
+        public ReportsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
-            _bootstrap = bootstrap;
+            
         }
     }
 }

@@ -8,17 +8,13 @@ using System.Threading.Tasks;
 namespace Promact.Trappist.Test.Tests
 {
     [Collection("Register Dependency")]
-    public class TestsRepositoryTest
+    public class TestsRepositoryTest : BaseTest
     {
         private readonly ITestsRepository _testRepository;
-        private readonly TrappistDbContext _trappistDbContext;
-
-        public TestsRepositoryTest(Bootstrap bootstrap)
-        {
-            //resolve dependency to be used in tests
-            _trappistDbContext = bootstrap.ServiceProvider.GetService<TrappistDbContext>();
-            _testRepository = bootstrap.ServiceProvider.GetService<ITestsRepository>();
-            ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+        
+        public TestsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
+        {   
+            _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
         }
         /// <summary>
         /// Test Case For Not Empty Test Model

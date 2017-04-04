@@ -3,9 +3,9 @@
 namespace Promact.Trappist.Test.BasicSetup
 {
     [Collection("Register Dependency")]
-    public class BasicSetupRepositoryTest
+    public class BasicSetupRepositoryTest : BaseTest
     {
-        public BasicSetupRepositoryTest()
+        public BasicSetupRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
         }
     }
