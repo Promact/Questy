@@ -8,19 +8,13 @@ using Promact.Trappist.Repository.Categories;
 namespace Promact.Trappist.Test.Category
 {
     [Collection("Register Dependency")]
-    public class CategoryRepositoryTest
+    public class CategoryRepositoryTest : BaseTest
     {
-        private readonly Bootstrap _bootstrap;
-        private readonly TrappistDbContext _trappistDbContext;
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryRepositoryTest(Bootstrap bootstrap)
-        {
-            _bootstrap = bootstrap;
-            //resolve dependency to be used in tests
-            _trappistDbContext = _bootstrap.ServiceProvider.GetService<TrappistDbContext>();
-            _categoryRepository = _bootstrap.ServiceProvider.GetService<ICategoryRepository>();
-            ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+        public CategoryRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
+        {   
+            _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
         }
 
         [Fact]

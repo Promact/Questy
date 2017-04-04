@@ -8,7 +8,11 @@ using Promact.Trappist.Web.Models;
 namespace Promact.Trappist.Test.Profile
 {
     [Collection("Register Dependency")]
-    public class ProfileRepositoryTest
+    public class ProfileRepositoryTest : BaseTest
     {
+        public ProfileRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
+        {
+
+        }
     }
 }
