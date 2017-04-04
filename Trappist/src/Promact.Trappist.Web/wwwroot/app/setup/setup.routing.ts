@@ -3,9 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { SetupComponent } from './setup.component';
 const appRoutes: Routes = [
     {
-        path: 'setup',
-        component: SetupComponent,
-        pathMatch: 'full'
+        path: '',
+        component: SetupComponent
     }
 ];
 
