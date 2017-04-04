@@ -5,6 +5,11 @@ import { InstructionsComponent } from './instructions/instructions.component';
 
 const conductRoutes: Routes = [
     {
+        path: '',
+        redirectTo: '/register',
+        pathMatch: 'full'
+    },
+    {
         path: 'register',
         component: RegisterComponent
     },

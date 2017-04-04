@@ -1,4 +1,8 @@
-﻿<app>
+﻿@{
+    ViewBag.BaseHref = "/";
+}
+
+<app>
     <div class="loader-container main-loader">
         <div class="loader-block">
             <div class="spinner"></div>
@@ -16,7 +20,7 @@
 
     <script src="systemjs.config.js"></script>
     <script>
-            System.import('app/main.js').catch(function (err) { console.error(err); });
+        System.import('app/main.js').catch(function (err) { console.error(err); });
     </script>
 </environment>
 
