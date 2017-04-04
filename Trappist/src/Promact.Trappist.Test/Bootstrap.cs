@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Moq;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
@@ -16,7 +14,7 @@ using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Utility.EmailServices;
+using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
 
@@ -64,12 +62,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
-            services.AddScoped<IEmailService, EmailService>();
-            var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
-            var environmenrMockObject = hostingEnvironmentMock.Object;
-            services.AddScoped(x => hostingEnvironmentMock);
-            services.AddScoped(x => environmenrMockObject);
-
+            services.AddScoped<IGlobalUtil, GlobalUtil>();
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
