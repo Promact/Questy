@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.GlobalUtil;
 using System;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
-using AutoMapper;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -57,12 +55,11 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// Updates the changes made to the settings of a Test
         /// </summary>
-        /// <param name="testACObject">The parameter "testACObject" is an object of TestSettingsAC</param>
+        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>
-        public async Task UpdateTestSettingsAsync(TestSettingsAC testACObject)
-        {
-            Test settings = Mapper.Map<TestSettingsAC, Test>(testACObject);
-            _dbContext.Test.Update(settings);
+        public async Task UpdateTestSettingsAsync(Test testObject)
+        {       
+            _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
 

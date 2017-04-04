@@ -1,7 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -36,9 +35,9 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// Updates the changes made to the settings of a Test
         /// </summary>
-        /// <param name="testACObject">The parameter "testACObject" is an object of TestSettingsAC</param>
+        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>
-        Task UpdateTestSettingsAsync(TestSettingsAC testACObject);
+        Task UpdateTestSettingsAsync(Test testObject);
 
         /// <summary>
         /// Checks if the Test Settings Exists or not
