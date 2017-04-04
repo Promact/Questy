@@ -90,9 +90,9 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="id">The parameter "id" is taken from the route</param>
         /// <returns>A bool value based on the condition is satisfied or not</returns>
-        public async Task<bool> TestSettingsExists(int id)
+        public async Task<bool> IsTestExists(int id)
         {
-            return await _dbContext.Test.AnyAsync(check => check.Id == id);
+            return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
     }
 }

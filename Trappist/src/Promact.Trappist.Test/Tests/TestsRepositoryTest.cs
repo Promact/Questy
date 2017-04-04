@@ -1,4 +1,4 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.Tests;
@@ -75,7 +75,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetSettingsById()
         {
-            var test = AddNewTest();
+            var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
             Assert.NotNull(test);
             var testSettings = await _testRepository.GetTestSettingsAsync(test.Id);
@@ -91,7 +91,7 @@ namespace Promact.Trappist.Test.Tests
         {
             try
             {
-                var test = AddNewTest();
+                var test = CreateTest("AOT 669");
                 await _testRepository.CreateTestAsync(test);
                 var settingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
                 settingsToUpdate.TestName = "IIT BANGALORE";
@@ -112,19 +112,6 @@ namespace Promact.Trappist.Test.Tests
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName
-            };
-            return test;
-        }
-
-        /// <summary>
-        /// Adds new Test in the database
-        /// </summary>
-        /// <returns>The data added in the database</returns>
-        public DomainModel.Models.Test.Test AddNewTest()
-        {
-            var test = new DomainModel.Models.Test.Test()
-            {
-                TestName = "AOT 669"
             };
             return test;
         }

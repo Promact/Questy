@@ -45,6 +45,6 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="id">The parameter "id" is taken from the route</param>
         /// <returns>A bool value based on the condition is satisfied or not</returns>
-        Task<bool> TestSettingsExists(int id);
+        Task<bool> IsTestExists(int id);
     }
 }
