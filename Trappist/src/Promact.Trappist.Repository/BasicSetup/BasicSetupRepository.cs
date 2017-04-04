@@ -52,7 +52,7 @@ namespace Promact.Trappist.Repository.BasicSetup
                 Name = model.RegistrationFields.Name,
                 UserName = model.RegistrationFields.Email,
                 Email = model.RegistrationFields.Email,
-                CreateDateTime = DateTime.UtcNow
+                CreatedDateTime = DateTime.UtcNow
             };
             bool response = SaveSetupParameter(model);
             _connectionString.Value = model.ConnectionString.Value;
