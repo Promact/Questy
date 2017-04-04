@@ -2,7 +2,7 @@
 import { Category } from '../category.model';
 import { CategoryService } from '../categories.service';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
-import { QuestionsDashboardComponent } from './questions-dashboard.component'
+import { QuestionsDashboardComponent } from './questions-dashboard.component';
 
 @Component({
     moduleId: module.id,
