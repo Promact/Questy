@@ -42,8 +42,7 @@ namespace Promact.Trappist.Test.Profile
         {
             var user = UserDetails();
             await _userManager.CreateAsync(user);
-            var userToUpdate = new ApplicationUser();
-            userToUpdate = await _profileRepository.GetUserDetailsAsync(user.Email);
+            var userToUpdate = await _profileRepository.GetUserDetailsAsync(user.Email);
             userToUpdate.Name = "Ritika Mohata";
             userToUpdate.OrganizationName = "Promact Infotect";
             userToUpdate.PhoneNumber = "7003957635";
