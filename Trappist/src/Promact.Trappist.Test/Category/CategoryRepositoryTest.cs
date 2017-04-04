@@ -1,5 +1,4 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using System;
 using System.Linq;
@@ -11,8 +10,6 @@ namespace Promact.Trappist.Test.Category
     [Collection("Register Dependency")]
     public class CategoryRepositoryTest : BaseTest
     {
-        private readonly Bootstrap _bootstrap;
-        private readonly TrappistDbContext _trappistDbContext;
         private readonly ICategoryRepository _categoryRepository;
 
         public CategoryRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
@@ -85,14 +82,15 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Test method for removing category
+        /// Method to test remove Category
         /// </summary>        
         [Fact]
         public async Task DeleteCategory()
         {
             var category = CreateCategory();
-            _categoryRepository.AddCategory(category);
+            await _categoryRepository.AddCategoryAsync(category);
             var categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(category.Id);
+            Assert.NotNull(categoryToDelete);
             if (categoryToDelete != null)
             {
                 await _categoryRepository.RemoveCategoryAsync(categoryToDelete);

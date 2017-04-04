@@ -22,18 +22,19 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         ///API to get all the Categories
         /// </summary>
-        /// <returns>Category List</returns>        
+        /// <returns>Category List</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
             return Ok(await _categoryRepository.GetAllCategoriesAsync());
         }
-      
+
         /// <summary>
         /// API to add Category
         ///</summary>
         /// <param name="category">Category object</param>
         /// <returns>Category object</returns>
+        [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
@@ -78,9 +79,10 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Delete API to Remove a category
+        /// Delete API to remove a Category
         ///</summary>
-        /// <param name="categoryId">Id of category</param>        
+        /// <param name="categoryId">The id of the Category to delete.</param>
+        /// <returns>No content(204) response if id found else not found(404) response</returns>
         [HttpDelete("{categoryId}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId)
         {

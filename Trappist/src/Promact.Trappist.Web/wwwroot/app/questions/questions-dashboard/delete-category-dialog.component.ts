@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { CategoryService } from '../category.service';
+import { CategoryService } from '../categories.service';
 import { MdDialog } from '@angular/material';
 import { Category } from '../../questions/category.model';
 import { MdSnackBar } from '@angular/material';
@@ -11,29 +11,32 @@ import { MdSnackBar } from '@angular/material';
 })
 
 export class DeleteCategoryDialogComponent {
-    categoryToDelete: Category;
+    category: Category;
     categoryArray: Category[] = new Array<Category>();
     constructor(private categoryService: CategoryService, private dialog: MdDialog, private snackBar: MdSnackBar) {
     }
 
     // A method to remove a category from dashboard
     removeCategoryOperation() {
-        this.categoryService.removeCategory(this.categoryToDelete.id).subscribe(
+        this.categoryService.removeCategory(this.category.id).subscribe(
             result => {
                 if (result.status === 204) {
-                    this.categoryArray.splice(this.categoryArray.indexOf(this.categoryToDelete), 1);
-                    this.snackBar.open('Category Successfully Removed', 'Dismiss', {
-                        duration: 3000,
-                    })
+                    this.categoryArray.splice(this.categoryArray.indexOf(this.category), 1);
+                    this.openSnackBar('Category successfully removed');
                 }
             },
             err => {
-                if (err.status === 404) {
-                    this.snackBar.open('Category is not available', 'Dismiss', {
-                        duration: 3000,
-                    });
-                }
+                this.openSnackBar('Something went wrong. Please try again later');
             });
         this.dialog.closeAll();
+    }
+
+    /**
+     * Open snackbar
+     */
+    openSnackBar(message: string) {
+        let snackBarRef = this.snackBar.open(message, 'Dismiss', {
+            duration: 3000,
+        });
     }
 }
