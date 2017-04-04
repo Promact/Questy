@@ -59,7 +59,7 @@ export class QuestionsDashboardComponent implements OnInit {
     addCategoryDialog() {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
-            if (categoryToAdd !== null)
+            if (categoryToAdd !== null && categoryToAdd !== undefined)
                 this.categoryArray.push(categoryToAdd);
         });
     }
@@ -70,7 +70,7 @@ export class QuestionsDashboardComponent implements OnInit {
         let renameDialogRef = this.dialog.open(RenameCategoryDialogComponent);
         renameDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
         renameDialogRef.afterClosed().subscribe(updatedCategory => {
-            if (updatedCategory !== null) {
+            if (updatedCategory !== null && updatedCategory !== undefined) {
                 categoryToUpdate.categoryName = updatedCategory.categoryName;
             }
         });
