@@ -62,11 +62,11 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTestSettings([FromRoute] int id)
         {
-            var settings = await _testRepository.GetTestSettingsAsync(id);
-            if (settings == null)
+            var testSettings = await _testRepository.GetTestSettingsAsync(id);
+            if (testSettings == null)
                 return NotFound();
             else
-                return Ok(settings);
+                return Ok(testSettings);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] TestSettingsAC testSettingsAC)
         {
-            if (!await _testRepository.TestSettingsExists(id))
+            if (!await _testRepository.IsTestExists(id))
                 return NotFound();
             if (ModelState.IsValid)
             {

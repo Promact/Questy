@@ -35,8 +35,8 @@ export class TestSettingsComponent implements OnInit {
         this.validTime = false;
         this.validStartDate = false;
         this.currentDate = new Date();
-        this.testNameUpdationMessage = "Test Name has been successfully updated";
-        this.settingsUpdationMessage = "Data has been updated successfully";
+        this.testNameUpdationMessage = "Test Name has been updated successfully";
+        this.settingsUpdationMessage = "The settings of the Test has been updated successfully";
     }
 
     /**
@@ -63,7 +63,7 @@ export class TestSettingsComponent implements OnInit {
      * @param id contains the value of the Id from the route
      */
     getTestSettings(id: number) {
-        this.testService.getSettings(id).subscribe((response) => {
+        this.testService.getTestSettings(id).subscribe((response) => {
             this.testsettings = (response);
         });
     }
@@ -82,8 +82,8 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      * @param value contains the Test Name of the Test which is to be edited 
      */
-    testNameUpdation(id: number, testObject: Test, value: string) {
-        this.testService.updateSettings(id, testObject).subscribe((response) => {
+    updateTestName(id: number, testObject: Test, value: string) {
+        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
             this.openSnackBar(this.testNameUpdationMessage);
         });
     }
@@ -92,14 +92,14 @@ export class TestSettingsComponent implements OnInit {
      * Checks the End Date and Time is valid or not
      * @param endDate contains ths the value of the field End Date and Time
      */
-    validEndDateChecking(endDate: Date) {
+    isEndDateValid(endDate: Date) {
         this.testsettings.startDate > endDate ? this.validEndDate = true : this.validEndDate = false;
     }
 
     /**
      * Checks whether the Start Date selected is valid or not
      */
-    validStartDateChecking() {
+    isStartDateValid() {
         new Date(this.testsettings.startDate) < this.currentDate || this.testsettings.startDate > this.testsettings.endDate ? this.validStartDate = true : this.validStartDate = false;
     }
 
@@ -116,7 +116,7 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.testService.updateSettings(id, testObject).subscribe((response) => {
+        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
             this.openSnackBar(this.settingsUpdationMessage);
         });
         let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
