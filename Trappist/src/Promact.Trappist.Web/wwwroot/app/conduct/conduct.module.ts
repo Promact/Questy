@@ -8,6 +8,8 @@ import { conductRouting } from './conduct.routing';
 import { ConductComponent } from './conduct.component';
 import { RegisterComponent } from './register/register.component';
 import { InstructionsComponent } from './instructions/instructions.component';
+import { TestSummaryComponent } from './test-summary/test-summary.component';
+import { TestEndComponent } from './test-end/test-end.component';
 
 @NgModule({
     bootstrap: [ConductComponent],
@@ -23,7 +25,9 @@ import { InstructionsComponent } from './instructions/instructions.component';
     declarations: [
         ConductComponent,
         RegisterComponent,
-        InstructionsComponent
+        InstructionsComponent,
+        TestSummaryComponent,
+        TestEndComponent
     ]
 })
 export class ConductModule { }
