@@ -19,22 +19,20 @@ export class TestsDashboardComponent {
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
     searchTest: string;
-    
+
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.getAllTests();
     }
     // get All The Tests From Server
     getAllTests() {
-        this.testService.getTests().subscribe((response) => { this.Tests = (response);});
+        this.testService.getTests().subscribe((response) => { this.Tests = (response); });
     }
     // open Create Test Dialog
     createTestDialog() {
         let dialogRef = this.dialog.open(TestCreateDialogComponent);
         dialogRef.afterClosed().subscribe(test => {
-            if (test) {
-                console.log(test);
+            if (test)
                 this.Tests.push(test);
-            }
         });
     }
     // Open Delete Test Dialog
