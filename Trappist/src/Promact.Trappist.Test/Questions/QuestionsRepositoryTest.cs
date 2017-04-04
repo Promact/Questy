@@ -43,14 +43,14 @@ namespace Promact.Trappist.Test.Questions
 
             QuestionAC codingQuestion = new QuestionAC
             {
-                Question = new DomainModel.Models.Question.Question
+                Question = new QuestionDetailAC
                 {
                     QuestionDetail = "<h1>Write a program to add two number</h1>",
                     CategoryID = category.Entity.Id,
                     DifficultyLevel = DomainModel.Enum.DifficultyLevel.Easy,
                     QuestionType = DomainModel.Enum.QuestionType.Programming
                 },
-                CodeSnippetQuestionAC = new CodeSnippetQuestionAC
+                CodeSnippetQuestion = new CodeSnippetQuestionAC
                 {
                     CheckCodeComplexity = true,
                     CheckTimeComplexity = true,
@@ -58,7 +58,7 @@ namespace Promact.Trappist.Test.Questions
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false
                 },
-                SingleMultipleAnswerQuestionAC = null
+                SingleMultipleAnswerQuestion = null
             };
 
             return codingQuestion;
