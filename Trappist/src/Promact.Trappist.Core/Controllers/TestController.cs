@@ -78,7 +78,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] TestSettingsAC testSettingsAC)
         {
-            if (await _testRepository.TestSettingsExists(id))
+            if (!await _testRepository.TestSettingsExists(id))
                 return NotFound();
             if (ModelState.IsValid)
             {
