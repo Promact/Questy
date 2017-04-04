@@ -7,7 +7,7 @@ import { QuestionsDashboardComponent } from './questions-dashboard/questions-das
 import { AddCategoryDialogComponent } from './questions-dashboard/add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './questions-dashboard/delete-category-dialog.component';
 import { DeleteQuestionDialogComponent } from './questions-dashboard/delete-question-dialog.component';
-import { QuestionsSingleMultipleAnswerComponent } from './questions-single-multiple-answer/questions-single-multiple-answer.component';
+import { SingleMultipleAnswerQuestionComponent } from './questions-single-multiple-answer/questions-single-multiple-answer.component';
 import { QuestionsProgrammingComponent } from './questions-programming/questions-programming.component';
 import { QuestionsService } from './questions.service';
 import { CategoryService } from './categories.service';
@@ -20,7 +20,7 @@ import { CategoryService } from './categories.service';
         QuestionsComponent,
         QuestionsDashboardComponent,
         AddCategoryDialogComponent,
-        QuestionsSingleMultipleAnswerComponent,
+        SingleMultipleAnswerQuestionComponent,
         RenameCategoryDialogComponent,
         QuestionsProgrammingComponent,
         DeleteCategoryDialogComponent,

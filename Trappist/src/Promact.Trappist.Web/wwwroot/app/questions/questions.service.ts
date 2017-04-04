@@ -8,7 +8,7 @@ export class QuestionsService {
     private questionsApiUrl = 'api/question';
 
     constructor(private httpService: HttpService) {
-        
+
     }
 
     /**
@@ -23,7 +23,6 @@ export class QuestionsService {
      *To get list of Questions
      */
     getQuestions() {
-         return this.httpService.get(this.questionsApiUrl);
+        return this.httpService.get(this.questionsApiUrl);
     }
-    
 }
