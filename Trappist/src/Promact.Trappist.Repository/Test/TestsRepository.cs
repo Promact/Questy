@@ -92,7 +92,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>A bool value based on the condition is satisfied or not</returns>
         public async Task<bool> TestSettingsExists(int id)
         {
-            return await _dbContext.Test.AnyAsync(check => check.Id != id);
+            return await _dbContext.Test.AnyAsync(check => check.Id == id);
         }
     }
 }
