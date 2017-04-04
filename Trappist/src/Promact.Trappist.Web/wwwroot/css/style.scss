@@ -1527,7 +1527,7 @@ footer {
     border: 1px solid $color_border;
     padding: 40px;
 
-    .tc-subtitle {
+    .test-conduct-subtitle {
       color: $color_base_secondary;
       margin: 8px 0 30px;
     }
@@ -1547,17 +1547,15 @@ footer {
       width: 100%;
       border: 1px solid $color_border;
 
-      tr {
-        th,
-        td {
-          padding: 15px 30px;
-          text-align: center;
-        }
+      th,
+      td {
+        padding: 15px 30px;
+        text-align: center;
+      }
 
-        th {
-          background-color: $color_bg_secondary;
-          border-bottom: 1px solid $color_border;
-        }
+      th {
+        background-color: $color_bg_secondary;
+        border-bottom: 1px solid $color_border;
       }
     }
 
