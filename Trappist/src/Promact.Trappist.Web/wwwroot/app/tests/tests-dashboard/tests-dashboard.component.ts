@@ -31,8 +31,10 @@ export class TestsDashboardComponent {
     createTestDialog() {
         let dialogRef = this.dialog.open(TestCreateDialogComponent);
         dialogRef.afterClosed().subscribe(test => {
-            if (test != null) 
+            if (test) {
+                console.log(test)
                 this.Tests.push(test);
+            }
         });
     }
     // Open Delete Test Dialog
