@@ -32,7 +32,7 @@ export class TestsDashboardComponent {
         let dialogRef = this.dialog.open(TestCreateDialogComponent);
         dialogRef.afterClosed().subscribe(test => {
             if (test) {
-                console.log(test)
+                console.log(test);
                 this.Tests.push(test);
             }
         });
