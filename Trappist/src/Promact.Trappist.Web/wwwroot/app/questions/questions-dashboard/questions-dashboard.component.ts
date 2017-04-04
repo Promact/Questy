@@ -18,8 +18,7 @@ import { RenameCategoryDialogComponent } from './rename-category-dialog.componen
 })
 
 export class QuestionsDashboardComponent implements OnInit {
-    private category: Category;
-
+    category: Category;
     showSearchInput: boolean;
     questionDisplay: Question[] = new Array<Question>();
     categoryArray: Category[] = new Array<Category>();
