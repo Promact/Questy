@@ -56,7 +56,7 @@ namespace Promact.Trappist.Utility.EmailServices
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false; //issue in sending mail
             }
