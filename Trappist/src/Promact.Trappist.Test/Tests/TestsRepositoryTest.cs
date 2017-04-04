@@ -4,9 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.Tests;
 using System.Linq;
 using System.Threading.Tasks;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
-using AutoMapper;
-using System;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -14,9 +11,9 @@ namespace Promact.Trappist.Test.Tests
     public class TestsRepositoryTest : BaseTest
     {
         private readonly ITestsRepository _testRepository;
-        
+
         public TestsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
-        {   
+        {
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
         }
 
@@ -89,22 +86,14 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task UpdateTestSettingsById()
         {
-            try
-            {
-                var test = CreateTest("AOT 669");
-                await _testRepository.CreateTestAsync(test);
-                var settingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
-                settingsToUpdate.TestName = "IIT BANGALORE";
-                var testObject = Mapper.Map<DomainModel.Models.Test.Test, TestSettingsAC>(settingsToUpdate);
-                await _testRepository.UpdateTestSettingsAsync(testObject);
-                var TestName = "IIT BANGALORE";
-                await _trappistDbContext.SaveChangesAsync();
-                Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("An error occurred", e);
-            }
+            var test = CreateTest("AOT 669");
+            await _testRepository.CreateTestAsync(test);
+            var settingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+            settingsToUpdate.TestName = "IIT BANGALORE";
+            await _testRepository.UpdateTestSettingsAsync(settingsToUpdate);
+            var TestName = "IIT BANGALORE";
+            await _trappistDbContext.SaveChangesAsync();
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
         }
 
         private DomainModel.Models.Test.Test CreateTest(string testName)

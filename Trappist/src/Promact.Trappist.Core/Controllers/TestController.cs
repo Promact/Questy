@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using System.Threading.Tasks;
@@ -73,17 +72,17 @@ namespace Promact.Trappist.Core.Controllers
         /// Updates the changes made to the settings of a Test
         /// </summary>
         /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
-        /// <param name="testSettingsAC">The parameter "testSettingsAC" is an object of TestSettingsAC</param>
+        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>     
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] TestSettingsAC testSettingsAC)
+        public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
         {
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
             if (ModelState.IsValid)
             {
-                await _testRepository.UpdateTestSettingsAsync(testSettingsAC);
-                return Ok(testSettingsAC);
+                await _testRepository.UpdateTestSettingsAsync(testObject);
+                return Ok(testObject);
             }
             else
                 return BadRequest();

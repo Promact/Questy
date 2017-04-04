@@ -23,7 +23,6 @@ using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestSettings;
 using Promact.Trappist.Repository.Account;
 using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
 using Promact.Trappist.DomainModel.Models.Test;
@@ -156,7 +155,6 @@ namespace Promact.Trappist.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
-                cfg.CreateMap<TestSettingsAC, Test>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC,List<SingleMultipleAnswerQuestionOption>>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
