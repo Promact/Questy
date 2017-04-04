@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/question")]
+    [Authorize]
     public class QuestionController : Controller
     {
         private readonly IQuestionRespository _questionsRepository;
@@ -25,7 +26,6 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns added question
         /// </returns>
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid)

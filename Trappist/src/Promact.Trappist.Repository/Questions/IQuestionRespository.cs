@@ -9,8 +9,9 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// A method to add single multiple answer question.
         /// </summary>
-        /// <param name="questionAC"></param>
-        /// <returns>Returns object of QuestionAC</returns>
+        /// <param name="questionAC">Object of QuestionAC</param>
+        /// <param name="userEmail">Email id of user</param>
+        /// <returns>Return object of QuestionAC</returns>
         Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail);
 
         /// <summary>

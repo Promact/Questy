@@ -2,13 +2,12 @@
 import { QuestionType } from './enum-questiontype';
 import { Category } from './category.model';
 import { SingleMultipleAnswerQuestionOption } from './single-multiple-answer-question-option.model';
-import { SingleMultipleAnswerQuestion } from './single-multiple-answer-question.model';
 
-export class SingleMultipleQuestion {
-    singleMultipleAnswerQuestion: SingleMultipleAnswerQuestion;
+export class SingleMultipleAnswerQuestion {
+    id: number;
     singleMultipleAnswerQuestionOption: Array<SingleMultipleAnswerQuestionOption>;
+
     constructor() {
-        this.singleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion();
         this.singleMultipleAnswerQuestionOption = new Array<SingleMultipleAnswerQuestionOption>();
     }
 }

@@ -21,7 +21,7 @@ namespace Promact.Trappist.Web.Models
         public DateTime CreateDateTime { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime? UpdatedateTime { get; set; }
+        public DateTime? UpdatedDateTime { get; set; }
 
         public virtual ICollection<Question> Question { get; set; } 
     }

@@ -23,7 +23,7 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        ///Method to get all the Questions
+        /// Method to get all the Questions
         /// </summary>
         /// <returns>Question list</returns>
         public async Task<ICollection<Question>> GetAllQuestionsAsync()
@@ -32,14 +32,15 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        /// A method to add single multiple answer question.
+        /// A method to add single multiple answer Question.
         /// </summary>
         /// <param name="questionAC">Object of QuestionAC</param>
+        /// <param name="userEmail">Email id of user</param>
         /// <returns>Returns object of QuestionAC</returns>
-        public async Task<QuestionAC>  AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail)
+        public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            var singleMultipleQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC,SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
+            var singleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
             question.ApplicationUser = await _userManager.FindByEmailAsync(userEmail);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
@@ -49,21 +50,21 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Add single/multiple question and option
-                singleMultipleQuestion.Question = question;
-                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleQuestion);
+                singleMultipleAnswerQuestion.Question = question;
+                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleAnswerQuestion);
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
-            }            
-            return(questionAC);
+            }
+            return (questionAC);
         }
 
         /// <summary>
-        /// Add new code snippet question to the database
+        /// Add new code snippet Question to the database
         /// </summary>
         /// <param name="questionAC">Question data transfer object</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC)
         {
-            var codeSnippetQuestion =questionAC.CodeSnippetQuestion;
+            var codeSnippetQuestion = questionAC.CodeSnippetQuestion;
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
@@ -76,7 +77,6 @@ namespace Promact.Trappist.Repository.Questions
                 codeSnippetQuestion.Id = question.Id;
                 await _dbContext.CodeSnippetQuestion.AddAsync(questionAC.CodeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
-
                 var languageIdList = await _dbContext.CodingLanguage.Select(x => x.Id).ToListAsync();
 
                 //Map language to codeSnippetQuestion
@@ -88,7 +88,6 @@ namespace Promact.Trappist.Repository.Questions
                         LanguageId = languageId
                     });
                 }
-
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
