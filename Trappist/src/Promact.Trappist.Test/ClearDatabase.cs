@@ -9,6 +9,7 @@ namespace Promact.Trappist.Test
     {
         public static void ClearDatabaseAndSeed(TrappistDbContext dbContext)
         {
+            dbContext.Database.EnsureDeleted();
             //seed data will go here.
             var Languages = new CodingLanguage[]
             {
