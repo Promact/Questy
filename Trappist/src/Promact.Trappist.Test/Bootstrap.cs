@@ -55,7 +55,6 @@ namespace Promact.Trappist.Test
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<TrappistDbContext>().AddDefaultTokenProviders();
             services.AddScoped<IQuestionRespository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
