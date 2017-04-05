@@ -28,6 +28,23 @@ namespace Promact.Trappist.Test.Questions
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
+        
+        /// <summary>
+        ///Test to gett all questions 
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task GetAllQuestionsAsyncTest()
+        {
+            string userName = "sandipan@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+            var result = await _questionRepository.GetAllQuestionsAsync();
+            Assert.True(result.Count() == 1);
+        }
 
         /// <summary>
         /// Test to add single answer Question
