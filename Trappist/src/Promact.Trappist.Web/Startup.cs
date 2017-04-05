@@ -26,6 +26,7 @@ using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
+using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.IO;
