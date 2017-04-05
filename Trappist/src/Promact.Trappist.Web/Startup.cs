@@ -22,21 +22,12 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.Repository.Account;
-using Promact.Trappist.DomainModel.ApplicationClasses.SingleMultipleAnswerQuestionApplicationClass;
-using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.IO;
-using Promact.Trappist.Utility.GlobalUtil;
 
 namespace Promact.Trappist.Web
 {
