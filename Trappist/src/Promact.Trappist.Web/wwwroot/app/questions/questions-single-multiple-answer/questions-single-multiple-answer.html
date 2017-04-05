@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="actions-area">
-                <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
+                <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
             </div>
         </form>
