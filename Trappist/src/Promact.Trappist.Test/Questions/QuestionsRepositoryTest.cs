@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Web.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,6 +26,66 @@ namespace Promact.Trappist.Test.Questions
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+        }
+
+        /// <summary>
+        /// Test to add single multiple answer Question
+        /// </summary>
+        [Fact]
+        public async Task AddSingleMultipleAnswerQuestionAsync()
+        {
+            var singleMultipleAnswerQuestion = await CreateSingleMultipleAnswerQuestion();
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleMultipleAnswerQuestion, "vihar@promactinfo.com");
+            Assert.True(_trappistDbContext.Question.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
+        }
+
+        /// <summary>
+        /// Creating single multiple answer Question
+        /// </summary>
+        /// <returns>Object of single multiple answer Question</returns>
+        private async Task<QuestionAC> CreateSingleMultipleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var singleMultipleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Single
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return singleMultipleAnswerQuestion;
         }
 
         /// <summary>
@@ -56,8 +121,8 @@ namespace Promact.Trappist.Test.Questions
                 {
                     QuestionDetail = "<h1>Write a program to add two number</h1>",
                     CategoryID = category.Entity.Id,
-                    DifficultyLevel = DomainModel.Enum.DifficultyLevel.Easy,
-                    QuestionType = DomainModel.Enum.QuestionType.Programming
+                    DifficultyLevel = DifficultyLevel.Easy,
+                    QuestionType = QuestionType.Programming
                 },
                 CodeSnippetQuestion = new CodeSnippetQuestionAC
                 {
@@ -69,7 +134,6 @@ namespace Promact.Trappist.Test.Questions
                 },
                 SingleMultipleAnswerQuestion = null
             };
-
             return codingQuestion;
         }
 
@@ -83,7 +147,6 @@ namespace Promact.Trappist.Test.Questions
             {
                 CategoryName = "Test Category"
             };
-
             return category;
         }
     }
