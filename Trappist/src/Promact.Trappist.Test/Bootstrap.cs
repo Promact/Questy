@@ -26,6 +26,7 @@ using Promact.Trappist.Web.Models;
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Moq;
+using Promact.Trappist.Utility.GlobalUtil;
 
 namespace Promact.Trappist.Test
 {
@@ -77,6 +78,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
+            services.AddScoped<IGlobalUtil, GlobalUtil>();
             #endregion
 
             #region Mocking
