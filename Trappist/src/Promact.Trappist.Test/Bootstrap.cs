@@ -20,13 +20,9 @@ using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.DbUtil;
-using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
-using Microsoft.AspNetCore.Hosting;
-using Moq;
-using Promact.Trappist.Utility.GlobalUtil;
 
 namespace Promact.Trappist.Test
 {
@@ -71,7 +67,7 @@ namespace Promact.Trappist.Test
             #endregion
 
             #region Dependencies       
-            services.AddScoped<IQuestionRespository, QuestionRepository>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITestsRepository, TestsRepository>();
             services.AddScoped<IStringConstants, StringConstants>();
