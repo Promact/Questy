@@ -60,7 +60,7 @@ export class QuestionsDashboardComponent implements OnInit {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
             if (categoryToAdd !== null && categoryToAdd !== undefined)
-                this.categoryArray.push(categoryToAdd);
+                this.categoryArray.unshift(categoryToAdd);
         });
     }
 
