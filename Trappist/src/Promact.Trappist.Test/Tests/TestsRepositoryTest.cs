@@ -92,7 +92,6 @@ namespace Promact.Trappist.Test.Tests
             settingsToUpdate.TestName = "IIT BANGALORE";
             await _testRepository.UpdateTestSettingsAsync(settingsToUpdate);
             var TestName = "IIT BANGALORE";
-            await _trappistDbContext.SaveChangesAsync();
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
         }
 
