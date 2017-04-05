@@ -8,6 +8,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Questions;
 using System;
 using System.Collections.Generic;
+using Promact.Trappist.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;

@@ -14,7 +14,7 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
     templateUrl: 'questions-single-multiple-answer.html'
 })
 
-export class SingleMultipleAnswerQuestionComponent {
+export class SingleMultipleAnswerQuestionComponent implements OnInit {
     value: number;
     categoryName: string;
     noOfOptionShown: number;
