@@ -5,15 +5,18 @@ import { Test } from './tests.model';
 
 export class TestService {
     private testApiUrl = 'api/tests';
+    private testNameUpdateApiUrl = 'api/tests/id';
     private testNameApiUrl = 'api/tests/isUnique';
     constructor(private httpService: HttpService) {
     }
+
     /**
      * get list of tests
      */
     getTests() {
         return this.httpService.get(this.testApiUrl);
     }
+
     /**
      * add new test
      * @param url
@@ -22,6 +25,7 @@ export class TestService {
     addTests(test: any) {
         return this.httpService.post(this.testApiUrl, test);
     }
+
     /**
      * get response whether test name is unique or not
      * @param testName is name of the test
@@ -35,7 +39,7 @@ export class TestService {
      * @param id is used to get the Settings of a Test by its Id
      */
     getTestSettings(id: number) {
-        return this.httpService.get(this.testApiUrl + '/' + id);
+        return this.httpService.get(this.testApiUrl + '/' + id + '/' + 'settings');
     }
 
     /**
@@ -44,6 +48,15 @@ export class TestService {
      * @param body is used as an object for the Model Test
      */
     updateTestSettings(id: number, body: Test) {
-        return this.httpService.put(this.testApiUrl + '/' + id, body);
+        return this.httpService.put(this.testApiUrl + '/' + id + '/' + 'settings', body);
+    }
+
+    /**
+     * Updates the edited Test Name
+     * @param id is used to access the Name of that Test
+     * @param body is used as an object for the Model Test
+     */
+    updateTestName(id: number, body: Test) {
+        return this.httpService.put(this.testNameUpdateApiUrl + '/' + id, body);
     }
 }

@@ -53,12 +53,26 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         /// <summary>
+        /// Updates the edited Test Name
+        /// </summary>
+        /// <param name="id">The parameter "id" takes takes the value of the Id from the route</param>
+        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
+        /// <returns>Updated Test Name</returns>
+        public async Task UpdateTestNameAsync(int id, Test testObject)
+        {
+            var testSettingsToUpdate = _dbContext.Test.FirstOrDefault(x => x.Id == id);
+            testSettingsToUpdate.TestName = testObject.TestName;
+            _dbContext.Test.Update(testSettingsToUpdate);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Updates the changes made to the settings of a Test
         /// </summary>
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>
         public async Task UpdateTestSettingsAsync(Test testObject)
-        {       
+        {
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }

@@ -58,7 +58,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
         /// <returns>Settings saved for the selected Test</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}/settings")]
         public async Task<IActionResult> GetTestSettings([FromRoute] int id)
         {
             var testSettings = await _testRepository.GetTestSettingsAsync(id);
@@ -69,12 +69,32 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
+        /// Updates the edited Test Name
+        /// </summary>
+        /// <param name="id">The parameter "id" is used to access the name of the selected Test</param>
+        /// <param name="testObject">The parameter "testObject" is an Object of Test</param>
+        /// <returns>Updated Test Name</returns>
+        [HttpPut("id/{id}")]
+        public async Task<IActionResult> UpdateTestName([FromRoute]int id, [FromBody] Test testObject)
+        {
+            if (!await _testRepository.IsTestExists(id))
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+                await _testRepository.UpdateTestNameAsync(id, testObject);
+                return Ok(testObject);
+            }
+            else
+                return BadRequest();
+        }
+
+        /// <summary>
         /// Updates the changes made to the settings of a Test
         /// </summary>
         /// <param name="id">The parameter "id" is used to access the Settings of that Test</param>
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>     
-        [HttpPut("{id}")]
+        [HttpPut("{id}/settings")]
         public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
         {
             if (!await _testRepository.IsTestExists(id))

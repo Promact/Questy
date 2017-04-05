@@ -20,23 +20,17 @@ export class TestSettingsComponent implements OnInit {
     validStartDate: boolean;
     currentDate: Date;
     editName: string;
-    testNameUpdationMessage: string;
-    settingsUpdationMessage: string;
+    testNameUpdatedMessage: string;
+    testSettingsUpdatedMessage: string;
 
-    /**
-     * Open Launch Test Dialog
-     * @param dialog is responsible for opening the Dialog box
-     * @param testSettingService is used to get the Url from the testsettings.service file
-     * @param route is used to take the value of Id from the active route
-     */
     constructor(public dialog: MdDialog, private testService: TestService, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testsettings = new Test();
         this.validEndDate = false;
         this.validTime = false;
         this.validStartDate = false;
         this.currentDate = new Date();
-        this.testNameUpdationMessage = "Test Name has been updated successfully";
-        this.settingsUpdationMessage = "The settings of the Test has been updated successfully";
+        this.testNameUpdatedMessage = "Test Name has been updated successfully";
+        this.testSettingsUpdatedMessage = "The settings of the Test has been updated successfully";
     }
 
     /**
@@ -57,7 +51,6 @@ export class TestSettingsComponent implements OnInit {
         });
     }
 
-    //Gets the Settings saved for a particular Test
     /**
      * Gets the Settings saved for a particular Test
      * @param id contains the value of the Id from the route
@@ -80,11 +73,10 @@ export class TestSettingsComponent implements OnInit {
      * Updates the Edited Test Name in the Database om removing focus
      * @param id contains the value of the Id from the route
      * @param testObject is an object of class Test
-     * @param value contains the Test Name of the Test which is to be edited 
      */
-    updateTestName(id: number, testObject: Test, value: string) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
-            this.openSnackBar(this.testNameUpdationMessage);
+    updateTestName(id: number, testObject: Test) {
+        this.testService.updateTestName(id, testObject).subscribe((response) => {
+            this.openSnackBar(this.testNameUpdatedMessage);
         });
     }
 
@@ -106,7 +98,7 @@ export class TestSettingsComponent implements OnInit {
     /**
      * Checks whether the Warning Time set is valid
      */
-    validWarningTimeChecking() {
+    isWarningTimeValid() {
         this.testsettings.warningTime >= this.testsettings.duration ? this.validTime = true : this.validTime = false;
     }
 
@@ -117,11 +109,9 @@ export class TestSettingsComponent implements OnInit {
      */
     launchTestDialog(id: number, testObject: Test) {
         this.testService.updateTestSettings(id, testObject).subscribe((response) => {
-            this.openSnackBar(this.settingsUpdationMessage);
+            this.openSnackBar(this.testSettingsUpdatedMessage);
         });
         let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-        instance.settingObject = testObject;
+        instance.testSettingObject = testObject;
     }
 }
-
-

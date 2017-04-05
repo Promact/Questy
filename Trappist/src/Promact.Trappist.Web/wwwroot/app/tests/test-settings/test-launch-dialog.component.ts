@@ -8,10 +8,10 @@ import { Test } from '../tests.model';
 })
 export class TestLaunchDialogComponent {
     copiedContent: boolean;
-    settingObject: Test;
+    testSettingObject: Test;
 
     constructor() {
-        this.settingObject = new Test();
+        this.testSettingObject = new Test();
         this.copiedContent = true;
     }
 }
