@@ -7,14 +7,14 @@
     <div class="form-group">
       <label class="h4">Global URL</label>
       <div class="url-container">
-        <input type="text" class="form-control" [(ngModel)]="settingObject.link" name="Test Link" />
-        <em class="material-icons" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">content_copy</em>
+        <input type="text" class="form-control" [(ngModel)]="testSettingObject.link" name="Test Link" />
+        <em class="material-icons" ngxClipboard [cbContent]="testSettingObject.link" (cbOnSuccess)="copiedContent = true">content_copy</em>
       </div>
       <div class="errors-container"></div>
     </div>
   </md-dialog-content>
   <md-dialog-actions>
     <button type="button" class="btn" md-dialog-close>Close</button>
-    <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="settingObject.link" (cbOnSuccess)="copiedContent = true">Copy</button>
+    <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="testSettingObject.link" (cbOnSuccess)="copiedContent = true">Copy</button>
   </md-dialog-actions>
 </div>

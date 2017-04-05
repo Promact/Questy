@@ -1,5 +1,4 @@
-﻿
-using Xunit;
+﻿using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.Tests;
 using System.Linq;
@@ -88,10 +87,27 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
-            var settingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
-            settingsToUpdate.TestName = "IIT BANGALORE";
-            await _testRepository.UpdateTestSettingsAsync(settingsToUpdate);
+            var testSettingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+            testSettingsToUpdate.TestName = "IIT BANGALORE";
+            testSettingsToUpdate.BrowserTolerance = 2;
+            await _testRepository.UpdateTestSettingsAsync(testSettingsToUpdate);
             var TestName = "IIT BANGALORE";
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
+            Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == 2) == 1);
+        }
+
+        /// <summary>
+        /// Updates the name of the Test with the help of Id
+        /// </summary>
+        [Fact]
+        public async Task UpdateTestName()
+        {
+            var test = CreateTest("AOT 669");
+            await _testRepository.CreateTestAsync(test);
+            var testNameToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+            testNameToUpdate.TestName = "MCKV";
+            await _testRepository.UpdateTestNameAsync(test.Id,testNameToUpdate);
+            var TestName = "MCKV";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
         }
 
@@ -99,7 +115,8 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = new DomainModel.Models.Test.Test
             {
-                TestName = testName
+                TestName = testName,
+                BrowserTolerance = 1
             };
             return test;
         }

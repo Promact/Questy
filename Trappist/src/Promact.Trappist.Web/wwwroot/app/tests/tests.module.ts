@@ -10,7 +10,6 @@ import { TestLaunchDialogComponent } from './test-settings/test-launch-dialog.co
 import { TestSectionsComponent } from './test-sections/test-sections.component';
 import { TestService } from './tests.service';
 import { FilterPipe } from './tests-dashboard/test-dashboard.pipe';
-import { TestSettingService } from './testsetting.service';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { TestViewComponent } from './test-view/test-view.component';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -41,7 +40,6 @@ import { Test } from './tests.model';
     ],
     providers: [
         TestService,
-        TestSettingService,
         Test
     ]
 })

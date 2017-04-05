@@ -5,7 +5,7 @@
         <span [hidden]="editName">{{testsettings.testName}}</span>
         <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test"
                [(ngModel)]="testsettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focusout)="editName = !editName"
-               [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="updateTestName(testsettings.id,testsettings,testsettings.testName)" />
+               [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="updateTestName(testsettings.id,testsettings)" />
         <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
         <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>
         <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.maxlength">Test Name should not exceed 150 characters</span>
@@ -95,7 +95,7 @@
       </div>
       <div class="form-group">
         <label class="h4">Warning Time (mins)</label>
-        <input type="number" class="form-control small-width" placeholder="00" [(ngModel)]="testsettings.warningTime" name="Warning Time" min="0" (click)="validWarningTimeChecking()" />
+        <input type="number" class="form-control small-width" placeholder="00" [(ngModel)]="testsettings.warningTime" name="Warning Time" min="0" (click)="isWarningTimeValid()" />
         <div class="errors-container">
           <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
         </div>

@@ -25,7 +25,7 @@
                                     <a md-menu-item>Edit</a>
                                     <a md-menu-item (click)="deleteTestDialog()">Delete</a>
                                     <a md-menu-item>Duplicate</a>
-                                    <a md-menu-item [routerLink]="['settings', test.id]">Settings</a>
+                                    <a md-menu-item [routerLink]="[test.id,'settings']">Settings</a>
                                 </md-menu>
                             </div>
                             <div class="test-details">
