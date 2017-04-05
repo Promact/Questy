@@ -1,9 +1,9 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { QuestionsService } from '../questions.service';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
-import { QuestionModel } from '../question.application.model';
+import { QuestionBase } from '../question';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     selectedLanguageList: string[];
     codingLanguageList: string[];
     categoryList: Category[];
-    questionModel: QuestionModel;
+    questionModel: QuestionBase;
     formControlModel: FormControlModel;
 
     nolanguageSelected: boolean;
@@ -43,7 +43,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
-        this.questionModel = new QuestionModel();
+        this.questionModel = new QuestionBase();
         this.formControlModel = new FormControlModel();
     }
 
@@ -114,7 +114,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     /**
      * Adds difficulty to the Question
-     * @param difficulty
+     * @param difficulty : Difficulty level to select
      */
     selectDifficulty(difficulty: string) {
         this.questionModel.question.difficultyLevel = DifficultyLevel[difficulty];
@@ -140,7 +140,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     /**
      * Sends post request to add code snippet question
-     * @param codeSnippetQuestionForm : code snippet form of type ngForm
+     * @param isCodeSnippetFormValid : Validation status of code snippet form
      */
     addCodingQuestion(isCodeSnippetFormValid: boolean) {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {

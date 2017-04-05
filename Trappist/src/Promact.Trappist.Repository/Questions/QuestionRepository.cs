@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +13,10 @@ namespace Promact.Trappist.Repository.Questions
     public class QuestionRepository : IQuestionRepository
     {
         private readonly TrappistDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public QuestionRepository(TrappistDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public QuestionRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
-            _userManager = userManager;
         }
 
         /// <summary>
@@ -41,8 +37,7 @@ namespace Promact.Trappist.Repository.Questions
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            var singleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
-            question.ApplicationUser = await _userManager.FindByEmailAsync(userEmail);
+            var singleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion); 
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
@@ -60,15 +55,15 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        /// Adds new code snippet question to the database
+        /// Adds new code snippet question to the Database
         /// </summary>
         /// <param name="questionAC">QuestionAC class object</param>
-        /// <param name="userEmail">Email of logged in user</param>
-        public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail)
+        /// <param name="userId">Id of logged in user</param>
+        public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
-            var codeSnippetQuestion = questionAC.CodeSnippetQuestion;
+            var codeSnippetQuestion = Mapper.Map< CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            question.CreatedByUser = await _userManager.FindByEmailAsync(userEmail);
+            question.CreatedByUserId = userId;
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
@@ -77,8 +72,8 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Add codeSnippet part of question
-                codeSnippetQuestion.Id = question.Id;
-                await _dbContext.CodeSnippetQuestion.AddAsync(questionAC.CodeSnippetQuestion);
+                codeSnippetQuestion.Question = question;
+                await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
                 var languageIdList = await _dbContext.CodingLanguage.Select(x => x.Id).ToListAsync();
 
@@ -97,7 +92,7 @@ namespace Promact.Trappist.Repository.Questions
         }
 
         /// <summary>
-        /// Gets all the coding languages as string from the database
+        /// Gets all the coding languages as string from the Database
         /// </summary>
         /// <returns>CodingLanguageAC class object</returns>
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()

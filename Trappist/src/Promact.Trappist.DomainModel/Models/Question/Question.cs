@@ -15,9 +15,9 @@ namespace Promact.Trappist.DomainModel.Models.Question
         [Required]
         public DifficultyLevel DifficultyLevel { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string CreatedByUserId { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public string UpdatedByUserId { get; set; }
 
         public int CategoryID { get; set; }
 

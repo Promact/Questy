@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
-import { QuestionModel } from './question.application.model';
 import { Question } from './question.model';
 import { QuestionBase } from './question';
 
@@ -36,9 +35,9 @@ export class QuestionsService {
 
     /**
      * Calls API to post code snippet question
-     * @param questionModel: Coding question data transfer object
+     * @param question: QuestionBase class object 
      */
-    addCodingQuestion(questionModel: QuestionModel) {
-        return this.httpService.post(this.questionsApiUrl, questionModel);
+    addCodingQuestion(question: QuestionBase) {
+        return this.httpService.post(this.questionsApiUrl, question);
     }
 }

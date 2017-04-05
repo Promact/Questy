@@ -53,7 +53,7 @@
               <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete ngModel name="languageInput" #languageInput="ngModel">
             </md-input-container>
             <md-autocomplete #code="mdAutocomplete">
-              <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)" value="{{language}}">{{language}}</md-option>
+              <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)">{{language}}</md-option>
             </md-autocomplete>
           </md-chip-list>
           <div class="errors-container">

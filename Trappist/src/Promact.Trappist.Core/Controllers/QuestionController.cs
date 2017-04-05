@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
@@ -11,10 +13,12 @@ namespace Promact.Trappist.Core.Controllers
     public class QuestionController : Controller
     {
         private readonly IQuestionRepository _questionsRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public QuestionController(IQuestionRepository questionsRepository)
+        public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager)
         {
             _questionsRepository = questionsRepository;
+            _userManager = userManager;
         }
 
         #region Question API
@@ -26,7 +30,6 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns added Question
         /// </returns>
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid)
@@ -34,9 +37,11 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+
             if (questionAC.Question.QuestionType == QuestionType.Programming)
             {
-                await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, User.Identity.Name);
+                await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
             }
             else
             {

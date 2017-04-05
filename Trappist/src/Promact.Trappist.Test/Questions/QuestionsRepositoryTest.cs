@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.Repository.Questions;
-using System;
+using Promact.Trappist.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -12,12 +12,14 @@ namespace Promact.Trappist.Test.Questions
     [Collection("Register Dependency")]
     public class QuestionsRepositoryTest : BaseTest
     {
-        private readonly IQuestionRespository _questionRepository;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public QuestionsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             //resolve dependency to be used in tests
-            _questionRepository = _scope.ServiceProvider.GetService<IQuestionRespository>();
+            _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
+            _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
@@ -27,8 +29,15 @@ namespace Promact.Trappist.Test.Questions
         [Fact]
         public async Task AddCodeSnippetQuestionAsync()
         {
+            string userName = "deepankar@promactinfo.com";
+
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
             var codingQuestion = await CreateCodingQuestion();
-            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion);
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
             Assert.True(_trappistDbContext.Question.Count(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail) == 1);
         }
 
