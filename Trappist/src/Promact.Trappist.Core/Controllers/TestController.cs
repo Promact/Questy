@@ -74,7 +74,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">The parameter "id" is used to access the name of the selected Test</param>
         /// <param name="testObject">The parameter "testObject" is an Object of Test</param>
         /// <returns>Updated Test Name</returns>
-        [HttpPut("id/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestName([FromRoute]int id, [FromBody] Test testObject)
         {
             if (!await _testRepository.IsTestExists(id))
