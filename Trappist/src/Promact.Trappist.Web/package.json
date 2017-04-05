@@ -20,6 +20,7 @@
     "gulp-typescript": "^3.1.5",
     "gulp-uglify": "^2.1.0",
     "md2": "0.0.17",
+    "ng2-ckeditor": "^1.1.6",
     "ngx-clipboard": "^3.0.7",
     "run-sequence": "^1.2.2",
     "rxjs": "5.0.1",
