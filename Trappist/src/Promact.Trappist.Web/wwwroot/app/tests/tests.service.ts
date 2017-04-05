@@ -5,7 +5,6 @@ import { Test } from './tests.model';
 
 export class TestService {
     private testApiUrl = 'api/tests';
-    private testNameUpdateApiUrl = 'api/tests/id';
     private testNameApiUrl = 'api/tests/isUnique';
     constructor(private httpService: HttpService) {
     }
@@ -57,6 +56,6 @@ export class TestService {
      * @param body is used as an object for the Model Test
      */
     updateTestName(id: number, body: Test) {
-        return this.httpService.put(this.testNameUpdateApiUrl + '/' + id, body);
+        return this.httpService.put(this.testApiUrl + '/' + id, body);
     }
 }
