@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
 using Promact.Trappist.DomainModel.Models.Question;
-using System.Linq;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
 using System;
@@ -10,6 +9,7 @@ using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
