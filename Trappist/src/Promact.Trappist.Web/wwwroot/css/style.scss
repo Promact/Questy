@@ -85,6 +85,14 @@ h6, .h6 {
   margin-bottom: 40px;
 }
 
+.ml10 {
+  margin-left: 10px;
+}
+
+.mt6 {
+  margin-top: 6px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -824,6 +832,14 @@ footer {
           line-height: 24px;
           cursor: pointer;
 
+          span {
+            display: inline-block;
+            width: 88%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
           .material-icons {
             color: $color_base_secondary;
 
@@ -1009,6 +1025,7 @@ footer {
     .mat-checkbox-label {
       width: $full_size;
       padding-left: 15px;
+      white-space: nowrap;
 
       .form-control {
         display: inline-block;
@@ -1051,7 +1068,7 @@ footer {
 
     .form-group {
       &.answer-choices {
-        margin: 32px 0;
+        margin: 15px 0 30px;
 
         .tip {
           font-weight: 600;
