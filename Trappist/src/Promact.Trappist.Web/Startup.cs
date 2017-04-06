@@ -28,7 +28,6 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -76,7 +75,6 @@ namespace Promact.Trappist.Web
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestsRepository, TestsRepository>();           
-            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
             services.AddScoped<IDbUtility, DbUtility>();
             services.AddScoped<IFileUtility, FileUtility>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
