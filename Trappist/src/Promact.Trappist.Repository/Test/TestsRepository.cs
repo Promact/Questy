@@ -22,12 +22,25 @@ namespace Promact.Trappist.Repository.Tests
     {
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
-        private readonly IStringConstants _stringConstants;
+        private List<TestQuestion> testQuestionList;
+        private QuestionAC questionAc;
+        private List<QuestionAC> questionListAC;
+        private TestAC testACObject;
+        private List<CategoryAC> categoryListAC;
+        private TestQuestion testQuestionObj;
+        private List<Category> categoryList;
+        private bool isDeleted = false;
 
-        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants)
+
+        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
         {
             _dbContext = dbContext;
             _util = util;
+            testACObject = new TestAC();
+            testQuestionList = new List<TestQuestion>();         
+            questionListAC = new List<QuestionAC>();
+            categoryListAC = new List<CategoryAC>();
+            categoryList = new List<Category>();
             _stringConstants = stringConstants;
         }
         #region Test
@@ -96,6 +109,71 @@ namespace Promact.Trappist.Repository.Tests
             Test test = await _dbContext.Test.FindAsync(id);
             _dbContext.Test.Remove(test);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<QuestionAC>> GetAllTestCategoryQuestionsByIdAsync(int testId, int categoryId)
+        {
+            var testQuestionList = await _dbContext.TestQuestion.Where(x=>x.TestId == testId).ToListAsync();
+            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId).Include(z => z.CodeSnippetQuestion).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
+                     
+                foreach (var question in questionList)
+                {
+                    questionAc = new QuestionAC();
+                    questionAc.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+                    questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+                    questionAc.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
+                    if (testQuestionList.Exists(x=> x.QuestionId == questionAc.Question.Id))
+                        questionAc.Question.IsSelect = true;
+                questionListAC.Add(questionAc);
+                }
+            return questionListAC;
+        }
+
+        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> QuestionsToAddTest,int testId)
+        {        
+            foreach (var questionToAdd in QuestionsToAddTest)
+            {
+                var question = Mapper.Map<QuestionDetailAC, Question>(questionToAdd.Question);
+                var QuestionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == question.Id);
+                if (QuestionExistInTest != null && !questionToAdd.Question.IsSelect)
+                {
+                    _dbContext.TestQuestion.Remove(QuestionExistInTest);
+                    await _dbContext.SaveChangesAsync();
+                    isDeleted = true;
+                }
+                    
+                else if (questionToAdd.Question.IsSelect)
+                {
+                    testQuestionObj = new TestQuestion();
+                    testQuestionObj.QuestionId = question.Id;
+                    testQuestionObj.TestCategoryId = question.CategoryID;
+                    testQuestionObj.TestId = testId;
+                    if (!await _dbContext.TestQuestion.AnyAsync(x => x.QuestionId == question.Id))
+                        testQuestionList.Add(testQuestionObj);
+                }                 
+            }
+            if (testQuestionList.Count == 0 && !isDeleted)
+                return "No new questions selected..";
+            else
+            {
+                await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
+                await _dbContext.SaveChangesAsync();
+                return "Your changes saved successfully";
+            }                
+        }
+
+        public async Task<TestAC> GetTestDetailsByIdAsync(int testId)
+        {          
+            var test = await _dbContext.Test.FirstOrDefaultAsync(x=>x.Id == testId);
+            testACObject = Mapper.Map<Test, TestAC>(test);         
+            var testCategoryList =   await _dbContext.TestCategory.Where(x=>x.TestId== testId).Include(x=>x.Category).ToListAsync();
+            foreach (var testcategory in testCategoryList)
+            {
+                categoryList.Add(testcategory.Category);
+            }
+            categoryListAC = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            testACObject.CategoryACList = categoryListAC;
+            return testACObject;          
         }
         #endregion
         #region Test-Question-Selection
