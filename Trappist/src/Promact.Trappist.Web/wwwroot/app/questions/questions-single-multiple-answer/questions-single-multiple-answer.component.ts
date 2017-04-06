@@ -21,6 +21,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     isClose: boolean;
     isOptionSelected: boolean;
     isSingleAnswerQuestion: boolean;
+    isNoOfOptionOverLimit: boolean;
     categoryArray: Category[];
     difficultyLevel: string[];
     singleMultipleAnswerQuestion: QuestionBase;
@@ -73,6 +74,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (+this.value === optionIndex) {
             this.value = null;
         }
+        if (this.noOfOptionShown === 9) {
+            this.isNoOfOptionOverLimit = false;
+        }
     }
 
     /**
@@ -84,6 +88,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
         this.noOfOptionShown++;
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
+        if (this.noOfOptionShown === 10) {
+            this.isNoOfOptionOverLimit = true;
+        }
     }
 
     /**
