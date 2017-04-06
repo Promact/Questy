@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
@@ -13,13 +14,15 @@ namespace Promact.Trappist.Utility.DbUtil
         #region Private Variables
         #region Dependencies
         private readonly TrappistDbContext _trappistDbContext;
+        private readonly IHostingEnvironment _hostingEnv;
         #endregion
         #endregion
 
         #region Constructor
-        public DbUtility(TrappistDbContext trappistDbContext)
+        public DbUtility(TrappistDbContext trappistDbContext,IHostingEnvironment hostingEnv)
         {
             _trappistDbContext = trappistDbContext;
+            _hostingEnv = hostingEnv;
         }
         #endregion
 
@@ -51,6 +54,8 @@ namespace Promact.Trappist.Utility.DbUtil
 
         public void MigrateAndSeedDb()
         {
+            if (_hostingEnv.IsProduction())
+                _trappistDbContext.Database.EnsureDeleted();
             _trappistDbContext.Database.Migrate();
             _trappistDbContext.Seed();
         }
