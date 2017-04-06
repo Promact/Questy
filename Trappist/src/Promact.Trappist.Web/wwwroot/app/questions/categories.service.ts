@@ -29,4 +29,12 @@ export class CategoryService {
     updateCategory(id: number, category: Category) {
         return this.httpService.put(this.categoriesApiUrl + '/' + id, category);
     }
+
+    /**
+    * API to remove Category
+    * @param categoryId: Category id
+    */
+    removeCategory(categoryId: number) {
+        return this.httpService.delete(this.categoriesApiUrl + '/' + categoryId);
+    }
 }

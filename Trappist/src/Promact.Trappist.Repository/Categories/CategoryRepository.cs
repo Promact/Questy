@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.Models.Category;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
@@ -65,6 +66,16 @@ namespace Promact.Trappist.Repository.Categories
         public async Task<bool> IsCategoryNameExistsAsync(string categoryName, int id)
         {
             return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant().Equals(categoryName.ToLowerInvariant()) && x.Id != id);
+        }
+
+        /// <summary>
+        /// Method to remove a Category
+        /// </summary>
+        /// <param name="category">Category object</param>
+        public async Task RemoveCategoryAsync(Category category)
+        {
+            _dbContext.Category.Remove(category);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

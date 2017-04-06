@@ -39,5 +39,11 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="id">Id to get Category</param>
         /// <returns>Category object</returns>
         Task<Category> GetCategoryByIdAsync(int id);
+
+        /// <summary>
+        /// Method to remove a Category
+        /// </summary>
+        /// <param name="catagory">Category object</param>
+        Task RemoveCategoryAsync(Category category);
     }
 }

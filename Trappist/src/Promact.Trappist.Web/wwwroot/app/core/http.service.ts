@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 export class HttpService {
 
     constructor(private http: Http) {
-
     }
 
     get(url: string) {
@@ -40,7 +39,6 @@ export class HttpService {
     }
 
     delete(url: string) {
-        return this.http.delete(url).map(res => res.json());
+        return this.http.delete(url).map((res) => res);
     }
-
 }

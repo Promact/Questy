@@ -1,5 +1,4 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using System;
 using System.Linq;
@@ -80,6 +79,23 @@ namespace Promact.Trappist.Test.Category
             var isCategoryExist = CreateCategory();
             isCategoryExist.CategoryName = "Test Category";
             Assert.True(await _categoryRepository.IsCategoryNameExistsAsync(isCategoryExist.CategoryName, isCategoryExist.Id));
+        }
+
+        /// <summary>
+        /// Method to test remove Category
+        /// </summary>        
+        [Fact]
+        public async Task DeleteCategory()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            var categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(category.Id);
+            Assert.NotNull(categoryToDelete);
+            if (categoryToDelete != null)
+            {
+                await _categoryRepository.RemoveCategoryAsync(categoryToDelete);
+                Assert.Equal(0, _trappistDbContext.Category.Count());
+            }
         }
 
         /// <summary>

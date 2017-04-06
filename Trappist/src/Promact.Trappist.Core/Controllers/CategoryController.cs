@@ -3,6 +3,7 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/category")]
@@ -28,12 +29,12 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _categoryRepository.GetAllCategoriesAsync());
         }
 
-        [HttpPost]
         /// <summary>
         /// API to add Category
         ///</summary>
         /// <param name="category">Category object</param>
         /// <returns>Category object</returns>
+        [HttpPost]
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
             if (!ModelState.IsValid)
@@ -76,7 +77,27 @@ namespace Promact.Trappist.Core.Controllers
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             return Ok(category);
         }
+
+        /// <summary>
+        /// Delete API to remove a Category
+        ///</summary>
+        /// <param name="categoryId">The id of the Category to delete.</param>
+        /// <returns>No content(204) response if id found else not found(404) response</returns>
+        [HttpDelete("{categoryId}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (category != null)
+            {
+                await _categoryRepository.RemoveCategoryAsync(category);
+                return NoContent();
+            }
+            return NotFound();
+        }
         #endregion
     }
 }
-
