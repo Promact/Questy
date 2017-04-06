@@ -1,192 +1,192 @@
 ﻿<div class="container">
-  <div class="question-type programming">
-    <div class="header">
-      <h2>Question</h2>
-      <h5>Programming</h5>
+    <div class="question-type programming">
+        <div class="header">
+            <h2>Question</h2>
+            <h5>Programming</h5>
+        </div>
+        <div class="loader-container" *ngIf="!(isCategoryReady && isLanguageReady) || isFormSubmitted">
+            <div class="spinner">
+            </div>
+        </div>
+        <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)">
+            <div class="form-fields">
+                <div class="form-group">
+                    <label class="h4">Section</label>
+                    <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" ngModel required name="categorySelect" #categorySelect="ngModel">
+                        <option [disabled]="categorySelect.dirty" selected value="">Please select a category</option>
+                        <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
+                    </select>
+                    <div class="errors-container">
+                        <div *ngIf="categorySelect.errors">
+                            <div *ngIf="(categorySelect.dirty || categorySelect.touched)">
+                                <span class="error-msg">Please select a category</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="h4">Difficulty Level</label>
+                    <select class="form-control small-width" name="difficulty" (change)="selectDifficulty($event.target.value)">
+                        <option selected>Easy</option>
+                        <option>Medium</option>
+                        <option>Hard</option>
+                    </select>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label class="h4">Question Details</label>
+                    <ckeditor [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
+                    <div class="errors-container">
+                        <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
+                            <div [hidden]="!detail.errors.required">
+                                <span class="error-msg">Question detail is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="h4">Code Languages</label>
+                    <md-chip-list class="form-control width-percent-60" (click)="autocomplete.focus()">
+                        <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
+                        <md-input-container>
+                            <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete ngModel name="languageInput" #languageInput="ngModel">
+                        </md-input-container>
+                        <md-autocomplete #code="mdAutocomplete">
+                            <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)">{{language}}</md-option>
+                        </md-autocomplete>
+                    </md-chip-list>
+                    <div class="errors-container">
+                        <div *ngIf="nolanguageSelected  && (languageInput.dirty || languageInput.touched)">
+                            <span class="error-msg">Please select atleast one programming language</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="h4">Score Settings</label>
+                    <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkCodeComplexity" (change)="questionModel.codeSnippetQuestion.checkCodeComplexity = !questionModel.codeSnippetQuestion.checkCodeComplexity">Check code complexity</md-checkbox>
+                    <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkTimeComplexity" (change)="questionModel.codeSnippetQuestion.checkTimeComplexity = !questionModel.codeSnippetQuestion.checkTimeComplexity">Check time complexity</md-checkbox>
+                    <md-checkbox [checked]="questionModel.codeSnippetQuestion.runBasicTestCase" (change)="questionModel.codeSnippetQuestion.runBasicTestCase = !questionModel.codeSnippetQuestion.runBasicTestCase">Run basic test cases</md-checkbox>
+                    <md-checkbox [checked]="questionModel.codeSnippetQuestion.runCornerTestCase" (change)="questionModel.codeSnippetQuestion.runCornerTestCase = !questionModel.codeSnippetQuestion.runCornerTestCase">Run corner test cases</md-checkbox>
+                    <md-checkbox [checked]="questionModel.codeSnippetQuestion.runNecessaryTestCase" (change)="questionModel.codeSnippetQuestion.runNecessaryTestCase = !questionModel.codeSnippetQuestion.runNecessaryTestCase">Run necessary test cases</md-checkbox>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label class="h4">Test Case(s)</label>
+                    <br />
+                    <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true">Add Test Case</button>
+                    <md2-accordion>
+                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
+                            <md2-accordion-header class="collapsible-header clearfix">
+                                <div class="title-info h2 pull-left">
+                                    <span>Type: Basic</span>
+                                    <span> | </span>
+                                    <span>Title: </span>
+                                    <span> | </span>
+                                    <span>Weightage: 0</span>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="delete-option h7"><em class="material-icons">delete</em> <span>Delete</span></span>
+                                    <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+                                </div>
+                            </md2-accordion-header>
+                            <div class="collapsible-body">
+                                <div class="form-group">
+                                    <label>Test Case Title</label>
+                                    <input type="text" class="form-control width-percent-60" />
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Description</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Type</label>
+                                    <select class="form-control width-percent-60">
+                                        <option>Select Option</option>
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Marks</label>
+                                    <input type="text" class="form-control width-percent-60" placeholder="0" />
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Input Values</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Expected Values</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                            </div>
+                        </md2-accordion-tab>
+                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showNewTestCase">
+                            <md2-accordion-header class="collapsible-header clearfix">
+                                <div class="title-info h2 pull-left">
+                                    <span>Type: Basic</span>
+                                    <span> | </span>
+                                    <span>Title: </span>
+                                    <span> | </span>
+                                    <span>Weightage: 0</span>
+                                </div>
+                                <div class="pull-right">
+                                    <span class="delete-option h7"><em class="material-icons">delete</em> <span>Delete</span></span>
+                                    <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+                                </div>
+                            </md2-accordion-header>
+                            <div class="collapsible-body">
+                                <div class="form-group">
+                                    <label>Test Case Title</label>
+                                    <input type="text" class="form-control width-percent-60" />
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Description</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Type</label>
+                                    <select class="form-control width-percent-60">
+                                        <option>Select Option</option>
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Marks</label>
+                                    <input type="text" class="form-control width-percent-60" placeholder="0" />
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Input Values</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Test Case Expected Values</label>
+                                    <textarea class="form-control width-percent-60" rows="3"></textarea>
+                                    <div class="errors-container"></div>
+                                </div>
+                            </div>
+                        </md2-accordion-tab>
+                    </md2-accordion>
+                    <button type="button" class="add-testcase-btn h2" [hidden]="!formControlModel.showTestCase" (click)="formControlModel.showNewTestCase=true">Add New Test Case</button>
+                </div>
+            </div>
+            <div class="actions-area">
+                <button type="button" class="btn" [routerLink]="['/questions']">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected">Save</button>
+            </div>
+        </form>
     </div>
-    <div class="loader-container" *ngIf="!(isCategoryReady && isLanguageReady) || isFormSubmitted">
-      <div class="spinner">
-      </div>
-    </div>
-    <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)">
-      <div class="form-fields">
-        <div class="form-group">
-          <label class="h4">Section</label>
-          <select class="form-control half-width" id="categorySelect" (change)="selectCategory($event.target.value)" ngModel required name="categorySelect" #categorySelect="ngModel">
-            <option [disabled]="categorySelect.dirty" selected value="">Please select a category</option>
-            <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
-          </select>
-          <div class="errors-container">
-            <div *ngIf="categorySelect.errors">
-              <div *ngIf="(categorySelect.dirty || categorySelect.touched)">
-                <p class="text-danger">Please select a category</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="h4">Difficulty Level</label>
-          <select class="form-control small-width" name="difficulty" (change)="selectDifficulty($event.target.value)">
-            <option selected>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
-          </select>
-        </div>
-        <div class="errors-container">
-        </div>
-        <div class="form-group">
-          <label class="h4">Question Details</label>
-          <ckeditor placeholder="Question details here" rows="3" [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
-          <div class="errors-container">
-            <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
-              <div [hidden]="!detail.errors.required">
-                <p class="text-danger">Question detail is required</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="h4">Code Languages</label>
-          <md-chip-list class="form-control half-width" (click)="autocomplete.focus()">
-            <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
-            <md-input-container>
-              <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete ngModel name="languageInput" #languageInput="ngModel">
-            </md-input-container>
-            <md-autocomplete #code="mdAutocomplete">
-              <md-option *ngFor="let language of codingLanguageList" (click)="selectLanguage(language)">{{language}}</md-option>
-            </md-autocomplete>
-          </md-chip-list>
-          <div class="errors-container">
-            <div *ngIf="nolanguageSelected  && (languageInput.dirty || languageInput.touched)">
-              <p class="text-danger">Please select atleast one programming language</p>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="h4">Score Settings</label>
-          <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkCodeComplexity" (change)="questionModel.codeSnippetQuestion.checkCodeComplexity = !questionModel.codeSnippetQuestion.checkCodeComplexity">Check code complexity</md-checkbox>
-          <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkTimeComplexity" (change)="questionModel.codeSnippetQuestion.checkTimeComplexity = !questionModel.codeSnippetQuestion.checkTimeComplexity">Check time complexity</md-checkbox>
-          <md-checkbox [checked]="questionModel.codeSnippetQuestion.runBasicTestCase" (change)="questionModel.codeSnippetQuestion.runBasicTestCase = !questionModel.codeSnippetQuestion.runBasicTestCase">Run basic test cases</md-checkbox>
-          <md-checkbox [checked]="questionModel.codeSnippetQuestion.runCornerTestCase" (change)="questionModel.codeSnippetQuestion.runCornerTestCase = !questionModel.codeSnippetQuestion.runCornerTestCase">Run corner test cases</md-checkbox>
-          <md-checkbox [checked]="questionModel.codeSnippetQuestion.runNecessaryTestCase" (change)="questionModel.codeSnippetQuestion.runNecessaryTestCase = !questionModel.codeSnippetQuestion.runNecessaryTestCase">Run necessary test cases</md-checkbox>
-        </div>
-        <div class="form-group">
-          <label class="h4">Test Case(s)</label>
-          <br />
-          <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true">Add Test Case</button>
-          <md2-accordion>
-            <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
-              <md2-accordion-header class="collapsible-header clearfix">
-                <div class="title-info h2 pull-left">
-                  <span>Type: Basic</span>
-                  <span> | </span>
-                  <span>Title: </span>
-                  <span> | </span>
-                  <span>Weightage: 0</span>
-                </div>
-                <div class="pull-right">
-                  <span class="delete-option h7"><em class="material-icons">delete</em> <span>Delete</span></span>
-                  <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-                </div>
-              </md2-accordion-header>
-              <div class="collapsible-body">
-                <div class="form-group">
-                  <label>Test Case Title</label>
-                  <input type="text" class="form-control half-width" />
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Description</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Type</label>
-                  <select class="form-control half-width">
-                    <option>Select Option</option>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
-                  </select>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Marks</label>
-                  <input type="text" class="form-control half-width" placeholder="0" />
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Input Values</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Expected Values</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-              </div>
-            </md2-accordion-tab>
-            <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showNewTestCase">
-              <md2-accordion-header class="collapsible-header clearfix">
-                <div class="title-info h2 pull-left">
-                  <span>Type: Basic</span>
-                  <span> | </span>
-                  <span>Title: </span>
-                  <span> | </span>
-                  <span>Weightage: 0</span>
-                </div>
-                <div class="pull-right">
-                  <span class="delete-option h7"><em class="material-icons">delete</em> <span>Delete</span></span>
-                  <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-                </div>
-              </md2-accordion-header>
-              <div class="collapsible-body">
-                <div class="form-group">
-                  <label>Test Case Title</label>
-                  <input type="text" class="form-control half-width" />
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Description</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Type</label>
-                  <select class="form-control half-width">
-                    <option>Select Option</option>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
-                  </select>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Marks</label>
-                  <input type="text" class="form-control half-width" placeholder="0" />
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Input Values</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-                <div class="form-group">
-                  <label>Test Case Expected Values</label>
-                  <textarea class="form-control half-width" rows="3"></textarea>
-                  <div class="errors-container"></div>
-                </div>
-              </div>
-            </md2-accordion-tab>
-          </md2-accordion>
-          <button type="button" class="add-testcase-btn h2" [hidden]="!formControlModel.showTestCase" (click)="formControlModel.showNewTestCase=true">Add New Test Case</button>
-        </div>
-      </div>
-      <div class="actions-area">
-        <button type="button" class="btn" [routerLink]="['/questions']">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected">Save</button>
-      </div>
-    </form>
-  </div>
 </div>

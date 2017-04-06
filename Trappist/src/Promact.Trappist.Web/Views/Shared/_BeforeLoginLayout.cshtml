@@ -15,14 +15,18 @@
     <link rel="icon" type="image/x-icon" href="~/favicon.ico">
     <title>Trappist</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <!-- Additionals -->
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="~/css/style.css" rel="stylesheet" />
+    <!--CSS-->
+    <environment names="Development">
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </environment>
+
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="/dist/bundle.css">
+    </environment>
 </head>
 
 <body>
