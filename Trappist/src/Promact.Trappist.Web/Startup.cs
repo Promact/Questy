@@ -147,7 +147,6 @@ namespace Promact.Trappist.Web
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC,List<SingleMultipleAnswerQuestionOption>>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
             });
             #endregion

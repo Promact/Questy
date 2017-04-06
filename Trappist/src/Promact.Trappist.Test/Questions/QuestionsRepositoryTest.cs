@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Questions;
+using System;
+using System.Collections.Generic;
 using Promact.Trappist.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +27,130 @@ namespace Promact.Trappist.Test.Questions
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+        }
+
+        /// <summary>
+        /// Test to add single answer Question
+        /// </summary>
+        [Fact]
+        public async Task AddSingleAnswerQuestionAsync()
+        {
+            var singleAnswerQuestion = await CreateSingleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, user.Id);
+            Assert.True(_trappistDbContext.Question.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
+        }
+
+        /// <summary>
+        /// Creating single answer Question
+        /// </summary>
+        /// <returns>Object of single answer Question</returns>
+        private async Task<QuestionAC> CreateSingleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var singleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Single
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return singleAnswerQuestion;
+        }
+
+        /// <summary>
+        /// Test to add multiple answer Question
+        /// </summary>
+        [Fact]
+        public async Task AddMultipleAnswerQuestionAsync()
+        {
+            var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, user.Id);
+            Assert.True(_trappistDbContext.Question.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
+        }
+
+        /// <summary>
+        /// Creating multiple answer Question
+        /// </summary>
+        /// <returns>Object of multiple answer Question</returns>
+        private async Task<QuestionAC> CreateMultipleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var multipleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Multiple
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return multipleAnswerQuestion;
         }
 
         /// <summary>
@@ -56,8 +186,8 @@ namespace Promact.Trappist.Test.Questions
                 {
                     QuestionDetail = "<h1>Write a program to add two number</h1>",
                     CategoryID = category.Entity.Id,
-                    DifficultyLevel = DomainModel.Enum.DifficultyLevel.Easy,
-                    QuestionType = DomainModel.Enum.QuestionType.Programming
+                    DifficultyLevel = DifficultyLevel.Easy,
+                    QuestionType = QuestionType.Programming
                 },
                 CodeSnippetQuestion = new CodeSnippetQuestionAC
                 {
@@ -69,7 +199,6 @@ namespace Promact.Trappist.Test.Questions
                 },
                 SingleMultipleAnswerQuestion = null
             };
-
             return codingQuestion;
         }
 
@@ -83,7 +212,6 @@ namespace Promact.Trappist.Test.Questions
             {
                 CategoryName = "Test Category"
             };
-
             return category;
         }
     }

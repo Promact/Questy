@@ -16,7 +16,7 @@
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
                     <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
                         <md-radio-button value="{{i}}" [disabled]="choice.pristine">
-                            <input type="text" class="form-control" placeholder="Answer Choice" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
+                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
                                 <span *ngIf="choice.invalid && choice.touched" class="error-msg mt6 ml10">This field is required</span>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
                     <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first" [disabled]="choice.pristine" (ngModelChange)="isOptionSelected=true">
-                        <input type="text" class="form-control" placeholder="Answer Choice" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
+                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
                             <span *ngIf="choice.invalid && choice.touched" class="error-msg mt6 ml10">This field is required</span>
@@ -35,6 +35,7 @@
                     </md-checkbox>
                     <p class="tip">Tip: Click the check boxes to mark the correct answers</p>
                 </div>
+                <button type="button" (click)="addOption()">Add Question</button>
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [(ngModel)]="categoryName" (change)="getCategoryId()" id="category" #category="ngModel" [ngModelOptions]="{standalone: true}">
@@ -51,7 +52,7 @@
                 </div>
             </div>
             <div class="actions-area">
-                <button type="button" class="btn" click="cancelButtonClicked()">Cancel</button>
+                <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
             </div>
         </form>

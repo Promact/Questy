@@ -32,12 +32,13 @@ namespace Promact.Trappist.Repository.Questions
         /// A method to add single multiple answer Question.
         /// </summary>
         /// <param name="questionAC">Object of QuestionAC</param>
-        /// <param name="userEmail">Email id of user</param>
+        /// <param name="userId">Id of logged in user</param>
         /// <returns>Returns object of QuestionAC</returns>
-        public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userEmail)
+        public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            var singleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion); 
+            var singleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
+            question.CreatedByUserId = userId;
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
@@ -61,7 +62,7 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="userId">Id of logged in user</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
-            var codeSnippetQuestion = Mapper.Map< CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
+            var codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
             question.CreatedByUserId = userId;
 
