@@ -5,6 +5,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class QuestionDetailAC
     {
+        public int Id { get; set; }
         [Required]
         public string QuestionDetail { get; set; }
 
@@ -15,5 +16,9 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
         public DifficultyLevel DifficultyLevel { get; set; }
 
         public int CategoryID { get; set; }
+
+        public bool IsSelect { get; set; }
+
+        public int TestId { get; set; }
     }
 }

@@ -16,10 +16,10 @@ const testsRoutes: Routes = [
       { path: '', component: TestsDashboardComponent },
       { path: ':id/settings', component: TestSettingsComponent },
       { path: 'sections', component: TestSectionsComponent },
-      { path: 'questions', component: TestQuestionsComponent },
+      { path: ':id/questions', component: TestQuestionsComponent },
       { path: 'view', component: TestViewComponent }
     ]
   }
-];
+];  
 
 export const testsRouting: ModuleWithProviders = RouterModule.forChild(testsRoutes);
