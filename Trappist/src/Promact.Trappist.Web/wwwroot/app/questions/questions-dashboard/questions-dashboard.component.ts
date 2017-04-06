@@ -214,8 +214,4 @@ export class QuestionsDashboardComponent implements OnInit {
             }
         });
     }
-
 }
-
-
-
