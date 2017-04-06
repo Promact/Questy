@@ -30,26 +30,28 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
-        /// Test to add single multiple answer Question
+        /// Test to add single answer Question
         /// </summary>
         [Fact]
-        public async Task AddSingleMultipleAnswerQuestionAsync()
+        public async Task AddSingleAnswerQuestionAsync()
         {
-            var singleMultipleAnswerQuestion = await CreateSingleMultipleAnswerQuestion();
-            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleMultipleAnswerQuestion, "vihar@promactinfo.com");
+            var singleAnswerQuestion = await CreateSingleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, user.Id);
             Assert.True(_trappistDbContext.Question.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
         }
 
         /// <summary>
-        /// Creating single multiple answer Question
+        /// Creating single answer Question
         /// </summary>
-        /// <returns>Object of single multiple answer Question</returns>
-        private async Task<QuestionAC> CreateSingleMultipleAnswerQuestion()
+        /// <returns>Object of single answer Question</returns>
+        private async Task<QuestionAC> CreateSingleAnswerQuestion()
         {
             var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
-            var singleMultipleAnswerQuestion = new QuestionAC()
+            var singleAnswerQuestion = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
                 {
@@ -86,7 +88,69 @@ namespace Promact.Trappist.Test.Questions
                     }
                 }
             };
-            return singleMultipleAnswerQuestion;
+            return singleAnswerQuestion;
+        }
+
+        /// <summary>
+        /// Test to add multiple answer Question
+        /// </summary>
+        [Fact]
+        public async Task AddMultipleAnswerQuestionAsync()
+        {
+            var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, user.Id);
+            Assert.True(_trappistDbContext.Question.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
+            Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
+        }
+
+        /// <summary>
+        /// Creating multiple answer Question
+        /// </summary>
+        /// <returns>Object of multiple answer Question</returns>
+        private async Task<QuestionAC> CreateMultipleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var multipleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Multiple
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return multipleAnswerQuestion;
         }
 
         /// <summary>

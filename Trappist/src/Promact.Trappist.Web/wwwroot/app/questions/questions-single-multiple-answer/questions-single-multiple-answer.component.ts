@@ -49,7 +49,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.categoryArray = CategoriesList;
         },
             err => {
-                this.snackBar.open('Failed to Load Category');
+                this.snackBar.open('Failed to Load Category', 'Dismiss', { duration: 3000 });
             }
         );
     }
@@ -70,6 +70,20 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
+        if (+this.value === optionIndex) {
+            this.value = null;
+        }
+    }
+
+    /**
+     * Add option on display page
+     */
+    addOption(optionIndex: number) {
+        if (this.noOfOptionShown === 2) {
+            this.isClose = false;
+        }
+        this.noOfOptionShown++;
+        this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
     }
 
     /**
@@ -96,11 +110,11 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
         this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion).subscribe(
             (response) => {
-                this.snackBar.open('Question added successfully', 'Dismiss');
+                this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
                 this.router.navigate(['/questions']);
             },
             err => {
-                this.snackBar.open('There is some eror. Please try again.', 'Dismiss');
+                this.snackBar.open('There is some eror. Please try again.', 'Dismiss', { duration: 3000 });
             }
         );
     }
