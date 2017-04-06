@@ -14,8 +14,11 @@ using NLog.Web;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
@@ -156,6 +159,13 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
+                cfg.CreateMap<Question, QuestionDetailAC> ();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<Category, CategoryAC>();
+                cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
+                cfg.CreateMap<Question,QuestionAC>();
+                cfg.CreateMap<Test, TestAC>();
+                cfg.CreateMap<TestAC, Test>();
             });
             #endregion
         }
