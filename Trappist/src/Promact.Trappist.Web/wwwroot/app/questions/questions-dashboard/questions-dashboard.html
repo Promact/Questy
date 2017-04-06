@@ -3,7 +3,7 @@
         <div class="title-area clearfix">
             <h1 class="pull-left">Questions</h1>
             <div class="search-area pull-right">
-                <input type="text" [hidden]="!showSearchInput" />
+                <input [(ngModel)]="matchString" (keyup)="getQuestionsMatchingSearchCriteria(matchString)" [hidden]="!showSearchInput" />
                 <button type="button" (click)="showSearchInput = !showSearchInput"><em class="material-icons">search</em></button>
             </div>
         </div>
@@ -14,9 +14,9 @@
                     <em class="material-icons pull-right" (click)="addCategoryDialog()">add</em>
                 </div>
                 <ul class="category-list">
-                    <li class="active h5">All Questions</li>
-                    <li *ngFor="let category of categoryArray" class="clearfix h5">
-                        <span title="{{category.categoryName}}">{{category.categoryName}}</span>
+                    <li class="h5" (click)="getAllQuestions()" [ngClass]="{'active' : selectedCategory.categoryName === undefined}">All Questions</li>
+                    <li *ngFor="let category of categoryArray" class="clearfix h5" [ngClass]="isCategorySelected(category)">
+                        <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category)">{{category.categoryName}}</span>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item (click)="renameCategoryDialog(category)">Rename</button>
@@ -32,10 +32,10 @@
                 <div class="block-subtitle clearfix">
                     <button type="button" class="btn-link h5 hidden-md hidden-lg" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <ul class="difficulty-levels pull-left">
-                        <li class="h5 active">Total (30)</li>
-                        <li class="h5">Easy (10)</li>
-                        <li class="h5">Medium (10)</li>
-                        <li class="h5">Hard (10)</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['']}" (click)="difficultyWiseSearch('')" class="h5">Total ({{easy+medium+hard}})</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Easy']}" (click)="difficultyWiseSearch('Easy')" class="h5">Easy ({{easy}})</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Medium']}" (click)="difficultyWiseSearch('Medium')" class="h5">Medium ({{medium}})</li>
+                        <li [ngClass]="{active: selectedDifficulty === DifficultyLevel['Hard']}" (click)="difficultyWiseSearch('Hard')" class="h5">Hard ({{hard}})</li>
                     </ul>
                     <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" x-position="before">
