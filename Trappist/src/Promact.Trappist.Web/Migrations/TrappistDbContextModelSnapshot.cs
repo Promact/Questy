@@ -422,6 +422,46 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("TestAttendees");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestCategory");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("QuestionId");
+
+                    b.Property<int>("TestCategoryId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("TestCategoryId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestQuestion");
+                });
+
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
