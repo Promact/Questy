@@ -1,8 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Test } from './tests.model';
+import { TestQuestion } from './test-questions/test-question.model';
+import { TestDetails } from './test';
 import { QuestionBase } from '../questions/question';
-
 @Injectable()
 
 export class TestService {
