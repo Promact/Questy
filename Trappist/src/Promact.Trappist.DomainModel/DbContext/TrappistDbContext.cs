@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Web.Models;
+
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
@@ -33,8 +34,18 @@ namespace Promact.Trappist.DomainModel.DbContext
         #region Protected Methods
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            //to avoid cascade deletion and circular dependency
+            builder.Entity<TestQuestion>(b =>
+            {
+                b.HasOne(x => x.TestCategory)
+                .WithMany()
+                .HasForeignKey(x => x.TestCategoryId)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Restrict);
+            });
+             
 
+            base.OnModelCreating(builder);
+                
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
         }
@@ -74,6 +85,8 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestCategory> TestCategory { get; set; }
         public DbSet<TestQuestion> TestQuestion { get; set; }
 
+        public DbSet<TestQuestion> TestQuestion { get; set; }
+        public DbSet<TestCategory> TestCategory { get; set; }
         #region Overridden Methods  
         public override int SaveChanges()
         {
@@ -104,6 +117,6 @@ namespace Promact.Trappist.DomainModel.DbContext
             });
             return base.SaveChangesAsync(cancellationToken);
         }
-        #endregion
+         #endregion
     }
 }

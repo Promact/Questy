@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class Initial : Migration
+    public partial class TestQuestionSelection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -139,6 +139,32 @@ namespace Promact.Trappist.Web.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestCategory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryId = table.Column<int>(nullable: false),
+                    TestId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestCategory_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestCategory_Test_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Test",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -290,6 +316,39 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TestQuestion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    QuestionId = table.Column<int>(nullable: false),
+                    TestCategoryId = table.Column<int>(nullable: false),
+                    TestId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestQuestion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestQuestion_Question_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Question",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TestQuestion_TestCategory_TestCategoryId",
+                        column: x => x.TestCategoryId,
+                        principalTable: "TestCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TestQuestion_Test_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Test",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "QuestionLanguageMapping",
                 columns: table => new
                 {
@@ -397,6 +456,31 @@ namespace Promact.Trappist.Web.Migrations
                 column: "SingleMultipleAnswerQuestionID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TestCategory_CategoryId",
+                table: "TestCategory",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestCategory_TestId",
+                table: "TestCategory",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestQuestion_QuestionId",
+                table: "TestQuestion",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestQuestion_TestCategoryId",
+                table: "TestQuestion",
+                column: "TestCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestQuestion_TestId",
+                table: "TestQuestion",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -432,7 +516,7 @@ namespace Promact.Trappist.Web.Migrations
                 name: "SingleMultipleAnswerQuestionOption");
 
             migrationBuilder.DropTable(
-                name: "Test");
+                name: "TestQuestion");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -447,7 +531,13 @@ namespace Promact.Trappist.Web.Migrations
                 name: "SingleMultipleAnswerQuestion");
 
             migrationBuilder.DropTable(
+                name: "TestCategory");
+
+            migrationBuilder.DropTable(
                 name: "Question");
+
+            migrationBuilder.DropTable(
+                name: "Test");
 
             migrationBuilder.DropTable(
                 name: "Category");
