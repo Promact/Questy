@@ -30,18 +30,21 @@ namespace Promact.Trappist.Test.Questions
         }
         
         /// <summary>
-        ///Test to gett all questions 
+        ///Test to get all Questions 
         /// </summary>
         /// <returns></returns>
         [Fact]
         public async Task GetAllQuestionsAsyncTest()
         {
             string userName = "sandipan@promactinfo.com";
+
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
             var result = await _questionRepository.GetAllQuestionsAsync();
             Assert.True(result.Count() == 1);
         }
