@@ -45,7 +45,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             else
             {
-                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, User.Identity.Name);
+                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
             }
             return Ok(questionAC);
         }
