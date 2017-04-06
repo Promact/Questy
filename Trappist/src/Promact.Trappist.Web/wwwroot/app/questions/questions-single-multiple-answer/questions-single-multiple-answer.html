@@ -35,7 +35,7 @@
                     </md-checkbox>
                     <p class="tip">Tip: Click the check boxes to mark the correct answers</p>
                 </div>
-                <button type="button" (click)="addOption()">Add Question</button>
+                <button type="button" (click)="addOption()">Add Option</button>
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [(ngModel)]="categoryName" (change)="getCategoryId()" id="category" #category="ngModel" [ngModelOptions]="{standalone: true}">
