@@ -38,7 +38,9 @@ namespace Promact.Trappist.Test.Questions
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, user.Id);
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
             Assert.True(_trappistDbContext.Question.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
@@ -100,7 +102,9 @@ namespace Promact.Trappist.Test.Questions
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, user.Id);
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
             Assert.True(_trappistDbContext.Question.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
