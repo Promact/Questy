@@ -38,7 +38,7 @@ export class TestSettingsComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.gettestSettings(this.testId);
+        this.getTestSettings(this.testId);
     }
 
     /**
@@ -55,7 +55,7 @@ export class TestSettingsComponent implements OnInit {
      * Gets the Settings saved for a particular Test
      * @param id contains the value of the Id from the route
      */
-    gettestSettings(id: number) {
+    getTestSettings(id: number) {
         this.testService.getTestSettings(id).subscribe((response) => {
             this.testSettings = (response);
         });
