@@ -77,7 +77,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * To get Category by Id
+     * To get Category by id
      * @param id
      */
     getCategoryById(id: number) {
