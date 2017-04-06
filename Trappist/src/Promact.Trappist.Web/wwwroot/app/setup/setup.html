@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <label class="h4">Port</label>
-                            <input required pattern="[0-9]*" type="text" class="form-control" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
+                            <input required pattern="[0-9]*" type="text" class="form-control small-width" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">required</span>
                                 <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.pattern" class="error-msg">Invalid port number</span>
@@ -68,11 +68,11 @@
                             <div class="errors-container"></div>
                         </div>
                         <div class="action-buttons">
-                            <a *ngIf="stepTwoErrorMessage" (click)="proccedFurtherWithoutEmailSettings(setup)">Click me to proceed further without email settings</a>
                             <span class="general-error-msg pull-left" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
-                            <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button><br />
+                            <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button>
                         </div>
+                        <p class="proceed-link" *ngIf="stepTwoErrorMessage">To proceed further without Email Settings, please <a (click)="proccedFurtherWithoutEmailSettings(setup)">Click Here</a></p>
                     </form>
                 </wizard-step>
                 <wizard-step [title]="3">
@@ -108,12 +108,12 @@
                             <input required type="password" class="form-control" [(ngModel)]="registrationFields.confirmPassword"
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
                             <div class="errors-container">
-                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">required</span><br />
+                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">required</span>
                                 <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">New password and Confirm password do not match</span>
                             </div>
                         </div>
                         <div class="action-buttons">
-                            <span class="general-error-msg pull-left" *ngIf="stepThreeErrorMessage">{{exceptionMessage}}</span>
+                            <span class="general-error-msg long-msg pull-left" *ngIf="stepThreeErrorMessage">{{exceptionMessage}}</span>
                             <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
                         </div>

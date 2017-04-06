@@ -170,6 +170,10 @@ h6, .h6 {
       width: $half_size;
     }
 
+    &.width-percent-60 {
+      width: 60%;
+    }
+
     &.small-width {
       width: 220px;
     }
@@ -196,6 +200,12 @@ h6, .h6 {
   font-weight: 700;
   color: $color_red;
   margin-top: 8px;
+
+  &.long-msg {
+    max-width: 400px;
+    text-align: left;
+    margin-top: 0;
+  }
 }
 
 .cdk-overlay-pane {
@@ -319,6 +329,49 @@ md2-accordion-tab {
   .md2-accordion-tab-content {
     padding: 0;
     border-bottom: 0;
+  }
+}
+
+.cke.cke_reset {
+  width: 60%;
+  border: 0;
+
+  .cke_top {
+    background-color: transparent;
+    border: 1px solid $color_border;
+    border-radius: 4px;
+    margin-bottom: 6px;
+
+    .cke_button_off:hover,
+    .cke_button_off:focus,
+    .cke_button_off:active,
+    .cke_combo_off .cke_combo_button:hover,
+    .cke_combo_off .cke_combo_button:focus,
+    .cke_combo_off .cke_combo_button:active {
+      border-color: transparent;
+      background-color: $color_theme_hover;
+    }
+  }
+
+  .cke_contents {
+    border: 1px solid $color_base_secondary;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .cke_bottom {
+    background-color: $color_bg;
+    border: 1px solid $color_base_secondary;
+    border-top-color: $color_border;
+    border-radius: 0 0 4px 4px;
+  }
+}
+
+.cke_dialog {
+  .cke_dialog_ui_button_ok,
+  .cke_dialog_ui_button_ok:hover {
+    background-color: $color_theme;
+    border-color: $color_theme;
   }
 }
 
@@ -989,6 +1042,7 @@ footer {
         vertical-align: middle;
         color: $color_base_secondary;
         font-size: 16px;
+        cursor: pointer;
 
         &:hover {
           color: $color_base;
@@ -1038,6 +1092,7 @@ footer {
         vertical-align: middle;
         color: $color_base_secondary;
         font-size: 16px;
+        cursor: pointer;
 
         &:hover {
           color: $color_base;
@@ -1069,6 +1124,11 @@ footer {
     .form-group {
       &.answer-choices {
         margin: 15px 0 30px;
+
+        .btn {
+          display: block;
+          margin: 10px 0 20px 30px;
+        }
 
         .tip {
           font-weight: 600;
@@ -1186,18 +1246,21 @@ footer {
           }
 
           .form-group {
-            .form-control {
-              width: 74%;
-
-              &[type=number] {
-                width: 22%;
-              }
-            }
+            width: 74%;
           }
 
           .action-buttons {
             text-align: right;
             padding: 15px 0 5px;
+          }
+
+          .proceed-link {
+            margin-bottom: 0;
+
+            a {
+              color: $color_theme;
+              cursor: pointer;
+            }
           }
         }
 
@@ -1217,10 +1280,22 @@ footer {
     margin-bottom: 20px;
 
     h1 {
-      span {
+      position: relative;
+
+      .errors-container {
+        position: absolute;
+        bottom: -16px;
+      }
+
+      .test-name {
         display: inline-block;
         min-width: 184px;
+        max-width: 800px;
         min-height: 34px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
 
         &[hidden] {
           display: none;
@@ -1279,6 +1354,10 @@ footer {
       }
 
       &.ip-restrictions-field {
+        > div {
+          display: inline-block;
+        }
+
         .form-control {
           display: inline-block;
           margin-right: 20px;
@@ -1634,7 +1713,9 @@ footer {
 
 /* Responsive */
 @media (max-width: 992px) {
-  .form-group .form-control.half-width {
+  .form-group .form-control.half-width,
+  .form-group .form-control.width-percent-60,
+  .cke.cke_reset {
     width: 75%;
   }
 
@@ -1662,5 +1743,9 @@ footer {
     .setup-content {
       width: 600px;
     }
+  }
+
+  .general-error-msg.long-msg {
+    max-width: 250px;
   }
 }
