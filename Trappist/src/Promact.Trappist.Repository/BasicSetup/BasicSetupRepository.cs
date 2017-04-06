@@ -90,10 +90,10 @@ namespace Promact.Trappist.Repository.BasicSetup
                     response.IsSuccess = true;
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.ExceptionMessage = _stringConstants.DatabaseRelatedIssue;
+                response.ExceptionMessage = ex.Message;
                 return response;
             }
         }
