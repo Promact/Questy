@@ -76,6 +76,14 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
+    /**
+     * To get Category by Id
+     * @param id
+     */
+    getCategoryById(id: number) {
+        return this.categoryArray.find(x => x.id === id);
+    }
+
     // Open delete category dialog and set the property of DeleteCategoryDialogComponent class
     deleteCategoryDialog(category: Category) {
         let deleteCategoryDialog = this.dialog.open(DeleteCategoryDialogComponent).componentInstance;
