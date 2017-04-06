@@ -1,10 +1,14 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Test } from './tests.model';
+import { TestQuestion } from './test-questions/test-question.model';
+import { TestDetails } from './test';
+import { QuestionBase } from '../questions/question';
 @Injectable()
 
 export class TestService {
     private testApiUrl = 'api/tests';
+    //private questionApiUrl = 'api/question';
     private testNameApiUrl = 'api/tests/isUnique';
     constructor(private httpService: HttpService) {
     }
@@ -73,5 +77,31 @@ export class TestService {
      */
     isTestAttendeeExist(testId: number) {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
+    }
+
+
+    /**
+     * Gets the questions of a particular category in a "Test"
+     * @param testId is passed to identify that particular "Test"
+     * @param categoryId is passed to identify that particular "category"
+     */
+    getQuestions(testId: number, categoryId: number) {
+        return this.httpService.get(this.testApiUrl + '/questions/' + testId + '/' + categoryId);
+    }
+
+    /**
+     * Adds the selected questions to the "Test"
+     * @param selectedQuestions is a list of questions user wants to add to the test
+     * @param testId is passed to identify that particular "Test"
+     */
+    addTestQuestions(selectedQuestions: QuestionBase[], testId: number) {
+        return this.httpService.post(this.testApiUrl + '/questions/' + testId, selectedQuestions);
+    }
+    /**
+     * Gets the details of a particular test withs all categories it contains
+     * @param id is passed to identify that particular "Test"
+     */
+    getTestDetails(id: number) {
+        return this.httpService.get(this.testApiUrl + '/testDetails/' + id);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -67,5 +69,28 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="id">Id of the test</param>
         /// <returns>Boolean:true if an attendee exist or else false</returns>
         Task<bool> IsTestAttendeeExistAsync(int id);
+
+        /// <summary>
+        /// Gets all the questions contained by a particular category in a test
+        /// </summary>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route </param>
+        /// <param name="CategoryId">Parameter "CategoryId" takes value of a Category's Id from route</param>
+        /// <returns>List of QuestionAC objects of particular category</returns>      
+        Task<List<QuestionAC>> GetAllTestCategoryQuestionsByIdAsync(int testId, int CategoryId);
+
+        /// <summary>
+        /// Adds selected question(s) to the particular "Test" 
+        /// </summary>
+        /// <param name="QuestionsToAddTest">Parameter "QuestionsToAddTest" is a list of questions to be added to Test which takes value from body</param>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
+        /// <returns>A string message of Success</returns>
+        Task<string> AddTestQuestionsAsync(List<QuestionAC> QuestionsToAddTest, int testId);
+
+        /// <summary>
+        /// Get details of a Test
+        /// </summary>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
+        /// <returns>TestAC object</returns>       
+        Task<TestAC> GetTestDetailsByIdAsync(int testId);
     }
 }
