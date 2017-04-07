@@ -1,14 +1,5 @@
 ﻿<div class="test-create-steps test-questions">
-  <div class="header-block clearfix">
-    <div class="container">
-      <h1 class="pull-left">
-        <span [hidden]="editName">BBIT 10-08-2017</span>
-        <input type="text" class="form-control" [hidden]="!editName" />
-        <em class="material-icons" (click)="editName = !editName">edit</em>
-      </h1>
-      <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
-    </div>
-  </div>
+  <create-test-header></create-test-header>
   <div class="container">
     <h2>Select questions for each section</h2>
     <md2-accordion class="questions-selection">
@@ -203,19 +194,5 @@
       </md2-accordion-tab>
     </md2-accordion>
   </div>
-  <div class="footer-block clearfix">
-    <div class="container">
-      <ul class="steps pull-left">
-        <li class="h5"><a [routerLink]="['/tests/sections']">Select Sections</a></li>
-        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-        <li class="h5 active"><a [routerLink]="['/tests/questions']">Select Questions</a></li>
-        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-        <li class="h5"><a [routerLink]="['/tests/settings']">Settings & Schedule</a></li>
-      </ul>
-      <div class="buttons-block pull-right">
-        <button type="button" class="btn" [routerLink]="['/tests']">Save & Exit</button>
-        <button type="button" class="btn btn-primary">Save & Next</button>
-      </div>
-    </div>
-  </div>
+  <create-test-footer></create-test-footer>
 </div>
