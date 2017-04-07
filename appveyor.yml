@@ -5,7 +5,7 @@ configuration: Release
 environment:
  nodejs_version: "0.12"
 build_script:
-- ps: dotnet restore
+- ps: dotnet restore ./Trappist/Trappist.sln
 build:
   project: .\Trappist\Trappist.sln
   verbosity: minimal
