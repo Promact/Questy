@@ -1,0 +1,16 @@
+﻿<div class="dialog">
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left" md-dialog-title>Duplicate Test</h1>
+        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+    </div>
+    <md-dialog-content>
+        <div class="form-group">
+            <label class="h4">Test Name</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="testName" />
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button type="button" class="btn" md-dialog-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="duplicateTest()">Duplicate Test</button>
+    </md-dialog-actions>
+</div>
