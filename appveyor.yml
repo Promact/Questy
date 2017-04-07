@@ -4,8 +4,6 @@ skip_tags: true
 configuration: Release
 environment:
  nodejs_version: "0.12"
-install:
- npm 
 build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
 - ps: 
