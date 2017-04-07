@@ -6,7 +6,11 @@
                 <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test"
                        [(ngModel)]="testSettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focusout)="editName = !editName"
                        [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" (blur)="updateTestName(testSettings.id,testSettings)" />
-                <em class="material-icons" (click)="editName = !editName">edit</em>
+                <button type="button" class="icon-btn ml10" (click)="editName = !editName"><em class="material-icons">edit</em></button>
+                <span class="update-btns">
+                    <button type="button" class="icon-btn ml10"><em class="material-icons theme-text">check</em></button>
+                    <button type="button" class="icon-btn ml10"><em class="material-icons danger-text">close</em></button>
+                </span>
                 <span class="errors-container">
                     <span class="error-msg" *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required">Name is required</span>
                     <span class="error-msg" *ngIf="name.errors && (name.touched || name.pristine || name.untouched)" [hidden]="!name.errors.pattern">Enter valid Test Name</span>

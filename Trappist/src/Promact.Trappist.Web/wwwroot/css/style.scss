@@ -110,11 +110,15 @@ h6, .h6 {
 }
 
 .theme-text {
-  color: $color_theme;
+  color: $color_theme !important;
 }
 
 .yellow-text {
   color: $color_yellow;
+}
+
+.danger-text {
+  color: $color_red !important;
 }
 
 .btn {
@@ -144,6 +148,17 @@ h6, .h6 {
 
   & + .btn {
     margin-left: 10px;
+  }
+}
+
+.icon-btn {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  vertical-align: top;
+
+  &:focus {
+    outline: 0;
   }
 }
 
@@ -1316,8 +1331,6 @@ footer {
       .material-icons {
         vertical-align: middle;
         color: $color_base_secondary;
-        cursor: pointer;
-        padding-left: 10px;
       }
     }
 
