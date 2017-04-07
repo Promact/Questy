@@ -6,10 +6,11 @@ environment:
  nodejs_version: "0.12"
 build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
-- ps: 
 build:
   project: .\Trappist\Trappist.sln
   verbosity: minimal
 test_script:
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release .\Trappist\src\Promact.Trappist.Test" -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   cd .\Trappist\src\Promact.Trappist.Test
+- ps: >-
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1 -c Release Promact.Trappist.Test" -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
