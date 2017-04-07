@@ -13,4 +13,4 @@ test_script:
 - ps: >-
    cd .\Trappist\src\Promact.Trappist.Test
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test -f netcoreapp1.1" -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:" test " -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
