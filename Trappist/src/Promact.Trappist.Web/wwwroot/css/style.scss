@@ -403,7 +403,14 @@ md2-accordion-tab {
     .title-info {
       span {
         vertical-align: middle;
-        padding-right: 3px;
+        display: inline-block;
+
+        & + span {
+          border-left: 2px solid rgba($color_base, 0.8);
+          padding-left: 10px;
+          margin-left: 8px;
+          line-height: 20px;
+        }
       }
     }
 
@@ -445,6 +452,10 @@ md2-accordion-tab {
       border: 1px solid $color_theme_secondary;
       background-color: $color_theme;
       color: $color_white;
+
+      .title-info span + span {
+        border-color: $color_white;
+      }
 
       .collapsible-icon {
         .add-icon {
@@ -1367,7 +1378,7 @@ footer {
       }
 
       &.ip-restrictions-field {
-        > div {
+        & > div {
           display: inline-block;
         }
 
