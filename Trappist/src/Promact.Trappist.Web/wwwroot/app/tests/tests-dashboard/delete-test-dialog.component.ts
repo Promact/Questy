@@ -3,6 +3,7 @@ import { Test } from '../tests.model';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { TestService } from '../tests.service';
 
+
 @Component({
     moduleId: module.id,
     selector: 'delete-test-dialog',

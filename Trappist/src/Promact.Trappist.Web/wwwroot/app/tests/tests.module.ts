@@ -16,6 +16,9 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
+
+import { DuplicateTestDialogComponent } from './tests-dashboard/duplicate-test-dialog.component';
+
 import { DeselectCategoryComponent } from './test-sections/deselect-category.component';
 @NgModule({
     imports: [
@@ -28,6 +31,7 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
         TestsDashboardComponent,
         TestCreateDialogComponent,
         DeleteTestDialogComponent,
+        DuplicateTestDialogComponent,
         TestSettingsComponent,
         TestLaunchDialogComponent,
         TestSectionsComponent,
@@ -43,7 +47,8 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
         TestCreateDialogComponent,
         DeleteTestDialogComponent,
         TestLaunchDialogComponent,
-        DeselectCategoryComponent
+        DeselectCategoryComponent,
+        DuplicateTestDialogComponent
     ],
     providers: [
         TestService,

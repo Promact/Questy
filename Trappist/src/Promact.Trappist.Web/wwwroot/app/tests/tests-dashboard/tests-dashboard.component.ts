@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, provideRoutes } from '@angular/router';
 import { Http } from '@angular/http';
 import { TestSettingsComponent } from '../../tests/test-settings/test-settings.component';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
+import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -20,6 +21,8 @@ export class TestsDashboardComponent {
     searchTest: string;
     isDeleteAllowed: boolean;
     loader: boolean;
+    test: Test;
+
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.loader = true;
         this.getAllTests();
@@ -51,5 +54,11 @@ export class TestsDashboardComponent {
             deleteTestDialog.testArray = this.Tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
         }); 
+    }
+
+    duplicateTestDialog(test:Test) {
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
+        duplicateTestDialog.testName = test.testName + '_copy';
+        duplicateTestDialog.testArray=this.Tests;
     }
 }
