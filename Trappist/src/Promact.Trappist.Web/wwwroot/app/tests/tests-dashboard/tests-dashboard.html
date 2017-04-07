@@ -27,7 +27,7 @@
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                                     <a md-menu-item>Edit</a>
                                     <a md-menu-item (click)="deleteTestDialog(test)">Delete</a>
-                                    <a md-menu-item>Duplicate</a>
+                                    <a md-menu-item (click)="duplicateTestDialog(test)">Duplicate</a>
                                     <a md-menu-item [routerLink]="[test.id,'settings']">Settings</a>
                                 </md-menu>
                             </div>
