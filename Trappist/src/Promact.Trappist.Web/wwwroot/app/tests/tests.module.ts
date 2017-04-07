@@ -14,23 +14,28 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
 import { TestViewComponent } from './test-view/test-view.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
+import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
+import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
+
 @NgModule({
-  imports: [
-    SharedModule,
-    testsRouting,
-    ClipboardModule
-  ],
-  declarations: [
-    TestsComponent,
-    TestsDashboardComponent,
-    TestCreateDialogComponent,
-    DeleteTestDialogComponent,
-    TestSettingsComponent,
-    TestLaunchDialogComponent,
-    TestSectionsComponent,
-    TestQuestionsComponent,
-    TestViewComponent,
-    FilterPipe
+    imports: [
+        SharedModule,
+        testsRouting,
+        ClipboardModule
+    ],
+    declarations: [
+        TestsComponent,
+        TestsDashboardComponent,
+        TestCreateDialogComponent,
+        DeleteTestDialogComponent,
+        TestSettingsComponent,
+        TestLaunchDialogComponent,
+        TestSectionsComponent,
+        TestQuestionsComponent,
+        TestViewComponent,
+        CreateTestHeaderComponent,
+        CreateTestFooterComponent,
+        FilterPipe
 
     ],
     entryComponents: [

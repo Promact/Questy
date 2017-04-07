@@ -1,5 +1,5 @@
 ﻿<div class="test-create-steps test-settings">
-    <div class="header-block clearfix">
+    <div class="test-create-header clearfix">
         <div class="container">
             <h1 class="pull-left">
                 <span class="test-name" [hidden]="editName">{{testSettings.testName}}</span>
@@ -111,7 +111,7 @@
                     <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
                 </div>
             </div>
-            <div class="footer-block clearfix">
+            <div class="test-create-footer clearfix">
                 <div class="container">
                     <ul class="steps pull-left">
                         <li class="h5"><a [routerLink]="['/tests/sections']">Select Sections</a></li>

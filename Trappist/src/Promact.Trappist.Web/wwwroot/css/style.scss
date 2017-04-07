@@ -1300,71 +1300,6 @@ footer {
 
 /* Test Create Steps */
 .test-create-steps {
-  .header-block {
-    padding-bottom: 15px;
-    border-bottom: 1px solid $color_border;
-    margin-bottom: 20px;
-
-    h1 {
-      position: relative;
-
-      .errors-container {
-        position: absolute;
-        bottom: -16px;
-      }
-
-      .test-name {
-        display: inline-block;
-        min-width: 184px;
-        max-width: 800px;
-        min-height: 34px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: top;
-
-        &[hidden] {
-          display: none;
-        }
-      }
-
-      .form-control {
-        display: inline-block;
-        width: inherit;
-        font-weight: 400;
-        min-width: 184px;
-
-        &[hidden] {
-          display: none;
-        }
-      }
-
-      .material-icons {
-        vertical-align: middle;
-        color: $color_base_secondary;
-      }
-    }
-
-    .btn {
-      .material-icons {
-        vertical-align: top;
-        font-size: 18px;
-        padding-right: 8px;
-      }
-    }
-
-    .settings-menu {
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-      cursor: pointer;
-
-      .material-icons:last-child {
-        margin-left: -10px;
-      }
-    }
-  }
-
   .form-area {
     margin: 20px 0;
     padding: 20px 20px 0;
@@ -1387,44 +1322,6 @@ footer {
           margin-right: 20px;
         }
       }
-    }
-  }
-
-  .footer-block {
-    background-color: $color_footer_secondary;
-    color: $color_base_secondary;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: $full_size;
-    padding: 12px 0;
-    z-index: 99;
-
-    .steps {
-      list-style: none;
-      padding-left: 0;
-      margin: 6px 0 6px -5px;
-
-      li {
-        display: inline-block;
-        padding-right: 20px;
-
-        a {
-          color: inherit;
-        }
-
-        .material-icons {
-          vertical-align: middle;
-        }
-
-        &.active {
-          color: $color_theme;
-        }
-      }
-    }
-
-    .buttons-block {
-      margin-right: 8px;
     }
   }
 
@@ -1534,6 +1431,109 @@ footer {
   }
 }
 
+.test-create-header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color_border;
+  margin-bottom: 20px;
+
+  h1 {
+    position: relative;
+
+    .errors-container {
+      position: absolute;
+      bottom: -16px;
+    }
+
+    .test-name {
+      display: inline-block;
+      min-width: 184px;
+      max-width: 800px;
+      min-height: 34px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: top;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .form-control {
+      display: inline-block;
+      width: inherit;
+      font-weight: 400;
+      min-width: 184px;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .material-icons {
+      vertical-align: middle;
+      color: $color_base_secondary;
+    }
+  }
+
+  .btn {
+    .material-icons {
+      vertical-align: top;
+      font-size: 18px;
+      padding-right: 8px;
+    }
+  }
+
+  .settings-menu {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    cursor: pointer;
+
+    .material-icons:last-child {
+      margin-left: -10px;
+    }
+  }
+}
+
+.test-create-footer {
+  background-color: $color_footer_secondary;
+  color: $color_base_secondary;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: $full_size;
+  padding: 12px 0;
+  z-index: 99;
+
+  .steps {
+    list-style: none;
+    padding-left: 0;
+    margin: 6px 0 6px -5px;
+
+    li {
+      display: inline-block;
+      padding-right: 20px;
+
+      a {
+        color: inherit;
+      }
+
+      .material-icons {
+        vertical-align: middle;
+      }
+
+      &.active {
+        color: $color_theme;
+      }
+    }
+  }
+
+  .buttons-block {
+    margin-right: 8px;
+  }
+}
+
 .dialog .url-container {
   position: relative;
 
@@ -1639,13 +1639,6 @@ footer {
 .test-conduct {
   padding: 50px 0 100px;
 
-  .promact-logo {
-    img {
-      width: 180px;
-      margin-bottom: 50px;
-    }
-  }
-
   .registration-block {
     width: 600px;
     margin: 0 auto;
@@ -1655,20 +1648,6 @@ footer {
 
     h2 {
       margin-bottom: 30px;
-    }
-  }
-
-  .trappist-logo {
-    margin-top: 40px;
-
-    p {
-      font-size: 11px;
-      color: $color_base_secondary;
-      margin-bottom: 0;
-    }
-
-    img {
-      width: 70px;
     }
   }
 
@@ -1732,6 +1711,27 @@ footer {
         margin-bottom: 45px;
       }
     }
+  }
+}
+
+.test-conduct-header {
+  img {
+    width: 180px;
+    margin-bottom: 50px;
+  }
+}
+
+.test-conduct-footer {
+  margin-top: 40px;
+
+  p {
+    font-size: 11px;
+    color: $color_base_secondary;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 70px;
   }
 }
 
