@@ -64,7 +64,7 @@
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</em>
                         <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item>Edit</button>
-                            <button md-menu-item (click)="deleteQuestionDialog()">Delete</button>
+                            <button md-menu-item (click)="deleteQuestionDialog(question)">Delete</button>
                             <button md-menu-item>Duplicate</button>
                         </md-menu>
                     </div>
