@@ -1,20 +1,20 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
-using System.Linq;
-using Promact.Trappist.DomainModel.Models.Test;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.Utility.GlobalUtil;
-using System;
-using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses;
-using Promact.Trappist.Utility.ExtensionMethods;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Utility.ExtensionMethods;
+using Promact.Trappist.Utility.GlobalUtil;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -247,15 +247,49 @@ namespace Promact.Trappist.Repository.Tests
                     //If category present in TestCategory Model,then its IsSelect property made true
                     if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     {
-                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == category.Id && x.TestId== testId).ToList().Count();
+                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == category.Id && x.TestId == testId).ToList().Count();
                         category.IsSelect = true;
-                    }                       
+                    }
                 });
                 testAcObject.CategoryAcList = categoryListAc;
                 return testAcObject;
             }
             else
                 return null;
+        }
+        #endregion
+
+        #region Duplicate Test
+        public async Task<Test> DuplicateTest(int testId, Test newTest)
+        {
+            //Fetch categories present in that particular test and satores it in a variable of list type
+            var testCategoryList = new List<TestCategory>(_dbContext.TestCategory.Where(x => x.TestId == testId));
+            // Fetch questions present in that particular test and satores it in a variable of list type
+            var testQuestionList = new List<TestQuestion>(_dbContext.TestQuestion.Where(x => x.TestId == testId));
+            var test = await _dbContext.Test.FindAsync(newTest.Id);
+            var categoryList = new List<TestCategory>();
+            foreach (TestCategory categoryObject in testCategoryList)
+            {
+                var categoryObj = new TestCategory();
+                categoryObj.CategoryId = categoryObject.CategoryId;
+                categoryObj.Test = test;
+                categoryObj.TestId = test.Id;
+                categoryList.Add(categoryObj);
+            }
+            await _dbContext.TestCategory.AddRangeAsync(categoryList);
+            await _dbContext.SaveChangesAsync();
+            var questionList = new List<TestQuestion>();
+            foreach (TestQuestion questionObject in testQuestionList)
+            {
+                var questionObj = new TestQuestion();
+                questionObj.QuestionId = questionObject.QuestionId;
+                questionObj.Test = test;
+                questionObj.TestId = test.Id;
+                questionList.Add(questionObj);
+            }
+            await _dbContext.TestQuestion.AddRangeAsync(questionList);
+            await _dbContext.SaveChangesAsync();
+            return test;
         }
         #endregion
     }

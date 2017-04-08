@@ -117,4 +117,13 @@ export class TestService {
     getTestById(id: number) {
         return this.httpService.get(this.testApiUrl + '/' + id);
     }
+
+    /**
+     * Duplicates the slected test
+     * @param testId: Id of the test that is to be duplicated
+     * @param newTestId: Id of the duplicated Test
+     */
+    duplicateTest(testId: number, test:Test) {
+        return this.httpService.post(this.testApiUrl + '/' + testId +'/duplicateTest', test);
+    }
 }
