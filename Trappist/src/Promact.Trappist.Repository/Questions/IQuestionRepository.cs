@@ -18,8 +18,9 @@ namespace Promact.Trappist.Repository.Questions
         /// Adds new code snippet question to the database
         /// </summary>
         /// <param name="questionAC">QuestionAC class object</param>
-        /// <param name="userEmail">Email of logged in user</param>
-        Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail);
+        /// <param name="userId">Id of logged in user</param>
+        Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId);
+
         /// <summary>
         /// Method to get all Questions
         /// </summary>
@@ -47,5 +48,13 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="questionId">Id of Question</param>
         /// <returns>Return true if id already exists otherwise return false</returns>
         Task<bool> IsQuestionExistAsync(int questionId);
+
+        /// <summary>
+        ///  Updates existing code snippet question in the database
+        /// </summary>
+        /// <param name="questionId">Id of question to update</param>
+        /// <param name="questionAC">QuestionAC class object</param>
+        /// <param name="userId">Id of logged in user</param>
+        Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId);
     }
 }
