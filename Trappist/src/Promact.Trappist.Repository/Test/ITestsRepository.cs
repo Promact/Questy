@@ -121,5 +121,14 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>TestAC object</returns>       
         Task<TestAC> GetTestByIdAsync(int testId);
         #endregion
+        #region Duplicate Test
+        /// <summary>
+        /// Duplicates questions and categories present in the test
+        /// </summary>
+        /// <param name="testId">Id of the test that is to be duplicated</param>
+        /// <param name="newtestId">Id of the duplicated Test</param>
+        /// <returns></returns>
+        Task<Test> DuplicateTest(int testId, Test test);
+        #endregion
     }
 }

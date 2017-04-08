@@ -240,5 +240,25 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(testAcObject);
         }
         #endregion
+
+        #region Duplicate Test
+        /// <summary>
+        /// Duplicates questions and categories present in the test
+        /// </summary>
+        /// <param name="id">Id of the test that is to be duplicated</param>
+        /// <param name="newtestId">Id of the duplicated test</param>
+        /// <returns>object of the Test class</returns>
+        [HttpPost("{id}/duplicateTest")]
+        public async Task<IActionResult> DuplicateTest([FromRoute]int id, [FromBody]Test test)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await _testRepository.CreateTestAsync(test);
+            var newTest = test;
+            return Ok(await _testRepository.DuplicateTest(id, newTest));
+        }
+        #endregion
     }
 }
