@@ -103,7 +103,7 @@ namespace Promact.Trappist.Core.Controllers
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             if (questionAC.Question.QuestionType == QuestionType.Programming)
             {
-                //To-Do Add call to update method for code snippet type question 
+                await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, "");
             }
             else
             {
