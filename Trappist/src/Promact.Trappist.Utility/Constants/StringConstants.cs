@@ -161,5 +161,15 @@
             }
         }
         #endregion
+
+        #region "Question Constants"
+        public string QuestionExistInTestError
+        {
+            get
+            {
+                return "Question Exist In Test";
+            }
+        }
+        #endregion
     }
 }

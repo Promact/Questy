@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Member
         private readonly IQuestionRepository _questionsRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IStringConstants _stringConstants;
         #endregion
 
         #region Constructor
@@ -23,6 +25,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             _questionsRepository = questionsRepository;
             _userManager = userManager;
+            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -123,6 +126,31 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             return Ok(questionAC);
+        }
+
+        /// <summary>
+        /// API to delete Question
+        /// </summary>
+        /// <param name="id">Id to delete Question</param>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteQuestionAsync([FromRoute]int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var questionToDelete = await _questionsRepository.GetQuestionByIdAsync(id);
+            if (questionToDelete == null)
+            {
+                return NotFound();
+            }
+            if (await _questionsRepository.IsQuestionExistInTest(id))
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.QuestionExistInTestError);
+                return BadRequest(ModelState);
+            }
+            await _questionsRepository.DeleteQuestionAsync(questionToDelete);
+            return NoContent();
         }
         #endregion
     }

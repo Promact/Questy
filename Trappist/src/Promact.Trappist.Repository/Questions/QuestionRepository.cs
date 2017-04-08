@@ -173,6 +173,22 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.SingleMultipleAnswerQuestionOption.AddRange(options);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Question> GetQuestionByIdAsync(int id)
+        {
+            return await _dbContext.Question.FindAsync(id);
+        }
+
+        public async Task<bool> IsQuestionExistInTest(int id)
+        {
+            return false;
+        }
+
+        public async Task DeleteQuestionAsync(Question question)
+        {
+            _dbContext.Question.Remove(question);
+            await _dbContext.SaveChangesAsync();
+        }
     }
     #endregion
 }
