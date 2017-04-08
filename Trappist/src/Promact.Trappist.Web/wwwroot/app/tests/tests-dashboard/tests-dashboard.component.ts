@@ -22,6 +22,7 @@ export class TestsDashboardComponent {
     isDeleteAllowed: boolean;
     loader: boolean;
     test: Test;
+    testName: string;
 
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.loader = true;
@@ -55,10 +56,12 @@ export class TestsDashboardComponent {
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
         }); 
     }
-
-    duplicateTestDialog(test:Test) {
+    // Open duplicate test dialog
+    duplicateTestDialog(test: Test) {
+        var newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
-        duplicateTestDialog.testName = test.testName + '_copy';
-        duplicateTestDialog.testArray=this.Tests;
+        duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        duplicateTestDialog.testArray = this.Tests;
+        duplicateTestDialog.testToDuplicate = test;
     }
 }
