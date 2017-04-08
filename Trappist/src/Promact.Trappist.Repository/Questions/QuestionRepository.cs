@@ -122,7 +122,6 @@ namespace Promact.Trappist.Repository.Questions
                 var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedCodeSnippetQuestion.Id).ToListAsync();
                 _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
 
-                var updatedLanguageList = questionAC.CodeSnippetQuestion.LanguageList;
                 var questionLanguageMapping = new List<QuestionLanguageMapping>();
 
                 //Map language to codeSnippetQuestion
