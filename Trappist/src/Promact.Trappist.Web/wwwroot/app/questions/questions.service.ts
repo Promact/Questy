@@ -40,4 +40,12 @@ export class QuestionsService {
     addCodingQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
     }
+
+    /**
+     * API to delete Question
+     * @param id:Id to delete Question
+     */
+    deleteQuestion(id: number) {
+        return this.httpService.delete(this.questionsApiUrl + '/' + id);
+    }
 }
