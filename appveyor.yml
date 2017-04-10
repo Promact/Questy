@@ -1,0 +1,18 @@
+version: 1.0.{build}
+os: Visual Studio 2017
+skip_tags: true
+configuration: Debug
+build_script:
+- ps: dotnet restore ./Trappist/Trappist.sln
+skip_branch_with_pr: true
+branches:
+  only:
+    - development
+build:
+  project: .\Trappist\Trappist.sln
+  verbosity: minimal
+test_script:
+- ps: >-
+   cd .\Trappist\src\Promact.Trappist.Test
+- ps: >-
+   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:" test " -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
