@@ -8,6 +8,7 @@ import { DifficultyLevel } from '../enum-difficultylevel';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { CodeSnippetQuestionsTestCases } from '../../questions/code-snippet-questions-test-cases.model';
+import { TestCaseType } from '../enum-test-case-type';
 
 @Component({
     moduleId: module.id,
@@ -30,6 +31,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isTestCaseAdded: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
+    TestCaseType: TestCaseType;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
