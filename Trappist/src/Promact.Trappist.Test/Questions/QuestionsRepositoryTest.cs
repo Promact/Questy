@@ -219,7 +219,8 @@ namespace Promact.Trappist.Test.Questions
                     CheckTimeComplexity = true,
                     RunBasicTestCase = true,
                     RunCornerTestCase = false,
-                    RunNecessaryTestCase = false
+                    RunNecessaryTestCase = false,
+                    LanguageList = new String[]{ "Java", "C" }
                 },
                 SingleMultipleAnswerQuestion = null
             };
