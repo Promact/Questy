@@ -55,7 +55,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <returns>Questions List</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllQuestions()
+        public async Task<IActionResult> GetAllQuestionsAsync()
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id));

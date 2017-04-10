@@ -24,7 +24,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <returns>Category List</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
+        public async Task<IActionResult> GetAllCategoriesAsync()
         {
             return Ok(await _categoryRepository.GetAllCategoriesAsync());
         }
