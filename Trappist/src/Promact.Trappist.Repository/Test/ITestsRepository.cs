@@ -54,6 +54,17 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>Updated Test Name</returns>
         Task UpdateTestNameAsync(int id, Test testObject);
 
+        #region Category Selection
+        /// <summary>
+        /// Add Selected Categories 
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>List of Selected Categories</returns>        
+        void SelectedCategoriesAsync(TestCategory[] testCategory);
+
+        Task DeselectCategoryAsync(int id);
+        #endregion
+
         /// <summary>
         /// Delete test from the test model
         /// </summary>
