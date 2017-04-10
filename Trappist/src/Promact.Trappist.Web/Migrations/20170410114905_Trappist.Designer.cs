@@ -9,8 +9,8 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170410114032_trappist")]
-    partial class trappist
+    [Migration("20170410114905_Trappist")]
+    partial class Trappist
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
