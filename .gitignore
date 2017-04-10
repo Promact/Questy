@@ -259,9 +259,6 @@ _references.js
 
 **/wwwroot/dist/
 
-# Migration Folder
-**/Migrations/
-
 # published output
 **/published/
 

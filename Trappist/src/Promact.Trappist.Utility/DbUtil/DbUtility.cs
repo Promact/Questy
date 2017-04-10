@@ -53,12 +53,7 @@ namespace Promact.Trappist.Utility.DbUtil
         }
 
         public void MigrateAndSeedDb()
-        {
-            //Delete production db upon every deployment
-            //Temporary fix as we are not including migrations in scm
-            //Will remove after we include migrations in code base
-            if (_hostingEnv.IsProduction())
-                _trappistDbContext.Database.EnsureDeleted();
+        {          
             _trappistDbContext.Database.Migrate();
             _trappistDbContext.Seed();
         }
