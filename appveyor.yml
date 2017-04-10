@@ -4,6 +4,10 @@ skip_tags: true
 configuration: Debug
 build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
+skip_branch_with_pr: true
+branches:
+  only:
+    - development
 build:
   project: .\Trappist\Trappist.sln
   verbosity: minimal
