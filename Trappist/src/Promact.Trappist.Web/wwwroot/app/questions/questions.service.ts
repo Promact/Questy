@@ -51,6 +51,14 @@ export class QuestionsService {
     }
 
     /**
+     * Gets Question of specific Id
+     * @param id: Id of the Question
+     */
+    getQuestionById(id: number) {
+        return this.httpService.get(this.questionsApiUrl + '/' + id);
+    }
+
+    /**
      * API to delete Question
      * @param id:Id to delete Question
      */
