@@ -85,7 +85,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Coding language object of type CodingLanguageAC
         /// </returns>
         [HttpGet("codinglanguage")]
-        public async Task<IActionResult> GetAllCodingLanguages()
+        public async Task<IActionResult> GetAllCodingLanguagesAsync()
         {
             var codinglanguages = await _questionsRepository.GetAllCodingLanguagesAsync();
             return Ok(codinglanguages);
