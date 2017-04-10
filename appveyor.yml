@@ -1,7 +1,7 @@
 version: 1.0.{build}
 os: Visual Studio 2017
 skip_tags: true
-configuration: Release
+configuration: Debug
 build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
 build:

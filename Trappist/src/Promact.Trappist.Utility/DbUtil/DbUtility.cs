@@ -14,15 +14,13 @@ namespace Promact.Trappist.Utility.DbUtil
         #region Private Variables
         #region Dependencies
         private readonly TrappistDbContext _trappistDbContext;
-        private readonly IHostingEnvironment _hostingEnv;
         #endregion
         #endregion
 
         #region Constructor
-        public DbUtility(TrappistDbContext trappistDbContext,IHostingEnvironment hostingEnv)
+        public DbUtility(TrappistDbContext trappistDbContext)
         {
             _trappistDbContext = trappistDbContext;
-            _hostingEnv = hostingEnv;
         }
         #endregion
 
