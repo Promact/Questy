@@ -110,6 +110,7 @@ namespace Promact.Trappist.Repository.Questions
             if (await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync())
             {
                 updatedQuestion.Id = questionId;
+                updatedQuestion.UpdatedByUserId = userId;
                 _dbContext.Question.Update(updatedQuestion);
                 await _dbContext.SaveChangesAsync();
 
