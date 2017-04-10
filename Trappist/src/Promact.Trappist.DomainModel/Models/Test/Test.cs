@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Promact.Trappist.DomainModel.Models.TestConduct;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Trappist.DomainModel.Models.Test
@@ -20,5 +22,7 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public string WarningMessage { get; set; }
         public decimal CorrectMarks { get; set; }
         public decimal IncorrectMarks { get; set; }
+
+        public virtual ICollection<TestAttendees> TestAttendees { get; set; }
     }
 }
