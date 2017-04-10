@@ -20,12 +20,12 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="questionAC">QuestionAC class object</param>
         /// <param name="userEmail">Email of logged in user</param>
         Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userEmail);
-
         /// <summary>
-        /// Method to get all the Questions
+        /// Method to get all Questions
         /// </summary>
-        /// <returns>Question list</returns>
-        Task <ICollection<Question>> GetAllQuestionsAsync(string userId);
+        /// <param name="userId">Id of logged in user</param>
+        /// <returns></returns>
+        Task<ICollection<Question>> GetAllQuestionsAsync(string userId);
 
         /// <summary>
         /// Gets all the coding languages as string from database

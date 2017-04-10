@@ -26,7 +26,7 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task<ICollection<Question>> GetAllQuestionsAsync(string userId)
         {
-            return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Where(u=>u.CreatedByUserId == userId).ToListAsync());
+            return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Where(u=>u.CreatedByUserId.Equals(userId)).ToListAsync());
         }
 
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
