@@ -102,48 +102,46 @@ namespace Promact.Trappist.Repository.Questions
             return languageNameList;
         }
 
+        public async Task<bool> QuestionExist(int questionId)
+        {
+            return await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync();
+        }
+
         public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
             var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
             var updatedCodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
+            
+            updatedQuestion.Id = questionId;
+            updatedQuestion.UpdatedByUserId = userId;
+            _dbContext.Question.Update(updatedQuestion);
+            await _dbContext.SaveChangesAsync();
 
-            if (await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync())
+            updatedCodeSnippetQuestion.Question = updatedQuestion;
+            _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
+            await _dbContext.SaveChangesAsync();
+
+            //Handling many to many relationship entity
+            //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
+            var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedCodeSnippetQuestion.Id).ToListAsync();
+            _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
+
+            var questionLanguageMapping = new List<QuestionLanguageMapping>();
+
+            //Map language to codeSnippetQuestion
+            foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
             {
-                updatedQuestion.Id = questionId;
-                updatedQuestion.UpdatedByUserId = userId;
-                _dbContext.Question.Update(updatedQuestion);
-                await _dbContext.SaveChangesAsync();
+                var languageId = await _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefaultAsync();
 
-                updatedCodeSnippetQuestion.Question = updatedQuestion;
-                _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
-                await _dbContext.SaveChangesAsync();
-
-                //Handling many to many relationship entity
-                //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
-                var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedCodeSnippetQuestion.Id).ToListAsync();
-                _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
-
-                var questionLanguageMapping = new List<QuestionLanguageMapping>();
-
-                //Map language to codeSnippetQuestion
-                foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
+                questionLanguageMapping.Add(new QuestionLanguageMapping
                 {
-                    var languageId = await _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefaultAsync();
-
-                    questionLanguageMapping.Add(new QuestionLanguageMapping
-                    {
-                        QuestionId = updatedCodeSnippetQuestion.Id,
-                        LanguageId = languageId
-                    });
-                }
-
-                updatedCodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
-                await _dbContext.SaveChangesAsync();
+                    QuestionId = updatedCodeSnippetQuestion.Id,
+                    LanguageId = languageId
+                });
             }
-            else
-            {
-                throw new KeyNotFoundException("No question found");
-            }
+
+            updatedCodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
