@@ -1,7 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Repository.Questions
 {
@@ -26,12 +25,27 @@ namespace Promact.Trappist.Repository.Questions
         /// Method to get all the Questions
         /// </summary>
         /// <returns>Question list</returns>
-        Task <ICollection<Question>> GetAllQuestionsAsync();
+        Task<ICollection<Question>> GetAllQuestionsAsync();
 
         /// <summary>
         /// Gets all the coding languages as string from database
         /// </summary>
         /// <returns>CodingLanguageAC class object</returns>
         Task<ICollection<string>> GetAllCodingLanguagesAsync();
+
+        /// <summary>  
+        /// Updates existing single multiple answer Question in the database  
+        /// </summary>  
+        /// <param name="questionId">Id of Question to update</param>  
+        /// <param name="questionAC">QuestionAC class object</param>  
+        /// <param name="userId">Id of logged in user</param>  
+        Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId);
+
+        /// <summary>
+        /// Method to check Question is exists or not.
+        /// </summary>
+        /// <param name="questionId">Id of Question</param>
+        /// <returns>Return true if id already exists otherwise return false</returns>
+        Task<bool> QuestionExistAsync(int questionId);
     }
 }
