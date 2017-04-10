@@ -6,7 +6,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
 {
     public class CodeSnippetQuestionTestCases
     {
-        [ForeignKey("CodeSnippetQuestion")]
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -25,7 +25,8 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         [Required]
         public int TestCaseMarks { get; set; }
-        
+
+        public int CodeSnippetQuestionId { get; set; }
         public virtual CodeSnippetQuestion CodeSnippetQuestion { get; set; }
     }
 }
