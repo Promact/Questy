@@ -867,7 +867,8 @@ footer {
 .questions-dashboard {
   .main-block {
     border: 1px solid $color_border;
-    position: relative;
+    display: table;
+    width: 100%;
 
     .block-title {
       h2 {
@@ -887,12 +888,11 @@ footer {
     }
 
     .category-block {
-      position: absolute;
-      top: 0;
-      bottom: 0;
+      display: table-cell;
+      width: 25%;
+      vertical-align: top;
       background-color: $color_bg_secondary;
       border-right: 1px solid $color_border;
-      padding: 0;
 
       .block-title {
         padding: 14px 8px 12px 12px;
@@ -944,8 +944,8 @@ footer {
     }
 
     .questions-block {
-      min-height: 500px;
-      padding: 0;
+      display: table-cell;
+      width: 75%;
 
       .block-title {
         padding: 14px 25px 12px;
@@ -993,6 +993,8 @@ footer {
       }
 
       .questions-area {
+        min-height: 400px;
+
         .qs-block {
           .pull-left {
             width: 90%;
@@ -1771,5 +1773,13 @@ footer {
 
   .general-error-msg.long-msg {
     max-width: 250px;
+  }
+
+  .questions-dashboard .main-block .category-block {
+    width: 34%;
+  }
+
+  .questions-dashboard .main-block .questions-block {
+    width: 66%;
   }
 }
