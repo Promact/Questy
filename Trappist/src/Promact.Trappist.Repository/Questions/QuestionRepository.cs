@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -149,6 +150,34 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
+        }
+
+        public async Task<QuestionAC> GetQuestionByIdAsync(int id)
+        {
+            var questionAC = new QuestionAC();
+
+            var question = await _dbContext.Question
+                .Include(x => x.SingleMultipleAnswerQuestion)
+                .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
+                .Include(x => x.CodeSnippetQuestion)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+            questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+            questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
+
+            if(question.QuestionType == QuestionType.Programming)
+            {
+                questionAC.CodeSnippetQuestion.LanguageList = await _dbContext
+                    .QuestionLanguageMapping
+                    .Include(x => x.CodeLanguage)
+                    .Where(x => x.QuestionId == question.Id)
+                    .Select(x => x.CodeLanguage.Language)
+                    .ToListAsync();
+            }
+
+            return questionAC;
         }
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
