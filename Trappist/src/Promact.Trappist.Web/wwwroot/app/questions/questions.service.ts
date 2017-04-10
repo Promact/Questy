@@ -40,4 +40,12 @@ export class QuestionsService {
     addCodingQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
     }
+
+    /**
+     * Gets Question of specific Id
+     * @param id: Id of the Question
+     */
+    getQuestionById(id: number) {
+        return this.httpService.get(this.questionsApiUrl + '/' + id);
+    }
 }
