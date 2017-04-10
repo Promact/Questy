@@ -7,6 +7,7 @@ import { QuestionBase } from '../question';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { CodeSnippetQuestionsTestCases } from '../../questions/code-snippet-questions-test-cases.model';
 
 @Component({
     moduleId: module.id,
@@ -26,7 +27,9 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCategoryReady: boolean;
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
+    isTestCaseAdded: boolean;
     code: any;
+    testCases: CodeSnippetQuestionsTestCases[];
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
@@ -40,16 +43,25 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
+        this.isTestCaseAdded = false;
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
         this.formControlModel = new FormControlModel();
+        this.testCases = new Array<CodeSnippetQuestionsTestCases>();
     }
 
     ngOnInit() {
         this.getCodingLanguage();
         this.getCategory();
+    }
+    /**
+     *  Adds test cases of code snippet question
+     */
+    addTestCases() {
+        this.testCases.push(new CodeSnippetQuestionsTestCases());
+        //this.isTestCaseAdded = true;
     }
 
     /**
@@ -148,6 +160,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isFormSubmitted = true;
 
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            this.questionModel.codeSnippetQuestion.testCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);

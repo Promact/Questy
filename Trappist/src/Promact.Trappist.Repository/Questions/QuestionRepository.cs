@@ -69,6 +69,7 @@ namespace Promact.Trappist.Repository.Questions
 
                 //Add codeSnippet part of question
                 codeSnippetQuestion.Question = question;
+                codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAC.CodeSnippetQuestion.TestCases;
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
                 var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
