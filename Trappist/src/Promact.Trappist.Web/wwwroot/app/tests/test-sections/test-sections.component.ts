@@ -8,6 +8,7 @@ import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
 import { TestService } from '../tests.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import { DeselectCategoryDialogComponent } from "../test-sections/deselect-category-dialog.component";
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,6 @@ export class TestSectionsComponent implements OnInit {
     testCategoryObj: TestCategory;
     testQuestion: TestQuestion;
     deselectCategoryError: boolean;
-    i: number;
 
     constructor(private categoryService: CategoryService, private testService: TestService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog) {
         this.getAllCategories();
@@ -54,7 +54,9 @@ export class TestSectionsComponent implements OnInit {
         if (!category.isSelect)
             category.isSelect = true;
         else
-            if (this.testQuestion.isSelect) {               
+            if (this.testQuestion.isSelect) { 
+                this.deselectCategoryError = true;
+                let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
             }
             else
                 category.isSelect = false;
@@ -65,7 +67,7 @@ export class TestSectionsComponent implements OnInit {
      */
     SaveNext() {
         this.SaveCategory();
-        // this.router.navigateByUrl('/tests/questions');
+        this.router.navigateByUrl('/tests/questions');
     }
 
     /**
