@@ -59,6 +59,14 @@ export class TestService {
         return this.httpService.put(this.testApiUrl + '/' + id, body);
     }
 
+    addSelectedCategories(testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'selectedCategories', testCategory);
+    }
+
+    removeDeselectedCategory(id: number) {
+        return this.httpService.delete(this.testApiUrl + '/' + 'deselectCategory' + '/' + id)
+    }
+
     /**
      * Delete the selected test
      * @param testId: type number and has the id of the test to be deleted
