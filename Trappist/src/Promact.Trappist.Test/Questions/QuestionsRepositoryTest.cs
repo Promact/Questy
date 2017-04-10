@@ -45,7 +45,7 @@ namespace Promact.Trappist.Test.Questions
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
-            var result = await _questionRepository.GetAllQuestionsAsync();
+            var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id);
             Assert.True(result.Count() == 1);
         }
         
