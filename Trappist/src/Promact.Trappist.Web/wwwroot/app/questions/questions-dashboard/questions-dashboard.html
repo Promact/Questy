@@ -50,7 +50,7 @@
                             <div class="qs-container">
                                 <p class="qs-num">Q.{{i+1}}</p>
                                 <div class="qs-text">
-                                    <p class="question" [innerHTML]="question.questionDetail"></p>
+                                    <p [innerHTML]="question.questionDetail"class="question"></p>
                                     <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
                                         <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
                                     </div>
