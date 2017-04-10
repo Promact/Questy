@@ -15,7 +15,7 @@ namespace Promact.Trappist.Repository.Questions
         Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId);
 
         /// <summary>
-        /// Adds new code snippet question to the database
+        /// Adds new code snippet question to the Database
         /// </summary>
         /// <param name="questionAC">QuestionAC class object</param>
         /// <param name="userId">Id of logged in user</param>
@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.Questions
         Task<ICollection<Question>> GetAllQuestionsAsync(string userId);
 
         /// <summary>
-        /// Gets all the coding languages as string from database
+        /// Gets all the coding languages as string from Database
         /// </summary>
         /// <returns>CodingLanguageAC class object</returns>
         Task<ICollection<string>> GetAllCodingLanguagesAsync();
@@ -50,11 +50,18 @@ namespace Promact.Trappist.Repository.Questions
         Task<bool> IsQuestionExistAsync(int questionId);
 
         /// <summary>
-        ///  Updates existing code snippet question in the database
+        ///  Updates existing code snippet question in the Database
         /// </summary>
         /// <param name="questionId">Id of question to update</param>
         /// <param name="questionAC">QuestionAC class object</param>
         /// <param name="userId">Id of logged in user</param>
         Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId);
+
+        /// <summary>
+        /// Checks if Question exist or not
+        /// </summary>
+        /// <param name="questionId">Id of the Question</param>
+        /// <returns>True if Question exist in the Database, else false</returns>
+        Task<bool> QuestionExist(int questionId);
     }
 }
