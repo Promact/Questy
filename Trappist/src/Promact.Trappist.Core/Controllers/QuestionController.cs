@@ -124,6 +124,24 @@ namespace Promact.Trappist.Core.Controllers
 
             return Ok(questionAC);
         }
+
+        /// <summary>
+        /// Returns Question of specific Id
+        /// </summary>
+        /// <param name="id">Id of Question</param>
+        /// <returns>
+        /// QuestionAC class object
+        /// </returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetQuestionById([FromRoute]int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
+            return Ok(await _questionsRepository.GetQuestionByIdAsync(id));
+        }
         #endregion
     }
 }
