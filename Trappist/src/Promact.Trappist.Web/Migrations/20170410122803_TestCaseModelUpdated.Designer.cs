@@ -9,8 +9,8 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170410065939_Initial")]
-    partial class Initial
+    [Migration("20170410122803_TestCaseModelUpdated")]
+    partial class TestCaseModelUpdated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,6 +164,35 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CodeSnippetQuestion");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestionTestCases", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CodeSnippetQuestionId");
+
+                    b.Property<string>("TestCaseDescription");
+
+                    b.Property<string>("TestCaseInput")
+                        .IsRequired();
+
+                    b.Property<int>("TestCaseMarks");
+
+                    b.Property<string>("TestCaseOutput")
+                        .IsRequired();
+
+                    b.Property<string>("TestCaseTitle")
+                        .IsRequired();
+
+                    b.Property<int>("TestCaseType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeSnippetQuestionId");
+
+                    b.ToTable("CodeSnippetQuestionTestCases");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", b =>
@@ -417,6 +446,14 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
                         .WithOne("CodeSnippetQuestion")
                         .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestionTestCases", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "CodeSnippetQuestion")
+                        .WithMany("CodeSnippetQuestionTestCases")
+                        .HasForeignKey("CodeSnippetQuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

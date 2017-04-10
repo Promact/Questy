@@ -165,6 +165,35 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("CodeSnippetQuestion");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestionTestCases", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CodeSnippetQuestionId");
+
+                    b.Property<string>("TestCaseDescription");
+
+                    b.Property<string>("TestCaseInput")
+                        .IsRequired();
+
+                    b.Property<int>("TestCaseMarks");
+
+                    b.Property<string>("TestCaseOutput")
+                        .IsRequired();
+
+                    b.Property<string>("TestCaseTitle")
+                        .IsRequired();
+
+                    b.Property<int>("TestCaseType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeSnippetQuestionId");
+
+                    b.ToTable("CodeSnippetQuestionTestCases");
+                });
+
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodingLanguage", b =>
                 {
                     b.Property<int>("Id")
@@ -452,6 +481,14 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
                         .WithOne("CodeSnippetQuestion")
                         .HasForeignKey("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestionTestCases", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.CodeSnippetQuestion", "CodeSnippetQuestion")
+                        .WithMany("CodeSnippetQuestionTestCases")
+                        .HasForeignKey("CodeSnippetQuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

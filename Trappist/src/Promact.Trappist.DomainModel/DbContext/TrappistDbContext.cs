@@ -69,6 +69,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
         public DbSet<CodingLanguage> CodingLanguage { get; set; }
         public DbSet<QuestionLanguageMapping> QuestionLanguageMapping { get; set; }
+        public DbSet<CodeSnippetQuestionTestCases> CodeSnippetQuestionTestCases { get; set; }
         public DbSet<TestAttendees> TestAttendees { get; set; }
 
         #region Overridden Methods  
