@@ -5,6 +5,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
@@ -30,7 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns added Question
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> AddQuestion([FromBody]QuestionAC questionAC)
+        public async Task<IActionResult> AddQuestionAsync([FromBody]QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid)
             {
@@ -71,6 +72,43 @@ namespace Promact.Trappist.Core.Controllers
         {
             var codinglanguages = await _questionsRepository.GetAllCodingLanguagesAsync();
             return Ok(codinglanguages);
+        }
+
+        /// <summary>
+        /// Updates an existing Question in database.
+        /// </summary>
+        /// <param name="id">Id of Question to update</param>
+        /// <param name="questionAC">Object of QuestionAC</param>
+        /// <returns>Returns updated question</returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateQuestionAsync(int id, [FromBody] QuestionAC questionAC)
+        {
+            if (questionAC == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            if (!await _questionsRepository.QuestionExistAsync(id))
+            {
+                return NotFound();
+            }
+            try
+            {
+                var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+                if (questionAC.Question.QuestionType == QuestionType.Programming)
+                {
+                    //To-Do Add call to update method for code snippet type question 
+                }
+                else
+                {
+                    await _questionsRepository.UpdateSingleMultipleAnswerQuestionAsync(id, questionAC, applicationUser.Id);
+                }
+            }
+            catch (KeyNotFoundException)
+            {
+                //Id did not match any entry  
+                return NotFound();
+            }
+            return Ok(questionAC);
         }
         #endregion
     }

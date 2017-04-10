@@ -19,21 +19,16 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext = dbContext;
         }
 
-        /// <summary>
-        /// Method to get all the Questions
-        /// </summary>
-        /// <returns>Question list</returns>
+        public async Task<bool> QuestionExistAsync(int questionId)
+        {
+            return await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync();
+        }
+
         public async Task<ICollection<Question>> GetAllQuestionsAsync()
         {
             return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
         }
 
-        /// <summary>
-        /// A method to add single multiple answer Question.
-        /// </summary>
-        /// <param name="questionAC">Object of QuestionAC</param>
-        /// <param name="userId">Id of logged in user</param>
-        /// <returns>Returns object of QuestionAC</returns>
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
@@ -55,11 +50,6 @@ namespace Promact.Trappist.Repository.Questions
             return (questionAC);
         }
 
-        /// <summary>
-        /// Adds new code snippet question to the Database
-        /// </summary>
-        /// <param name="questionAC">QuestionAC class object</param>
-        /// <param name="userId">Id of logged in user</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
@@ -92,10 +82,6 @@ namespace Promact.Trappist.Repository.Questions
             }
         }
 
-        /// <summary>
-        /// Gets all the coding languages as string from the Database
-        /// </summary>
-        /// <returns>CodingLanguageAC class object</returns>
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
         {
             var codingLanguageList = await _dbContext.CodingLanguage.ToListAsync();
@@ -108,6 +94,28 @@ namespace Promact.Trappist.Repository.Questions
                 languageNameList.Add(codingLanguage.Language);
             });
             return languageNameList;
+        }
+
+        public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
+        {
+            var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+
+            //Update common Question details
+            updatedQuestion.Id = questionId;
+            updatedQuestion.UpdatedByUserId = userId;
+            _dbContext.Question.Update(updatedQuestion);
+            await _dbContext.SaveChangesAsync();
+
+            //Update single/multiple Question and option
+            var optionToRemove = await _dbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == questionId).ToListAsync();
+            _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToRemove);
+            await _dbContext.SaveChangesAsync();
+            foreach (SingleMultipleAnswerQuestionOption option in questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption)
+            {
+                option.SingleMultipleAnswerQuestionID = questionId;
+                await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(option);
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
