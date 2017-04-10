@@ -10,6 +10,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Promact.Trappist.DomainModel.Models.TestConduct;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
@@ -68,6 +69,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
         public DbSet<CodingLanguage> CodingLanguage { get; set; }
         public DbSet<QuestionLanguageMapping> QuestionLanguageMapping { get; set; }
+        public DbSet<TestAttendees> TestAttendees { get; set; }
 
         #region Overridden Methods  
         public override int SaveChanges()
