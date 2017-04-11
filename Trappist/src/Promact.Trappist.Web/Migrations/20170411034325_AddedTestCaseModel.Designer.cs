@@ -9,8 +9,8 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170410122803_TestCaseModelUpdated")]
-    partial class TestCaseModelUpdated
+    [Migration("20170411034325_AddedTestCaseModel")]
+    partial class AddedTestCaseModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,12 +173,14 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<int>("CodeSnippetQuestionId");
 
+                    b.Property<DateTime>("CreatedDateTime");
+
                     b.Property<string>("TestCaseDescription");
 
                     b.Property<string>("TestCaseInput")
                         .IsRequired();
 
-                    b.Property<int>("TestCaseMarks");
+                    b.Property<double>("TestCaseMarks");
 
                     b.Property<string>("TestCaseOutput")
                         .IsRequired();
@@ -187,6 +189,8 @@ namespace Promact.Trappist.Web.Migrations
                         .IsRequired();
 
                     b.Property<int>("TestCaseType");
+
+                    b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
