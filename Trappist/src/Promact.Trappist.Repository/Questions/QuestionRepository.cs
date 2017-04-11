@@ -102,9 +102,9 @@ namespace Promact.Trappist.Repository.Questions
             return languageNameList;
         }
 
-        public async Task<bool> QuestionExist(int questionId)
+        public async Task<bool> IsQuestionExist(int questionId)
         {
-            return await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync();
+            return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
         }
 
         public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
