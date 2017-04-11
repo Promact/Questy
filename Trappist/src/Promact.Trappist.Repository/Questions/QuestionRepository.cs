@@ -127,16 +127,15 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
 
             var questionLanguageMapping = new List<QuestionLanguageMapping>();
+            var languageList = await _dbContext.CodingLanguage.ToListAsync();
 
             //Map language to codeSnippetQuestion
             foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
             {
-                var languageId = await _dbContext.CodingLanguage.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefaultAsync();
-
                 questionLanguageMapping.Add(new QuestionLanguageMapping
                 {
                     QuestionId = updatedCodeSnippetQuestion.Id,
-                    LanguageId = languageId
+                    LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                 });
             }
 
