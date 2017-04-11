@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Question;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +51,12 @@ namespace Promact.Trappist.Repository.Questions
             return (questionAC);
         }
 
-        public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
+        /// <summary>
+        /// Adds new code snippet question to the Database
+        /// </summary>
+        /// <param name="questionAC">QuestionAC class object</param>
+        /// <param name="userId">Id of logged in user</param>
+        public async Task<QuestionAC> AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
@@ -66,21 +72,30 @@ namespace Promact.Trappist.Repository.Questions
                 codeSnippetQuestion.Question = question;
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
-                var languageIdList = await _dbContext.CodingLanguage.ToListAsync();
+                var languageToAdd = await _dbContext.CodingLanguage.ToListAsync();
 
                 //Map language to codeSnippetQuestion
                 foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
                 {
-                    var languageId = languageIdList.Where(x => x.Language == language).Select(x => x.Id).FirstOrDefault();
-                    await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
+                    try
                     {
-                        QuestionId = codeSnippetQuestion.Id,
-                        LanguageId = languageId
-                    });
+                        var languageId = languageToAdd.First(x => x.Language.ToLower().Equals(language.ToLower())).Id;
+                        await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
+                        {
+                            QuestionId = codeSnippetQuestion.Id,
+                            LanguageId = languageId
+                        });
+                    }
+                    catch (Exception ex) when (ex is ArgumentNullException || ex is InvalidOperationException)
+                    {
+                        return null;
+                    }
                 }
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
+
+            return questionAC;
         }
 
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
