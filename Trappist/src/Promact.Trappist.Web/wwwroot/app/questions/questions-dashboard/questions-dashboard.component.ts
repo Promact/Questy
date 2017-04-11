@@ -24,8 +24,8 @@ export class QuestionsDashboardComponent implements OnInit {
     medium: number;
     hard: number;
     selectedCategory: Category;
-    questionDisplay: Question[];
-    question: Question[];
+    questionDisplay: QuestionDisplay[];
+    question: QuestionDisplay[];
     categoryArray: Category[];
     //To enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
@@ -39,10 +39,10 @@ export class QuestionsDashboardComponent implements OnInit {
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.category = new Category();
         this.selectedCategory = new Category;
-        this.optionName = ['a', 'b', 'c', 'd', 'e','f','g','h','i','j'];
+        this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.categoryArray = new Array<Category>();
-        this.question = new Array<Question>();
-        this.questionDisplay = new Array<Question>();
+        this.question = new Array<QuestionDisplay>();
+        this.questionDisplay = new Array<QuestionDisplay>();
         this.matchString = '';
         this.easy = 0;
         this.medium = 0;
@@ -166,12 +166,12 @@ export class QuestionsDashboardComponent implements OnInit {
      * @param difficultyLevel
      * @param matchString
      */
-    filterQuestion(question: Question[], category: Category = null, difficultyLevel: DifficultyLevel = null, matchString: string = null): Question[] {
-        let tempQuestion: Question[] = [];
+    filterQuestion(question: QuestionDisplay[], category: Category = null, difficultyLevel: DifficultyLevel = null, matchString: string = null): QuestionDisplay[] {
+        let tempQuestion: QuestionDisplay[] = [];
 
         if (category !== {} && category !== null) {
             question.forEach(x => {
-                if (x.categoryID === category.id || category.id === undefined) {
+                if (x.category.id === category.id || category.id === undefined) {
                     tempQuestion.push(x);
                 }
             });
