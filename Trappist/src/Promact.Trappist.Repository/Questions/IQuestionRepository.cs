@@ -46,6 +46,6 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="questionId">Id of Question</param>
         /// <returns>Return true if id already exists otherwise return false</returns>
-        Task<bool> QuestionExistAsync(int questionId);
+        Task<bool> IsQuestionExistAsync(int questionId);
     }
 }

@@ -19,9 +19,9 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext = dbContext;
         }
 
-        public async Task<bool> QuestionExistAsync(int questionId)
+        public async Task<bool> IsQuestionExistAsync(int questionId)
         {
-            return await _dbContext.Question.Where(x => x.Id == questionId).AnyAsync();
+            return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
         }
 
         public async Task<ICollection<Question>> GetAllQuestionsAsync()
@@ -99,6 +99,7 @@ namespace Promact.Trappist.Repository.Questions
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
             var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+            var options = questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
 
             //Update common Question details
             updatedQuestion.Id = questionId;
@@ -107,14 +108,10 @@ namespace Promact.Trappist.Repository.Questions
             await _dbContext.SaveChangesAsync();
 
             //Update single/multiple Question and option
-            var optionToRemove = await _dbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == questionId).ToListAsync();
-            _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToRemove);
+            _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(await _dbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == questionId).ToListAsync());
             await _dbContext.SaveChangesAsync();
-            foreach (SingleMultipleAnswerQuestionOption option in questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption)
-            {
-                option.SingleMultipleAnswerQuestionID = questionId;
-                await _dbContext.SingleMultipleAnswerQuestionOption.AddAsync(option);
-            }
+            options.ForEach(x => x.SingleMultipleAnswerQuestionID = questionId);
+            _dbContext.SingleMultipleAnswerQuestionOption.AddRange(options);
             await _dbContext.SaveChangesAsync();
         }
     }
