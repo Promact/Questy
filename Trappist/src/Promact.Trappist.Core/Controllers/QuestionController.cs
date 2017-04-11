@@ -101,14 +101,23 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
-            if (questionAC.Question.QuestionType == QuestionType.Programming)
+
+            try
             {
-                await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, "");
+                if (questionAC.Question.QuestionType == QuestionType.Programming)
+                {
+                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, applicationUser.Id);
+                }
+                else
+                {
+                    await _questionsRepository.UpdateSingleMultipleAnswerQuestionAsync(id, questionAC, applicationUser.Id);
+                }
             }
-            else
+            catch (InvalidOperationException)
             {
-                await _questionsRepository.UpdateSingleMultipleAnswerQuestionAsync(id, questionAC, applicationUser.Id);
+                return BadRequest();
             }
+
             return Ok(questionAC);
         }
         #endregion
