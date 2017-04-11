@@ -1,14 +1,10 @@
 ﻿using Promact.Trappist.DomainModel.Enum;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public class CodeSnippetQuestionTestCases
+    public class CodeSnippetQuestionTestCases:BaseModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string TestCaseTitle { get; set; }
 
@@ -24,7 +20,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
         public string TestCaseOutput { get; set; }
 
         [Required]
-        public int TestCaseMarks { get; set; }
+        public double TestCaseMarks { get; set; }
 
         public int CodeSnippetQuestionId { get; set; }
         public virtual CodeSnippetQuestion CodeSnippetQuestion { get; set; }

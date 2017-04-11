@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class TestCaseModelUpdated : Migration
+    public partial class AddedTestCaseModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -296,12 +296,14 @@ namespace Promact.Trappist.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CodeSnippetQuestionId = table.Column<int>(nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(nullable: false),
                     TestCaseDescription = table.Column<string>(nullable: true),
                     TestCaseInput = table.Column<string>(nullable: false),
-                    TestCaseMarks = table.Column<int>(nullable: false),
+                    TestCaseMarks = table.Column<double>(nullable: false),
                     TestCaseOutput = table.Column<string>(nullable: false),
                     TestCaseTitle = table.Column<string>(nullable: false),
-                    TestCaseType = table.Column<int>(nullable: false)
+                    TestCaseType = table.Column<int>(nullable: false),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
