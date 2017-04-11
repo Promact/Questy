@@ -70,7 +70,7 @@ export class QuestionsDashboardComponent implements OnInit {
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.question = questionsList;
-            this.selectedCategory = new Category;
+            this.selectedCategory = new Category();
             this.isAllQuestionsSelected = true;
             this.countQuestion();
             this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
