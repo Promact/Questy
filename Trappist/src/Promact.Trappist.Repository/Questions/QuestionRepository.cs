@@ -71,7 +71,7 @@ namespace Promact.Trappist.Repository.Questions
                 codeSnippetQuestion.Question = question;
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
-                var languageToAdd = await _dbContext.CodingLanguage.ToListAsync();
+                var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
 
                 //Map language to codeSnippetQuestion
                 foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
@@ -79,7 +79,7 @@ namespace Promact.Trappist.Repository.Questions
                     await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
                     {
                         QuestionId = codeSnippetQuestion.Id,
-                        LanguageId = languageToAdd.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
+                        LanguageId = codingLanguages.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                     });
                 }
                 await _dbContext.SaveChangesAsync();
