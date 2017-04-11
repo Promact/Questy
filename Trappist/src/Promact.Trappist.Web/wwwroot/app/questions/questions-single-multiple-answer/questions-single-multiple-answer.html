@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
-                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
+                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required (ngModelChange)="isRadioButtonSelelcted=true">
                         <md-radio-button value="{{i}}" [disabled]="choice.pristine">
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
@@ -27,7 +27,7 @@
                     <p class="tip">Tip: Click the radio button to mark the correct answer. Minimum 2 options are required and maximum 10 options can be added.</p>
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
-                    <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first" [disabled]="choice.pristine" (ngModelChange)="isOptionSelected=true">
+                    <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="choice.pristine">
                         <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
@@ -54,7 +54,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine || !isOptionSelected()">Save</button>
             </div>
         </form>
     </div>
