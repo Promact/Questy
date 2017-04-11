@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public class Question:BaseModel
+    public class Question : BaseModel
     {
         [Required]
         public string QuestionDetail { get; set; }
