@@ -1,11 +1,6 @@
 ﻿<div class="test-create-steps test-sections">
-    <div class="header-block">
-        <div class="container">
-            <h1>
-                <span [hidden]="editName">{{test.testName}}</span>
-                <input type="text" class="form-control" [hidden]="!editName" />
-                <em class="material-icons" (click)="editName = !editName">edit</em>
-            </h1>
+    <create-test-header></create-test-header>
+        <div class="container">          
         </div>
     </div>
     <div class="container">
@@ -37,5 +32,5 @@
                 <button type="button" class="btn btn-primary" (click)="SaveNext()">Save & Next</button>
             </div>
         </div>
+        <create-test-footer></create-test-footer>
     </div>
-</div>
