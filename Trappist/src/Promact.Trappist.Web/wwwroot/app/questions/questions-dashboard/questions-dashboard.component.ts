@@ -5,7 +5,7 @@ import { DeleteCategoryDialogComponent } from './delete-category-dialog.componen
 import { DeleteQuestionDialogComponent } from './delete-question-dialog.component';
 import { QuestionsService } from '../questions.service';
 import { CategoryService } from '../categories.service';
-import { Question } from '../../questions/question.model';
+import { QuestionDisplay } from '../../questions/question-display';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
@@ -20,7 +20,7 @@ import { RenameCategoryDialogComponent } from './rename-category-dialog.componen
 export class QuestionsDashboardComponent implements OnInit {
     category: Category;
     showSearchInput: boolean;
-    questionDisplay: Question[] = new Array<Question>();
+    questionDisplay: QuestionDisplay[] = new Array<QuestionDisplay>();
     categoryArray: Category[] = new Array<Category>();
     // to enable enum difficultylevel in template
     DifficultyLevel = DifficultyLevel;
