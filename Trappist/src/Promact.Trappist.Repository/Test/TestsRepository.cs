@@ -105,5 +105,20 @@ namespace Promact.Trappist.Repository.Tests
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
+
+        public async Task<bool> IsAttendeeExistAsync(int id)
+        {
+            Test test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
+            if (test.TestAttendees.Count != 0)
+                return true;
+            return false;
+        }
+
+        public async Task DeleteTestAsync(int id)
+        {
+            Test test = await _dbContext.Test.FindAsync(id);
+            _dbContext.Test.Remove(test);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

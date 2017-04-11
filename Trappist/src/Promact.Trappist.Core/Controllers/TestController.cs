@@ -107,5 +107,37 @@ namespace Promact.Trappist.Core.Controllers
             else
                 return BadRequest();
         }
+
+        /// <summary>
+        /// Checks whether there is any test attendee or not
+        /// </summary>
+        /// <param name="id">Id of the test</param>
+        /// <returns>Boolean:true if there exist an attendee or else false</returns>
+        [HttpGet("testAttendee/{id}")]
+        public async Task<bool> IsAttendeeExistAsync(int id)
+        {
+            return await _testRepository.IsAttendeeExistAsync(id);
+        }
+
+        /// <summary>
+        /// Delete the test from the database
+        /// </summary>
+        /// <param name="id">Id of the test to be deleted</param>
+        /// <returns>Ok if test id deleted else BadRequest</returns>
+        [HttpDelete("deleteTest/{id}")]
+        public async Task<IActionResult> DeleteTestAsync(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            if (!await _testRepository.IsAttendeeExistAsync(id))
+            {
+                await _testRepository.DeleteTestAsync(id);
+                return NoContent();
+            }
+            else
+                return BadRequest();
+        }
     }
 }
