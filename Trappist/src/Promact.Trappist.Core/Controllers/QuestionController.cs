@@ -5,6 +5,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Web.Models;
+using System;
 using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
@@ -39,15 +40,22 @@ namespace Promact.Trappist.Core.Controllers
 
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
 
-            if (questionAC.Question.QuestionType == QuestionType.Programming)
+            try
             {
-                if (await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, applicationUser.Id) == null)
-                    return BadRequest();
+                if (questionAC.Question.QuestionType == QuestionType.Programming)
+                {
+                    await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
+                }
+                else
+                {
+                    await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
+                }
             }
-            else
+            catch(InvalidOperationException)
             {
-                await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
+                return BadRequest();
             }
+
             return Ok(questionAC);
         }
 
