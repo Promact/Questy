@@ -18,6 +18,7 @@ export class TestsDashboardComponent {
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
     searchTest: string;
+    isDeleteAllowed: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.getAllTests();
@@ -34,8 +35,23 @@ export class TestsDashboardComponent {
                 this.Tests.push(test);
         });
     }
-    // Open Delete Test Dialog
-    deleteTestDialog() {
-        this.dialog.open(DeleteTestDialogComponent);
+
+    /**
+    * Open Delete Test Dialog
+    * @param test: Object of Test class that is to be deleted
+    */
+    deleteTestDialog(test: Test) {
+        // Checks if there is any one who is giving the test and returns boolean value. 
+        this.testService.isAttendeeExist(test.id).subscribe((isAttendeeExist) => {
+            if (isAttendeeExist)
+                this.isDeleteAllowed = false;
+            else
+                this.isDeleteAllowed = true;
+
+            let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
+            deleteTestDialog.testToDelete = test;
+            deleteTestDialog.testArray = this.Tests;
+            deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
+        });
     }
 }

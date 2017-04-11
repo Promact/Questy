@@ -53,5 +53,19 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Test Name</returns>
         Task UpdateTestNameAsync(int id, Test testObject);
+
+        /// <summary>
+        /// Delete test from the test model
+        /// </summary>
+        /// <param name="test">Test object which has all the details of the selected test</param>
+        /// <returns>Delete the test from database and save the changes</returns>
+        Task DeleteTestAsync(int id);
+
+        /// <summary>
+        /// Checks whether a test attendee exists or not
+        /// </summary>
+        /// <param name="id">Id of the test</param>
+        /// <returns>Boolean:true if an attendee exist or else false</returns>
+        Task<bool> IsAttendeeExistAsync(int id);
     }
 }

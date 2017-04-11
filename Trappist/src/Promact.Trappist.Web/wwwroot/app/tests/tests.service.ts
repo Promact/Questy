@@ -58,4 +58,20 @@ export class TestService {
     updateTestName(id: number, body: Test) {
         return this.httpService.put(this.testApiUrl + '/' + id, body);
     }
+
+    /**
+     * Delete the selected test
+     * @param testId: type number and has the id of the test to be deleted
+     */
+    deleteTest(testId: number) {
+        return this.httpService.delete(this.testApiUrl + '/deleteTest/' + testId);
+    }
+
+    /**
+     * Checks whether any test attendee exists 
+     * @param testId: type number and has the id of the test to be deleted
+     */
+    isAttendeeExist(testId: number) {
+        return this.httpService.get(this.testApiUrl + '/testAttendee/' + testId)
+    }
 }

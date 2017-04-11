@@ -106,9 +106,34 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             var testNameToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
             testNameToUpdate.TestName = "MCKV";
-            await _testRepository.UpdateTestNameAsync(test.Id,testNameToUpdate);
+            await _testRepository.UpdateTestNameAsync(test.Id, testNameToUpdate);
             var TestName = "MCKV";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
+        }
+
+        /// <summary>
+        /// Checks if any test attendee exists for the particular test
+        /// </summary>
+        [Fact]
+        public async Task IsAttendeeExistsAsync()
+        {
+            var testAttendee = TestAttendee();
+            var test = _testRepository.CreateTestAsync(testAttendee.Test);
+            _trappistDbContext.TestAttendees.Add(testAttendee);
+            var isExists = await _testRepository.IsAttendeeExistAsync(test.Id);
+            Assert.True(isExists);
+        }
+
+        /// <summary>
+        /// Deletes the selected test
+        /// </summary>
+        [Fact]
+        public async Task DeleteTestAsync()
+        {
+            var test = CreateTest("Logical");
+            await _testRepository.CreateTestAsync(test);
+            await _testRepository.DeleteTestAsync(test.Id);
+            Assert.Equal(0, _trappistDbContext.Test.Count());
         }
 
         private DomainModel.Models.Test.Test CreateTest(string testName)
@@ -119,6 +144,19 @@ namespace Promact.Trappist.Test.Tests
                 BrowserTolerance = 1
             };
             return test;
+        }
+
+        private DomainModel.Models.TestConduct.TestAttendees TestAttendee()
+        {
+            var test = CreateTest("Quantitative");
+            var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
+            {
+                Test = test,
+                FirstName = "Ritika",
+                LastName="Mohata",
+                Email="ritika@gmail.com"
+            };
+            return testAttendee;
         }
     }
 }
