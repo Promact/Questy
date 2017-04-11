@@ -67,7 +67,7 @@ export class TestSectionsComponent implements OnInit {
      */
     SaveNext() {
         this.SaveCategory();
-        this.router.navigateByUrl('/tests/questions');
+        //this.router.navigateByUrl('/tests/questions');
     }
 
     /**

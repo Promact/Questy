@@ -1,72 +1,41 @@
 ﻿<div class="test-create-steps test-sections">
-    <create-test-header></create-test-header>
+    <div class="header-block">
+        <div class="container">
+            <h1>
+                <span [hidden]="editName">{{test.testName}}</span>
+                <input type="text" class="form-control" [hidden]="!editName" />
+                <em class="material-icons" (click)="editName = !editName">edit</em>
+            </h1>
+        </div>
+    </div>
     <div class="container">
         <h2>Select sections to add in your test</h2>
         <ul class="sections-list">
-            <li>
-                <label for="section1">
-                    <input type="checkbox" id="section1" />
+            <li *ngFor="let category of Categories"
+                (click)="onSelect(category)">
+                <label for="section">
+                    <input type="checkbox" id="section1" [(ngModel)]="category.isSelect" />
                     <span class="section-box clearfix">
-                        <span class="h4 pull-left">English Communication</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section2">
-                    <input type="checkbox" id="section2" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">Logical Reasoning & Data Interpretation</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section3">
-                    <input type="checkbox" id="section3" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">Quantitative Ability</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section4">
-                    <input type="checkbox" id="section4" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">Programming</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section5">
-                    <input type="checkbox" id="section5" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">English Writing</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section6">
-                    <input type="checkbox" id="section6" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">General Awareness</span>
-                        <em class="material-icons pull-right">check</em>
-                    </span>
-                </label>
-            </li>
-            <li>
-                <label for="section7">
-                    <input type="checkbox" id="section7" />
-                    <span class="section-box clearfix">
-                        <span class="h4 pull-left">Physics</span>
+                        <span class="h4 pull-left">{{category.categoryName}}</span>
                         <em class="material-icons pull-right">check</em>
                     </span>
                 </label>
             </li>
         </ul>
     </div>
-    <create-test-footer></create-test-footer>
+    <div class="footer-block clearfix">
+        <div class="container">
+            <ul class="steps pull-left">
+                <li class="h5 active"><a [routerLink]="['/tests/sections', test.id]">Select Sections</a></li>
+                <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+                <li class="h5"><a [routerLink]="['/tests/questions']">Select Questions</a></li>
+                <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+                <li class="h5"><a [routerLink]="['/tests/settings']">Settings & Schedule</a></li>
+            </ul>
+            <div class="buttons-block pull-right">
+                <button type="button" class="btn" (click)="SaveExit()">Save & Exit</button>
+                <button type="button" class="btn btn-primary" (click)="SaveNext()">Save & Next</button>
+            </div>
+        </div>
+    </div>
 </div>
