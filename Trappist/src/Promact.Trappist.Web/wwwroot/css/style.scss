@@ -19,13 +19,16 @@ $color_yellow_light: #FFE2BD;
 $half_size: 50%;
 $full_size: 100%;
 
+/* Font */
+$font_open_sans: 'Open Sans', sans-serif;
+
 /* General */
 html {
   height: $full_size;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: $font_open_sans;
   font-size: 13px;
   background-color: $color_bg;
   color: $color_base;
@@ -151,6 +154,15 @@ h6, .h6 {
   color: $color_red !important;
 }
 
+.display-table {
+  display: table;
+  width: $full_size;
+}
+
+.display-table-cell {
+  display: table-cell;
+}
+
 .btn {
   font-size: 13px;
   font-weight: 600;
@@ -262,7 +274,7 @@ h6, .h6 {
 
       .mat-menu-item {
         font-size: 13px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         line-height: inherit;
         height: inherit;
         padding: 6px 30px 6px 16px;
@@ -341,7 +353,7 @@ h6, .h6 {
 
   .mat-autocomplete-panel {
     .mat-option {
-      font-family: 'Open Sans', sans-serif;
+      font-family: $font_open_sans;
       font-size: 13px;
       line-height: 34px;
       height: 34px;
@@ -354,7 +366,7 @@ h6, .h6 {
   }
 
   .mat-simple-snackbar {
-    font-family: 'Open Sans', sans-serif;
+    font-family: $font_open_sans;
     font-size: 13px;
   }
 }
@@ -1086,14 +1098,14 @@ footer {
     }
 
     .mat-radio-label-content {
-      font-family: 'Open Sans', sans-serif;
+      font-family: $font_open_sans;
       font-weight: 400;
       padding-left: 15px;
       width: $full_size;
 
       .form-control {
         display: inline-block;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         font-weight: 400;
         width: 92%;
       }
@@ -1123,7 +1135,7 @@ footer {
   width: 54%;
 
   .mat-checkbox-layout {
-    font-family: 'Open Sans', sans-serif;
+    font-family: $font_open_sans;
     font-weight: 400;
     margin-bottom: 15px;
     width: $full_size;
@@ -1145,7 +1157,7 @@ footer {
 
       .form-control {
         display: inline-block;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         font-weight: 400;
         width: 92%;
       }
@@ -1631,7 +1643,7 @@ footer {
         }
 
         .mat-input-container {
-          font-family: 'Open Sans', sans-serif;
+          font-family: $font_open_sans;
 
           .mat-input-wrapper {
             margin: 6px 0;
@@ -1779,15 +1791,9 @@ footer {
     z-index: 99;
 
     .container-fluid {
-      & > div {
-        display: table;
-        width: $full_size;
-
-        & > div {
-          display: table-cell;
-          width: 33.33%;
-          vertical-align: middle;
-        }
+      .display-table-cell {
+        width: 33.33%;
+        vertical-align: middle;
       }
     }
 
@@ -1804,22 +1810,16 @@ footer {
     padding: 70px 0 157px;
 
     .container-fluid {
-      & > div {
-        display: table;
-        width: $full_size;
+      .display-table-cell {
+        width: $half_size;
+        vertical-align: top;
 
-        & > div {
-          display: table-cell;
-          width: $half_size;
-          vertical-align: top;
+        & > * {
+          width: 80%;
+        }
 
-          & > * {
-            width: 80%;
-          }
-
-          & + div {
-            border-left: 1px solid $color_border;
-          }
+        & + div {
+          border-left: 1px solid $color_border;
         }
       }
     }
