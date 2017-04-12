@@ -112,7 +112,7 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Checks if any test attendee exists for the particular test
+        /// Check if any test attendee exist for a particular test
         /// </summary>
         [Fact]
         public async Task IsAttendeeExistsAsync()
@@ -125,7 +125,7 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Deletes the selected test
+        /// Delete the selected test
         /// </summary>
         [Fact]
         public async Task DeleteTestAsync()
@@ -153,8 +153,8 @@ namespace Promact.Trappist.Test.Tests
             {
                 Test = test,
                 FirstName = "Ritika",
-                LastName="Mohata",
-                Email="ritika@gmail.com"
+                LastName = "Mohata",
+                Email = "ritika@gmail.com"
             };
             return testAttendee;
         }

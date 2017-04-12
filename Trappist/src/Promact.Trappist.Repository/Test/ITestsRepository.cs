@@ -57,12 +57,12 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// Delete test from the test model
         /// </summary>
-        /// <param name="test">Test object which has all the details of the selected test</param>
+        ///<param name="id">Id of the test to be deleted</param>
         /// <returns>Delete the test from database and save the changes</returns>
         Task DeleteTestAsync(int id);
 
         /// <summary>
-        /// Checks whether a test attendee exists or not
+        /// Check whether a test attendee exist or not
         /// </summary>
         /// <param name="id">Id of the test</param>
         /// <returns>Boolean:true if an attendee exist or else false</returns>
