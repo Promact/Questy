@@ -38,7 +38,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
         this.category = new Category();
-        this.selectedCategory = new Category;
+        this.selectedCategory = new Category();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.categoryArray = new Array<Category>();
         this.question = new Array<QuestionDisplay>();
@@ -60,12 +60,14 @@ export class QuestionsDashboardComponent implements OnInit {
             return 'correct';
         }
     }
+
     //To get all the Categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
         });
     }
+
     //To get all the Questions
     getAllQuestions() {
         this.questionsService.getQuestions().subscribe((questionsList) => {
@@ -135,16 +137,13 @@ export class QuestionsDashboardComponent implements OnInit {
         updateDialogRef.afterClosed().subscribe(updatedCategory => {
             if (updatedCategory !== null && updatedCategory !== undefined) {
                 categoryToUpdate.categoryName = updatedCategory.categoryName;
+                this.question.forEach(x => {
+                    if (x.category.id === categoryToUpdate.id) {
+                        x.category.categoryName = categoryToUpdate.categoryName;
+                    }
+                });
             }
         });
-    }
-
-    /**
-     * To get Category by id
-     * @param id
-     */
-    getCategoryById(id: number) {
-        return this.categoryArray.find(x => x.id === id);
     }
 
     // Open delete category dialog and set the property of DeleteCategoryDialogComponent class
