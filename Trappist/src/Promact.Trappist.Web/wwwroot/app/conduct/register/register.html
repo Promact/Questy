@@ -1,35 +1,54 @@
 ﻿<div class="test-conduct">
     <test-conduct-header></test-conduct-header>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
     <div class="registration-block">
-        <form>
+        <form #RegistrationForm="ngForm">
             <h2>Registration Form</h2>
             <div class="form-group">
                 <label class="h4">First Name</label>
-                <input type="text" class="form-control" />
-                <div class="errors-container"></div>
+                <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.firstName" name="firstName" #firstName="ngModel" maxlength="255" />
+                <div class="errors-container">
+                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.pattern" class="error-msg">First name must be in alphabets</span>
+                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.required" class="error-msg">required</span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="h4">Last Name</label>
-                <input type="text" class="form-control" />
-                <div class="errors-container"></div>
+                <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.lastName" name="lastName" #lastName="ngModel" maxlength="255" />
+                <div class="errors-container">
+                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.pattern" class="error-msg">Last name must be in alphabets</span>
+                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.required" class="error-msg">required</span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="h4">Email</label>
-                <input type="email" class="form-control" />
-                <div class="errors-container"></div>
+                <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="email" class="form-control" [(ngModel)]="testAttendees.email" name="email" #email="ngModel" maxlength="255" />
+                <div class="errors-container">
+                    <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">Invalid email address</span>
+                    <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">required</span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="h4">Roll Number</label>
-                <input type="text" class="form-control" />
-                <div class="errors-container"></div>
+                <input required pattern="^[a-zA-Z0-9]*$" type="text" class="form-control" [(ngModel)]="testAttendees.rollNumber" name="rollNumber" #rollNumber="ngModel" />
+                <div class="errors-container">
+                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">Invalid roll number</span>
+                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">required</span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="h4">Contact Number</label>
-                <input type="text" class="form-control" />
-                <div class="errors-container"></div>
+                <input required pattern="[0-9]{10,15}" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" />
+                <div class="errors-container">
+                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Invalid contact number.</span>
+                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">required</span>
+                </div>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!RegistrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
+                <span class="general-error-msg long-msg pull-left" *ngIf="isErrorMessage">Due to some reason you can not continue with this test</span>
             </div>
         </form>
     </div>

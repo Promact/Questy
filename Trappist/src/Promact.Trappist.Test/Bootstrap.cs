@@ -23,6 +23,7 @@ using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
+using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Test
 {
@@ -51,7 +52,7 @@ namespace Promact.Trappist.Test
                .AddEntityFrameworkStores<TrappistDbContext>()
                .AddDefaultTokenProviders();
             #endregion
-            
+
             #region Setup parameters
             services.Configure<ConnectionString>(x => x.Value = "connectionstring");
             services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
@@ -75,6 +76,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
+            services.AddScoped<ITestConductRepository, TestConductRepository>();
             #endregion
 
             #region Mocking
@@ -101,6 +103,12 @@ namespace Promact.Trappist.Test
             var emailSettingsMockObject = emailSettingsMock.Object;
             services.AddScoped(x => emailSettingsMock);
             services.AddScoped(x => emailSettingsMockObject);
+
+            //Mock global utility
+            var globalUtilMock = new Mock<IGlobalUtil>();
+            var globalUtilObject = globalUtilMock.Object;
+            services.AddScoped(x => globalUtilMock);
+            services.AddScoped(x => globalUtilObject);
             #endregion
 
             #region Auto Mapper Configuration

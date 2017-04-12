@@ -23,7 +23,6 @@ namespace Promact.Trappist.Test.BasicSetup
         private readonly Mock<IEmailService> _emailService;
         private readonly ConnectionString _connectionString;
         #endregion
-        private readonly BasicSetupModel basicSetup = new BasicSetupModel();
         #endregion
 
         #region Constructor
@@ -35,7 +34,6 @@ namespace Promact.Trappist.Test.BasicSetup
             _fileUtility = _scope.ServiceProvider.GetService<Mock<IFileUtility>>();
             _emailService = _scope.ServiceProvider.GetService<Mock<IEmailService>>();
             _connectionString = _scope.ServiceProvider.GetService<ConnectionString>();
-            Initialize();
         }
         #endregion
 
@@ -47,6 +45,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task CreateAdminUserTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _hostingEnvironmentMock.Setup(x => x.ContentRootPath).Returns(string.Empty);
             _fileUtility.Setup(x => x.WriteJson(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             var result = await _basicSetupRepository.CreateAdminUser(basicSetup);
@@ -60,6 +59,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task ValidateConnectionStringTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _sqlConnectionMock.Setup(x => x.TryOpenSqlConnection(basicSetup.ConnectionString)).Returns(Task.FromResult(true));
             var result = await _basicSetupRepository.ValidateConnectionString(basicSetup.ConnectionString);
             Assert.True(result);
@@ -72,6 +72,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task ValidateEmailSettingTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _emailService.Setup(x => x.SendMailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
             var result = await _basicSetupRepository.ValidateEmailSetting(basicSetup.EmailSettings);
             Assert.True(result);
@@ -105,6 +106,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task InvalidCreateAdminUserTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _hostingEnvironmentMock.Setup(x => x.ContentRootPath).Returns(string.Empty);
             _fileUtility.Setup(x => x.WriteJson(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             var result = await _basicSetupRepository.CreateAdminUser(basicSetup);
@@ -118,6 +120,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task InvalidValidateConnectionStringTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _sqlConnectionMock.Setup(x => x.TryOpenSqlConnection(basicSetup.ConnectionString)).Returns(Task.FromResult(false));
             var result = await _basicSetupRepository.ValidateConnectionString(basicSetup.ConnectionString);
             Assert.False(result);
@@ -130,6 +133,7 @@ namespace Promact.Trappist.Test.BasicSetup
         [Fact]
         public async Task InvalidValidateEmailSettingTest()
         {
+            var basicSetup = InitializeBasicSetupParameters();
             _emailService.Setup(x => x.SendMailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(false));
             var result = await _basicSetupRepository.ValidateEmailSetting(basicSetup.EmailSettings);
             Assert.False(result);
@@ -138,8 +142,9 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This method used for initialize setup parameters. 
         /// </summary>
-        private void Initialize()
+        private BasicSetupModel InitializeBasicSetupParameters()
         {
+            var basicSetup = new BasicSetupModel();
             basicSetup.ConnectionString = new ConnectionString();
             basicSetup.ConnectionString.Value = "Server=(localdb)\\mssqllocaldb;Database=TrappistDb;Trusted_Connection=True";
             basicSetup.EmailSettings = new EmailSettings();
@@ -153,6 +158,7 @@ namespace Promact.Trappist.Test.BasicSetup
             basicSetup.RegistrationFields.Email = "xyz@promactinfo.com";
             basicSetup.RegistrationFields.Password = "Abc12345@";
             basicSetup.RegistrationFields.ConfirmPassword = "Abc12345@";
+            return basicSetup;
         }
         #endregion
     }
