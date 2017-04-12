@@ -51,7 +51,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     ngOnInit() {
         this.getAllQuestions();
-        this.getAllCategories();   
+        this.getAllCategories();
     }
 
     //To check whether the option is correct or not
@@ -197,6 +197,7 @@ export class QuestionsDashboardComponent implements OnInit {
         }
         return question;
     }
+
     /**
      * To count the number of Questions
      */
@@ -206,11 +207,11 @@ export class QuestionsDashboardComponent implements OnInit {
         questionList.forEach(x => {
             switch (x.difficultyLevel) {
                 case 0:
-                    return this.easy++;
+                    this.easy++;
                 case 1:
-                    return this.medium++;
+                    this.medium++;
                 case 2:
-                    return this.hard++;
+                    this.hard++;
             }
         });
     }
