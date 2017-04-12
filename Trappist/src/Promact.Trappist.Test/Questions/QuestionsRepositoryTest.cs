@@ -28,7 +28,7 @@ namespace Promact.Trappist.Test.Questions
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
-        
+
         /// <summary>
         ///Test to get all Questions 
         /// </summary>
@@ -193,6 +193,7 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
             Assert.True(_trappistDbContext.Question.Count(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail) == 1);
+            Assert.True(_trappistDbContext.CodeSnippetQuestionTestCases.Count() == 1);
         }
 
         /// <summary>
@@ -220,7 +221,18 @@ namespace Promact.Trappist.Test.Questions
                     RunBasicTestCase = true,
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false,
-                    LanguageList = new String[]{ "Java", "C" }
+                    TestCases = new List<CodeSnippetQuestionTestCases>()
+                    {
+                        new CodeSnippetQuestionTestCases()
+                        {
+                            TestCaseTitle = "Necessary check",
+                            TestCaseDescription = "This case must be successfuly passed",
+                            TestCaseMarks = 10.00,
+                            TestCaseType = TestCaseType.Necessary,
+                            TestCaseInput = "2+2",
+                            TestCaseOutput = "4",
+                        }
+                    }
                 },
                 SingleMultipleAnswerQuestion = null
             };
