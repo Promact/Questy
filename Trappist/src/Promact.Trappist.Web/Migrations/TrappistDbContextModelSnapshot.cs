@@ -327,6 +327,10 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("Link");
 
+                    b.Property<string>("OptionOrder");
+
+                    b.Property<string>("QuestionOrder");
+
                     b.Property<DateTime>("StartDate");
 
                     b.Property<string>("TestName")

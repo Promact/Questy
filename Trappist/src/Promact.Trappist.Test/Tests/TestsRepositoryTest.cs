@@ -66,7 +66,7 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Gets Settings of Test selected by Id
+        /// Test Case for fetching settings of a test from database with the help of Id
         /// </summary>
         [Fact]
         public async Task GetSettingsById()
@@ -80,7 +80,7 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Updates settings of a particular test with the help of Id
+        /// Test Case for updating the settings set for a test in the database with the help of Id
         /// </summary>
         [Fact]
         public async Task UpdateTestSettingsById()
@@ -97,7 +97,7 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Updates the name of the Test with the help of Id
+        /// Test Case for updating the edited test name in the database 
         /// </summary>
         [Fact]
         public async Task UpdateTestName()

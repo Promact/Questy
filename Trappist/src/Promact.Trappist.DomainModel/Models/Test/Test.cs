@@ -22,7 +22,8 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public string WarningMessage { get; set; }
         public decimal CorrectMarks { get; set; }
         public decimal IncorrectMarks { get; set; }
-
+        public string QuestionOrder { get; set; }
+        public string OptionOrder { get; set; }
         public virtual ICollection<TestAttendees> TestAttendees { get; set; }
     }
 }
