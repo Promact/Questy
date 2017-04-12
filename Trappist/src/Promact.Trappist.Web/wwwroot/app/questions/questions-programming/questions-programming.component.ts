@@ -32,7 +32,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
-    TestCaseType: TestCaseType;
+    testCaseType: TestCaseType;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
@@ -59,12 +59,12 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.getCodingLanguage();
         this.getCategory();
     }
+
     /**
      *  Adds test cases of code snippet question
      */
     addTestCases() {
         this.testCases.push(new CodeSnippetQuestionsTestCases());
-        //this.isTestCaseAdded = true;
     }
 
     /**

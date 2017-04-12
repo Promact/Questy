@@ -221,6 +221,7 @@ namespace Promact.Trappist.Test.Questions
                     RunBasicTestCase = true,
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false,
+                    LanguageList = new String[] { "Java", "C" },
                     TestCases = new List<CodeSnippetQuestionTestCases>()
                     {
                         new CodeSnippetQuestionTestCases()
