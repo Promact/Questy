@@ -9,7 +9,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Account
         public string Email { get; set; }
 
         [Required]
-        [StringLength(14, ErrorMessage = "Password must be alphanumeric including at least 1 uppercase letter and a special character with 8 to 14 characters", MinimumLength = 8)]
+        [StringLength(14, ErrorMessage = "Invalid Password", MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
