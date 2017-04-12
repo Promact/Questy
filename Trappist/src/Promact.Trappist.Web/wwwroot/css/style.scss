@@ -12,6 +12,8 @@ $color_white: #FFFFFF;
 $color_white_opacity: rgba(white, 0.8);
 $color_red: #DD2C00;
 $color_yellow: #F9BB4B;
+$color_yellow_border: #CCA778;
+$color_yellow_light: #FFE2BD;
 
 /* Size */
 $half_size: 50%;
@@ -93,6 +95,26 @@ h6, .h6 {
   margin-top: 6px;
 }
 
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mt3 {
+  margin-top: 3px;
+}
+
+.mlr10 {
+  margin: 0 10px;
+}
+
+.mt8 {
+  margin-top: 8px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -103,6 +125,14 @@ h6, .h6 {
 
 .ptb20 {
   padding: 20px 0;
+}
+
+.ptb10 {
+  padding: 10px 0;
+}
+
+.pl15 {
+  padding-left: 15px;
 }
 
 .light-text {
@@ -1056,6 +1086,8 @@ footer {
     }
 
     .mat-radio-label-content {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
       padding-left: 15px;
       width: $full_size;
 
@@ -1091,6 +1123,8 @@ footer {
   width: 54%;
 
   .mat-checkbox-layout {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
     margin-bottom: 15px;
     width: $full_size;
 
@@ -1567,8 +1601,6 @@ footer {
 
       .mat-checkbox .mat-checkbox-layout {
         margin-bottom: 3px;
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 400;
       }
 
       .mat-chip-list {
@@ -1737,7 +1769,199 @@ footer {
   }
 }
 
+.test {
+  .test-header {
+    position: fixed;
+    width: $full_size;
+    background-color: $color_white;
+    padding: 10px 0;
+    border-bottom: 1px solid $color_border;
+    z-index: 99;
+
+    .container-fluid {
+      & > div {
+        display: table;
+        width: $full_size;
+
+        & > div {
+          display: table-cell;
+          width: 33.33%;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .text-right {
+      h5,
+      h2 {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .test-body {
+    padding: 70px 0 157px;
+
+    .container-fluid {
+      & > div {
+        display: table;
+        width: $full_size;
+
+        & > div {
+          display: table-cell;
+          width: $half_size;
+          vertical-align: top;
+
+          & > * {
+            width: 80%;
+          }
+
+          & + div {
+            border-left: 1px solid $color_border;
+          }
+        }
+      }
+    }
+
+    .test-body-title {
+      background-color: $color_bg_secondary;
+    }
+
+    .test-body-content {
+      background-color: $color_white;
+
+      .qs-area {
+        height: calc(100vh - 263px);
+      }
+    }
+  }
+
+  .test-footer {
+    position: fixed;
+    bottom: 0;
+    width: $full_size;
+    background-color: $color_bg_secondary;
+    z-index: 99;
+
+    .test-footer-top {
+      max-height: 96px;
+      overflow: auto;
+
+      span {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-align: center;
+        padding: 6px 0;
+        margin: 5px 3px;
+
+        &.answered,
+        &.review,
+        &.selected {
+          color: $color_white;
+        }
+      }
+    }
+
+    .answered {
+      background-color: $color_theme;
+      border: 1px solid $color_theme_secondary;
+    }
+
+    .review {
+      background-color: $color_yellow;
+      border: 1px solid $color_yellow_border;
+    }
+
+    .selected {
+      background-color: $color_base;
+      border: 1px solid $color_border;
+    }
+
+    .unanswered {
+      background-color: $color_white;
+      border: 1px solid $color_border;
+    }
+
+    .test-footer-bottom {
+      border-top: 3px solid $color_white;
+
+      .trappist-logo {
+        p {
+          font-size: 11px;
+          color: $color_base_secondary;
+          margin-bottom: 0;
+        }
+      }
+
+      .indicator {
+        font-size: 11px;
+        margin-right: 15px;
+
+        span {
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          vertical-align: top;
+          margin-right: 3px;
+        }
+      }
+
+      .btn {
+        .material-icons {
+          vertical-align: top;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
 /* Responsive */
+@media (min-width: 1201px) and (max-width: 1310px) {
+  .test {
+    .test-body {
+      padding: 70px 0 200px;
+
+      .test-body-content .qs-area {
+        height: calc(100vh - 306px);
+      }
+    }
+
+    .test-footer-bottom {
+      .visible-lg-block {
+        display: none !important;
+      }
+
+      .hidden-lg {
+        display: block !important;
+        width: $full_size;
+
+        & + div {
+          width: $full_size;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .test {
+    .test-header .btn {
+      margin-bottom: 10px;
+    }
+
+    .test-body {
+      padding: 95px 0 200px;
+
+      .test-body-content .qs-area {
+        height: calc(100vh - 331px);
+      }
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .form-group .form-control.half-width,
   .form-group .form-control.width-percent-60,
