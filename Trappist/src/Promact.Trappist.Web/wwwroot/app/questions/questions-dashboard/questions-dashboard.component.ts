@@ -208,10 +208,13 @@ export class QuestionsDashboardComponent implements OnInit {
             switch (x.difficultyLevel) {
                 case 0:
                     this.easy++;
+                    break;
                 case 1:
                     this.medium++;
+                    break;
                 case 2:
                     this.hard++;
+                    break;
             }
         });
     }
