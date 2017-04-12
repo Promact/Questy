@@ -126,7 +126,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="id">Id of the test to be deleted</param>
         /// <returns>NoContent if test is deleted else BadRequest or NotFound</returns>
-        [HttpDelete("deleteTest/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTestAsync(int id)
         {
             if (!ModelState.IsValid)

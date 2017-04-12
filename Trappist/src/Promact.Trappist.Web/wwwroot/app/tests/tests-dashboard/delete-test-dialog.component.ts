@@ -13,14 +13,14 @@ export class DeleteTestDialogComponent implements OnInit {
     testArray: Test[] = new Array<Test>();
     response: any;
     isDeleteAllowed: boolean;
-    deleteReady: boolean;
+    isReadyToDelete: boolean;
     errorMessage: string;
     successMessage: string;
 
     constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) {
         this.errorMessage = 'Something went wrong.Please try again later';
         this.successMessage = 'The selected test is deleted';
-        this.deleteReady = false;
+        this.isReadyToDelete = false;
     }
 
     ngOnInit() {
@@ -30,11 +30,11 @@ export class DeleteTestDialogComponent implements OnInit {
     // Check if there is any one who is giving the test and returns boolean value. 
     isAttendeeExist() {
         this.testService.isAttendeeExist(this.testToDelete.id).subscribe((response) => {
-            this.deleteReady = true;
+            this.isReadyToDelete = true;
             this.isDeleteAllowed = false;
         },
             err => {
-                this.deleteReady = true;
+                this.isReadyToDelete = true;
                 this.isDeleteAllowed = true;
             });
     }

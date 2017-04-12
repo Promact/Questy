@@ -64,7 +64,7 @@ export class TestService {
      * @param testId: type number and has the id of the test to be deleted
      */
     deleteTest(testId: number) {
-        return this.httpService.delete(this.testApiUrl + '/deleteTest/' + testId);
+        return this.httpService.delete(this.testApiUrl + '/' + testId);
     }
 
     /**
