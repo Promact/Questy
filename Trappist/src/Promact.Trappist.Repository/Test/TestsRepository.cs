@@ -32,11 +32,6 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// this method is used to check whether test name is unique or not
-        /// </summary>
-        /// <param name="test">object of Test</param>
-        /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName, int id)
         {
             var isTestExists = await (_dbContext.Test.AnyAsync(x =>
@@ -45,10 +40,6 @@ namespace Promact.Trappist.Repository.Tests
             return !isTestExists;
         }
 
-        /// <summary>
-        /// Fetch all the tests from Test Model,Convert it into List
-        /// </summary>
-        /// <returns>List of Testsby decreasing order of there created Date</returns>
         public async Task<List<Test>> GetAllTestsAsync()
         {
             return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
@@ -69,22 +60,12 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Updates the changes made to the settings of a Test
-        /// </summary>
-        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
-        /// <returns>Updated Settings of that Test</returns>
         public async Task UpdateTestSettingsAsync(Test testObject)
         {
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Gets the Settings saved for a particular Test
-        /// </summary>
-        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
-        /// <returns>Settings Saved for the selected Test</returns>
         public async Task<Test> GetTestSettingsAsync(int id)
         {
             string currentDate = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm");
@@ -99,11 +80,6 @@ namespace Promact.Trappist.Repository.Tests
                 return null;
         }
 
-        /// <summary>
-        /// Checks if the Test Settings Exists or not
-        /// </summary>
-        /// <param name="id">The parameter "id" is taken from the route</param>
-        /// <returns>A bool value based on the condition is satisfied or not</returns>
         public async Task<bool> IsTestExists(int id)
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);

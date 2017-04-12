@@ -1,14 +1,20 @@
 ﻿<div class="test-create-header clearfix">
     <div class="container">
         <h1 class="pull-left">
-            <span class="test-name">Mathematics</span>
-            <input type="text" class="form-control" />
-            <button type="button" class="icon-btn ml10"><em class="material-icons">edit</em></button>
+            <span class="test-name" [hidden]="editName">{{testSettings.testName}}</span>
+          <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" (keyup)="changeErrorMessage()"
+                 [(ngModel)]="testSettings.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150"
+                 [hidden]="!editName" (focus)="selectAllContent($event)" (mouseup)="$event.preventDefault()" />
+          <button type="button" class="icon-btn ml10" (click)="editName = !editName; hideEditButton()" *ngIf="isEditButtonVisible"><em class="material-icons">edit</em></button>
             <span class="update-btns">
-                <button type="button" class="icon-btn ml10"><em class="material-icons theme-text">check</em></button>
-                <button type="button" class="icon-btn ml10"><em class="material-icons danger-text">close</em></button>
+              <button type="button" class="icon-btn ml10" (click)="updateTestName(testSettings.id,testSettings)" *ngIf="!isEditButtonVisible" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>
+              <button type="button" class="icon-btn ml10" (click)="editName = !editName;showEditButton(box.value)" *ngIf="!isEditButtonVisible"><em class="material-icons danger-text">close</em></button>
             </span>
-            <span class="errors-container"></span>
+            <span class="errors-container">
+              <span class="error-msg" *ngIf="name.errors && !name.valid && name.errors.required">Name is required</span>
+              <span class="error-msg" *ngIf="name.errors && (name. touched || name.untouched)  && !name.valid && name.errors.pattern && name.dirty">Enter a valid Test Name</span>
+              <span class="error-msg" *ngIf="isTestNameExist">Test with this name already exists</span>
+            </span>
         </h1>
         <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
     </div>

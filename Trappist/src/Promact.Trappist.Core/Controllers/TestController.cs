@@ -29,6 +29,7 @@ namespace Promact.Trappist.Core.Controllers
             // verifying the test name is unique or not
             return await _testRepository.IsTestNameUniqueAsync(testName, id);
         }
+
         /// <summary>
         /// this method is used to add a new test 
         /// </summary>
@@ -45,6 +46,7 @@ namespace Promact.Trappist.Core.Controllers
             else
                 return BadRequest();
         }
+
         /// <summary>
         /// Get All Tests
         /// </summary>
