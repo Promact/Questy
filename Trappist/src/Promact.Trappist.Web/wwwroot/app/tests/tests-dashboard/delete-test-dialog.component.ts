@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Test } from '../tests.model';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { TestService } from '../tests.service';
@@ -8,14 +8,36 @@ import { TestService } from '../tests.service';
     selector: 'delete-test-dialog',
     templateUrl: 'delete-test-dialog.html'
 })
-export class DeleteTestDialogComponent {
+export class DeleteTestDialogComponent implements OnInit {
     testToDelete: Test;
     testArray: Test[] = new Array<Test>();
-    errorMesseage: any;
-    errorCorrection: boolean = true;
     response: any;
     isDeleteAllowed: boolean;
-    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) { }
+    deleteReady: boolean;
+    errorMessage: string;
+    successMessage: string;
+
+    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) {
+        this.errorMessage = 'Something went wrong.Please try again later';
+        this.successMessage = 'The selected test is deleted';
+        this.deleteReady = false;
+    }
+
+    ngOnInit() {
+        this.isAttendeeExist();
+    }
+
+    // Check if there is any one who is giving the test and returns boolean value. 
+    isAttendeeExist() {
+        this.testService.isAttendeeExist(this.testToDelete.id).subscribe((response) => {
+            this.deleteReady = true;
+            this.isDeleteAllowed = false;
+        },
+            err => {
+                this.deleteReady = true;
+                this.isDeleteAllowed = true;
+            });
+    }
 
     /**
      * Delete the test from the test dashboard page
@@ -24,15 +46,12 @@ export class DeleteTestDialogComponent {
         this.testService.deleteTest(this.testToDelete.id).subscribe((response) => {
             this.testArray.splice(this.testArray.indexOf(this.testToDelete), 1);
             this.dialog.close();
-            let snackBarRef = this.snackBar.open('The selected test is deleted', 'Dismiss', {
+            this.snackBar.open(this.successMessage, 'Dismiss', {
                 duration: 3000,
             });
         },
             err => {
-                this.errorCorrection = true;
-                this.response = (err.json());
-                this.errorMesseage = this.response['error'][0];
-                let snackBarRef = this.snackBar.open(this.errorMesseage, 'Dismiss', {
+                this.snackBar.open(this.errorMessage, 'Dismiss', {
                     duration: 3000,
                 });
             });

@@ -1,26 +1,32 @@
-﻿<div class="dialog" *ngIf="isDeleteAllowed">
-    <div class="dialog-title clearfix">
-        <h1 class="pull-left" md-dialog-title>Delete Confirmation</h1>
-        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+﻿<div class="loader-container" *ngIf="!deleteReady">
+    <div class="spinner">
     </div>
-    <md-dialog-content>
-        <h4 class="mb20">Are you sure you want to delete {{testToDelete.testName}} test?</h4>
-    </md-dialog-content>
-    <md-dialog-actions>
-        <button type="button" class="btn" md-dialog-close>No</button>
-        <button type="submit" class="btn btn-primary" (click)="deleteTest()">Yes</button>
-    </md-dialog-actions>
 </div>
-
-<div class="dialog" *ngIf="!isDeleteAllowed">
-    <div class="dialog-title clearfix">
-        <h1 class="pull-left" md-dialog-title>Delete Validation</h1>
-        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+<div *ngIf="deleteReady">
+    <div class="dialog" *ngIf="isDeleteAllowed">
+        <div class="dialog-title clearfix">
+            <h1 class="pull-left" md-dialog-title>Delete Confirmation</h1>
+            <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+        </div>
+        <md-dialog-content>
+            <h4 class="mb20">Are you sure you want to delete {{testToDelete.testName}} test?</h4>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <button type="button" class="btn" md-dialog-close>No</button>
+            <button type="submit" class="btn btn-primary" (click)="deleteTest()">Yes</button>
+        </md-dialog-actions>
     </div>
-    <md-dialog-content>
-        <h4 class="mb20">The selected test can not be deleted</h4>
-    </md-dialog-content>
-    <md-dialog-actions>
-        <button type="button" class="btn" md-dialog-close>Cancel</button>
-    </md-dialog-actions>
+
+    <div class="dialog" *ngIf="!isDeleteAllowed">
+        <div class="dialog-title clearfix">
+            <h1 class="pull-left" md-dialog-title>Delete Validation</h1>
+            <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+        </div>
+        <md-dialog-content>
+            <h4 class="mb20">The selected test can not be deleted</h4>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <button type="button" class="btn" md-dialog-close>Cancel</button>
+        </md-dialog-actions>
+    </div>
 </div>
