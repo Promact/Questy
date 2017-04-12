@@ -35,7 +35,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="category">Category object</param>
         /// <returns>Category object</returns>
         [HttpPost]
-        public async Task<IActionResult> AddCategory([FromBody] Category category)
+        public async Task<IActionResult> AddCategoryAsync([FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="category">Category object</param>
         /// <returns>Category object</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] int id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateCategoryAsync([FromRoute] int id, [FromBody] Category category)
         {
             if (!ModelState.IsValid)
             {
