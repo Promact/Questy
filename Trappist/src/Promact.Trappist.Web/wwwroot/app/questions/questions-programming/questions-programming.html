@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Type</label>
-                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value"  ngModel required name="type{{i}}" #type="ngModel">
+                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value"  ngModel required name="type_{{i}}" #type="ngModel">
                                         <option [disabled]="type.dirty" selected value="">Select Option</option>
                                         <option>Default</option>
                                         <option>Basic</option>
