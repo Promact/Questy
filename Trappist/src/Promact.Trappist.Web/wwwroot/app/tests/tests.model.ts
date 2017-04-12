@@ -12,5 +12,7 @@
     public correctMarks: string;
     public incorrectMarks: string;
     public browserTolerance: number;
+    public questionOrder: string;
+    public optionOrder: string;
 }
 

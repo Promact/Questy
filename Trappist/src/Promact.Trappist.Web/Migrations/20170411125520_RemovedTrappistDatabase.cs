@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class Initial : Migration
+    public partial class RemovedTrappistDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,6 +81,8 @@ namespace Promact.Trappist.Web.Migrations
                     FromIpAddress = table.Column<string>(nullable: true),
                     IncorrectMarks = table.Column<decimal>(nullable: false),
                     Link = table.Column<string>(nullable: true),
+                    OptionOrder = table.Column<string>(nullable: true),
+                    QuestionOrder = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     TestName = table.Column<string>(maxLength: 150, nullable: false),
                     ToIpAddress = table.Column<string>(nullable: true),
