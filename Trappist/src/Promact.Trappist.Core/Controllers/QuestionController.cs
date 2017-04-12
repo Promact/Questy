@@ -137,7 +137,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(await _questionsRepository.GetQuestionByIdAsync(id));

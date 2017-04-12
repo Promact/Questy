@@ -14,7 +14,7 @@ const questionsRoutes: Routes = [
             { path: 'single-answer', component: SingleMultipleAnswerQuestionComponent },
             { path: 'multiple-answers', component: SingleMultipleAnswerQuestionComponent },
             { path: 'programming', component: QuestionsProgrammingComponent },
-            { path: 'programming/edit/:id', component: QuestionsProgrammingComponent }
+            { path: 'programming/:id', component: QuestionsProgrammingComponent }
         ]
     }
 ];
