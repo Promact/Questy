@@ -31,6 +31,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isTestCaseAdded: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
+    //To enable enum testCaseType in template
     TestCaseType: TestCaseType;
 
     private successMessage: string = 'Question saved successfully';

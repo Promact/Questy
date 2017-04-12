@@ -1,4 +1,5 @@
 ﻿import { TestCaseType } from '../questions/enum-test-case-type';
+
 export class CodeSnippetQuestionsTestCases {
     testCaseTitle: string;
     testCaseDescription: string;
