@@ -4,12 +4,10 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Account
 {
     public class Login
     {
-        [Required]
-        [RegularExpression(@"^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$", ErrorMessage = "Invalid Email Address")]
+        [Required]      
         public string Email { get; set; }
 
         [Required]
-        [StringLength(14, ErrorMessage = "Invalid Password", MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
