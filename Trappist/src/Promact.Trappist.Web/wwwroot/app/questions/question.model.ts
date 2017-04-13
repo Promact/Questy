@@ -8,4 +8,5 @@ export class Question {
     questionType: QuestionType;
     difficultyLevel: DifficultyLevel;
     categoryID: number;
+    isSelect: boolean;
 }

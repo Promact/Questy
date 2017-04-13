@@ -33,6 +33,15 @@ namespace Promact.Trappist.DomainModel.DbContext
         #region Protected Methods
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<TestQuestion>(b =>
+            {
+                b.HasOne(x => x.TestCategory)
+                .WithMany()
+                .HasForeignKey(x => x.TestCategoryId)
+                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Restrict);
+
+
+            });
             base.OnModelCreating(builder);
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
@@ -72,6 +81,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<CodeSnippetQuestionTestCases> CodeSnippetQuestionTestCases { get; set; }
         public DbSet<TestAttendees> TestAttendees { get; set; }
         public DbSet<TestCategory> TestCategory { get; set; }
+        public DbSet<TestQuestion> TestQuestion { get; set; }
 
         #region Overridden Methods  
         public override int SaveChanges()

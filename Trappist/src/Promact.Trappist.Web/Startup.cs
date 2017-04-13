@@ -14,8 +14,11 @@ using NLog.Web;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
@@ -151,6 +154,9 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<TestAC, Test>();
+                cfg.CreateMap<TestCategoryAC, TestCategory>();
+                cfg.CreateMap<Category, CategoryAC>();
             });
             #endregion
         }

@@ -1,6 +1,9 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -55,12 +58,13 @@ namespace Promact.Trappist.Repository.Tests
         Task UpdateTestNameAsync(int id, Test testObject);
 
         #region Category Selection
+
         /// <summary>
-        /// Add Selected Categories 
+        /// Get Test Details
         /// </summary>
         /// <param name="testCategory"></param>
         /// <returns>List of Selected Categories</returns>        
-        void SelectedCategoriesAsync(TestCategory[] testCategory);
+        Task GetTestDetailsAsync(int id);
 
         Task DeselectCategoryAsync(int id);
         #endregion

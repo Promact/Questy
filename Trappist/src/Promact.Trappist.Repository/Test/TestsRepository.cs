@@ -6,12 +6,17 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.GlobalUtil;
 using System;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Utility.ExtensionMethods;
 
 namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
+        public List<CategoryAC> categoryAc = new List<CategoryAC>();
+       public List<Category> categories= new List<Category>();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
@@ -110,12 +115,18 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         #region Category selection
-        public void SelectedCategoriesAsync(TestCategory[] testCategory)
-        {
-            _dbContext.TestCategory.AddRange(testCategory);
-            _dbContext.SaveChanges();
+        public async Task GetTestDetailsAsync(int id)
+        {           
+            categories = await _dbContext.Category.OrderByDescending(x=> x.CreatedDateTime).ToListAsync();
+            foreach (var c in categories)
+            {
+                var catAc = Mapper.Map<Category, CategoryAC>(c);
+                categoryAc.Add(catAc);
+            }
+         
+         //  await _dbContext.SaveChangesAsync();
         }
-
+         
         public async Task DeselectCategoryAsync(int id)
         {
             var testCategory = await _dbContext.TestCategory.FindAsync(id);

@@ -28,7 +28,6 @@ export class TestCategory {
 
 export class TestQuestion {
     public id: number;
-    public cateId: number;
     public test: Test;
     public testId: number;
     public question: Question;

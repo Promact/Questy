@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { TestService } from '../tests.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { DeselectCategoryDialogComponent } from "../test-sections/deselect-category-dialog.component";
+import { Question } from '../../questions/question.model';
 
 @Component({
     moduleId: module.id,
@@ -22,21 +23,23 @@ export class TestSectionsComponent implements OnInit {
     testCategories: Array<TestCategory>;
     test: Test;
     testCategoryObj: TestCategory;
-    testQuestion: TestQuestion;
+    testQuestion: Array<TestQuestion>;
     deselectCategoryError: boolean;
+    question: Question[] = new Array<Question>();
 
     constructor(private categoryService: CategoryService, private testService: TestService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog) {
         this.getAllCategories();
         this.test = new Test();
         this.testCategoryObj = new TestCategory();
         this.testCategories = [];
-        this.testQuestion = new TestQuestion();
+        this.testQuestion = [];
     }
 
     ngOnInit() {
         let id = +this.route.snapshot.params['id'];
         this.testService.getTestSettings(id)
             .subscribe((test: Test) => { this.test = test });
+
     }
 
     /**
@@ -53,17 +56,19 @@ export class TestSectionsComponent implements OnInit {
     onSelect(category: Category) {
         if (!category.isSelect)
             category.isSelect = true;
-        else
-            if (this.testQuestion.isSelect) { 
-                this.deselectCategoryError = true;
-                let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
+        else {
+            for (let testquestion of this.testQuestion) {
+                if (testquestion.testCategoryId = this.testCategoryObj.categoryId) {
+                    let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
+                }
+                else
+                    category.isSelect = false;
             }
-            else
-                category.isSelect = false;
+        }
     }
 
     /**
-     * To Save the Selected Categories and redirect user further for question selection
+     * To Save the Selected Categories and redirect user for question selection
      */
     SaveNext() {
         this.SaveCategory();
@@ -85,8 +90,6 @@ export class TestSectionsComponent implements OnInit {
         for (let category of categories) {
             this.testCategoryObj.categoryId = category.id;
             this.testCategoryObj.testId = this.test.id;
-            this.testCategoryObj.category = category;
-            this.testCategoryObj.test = this.test;
             this.testCategories.push(this.testCategoryObj);
             this.testCategoryObj = new TestCategory()
         }

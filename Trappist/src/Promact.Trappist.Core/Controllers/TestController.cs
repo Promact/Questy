@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -111,13 +114,13 @@ namespace Promact.Trappist.Core.Controllers
             else
                 return BadRequest();
         }
-
-        #region  Category selection
+#endregion
+#region Category Selection
         [HttpPost("selectedCategories")]
-        public ActionResult GetSelectedCategories([FromBody] TestCategory[] testCategory)
+        public async Task<ActionResult> GetTestDetail(List<CategoryAC> catelist)
         {
-            _testRepository.SelectedCategoriesAsync(testCategory);
-            return Ok(testCategory);
+          await _testRepository.GetTestDetailsAsync(catelist);
+            return Ok(catelist);
         }
 
         [HttpDelete("deselectCategory/{id}")]
