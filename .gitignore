@@ -267,3 +267,5 @@ _references.js
 
 # opencover xml file
 **/opencover.xml
+
+**/aot/

@@ -10,10 +10,14 @@ var ts = require("gulp-typescript");
 var tsProject = ts.createProject("./wwwroot/tsconfig.json");
 var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
+var ngc = require('gulp-ngc');
+var rollup = require('rollup-stream');
+var source = require('vinyl-source-stream');
+
 
 //production publish task
 gulp.task('prod', function (done) {
-    runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'bundle-conduct-app', 'sass', 'bundle-css', function () {
+    runSequence('ngc', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'bundle-conduct-app', 'sass', 'bundle-css', function () {
         done();
     });
 });
@@ -66,46 +70,26 @@ gulp.task('bundle-shims', function () {
 });
 
 //bundle main dashboard app
-gulp.task('bundle-app', function (done) {
+gulp.task('ngc', function (done) {
+    return ngc('./wwwroot/tsconfig.aot.json');
+});
 
-    var builder = new Builder('./', './wwwroot/systemjs.config.js');
-
-    builder
-      .buildStatic('./wwwroot/app/main.js', './wwwroot/dist/app-bundle.js', {
-          runtime: false
-          /*minify: true,
-          mangle: false*/
-      }).then(function () {
-          done();
-      });
+gulp.task('bundle-app', () => {
+    return rollup('wwwroot/rollup-config.js')
+        .pipe(source('app.bundle.js'))
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //bundle setup app
 gulp.task('bundle-setup-app', function (done) {
-
-    var builder = new Builder('./', './wwwroot/systemjs.config.js');
-
-    builder
-      .buildStatic('./wwwroot/app/main-setup.js', './wwwroot/dist/setup-app-bundle.js', {
-          runtime: false
-          /*minify: true,
-          mangle: false*/
-      }).then(function () {
-          done();
-      });
+    return rollup('wwwroot/rollup-config.setup.js')
+        .pipe(source('app.setup.bundle.js'))
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //bundle conduct app
 gulp.task('bundle-conduct-app', function (done) {
-
-    var builder = new Builder('./', './wwwroot/systemjs.config.js');
-
-    builder
-        .buildStatic('./wwwroot/app/main-conduct.js', './wwwroot/dist/conduct-app-bundle.js', {
-            runtime: false
-            /*minify: true,
-            mangle: false*/
-        }).then(function () {
-            done();
-        });
+    return rollup('wwwroot/rollup-config.conduct.js')
+        .pipe(source('app.conduct.bundle.js'))
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
