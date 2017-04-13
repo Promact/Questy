@@ -120,8 +120,8 @@ namespace Promact.Trappist.Repository.Tests
         #region Category selection
         public async Task<TestAC> GetTestDetails(int id)
         {
-            var testobj = await _dbContext.Test.FindAsync(id);
-           var testACObj= Mapper.Map<Test, TestAC>(testobj);
+            var testobj = await  _dbContext.Test.FindAsync(id);
+            var testACObj= Mapper.Map<Test, TestAC>(testobj);
             testACObj.Category = new List<CategoryAC>();
             var tests = _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToList();          
             List<Category> categoryList = _dbContext.Category.ToList();

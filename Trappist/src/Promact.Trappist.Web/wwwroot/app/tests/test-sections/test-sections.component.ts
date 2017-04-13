@@ -10,6 +10,7 @@ import { TestService } from '../tests.service';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { DeselectCategoryDialogComponent } from "../test-sections/deselect-category-dialog.component";
 import { Question } from '../../questions/question.model';
+import { TestDetails } from '../test-details';
 
 @Component({
     moduleId: module.id,
@@ -26,27 +27,30 @@ export class TestSectionsComponent implements OnInit {
     testQuestion: Array<TestQuestion>;
     deselectCategoryError: boolean;
     question: Question[] = new Array<Question>();
+    testDetailsObj: TestDetails;
+    id: number;
 
     constructor(private categoryService: CategoryService, private testService: TestService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog) {
-        this.getAllCategories();
         this.test = new Test();
         this.testCategoryObj = new TestCategory();
         this.testCategories = [];
         this.testQuestion = [];
+        this.testDetailsObj = new TestDetails();
     }
 
     ngOnInit() {
         let id = +this.route.snapshot.params['id'];
         this.testService.getTestSettings(id)
             .subscribe((test: Test) => { this.test = test });
-
+        
     }
 
     /**
      * To get All categories
      */
-    getAllCategories() {
-        this.categoryService.getAllCategories().subscribe((response) => { this.Categories = (response); });
+    getTestSectionsDetails(id: number) {
+        this.test.id = id = id;
+        this.testService.getTestDetails(id).subscribe((response) => { this.testDetailsObj = response });
     }
 
     /**
@@ -93,6 +97,6 @@ export class TestSectionsComponent implements OnInit {
             this.testCategories.push(this.testCategoryObj);
             this.testCategoryObj = new TestCategory()
         }
-        this.testService.addSelectedCategories(this.testCategories).subscribe();
+       // this.testService.addSelectedCategories(this.testCategories).subscribe();
     }
 }

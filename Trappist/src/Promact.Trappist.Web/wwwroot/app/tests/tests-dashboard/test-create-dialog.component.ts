@@ -24,8 +24,8 @@ export class TestCreateDialogComponent {
      * @param testNameRef is name of the test
      */
     AddTest(testNameRef: string) {
-        this.test.testName = testNameRef;
-        this.testService.IsTestNameUnique(testNameRef, this.test.id ).subscribe((isTestNameUnique) => {
+        this.test.testName = testNameRef;        
+        this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.addTests(this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);

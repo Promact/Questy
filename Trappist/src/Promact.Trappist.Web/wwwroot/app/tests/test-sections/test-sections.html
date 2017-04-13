@@ -14,7 +14,7 @@
             <li *ngFor="let category of Categories"
                 (click)="onSelect(category)">
                 <label for="section">
-                    <input type="checkbox" id="section1" [(ngModel)]="category.isSelect" />
+                    <input type="checkbox" id="section1" />
                     <span class="section-box clearfix">
                         <span class="h4 pull-left">{{category.categoryName}}</span>
                         <em class="material-icons pull-right">check</em>

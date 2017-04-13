@@ -59,8 +59,8 @@ export class TestService {
         return this.httpService.put(this.testApiUrl + '/' + id, body);
     }
 
-    addSelectedCategories(testCategory: any) {
-        return this.httpService.post(this.testApiUrl + '/' + 'selectedCategories', testCategory);
+    getTestDetails(id: number) {
+        return this.httpService.get(this.testApiUrl + '/' + 'selectedCategories'+ '/' + id);
     }
 
     removeDeselectedCategory(id: number) {
