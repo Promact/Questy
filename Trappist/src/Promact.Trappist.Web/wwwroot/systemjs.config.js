@@ -27,7 +27,7 @@
             '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
             // other libraries
             'rxjs': 'npm:rxjs',
-            'angular2-wizard': 'npm:angular2-wizard/dist/',
+            'angular2-wizard-fix': 'npm:angular2-wizard-fix/dist/',
             'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
             'clipboard': 'npm:clipboard/dist/clipboard.js',
             'ngx-clipboard': 'npm:ngx-clipboard',
@@ -39,7 +39,7 @@
             rxjs: {
                 defaultExtension: 'js'
             },
-            'angular2-wizard': {
+            'angular2-wizard-fix': {
                 main: 'index.js',
                 defaultExtension: 'js'
             },

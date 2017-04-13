@@ -13,7 +13,7 @@
     "@angular/platform-browser": "~4.0.0",
     "@angular/platform-browser-dynamic": "~4.0.0",
     "@angular/router": "~4.0.0",
-    "angular2-wizard": "^0.3.0",
+    "angular2-wizard-fix": "0.2.2",
     "bootstrap": "3.3.7",
     "clipboard": "^1.6.1",
     "core-js": "^2.4.1",
@@ -25,19 +25,28 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@angular/compiler-cli": "^4.0.2",
+    "@angular/platform-server": "^4.0.2",
     "@types/node": "^7.0.5",
     "codelyzer": "^2.0.0-beta.4",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-inline-ng2-template": "^4.0.0",
+    "gulp-ngc": "^0.2.1",
     "gulp-sass": "^3.1.0",
     "gulp-tslint": "^7.1.0",
     "gulp-typescript": "^3.1.5",
     "gulp-uglify": "^2.1.0",
+    "rollup": "^0.41.6",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-stream": "^1.19.0",
     "run-sequence": "^1.2.2",
     "systemjs-builder": "^0.16.3",
     "tslint": "^4.0.0",
-    "typescript": "2.2.1"
+    "typescript": "2.2.1",
+    "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
     "lint": "gulp lint",
