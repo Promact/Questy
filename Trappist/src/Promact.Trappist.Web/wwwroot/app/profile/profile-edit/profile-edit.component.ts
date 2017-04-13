@@ -15,14 +15,14 @@ export class ProfileEditComponent implements OnInit {
     constructor(public profileService: ProfileService, private router: Router, public snackBar: MdSnackBar) { }
 
     ngOnInit() {
-        this.editUserDetails();
+        this.getUserDetails();
     }
 
     /**
     * get details of the user and display them in the profile edit page so that the user can edit them
     */
-    editUserDetails() {
-        this.profileService.editUserDetails().subscribe((response) => {
+    getUserDetails() {
+        this.profileService.getUserDetails().subscribe((response) => {
             this.editUser = response;
         });
     }
@@ -30,7 +30,7 @@ export class ProfileEditComponent implements OnInit {
     /**
     * update the  details of the user
     */
-    updateUserDetails(userEdit: ApplicationUser) {
+    updateUserDetails() {
         this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
             // Open Snackbar
             let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
