@@ -19,7 +19,7 @@
                         <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category)">{{category.categoryName}}</span>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                            <button md-menu-item (click)="renameCategoryDialog(category)">Rename</button>
+                            <button md-menu-item (click)="updateCategoryDialog(category)">Update</button>
                             <button md-menu-item (click)="deleteCategoryDialog(category)">Delete</button>
                         </md-menu>
                     </li>

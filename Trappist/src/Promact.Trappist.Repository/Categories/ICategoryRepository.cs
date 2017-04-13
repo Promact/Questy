@@ -27,11 +27,12 @@ namespace Promact.Trappist.Repository.Categories
         Task UpdateCategoryAsync(Category categoryToUpdate);
 
         /// <summary>
-        /// Method to check Category Name exists or not
+        /// Method to check category exists or not
         /// </summary>
-        /// <param name="category">Category object</param>
-        /// <returns>True if exists else flase</returns>
-        Task<bool> IsCategoryNameExistsAsync(string categoryName, int id);
+        /// <param name="categoryName">CategoryName of the Category</param>
+        /// <param name="id">Id of the Category</param>
+        /// <returns>>True if exists else false</returns>
+        Task<bool> IsCategoryExistAsync(string categoryName, int id);
 
         /// <summary>
         /// Method to get Category by id

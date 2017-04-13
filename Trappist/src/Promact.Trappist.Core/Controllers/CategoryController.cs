@@ -41,7 +41,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (await _categoryRepository.IsCategoryNameExistsAsync(category.CategoryName, category.Id))
+            if (await _categoryRepository.IsCategoryExistAsync(category.CategoryName, category.Id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
@@ -68,7 +68,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return NotFound();
             }
-            if (await _categoryRepository.IsCategoryNameExistsAsync(category.CategoryName, id))
+            if (await _categoryRepository.IsCategoryExistAsync(category.CategoryName, id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);

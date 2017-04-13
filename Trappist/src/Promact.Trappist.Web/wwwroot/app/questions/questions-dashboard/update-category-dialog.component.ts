@@ -6,11 +6,11 @@ import { Category } from '../category.model';
 @Injectable()
 @Component({
     moduleId: module.id,
-    selector: 'rename-category-dialog',
-    templateUrl: 'rename-category-dialog.html'
+    selector: 'update-category-dialog',
+    templateUrl: 'update-category-dialog.html'
 })
 
-export class RenameCategoryDialogComponent {
+export class UpdateCategoryDialogComponent {
     private response: any;
     private successMessage: string;
 
@@ -19,7 +19,7 @@ export class RenameCategoryDialogComponent {
     category: Category;
     responseObject: Category;
 
-    constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<RenameCategoryDialogComponent>, public snackBar: MdSnackBar) {
+    constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<UpdateCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
         this.successMessage = 'Category Name Updated Successfully';
     }
