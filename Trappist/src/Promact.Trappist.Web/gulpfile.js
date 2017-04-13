@@ -13,7 +13,7 @@ var tslint = require('gulp-tslint');
 
 //production publish task
 gulp.task('prod', function (done) {
-    runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'sass', 'bundle-css', function () {
+    runSequence('tstojs', 'bundle-shims', 'bundle-app', 'bundle-setup-app', 'bundle-conduct-app', 'sass', 'bundle-css', function () {
         done();
     });
 });
@@ -93,4 +93,19 @@ gulp.task('bundle-setup-app', function (done) {
       }).then(function () {
           done();
       });
+});
+
+//bundle conduct app
+gulp.task('bundle-conduct-app', function (done) {
+
+    var builder = new Builder('./', './wwwroot/systemjs.config.js');
+
+    builder
+        .buildStatic('./wwwroot/app/main-conduct.js', './wwwroot/dist/conduct-app-bundle.js', {
+            runtime: false
+            /*minify: true,
+            mangle: false*/
+        }).then(function () {
+            done();
+        });
 });
