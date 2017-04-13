@@ -41,7 +41,7 @@ gulp.task('watch', ['sass'], function () {
 gulp.task("bundle-css", function () {
     return gulp.src([
         './node_modules/bootstrap/dist/css/bootstrap.css',
-        './node_modules/@angular/material/core/theming/prebuilt/indigo-pink.css',
+        './node_modules/@angular/material/prebuilt-themes/indigo-pink.css',
         './wwwroot/css/style.css'
     ])
     .pipe(concat('bundle.css'))
