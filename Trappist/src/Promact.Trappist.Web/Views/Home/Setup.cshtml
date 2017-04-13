@@ -20,11 +20,12 @@
 
     <script src="/systemjs.config.js"></script>
     <script>
-        System.import('/app/main-setup.js').catch(function (err) { console.error(err); });
+        System.import('/app/main.setup.js').catch(function (err) { console.error(err); });
     </script>
 </environment>
 
 <environment names="Staging,Production">
+    <script>window.module = "aot";</script>
     <script src="/dist/shims.js"></script>
-    <script src="/dist/setup-app-bundle.js"></script>
+    <script src="/dist/app.setup.bundle.js"></script>
 </environment>
