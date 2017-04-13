@@ -21,52 +21,28 @@ namespace Promact.Trappist.Repository.Categories
             return (await _dbContext.Category.OrderByDescending(g => g.CreatedDateTime).ToListAsync());
         }
 
-        /// <summary>
-        /// Method to add Category
-        /// </summary>
-        /// <param name="category">Category object</param>
-        /// <returns>Category object</returns>
         public async Task AddCategoryAsync(Category category)
         {
             await _dbContext.Category.AddAsync(category);
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Method to get Category by id
-        /// </summary>
-        /// <param name="id">Id to get Category</param>
-        /// <returns>Category object</returns>
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
             return await _dbContext.Category.FindAsync(id);
         }
 
-        /// <summary>
-        /// Method to update Category
-        /// </summary>
-        /// <param name="category">Category object</param>
-        /// <returns>Category object</returns>
         public async Task UpdateCategoryAsync(Category category)
         {
             _dbContext.Category.Update(category);
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Method to check CategoryName exists or not
-        /// </summary>
-        /// <param name="category">Category object</param>
-        /// <returns>True if exists else flase</returns>
-        public async Task<bool> IsCategoryNameExistsAsync(string categoryName, int id)
+        public async Task<bool> IsCategoryExistAsync(string categoryName, int id)
         {
             return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant().Equals(categoryName.ToLowerInvariant()) && x.Id != id);
         }
 
-        /// <summary>
-        /// Method to remove a Category
-        /// </summary>
-        /// <param name="category">Category object</param>
         public async Task RemoveCategoryAsync(Category category)
         {
             _dbContext.Category.Remove(category);

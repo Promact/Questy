@@ -78,7 +78,7 @@ namespace Promact.Trappist.Test.Category
             await _categoryRepository.AddCategoryAsync(category);
             var isCategoryExist = CreateCategory();
             isCategoryExist.CategoryName = "Test Category";
-            Assert.True(await _categoryRepository.IsCategoryNameExistsAsync(isCategoryExist.CategoryName, isCategoryExist.Id));
+            Assert.True(await _categoryRepository.IsCategoryExistAsync(isCategoryExist.CategoryName, isCategoryExist.Id));
         }
 
         /// <summary>

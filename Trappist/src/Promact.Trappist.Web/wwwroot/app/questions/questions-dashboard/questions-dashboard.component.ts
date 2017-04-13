@@ -9,7 +9,7 @@ import { QuestionDisplay } from '../../questions/question-display';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
-import { RenameCategoryDialogComponent } from './rename-category-dialog.component';
+import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -127,12 +127,12 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open rename Category Dialog
-    renameCategoryDialog(category: Category) {
+    // Open update Category Dialog
+    updateCategoryDialog(category: Category) {
         let categoryToUpdate = this.categoryArray.find(x => x.id === category.id);
-        let renameDialogRef = this.dialog.open(RenameCategoryDialogComponent);
-        renameDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
-        renameDialogRef.afterClosed().subscribe(updatedCategory => {
+        let updateDialogRef = this.dialog.open(UpdateCategoryDialogComponent);
+        updateDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
+        updateDialogRef.afterClosed().subscribe(updatedCategory => {
             if (updatedCategory !== null && updatedCategory !== undefined) {
                 categoryToUpdate.categoryName = updatedCategory.categoryName;
             }
