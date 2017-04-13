@@ -115,13 +115,28 @@ namespace Promact.Trappist.Test.Tests
         /// Check if any test attendee exist for a particular test
         /// </summary>
         [Fact]
-        public async Task IsAttendeeExistsAsync()
+        public async Task IsAttendeeExistAsync()
         {
+            var test = CreateTest("Aptitude");
             var testAttendee = TestAttendee();
-            var test = _testRepository.CreateTestAsync(testAttendee.Test);
+            await _testRepository.CreateTestAsync(test);
+            testAttendee.Test = test;
+            testAttendee.TestId = test.Id;
             _trappistDbContext.TestAttendees.Add(testAttendee);
             var isExists = await _testRepository.IsAttendeeExistAsync(test.Id);
             Assert.True(isExists);
+        }
+
+        /// <summary>
+        /// CHeck that no Test attendee exist for a particular test 
+        /// </summary>
+        [Fact]
+        public async Task IsAttendeeNotExistAsync()
+        {
+            var test = CreateTest("Aptitude");
+            await _testRepository.CreateTestAsync(test);
+            var isNotExist = await _testRepository.IsAttendeeExistAsync(test.Id);
+            Assert.False(isNotExist);
         }
 
         /// <summary>
@@ -151,7 +166,6 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("Quantitative");
             var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
             {
-                Test = test,
                 FirstName = "Ritika",
                 LastName = "Mohata",
                 Email = "ritika@gmail.com"
