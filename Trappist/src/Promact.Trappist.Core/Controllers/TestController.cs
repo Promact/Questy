@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
@@ -116,11 +117,10 @@ namespace Promact.Trappist.Core.Controllers
         }
 #endregion
 #region Category Selection
-        [HttpPost("selectedCategories")]
-        public async Task<ActionResult> GetTestDetail(List<CategoryAC> catelist)
+        [HttpGet("selectedCategories/{id}")]
+        public async Task<ActionResult> GetTestDetail([FromRoute] int id)
         {
-          await _testRepository.GetTestDetailsAsync(catelist);
-            return Ok(catelist);
+                    return Ok(await _testRepository.GetTestDetails(id));
         }
 
         [HttpDelete("deselectCategory/{id}")]

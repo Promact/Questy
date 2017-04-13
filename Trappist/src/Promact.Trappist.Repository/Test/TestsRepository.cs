@@ -9,13 +9,16 @@ using System;
 using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.Utility.ExtensionMethods;
 
 namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
-        public List<CategoryAC> categoryAc = new List<CategoryAC>();
+        public List<CategoryAC> categorylist = new List<CategoryAC>();
        public List<Category> categories= new List<Category>();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
@@ -115,18 +118,17 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         #region Category selection
-        public async Task GetTestDetailsAsync(int id)
-        {           
-            categories = await _dbContext.Category.OrderByDescending(x=> x.CreatedDateTime).ToListAsync();
-            foreach (var c in categories)
-            {
-                var catAc = Mapper.Map<Category, CategoryAC>(c);
-                categoryAc.Add(catAc);
-            }
-         
-         //  await _dbContext.SaveChangesAsync();
+        public async Task<TestAC> GetTestDetails(int id)
+        {
+            var testobj = await _dbContext.Test.FindAsync(id);
+           var testACObj= Mapper.Map<Test, TestAC>(testobj);
+            testACObj.Category = new List<CategoryAC>();
+            var tests = _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToList();          
+            List<Category> categoryList = _dbContext.Category.ToList();
+            categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);       
+            testACObj.Category = categorylist;                       
+            return testACObj;
         }
-         
         public async Task DeselectCategoryAsync(int id)
         {
             var testCategory = await _dbContext.TestCategory.FindAsync(id);
