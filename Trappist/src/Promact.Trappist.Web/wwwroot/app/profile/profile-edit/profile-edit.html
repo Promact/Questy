@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label class="h4">Organization</label>
-                    <input type="text" class="form-control half-width" name="organizationname" [(ngModel)]="editUser.organizationName" #organizationname="ngModel" pattern="[A-Za-z\s]+$" />
+                    <input type="text" class="form-control half-width" name="organizationname" [(ngModel)]="editUser.organizationName" #organizationname="ngModel" pattern="[A-Za-z\s]+$" maxlength="150"/>
                     <div class="errors-container">
                         <span *ngIf='organizationname.errors && (organizationname.dirty || organizationname.touched)' class='error-msg'>Organization Name must contain only alphabets</span>
                     </div>

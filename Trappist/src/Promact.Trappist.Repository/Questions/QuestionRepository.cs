@@ -19,21 +19,16 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext = dbContext;
         }
 
-        /// <summary>
-        /// Method to get all the Questions
-        /// </summary>
-        /// <returns>Question list</returns>
-        public async Task<ICollection<Question>> GetAllQuestionsAsync()
+        public async Task<bool> IsQuestionExistAsync(int questionId)
         {
-            return (await _dbContext.Question.Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
+            return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
         }
 
-        /// <summary>
-        /// A method to add single multiple answer Question.
-        /// </summary>
-        /// <param name="questionAC">Object of QuestionAC</param>
-        /// <param name="userId">Id of logged in user</param>
-        /// <returns>Returns object of QuestionAC</returns>
+        public async Task<ICollection<Question>> GetAllQuestionsAsync(string userId)
+        {
+            return (await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId)).Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
+        }
+
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
         {
             var question = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
@@ -76,15 +71,15 @@ namespace Promact.Trappist.Repository.Questions
                 codeSnippetQuestion.Question = question;
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
-                var languageIdList = await _dbContext.CodingLanguage.Select(x => x.Id).ToListAsync();
+                var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
 
                 //Map language to codeSnippetQuestion
-                foreach (var languageId in languageIdList)
+                foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
                 {
                     await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
                     {
                         QuestionId = codeSnippetQuestion.Id,
-                        LanguageId = languageId
+                        LanguageId = codingLanguages.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                     });
                 }
                 await _dbContext.SaveChangesAsync();
@@ -92,10 +87,6 @@ namespace Promact.Trappist.Repository.Questions
             }
         }
 
-        /// <summary>
-        /// Gets all the coding languages as string from the Database
-        /// </summary>
-        /// <returns>CodingLanguageAC class object</returns>
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
         {
             var codingLanguageList = await _dbContext.CodingLanguage.ToListAsync();
@@ -108,6 +99,25 @@ namespace Promact.Trappist.Repository.Questions
                 languageNameList.Add(codingLanguage.Language);
             });
             return languageNameList;
+        }
+
+        public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
+        {
+            var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
+            var options = questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
+
+            //Update common Question details
+            updatedQuestion.Id = questionId;
+            updatedQuestion.UpdatedByUserId = userId;
+            _dbContext.Question.Update(updatedQuestion);
+            await _dbContext.SaveChangesAsync();
+
+            //Update single/multiple Question and option
+            _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(await _dbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == questionId).ToListAsync());
+            await _dbContext.SaveChangesAsync();
+            options.ForEach(x => x.SingleMultipleAnswerQuestionID = questionId);
+            _dbContext.SingleMultipleAnswerQuestionOption.AddRange(options);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

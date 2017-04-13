@@ -17,9 +17,9 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
     value: number;
     categoryName: string;
+    isRadioButtonSelelcted: boolean;
     noOfOptionShown: number;
     isClose: boolean;
-    isOptionSelected: boolean;
     isSingleAnswerQuestion: boolean;
     isNoOfOptionOverLimit: boolean;
     categoryArray: Category[];
@@ -131,5 +131,17 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      */
     getCategoryId() {
         this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName) !.id;
+    }
+
+    /**
+     * Check at least one option is selected or not
+     */
+    isOptionSelected() {
+        if (this.singleMultipleAnswerQuestion.question.questionType === 0) {
+            return this.isRadioButtonSelelcted;
+        }
+        if (this.singleMultipleAnswerQuestion.question.questionType === 1) {
+            return this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer === true);
+        }
     }
 }

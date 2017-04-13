@@ -148,6 +148,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isFormSubmitted = true;
 
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);
             });

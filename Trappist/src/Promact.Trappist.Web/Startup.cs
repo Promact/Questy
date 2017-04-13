@@ -66,6 +66,7 @@ namespace Promact.Trappist.Web
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
+
             #region Dependencies
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
@@ -80,12 +81,13 @@ namespace Promact.Trappist.Web
             services.AddScoped<IProfileRepository, ProfileRepository>();
             #endregion
 
-            #region "options configuration"
+            #region Options configuration
             services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
             services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             #endregion
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString)
@@ -140,8 +142,6 @@ namespace Promact.Trappist.Web
             //Will remove after we include migrations in code base
             if (!string.IsNullOrEmpty(connectionString.Value))
             {
-                if (env.IsProduction())
-                    context.Database.EnsureDeleted();
                 context.Database.Migrate();
                 context.Seed();
             }

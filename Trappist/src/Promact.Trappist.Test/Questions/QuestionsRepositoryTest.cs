@@ -45,10 +45,10 @@ namespace Promact.Trappist.Test.Questions
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
-            var result = await _questionRepository.GetAllQuestionsAsync();
+            var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id);
             Assert.True(result.Count() == 1);
         }
-
+        
         /// <summary>
         /// Test to add single answer Question
         /// </summary>
@@ -219,7 +219,8 @@ namespace Promact.Trappist.Test.Questions
                     CheckTimeComplexity = true,
                     RunBasicTestCase = true,
                     RunCornerTestCase = false,
-                    RunNecessaryTestCase = false
+                    RunNecessaryTestCase = false,
+                    LanguageList = new String[]{ "Java", "C" }
                 },
                 SingleMultipleAnswerQuestion = null
             };

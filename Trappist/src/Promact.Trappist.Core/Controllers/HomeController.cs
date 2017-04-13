@@ -47,6 +47,8 @@ namespace Promact.Trappist.Web.Controllers
         {
             if (!string.IsNullOrWhiteSpace(link))
             {
+                ViewBag.Link = link;
+
                 //logic will go here
                 return View();
             }

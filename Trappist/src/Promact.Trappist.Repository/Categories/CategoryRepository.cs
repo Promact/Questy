@@ -16,11 +16,6 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext = dbContext;
         }
 
-        /// <summary>
-        /// Method to get all the Categories
-        /// </summary>
-        /// <returns>Categories list</returns>
-        /// The function name ends with Async
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             return (await _dbContext.Category.OrderByDescending(g => g.CreatedDateTime).ToListAsync());

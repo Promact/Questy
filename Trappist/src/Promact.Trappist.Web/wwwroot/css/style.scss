@@ -12,10 +12,15 @@ $color_white: #FFFFFF;
 $color_white_opacity: rgba(white, 0.8);
 $color_red: #DD2C00;
 $color_yellow: #F9BB4B;
+$color_yellow_border: #CCA778;
+$color_yellow_light: #FFE2BD;
 
 /* Size */
 $half_size: 50%;
 $full_size: 100%;
+
+/* Font */
+$font_open_sans: 'Open Sans', sans-serif;
 
 /* General */
 html {
@@ -23,7 +28,7 @@ html {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: $font_open_sans;
   font-size: 13px;
   background-color: $color_bg;
   color: $color_base;
@@ -93,6 +98,26 @@ h6, .h6 {
   margin-top: 6px;
 }
 
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mt3 {
+  margin-top: 3px;
+}
+
+.mlr10 {
+  margin: 0 10px;
+}
+
+.mt8 {
+  margin-top: 8px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -103,6 +128,14 @@ h6, .h6 {
 
 .ptb20 {
   padding: 20px 0;
+}
+
+.ptb10 {
+  padding: 10px 0;
+}
+
+.pl15 {
+  padding-left: 15px;
 }
 
 .light-text {
@@ -119,6 +152,15 @@ h6, .h6 {
 
 .danger-text {
   color: $color_red !important;
+}
+
+.display-table {
+  display: table;
+  width: $full_size;
+}
+
+.display-table-cell {
+  display: table-cell;
 }
 
 .btn {
@@ -232,7 +274,7 @@ h6, .h6 {
 
       .mat-menu-item {
         font-size: 13px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         line-height: inherit;
         height: inherit;
         padding: 6px 30px 6px 16px;
@@ -311,7 +353,7 @@ h6, .h6 {
 
   .mat-autocomplete-panel {
     .mat-option {
-      font-family: 'Open Sans', sans-serif;
+      font-family: $font_open_sans;
       font-size: 13px;
       line-height: 34px;
       height: 34px;
@@ -324,7 +366,7 @@ h6, .h6 {
   }
 
   .mat-simple-snackbar {
-    font-family: 'Open Sans', sans-serif;
+    font-family: $font_open_sans;
     font-size: 13px;
   }
 }
@@ -867,7 +909,8 @@ footer {
 .questions-dashboard {
   .main-block {
     border: 1px solid $color_border;
-    position: relative;
+    display: table;
+    width: 100%;
 
     .block-title {
       h2 {
@@ -887,12 +930,11 @@ footer {
     }
 
     .category-block {
-      position: absolute;
-      top: 0;
-      bottom: 0;
+      display: table-cell;
+      width: 25%;
+      vertical-align: top;
       background-color: $color_bg_secondary;
       border-right: 1px solid $color_border;
-      padding: 0;
 
       .block-title {
         padding: 14px 8px 12px 12px;
@@ -944,8 +986,8 @@ footer {
     }
 
     .questions-block {
-      min-height: 500px;
-      padding: 0;
+      display: table-cell;
+      width: 75%;
 
       .block-title {
         padding: 14px 25px 12px;
@@ -993,6 +1035,8 @@ footer {
       }
 
       .questions-area {
+        min-height: 400px;
+
         .qs-block {
           .pull-left {
             width: 90%;
@@ -1054,12 +1098,14 @@ footer {
     }
 
     .mat-radio-label-content {
+      font-family: $font_open_sans;
+      font-weight: 400;
       padding-left: 15px;
       width: $full_size;
 
       .form-control {
         display: inline-block;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         font-weight: 400;
         width: 92%;
       }
@@ -1089,6 +1135,8 @@ footer {
   width: 54%;
 
   .mat-checkbox-layout {
+    font-family: $font_open_sans;
+    font-weight: 400;
     margin-bottom: 15px;
     width: $full_size;
 
@@ -1109,7 +1157,7 @@ footer {
 
       .form-control {
         display: inline-block;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font_open_sans;
         font-weight: 400;
         width: 92%;
       }
@@ -1300,71 +1348,6 @@ footer {
 
 /* Test Create Steps */
 .test-create-steps {
-  .header-block {
-    padding-bottom: 15px;
-    border-bottom: 1px solid $color_border;
-    margin-bottom: 20px;
-
-    h1 {
-      position: relative;
-
-      .errors-container {
-        position: absolute;
-        bottom: -16px;
-      }
-
-      .test-name {
-        display: inline-block;
-        min-width: 184px;
-        max-width: 800px;
-        min-height: 34px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        vertical-align: top;
-
-        &[hidden] {
-          display: none;
-        }
-      }
-
-      .form-control {
-        display: inline-block;
-        width: inherit;
-        font-weight: 400;
-        min-width: 184px;
-
-        &[hidden] {
-          display: none;
-        }
-      }
-
-      .material-icons {
-        vertical-align: middle;
-        color: $color_base_secondary;
-      }
-    }
-
-    .btn {
-      .material-icons {
-        vertical-align: top;
-        font-size: 18px;
-        padding-right: 8px;
-      }
-    }
-
-    .settings-menu {
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 10px;
-      cursor: pointer;
-
-      .material-icons:last-child {
-        margin-left: -10px;
-      }
-    }
-  }
-
   .form-area {
     margin: 20px 0;
     padding: 20px 20px 0;
@@ -1387,44 +1370,6 @@ footer {
           margin-right: 20px;
         }
       }
-    }
-  }
-
-  .footer-block {
-    background-color: $color_footer_secondary;
-    color: $color_base_secondary;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: $full_size;
-    padding: 12px 0;
-    z-index: 99;
-
-    .steps {
-      list-style: none;
-      padding-left: 0;
-      margin: 6px 0 6px -5px;
-
-      li {
-        display: inline-block;
-        padding-right: 20px;
-
-        a {
-          color: inherit;
-        }
-
-        .material-icons {
-          vertical-align: middle;
-        }
-
-        &.active {
-          color: $color_theme;
-        }
-      }
-    }
-
-    .buttons-block {
-      margin-right: 8px;
     }
   }
 
@@ -1534,6 +1479,109 @@ footer {
   }
 }
 
+.test-create-header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color_border;
+  margin-bottom: 20px;
+
+  h1 {
+    position: relative;
+
+    .errors-container {
+      position: absolute;
+      bottom: -16px;
+    }
+
+    .test-name {
+      display: inline-block;
+      min-width: 184px;
+      max-width: 800px;
+      min-height: 34px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: top;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .form-control {
+      display: inline-block;
+      width: inherit;
+      font-weight: 400;
+      min-width: 184px;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .material-icons {
+      vertical-align: middle;
+      color: $color_base_secondary;
+    }
+  }
+
+  .btn {
+    .material-icons {
+      vertical-align: top;
+      font-size: 18px;
+      padding-right: 8px;
+    }
+  }
+
+  .settings-menu {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    cursor: pointer;
+
+    .material-icons:last-child {
+      margin-left: -10px;
+    }
+  }
+}
+
+.test-create-footer {
+  background-color: $color_footer_secondary;
+  color: $color_base_secondary;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: $full_size;
+  padding: 12px 0;
+  z-index: 99;
+
+  .steps {
+    list-style: none;
+    padding-left: 0;
+    margin: 6px 0 6px -5px;
+
+    li {
+      display: inline-block;
+      padding-right: 20px;
+
+      a {
+        color: inherit;
+      }
+
+      .material-icons {
+        vertical-align: middle;
+      }
+
+      &.active {
+        color: $color_theme;
+      }
+    }
+  }
+
+  .buttons-block {
+    margin-right: 8px;
+  }
+}
+
 .dialog .url-container {
   position: relative;
 
@@ -1565,8 +1613,6 @@ footer {
 
       .mat-checkbox .mat-checkbox-layout {
         margin-bottom: 3px;
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 400;
       }
 
       .mat-chip-list {
@@ -1597,7 +1643,7 @@ footer {
         }
 
         .mat-input-container {
-          font-family: 'Open Sans', sans-serif;
+          font-family: $font_open_sans;
 
           .mat-input-wrapper {
             margin: 6px 0;
@@ -1639,13 +1685,6 @@ footer {
 .test-conduct {
   padding: 50px 0 100px;
 
-  .promact-logo {
-    img {
-      width: 180px;
-      margin-bottom: 50px;
-    }
-  }
-
   .registration-block {
     width: 600px;
     margin: 0 auto;
@@ -1655,20 +1694,6 @@ footer {
 
     h2 {
       margin-bottom: 30px;
-    }
-  }
-
-  .trappist-logo {
-    margin-top: 40px;
-
-    p {
-      font-size: 11px;
-      color: $color_base_secondary;
-      margin-bottom: 0;
-    }
-
-    img {
-      width: 70px;
     }
   }
 
@@ -1735,7 +1760,208 @@ footer {
   }
 }
 
+.test-conduct-header {
+  img {
+    width: 180px;
+    margin-bottom: 50px;
+  }
+}
+
+.test-conduct-footer {
+  margin-top: 40px;
+
+  p {
+    font-size: 11px;
+    color: $color_base_secondary;
+    margin-bottom: 0;
+  }
+
+  img {
+    width: 70px;
+  }
+}
+
+.test {
+  .test-header {
+    position: fixed;
+    width: $full_size;
+    background-color: $color_white;
+    padding: 10px 0;
+    border-bottom: 1px solid $color_border;
+    z-index: 99;
+
+    .container-fluid {
+      .display-table-cell {
+        width: 33.33%;
+        vertical-align: middle;
+      }
+    }
+
+    .text-right {
+      h5,
+      h2 {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .test-body {
+    padding: 70px 0 157px;
+
+    .container-fluid {
+      .display-table-cell {
+        width: $half_size;
+        vertical-align: top;
+
+        & > * {
+          width: 80%;
+        }
+
+        & + div {
+          border-left: 1px solid $color_border;
+        }
+      }
+    }
+
+    .test-body-title {
+      background-color: $color_bg_secondary;
+    }
+
+    .test-body-content {
+      background-color: $color_white;
+
+      .qs-area {
+        height: calc(100vh - 263px);
+      }
+    }
+  }
+
+  .test-footer {
+    position: fixed;
+    bottom: 0;
+    width: $full_size;
+    background-color: $color_bg_secondary;
+    z-index: 99;
+
+    .test-footer-top {
+      max-height: 96px;
+      overflow: auto;
+
+      span {
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        text-align: center;
+        padding: 6px 0;
+        margin: 5px 3px;
+
+        &.answered,
+        &.review,
+        &.selected {
+          color: $color_white;
+        }
+      }
+    }
+
+    .answered {
+      background-color: $color_theme;
+      border: 1px solid $color_theme_secondary;
+    }
+
+    .review {
+      background-color: $color_yellow;
+      border: 1px solid $color_yellow_border;
+    }
+
+    .selected {
+      background-color: $color_base;
+      border: 1px solid $color_border;
+    }
+
+    .unanswered {
+      background-color: $color_white;
+      border: 1px solid $color_border;
+    }
+
+    .test-footer-bottom {
+      border-top: 3px solid $color_white;
+
+      .trappist-logo {
+        p {
+          font-size: 11px;
+          color: $color_base_secondary;
+          margin-bottom: 0;
+        }
+      }
+
+      .indicator {
+        font-size: 11px;
+        margin-right: 15px;
+
+        span {
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          vertical-align: top;
+          margin-right: 3px;
+        }
+      }
+
+      .btn {
+        .material-icons {
+          vertical-align: top;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
 /* Responsive */
+@media (min-width: 1201px) and (max-width: 1310px) {
+  .test {
+    .test-body {
+      padding: 70px 0 200px;
+
+      .test-body-content .qs-area {
+        height: calc(100vh - 306px);
+      }
+    }
+
+    .test-footer-bottom {
+      .visible-lg-block {
+        display: none !important;
+      }
+
+      .hidden-lg {
+        display: block !important;
+        width: $full_size;
+
+        & + div {
+          width: $full_size;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .test {
+    .test-header .btn {
+      margin-bottom: 10px;
+    }
+
+    .test-body {
+      padding: 95px 0 200px;
+
+      .test-body-content .qs-area {
+        height: calc(100vh - 331px);
+      }
+    }
+  }
+}
+
 @media (max-width: 992px) {
   .form-group .form-control.half-width,
   .form-group .form-control.width-percent-60,
@@ -1771,5 +1997,13 @@ footer {
 
   .general-error-msg.long-msg {
     max-width: 250px;
+  }
+
+  .questions-dashboard .main-block .category-block {
+    width: 34%;
+  }
+
+  .questions-dashboard .main-block .questions-block {
+    width: 66%;
   }
 }
