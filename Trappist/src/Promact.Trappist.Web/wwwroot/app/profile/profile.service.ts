@@ -19,13 +19,6 @@ export class ProfileService {
     }
 
     /**
-    * get details of the user and display them in the profile edit page so that the user can edit the details
-    */
-    editUserDetails() {
-        return this.httpService.get(this.profileApiUrl);
-    }
-
-    /**
      *  update the  details of the user
      * @param editUser of type ApplicationUser which has the updated details of the user profile
      */
