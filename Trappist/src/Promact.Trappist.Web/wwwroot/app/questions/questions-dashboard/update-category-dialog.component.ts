@@ -39,6 +39,7 @@ export class UpdateCategoryDialogComponent {
      */
     updateCategory(category: Category) {
         if (category.categoryName) {
+            category.categoryName = category.categoryName.trim();
             this.categoryService.updateCategory(category.id, category).subscribe(
                 result => {
                     this.responseObject = result;

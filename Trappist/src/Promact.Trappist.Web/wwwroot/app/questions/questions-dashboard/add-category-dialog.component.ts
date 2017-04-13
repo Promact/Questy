@@ -40,6 +40,7 @@ export class AddCategoryDialogComponent {
      */
     addCategory(category: Category) {
         if (category.categoryName) {
+            category.categoryName = category.categoryName.trim();
             this.categoryService.addCategory(category).subscribe(
                 result => {
                     this.responseObject = result;
