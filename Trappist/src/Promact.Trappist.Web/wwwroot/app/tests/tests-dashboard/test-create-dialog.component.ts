@@ -22,10 +22,9 @@ export class TestCreateDialogComponent {
      * this method is used to add a new test
      * @param testNameRef is name of the test
      */
-    AddTest(testNameRef: string, id: number) {
+    AddTest(testNameRef: string) {
         this.test.testName = testNameRef;
-        this.test.id = id;
-        this.testService.IsTestNameUnique(testNameRef, id).subscribe((isTestNameUnique) => {
+        this.testService.IsTestNameUnique(testNameRef, this.test.id ).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.addTests(this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);
