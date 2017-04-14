@@ -5,6 +5,7 @@ import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { Md2AccordionModule, Md2DataTableModule } from 'md2';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { Md2AccordionModule, Md2DataTableModule } from 'md2';
         MaterialModule.forRoot(),
         RouterModule,
         Md2AccordionModule.forRoot(),
-        Md2DataTableModule.forRoot()
+        Md2DataTableModule.forRoot(),
+        CKEditorModule
     ],
     declarations: [
     ],
@@ -23,7 +25,8 @@ import { Md2AccordionModule, Md2DataTableModule } from 'md2';
         FormsModule,
         MaterialModule,
         Md2AccordionModule,
-        Md2DataTableModule
+        Md2DataTableModule,
+        CKEditorModule
     ]
 })
 export class SharedModule { }
