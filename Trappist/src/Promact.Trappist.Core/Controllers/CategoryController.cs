@@ -91,12 +91,17 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest(ModelState);
             }
             Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-            if (category != null)
+            if (category == null)
             {
-                await _categoryRepository.RemoveCategoryAsync(category);
-                return NoContent();
+                return NotFound();
             }
-            return NotFound();
+            if (await _categoryRepository.IsCategoryExistInQuestionAsync(categoryId))
+            {
+                ModelState.AddModelError(_stringConstants.CategoryId, _stringConstants.QuestionsDependOnCategory);
+                return BadRequest(ModelState);
+            }
+            await _categoryRepository.RemoveCategoryAsync(category);
+            return NoContent();
         }
         #endregion
     }

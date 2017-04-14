@@ -48,5 +48,10 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.Category.Remove(category);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> IsCategoryExistInQuestionAsync(int categoryId)
+        {
+            return await _dbContext.Question.AnyAsync(x => x.CategoryID == categoryId);
+        }
     }
 }

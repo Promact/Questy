@@ -46,5 +46,12 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="catagory">Category object</param>
         Task RemoveCategoryAsync(Category category);
+
+        /// <summary>
+        /// Method to check Category in questions
+        /// </summary>
+        /// <param name="categoryId">Category id</param>
+        /// <returns>True if condition satisfies else false</returns>
+        Task<bool> IsCategoryExistInQuestionAsync(int categoryId);
     }
 }
