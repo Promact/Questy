@@ -123,10 +123,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Marks</label>
-                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{id}}" #marks="ngModel"/>
+                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{id}}" #marks="ngModel" pattern="\d+"/>
                                     <div class="errors-container">
                                         <div *ngIf="marks.errors && (marks.dirty || marks.touched)">
-                                            <p class="text-danger">Test Case Marks is required</p>
+                                            <p class="text-danger" *ngIf="marks.errors.required">Test Case Marks is required</p>
+                                            <p class="text-danger" *ngIf="marks.errors.pattern">Please enter number</p>
                                         </div>
                                     </div>
                                 </div>
