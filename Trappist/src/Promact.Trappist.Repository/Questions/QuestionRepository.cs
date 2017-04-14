@@ -110,10 +110,8 @@ namespace Promact.Trappist.Repository.Questions
 
             Mapper.Map(questionAC.Question, updatedQuestion);
             Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
-
-            updatedQuestion.Id = questionId;
+            
             updatedQuestion.UpdatedByUserId = userId;
-            updatedCodeSnippetQuestion.Id = questionId;
             updatedCodeSnippetQuestion.Question = updatedQuestion;
 
             _dbContext.Question.Update(updatedQuestion);
