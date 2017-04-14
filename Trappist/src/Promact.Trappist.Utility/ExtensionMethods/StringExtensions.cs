@@ -12,7 +12,7 @@ namespace Promact.Trappist.Utility.ExtensionMethods
         /// <returns>string after removing extra white spaces.</returns>
         public static string AllTrim(this string value)
         {
-            return Regex.Replace(value.Trim(), "\\s+", string.Empty);
+            return Regex.Replace(value.Trim(), "\\s+", " ");
         }
     }
 }
