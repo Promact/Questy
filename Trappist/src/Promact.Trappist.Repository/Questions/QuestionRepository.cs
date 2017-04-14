@@ -101,29 +101,30 @@ namespace Promact.Trappist.Repository.Questions
             });
             return languageNameList;
         }
-
-        public async Task<bool> IsQuestionExist(int questionId)
-        {
-            return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
-        }
+        
 
         public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
-            var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            var updatedCodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
-            
+            var updatedQuestion = await _dbContext.Question.FirstOrDefaultAsync(x => x.Id == questionId);
+            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FirstOrDefaultAsync(x => x.Id == questionId);
+
+            Mapper.Map(questionAC.Question, updatedQuestion);
+            Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
+
             updatedQuestion.Id = questionId;
             updatedQuestion.UpdatedByUserId = userId;
+            updatedCodeSnippetQuestion.Id = questionId;
+            updatedCodeSnippetQuestion.Question = updatedQuestion;
+
             _dbContext.Question.Update(updatedQuestion);
             await _dbContext.SaveChangesAsync();
-
-            updatedCodeSnippetQuestion.Question = updatedQuestion;
+            
             _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
             await _dbContext.SaveChangesAsync();
 
             //Handling many to many relationship entity
             //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
-            var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedCodeSnippetQuestion.Id).ToListAsync();
+            var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
             _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
 
             var questionLanguageMapping = new List<QuestionLanguageMapping>();
@@ -134,12 +135,12 @@ namespace Promact.Trappist.Repository.Questions
             {
                 questionLanguageMapping.Add(new QuestionLanguageMapping
                 {
-                    QuestionId = updatedCodeSnippetQuestion.Id,
+                    QuestionId = updatedQuestion.CodeSnippetQuestion.Id,
                     LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                 });
             }
 
-            updatedCodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
+            updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
             await _dbContext.SaveChangesAsync();
         }
 

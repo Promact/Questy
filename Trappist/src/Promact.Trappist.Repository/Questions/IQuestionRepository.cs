@@ -56,12 +56,5 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="questionAC">QuestionAC class object</param>
         /// <param name="userId">Id of logged in user</param>
         Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId);
-
-        /// <summary>
-        /// Checks if Question exist or not
-        /// </summary>
-        /// <param name="questionId">Id of the Question</param>
-        /// <returns>True if Question exist in the Database, else false</returns>
-        Task<bool> IsQuestionExist(int questionId);
     }
 }

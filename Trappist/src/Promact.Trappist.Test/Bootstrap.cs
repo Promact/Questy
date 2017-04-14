@@ -46,7 +46,7 @@ namespace Promact.Trappist.Test
                     options.UseInMemoryDatabase()
                            .UseInternalServiceProvider(serviceProvider)
                            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-                }, ServiceLifetime.Transient);
+                });
             services.AddIdentity<ApplicationUser, IdentityRole>()
                .AddEntityFrameworkStores<TrappistDbContext>()
                .AddDefaultTokenProviders();
