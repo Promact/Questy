@@ -7,6 +7,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -75,6 +76,9 @@ namespace Promact.Trappist.Repository.Questions
                 //Add codeSnippet part of question
                 codeSnippetQuestion.Question = question;
                 codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAC.CodeSnippetQuestion.TestCases;
+
+                codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x => x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2));
+
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
                 var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
