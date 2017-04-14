@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/tests")]
     public class TestsController : Controller
