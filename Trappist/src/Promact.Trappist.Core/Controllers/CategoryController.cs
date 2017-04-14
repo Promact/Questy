@@ -90,13 +90,18 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-            if (category != null)
+            if (!await _categoryRepository.IsCheckCategoryInQuestionsById(categoryId))
             {
-                await _categoryRepository.RemoveCategoryAsync(category);
-                return NoContent();
+                Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+                if (category != null)
+                {
+                    await _categoryRepository.RemoveCategoryAsync(category);
+                    return NoContent();
+                }
+                return NotFound();
             }
-            return NotFound();
+            ModelState.AddModelError("Error", "This category contains questions. You can't delete the category");
+            return BadRequest(ModelState);
         }
         #endregion
     }

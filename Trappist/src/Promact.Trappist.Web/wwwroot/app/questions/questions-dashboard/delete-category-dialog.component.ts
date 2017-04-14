@@ -26,7 +26,10 @@ export class DeleteCategoryDialogComponent {
                 }
             },
             err => {
-                this.openSnackBar('Something went wrong. Please try again later');
+                if (err.status === 404)
+                    this.openSnackBar('Something went wrong. Please try again later');
+                else
+                    this.openSnackBar(err.json()['Error'][0]);
             });
         this.dialog.closeAll();
     }

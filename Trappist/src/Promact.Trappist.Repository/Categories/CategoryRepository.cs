@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,16 @@ namespace Promact.Trappist.Repository.Categories
         {
             _dbContext.Category.Remove(category);
             await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Method to check Category in Question model
+        /// </summary>
+        /// <param name="categoryId">Category id</param>
+        /// <returns>True if condition satisfies else false</returns>
+        public async Task<bool> IsCheckCategoryInQuestionsById(int categoryId)
+        {
+            return await _dbContext.Question.AnyAsync(x => x.CategoryID == categoryId);
         }
     }
 }
