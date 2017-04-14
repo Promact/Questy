@@ -8,35 +8,17 @@ import { TestService } from '../tests.service';
     selector: 'delete-test-dialog',
     templateUrl: 'delete-test-dialog.html'
 })
-export class DeleteTestDialogComponent implements OnInit {
+export class DeleteTestDialogComponent {
     testToDelete: Test;
     testArray: Test[] = new Array<Test>();
     response: any;
     isDeleteAllowed: boolean;
-    isReadyToDelete: boolean;
     errorMessage: string;
     successMessage: string;
 
     constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) {
         this.errorMessage = 'Something went wrong.Please try again later';
         this.successMessage = 'The selected test is deleted';
-        this.isReadyToDelete = false;
-    }
-
-    ngOnInit() {
-        this.isTestAttendeeExist();
-    }
-
-    // Check if there is any one who is giving the test and returns boolean value. 
-    isTestAttendeeExist() {
-        this.testService.isTestAttendeeExist(this.testToDelete.id).subscribe((response) => {
-            this.isReadyToDelete = true;
-            this.isDeleteAllowed = false;
-        },
-            err => {
-                this.isReadyToDelete = true;
-                this.isDeleteAllowed = true;
-            });
     }
 
     /**
