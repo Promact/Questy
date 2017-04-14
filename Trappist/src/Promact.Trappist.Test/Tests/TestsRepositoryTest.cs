@@ -74,7 +74,7 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
             Assert.NotNull(test);
-            var testSettings = await _testRepository.GetTestSettingsAsync(test.Id);
+            var testSettings = await _testRepository.GetTestByIdAsync(test.Id);
             var testName = testSettings.TestName;
             Assert.Equal(testName, "AOT 669");
         }
@@ -87,10 +87,10 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
-            var testSettingsToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+            var testSettingsToUpdate = await _testRepository.GetTestByIdAsync(test.Id);
             testSettingsToUpdate.TestName = "IIT BANGALORE";
             testSettingsToUpdate.BrowserTolerance = 2;
-            await _testRepository.UpdateTestSettingsAsync(testSettingsToUpdate);
+            await _testRepository.UpdateTestByIdAsync(testSettingsToUpdate);
             var TestName = "IIT BANGALORE";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == 2) == 1);
@@ -104,7 +104,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
-            var testNameToUpdate = await _testRepository.GetTestSettingsAsync(test.Id);
+            var testNameToUpdate = await _testRepository.GetTestByIdAsync(test.Id);
             testNameToUpdate.TestName = "MCKV";
             await _testRepository.UpdateTestNameAsync(test.Id, testNameToUpdate);
             var TestName = "MCKV";

@@ -1,18 +1,23 @@
 ﻿<div class="test-create-footer clearfix">
-    <div class="container">
-        <ul class="steps pull-left">
-            <li class="h5" [class.active]="router.url==='/tests/sections/' + testSettings.id"><a [routerLink]="['/tests/sections',testSettings.id]">Select Sections</a></li>
-            <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-            <li class="h5" [class.active]="router.url==='/tests/questions/' + testSettings.id"><a [routerLink]="['/tests/questions',testSettings.id]">Select Questions</a></li>
-            <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-            <li class="h5" [class.active]="router.url==='/tests/'+testSettings.id + '/settings'"><a [routerLink]="['/tests',testSettings.id,'settings']">Settings & Schedule</a></li>  
-        </ul>
-        <div class="buttons-block pull-right">
-          <button type="button" class="btn" *ngIf="isTestSection || isTestQuestion">Save & Exit</button>
-          <button type="button" class="btn btn-primary" *ngIf="isTestSection">Save & Next</button>
-          <button type="button" class="btn btn-primary" *ngIf="isTestQuestion">Save & Next</button>
-          <button type="button" class="btn" *ngIf="isTestSettings" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="updateTestSettings(testSettings.id,testSettings)">Save & Exit</button>
-          <button type="submit" *ngIf="isTestSettings" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" class="btn btn-primary" (click)="launchTestDialog(testSettings.id,testSettings)">Save & Share</button>
-        </div>
+  <div class="container">
+    <ul class="steps pull-left">
+      <li class="h5" [class.active]="router.url==='/tests/sections/' + testId"><a [routerLink]="['/tests/sections',testId]">Select Sections</a></li>
+      <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+      <li class="h5" [class.active]="router.url==='/tests/questions/' + testId"><a [routerLink]="['/tests/questions',testId]">Select Questions</a></li>
+      <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+      <li class="h5" [class.active]="router.url==='/tests/'+testId + '/settings'"><a [routerLink]="['/tests',testId,'settings']">Settings & Schedule</a></li>
+    </ul>
+    <div class="buttons-block pull-right" *ngIf="isTestSection">
+      <button type="button" class="btn">Save & Exit</button>
+      <button type="button" class="btn btn-primary">Save & Next</button>
     </div>
+    <div class="buttons-block pull-right" *ngIf="isTestQuestion">
+      <button type="button" class="btn">Save & Exit</button>
+      <button type="button" class="btn btn-primary">Save & Next</button>
+    </div>
+    <div class="buttons-block pull-right" *ngIf="isTestSettings">
+      <button type="button" class="btn" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="updateTestSettings()">Save & Exit</button>
+      <button type="button" class="btn btn-primary"  [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="launchTestDialogBox()">Save & Share</button>
+    </div>
+  </div>
 </div>
