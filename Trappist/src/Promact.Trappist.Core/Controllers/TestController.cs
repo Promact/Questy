@@ -65,9 +65,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
         /// <returns>Settings saved for the selected Test</returns>
         [HttpGet("{id}/settings")]
-        public async Task<IActionResult> GetTestSettings([FromRoute] int id)
+        public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
         {
-            var testSettings = await _testRepository.GetTestSettingsAsync(id);
+            var testSettings = await _testRepository.GetTestByIdAsync(id);
             if (testSettings == null)
                 return NotFound();
             else
@@ -81,7 +81,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testObject">The parameter "testObject" is an Object of Test</param>
         /// <returns>Updated Test Name</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTestName([FromRoute]int id, [FromBody] Test testObject)
+        public async Task<IActionResult> UpdateTestNameAsync([FromRoute]int id, [FromBody] Test testObject)
         {
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
@@ -101,13 +101,15 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>     
         [HttpPut("{id}/settings")]
-        public async Task<IActionResult> UpdateTestSettings([FromRoute] int id, [FromBody] Test testObject)
+        public async Task<IActionResult> UpdateTestByIdAsync([FromRoute] int id, [FromBody] Test testObject)
         {
+            if (!await _testRepository.IsTestNameUniqueAsync(testObject.TestName,id))
+                return BadRequest();
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
             if (ModelState.IsValid)
             {
-                await _testRepository.UpdateTestSettingsAsync(testObject);
+                await _testRepository.UpdateTestByIdAsync(testObject);
                 return Ok(testObject);
             }
             else

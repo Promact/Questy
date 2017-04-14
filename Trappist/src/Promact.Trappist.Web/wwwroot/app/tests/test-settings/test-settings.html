@@ -1,13 +1,15 @@
 ﻿<div class="test-create-steps test-settings">
   <form #settingsForm="ngForm">
-    <create-test-header></create-test-header>
+    <create-test-header [testSettings]="testSettings"></create-test-header>
     <div class="container">
       <h5>Settings & Schedule</h5>
       <div class="form-area">
         <div class="form-group">
           <label class="h4">Time Duration (mins)</label>
-          <input type="number" class="form-control small-width" [(ngModel)]="testSettings.duration" name="Duration" placeholder="00" max="180" min="0" (mouseup)="isWarningTimeValid()"/>
-          <div class="errors-container"></div>
+          <input type="text" class="form-control small-width" [(ngModel)]="testSettings.duration" name="Duration" placeholder="00" max="180" min="0" #Duration="ngModel" pattern="^\d{0,3}?$" (keyup)="isWarningTimeValid()"/>
+          <div class="errors-container">
+            <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
+          </div>
         </div>
         <div class="form-group inline-field">
           <label class="h4">Start Date & Time</label>
@@ -53,7 +55,7 @@
         </div>
         <div class="form-group">
           <label class="h4">Question Order</label>
-          <select class="form-control half-width">
+          <select class="form-control half-width" [(ngModel)]="testSettings.questionOrder" name="Question Order">
             <option>Fixed</option>
             <option>Random</option>
           </select>
@@ -61,7 +63,7 @@
         </div>
         <div class="form-group">
           <label class="h4">Option Order</label>
-          <select class="form-control half-width">
+          <select class="form-control half-width" [(ngModel)]="testSettings.optionOrder" name="Option Order">
             <option>Fixed</option>
             <option>Random</option>
           </select>
@@ -69,13 +71,17 @@
         </div>
         <div class="form-group inline-field">
           <label class="h4">Correct Marks</label>
-          <input type="number" class="form-control small-width" [(ngModel)]="testSettings.correctMarks" name="Correct Marks" min="0" />
-          <div class="errors-container"></div>
+          <input type="text" class="form-control small-width" [(ngModel)]="testSettings.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" pattern="^\d{0,4}(\.\d{1,2})?$" min="0" />
+          <div class="errors-container">
+            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks</span>
+          </div>
         </div>
         <div class="form-group inline-field">
           <label class="h4">Incorrect Marks</label>
-          <input type="number" class="form-control small-width" [(ngModel)]="testSettings.incorrectMarks" name="Incorrect Marks" min="0" />
-          <div class="errors-container"></div>
+          <input type="text" class="form-control small-width" [(ngModel)]="testSettings.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" pattern="^\d{0,4}(\.\d{1,2})?$"  min="0" />
+          <div class="errors-container">
+            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks</span>
+          </div>
         </div>
         <div class="form-group">
           <label class="h4">Warning Message</label>
@@ -84,12 +90,13 @@
         </div>
         <div class="form-group">
           <label class="h4">Warning Time (mins)</label>
-          <input type="number" class="form-control small-width" placeholder="00" [(ngModel)]="testSettings.warningTime" name="Warning Time" min="0"  (mouseup)="isWarningTimeValid()"/>
+          <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testSettings.warningTime" name="WarningTime" min="0" #WarningTime="ngModel" (keyup)="isWarningTimeValid()"/>
           <div class="errors-container">
+            <span class="error-msg" *ngIf="WarningTime.errors && WarningTime.dirty && !WarningTime.valid && WarningTime.errors.pattern">Invalid Time</span>      
             <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
           </div>
         </div>
-        <create-test-footer [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+        <create-test-footer (saveTestSettings)="saveTestSettings(testSettings.id,testSettings)" (launchTestDialog)="launchTestDialog(testSettings.id,testSettings)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
       </div>
     </div>
   </form>
