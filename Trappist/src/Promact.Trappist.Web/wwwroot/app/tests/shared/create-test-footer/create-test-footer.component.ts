@@ -1,22 +1,18 @@
-﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { MdDialog, MdSnackBar } from '@angular/material';
+﻿import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Test } from '../../tests.model';
 import { TestService } from '../../tests.service';
 import { ActivatedRoute } from '@angular/router';
-import { TestLaunchDialogComponent } from '../../test-settings/test-launch-dialog.component';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-
 
 @Component({
     moduleId: module.id,
     selector: 'create-test-footer',
     templateUrl: 'create-test-footer.html',
 })
+
 export class CreateTestFooterComponent implements OnInit {
-    testSettings: Test;
     testId: number;
-    testSettingsUpdatedMessage: string;
     isTestSection: boolean;
     isTestQuestion: boolean;
     isTestSettings: boolean;
@@ -28,10 +24,14 @@ export class CreateTestFooterComponent implements OnInit {
     public validEndDate: boolean;
     @Input('validTime')
     public validTime: boolean;
+    @Output() saveTestSettings = new EventEmitter();
+    @Output() launchTestDialog = new EventEmitter();
 
-    constructor(public dialog: MdDialog, private testService: TestService, public router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
-        this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully';
+    
+   
+
+
+    constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
         this.isTestQuestion = false;
         this.isTestSettings = false;
@@ -42,7 +42,6 @@ export class CreateTestFooterComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.getTestSettings(this.testId);
         this.getComponent();
     }
 
@@ -56,51 +55,16 @@ export class CreateTestFooterComponent implements OnInit {
     }
 
     /**
-     * Open snackbar
-     * @param message contains the message to be displayed when the snackbar gets opened
+     * Emits the event saveTestSettings 
      */
-    openSnackBar(message: string) {
-        let snackBarRef = this.snackbarRef.open(message, 'Dismiss', {
-            duration: 4000,
-        });
+    updateTestSettings() {
+        this.saveTestSettings.emit();
     }
 
     /**
-     * Gets the Settings saved for a particular Test
-     * @param id contains the value of the Id from the route
+     * Emits the event launchTestDialog
      */
-    getTestSettings(id: number) {
-        this.testService.getTestSettings(id).subscribe((response) => {
-            this.testSettings = (response);
-        });
-    }
-
-    /**
-     *  Updates the settings edited for the selected Test and redirects to the test dashboard after the settings of the selected Test has been successfully updated
-     * @param id contains the value of the Id from the route
-     * @param testObject is an object of the class Test
-     */
-    updateTestSettings(id: number, testObject: Test) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
-            let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
-                duration: 3000,
-            });
-            snackBarRef.afterDismissed().subscribe(() => {
-                this.router.navigate(['/tests']);
-            });
-        });
-    }
-
-    /**
-     * Launches the Test Dialog Box and also updates the Settings edited for the selected Test
-     * @param id contains the value of the Id from the route
-     * @param testObject is an object of class Test
-     */
-    launchTestDialog(id: number, testObject: Test) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
-            this.openSnackBar(this.testSettingsUpdatedMessage);
-        });
-        let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-        instance.testSettingObject = testObject;
+    launchTestDialogBox() {
+        this.launchTestDialog.emit();
     }
 }

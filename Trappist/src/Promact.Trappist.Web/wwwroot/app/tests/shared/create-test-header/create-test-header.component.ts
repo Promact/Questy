@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { Test } from '../../tests.model';
 import { TestService } from '../../tests.service';
@@ -6,14 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 
-
 @Component({
     moduleId: module.id,
     selector: 'create-test-header',
     templateUrl: 'create-test-header.html',
 })
 export class CreateTestHeaderComponent implements OnInit {
-    testSettings: Test;
     testId: number;
     editName: string;
     testNameUpdatedMessage: string;
@@ -21,9 +19,10 @@ export class CreateTestHeaderComponent implements OnInit {
     testNameRef: string;
     isEditButtonVisible: boolean;
     id: number;
+    @Input('testSettings')
+    public testSettings: Test;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.isTestNameExist = false;
         this.isEditButtonVisible = true;
@@ -34,7 +33,6 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.getTestSettings(this.testId);
     }
 
     /**
@@ -44,16 +42,6 @@ export class CreateTestHeaderComponent implements OnInit {
     openSnackBar(message: string) {
         let snackBarRef = this.snackbarRef.open(message, 'Dismiss', {
             duration: 4000,
-        });
-    }
-
-    /**
-     * Gets the Settings saved for a particular Test
-     * @param id contains the value of the Id from the route
-     */
-    getTestSettings(id: number) {
-        this.testService.getTestSettings(id).subscribe((response) => {
-            this.testSettings = (response);
         });
     }
 

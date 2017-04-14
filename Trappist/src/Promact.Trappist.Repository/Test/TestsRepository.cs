@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.GlobalUtil;
 using System;
 using Promact.Trappist.Utility.ExtensionMethods;
+using System.Globalization;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -60,20 +61,21 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateTestSettingsAsync(Test testObject)
+        public async Task UpdateTestByIdAsync(Test testObject)
         {
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Test> GetTestSettingsAsync(int id)
+        public async Task<Test> GetTestByIdAsync(int id)
         {
-            string currentDate = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm");
+            string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             if (testSettings != null)
             {
-                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? date : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? date : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 return testSettings;
             }
             else
