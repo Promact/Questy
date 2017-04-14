@@ -21,4 +21,4 @@ test_script:
 - ps: >-
    opencover.4.6.589\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test " -filter:"+[Promact.Trappist.Repository*]*" -hideskipped:File -output:opencover.xml -oldStyle
      
-   C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+
