@@ -11,6 +11,7 @@ import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
+import { Router } from '@angular/router';
 import { Question } from '../question.model';
 
 @Component({
@@ -169,6 +170,16 @@ export class QuestionsDashboardComponent implements OnInit {
                     this.questionDisplay.splice(this.question.indexOf(deletedQuestion), 1);
                 }
             });
+    }
+
+    /**
+     * Routes to respective components for editing Question
+     * @param question: QuestionDisplay object
+     */
+    editQuestion(question: QuestionDisplay) {
+        if (question.questionType === QuestionType.codeSnippetQuestion) {
+            this.router.navigate(['questions','programming', question.id]);
+        }
     }
 
     /**
