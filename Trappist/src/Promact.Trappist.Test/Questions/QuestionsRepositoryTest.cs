@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
-using Promact.Trappist.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,12 +20,14 @@ namespace Promact.Trappist.Test.Questions
     public class QuestionsRepositoryTest : BaseTest
     {
         private readonly IQuestionRepository _questionRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public QuestionsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             //resolve dependency to be used in tests
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
+            _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
@@ -196,6 +199,44 @@ namespace Promact.Trappist.Test.Questions
             Assert.True(_trappistDbContext.CodeSnippetQuestionTestCases.Count() == 1);
         }
 
+        [Fact]
+        public async Task UpdateCodeSnippetQuestionAsyncTest()
+        {
+            string userName = "deepankar@promactinfo.com";
+
+            //Adding Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+            //Adding 
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
+            var question = await _trappistDbContext
+                .Question
+                .FirstOrDefaultAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
+
+            codingQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
+            codingQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
+            codingQuestion.Question.QuestionDetail = "Updated question details";
+            codingQuestion.Question.DifficultyLevel = DifficultyLevel.Hard;
+            codingQuestion.CodeSnippetQuestion.LanguageList = new string[] { "C" };
+            await _questionRepository.UpdateCodeSnippetQuestionAsync(question.Id, codingQuestion, applicationUser.Id);
+
+            var updatedQuestion = await _trappistDbContext
+                .Question
+                .Include(x => x.CodeSnippetQuestion)
+                .ThenInclude(x => x.QuestionLanguangeMapping)
+                .FirstOrDefaultAsync(x => x.Id == question.Id);
+
+            Assert.True(string.Equals(updatedQuestion.QuestionDetail, codingQuestion.Question.QuestionDetail, StringComparison.CurrentCultureIgnoreCase));
+            Assert.True(updatedQuestion.DifficultyLevel == codingQuestion.Question.DifficultyLevel);
+            Assert.True(updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity == codingQuestion.CodeSnippetQuestion.CheckCodeComplexity);
+            Assert.True(updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity == codingQuestion.CodeSnippetQuestion.CheckTimeComplexity);
+            Assert.True(updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping.Count == 1);
+        }
+
         /// <summary>
         /// Creates Coding Question
         /// </summary>
@@ -203,14 +244,14 @@ namespace Promact.Trappist.Test.Questions
         private async Task<QuestionAC> CreateCodingQuestion()
         {
             var categoryToCreate = CreateCategory();
-            var category = await _trappistDbContext.Category.AddAsync(categoryToCreate);
+            await _categoryRepository.AddCategoryAsync(categoryToCreate);
 
             QuestionAC codingQuestion = new QuestionAC
             {
                 Question = new QuestionDetailAC
                 {
                     QuestionDetail = "<h1>Write a program to add two number</h1>",
-                    CategoryID = category.Entity.Id,
+                    CategoryID = categoryToCreate.Id,
                     DifficultyLevel = DifficultyLevel.Easy,
                     QuestionType = QuestionType.Programming
                 },
