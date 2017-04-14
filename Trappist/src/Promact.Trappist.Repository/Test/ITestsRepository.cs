@@ -66,6 +66,6 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="id">Id of the test</param>
         /// <returns>Boolean:true if an attendee exist or else false</returns>
-        Task<bool> IsAttendeeExistAsync(int id);
+        Task<bool> IsTestAttendeeExistAsync(int id);
     }
 }

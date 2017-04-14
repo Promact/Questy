@@ -24,12 +24,12 @@ export class DeleteTestDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isAttendeeExist();
+        this.isTestAttendeeExist();
     }
 
     // Check if there is any one who is giving the test and returns boolean value. 
-    isAttendeeExist() {
-        this.testService.isAttendeeExist(this.testToDelete.id).subscribe((response) => {
+    isTestAttendeeExist() {
+        this.testService.isTestAttendeeExist(this.testToDelete.id).subscribe((response) => {
             this.isReadyToDelete = true;
             this.isDeleteAllowed = false;
         },
