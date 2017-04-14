@@ -19,7 +19,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     selectedLanguageList: string[];
     codingLanguageList: string[];
-    selectedCategory: Category;
+    selectedCategory: string;
     selectedDifficulty: string;
     categoryList: Category[];
     questionModel: QuestionBase;
@@ -37,7 +37,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
-    private routeToDashboard = '/questions';
+    private routeToDashboard = ['questions'];
 
     constructor(private questionsService: QuestionsService,
         private categoryService: CategoryService,
@@ -52,7 +52,8 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
-        this.selectedCategory = new Category();
+        this.selectedCategory = "Please select a category";
+        this.selectedDifficulty = "Easy";
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
     }
@@ -83,12 +84,16 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param id: Id of the Question
      */
     getQuestionById(id: number) {
-        this.questionsService.getQuestionById(id).subscribe((response) => {
-            this.questionModel = response;
-            this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
-            this.getCodingLanguage();
-            this.getCategory();
-        });
+        this.questionsService.getQuestionById(id).subscribe(
+            (response) => {
+                this.questionModel = response;
+                this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
+                this.getCodingLanguage();
+                this.getCategory();
+            },
+            err => {
+                this.openSnackBar("Question not found", true, this.routeToDashboard);
+            });
     }
 
     /**
@@ -124,7 +129,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.codingLanguageList.sort();
 
             if (this.isQuestionEditted) {
-                this.codingLanguageList.forEach(x => {
+                this.questionModel.codeSnippetQuestion.languageList.forEach(x => {
                     this.selectLanguage(x);
                 });
             }
@@ -142,7 +147,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
             //If question is being editted then set the category
             if (this.isQuestionEditted)
-                this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID);
+                this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID).categoryName;
 
             this.isCategoryReady = true;
         });
@@ -201,15 +206,12 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param enableRouting: enable routing after snack bar dismissed
      * @param routeTo: routing path 
      */
-    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: string = '') {
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: any[] = ['']) {
         let snackBarAction = this.snackBar.open(message, 'Dismiss', {
             duration: 3000
         });
-
         if (enableRouting) {
-            snackBarAction.afterDismissed().subscribe(() => {
-                this.router.navigate([routeTo]);
-            });
+            this.router.navigate(routeTo);
         }
     }
 

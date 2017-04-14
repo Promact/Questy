@@ -10,6 +10,7 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -36,7 +37,7 @@ export class QuestionsDashboardComponent implements OnInit {
     matchString: string;
     isAllQuestionsSelected: boolean;
 
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
@@ -156,6 +157,16 @@ export class QuestionsDashboardComponent implements OnInit {
     // Open delete question dialog
     deleteQuestionDialog() {
         this.dialog.open(DeleteQuestionDialogComponent);
+    }
+
+    /**
+     * Routes to respective components for editing Question
+     * @param question: QuestionDisplay object
+     */
+    editQuestion(question: QuestionDisplay) {
+        if (question.questionType === QuestionType.codeSnippetQuestion) {
+            this.router.navigate(['questions','programming', question.id]);
+        }
     }
 
     /**
