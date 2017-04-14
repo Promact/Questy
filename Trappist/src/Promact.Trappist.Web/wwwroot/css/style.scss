@@ -118,6 +118,10 @@ h6, .h6 {
   margin-bottom: 10px;
 }
 
+.mr10 {
+  margin-right: 10px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -152,6 +156,10 @@ h6, .h6 {
 
 .danger-text {
   color: $color_red !important;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .display-table {
@@ -616,29 +624,29 @@ footer {
     h1 {
       text-transform: uppercase;
     }
+  }
+}
 
-    .search-area {
-      input {
-        border: 0;
-        border-bottom: 2px solid $color_base;
-        padding: 3px;
-        background-color: transparent;
+.search-area {
+  input {
+    border: 0;
+    border-bottom: 2px solid $color_base;
+    padding: 3px;
+    background-color: transparent;
 
-        &:focus {
-          outline: 0;
-        }
-      }
+    &:focus {
+      outline: 0;
+    }
+  }
 
-      button {
-        padding: 0;
-        border: 0;
-        background-color: transparent;
-        vertical-align: middle;
+  button {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    vertical-align: middle;
 
-        &:focus {
-          outline: 0;
-        }
-      }
+    &:focus {
+      outline: 0;
     }
   }
 }
@@ -1416,20 +1424,6 @@ footer {
   .questions-selection {
     margin: 20px 0;
 
-    .mat-checkbox {
-      display: inline-block;
-      width: inherit;
-      margin-right: 10px;
-
-      .mat-checkbox-layout {
-        margin-bottom: 0;
-
-        .mat-checkbox-label {
-          padding-left: 0;
-        }
-      }
-    }
-
     .select-all {
       padding: 10px 20px;
       border-bottom: 1px solid $color_border;
@@ -1463,11 +1457,6 @@ footer {
     }
   }
 
-  .back-link {
-    color: $color_theme;
-    text-decoration: none;
-  }
-
   .bottom-info {
     text-align: right;
 
@@ -1476,6 +1465,28 @@ footer {
       margin-right: 15px;
       color: $color_base_secondary;
     }
+  }
+}
+
+.mat-checkbox.only-checkbox {
+  display: inline-block;
+  width: inherit;
+
+  .mat-checkbox-layout {
+    margin-bottom: 0;
+
+    .mat-checkbox-label {
+      padding-left: 0;
+    }
+  }
+}
+
+.back-link {
+  color: $color_theme;
+
+  &:hover {
+    color: $color_theme;
+    text-decoration: none;
   }
 }
 
@@ -1912,6 +1923,119 @@ footer {
         .material-icons {
           vertical-align: top;
           font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
+/* Reports */
+.test-report {
+  .report-title-block {
+    h2,
+    select {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    select {
+      width: 200px;
+      margin: 0 15px;
+      border-color: $color_base_secondary;
+      color: $color_base;
+      font-size: 13px;
+
+      &:focus {
+        box-shadow: none;
+        border-color: $color_theme;
+      }
+    }
+  }
+   
+  .grid-container {
+    overflow-x: auto;
+  }
+
+  .report-grid {
+    width: 100%;
+    border: 1px solid $color_border;
+    margin-top: 15px;
+    background-color: $color_white;
+
+    thead {
+      background-color: $color_bg_secondary;
+      border-bottom: 1px solid $color_border;
+
+      th {
+        padding: 10px 20px;
+        color: $color_base;
+        
+        &[md2SortBy] svg {
+          padding-bottom: 5px;
+          height: 20px;
+          width: 20px;
+        }
+      }
+    }
+
+    tbody {
+      td {
+        padding: 10px 20px;
+        border-bottom: 1px solid $color_border;
+
+        &:last-child {
+          text-align: right;
+        }
+      }
+    }
+
+    .mat-checkbox-layout {
+      margin-top: -2px;
+    }
+
+    .material-icons {
+      color: $color_base_secondary;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    tfoot {
+      background-color: $color_bg_secondary;
+
+      td {
+        padding: 10px 20px;
+
+        .records-info {
+          font-size: 11px;
+          color: $color_base_secondary;
+        }
+
+        md2-pagination {
+          text-align: right;
+
+          .md2-pagination {
+            margin: 0;
+
+            li {
+              width: 30px;
+              line-height: 28px;
+              border-radius: 0;
+              background-color: $color_white;
+              color: $color_theme;
+              border: 1px solid $color_border;
+              margin-left: -1px;
+
+              &:hover {
+                background-color: $color_theme_hover;
+              }
+
+              &.active {
+                background-color: $color_theme;
+                border-color: $color_theme;
+                color: $color_white;
+              }
+            }
+          }
         }
       }
     }

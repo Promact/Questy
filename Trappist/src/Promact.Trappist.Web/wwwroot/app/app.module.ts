@@ -14,6 +14,7 @@ import { CoreModule } from './core/core.module';
 import { QuestionsModule } from './questions/questions.module';
 import { TestsModule } from './tests/tests.module';
 import { ProfileModule } from './profile/profile.module';
+import { ReportsModule } from './reports/reports.module';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -26,7 +27,8 @@ import { ProfileModule } from './profile/profile.module';
         TestsModule,
         ProfileModule,
         FormsModule,
-        CKEditorModule
+        CKEditorModule,
+        ReportsModule
     ],
     providers: [
 
