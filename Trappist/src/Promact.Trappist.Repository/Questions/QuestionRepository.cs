@@ -114,32 +114,36 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             updatedCodeSnippetQuestion.Question = updatedQuestion;
 
-            _dbContext.Question.Update(updatedQuestion);
-            await _dbContext.SaveChangesAsync();
-            
-            _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
-            await _dbContext.SaveChangesAsync();
-
-            //Handling many to many relationship entity
-            //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
-            var mappingToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
-            _dbContext.QuestionLanguageMapping.RemoveRange(mappingToRemove);
-
-            var questionLanguageMapping = new List<QuestionLanguageMapping>();
-            var languageList = await _dbContext.CodingLanguage.ToListAsync();
-
-            //Map language to codeSnippetQuestion
-            foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
+            using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                questionLanguageMapping.Add(new QuestionLanguageMapping
-                {
-                    QuestionId = updatedQuestion.CodeSnippetQuestion.Id,
-                    LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
-                });
-            }
+                _dbContext.Question.Update(updatedQuestion);
+                await _dbContext.SaveChangesAsync();
 
-            updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
-            await _dbContext.SaveChangesAsync();
+                _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
+                await _dbContext.SaveChangesAsync();
+
+                //Handling many to many relationship entity
+                //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
+                var codingLanguageToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
+                _dbContext.QuestionLanguageMapping.RemoveRange(codingLanguageToRemove);
+
+                var questionLanguageMapping = new List<QuestionLanguageMapping>();
+                var languageList = await _dbContext.CodingLanguage.ToListAsync();
+
+                //Map language to codeSnippetQuestion
+                foreach (var language in questionAC.CodeSnippetQuestion.LanguageList)
+                {
+                    questionLanguageMapping.Add(new QuestionLanguageMapping
+                    {
+                        QuestionId = updatedQuestion.CodeSnippetQuestion.Id,
+                        LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
+                    });
+                }
+
+                updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
+                await _dbContext.SaveChangesAsync();
+                transaction.Commit();
+            }
         }
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
