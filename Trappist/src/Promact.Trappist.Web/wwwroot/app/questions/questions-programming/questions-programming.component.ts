@@ -20,6 +20,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     selectedLanguageList: string[];
     codingLanguageList: string[];
     categoryList: Category[];
+    idList: number[];
     questionModel: QuestionBase;
     formControlModel: FormControlModel;
 
@@ -29,6 +30,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isFormSubmitted: boolean;
     isTestCaseAdded: boolean;
     code: any;
+    id: number = 0;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
@@ -46,6 +48,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.isCategoryReady = false;
         this.isLanguageReady = false;
         this.isTestCaseAdded = false;
+        this.idList = new Array<number>();
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
@@ -62,8 +65,11 @@ export class QuestionsProgrammingComponent implements OnInit {
     /**
      *  Adds test cases of code snippet question
      */
-    addTestCases() {
+    addTestCases(id: number) {
+        this.idList.push(id);
         this.testCases.push(new CodeSnippetQuestionsTestCases());
+        console.log(this.testCases);
+        this.id = id + 1;
     }
 
     /**
@@ -72,6 +78,9 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     removeTestCases(testCaseIndex: number) {
         this.testCases.splice(testCaseIndex, 1);
+        this.idList.splice(testCaseIndex, 1);
+        console.log(testCaseIndex);
+        console.log(this.testCases);
     }
 
     /**

@@ -73,9 +73,9 @@
                 <div class="form-group">
                     <label class="h4">Test Case(s)</label>
                     <br />
-                    <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true;addTestCases()">Add Test Case</button>
-                    <md2-accordion *ngFor="let testCase of testCases;let i = index">
-                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
+                    <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true;addTestCases(id)">Add Test Case</button>
+                    <md2-accordion >
+                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase" *ngFor="let testCase of testCases;let i = index">
                             <md2-accordion-header class="collapsible-header clearfix">
                                 <div class="title-info h2 pull-left">
                                     <span>Type:{{testCase.testCaseType}}</span>
@@ -90,7 +90,7 @@
                             <div class="collapsible-body">
                                 <div class="form-group">
                                     <label>Test Case Title</label>
-                                    <input type="text" [(ngModel)]="testCase.testCaseTitle" class="form-control width-percent-60" required name="title_{{i}}" #title="ngModel"/>
+                                    <input type="text" [(ngModel)]="testCase.testCaseTitle" class="form-control width-percent-60" required name="title_{{id}}" #title="ngModel"/>
                                     <div class="errors-container">
                                         <div *ngIf="title.errors && (title.dirty || title.touched)">
                                             <p class="text-danger">Test Case Title is required</p>
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Description</label>
-                                    <textarea  [(ngModel)]="testCase.testCaseDescription" class="form-control width-percent-60" rows="3" required name="description_{{i}}" #description="ngModel"></textarea>
+                                    <textarea  [(ngModel)]="testCase.testCaseDescription" class="form-control width-percent-60" rows="3" required name="description_{{id}}" #description="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="description.errors && (description.dirty || description.touched)">
                                             <p class="text-danger">Test Case Description is required</p>
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Type</label>
-                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value"  ngModel required name="type_{{i}}" #type="ngModel">
+                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value"  ngModel required name="type_{{id}}" #type="ngModel">
                                         <option [disabled]="type.dirty" selected value="">Select Option</option>
                                         <option>Default</option>
                                         <option>Basic</option>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Marks</label>
-                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{i}}" #marks="ngModel"/>
+                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{id}}" #marks="ngModel"/>
                                     <div class="errors-container">
                                         <div *ngIf="marks.errors && (marks.dirty || marks.touched)">
                                             <p class="text-danger">Test Case Marks is required</p>
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Input Values</label>
-                                    <textarea [(ngModel)]="testCase.testCaseInput" class="form-control width-percent-60" rows="3" required name="input_{{i}}" #input="ngModel"></textarea>
+                                    <textarea [(ngModel)]="testCase.testCaseInput" class="form-control width-percent-60" rows="3" required name="input_{{id}}" #input="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="input.errors && (input.dirty || input.touched)">
                                             <p class="text-danger">Test Case Input is required</p>
@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Expected Values</label>
-                                    <textarea [(ngModel)]="testCase.testCaseOutput" class="form-control width-percent-60" rows="3" required name="output_{{i}}" #output="ngModel"></textarea>
+                                    <textarea [(ngModel)]="testCase.testCaseOutput" class="form-control width-percent-60" rows="3" required name="output_{{id}}" #output="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="output.errors && (output.dirty || output.touched)">
                                             <p class="text-danger">Test Case Output is required</p>
@@ -151,7 +151,7 @@
                             </div>
                         </md2-accordion-tab>
                     </md2-accordion>
-                    <button type="button" class="add-testcase-btn h2" [hidden]="!formControlModel.showTestCase" (click)="formControlModel.showNewTestCase=true;addTestCases()">Add New Test Case</button>
+                    <button type="button" class="add-testcase-btn h2" [hidden]="!formControlModel.showTestCase" (click)="formControlModel.showNewTestCase=true;addTestCases(id)">Add New Test Case</button>
                 </div>
             </div>
             <div class="actions-area">
