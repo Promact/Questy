@@ -1,41 +1,19 @@
 ﻿<div class="test-create-steps test-sections">
-    <div class="header-block">
-        <div class="container">
-            <h1>
-                <span [hidden]="editName">{{test.testName}}</span>
-                <input type="text" class="form-control" [hidden]="!editName" />
-                <em class="material-icons" (click)="editName = !editName">edit</em>
-            </h1>
-        </div>
-    </div>
+    <create-test-header></create-test-header>
     <div class="container">
         <h2>Select sections to add in your test</h2>
-        <ul class="sections-list">
-            <li *ngFor="let category of Categories"
-                (click)="onSelect(category)">
-                <label for="section">
-                    <input type="checkbox" id="section1" />
+        <ul class="sections-list" >
+            <li *ngFor="let category of testDetailsObj.category"
+                (click)="onSelect({{category}})">
+                <label for="{{category.categoryName}}">
+                    <input type="checkbox" id="{{category.categoryName}}"/>
                     <span class="section-box clearfix">
                         <span class="h4 pull-left">{{category.categoryName}}</span>
                         <em class="material-icons pull-right">check</em>
                     </span>
                 </label>
-            </li>
-        </ul>
+                </li>
+</ul>
     </div>
-    <div class="footer-block clearfix">
-        <div class="container">
-            <ul class="steps pull-left">
-                <li class="h5 active"><a [routerLink]="['/tests/sections', test.id]">Select Sections</a></li>
-                <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-                <li class="h5"><a [routerLink]="['/tests/questions']">Select Questions</a></li>
-                <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-                <li class="h5"><a [routerLink]="['/tests/settings']">Settings & Schedule</a></li>
-            </ul>
-            <div class="buttons-block pull-right">
-                <button type="button" class="btn" (click)="SaveExit()">Save & Exit</button>
-                <button type="button" class="btn btn-primary" (click)="SaveNext()">Save & Next</button>
-            </div>
-        </div>
-    </div>
+    <create-test-footer></create-test-footer>
 </div>

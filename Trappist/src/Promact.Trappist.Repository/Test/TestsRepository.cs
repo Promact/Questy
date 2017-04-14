@@ -19,7 +19,7 @@ namespace Promact.Trappist.Repository.Tests
     public class TestsRepository : ITestsRepository
     {
         public List<CategoryAC> categorylist = new List<CategoryAC>();
-       public List<Category> categories= new List<Category>();
+        public List<Category> categories = new List<Category>();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
@@ -47,6 +47,8 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName, int id)
         {
+            testName = System.Text.RegularExpressions.Regex.Replace(testName, @"\s+", " "); ;
+            //string = string.replace(/\s\s +/ g, ' ');
             var isTestExists = await (_dbContext.Test.AnyAsync(x =>
                                     x.TestName.ToLowerInvariant() == testName.AllTrim().ToLowerInvariant()
                                     && x.Id != id));
@@ -99,8 +101,8 @@ namespace Promact.Trappist.Repository.Tests
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             if (testSettings != null)
             {
-                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                //testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                // testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 return testSettings;
             }
             else
@@ -118,17 +120,23 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         #region Category selection
-        public async Task<TestAC> GetTestDetails(int id)
+        public async Task<TestAC> GetTestDetailsAsync(int id)
         {
-            var testobj = await  _dbContext.Test.FindAsync(id);
-            var testACObj= Mapper.Map<Test, TestAC>(testobj);
+            var testobj = await _dbContext.Test.FindAsync(id);
+            var testACObj = Mapper.Map<Test, TestAC>(testobj);
             testACObj.Category = new List<CategoryAC>();
-            var tests = _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToList();          
+            var tests = _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToList();
             List<Category> categoryList = _dbContext.Category.ToList();
-            categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);       
-            testACObj.Category = categorylist;                       
+            categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            testACObj.Category = categorylist;
             return testACObj;
         }
+        public async Task AddSelectedAsync(TestCategory[] testCategory)
+        {
+            await _dbContext.TestCategory.AddRangeAsync(testCategory);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task DeselectCategoryAsync(int id)
         {
             var testCategory = await _dbContext.TestCategory.FindAsync(id);

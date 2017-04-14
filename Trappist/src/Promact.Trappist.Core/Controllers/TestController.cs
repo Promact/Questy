@@ -117,13 +117,26 @@ namespace Promact.Trappist.Core.Controllers
         }
 #endregion
 #region Category Selection
-        [HttpGet("selectedCategories/{id}")]
-        public ActionResult GetTestDetail([FromRoute] int id)
+        [HttpGet("Categories/{id}")]
+        public async Task<ActionResult> GetTestDetail([FromRoute] int id)
         {
-                    return Ok( _testRepository.GetTestDetails(id));
+                    return Ok( await _testRepository.GetTestDetailsAsync(id));
+        }
+
+        /// <summary>
+        /// this method is used to add the selected categories from category list to the TestCategory model
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>testCategory</returns>
+        [HttpPost ("addSelectedCategories")]
+        public async Task<ActionResult> AddSelectedCategories([FromBody] TestCategory[] testCategory)
+        {
+            await _testRepository.AddSelectedAsync(testCategory);
+            return Ok(testCategory);
         }
 
         [HttpDelete("deselectCategory/{id}")]
+       
         public async Task<ActionResult> DeselectCategoriesAsync([FromRoute] int id)
         {
             await _testRepository.DeselectCategoryAsync(id);

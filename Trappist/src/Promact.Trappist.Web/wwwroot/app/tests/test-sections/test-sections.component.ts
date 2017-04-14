@@ -20,7 +20,7 @@ import { TestDetails } from '../test-details';
 
 export class TestSectionsComponent implements OnInit {
     editName: boolean;
-    Categories: Category[] = new Array<Category>();
+    Categories: Category[];
     testCategories: Array<TestCategory>;
     test: Test;
     testCategoryObj: TestCategory;
@@ -28,7 +28,6 @@ export class TestSectionsComponent implements OnInit {
     deselectCategoryError: boolean;
     question: Question[] = new Array<Question>();
     testDetailsObj: TestDetails;
-    id: number;
 
     constructor(private categoryService: CategoryService, private testService: TestService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog) {
         this.test = new Test();
@@ -36,40 +35,48 @@ export class TestSectionsComponent implements OnInit {
         this.testCategories = [];
         this.testQuestion = [];
         this.testDetailsObj = new TestDetails();
+        this.getTestSectionsDetails();
+        this.Categories = this.testDetailsObj.category;
     }
 
     ngOnInit() {
         let id = +this.route.snapshot.params['id'];
         this.testService.getTestSettings(id)
             .subscribe((test: Test) => { this.test = test });
-        
+
     }
 
     /**
      * To get All categories
      */
-    getTestSectionsDetails(id: number) {
-        this.test.id = id = id;
-        this.testService.getTestDetails(id).subscribe((response) => { this.testDetailsObj = response });
+    getTestSectionsDetails() {
+        let id = +this.route.snapshot.params['id'];
+        this.testService.getTestSettings(id)
+            .subscribe((test: Test) => { this.test = test });
+        this.testService.getTestDetails(id).subscribe((response) => {
+            this.testDetailsObj = response;
+            console.log(this.testDetailsObj);
+        });
     }
 
     /**
      * To Select or Deselect a Category from list
      * @param category
      */
-    onSelect(category: Category) {
+    onSelect(category: any) {
+        this.testDetailsObj.category = category;
         if (!category.isSelect)
             category.isSelect = true;
-        else {
-            for (let testquestion of this.testQuestion) {
-                if (testquestion.testCategoryId = this.testCategoryObj.categoryId) {
-                    let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
-                }
-                else
-                    category.isSelect = false;
-            }
-        }
+        //else {
+        //    for (let testquestion of this.testQuestion) {
+        //        if (testquestion.testCategoryId = this.testCategoryObj.categoryId) {
+        //            let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
+        //        }
+        else
+            category.isSelect = false;
     }
+
+
 
     /**
      * To Save the Selected Categories and redirect user for question selection
@@ -88,7 +95,7 @@ export class TestSectionsComponent implements OnInit {
     }
 
     SaveCategory() {
-        let categories = this.Categories.filter(function (x) {
+        let categories = this.testDetailsObj.category.filter(function (x) {
             return (x.isSelect);
         });
         for (let category of categories) {
@@ -97,6 +104,6 @@ export class TestSectionsComponent implements OnInit {
             this.testCategories.push(this.testCategoryObj);
             this.testCategoryObj = new TestCategory()
         }
-       // this.testService.addSelectedCategories(this.testCategories).subscribe();
+         this.testService.addSelectedCategories(this.testCategories).subscribe();
     }
 }

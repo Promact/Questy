@@ -64,9 +64,11 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="testCategory"></param>
         /// <returns>List of Selected Categories</returns>        
-        Task<TestAC> GetTestDetails(int id);
+        Task<TestAC> GetTestDetailsAsync(int id);
 
         Task DeselectCategoryAsync(int id);
+
+        Task AddSelectedAsync(TestCategory[] testCategory);
         #endregion
 
         /// <summary>

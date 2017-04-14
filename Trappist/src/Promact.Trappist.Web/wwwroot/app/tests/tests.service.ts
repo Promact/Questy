@@ -60,7 +60,11 @@ export class TestService {
     }
 
     getTestDetails(id: number) {
-        return this.httpService.get(this.testApiUrl + '/' + 'selectedCategories'+ '/' + id);
+        return this.httpService.get(this.testApiUrl + '/' + 'Categories'+ '/' + id);
+    }
+
+    addSelectedCategories(testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories', testCategory);
     }
 
     removeDeselectedCategory(id: number) {

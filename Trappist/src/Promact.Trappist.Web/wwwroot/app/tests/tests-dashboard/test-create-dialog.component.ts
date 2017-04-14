@@ -16,16 +16,18 @@ export class TestCreateDialogComponent {
     errorMessage: boolean;
     test: Test;
     testNameReference: string;
+    testname: string;
+    
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar, public router: Router) {
-        this.test = new Test();
+        this.test = new Test();      
     }
     /**
      * this method is used to add a new test
      * @param testNameRef is name of the test
      */
     AddTest(testNameRef: string) {
-        this.test.testName = testNameRef;        
-        this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
+        this.test.testName = testNameRef;
+        this.testService.IsTestNameUnique(testNameRef.trim(), this.test.id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.addTests(this.test).subscribe((responses) => {
                     this.dialogRef.close(responses);

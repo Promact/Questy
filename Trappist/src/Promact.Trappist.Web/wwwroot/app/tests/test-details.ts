@@ -5,6 +5,6 @@ import { TestCategory } from '../tests/tests.model';
 export class TestDetails {
     id: number;
     testName: string;
-    testCategory: TestCategory[] = new Array<TestCategory>();
-    categories: Category[] = new Array<Category>();
+    testCategory: TestCategory[] = [];
+    category: Category[] = [];
 }
