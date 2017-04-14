@@ -97,6 +97,13 @@
                 return "Invalid Link To Reset The Password!";
             }
         }
+        public string UserName
+        {
+            get
+            {
+                return "Trappist123@gmail.com";
+            }
+        }
         #endregion
 
         #region Profile Constants
@@ -130,6 +137,22 @@
             get
             {
                 return "error";
+            }
+        }
+
+        public string QuestionsDependOnCategory
+        {
+            get
+            {
+                return "This category contains questions. You can't delete this category";
+            }
+        }
+
+        public string CategoryId
+        {
+            get
+            {
+                return "categoryId";
             }
         }
         #endregion
