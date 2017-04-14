@@ -67,6 +67,14 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     /**
+     * Removes the test cases of code snippet question 
+     * @param testCaseIndex
+     */
+    removeTestCases(testCaseIndex: number) {
+        this.testCases.splice(testCaseIndex, 1);
+    }
+
+    /**
      * Gets all the coding languages
      */
     private getCodingLanguage() {

@@ -83,7 +83,7 @@
                                     <span>Weightage: {{testCase.testCaseMarks}}</span>
                                 </div>
                                 <div class="pull-right">
-                                    <span class="delete-option h7"><em class="material-icons">delete</em> <span>Delete</span></span>
+                                    <span class="delete-option h7"><em class="material-icons" (click)="removeTestCases(i)">delete</em> <span>Delete</span></span>
                                     <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
                                 </div>
                             </md2-accordion-header>
