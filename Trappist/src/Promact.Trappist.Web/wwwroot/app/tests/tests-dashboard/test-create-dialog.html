@@ -6,7 +6,7 @@
     <md-dialog-content>
         <div class="form-group">
             <label class="h4">Test Name</label>
-            <input type="text" id="name" name="name" class="form-control" (blur)="ChangeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$" maxlength="150" />
+            <input type="text" id="name" name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" (ngModelChange)="ChangeError()" required pattern="^[a-zA-Z0-9_@ $#%&*^{}+;:<>()-]*$" maxlength="150" />
             <div class="errors-container">
                 <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.required">Name is required</span>
                 <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Enter a valid Test Name</span>
