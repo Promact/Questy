@@ -68,7 +68,6 @@ export class QuestionsProgrammingComponent implements OnInit {
     addTestCases(id: number) {
         this.idList.push(id);
         this.testCases.push(new CodeSnippetQuestionsTestCases());
-        console.log(this.testCases);
         this.id = id + 1;
     }
 
@@ -79,8 +78,6 @@ export class QuestionsProgrammingComponent implements OnInit {
     removeTestCases(testCaseIndex: number) {
         this.testCases.splice(testCaseIndex, 1);
         this.idList.splice(testCaseIndex, 1);
-        console.log(testCaseIndex);
-        console.log(this.testCases);
     }
 
     /**
