@@ -71,7 +71,7 @@ export class TestService {
      * Checks whether any test attendee exists 
      * @param testId: type number and has the id of the test to be deleted
      */
-    isAttendeeExist(testId: number) {
+    isTestAttendeeExist(testId: number) {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
     }
 }

@@ -106,7 +106,7 @@ namespace Promact.Trappist.Repository.Tests
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
 
-        public async Task<bool> IsAttendeeExistAsync(int id)
+        public async Task<bool> IsTestAttendeeExistAsync(int id)
         {
             Test test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
             return test.TestAttendees.Any();

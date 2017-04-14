@@ -123,7 +123,7 @@ namespace Promact.Trappist.Test.Tests
             testAttendee.Test = test;
             testAttendee.TestId = test.Id;
             _trappistDbContext.TestAttendees.Add(testAttendee);
-            var isExists = await _testRepository.IsAttendeeExistAsync(test.Id);
+            var isExists = await _testRepository.IsTestAttendeeExistAsync(test.Id);
             Assert.True(isExists);
         }
 
@@ -135,7 +135,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("Aptitude");
             await _testRepository.CreateTestAsync(test);
-            var isNotExist = await _testRepository.IsAttendeeExistAsync(test.Id);
+            var isNotExist = await _testRepository.IsTestAttendeeExistAsync(test.Id);
             Assert.False(isNotExist);
         }
 
