@@ -8,50 +8,65 @@
         /// property Success is called when test creation is successfuly done
         string Success { get; }
 
-        #region BasicSetup Constants        
+        #region BasicSetup Constants  
+        
         /// <summary>
         /// Property SetupConfigFilename is called whenever required SetupConfig file name
         /// </summary>
         string SetupConfigFileName { get; }
+
         /// <summary>
         /// This property used for provide body constant in mail.
         /// </summary>
         string TestMailBody { get; }
+
         /// <summary>
         /// This property used for provide subject constant in mail.
         /// </summary>
         string TestMailSubject { get; }
+
         /// <summary>
         /// This property used for providing error message if a user already exists.
         /// </summary>
         string UserAlreadyExistErrorMessage { get; }
+
         /// <summary>
         /// This property used for providing error message if any issues in the database.
         /// </summary>
         string DatabaseRelatedIssue { get; }
         #endregion
+
         /// <summary>
         /// property to store characters for random link generation
         /// </summary>
         string CharactersForLink { get; }
 
         #region "Account Constants"
+
         /// <summary>
         /// property InvalidLoginError is used when input credentials are not matched with database at the time of login
         /// </summary>
         string InvalidLoginError { get; }
+
         /// <summary>
         /// property InvalidLoginError is used when model state and model binding are not proper
         /// </summary>
         string InvalidModelError { get; }
+
         /// <summary>
         /// property InvalidEmailError is used when emailid does not match with databse id
         /// </summary>
         string InvalidEmailError { get; }
+
         /// <summary>
         /// property InvalidTokenError is used when user will try to reset password with already used link
         /// </summary>
         string InvalidTokenError { get; }
+
+        /// <summary>
+        /// Property UserName to return "Trappist123@gmail.com" string
+        /// </summary>
+        string UserName { get; }
         #endregion
 
         #region Profile Constants
@@ -77,6 +92,16 @@
         /// Property CategoryNameExistsError is used to check Category Name uniqueness
         /// </summary>
         string CategoryNameExistsError { get; }
+
+        /// <summary>
+        /// Property QuestionsDependOnCategory is used to check associated questions
+        /// </summary>
+        string QuestionsDependOnCategory { get; }
+
+        /// <summary>
+        /// Property CategoryId to return categoryId string
+        /// </summary>
+        string CategoryId { get; }
         #endregion
 
         #region "TestSettings Constants"
