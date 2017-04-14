@@ -7,7 +7,6 @@ import 'rxjs/Rx';
 
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
-import { CKEditorModule } from 'ng2-ckeditor';
 
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
@@ -27,7 +26,6 @@ import { ReportsModule } from './reports/reports.module';
         TestsModule,
         ProfileModule,
         FormsModule,
-        CKEditorModule,
         ReportsModule
     ],
     providers: [
