@@ -4,10 +4,14 @@ skip_tags: true
 configuration: Debug
 build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
-skip_branch_with_pr: true
+environment:  
+  COVERALLS_REPO_TOKEN:
+  secure: oI8JLO5/25+ZMrrWdVckNz5zqUysVlU+VVMBpPxZlEXaQ/A/6z544OcIs8rVhk49
 branches:
   only:
     - development
+    - staging
+    - master
 build:
   project: .\Trappist\Trappist.sln
   verbosity: minimal
@@ -15,4 +19,6 @@ test_script:
 - ps: >-
    cd .\Trappist\src\Promact.Trappist.Test
 - ps: >-
-   C:\Users\appveyor\.nuget\packages\OpenCover\4.6.519\tools\OpenCover.Console.exe -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:" test " -filter:"+[Promact.Trappist]*Repository -[Promact.Trappist.Test*]*" -mergeoutput -hideskipped:File -output:opencover.xml -oldStyle
+   opencover.4.6.589\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test " -filter:"+[Promact.Trappist.Repository*]*" -hideskipped:File -output:opencover.xml -oldStyle
+     
+   C:\Users\%USERNAME%\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID

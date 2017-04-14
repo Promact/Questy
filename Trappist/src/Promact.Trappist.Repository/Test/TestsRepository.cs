@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.GlobalUtil;
 using System;
+using System.Globalization;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -84,12 +85,13 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>Settings Saved for the selected Test</returns>
         public async Task<Test> GetTestSettingsAsync(int id)
         {
-            string currentDate = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm");
+            string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             if (testSettings != null)
             {
-                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? Convert.ToDateTime(currentDate) : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? date : testSettings.StartDate;
+                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? date : testSettings.EndDate;
                 return testSettings;
             }
             else
