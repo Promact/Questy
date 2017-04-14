@@ -163,7 +163,6 @@ namespace Promact.Trappist.Test.Tests
 
         private DomainModel.Models.TestConduct.TestAttendees TestAttendee()
         {
-            var test = CreateTest("Quantitative");
             var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
             {
                 FirstName = "Ritika",
