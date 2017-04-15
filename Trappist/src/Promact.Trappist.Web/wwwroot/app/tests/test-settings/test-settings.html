@@ -6,7 +6,7 @@
       <div class="form-area">
         <div class="form-group">
           <label class="h4">Time Duration (mins)</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testSettings.duration" name="Duration" placeholder="00" max="180" min="0" #Duration="ngModel" pattern="^\d{0,3}?$" (keyup)="isWarningTimeValid()"/>
+          <input type="text" class="form-control small-width" [(ngModel)]="testSettings.duration" name="Duration" placeholder="00" max="180" min="0" #Duration="ngModel" pattern="^\d{0,4}?$" (keyup)="isWarningTimeValid()"/>
           <div class="errors-container">
             <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
           </div>
@@ -55,7 +55,7 @@
         </div>
         <div class="form-group">
           <label class="h4">Question Order</label>
-          <select class="form-control half-width" [(ngModel)]="testSettings.questionOrder" name="Question Order">
+          <select class="form-control half-width" (change)="testSettings.questionOrder = QuestionOrder[$event.target.value]" [(ngModel)]="selectedQuestionOrder" name="questionOrder">
             <option>Fixed</option>
             <option>Random</option>
           </select>
@@ -63,7 +63,7 @@
         </div>
         <div class="form-group">
           <label class="h4">Option Order</label>
-          <select class="form-control half-width" [(ngModel)]="testSettings.optionOrder" name="Option Order">
+          <select class="form-control half-width" (change)="testSettings.optionOrder = OptionOrder[$event.target.value]" [(ngModel)]="selectedOptionOrder" name="optionOrder">
             <option>Fixed</option>
             <option>Random</option>
           </select>

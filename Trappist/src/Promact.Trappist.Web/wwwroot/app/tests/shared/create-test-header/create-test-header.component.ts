@@ -67,7 +67,7 @@ export class CreateTestHeaderComponent implements OnInit {
     showEditButton(testName: string) {
         this.isEditButtonVisible = true;
         this.id = this.testSettings.id;
-        this.testService.getTestSettings(this.id).subscribe((name) => {
+        this.testService.getTestById(this.id).subscribe((name) => {
             this.testSettings = (name);
         });
         if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$')) || this.isTestNameExist === true) {

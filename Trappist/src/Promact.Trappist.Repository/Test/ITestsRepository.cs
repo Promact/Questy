@@ -26,7 +26,7 @@ namespace Promact.Trappist.Repository.Tests
         Task<List<Test>> GetAllTestsAsync();
 
         /// <summary>
-        /// Gets the Settings saved for a particular Test
+        /// Gets the settings saved of a particular Test
         /// </summary>
         /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
         /// <returns>Settings Saved for the selected Test</returns>

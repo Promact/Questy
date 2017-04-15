@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
+import { QuestionOrder } from '../enum-questionorder';
+import { OptionOrder } from '../enum-optionorder';
 
 @Component({
     moduleId: module.id,
@@ -26,6 +28,10 @@ export class TestSettingsComponent implements OnInit {
     testSettingsUpdatedMessage: string;
     testNameRef: string;
     isTestNameExist: boolean;
+    QuestionOrder = QuestionOrder;
+    OptionOrder = OptionOrder;
+    selectedOptionOrder: string;
+    selectedQuestionOrder: string;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
@@ -41,16 +47,18 @@ export class TestSettingsComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.getTestSettings(this.testId);
+        this.getTestById(this.testId);
     }
 
     /**
      * Gets the Settings saved for a particular Test
      * @param id contains the value of the Id from the route
      */
-    getTestSettings(id: number) {
-        this.testService.getTestSettings(id).subscribe((response) => {
+    getTestById(id: number) {
+        this.testService.getTestById(id).subscribe((response) => {
             this.testSettings = (response);
+            this.selectedOptionOrder = OptionOrder[this.testSettings.optionOrder];
+            this.selectedQuestionOrder = QuestionOrder[this.testSettings.questionOrder];
         });
     }
 
@@ -103,7 +111,7 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
+        this.testService.updateTestById(id, testObject).subscribe((response) => {
             let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
                 duration: 3000,
             });
@@ -125,7 +133,7 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
+        this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.openSnackBar(this.testSettingsUpdatedMessage);
             let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
             instance.testSettingObject = testObject;
