@@ -3,6 +3,7 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
+using Promact.Trappist.Utility.ExtensionMethods;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -41,6 +42,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
+            category.CategoryName = category.CategoryName.AllTrim();
             if (await _categoryRepository.IsCategoryExistAsync(category.CategoryName, category.Id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
@@ -63,6 +65,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
+            category.CategoryName = category.CategoryName.AllTrim();
             var categoryToUpdate = await _categoryRepository.GetCategoryByIdAsync(category.Id);
             if (categoryToUpdate == null)
             {
