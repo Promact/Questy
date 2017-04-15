@@ -76,5 +76,12 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="question">Question object</param>
         Task DeleteQuestionAsync(Question question);
+
+        /// <summary>
+        /// Method to get question
+        /// </summary>
+        /// <param name="id">Id of Question</param>
+        /// <returns>Object of QuestionAC</returns>
+        Task<QuestionAC> GetQuestionByIdAsync(int id);
     }
 }

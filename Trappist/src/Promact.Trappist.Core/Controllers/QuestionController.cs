@@ -156,6 +156,23 @@ namespace Promact.Trappist.Core.Controllers
             await _questionsRepository.DeleteQuestionAsync(questionToDelete);
             return NoContent();
         }
+
+        /// <summary>
+        /// Returns Question of specific Id
+        /// </summary>
+        /// <param name="id">Id of Question</param>
+        /// <returns>
+        /// QuestionAC class object
+        /// </returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetQuestionByIdAsync([FromRoute]int id)
+        {
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+            return Ok(await _questionsRepository.GetQuestionByIdAsync(id));
+        }
         #endregion
     }
 }

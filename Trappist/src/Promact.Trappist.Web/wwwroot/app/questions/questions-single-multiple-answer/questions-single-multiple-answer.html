@@ -14,8 +14,8 @@
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
-                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required (ngModelChange)="isRadioButtonSelelcted=true">
-                        <md-radio-button value="{{i}}" [disabled]="choice.pristine">
+                    <md-radio-group [(ngModel)]="value" name="first" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required (ngModelChange)="isRadioButtonSelected=true">
+                        <md-radio-button value="{{i}}" [disabled]="choice.pristine && !isEditQuestion">
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
@@ -27,7 +27,7 @@
                     <p class="tip">Tip: Click the radio button to mark the correct answer. Minimum 2 options are required and maximum 10 options can be added.</p>
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
-                    <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="choice.pristine">
+                    <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="choice.pristine && !isEditQuestion">
                         <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
@@ -40,13 +40,13 @@
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [(ngModel)]="categoryName" (change)="getCategoryId()" id="category" #category="ngModel" [ngModelOptions]="{standalone: true}">
-                            <option [disabled]="category.dirty">Select Category</option>
+                            <option [disabled]="category.dirty || isEditQuestion">Select Category</option>
                             <option *ngFor="let category of categoryArray">{{category.categoryName}}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-2 col-sm-2 pl0">
-                        <select name="difficulty" class="form-control" [(ngModel)]="singleMultipleAnswerQuestion.question.difficultyLevel" [ngModelOptions]="{standalone:true}" #difficulty="ngModel">
-                            <option [disabled]="difficulty.dirty" value="0">Select Difficulty</option>
+                        <select name="difficulty" class="form-control" [(ngModel)]="difficultyLevelSelected" [ngModelOptions]="{standalone:true}" #difficulty="ngModel" >
+                            <option [disabled]="difficulty.dirty || isEditQuestion" value="default">Select Difficulty</option>
                             <option *ngFor="let level of difficultyLevel">{{level}}</option>
                         </select>
                     </div>
@@ -54,7 +54,8 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine || !isOptionSelected()">Save</button>
+                <button type="submit" *ngIf="!isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficulty.pristine || category.pristine || !isOptionSelected()">Save</button>
+                <button type="submit" *ngIf="isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || !isOptionSelected()">Update</button>
             </div>
         </form>
     </div>
