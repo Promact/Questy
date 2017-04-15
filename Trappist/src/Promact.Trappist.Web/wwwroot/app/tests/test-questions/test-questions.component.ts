@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
     templateUrl: 'test-questions.html'
 })
 
-export class TestQuestionsComponent implements OnInit{
+export class TestQuestionsComponent implements OnInit {
     testSettings: Test;
     testId: number;
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
