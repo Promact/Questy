@@ -12,7 +12,9 @@ const questionsRoutes: Routes = [
         children: [
             { path: '', component: QuestionsDashboardComponent },
             { path: 'single-answer', component: SingleMultipleAnswerQuestionComponent },
+            { path: 'edit-single-answer/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'multiple-answers', component: SingleMultipleAnswerQuestionComponent },
+            { path: 'edit-multiple-answers/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'programming', component: QuestionsProgrammingComponent }
         ]
     }
