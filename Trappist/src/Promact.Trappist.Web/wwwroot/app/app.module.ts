@@ -1,7 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 
 import 'rxjs/Rx';
 
@@ -25,7 +24,6 @@ import { ReportsModule } from './reports/reports.module';
         QuestionsModule,
         TestsModule,
         ProfileModule,
-        FormsModule,
         ReportsModule
     ],
     providers: [

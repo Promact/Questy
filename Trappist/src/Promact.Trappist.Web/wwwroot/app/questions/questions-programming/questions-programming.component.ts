@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { QuestionsService } from '../questions.service';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
