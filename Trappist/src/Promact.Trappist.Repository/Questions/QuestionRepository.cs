@@ -56,11 +56,6 @@ namespace Promact.Trappist.Repository.Questions
             return (questionAC);
         }
 
-        /// <summary>
-        /// Adds new code snippet question to the Database
-        /// </summary>
-        /// <param name="questionAC">QuestionAC class object</param>
-        /// <param name="userId">Id of logged in user</param>
         public async Task AddCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var codeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC, CodeSnippetQuestion>(questionAC.CodeSnippetQuestion);
@@ -157,21 +152,43 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
+            questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(x => x.Id = 0);
             var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
-            var options = questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
+            var updatedSingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
 
-            //Update common Question details
-            updatedQuestion.Id = questionId;
-            updatedQuestion.UpdatedByUserId = userId;
-            _dbContext.Question.Update(updatedQuestion);
-            await _dbContext.SaveChangesAsync();
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                //Update common Question details
+                updatedQuestion.Id = questionId;
+                updatedQuestion.UpdatedByUserId = userId;
+                updatedQuestion.CreatedByUserId = userId;
+                _dbContext.Question.Update(updatedQuestion);
+                await _dbContext.SaveChangesAsync();
 
-            //Update single/multiple Question and option
-            _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(await _dbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == questionId).ToListAsync());
-            await _dbContext.SaveChangesAsync();
-            options.ForEach(x => x.SingleMultipleAnswerQuestionID = questionId);
-            _dbContext.SingleMultipleAnswerQuestionOption.AddRange(options);
-            await _dbContext.SaveChangesAsync();
+                //Update single/multiple Question and option
+                var singleMultipleAnswerQuestion = _dbContext.SingleMultipleAnswerQuestion.FirstOrDefault(x => x.Id == questionId);
+                _dbContext.SingleMultipleAnswerQuestion.Remove(singleMultipleAnswerQuestion);
+                await _dbContext.SaveChangesAsync();
+                updatedSingleMultipleAnswerQuestion.Id = questionId;
+                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(updatedSingleMultipleAnswerQuestion);
+                await _dbContext.SaveChangesAsync();
+                transaction.Commit();
+            }
+        }
+
+        public async Task<QuestionAC> GetQuestionByIdAsync(int id)
+        {
+            var questionAC = new QuestionAC();
+            var question = await _dbContext.Question
+                .Include(x => x.SingleMultipleAnswerQuestion)
+                .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
+                .Include(x => x.CodeSnippetQuestion)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+            questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+            questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+            questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
+            return questionAC;
         }
 
         public async Task<Question> GetQuestionByIdAsync(int id)

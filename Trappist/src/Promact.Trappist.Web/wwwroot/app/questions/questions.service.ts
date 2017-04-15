@@ -2,6 +2,7 @@
 import { HttpService } from '../core/http.service';
 import { Question } from './question.model';
 import { QuestionBase } from './question';
+import { QuestionDisplay } from '../questions/question-display';
 
 @Injectable()
 export class QuestionsService {
@@ -17,6 +18,14 @@ export class QuestionsService {
      */
     addSingleMultipleAnswerQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
+    }
+
+    /**
+     * Update single multiple answer question
+     * @param question
+     */
+    updateSingleMultipleAnswerQuestion(questionId: number, question: QuestionBase) {
+        return this.httpService.put(this.questionsApiUrl + '/' + questionId, question);
     }
 
     /**
@@ -47,5 +56,13 @@ export class QuestionsService {
      */
     deleteQuestion(id: number) {
         return this.httpService.delete(this.questionsApiUrl + '/' + id);
+    }
+
+    /**
+     * Gets Question base on Question id
+     * @param id
+     */
+    getQuestionById(id: number) {
+        return this.httpService.get(this.questionsApiUrl + '/' + id);
     }
 }
