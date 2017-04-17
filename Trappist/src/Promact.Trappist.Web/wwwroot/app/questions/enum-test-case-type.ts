@@ -1,6 +1,6 @@
 ﻿export enum TestCaseType {
-    default = 0,
-    basic = 1,
-    necessary = 2,
-    corner = 3
+    Default = 0,
+    Basic = 1,
+    Necessary = 2,
+    Corner = 3
 }

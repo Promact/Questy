@@ -52,8 +52,8 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
-        this.selectedCategory = "Please select a category";
-        this.selectedDifficulty = "Easy";
+        this.selectedCategory = 'Please select a category';
+        this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
     }
@@ -88,11 +88,13 @@ export class QuestionsProgrammingComponent implements OnInit {
             (response) => {
                 this.questionModel = response;
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
+                this.testCases = this.questionModel.codeSnippetQuestion.testCases;
+                this.formControlModel.showTestCase = true;
                 this.getCodingLanguage();
                 this.getCategory();
             },
             err => {
-                this.openSnackBar("Question not found", true, this.routeToDashboard);
+                this.openSnackBar('Question not found', true, this.routeToDashboard);
             });
     }
 
@@ -198,6 +200,11 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     selectDifficulty(difficulty: string) {
         this.questionModel.question.difficultyLevel = DifficultyLevel[difficulty];
+    }
+
+    //Converts enum of type TestCaseType to string
+    getTestCaseString(testCase: TestCaseType) {
+        return TestCaseType[testCase];
     }
 
     /**
