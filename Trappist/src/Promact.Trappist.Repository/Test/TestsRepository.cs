@@ -38,7 +38,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName, int id)
         {
-            testName = StringExtensions.AllTrim(testName);
+            testName = testName.AllTrim();
             var isTestExists = await (_dbContext.Test.AnyAsync(x =>
                                     x.TestName.ToLowerInvariant() == testName.ToLowerInvariant()
                                     && x.Id != id));
