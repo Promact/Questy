@@ -50,6 +50,7 @@
   },
   "scripts": {
     "lint": "gulp lint",
+    "ngc": "gulp ngc",
     "prod": "gulp prod"
   }
 }
