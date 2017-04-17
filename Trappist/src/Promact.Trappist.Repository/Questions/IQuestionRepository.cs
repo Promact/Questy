@@ -52,10 +52,9 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         ///  Updates existing code snippet question in the Database
         /// </summary>
-        /// <param name="questionId">Id of question to update</param>
         /// <param name="questionAC">QuestionAC class object</param>
         /// <param name="userId">Id of logged in user</param>
-        Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId);
+        Task UpdateCodeSnippetQuestionAsync(QuestionAC questionAC, string userId);
 
         /// <summary>
         /// Returns Question with specific Id
