@@ -241,6 +241,24 @@ namespace Promact.Trappist.Test.Questions
             Assert.True(updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping.Count == 1);
         }
 
+        [Fact]
+        public async Task GetQuestionByIdAsyncTest()
+        {
+            string userName = "deepankar@promactinfo.com";
+
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
+            var question = _trappistDbContext.Question.FirstOrDefault(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
+
+            var questionFetched = await _questionRepository.GetQuestionByIdAsync(question.Id);
+            Assert.True(codingQuestion.Question == questionFetched.Question);
+        }
+
         /// <summary>
         /// Method to test delete Question
         /// </summary>

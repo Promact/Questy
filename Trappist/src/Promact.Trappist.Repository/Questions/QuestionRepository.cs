@@ -160,8 +160,7 @@ namespace Promact.Trappist.Repository.Questions
                 .Include(x => x.SingleMultipleAnswerQuestion)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.CodeSnippetQuestion)
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
             questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
@@ -174,6 +173,11 @@ namespace Promact.Trappist.Repository.Questions
                     .Include(x => x.CodeLanguage)
                     .Where(x => x.QuestionId == question.Id)
                     .Select(x => x.CodeLanguage.Language)
+                    .ToListAsync();
+
+                questionAC.CodeSnippetQuestion.TestCases = await _dbContext
+                    .CodeSnippetQuestionTestCases
+                    .Where(x => x.CodeSnippetQuestionId == question.Id)
                     .ToListAsync();
             }
 
