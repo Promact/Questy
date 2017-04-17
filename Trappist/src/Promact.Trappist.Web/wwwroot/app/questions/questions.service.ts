@@ -48,4 +48,8 @@ export class QuestionsService {
     getQuestionById(id: number) {
         return this.httpService.get(this.questionsApiUrl + '/' + id);
     }
+
+    updateQuestionById(id: number, question: QuestionBase) {
+        return this.httpService.put(this.questionsApiUrl + '/' + id, question);
+    }
 }

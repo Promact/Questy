@@ -51,7 +51,7 @@ namespace Promact.Trappist.Test.Questions
             var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id);
             Assert.True(result.Count() == 1);
         }
-        
+
         /// <summary>
         /// Test to add single answer Question
         /// </summary>
@@ -214,6 +214,15 @@ namespace Promact.Trappist.Test.Questions
 
             //Adding code snippet question
             var codingQuestion = await CreateCodingQuestion();
+            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases()
+            {
+                TestCaseTitle = "Default Check",
+                TestCaseDescription = "This case is default case",
+                TestCaseMarks = 10.00,
+                TestCaseType = TestCaseType.Necessary,
+                TestCaseInput = "1+1",
+                TestCaseOutput = "2",
+            });
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
             var question = await _trappistDbContext
@@ -222,11 +231,21 @@ namespace Promact.Trappist.Test.Questions
 
             codingQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
             codingQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
-            codingQuestion.Question.Id = question.Id;
+            codingQuestion.CodeSnippetQuestion.TestCases.Remove(codingQuestion.CodeSnippetQuestion.TestCases.First());
+            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases
+            {
+                TestCaseTitle = "New check",
+                TestCaseDescription = "This is a new case",
+                TestCaseMarks = 10.00,
+                TestCaseType = TestCaseType.Basic,
+                TestCaseInput = "1+1",
+                TestCaseOutput = "2",
+            });
             codingQuestion.Question.QuestionDetail = "Updated question details";
             codingQuestion.Question.DifficultyLevel = DifficultyLevel.Hard;
             codingQuestion.CodeSnippetQuestion.LanguageList = new string[] { "C" };
-            await _questionRepository.UpdateCodeSnippetQuestionAsync(question.Id, codingQuestion, applicationUser.Id);
+            codingQuestion.Question.Id = question.Id;
+            await _questionRepository.UpdateCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
             var updatedQuestion = await _trappistDbContext
                 .Question
