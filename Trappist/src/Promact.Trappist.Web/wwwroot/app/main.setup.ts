@@ -2,6 +2,4 @@
 
 import { SetupModule } from './setup/setup.module';
 
-import 'rxjs/Rx';
-
 platformBrowserDynamic().bootstrapModule(SetupModule);

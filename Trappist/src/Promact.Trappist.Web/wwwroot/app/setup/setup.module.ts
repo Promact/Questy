@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import 'rxjs/Rx';
 import { FormWizardModule } from 'angular2-wizard-fix';
 import { SetupComponent } from './setup.component';
 import { SharedModule } from '../shared/shared.module';
