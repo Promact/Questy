@@ -135,7 +135,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetQuestionByIdAsync([FromRoute]int id)
         {
-            if (id <= 0)
+            if (!await _questionsRepository.IsQuestionExistAsync(id))
             {
                 return NotFound();
             }

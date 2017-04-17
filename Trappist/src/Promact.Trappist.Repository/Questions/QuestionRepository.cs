@@ -152,7 +152,6 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
-            questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(x => x.Id = 0);
             var updatedQuestion = Mapper.Map<QuestionDetailAC, Question>(questionAC.Question);
             var updatedSingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAC.SingleMultipleAnswerQuestion);
 
@@ -166,7 +165,7 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Update single/multiple Question and option
-                var singleMultipleAnswerQuestion = _dbContext.SingleMultipleAnswerQuestion.FirstOrDefault(x => x.Id == questionId);
+                var singleMultipleAnswerQuestion = _dbContext.SingleMultipleAnswerQuestion.Find(questionId);
                 _dbContext.SingleMultipleAnswerQuestion.Remove(singleMultipleAnswerQuestion);
                 await _dbContext.SaveChangesAsync();
                 updatedSingleMultipleAnswerQuestion.Id = questionId;
@@ -180,10 +179,10 @@ namespace Promact.Trappist.Repository.Questions
         {
             var questionAC = new QuestionAC();
             var question = await _dbContext.Question
+                .Where(x => x.Id == id)
                 .Include(x => x.SingleMultipleAnswerQuestion)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.CodeSnippetQuestion)
-                .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
             questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
             questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
