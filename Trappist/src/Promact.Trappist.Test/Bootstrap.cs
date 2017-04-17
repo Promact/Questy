@@ -117,6 +117,8 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionOptionAC, SingleMultipleAnswerQuestionOption>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionOption, SingleMultipleAnswerQuestionOptionAC>();
             });
             #endregion
 
