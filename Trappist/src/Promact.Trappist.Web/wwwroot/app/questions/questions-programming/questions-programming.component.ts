@@ -20,7 +20,6 @@ export class QuestionsProgrammingComponent implements OnInit {
     selectedLanguageList: string[];
     codingLanguageList: string[];
     categoryList: Category[];
-    idList: number[];
     questionModel: QuestionBase;
     formControlModel: FormControlModel;
 
@@ -28,9 +27,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCategoryReady: boolean;
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
-    isTestCaseAdded: boolean;
     code: any;
-    id: number = 0;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
@@ -47,8 +44,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
-        this.isTestCaseAdded = false;
-        this.idList = new Array<number>();
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
@@ -65,10 +60,8 @@ export class QuestionsProgrammingComponent implements OnInit {
     /**
      *  Adds test cases of code snippet question
      */
-    addTestCases(id: number) {
-        this.idList.push(id);
+    addTestCases() {
         this.testCases.push(new CodeSnippetQuestionsTestCases());
-        this.id = id + 1;
     }
 
     /**
@@ -77,7 +70,6 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     removeTestCases(testCaseIndex: number) {
         this.testCases.splice(testCaseIndex, 1);
-        this.idList.splice(testCaseIndex, 1);
     }
 
     /**
@@ -176,6 +168,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isFormSubmitted = true;
 
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            this.testCases.forEach(x => x.id = 0);//Explicitly converting the id of the testcases to zero
             this.questionModel.codeSnippetQuestion.testCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
