@@ -66,11 +66,7 @@ export class QuestionsService {
         return this.httpService.delete(this.questionsApiUrl + '/' + id);
     }
 
-    /**
-     * Gets Question base on Question id
-     * @param id
-     */
-    getQuestionById(id: number) {
-        return this.httpService.get(this.questionsApiUrl + '/' + id);
+    updateQuestionById(id: number, question: QuestionBase) {
+        return this.httpService.put(this.questionsApiUrl + '/' + id, question);
     }
 }
