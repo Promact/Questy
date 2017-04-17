@@ -105,8 +105,8 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
-            var updatedQuestion = await _dbContext.Question.FirstOrDefaultAsync(x => x.Id == questionId);
-            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FirstOrDefaultAsync(x => x.Id == questionId);
+            var updatedQuestion = await _dbContext.Question.FindAsync(questionId);
+            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FindAsync(questionId);
 
             Mapper.Map(questionAC.Question, updatedQuestion);
             Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
