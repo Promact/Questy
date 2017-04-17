@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -16,6 +19,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             _testRepository = testRepository;
         }
+        #region Test Api
         /// <summary>
         /// this method is to verify unique name of a test
         /// </summary>
@@ -146,5 +150,28 @@ namespace Promact.Trappist.Core.Controllers
             await _testRepository.DeleteTestAsync(id);
             return NoContent();
         }
+
+        [HttpGet("questions/{testid}/{categoryid}")]
+        public async Task<IActionResult> GetTestCategoryQuestions([FromRoute] int  testid,[FromRoute] int categoryid)
+        {
+            return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testid, categoryid));
+        }
+        [HttpPost("questions/{testId}")]
+        public async Task<IActionResult> AddTestQuestion([FromBody] List<QuestionAC> QuestionToAddTest,[FromRoute] int testId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            else
+            {
+                var message = await _testRepository.AddTestQuestionsAsync(QuestionToAddTest, testId);
+                return Ok(new {message = message});
+            }
+        }
+        [HttpGet("testDetails/{id}")]
+        public async Task<IActionResult> GetTestDetailsById([FromRoute] int id)
+        {          
+            return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
+        }
+        #endregion
     }
 }

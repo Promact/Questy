@@ -14,8 +14,11 @@ using NLog.Web;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Seed;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
@@ -28,6 +31,7 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -151,6 +155,14 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<Question, QuestionAC>();
+                cfg.CreateMap<Question, QuestionDetailAC> ();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<Category, CategoryAC>();
+                cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
+                cfg.CreateMap<Question,QuestionAC>();
+                cfg.CreateMap<Test, TestAC>();
+                cfg.CreateMap<TestAC, Test>();
             });
             #endregion
         }

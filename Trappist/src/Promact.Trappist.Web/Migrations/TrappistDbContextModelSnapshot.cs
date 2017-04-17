@@ -346,6 +346,46 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("Test");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestCategory");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("QuestionId");
+
+                    b.Property<int>("TestCategoryId");
+
+                    b.Property<int>("TestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("TestCategoryId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestQuestion");
+                });
+
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
                 {
                     b.Property<int>("Id")
@@ -538,6 +578,36 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.TestCategory", "TestCategory")
+                        .WithMany()
+                        .HasForeignKey("TestCategoryId");
+
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
