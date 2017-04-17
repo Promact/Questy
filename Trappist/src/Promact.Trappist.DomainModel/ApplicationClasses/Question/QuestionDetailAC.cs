@@ -19,6 +19,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
         public int CategoryID { get; set; }
 
         public bool IsSelect { get; set; }
-
+    
     }
 }

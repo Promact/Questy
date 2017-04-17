@@ -4,9 +4,9 @@ import { QuestionBase } from './question';
 export class Category {
         id: number;
         categoryName: string; 
-        question: QuestionBase[] = [];
-        isactive: boolean = false;
-        isState: boolean;
+        questionList: QuestionBase[] = [];
+        isAccordionOpen: boolean = false;
+        isAlreadyClicked: boolean;
         selectAll: boolean;
         numberOfQuestion: number;
 } 
