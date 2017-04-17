@@ -9,7 +9,6 @@ import { QuestionDisplay } from '../../questions/question-display';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
-import { RenameCategoryDialogComponent } from './rename-category-dialog.component';
 import { Router } from '@angular/router';
 import { Question } from '../../questions/question.model';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
