@@ -114,7 +114,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 if (questionAC.Question.QuestionType == QuestionType.Programming)
                 {
-                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, applicationUser.Id);
+                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
                 }
                 else
                 {

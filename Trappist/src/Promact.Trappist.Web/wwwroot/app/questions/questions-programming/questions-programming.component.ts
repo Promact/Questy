@@ -33,7 +33,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
-    max: number;
+    questionId: number;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
@@ -59,16 +59,16 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     ngOnInit() {
-        let questionId = +this.route.snapshot.params['id'];
-        if (questionId === undefined
-            || questionId === null
-            || isNaN(questionId)) {
+        this.questionId = +this.route.snapshot.params['id'];
+        if (this.questionId === undefined
+            || this.questionId === null
+            || isNaN(this.questionId)) {
             this.getCodingLanguage();
             this.getCategory();
         }
         else {
             this.isQuestionEditted = true;
-            this.prepareToEdit(questionId);
+            this.prepareToEdit(this.questionId);
         }
     }
 
@@ -242,16 +242,29 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);
             });
-            this.questionsService.addCodingQuestion(this.questionModel).subscribe(
-                (response) => {
-                    this.openSnackBar(this.successMessage, true, this.routeToDashboard);
-                },
-                err => {
-                    this.openSnackBar(this.failedMessage);
-                    //Release the form for user to retry
-                    this.isFormSubmitted = false;
-                }
-            );
+            if (!this.isQuestionEditted) {
+                this.questionsService.addCodingQuestion(this.questionModel).subscribe(
+                    (response) => {
+                        this.openSnackBar(this.successMessage, true, this.routeToDashboard);
+                    },
+                    err => {
+                        this.openSnackBar(this.failedMessage);
+                        //Release the form for user to retry
+                        this.isFormSubmitted = false;
+                    }
+                );
+            } else {
+                this.questionsService.updateQuestionById(this.questionId, this.questionModel).subscribe(
+                    (response) => {
+                        this.openSnackBar(this.successMessage, true, this.routeToDashboard);
+                    },
+                    err => {
+                        this.openSnackBar(this.failedMessage);
+                        //Release the form for user to retry
+                        this.isFormSubmitted = false;
+                    }
+                );
+            }
         }
     }
 }

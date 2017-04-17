@@ -110,10 +110,11 @@ namespace Promact.Trappist.Repository.Questions
         }
 
 
-        public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
+        public async Task UpdateCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
-            var updatedQuestion = await _dbContext.Question.FindAsync(questionId);
-            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FindAsync(questionId);
+            var updatedQuestion = await _dbContext.Question.FindAsync(questionAC.Question.Id);
+            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FindAsync(questionAC.Question.Id);
+            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == questionAC.Question.Id).ToListAsync();
 
             Mapper.Map(questionAC.Question, updatedQuestion);
             Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
@@ -125,8 +126,28 @@ namespace Promact.Trappist.Repository.Questions
             {
                 _dbContext.Question.Update(updatedQuestion);
                 await _dbContext.SaveChangesAsync();
-
+                
                 _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
+                await _dbContext.SaveChangesAsync();
+                 
+                //Handling updated TestCases
+                //Removing all the existing Test Case from the Database
+                var testCaseToUpdate = testCases.Where(x => questionAC.CodeSnippetQuestion.TestCases.Any(y => y.Id == x.Id)).ToList();
+                var testCaseToDelete = testCases.Where(x => !testCaseToUpdate.Any(y => y.Id == x.Id)).ToList();
+                var testCaseToAdd = questionAC.CodeSnippetQuestion.TestCases.Where(x => !testCases.Any(y => y.Id == x.Id)).ToList();
+
+                _dbContext.CodeSnippetQuestionTestCases.RemoveRange(testCaseToDelete);
+                await _dbContext.SaveChangesAsync();
+
+                _dbContext.CodeSnippetQuestionTestCases.UpdateRange(testCaseToUpdate);
+                await _dbContext.SaveChangesAsync();
+
+                foreach(var testCase in testCaseToAdd)
+                {
+                    testCase.CodeSnippetQuestion = updatedCodeSnippetQuestion;
+                    testCase.Id = 0;
+                }
+                await _dbContext.CodeSnippetQuestionTestCases.AddRangeAsync(testCaseToAdd);
                 await _dbContext.SaveChangesAsync();
 
                 //Handling many to many relationship entity
