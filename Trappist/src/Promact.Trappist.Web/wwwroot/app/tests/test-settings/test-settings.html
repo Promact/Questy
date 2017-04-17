@@ -55,17 +55,17 @@
         </div>
         <div class="form-group">
           <label class="h4">Question Order</label>
-          <select class="form-control half-width" (change)="testSettings.questionOrder = QuestionOrder[$event.target.value]" [(ngModel)]="selectedQuestionOrder" name="questionOrder">
-            <option>Fixed</option>
-            <option>Random</option>
+          <select class="form-control half-width"  [(ngModel)]="testSettings.questionOrder" name="questionOrder">
+            <option value="0">Fixed</option>
+            <option value="1">Random</option>
           </select>
           <div class="errors-container"></div>
         </div>
         <div class="form-group">
           <label class="h4">Option Order</label>
-          <select class="form-control half-width" (change)="testSettings.optionOrder = OptionOrder[$event.target.value]" [(ngModel)]="selectedOptionOrder" name="optionOrder">
-            <option>Fixed</option>
-            <option>Random</option>
+          <select class="form-control half-width"  [(ngModel)]="testSettings.optionOrder" name="optionOrder">
+            <option value="0">Fixed</option>
+            <option value="1">Random</option>
           </select>
           <div class="errors-container"></div>
         </div>
