@@ -30,9 +30,7 @@ export class TestSettingsComponent implements OnInit {
     isTestNameExist: boolean;
     QuestionOrder = QuestionOrder;
     OptionOrder = OptionOrder;
-    selectedOptionOrder: string;
-    selectedQuestionOrder: string;
-
+   
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
         this.validEndDate = false;
@@ -57,8 +55,6 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testSettings = (response);
-            this.selectedOptionOrder = OptionOrder[this.testSettings.optionOrder];
-            this.selectedQuestionOrder = QuestionOrder[this.testSettings.questionOrder];
         });
     }
 
