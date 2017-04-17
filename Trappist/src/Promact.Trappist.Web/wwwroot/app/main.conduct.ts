@@ -2,6 +2,4 @@
 
 import { ConductModule } from './conduct/conduct.module';
 
-import 'rxjs/Rx';
-
 platformBrowserDynamic().bootstrapModule(ConductModule);
