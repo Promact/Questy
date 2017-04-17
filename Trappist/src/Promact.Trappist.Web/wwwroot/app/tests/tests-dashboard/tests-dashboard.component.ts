@@ -41,7 +41,7 @@ export class TestsDashboardComponent {
     * @param test: Object of Test class that is to be deleted
     */
     deleteTestDialog(test: Test) {
-        // Check if there is any one who is giving the test
+        // Checks if any candidate has taken the test
         this.testService.isTestAttendeeExist(test.id).subscribe((isTestAttendee) => {
             this.isDeleteAllowed = false;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
