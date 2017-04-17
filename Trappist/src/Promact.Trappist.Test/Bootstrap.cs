@@ -125,7 +125,14 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
-                cfg.CreateMap<QuestionAC, Question>().ReverseMap();
+                cfg.CreateMap<QuestionAC, Question>().ReverseMap();  
+                cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<Question, QuestionDetailAC>();
+                cfg.CreateMap<ICollection<Question>, ICollection<QuestionAC>>();
+                cfg.CreateMap<DomainModel.Models.Test.Test, TestAC>();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<DomainModel.Models.Category.Category, CategoryAC>();
+
             });
             #endregion
 

@@ -114,15 +114,14 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<List<QuestionAC>> GetAllTestCategoryQuestionsByIdAsync(int testId, int categoryId)
         {
             var testQuestionList = await _dbContext.TestQuestion.Where(x=>x.TestId == testId).ToListAsync();
-            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId).Include(z => z.CodeSnippetQuestion).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
+            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
                      
                 foreach (var question in questionList)
                 {
                     questionAc = new QuestionAC();
                     questionAc.Question = Mapper.Map<Question, QuestionDetailAC>(question);
                     questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
-                    questionAc.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
-                    if (testQuestionList.Exists(x=> x.QuestionId == questionAc.Question.Id))
+                    if (testQuestionList.Exists(x=> x.QuestionId == questionAc.Question.Id && x.TestId == testId))
                         questionAc.Question.IsSelect = true;
                 questionListAC.Add(questionAc);
                 }
@@ -134,6 +133,7 @@ namespace Promact.Trappist.Repository.Tests
             foreach (var questionToAdd in QuestionsToAddTest)
             {
                 var question = Mapper.Map<QuestionDetailAC, Question>(questionToAdd.Question);
+                var TestCategory = _dbContext.TestCategory.FirstOrDefault(x=>x.CategoryId==question.CategoryID);
                 var QuestionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == question.Id);
                 if (QuestionExistInTest != null && !questionToAdd.Question.IsSelect)
                 {
@@ -146,9 +146,9 @@ namespace Promact.Trappist.Repository.Tests
                 {
                     testQuestionObj = new TestQuestion();
                     testQuestionObj.QuestionId = question.Id;
-                    testQuestionObj.TestCategoryId = question.CategoryID;
+                    testQuestionObj.TestCategoryId = TestCategory.Id;
                     testQuestionObj.TestId = testId;
-                    if (!await _dbContext.TestQuestion.AnyAsync(x => x.QuestionId == question.Id))
+                    if (!await _dbContext.TestQuestion.AnyAsync(x =>  x.QuestionId == question.Id && x.TestId == testId))
                         testQuestionList.Add(testQuestionObj);
                 }                 
             }
@@ -156,9 +156,10 @@ namespace Promact.Trappist.Repository.Tests
                 return "No new questions selected..";
             else
             {
-                await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
-                await _dbContext.SaveChangesAsync();
-                return "Your changes saved successfully";
+                
+                    await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
+                    await _dbContext.SaveChangesAsync();
+                    return "Your changes saved successfully";  
             }                
         }
 
