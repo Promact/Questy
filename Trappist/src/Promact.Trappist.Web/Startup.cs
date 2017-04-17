@@ -29,6 +29,7 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -152,6 +153,8 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
                 cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionOptionAC,SingleMultipleAnswerQuestionOption>();
+                cfg.CreateMap<SingleMultipleAnswerQuestionOption, SingleMultipleAnswerQuestionOptionAC>();
                 cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
                 cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<Question,QuestionDetailAC>();
