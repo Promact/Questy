@@ -145,7 +145,7 @@ namespace Promact.Trappist.Repository.Tests
             var testCategories = await _dbContext.TestCategory.ToListAsync();
             foreach (var category in testCategory)
             {
-                if (!testCategories.Exists(x => x.CategoryId == category.CategoryId))
+                if (!testCategories.Exists(x => x.CategoryId == category.CategoryId && x.TestId == category.TestId))
                     testCategoryList.Add(category);
             }
             await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
@@ -159,7 +159,7 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
         #endregion
-
+        #region Delete Test
         public async Task<bool> IsTestAttendeeExistAsync(int id)
         {
             Test test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
