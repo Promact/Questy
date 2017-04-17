@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.Utility.GlobalUtil;
 using System;
+using Promact.Trappist.Utility.ExtensionMethods;
 using System.Globalization;
 
 namespace Promact.Trappist.Repository.Tests
@@ -38,6 +39,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>boolean</returns>
         public async Task<bool> IsTestNameUniqueAsync(string testName, int id)
         {
+            testName = StringExtensions.AllTrim(testName);
             var isTestExists = await (_dbContext.Test.AnyAsync(x =>
                                     x.TestName.ToLowerInvariant() == testName.ToLowerInvariant()
                                     && x.Id != id));
