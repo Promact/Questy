@@ -88,24 +88,24 @@ namespace Promact.Trappist.Test.Questions
                 SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
                 {
                     SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOptionAC>()
                     {
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = true,
                             Option = "A",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = false,
                             Option = "B",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = false,
                             Option = "C",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = false,
                             Option = "D",
@@ -152,24 +152,24 @@ namespace Promact.Trappist.Test.Questions
                 SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
                 {
                     SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOptionAC>()
                     {
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = true,
                             Option = "A",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = true,
                             Option = "B",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = false,
                             Option = "C",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new SingleMultipleAnswerQuestionOptionAC()
                         {
                             IsAnswer = false,
                             Option = "D",
