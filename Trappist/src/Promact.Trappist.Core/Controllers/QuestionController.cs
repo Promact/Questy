@@ -110,7 +110,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 if (questionAC.Question.QuestionType == QuestionType.Programming)
                 {
-                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, applicationUser.Id);
+                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
                 }
                 else
                 {
@@ -140,7 +140,14 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            return Ok(await _questionsRepository.GetQuestionByIdAsync(id));
+            var questionAC = await _questionsRepository.GetQuestionByIdAsync(id);
+
+            if (questionAC == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(questionAC);
         }
         #endregion
     }
