@@ -78,8 +78,8 @@
                         <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
                             <md2-accordion-header class="collapsible-header clearfix">
                                 <div class="title-info h2 pull-left">
-                                    <span>Type:{{testCase.testCaseType}}</span>
-                                    <span>Title:{{testCase.testCaseTitle}}</span>
+                                    <span>Type: {{getTestCaseString(testCase.testCaseType)}}</span>
+                                    <span>Title: {{testCase.testCaseTitle}}</span>
                                     <span>Weightage: {{testCase.testCaseMarks}}</span>
                                 </div>
                                 <div class="pull-right">
@@ -108,12 +108,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Type</label>
-                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value" ngModel required name="type_{{testCase.id}}" #type="ngModel">
-                                        <option [disabled]="type.dirty" selected value="">Select Option</option>
-                                        <option>Default</option>
-                                        <option>Basic</option>
-                                        <option>Necessary</option>
-                                        <option>Corner</option>
+                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType = $event.target.value" [(ngModel)]="testCase.testCaseType" required name="type_{{testCase.id}}" #type="ngModel">
+                                        <option value="0">Default</option>
+                                        <option value="1">Basic</option>
+                                        <option value="2">Necessary</option>
+                                        <option value="3">Corner</option>
                                     </select>
                                     <div class="errors-container">
                                         <div *ngIf="type.errors && (type.dirty || type.touched)">
