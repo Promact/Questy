@@ -72,7 +72,6 @@ export class TestSettingsComponent implements OnInit {
         });
     }
 
-
     /**
      * Checks the End Date and Time is valid or not
      * @param endDate contains ths the value of the field End Date and Time
