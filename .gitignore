@@ -264,3 +264,6 @@ _references.js
 
 # ignored setup file 
 **/setup.json
+
+# opencover xml file
+**/opencover.xml
