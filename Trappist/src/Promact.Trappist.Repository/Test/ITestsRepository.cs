@@ -68,7 +68,7 @@ namespace Promact.Trappist.Repository.Tests
 
         Task DeselectCategoryAsync(int id);
 
-        Task AddSelectedAsync(TestCategory[] testCategory);
+        Task AddSelectedAsync(List<TestCategory> testCategory);
         #endregion
 
         /// <summary>

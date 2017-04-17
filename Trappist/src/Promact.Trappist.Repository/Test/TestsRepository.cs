@@ -118,22 +118,38 @@ namespace Promact.Trappist.Repository.Tests
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
-
+        #endregion
         #region Category selection
         public async Task<TestAC> GetTestDetailsAsync(int id)
         {
             var testobj = await _dbContext.Test.FindAsync(id);
             var testACObj = Mapper.Map<Test, TestAC>(testobj);
             testACObj.Category = new List<CategoryAC>();
-            var tests = _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToList();
+            var tests = _dbContext.Test.ToList();
+            var testCategories = _dbContext.TestCategory.Where(x => x.TestId == id).ToList();
             List<Category> categoryList = _dbContext.Category.ToList();
             categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            foreach (var category in categorylist)
+            {
+                if (testCategories.Exists(x => x.CategoryId == category.Id))
+                    category.IsSelect = true;
+
+            }
+
             testACObj.Category = categorylist;
             return testACObj;
         }
-        public async Task AddSelectedAsync(TestCategory[] testCategory)
+        public async Task AddSelectedAsync(List<TestCategory> testCategory)
         {
-            await _dbContext.TestCategory.AddRangeAsync(testCategory);
+            List<TestCategory> testCategoryList = new List<TestCategory>();
+            var testCategories = await _dbContext.TestCategory.ToListAsync();
+            foreach (var category in testCategory)
+            {
+                if (!testCategories.Exists(x => x.CategoryId == category.CategoryId))
+                    testCategoryList.Add(category);
+
+            }
+            await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
             await _dbContext.SaveChangesAsync();
         }
 

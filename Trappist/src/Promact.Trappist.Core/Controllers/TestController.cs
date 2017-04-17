@@ -129,7 +129,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testCategory"></param>
         /// <returns>testCategory</returns>
         [HttpPost ("addSelectedCategories")]
-        public async Task<ActionResult> AddSelectedCategories([FromBody] TestCategory[] testCategory)
+        public async Task<ActionResult> AddSelectedCategories([FromBody] List<TestCategory> testCategory)
         {
             await _testRepository.AddSelectedAsync(testCategory);
             return Ok(testCategory);

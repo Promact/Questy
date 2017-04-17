@@ -18,7 +18,7 @@ import { TestDetails } from '../test-details';
     templateUrl: 'test-sections.html'
 })
 
-export class TestSectionsComponent implements OnInit {
+export class TestSectionsComponent {
     editName: boolean;
     Categories: Category[];
     testCategories: Array<TestCategory>;
@@ -39,12 +39,12 @@ export class TestSectionsComponent implements OnInit {
         this.Categories = this.testDetailsObj.category;
     }
 
-    ngOnInit() {
-        let id = +this.route.snapshot.params['id'];
-        this.testService.getTestSettings(id)
-            .subscribe((test: Test) => { this.test = test });
+    //ngOnInit() {
+    //    let id = +this.route.snapshot.params['id'];
+    //    this.testService.getTestSettings(id)
+    //        .subscribe((test: Test) => { this.test = test });
 
-    }
+    //}
 
     /**
      * To get All categories
@@ -64,26 +64,22 @@ export class TestSectionsComponent implements OnInit {
      * @param category
      */
     onSelect(category: any) {
-        this.testDetailsObj.category = category;
         if (!category.isSelect)
             category.isSelect = true;
-        //else {
-        //    for (let testquestion of this.testQuestion) {
-        //        if (testquestion.testCategoryId = this.testCategoryObj.categoryId) {
-        //            let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
-        //        }
         else
-            category.isSelect = false;
+            for (let categories of this.testDetailsObj.category) {
+                for (let testquestion of categories.questions)
+                    if (testquestion.isSelect) {
+                        let dialogRef = this.dialog.open(DeselectCategoryDialogComponent);
+                    }
+            }
     }
-
-
-
     /**
      * To Save the Selected Categories and redirect user for question selection
      */
     SaveNext() {
         this.SaveCategory();
-        //this.router.navigateByUrl('/tests/questions');
+        this.router.navigateByUrl('/tests/questions');
     }
 
     /**
@@ -104,6 +100,6 @@ export class TestSectionsComponent implements OnInit {
             this.testCategories.push(this.testCategoryObj);
             this.testCategoryObj = new TestCategory()
         }
-         this.testService.addSelectedCategories(this.testCategories).subscribe();
+        this.testService.addSelectedCategories(this.testCategories).subscribe();
     }
 }
