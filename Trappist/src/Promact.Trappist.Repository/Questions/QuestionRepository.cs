@@ -161,12 +161,18 @@ namespace Promact.Trappist.Repository.Questions
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.CodeSnippetQuestion)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            try
+            {
+                questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+                questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+                questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
 
-            questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
-            questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
-            questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
-
-            if(question.QuestionType == QuestionType.Programming)
+            if (question.QuestionType == QuestionType.Programming)
             {
                 questionAC.CodeSnippetQuestion.LanguageList = await _dbContext
                     .QuestionLanguageMapping
