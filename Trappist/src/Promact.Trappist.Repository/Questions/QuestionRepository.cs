@@ -12,13 +12,18 @@ namespace Promact.Trappist.Repository.Questions
 {
     public class QuestionRepository : IQuestionRepository
     {
+        #region Private Member
         private readonly TrappistDbContext _dbContext;
+        #endregion
 
+        #region Constructor
         public QuestionRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
         }
+        #endregion
 
+        #region Public Method
         public async Task<bool> IsQuestionExistAsync(int questionId)
         {
             return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
@@ -101,7 +106,7 @@ namespace Promact.Trappist.Repository.Questions
             });
             return languageNameList;
         }
-        
+
 
         public async Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
@@ -110,7 +115,7 @@ namespace Promact.Trappist.Repository.Questions
 
             Mapper.Map(questionAC.Question, updatedQuestion);
             Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
-            
+
             updatedQuestion.UpdatedByUserId = userId;
             updatedCodeSnippetQuestion.Question = updatedQuestion;
 
@@ -165,4 +170,5 @@ namespace Promact.Trappist.Repository.Questions
             await _dbContext.SaveChangesAsync();
         }
     }
+    #endregion
 }
