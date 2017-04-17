@@ -23,6 +23,8 @@ using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using System.Collections.Generic;
 using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Test
@@ -113,7 +115,13 @@ namespace Promact.Trappist.Test
 
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
-            {
+            {                           
+                cfg.CreateMap<Question, QuestionDetailAC>();
+                cfg.CreateMap<ICollection<Question>, ICollection<QuestionAC>>();
+                cfg.CreateMap<DomainModel.Models.Test.Test, TestAC>();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<DomainModel.Models.Category.Category, CategoryAC>();
+
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
