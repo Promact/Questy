@@ -76,7 +76,7 @@ export class TestQuestionsComponent implements OnInit {
       
         if (question.question.isSelect) {
             if (category.question.every(function (x) {
-                return x.question.isSelect
+                return x.question.isSelect;
             }))
                 category.selectAll = true;
             category.numberOfQuestion++;
@@ -101,7 +101,7 @@ export class TestQuestionsComponent implements OnInit {
                 this.openSnackBar(response.message);
         },
             error => {
-                this.openSnackBar("Oops! something went wrong..please try after sometimes");
+                this.openSnackBar('Oops! something went wrong..please try after sometimes');
             });
     }
 
