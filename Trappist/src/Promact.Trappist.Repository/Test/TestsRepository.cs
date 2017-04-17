@@ -19,13 +19,14 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext = dbContext;
             _util = util;
         }
-
+        #region Test
         /// <summary>
         /// this method is used to create a new test
         /// </summary>
         /// <param name="test">object of Test</param>
         public async Task CreateTestAsync(Test test)
         {
+            test.TestName = test.TestName.AllTrim();
             test.Link = _util.GenerateRandomString(10);
             _dbContext.Test.Add(test);
             await _dbContext.SaveChangesAsync();
@@ -52,7 +53,8 @@ namespace Promact.Trappist.Repository.Tests
         {
             return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
         }
-
+        #endregion
+        #region Test Settings
         /// <summary>
         /// Updates the edited Test Name
         /// </summary>
@@ -106,7 +108,8 @@ namespace Promact.Trappist.Repository.Tests
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
-
+        #endregion
+        #region Delete Test
         public async Task<bool> IsTestAttendeeExistAsync(int id)
         {
             Test test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
@@ -119,5 +122,6 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.Test.Remove(test);
             await _dbContext.SaveChangesAsync();
         }
+        #endregion
     }
 }
