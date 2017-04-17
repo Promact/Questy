@@ -2,8 +2,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
-import 'rxjs/Rx';
-
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
 
