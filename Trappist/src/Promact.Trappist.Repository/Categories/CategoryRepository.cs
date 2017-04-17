@@ -4,18 +4,24 @@ using Promact.Trappist.DomainModel.Models.Category;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.Utility.ExtensionMethods;
 
 namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
     {
+        #region Dependency
         private readonly TrappistDbContext _dbContext;
+        #endregion
 
+        #region Constructor
         public CategoryRepository(TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
         }
+        #endregion
 
+        #region Public Methods
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             return (await _dbContext.Category.OrderByDescending(g => g.CreatedDateTime).ToListAsync());
@@ -23,6 +29,7 @@ namespace Promact.Trappist.Repository.Categories
 
         public async Task AddCategoryAsync(Category category)
         {
+            category.CategoryName = category.CategoryName.AllTrim();
             await _dbContext.Category.AddAsync(category);
             await _dbContext.SaveChangesAsync();
         }
@@ -34,12 +41,14 @@ namespace Promact.Trappist.Repository.Categories
 
         public async Task UpdateCategoryAsync(Category category)
         {
+            category.CategoryName = category.CategoryName.AllTrim();
             _dbContext.Category.Update(category);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> IsCategoryExistAsync(string categoryName, int id)
         {
+            categoryName = categoryName.AllTrim();
             return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant().Equals(categoryName.ToLowerInvariant()) && x.Id != id);
         }
 
@@ -48,5 +57,6 @@ namespace Promact.Trappist.Repository.Categories
             _dbContext.Category.Remove(category);
             await _dbContext.SaveChangesAsync();
         }
+        #endregion
     }
 }
