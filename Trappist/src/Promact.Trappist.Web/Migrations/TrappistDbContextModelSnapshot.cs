@@ -462,6 +462,42 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("TestQuestion");
                 });
 
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ContactNumber")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("RollNumber")
+                        .IsRequired();
+
+                    b.Property<int>("TestId");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TestAttendees");
+                });
+
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -643,6 +679,14 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
                         .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
+                        .WithMany("TestAttendees")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

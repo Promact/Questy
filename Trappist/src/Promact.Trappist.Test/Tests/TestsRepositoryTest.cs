@@ -3,6 +3,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.Tests;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using System.Collections.Generic;
+using Promact.Trappist.DomainModel.ApplicationClasses;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.Web.Models;
+using Microsoft.AspNetCore.Identity;
+using Promact.Trappist.Repository.Questions;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -10,10 +21,19 @@ namespace Promact.Trappist.Test.Tests
     public class TestsRepositoryTest : BaseTest
     {
         private readonly ITestsRepository _testRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public QuestionAC QuestionAc { get; private set; }
 
         public TestsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
+            _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
+            _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
+
         }
 
         /// <summary>
@@ -170,6 +190,143 @@ namespace Promact.Trappist.Test.Tests
                 Email = "ritika@gmail.com"
             };
             return testAttendee;
+        }
+        [Fact]
+        public async Task AddTestQuestion()
+        {
+            TestCategory testCategory = new TestCategory();
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
+            testCategory.TestId = test.Id;
+            testCategory.CategoryId = category.Id;
+            _trappistDbContext.TestCategory.Add(testCategory);
+            await _trappistDbContext.SaveChangesAsync();
+
+            List<QuestionAC> questionListAC = new List<QuestionAC>();
+            questionListAC.Add(CreatequestionAC(true, "This will be added..", category.Id , 1));
+            questionListAC.Add(CreatequestionAC(false, "This will not be added.", category.Id , 2));
+
+            await _testRepository.AddTestQuestionsAsync(questionListAC, test.Id);
+            Assert.True(_trappistDbContext.TestQuestion.Count() == 1);
+        }
+
+        public QuestionAC CreatequestionAC(bool isSelect, string questionDetails, int categoryId,int id)
+        {
+
+            QuestionAc = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = questionDetails,
+                    QuestionType = 0,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = null,
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="A",
+                            IsAnswer=true
+                        },
+                    }
+                }
+            };
+            return QuestionAc;
+        }
+
+        [Fact]
+        public async Task GetAllTestCategoryQuestionsByIdAsync()
+        {
+            TestCategory testCategory = new TestCategory();
+            var category1 = CreateCategory();   
+            await _categoryRepository.AddCategoryAsync(category1);
+            var category2 = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category2);
+            string userName = "asifkhan.ak95.ak@gmail.com";
+
+          //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+          //Creating questions
+            var question1 = CreatequestionAC(true, "This is in Category 1", category1.Id, 0);
+            var question2 = CreatequestionAC(true, "This is in Category 2", category2.Id, 0);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, applicationUser.Id);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, applicationUser.Id);
+
+            var AllQuestions = await _questionRepository.GetAllQuestionsAsync(user.Id);
+            List<Question> ListAC = AllQuestions.ToList();
+    
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
+
+            //Adding categories to test
+            testCategory.TestId = test.Id;
+            testCategory.CategoryId = category1.Id;
+            await _trappistDbContext.TestCategory.AddAsync(testCategory);
+            await _trappistDbContext.SaveChangesAsync();
+            testCategory = new TestCategory();
+            testCategory.TestId = test.Id;
+            testCategory.CategoryId = category2.Id;
+            await _trappistDbContext.TestCategory.AddAsync(testCategory);
+            await _trappistDbContext.SaveChangesAsync();
+
+            List<QuestionAC> questionListAC = new List<QuestionAC>();
+            var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(ListAC);
+            foreach (var question in questionDetailList)
+            {
+                QuestionAC questionAC = new QuestionAC();
+                question.IsSelect = true;
+                questionAC.Question = question;
+                questionListAC.Add(questionAC);
+            }
+     
+            await  _testRepository.AddTestQuestionsAsync(questionListAC, test.Id);
+            var questionACList = await _testRepository.GetAllTestCategoryQuestionsByIdAsync(test.Id,category1.Id);
+            Assert.Equal(1,questionACList.Count);
+            Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
+            Assert.True(questionACList[0].Question.IsSelect == true);
+        }
+
+        private DomainModel.Models.Category.Category CreateCategory()
+        {
+            var category = new DomainModel.Models.Category.Category
+            {
+                CategoryName = "Test Category"
+            };
+            return category;
+        }
+        [Fact]
+        public async Task GetTestDetails()
+        {
+            TestAC testAC = new TestAC();
+            //Creating Category
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            //Creating Test
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
+
+            //Adding category to TestCategory model
+            var testCategory = new TestCategory()
+            {
+                TestId = test.Id,
+                CategoryId = category.Id
+            };
+            _trappistDbContext.TestCategory.Add(testCategory);
+            await _trappistDbContext.SaveChangesAsync();
+            testAC = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            Assert.Equal(1, testAC.CategoryACList.Count());
         }
     }
 }
