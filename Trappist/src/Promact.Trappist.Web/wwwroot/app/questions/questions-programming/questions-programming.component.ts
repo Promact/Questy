@@ -89,7 +89,11 @@ export class QuestionsProgrammingComponent implements OnInit {
                 this.questionModel = response;
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
                 this.testCases = this.questionModel.codeSnippetQuestion.testCases;
-                this.formControlModel.showTestCase = true;
+
+                //If Question has no test case show the button to add new test case
+                if (this.testCases.length > 0)
+                    this.formControlModel.showTestCase = true;
+
                 this.getCodingLanguage();
                 this.getCategory();
             },
