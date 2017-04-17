@@ -252,11 +252,17 @@ namespace Promact.Trappist.Test.Questions
 
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+            var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
 
-            var question = _trappistDbContext.Question.FirstOrDefault(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
+            var codeSnippetQuestion = _trappistDbContext.Question.FirstOrDefault(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
+            var singleMultipleQuestion = _trappistDbContext.Question.FirstOrDefault(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);
 
-            var questionFetched = await _questionRepository.GetQuestionByIdAsync(question.Id);
-            Assert.True(codingQuestion.Question == questionFetched.Question);
+            var questionFetched = await _questionRepository.GetQuestionByIdAsync(codeSnippetQuestion.Id);
+            Assert.NotNull(questionFetched);
+
+            questionFetched = await _questionRepository.GetQuestionByIdAsync(singleMultipleQuestion.Id);
+            Assert.NotNull(questionFetched);
         }
 
         /// <summary>

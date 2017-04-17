@@ -5,6 +5,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,12 +165,18 @@ namespace Promact.Trappist.Repository.Questions
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.CodeSnippetQuestion)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            try
+            {
+                questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+                questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+                questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
+            }
+            catch (NullReferenceException)
+            {
+                return null;
+            }
 
-            questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
-            questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
-            questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
-
-            if(question.QuestionType == QuestionType.Programming)
+            if (question.QuestionType == QuestionType.Programming)
             {
                 questionAC.CodeSnippetQuestion.LanguageList = await _dbContext
                     .QuestionLanguageMapping
