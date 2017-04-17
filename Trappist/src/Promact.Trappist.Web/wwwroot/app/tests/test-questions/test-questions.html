@@ -4,7 +4,7 @@
     <h2>Select questions for each section</h2>
     <md2-accordion class="questions-selection" >
       <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryACList; let k=index">
-        <md2-accordion-header class="collapsible-header clearfix" [class.active]="category.isactive" (click)="getAllquestions(category,k)">
+        <md2-accordion-header class="collapsible-header clearfix" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
           <div class="title-info h2 pull-left">
             <span>{{category.categoryName}}</span>
           </div>
@@ -19,7 +19,7 @@
             <h5>Select All</h5>
             <span class="h7">(total {{selectedQuestions[k]}} questions)</span>
           </div>
-            <ng-container  *ngFor="let question of category.question;let i=index" >
+            <ng-container  *ngFor="let question of category.questionList;let i=index" >
                 <div class="qs-container">
                     <md-checkbox [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)"></md-checkbox>
                     <p class="qs-num">Q.{{i+1}}</p>

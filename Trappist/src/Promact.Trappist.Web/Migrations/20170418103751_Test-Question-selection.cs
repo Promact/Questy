@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class TestQuestionSelection : Migration
+    public partial class TestQuestionselection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -163,6 +163,32 @@ namespace Promact.Trappist.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TestCategory_Test_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Test",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestAttendees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ContactNumber = table.Column<string>(maxLength: 15, nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: false),
+                    Email = table.Column<string>(maxLength: 255, nullable: false),
+                    FirstName = table.Column<string>(maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(maxLength: 255, nullable: false),
+                    RollNumber = table.Column<string>(nullable: false),
+                    TestId = table.Column<int>(nullable: false),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestAttendees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TestAttendees_Test_TestId",
                         column: x => x.TestId,
                         principalTable: "Test",
                         principalColumn: "Id",
@@ -349,6 +375,33 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CodeSnippetQuestionTestCases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CodeSnippetQuestionId = table.Column<int>(nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(nullable: false),
+                    TestCaseDescription = table.Column<string>(nullable: true),
+                    TestCaseInput = table.Column<string>(nullable: false),
+                    TestCaseMarks = table.Column<double>(nullable: false),
+                    TestCaseOutput = table.Column<string>(nullable: false),
+                    TestCaseTitle = table.Column<string>(nullable: false),
+                    TestCaseType = table.Column<int>(nullable: false),
+                    UpdateDateTime = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CodeSnippetQuestionTestCases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CodeSnippetQuestionTestCases_CodeSnippetQuestion_CodeSnippetQuestionId",
+                        column: x => x.CodeSnippetQuestionId,
+                        principalTable: "CodeSnippetQuestion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "QuestionLanguageMapping",
                 columns: table => new
                 {
@@ -426,6 +479,11 @@ namespace Promact.Trappist.Web.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CodeSnippetQuestionTestCases_CodeSnippetQuestionId",
+                table: "CodeSnippetQuestionTestCases",
+                column: "CodeSnippetQuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Question_CategoryID",
                 table: "Question",
                 column: "CategoryID");
@@ -481,6 +539,11 @@ namespace Promact.Trappist.Web.Migrations
                 column: "TestId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TestAttendees_TestId",
+                table: "TestAttendees",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -510,6 +573,9 @@ namespace Promact.Trappist.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CodeSnippetQuestionTestCases");
+
+            migrationBuilder.DropTable(
                 name: "QuestionLanguageMapping");
 
             migrationBuilder.DropTable(
@@ -517,6 +583,9 @@ namespace Promact.Trappist.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "TestQuestion");
+
+            migrationBuilder.DropTable(
+                name: "TestAttendees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
