@@ -120,7 +120,7 @@ namespace Promact.Trappist.Repository.Tests
         }
         #endregion
         #region Category selection
-        public async Task<TestAC> GetTestDetailsAsync(int id)
+        public async Task<TestAC> GetTestDetailsByIdAsync(int id)
         {
             var testobj = await _dbContext.Test.FindAsync(id);
             var testACObj = Mapper.Map<Test, TestAC>(testobj);
@@ -139,7 +139,7 @@ namespace Promact.Trappist.Repository.Tests
             testACObj.Category = categorylist;
             return testACObj;
         }
-        public async Task AddSelectedAsync(List<TestCategory> testCategory)
+        public async Task AddSelectedCategoryAsync(List<TestCategory> testCategory)
         {
             List<TestCategory> testCategoryList = new List<TestCategory>();
             var testCategories = await _dbContext.TestCategory.ToListAsync();
@@ -147,7 +147,6 @@ namespace Promact.Trappist.Repository.Tests
             {
                 if (!testCategories.Exists(x => x.CategoryId == category.CategoryId))
                     testCategoryList.Add(category);
-
             }
             await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
             await _dbContext.SaveChangesAsync();

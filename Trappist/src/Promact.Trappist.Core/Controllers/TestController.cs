@@ -120,7 +120,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("Categories/{id}")]
         public async Task<ActionResult> GetTestDetail([FromRoute] int id)
         {
-                    return Ok( await _testRepository.GetTestDetailsAsync(id));
+                    return Ok( await _testRepository.GetTestDetailsByIdAsync(id));
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost ("addSelectedCategories")]
         public async Task<ActionResult> AddSelectedCategories([FromBody] List<TestCategory> testCategory)
         {
-            await _testRepository.AddSelectedAsync(testCategory);
+            await _testRepository.AddSelectedCategoryAsync(testCategory);
             return Ok(testCategory);
         }
 
