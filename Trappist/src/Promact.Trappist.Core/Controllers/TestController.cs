@@ -16,12 +16,13 @@ namespace Promact.Trappist.Core.Controllers
         {
             _testRepository = testRepository;
         }
+
+        #region Test
         /// <summary>
         /// this method is to verify unique name of a test
         /// </summary>
         /// <param name="testName">name of the test</param>
-        /// <returns>boolean</returns>
-
+        /// <returns>boolean</returns>        
         [HttpGet("isUnique/{testName}/{id}")]
         public async Task<bool> IsTestNameUnique([FromRoute] string testName, [FromRoute] int id)
         {
@@ -54,7 +55,8 @@ namespace Promact.Trappist.Core.Controllers
             var tests = await _testRepository.GetAllTestsAsync();
             return Ok(tests);
         }
-
+        #endregion 
+        #region Test Settings
         /// <summary>
         /// Gets the Settings saved for a particular Test
         /// </summary>
@@ -109,7 +111,8 @@ namespace Promact.Trappist.Core.Controllers
             else
                 return BadRequest();
         }
-
+        #endregion
+        #region Delete Test
         /// <summary>
         /// Check whether there is any test attendee or not
         /// </summary>
@@ -146,5 +149,6 @@ namespace Promact.Trappist.Core.Controllers
             await _testRepository.DeleteTestAsync(id);
             return NoContent();
         }
+        #endregion
     }
 }
