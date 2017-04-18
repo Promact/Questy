@@ -6,7 +6,7 @@ build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
 environment:  
   COVERALLS_REPO_TOKEN:
-  secure: Da895dH7C3dcFMIt85zJmnrRja5yEFsTY
+  secure: +U8RojpUoVh2Hn/hVkZ+MBV9HyZVPPiATA4WxOYQx3tIkVHQP8QLfaFmLCsCDTvJ
 branches:
   only:
     - development
