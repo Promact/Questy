@@ -5,8 +5,8 @@
                 <span>BBIT 10-08-2017</span>
             </h1>
             <div class="search-area pull-right">
-                <input type="text" [hidden]="!showSearchInput" />
-                <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
+                <input type="text" placeholder="Search reports" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
+                <button type="button" (click)="showSearchInput = true"><i class="material-icons">search</i></button>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
                 <button type="button" class="btn">Download Excel</button>
                 <button type="button" class="btn">Download PDF</button>
             </div>
-            <a class="pull-right h5 back-link mt10" [routerLink]="['/tests']">< back</a>
+            <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
         <div class="grid-container">
             <table class="report-grid" [md2Data]="reportData" #report="md2DataTable" [rowsPerPage]="10">
