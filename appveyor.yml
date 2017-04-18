@@ -13,8 +13,7 @@ branches:
     - staging
     - master
 install:
-  ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'
-  ps: 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
+  ps: Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'; 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
 build:
   project: .\Trappist\Trappist.sln
   verbosity: minimal
