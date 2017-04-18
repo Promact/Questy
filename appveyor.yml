@@ -19,11 +19,7 @@ test_script:
 - ps: >-
    cd .\Trappist\src\Promact.Trappist.Test; Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'; 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
 - ps: >-
-   .\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test " -filter:"+[Promact.Trappist.Repository*]*" -hideskipped:File -output:opencover.xml -oldStyle
-
-   $coveralls = (Resolve-Path "C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.Coveralls").ToString()
-   
-   & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+   .\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test " -filter:"+[Promact.Trappist.Repository*]*" -hideskipped:File -output:opencover.xml -oldStyle ; $coveralls = (Resolve-Path "C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe").ToString() & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
 
      
 
