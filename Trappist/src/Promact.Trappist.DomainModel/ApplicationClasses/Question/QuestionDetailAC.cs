@@ -5,6 +5,8 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class QuestionDetailAC
     {
+        public int Id { get; set; }
+
         [Required]
         public string QuestionDetail { get; set; }
 
