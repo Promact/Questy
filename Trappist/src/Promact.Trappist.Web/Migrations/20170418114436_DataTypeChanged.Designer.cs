@@ -9,8 +9,8 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170414130043_AddedQuestionOrderAndOptionOrderFieldsInTestModel")]
-    partial class AddedQuestionOrderAndOptionOrderFieldsInTestModel
+    [Migration("20170418114436_DataTypeChanged")]
+    partial class DataTypeChanged
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -328,9 +328,9 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("Link");
 
-                    b.Property<string>("OptionOrder");
+                    b.Property<int>("OptionOrder");
 
-                    b.Property<string>("QuestionOrder");
+                    b.Property<int>("QuestionOrder");
 
                     b.Property<DateTime>("StartDate");
 

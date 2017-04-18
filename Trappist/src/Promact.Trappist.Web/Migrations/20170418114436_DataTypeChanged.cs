@@ -4,19 +4,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class AddedQuestionOrderAndOptionOrderFieldsInTestModel : Migration
+    public partial class DataTypeChanged : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AddColumn<int>(
                 name: "OptionOrder",
                 table: "Test",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
 
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.AddColumn<int>(
                 name: "QuestionOrder",
                 table: "Test",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
