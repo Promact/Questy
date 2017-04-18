@@ -24,17 +24,15 @@ export class CreateTestFooterComponent implements OnInit {
     public validEndDate: boolean;
     @Input('validTime')
     public validTime: boolean;
-    @Output() saveTestSettings = new EventEmitter();
-    @Output() launchTestDialog = new EventEmitter();
-
-    
-   
-
+    @Output() saveTestSettings: any;
+    @Output() launchTestDialog: any;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
         this.isTestQuestion = false;
         this.isTestSettings = false;
+        this.saveTestSettings = new EventEmitter();
+        this.launchTestDialog = new EventEmitter();
     }
 
     /**
