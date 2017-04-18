@@ -25,5 +25,8 @@ namespace Promact.Trappist.Web.Data
         }
 
         public DbSet<Question> Question { get; set; }
+        public DbSet<CodeSnippetQuestion> CodeSnippetQuestion { get; set; }
+        public DbSet<CodingLanguage> CodingLanguage { get; set; }
+        public DbSet<QuestionLanguageMapping> QuestionLanguageMapping { get; set; }
     }
 }
