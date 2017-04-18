@@ -12,13 +12,18 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/tests")]
     public class TestsController : Controller
     {
+        #region Private Members
         private readonly ITestsRepository _testRepository;
         private readonly IStringConstants _stringConstants;
+        #endregion
+
+        #region Constructor
         public TestsController(ITestsRepository testRepository, IStringConstants stringConstants)
         {
             _testRepository = testRepository;
             _stringConstants = stringConstants;
         }
+        #endregion
 
         #region Test
         /// <summary>
@@ -85,17 +90,12 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestNameAsync([FromRoute]int id, [FromBody] Test testObject)
         {
-            if (testObject == null)
+            if (!ModelState.IsValid && testObject == null)
                 return BadRequest();
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
-            if (ModelState.IsValid)
-            {
-                await _testRepository.UpdateTestNameAsync(id, testObject);
-                return Ok(testObject);
-            }
-            else
-                return BadRequest();
+            await _testRepository.UpdateTestNameAsync(id, testObject);
+            return Ok(testObject);
         }
 
         /// <summary>
@@ -107,6 +107,11 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}/settings")]
         public async Task<IActionResult> UpdateTestByIdAsync([FromRoute] int id, [FromBody] Test testObject)
         {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameInvalidError);
+                return BadRequest(ModelState);
+            }
             if (testObject == null)
                 return BadRequest();
             if (!await _testRepository.IsTestNameUniqueAsync(testObject.TestName, id))
@@ -114,20 +119,10 @@ namespace Promact.Trappist.Core.Controllers
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameExistsError);
                 return BadRequest(ModelState);
             }
-
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
-
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameInvalidError);
-                return BadRequest(ModelState);
-            }
-            else
-            {
-                await _testRepository.UpdateTestByIdAsync(testObject);
-                return Ok(testObject);
-            }
+            await _testRepository.UpdateTestByIdAsync(testObject);
+            return Ok(testObject);
         }
         #endregion
         #region Delete Test
