@@ -9,7 +9,7 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/category")]
     public class CategoryController : Controller
     {
-        #region Dependencies
+        #region Private Members
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStringConstants _stringConstants;
         #endregion
