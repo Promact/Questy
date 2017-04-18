@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -12,9 +13,11 @@ namespace Promact.Trappist.Core.Controllers
     public class TestsController : Controller
     {
         private readonly ITestsRepository _testRepository;
-        public TestsController(ITestsRepository testRepository)
+        private readonly IStringConstants _stringConstants;
+        public TestsController(ITestsRepository testRepository, IStringConstants stringConstants)
         {
             _testRepository = testRepository;
+            _stringConstants = stringConstants;
         }
 
         #region Test
@@ -70,8 +73,7 @@ namespace Promact.Trappist.Core.Controllers
             var testSettings = await _testRepository.GetTestByIdAsync(id);
             if (testSettings == null)
                 return NotFound();
-            else
-                return Ok(testSettings);
+            return Ok(testSettings);
         }
 
         /// <summary>
@@ -83,6 +85,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestNameAsync([FromRoute]int id, [FromBody] Test testObject)
         {
+            if (testObject == null)
+                return BadRequest();
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
             if (ModelState.IsValid)
@@ -103,17 +107,27 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}/settings")]
         public async Task<IActionResult> UpdateTestByIdAsync([FromRoute] int id, [FromBody] Test testObject)
         {
-            if (!await _testRepository.IsTestNameUniqueAsync(testObject.TestName,id))
+            if (testObject == null)
                 return BadRequest();
+            if (!await _testRepository.IsTestNameUniqueAsync(testObject.TestName, id))
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameExistsError);
+                return BadRequest(ModelState);
+            }
+
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameInvalidError);
+                return BadRequest(ModelState);
+            }
+            else
             {
                 await _testRepository.UpdateTestByIdAsync(testObject);
                 return Ok(testObject);
             }
-            else
-                return BadRequest();
         }
         #endregion
         #region Delete Test

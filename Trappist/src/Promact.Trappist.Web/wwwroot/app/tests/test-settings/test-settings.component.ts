@@ -30,6 +30,8 @@ export class TestSettingsComponent implements OnInit {
     isTestNameExist: boolean;
     QuestionOrder = QuestionOrder;
     OptionOrder = OptionOrder;
+    response: any;
+    errorMessage: string;
    
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
@@ -115,8 +117,10 @@ export class TestSettingsComponent implements OnInit {
             });
         },
             errorHandling => {
-                this.snackbarRef.open('Test Name is invalid', 'Dismiss', {
-                    duration: 3000,
+                this.response = errorHandling.json();
+                this.errorMessage = this.response['error'];
+                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
+                    duration : 3000,
                 });
             },
         );
@@ -134,7 +138,9 @@ export class TestSettingsComponent implements OnInit {
             instance.testSettingObject = testObject;
         },
             errorHandling => {
-                this.snackbarRef.open('Test Name is invalid', 'Dismiss', {
+                this.response = errorHandling.json();
+                this.errorMessage = this.response['error'];
+                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
                     duration: 3000,
                 });
             },
