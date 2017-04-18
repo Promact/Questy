@@ -8,8 +8,4 @@ export class CodeSnippetQuestionsTestCases {
     testCaseInput: string;
     testCaseOutput: string;
     testCaseMarks: number;
-
-    constructor() {
-        this.id = Math.random();
-    }
 }

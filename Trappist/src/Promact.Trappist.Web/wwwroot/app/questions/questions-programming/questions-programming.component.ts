@@ -61,7 +61,22 @@ export class QuestionsProgrammingComponent implements OnInit {
      *  Adds test cases of code snippet question
      */
     addTestCases() {
-        this.testCases.push(new CodeSnippetQuestionsTestCases());
+        let storeId = new CodeSnippetQuestionsTestCases();
+
+        let max= this.findMaxId();
+
+        storeId.id = max + 1;
+        this.testCases.push(storeId);
+    }
+    /**
+     * Finds the greatest Id of testcases and increments it
+     */
+    private findMaxId() {
+        let max = 0;
+
+        this.testCases.forEach(x => max = x.id > max ? x.id + 1 : max);
+
+        return max;
     }
 
     /**
