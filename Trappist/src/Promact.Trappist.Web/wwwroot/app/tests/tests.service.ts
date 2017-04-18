@@ -37,7 +37,7 @@ export class TestService {
      * Gets the Settings saved for a particular Test
      * @param id is used to get the Settings of a Test by its Id
      */
-    getTestSettings(id: number) {
+    getTestById(id: number) {
         return this.httpService.get(this.testApiUrl + '/' + id + '/' + 'settings');
     }
 
@@ -46,7 +46,7 @@ export class TestService {
      * @param id is used to access the Settings of that Test
      * @param body is used as an object for the Model Test
      */
-    updateTestSettings(id: number, body: Test) {
+    updateTestById(id: number, body: Test) {
         return this.httpService.put(this.testApiUrl + '/' + id + '/' + 'settings', body);
     }
 

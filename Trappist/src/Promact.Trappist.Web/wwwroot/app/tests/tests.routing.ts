@@ -1,6 +1,5 @@
 ﻿import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { TestsComponent } from './tests.component';
 import { TestsDashboardComponent } from './tests-dashboard/tests-dashboard.component';
 import { TestSettingsComponent } from './test-settings/test-settings.component';
@@ -15,8 +14,8 @@ const testsRoutes: Routes = [
     children: [
       { path: '', component: TestsDashboardComponent },
       { path: ':id/settings', component: TestSettingsComponent },
-      { path: 'sections', component: TestSectionsComponent },
-      { path: 'questions', component: TestQuestionsComponent },
+      { path: 'sections/:id', component: TestSectionsComponent },
+      { path: 'questions/:id', component: TestQuestionsComponent },
       { path: 'view', component: TestViewComponent }
     ]
   }
