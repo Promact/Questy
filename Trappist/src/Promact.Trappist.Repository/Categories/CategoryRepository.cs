@@ -10,7 +10,7 @@ namespace Promact.Trappist.Repository.Categories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        #region Dependency
+        #region Private Member
         private readonly TrappistDbContext _dbContext;
         #endregion
 
