@@ -22,8 +22,8 @@
     </div>
     <div class="container">
         <div class="clearfix">
-            <h2 class="pull-left">Test Duration: 90 mins</h2>
-            <a class="pull-right h5 back-link" [routerLink]="['/tests']">< back to home</a>
+            <h5 class="pull-left">Test Duration: 90 mins</h5>
+            <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
         </div>
         <md2-accordion class="questions-selection">
             <md2-accordion-tab class="collapsible-block">
@@ -194,7 +194,7 @@
         </md2-accordion>
         <div class="bottom-info">
             <span>123 Candidates</span>
-            <button type="button" class="btn btn-primary">View Report</button>
+            <button type="button" class="btn btn-primary" [routerLink]="['/reports']">View Report</button>
         </div>
     </div>
 </div>

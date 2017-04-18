@@ -1,10 +1,10 @@
 ﻿<div class="container">
     <div class="tests-dashboard">
-        <div class="title-area clearfix">
+        <div class="title-area mb20 clearfix">
             <h1 class="pull-left">Tests</h1>
             <div class="search-area pull-right">
-                <input type="text" [hidden]="!showSearchInput" [(ngModel)]="searchTest" />
-                <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
+                <input type="text" placeholder="Search tests" [hidden]="!showSearchInput" [(ngModel)]="searchTest" (blur)="showSearchInput = false" />
+                <button type="button" (click)="showSearchInput = true"><i class="material-icons">search</i></button>
             </div>
         </div>
         <div class="blocks-area">
@@ -12,14 +12,14 @@
                 <div class="col-md-5ths col-sm-4">
                     <div class="create-test-block" (click)="createTestDialog()">
                         <i class="material-icons">add</i>
-                        <h2>Create New Test</h2>
+                        <h5>Create New Test</h5>
                     </div>
                 </div>
                 <div *ngFor="let test of Tests | filter: searchTest ">
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
                             <div class="test-title clearfix">
-                                <h2 class="pull-left" title="{{test.testName}}">{{test.testName}}</h2>
+                                <h5 class="pull-left" title="{{test.testName}}">{{test.testName}}</h5>
                                 <i class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</i>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                                     <a md-menu-item>Edit</a>
@@ -34,7 +34,7 @@
                                 <p class="light-text">123 Candidates</p>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-primary">View Report</button>
+                                <button type="button" class="btn btn-primary" [routerLink]="['/reports']">View Report</button>
                             </div>
                         </div>
                     </div>

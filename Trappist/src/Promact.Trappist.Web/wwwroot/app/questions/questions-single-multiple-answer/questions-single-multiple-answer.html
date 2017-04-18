@@ -19,7 +19,7 @@
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
-                                <span *ngIf="choice.invalid && choice.touched" class="error-msg mt6 ml10">This field is required</span>
+                                <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
                             </div>
                         </md-radio-button>
                     </md-radio-group>
@@ -31,7 +31,7 @@
                         <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
-                            <span *ngIf="choice.invalid && choice.touched" class="error-msg mt6 ml10">This field is required</span>
+                            <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
                         </div>
                     </md-checkbox>
                     <button type="button" class="btn btn-primary" (click)="addOption()" *ngIf="!isNoOfOptionOverLimit">Add Option</button>
