@@ -6,7 +6,7 @@ build_script:
 - ps: dotnet restore ./Trappist/Trappist.sln
 environment:  
   COVERALLS_REPO_TOKEN:
-  secure: oI8JLO5/25+ZMrrWdVckNz5zqUysVlU+VVMBpPxZlEXaQ/A/6z544OcIs8rVhk49
+  secure: Da895dH7C3dcFMIt85zJmnrRja5yEFsTY
 branches:
   only:
     - development
@@ -21,12 +21,6 @@ test_script:
 - ps: >-
    .\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test " -filter:"+[Promact.Trappist.Repository*]*" -hideskipped:File -output:opencover.xml -oldStyle
 - ps: >-
-   
-   if(![string]::IsNullOrEmpty($env:COVERALLS_REPO_TOKEN)){ 
-   
-   $coveralls = (Resolve-Path "C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe").ToString()
-   
-   & $coveralls --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
-   }     
+   C:\Users\appveyor\.nuget\packages\coveralls.net\0.8.0-unstable0013\tools\csmacnz.coveralls.exe --opencover -i opencover.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
      
 
