@@ -31,6 +31,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
+    max: number;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
@@ -63,7 +64,8 @@ export class QuestionsProgrammingComponent implements OnInit {
     addTestCases() {
         let storeId = new CodeSnippetQuestionsTestCases();
 
-        let max= this.findMaxId();
+        let max = this.findMaxId();
+        max = max === -Infinity ? 0 : max;
 
         storeId.id = max + 1;
         this.testCases.push(storeId);
@@ -72,11 +74,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * Finds the greatest Id of testcases and increments it
      */
     private findMaxId() {
-        let max = 0;
-
-        this.testCases.forEach(x => max = x.id > max ? x.id + 1 : max);
-
-        return max;
+        return Math.max.apply(Math, this.testCases.map(function (o) { return o.id; }));
     }
 
     /**
