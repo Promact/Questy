@@ -8,18 +8,7 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { TestDetails } from '../test';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Test } from '../tests.model';
-import { Component, OnInit } from '@angular/core';
-import { Question } from '../../questions/question.model';
-import { Category } from '../../questions/category.model';
-import { TestService } from '../tests.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
-import { DifficultyLevel } from '../../questions/enum-difficultylevel';
-import { Test } from '../tests.model';
-import { QuestionBase } from '../../questions/question';
-import { QuestionType } from '../../questions/enum-questiontype';
 
 @Component({
     moduleId: module.id,
@@ -33,18 +22,21 @@ export class TestQuestionsComponent implements OnInit {
     QuestionType = QuestionType;
     selectedQuestions: number[] = [];
     questionsToAdd: QuestionBase[] = [];
+    testSettings: Test;
     testId: number;
     testDetails: TestDetails;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new TestDetails();
+        this.testSettings = new Test();
     }
     ngOnInit() {
         this.router.params.subscribe(params => {
             this.testId = params['id'];
         });
         this.getTestDetails();
+        this.getTestById(this.testId);
     }
 
     openSnackBar(text: string) {
@@ -52,7 +44,11 @@ export class TestQuestionsComponent implements OnInit {
             duration: 5000
         });
     }
-
+    /**
+     * Gets all the questions of particular category by passing its Id
+     * @param category
+     * @param i is index of category
+     */
     getAllquestions(category: Category, i: number) {
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
@@ -73,12 +69,20 @@ export class TestQuestionsComponent implements OnInit {
             return 'correct';
         }
     }
-
+    /**
+     * Gets the details of a test by passing its Id
+     */
     getTestDetails() {
         this.testService.getTestDetails(this.testId).subscribe(response => {
             this.testDetails = response;
-        });
+        }); 
     }
+
+    /**
+     * Selects questions from the list of questions of a particular category
+     * @param question is an object of QuestionBase
+     * @param category is an object of Category
+     */
     selectQuestion(question: QuestionBase, category: Category) {
 
         if (question.question.isSelect) {
@@ -93,125 +97,8 @@ export class TestQuestionsComponent implements OnInit {
             category.numberOfQuestion--;
         }
     }
-    AddTestQuestion() {
-
-        this.questionsToAdd = new Array<QuestionBase>();
-        for (let category of this.testDetails.categoryACList) {
-            this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
-            category.questionList.filter(function (question) {
-                return question.question.isSelect;
-            });
-        }
-
-        this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
-            if (response)
-                this.openSnackBar(response.message);
-        },
-            error => {
-                this.openSnackBar('Oops! something went wrong..please try after sometime');
-            });
-    }
-
-    SelectAll(category: Category, selectedQuestions: number) {
-
-        category.questionList.map(function (questionList) {
-            if (category.selectAll) {
-                questionList.question.isSelect = true;
-                category.numberOfQuestion = selectedQuestions;
-            }
-            else {
-                questionList.question.isSelect = false;
-                category.numberOfQuestion = 0;
-            }
-        });
-    }
-    SaveExit() {
-        this.AddTestQuestion();
-        this.route.navigate(['/tests']);
-    }
-export class TestQuestionsComponent implements OnInit {
-    editName: boolean;
-    DifficultyLevel = DifficultyLevel;
-    QuestionType = QuestionType;
-    totalNumberOfQuestions: number[] = [];
-    questionsToAdd: QuestionBase[] = [];
-    testId: number;
-    isSaveExit: boolean;
-    testDetails: Test;
-    loader: boolean = false;
-    optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-
-    constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
-        this.testDetails = new Test();
-        this.isSaveExit = false;
-    }
-    ngOnInit() {
-        this.router.params.subscribe(params => {
-            this.testId = params['id'];
-        });
-        this.getTestDetails();
-    }
-
-    openSnackBar(text: string) {
-        this.snackBar.open(text, 'Dismiss', {
-            duration: 3000
-        });
-    }
-    /**
-     * Gets all the questions of particular category by passing its Id
-     * @param category
-     * @param i is index of category
-     */
-    getAllquestions(category: Category, i: number) {
-        if (!category.isAccordionOpen) {
-            category.isAccordionOpen = true;
-            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
-                category.isAlreadyClicked = true;
-                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                    this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
-                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
-                        return question.question.isSelect;
-                    }).length;
-                });
-            } else category.isAlreadyClicked = true;
-        } else category.isAccordionOpen = false;
-    }
-    isCorrectAnswer(isAnswer: boolean) {
-        if (isAnswer) {
-            return 'correct';
-        }
-    }
-
-    /**
-     * Gets the details of a test by passing its Id
-     */
-    getTestDetails() {
-        this.testService.getTestById(this.testId).subscribe(response => {
-            this.testDetails = response;
-        });
-    }
-
-    /**
-     * Selects questions from the list of questions of a particular category
-     * @param question is an object of QuestionBase
-     * @param category is an object of Category
-     */
-    selectQuestion(questionToSelect: QuestionBase, category: Category) {
-        if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
-            let isAllSelected = category.questionList.every(function (question) {
-                return question.question.isSelect;
-            })
-            if (isAllSelected)
-                category.selectAll = true;
-            category.numberOfSelectedQuestion++;
-        } else {
-            category.selectAll = false;
-            questionToSelect.question.isSelect = false;
-            category.numberOfSelectedQuestion--;
-        }
-    }
-
+  
+   
     /**
      * Adds all the questions to to database and navigate to test-settings.component
      */
