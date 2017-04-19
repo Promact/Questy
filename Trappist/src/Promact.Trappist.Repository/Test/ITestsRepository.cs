@@ -1,6 +1,7 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -67,5 +68,37 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="id">Id of the test</param>
         /// <returns>Boolean:true if an attendee exist or else false</returns>
         Task<bool> IsTestAttendeeExistAsync(int id);
+
+        #region Category Selection
+
+        /// <summary>
+        /// Get Test Details
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>List of Selected Categories</returns>        
+        Task<TestAC> GetTestDetailsByIdAsync(int id);
+
+        /// <summary>
+        /// To delete the deselected category from TestCategory model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Deletes the category from TestCategory model and save changes t th database</returns>
+        Task DeleteCategoryAsync(int id);
+
+         /// <summary>
+         /// To add a category to the test when it is selected
+         /// </summary>
+         /// <param name="testCategory"></param>
+         /// <returns>list of categories added</returns>        
+        Task AddSelectedCategoryAsync(List<TestCategory> testCategory);
+
+        /// <summary>
+        /// To deselect a category
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="testId"></param>
+        /// <returns>boolean</returns>
+        Task<bool> DeselectCategoryAync(int categoryId, int testId);
+        #endregion
     }
 }
