@@ -90,7 +90,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTestNameAsync([FromRoute]int id, [FromBody] Test testObject)
         {
-            if (!ModelState.IsValid && testObject == null)
+            if (!ModelState.IsValid || testObject == null)
                 return BadRequest();
             if (!await _testRepository.IsTestExists(id))
                 return NotFound();
