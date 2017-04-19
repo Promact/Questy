@@ -161,5 +161,22 @@
             }
         }
         #endregion
+
+        #region "Test-Question-Selection"
+        public string SuccessfullySaved
+        {
+            get
+            {
+                return "Your changes saved successfully";
+            }
+        }
+        public string NoNewChanges
+        {
+            get
+            { 
+                return "No new questions selected.."; 
+            }
+        }
+        #endregion
     }
 }
