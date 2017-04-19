@@ -15,6 +15,10 @@ using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.Constants;
 using System.Globalization;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.Models.Category;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -98,6 +102,46 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
         #endregion
+        #region Category selection
+        
+        public async Task AddSelectedCategoryAsync(List<TestCategory> testCategory)
+        {
+            List<TestCategory> testCategoryList = new List<TestCategory>();
+            var testCategories = await _dbContext.TestCategory.ToListAsync();
+            foreach (var category in testCategory)
+            {
+                if (!testCategories.Exists(x => x.CategoryId == category.CategoryId && x.TestId == category.TestId))
+                    testCategoryList.Add(category);
+            }
+            await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeselectCategoryAync(int categoryId, int testId)
+        {
+            var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
+            var testQuestions = await _dbContext.TestQuestion.OrderBy(x => x.QuestionId).ToListAsync();
+            foreach (var question in questions)
+            {
+                foreach (var testQuestion in testQuestions)
+                {
+                    if (question.CategoryID == categoryId && testQuestion.QuestionId == question.Id && testQuestion.TestId == testId)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task DeleteCategoryAsync(int id)
+        {
+            var testCategory = await _dbContext.TestCategory.FindAsync(id);
+            _dbContext.TestCategory.Remove(testCategory);
+            await _dbContext.SaveChangesAsync();
+        }
+        #endregion
+
         #region Test-Question-Selection
         public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId)
         {
