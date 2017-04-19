@@ -191,6 +191,10 @@ namespace Promact.Trappist.Test.Tests
             };
             return testAttendee;
         }
+        /// <summary>
+        /// Test For Adding Questions to TestQuestion Model
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task AddTestQuestion()
         {
@@ -242,7 +246,10 @@ namespace Promact.Trappist.Test.Tests
             };
             return QuestionAc;
         }
-
+        /// <summary>
+        /// Test Case for getting the questions by passing a particular category Id
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task GetAllTestCategoryQuestionsByIdAsync()
         {
@@ -306,6 +313,10 @@ namespace Promact.Trappist.Test.Tests
             };
             return category;
         }
+        /// <summary>
+        ///Test case for  getting test details containing categories only
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task GetTestDetails()
         {
