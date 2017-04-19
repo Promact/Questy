@@ -366,22 +366,18 @@ namespace Promact.Trappist.Web.Migrations
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("QuestionId");
 
                     b.Property<int>("TestCategoryId");
 
-                    b.Property<int>("TestId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
                     b.HasIndex("TestCategoryId");
-
-                    b.HasIndex("TestId");
 
                     b.ToTable("TestQuestion");
                 });
@@ -603,11 +599,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasOne("Promact.Trappist.DomainModel.Models.Test.TestCategory", "TestCategory")
                         .WithMany()
-                        .HasForeignKey("TestCategoryId");
-
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
-                        .WithMany()
-                        .HasForeignKey("TestId")
+                        .HasForeignKey("TestCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

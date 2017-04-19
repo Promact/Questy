@@ -34,15 +34,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //To avoid cascading deletion
-            builder.Entity<TestQuestion>(b =>
-            {
-                b.HasOne(x => x.TestCategory)
-                .WithMany()
-                .HasForeignKey(x => x.TestCategoryId)
-                .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Restrict);
-
-            });
+           
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
         }
