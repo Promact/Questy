@@ -8,14 +8,7 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { TestDetails } from '../test';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Test } from '../tests.model';
-import { TestService } from '../tests.service';
-import { MdDialog, MdSnackBar } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
-import { FormGroup } from '@angular/forms';
 
 @Component({
     moduleId: module.id,
@@ -29,18 +22,21 @@ export class TestQuestionsComponent implements OnInit {
     QuestionType = QuestionType;
     selectedQuestions: number[] = [];
     questionsToAdd: QuestionBase[] = [];
+    testSettings: Test;
     testId: number;
     testDetails: TestDetails;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new TestDetails();
+        this.testSettings = new Test();
     }
     ngOnInit() {
         this.router.params.subscribe(params => {
             this.testId = params['id'];
         });
         this.getTestDetails();
+        this.getTestById(this.testId);
     }
 
     openSnackBar(text: string) {
@@ -48,7 +44,11 @@ export class TestQuestionsComponent implements OnInit {
             duration: 5000
         });
     }
-
+    /**
+     * Gets all the questions of particular category by passing its Id
+     * @param category
+     * @param i is index of category
+     */
     getAllquestions(category: Category, i: number) {
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
@@ -69,12 +69,20 @@ export class TestQuestionsComponent implements OnInit {
             return 'correct';
         }
     }
-
+    /**
+     * Gets the details of a test by passing its Id
+     */
     getTestDetails() {
         this.testService.getTestDetails(this.testId).subscribe(response => {
             this.testDetails = response;
-        });
+        }); 
     }
+
+    /**
+     * Selects questions from the list of questions of a particular category
+     * @param question is an object of QuestionBase
+     * @param category is an object of Category
+     */
     selectQuestion(question: QuestionBase, category: Category) {
 
         if (question.question.isSelect) {
@@ -89,16 +97,18 @@ export class TestQuestionsComponent implements OnInit {
             category.numberOfQuestion--;
         }
     }
-    AddTestQuestion() {
+    /**
+     * Adds all the questions to to database and navigate to test-view.component
+     */
+    SaveNext() {
 
         this.questionsToAdd = new Array<QuestionBase>();
+        
         for (let category of this.testDetails.categoryACList) {
-            this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
-            category.questionList.filter(function (question) {
-                return question.question.isSelect;
-            });
-        }
-
+            if (category.isSelect && category.questionList !== null) 
+                this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
+         }
+              
         this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
             if (response)
                 this.openSnackBar(response.message);
@@ -106,14 +116,19 @@ export class TestQuestionsComponent implements OnInit {
             error => {
                 this.openSnackBar('Oops! something went wrong..please try after sometime');
             });
+        this.route.navigate(['tests/' + this.testId + '/view']);
     }
-
-    SelectAll(category: Category, selectedQuestions: number) {
+    /**
+     * Selects and deselect all the questions of a category
+     * @param category object
+     * @param totalNumberOfQuestions number of all the questions of a category
+     */
+    SelectAll(category: Category, totalNumberOfQuestions: number) {
 
         category.questionList.map(function (questionList) {
             if (category.selectAll) {
                 questionList.question.isSelect = true;
-                category.numberOfQuestion = selectedQuestions;
+                category.numberOfQuestion = totalNumberOfQuestions;
             }
             else {
                 questionList.question.isSelect = false;
@@ -121,23 +136,13 @@ export class TestQuestionsComponent implements OnInit {
             }
         });
     }
-    SaveExit() {
-        this.AddTestQuestion();
-        this.route.navigate(['/tests']);
-    }
-export class TestQuestionsComponent implements OnInit {
-    testSettings: Test;
-    testId: number;
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
-    }
-
     /**
-    * Gets the Id of the Test from the route and fills the Settings saved for the selected Test in their respective fields
-    */
-    ngOnInit() {
-        this.testId = this.route.snapshot.params['id'];
-        this.getTestById(this.testId);
+     * Adds the questions to question table and redirect to test dashboard
+     */
+
+    SaveExit() {
+        this.SaveNext();
+        this.route.navigate(['/tests']);
     }
 
     /**
