@@ -73,7 +73,6 @@ namespace Promact.Trappist.Web
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IStringConstants, StringConstants>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestsRepository, TestsRepository>();           
             services.AddScoped<IDbUtility, DbUtility>();
