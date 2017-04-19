@@ -76,7 +76,7 @@ namespace Promact.Trappist.Repository.Questions
 
                 //Add codeSnippet part of question
                 codeSnippetQuestion.Question = question;
-                codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAC.CodeSnippetQuestion.TestCases;
+                codeSnippetQuestion.CodeSnippetQuestionTestCases = Mapper.Map<List<CodeSnippetQuestionTestCases>>(questionAC.CodeSnippetQuestion.TestCases);
 
                 codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x => x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2));
 
@@ -111,7 +111,7 @@ namespace Promact.Trappist.Repository.Questions
             });
             return languageNameList;
         }
-        
+
         public async Task UpdateCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var updatedQuestion = await _dbContext.Question.FindAsync(questionAC.Question.Id);
@@ -133,17 +133,26 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
 
                 //Handling updated TestCases
-                //Removing all the existing Test Case from the Database
+                //Finding modified TestCases 
                 var testCaseToUpdate = testCases.Where(x => questionAC.CodeSnippetQuestion.TestCases.Any(y => y.Id == x.Id)).ToList();
                 var testCaseToDelete = testCases.Where(x => !testCaseToUpdate.Any(y => y.Id == x.Id)).ToList();
-                var testCaseToAdd = questionAC.CodeSnippetQuestion.TestCases.Where(x => !testCases.Any(y => y.Id == x.Id)).ToList();
+                var testCaseToAdd = Mapper.Map<List<CodeSnippetQuestionTestCases>>(questionAC.CodeSnippetQuestion.TestCases.Where(x => !testCases.Any(y => y.Id == x.Id)).ToList());
 
+                //Removing all the existing Test Case from the Database
                 _dbContext.CodeSnippetQuestionTestCases.RemoveRange(testCaseToDelete);
                 await _dbContext.SaveChangesAsync();
 
+                //AutoMapping each TestCase to CodeSnippetQuestionTestCases class
+                for (var i = 0; i < testCaseToUpdate.Count; i++)
+                {
+                    Mapper.Map(questionAC.CodeSnippetQuestion.TestCases.ElementAt(i), testCaseToUpdate.ElementAt(i));
+                }
+               
                 _dbContext.CodeSnippetQuestionTestCases.UpdateRange(testCaseToUpdate);
                 await _dbContext.SaveChangesAsync();
 
+                //Adding the new TestCases
+                //Initializing Id of each TestCase to default and creating relationship with CodeSnippetQuestion model
                 foreach (var testCase in testCaseToAdd)
                 {
                     testCase.CodeSnippetQuestion = updatedCodeSnippetQuestion;
@@ -205,10 +214,12 @@ namespace Promact.Trappist.Repository.Questions
                     .Select(x => x.CodeLanguage.Language)
                     .ToListAsync();
 
-                questionAC.CodeSnippetQuestion.TestCases = await _dbContext
+                var testCases = await _dbContext
                     .CodeSnippetQuestionTestCases
                     .Where(x => x.CodeSnippetQuestionId == question.Id)
                     .ToListAsync();
+
+                questionAC.CodeSnippetQuestion.TestCases = Mapper.Map<List<CodeSnippetQuestionTestCasesAC>>(testCases);
             }
 
             return questionAC;

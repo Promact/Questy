@@ -1,5 +1,4 @@
-﻿using Promact.Trappist.DomainModel.Models.Question;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
@@ -19,6 +18,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
         [Required]
         public ICollection<string> LanguageList { get; set; }
 
-        public ICollection<CodeSnippetQuestionTestCases> TestCases { get; set; }
+        public ICollection<CodeSnippetQuestionTestCasesAC> TestCases { get; set; }
     }
 }
