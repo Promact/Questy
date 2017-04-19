@@ -92,5 +92,12 @@
         string TestNameInvalidError { get; }
         #endregion
 
+        #region "Test-Question-Selection"
+
+        string SuccessfullySaved { get; }
+        string NoNewChanges { get; }
+
+        #endregion
+
     }
 }

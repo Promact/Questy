@@ -9,8 +9,8 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170419114708_Test-Question-Selection")]
-    partial class TestQuestionSelection
+    [Migration("20170413112455_TestCaseModelUpdated")]
+    partial class TestCaseModelUpdated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -328,10 +328,6 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("Link");
 
-                    b.Property<int>("OptionOrder");
-
-                    b.Property<int>("QuestionOrder");
-
                     b.Property<DateTime>("StartDate");
 
                     b.Property<string>("TestName")
@@ -349,42 +345,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Test");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CategoryId");
-
-                    b.Property<int>("TestId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestCategory");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("QuestionId");
-
-                    b.Property<int>("TestId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestQuestion");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
@@ -579,32 +539,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
-                        .WithMany()
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
-                        .WithMany()
-                        .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

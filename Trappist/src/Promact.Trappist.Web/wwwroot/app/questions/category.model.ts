@@ -9,4 +9,5 @@ export class Category {
         isAlreadyClicked: boolean;
         selectAll: boolean;
         numberOfQuestion: number;
+        isSelect: boolean;
 } 

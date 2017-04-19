@@ -4,7 +4,7 @@
     <h2>Select questions for each section</h2>
     <md2-accordion class="questions-selection" >
       <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryACList; let k=index">
-        <md2-accordion-header class="collapsible-header clearfix" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
+        <md2-accordion-header class="collapsible-header clearfix"  *ngIf="category.isSelect" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
           <div class="title-info h2 pull-left">
             <span>{{category.categoryName}}</span>
           </div>
@@ -39,19 +39,6 @@
       </md2-accordion-tab>
     </md2-accordion>
   </div>
-  <div class="footer-block clearfix">
-    <div class="container">
-      <ul class="steps pull-left">
-        <li class="h5"><a [routerLink]="['/tests/sections']">Select Sections</a></li>
-        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-        <li class="h5 active"><a [routerLink]="['/tests/questions']">Select Questions</a></li>
-        <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-        <li class="h5"><a [routerLink]="['/tests/settings']">Settings & Schedule</a></li>
-      </ul>
-      <div class="buttons-block pull-right">
-        <button type="button" class="btn" (click)="SaveExit()">Save & Exit</button>
-        <button type="button" class="btn btn-primary" (click)="AddTestQuestion()">Save & Share</button>
-      </div>
-    </div>
-  </div>
+    <create-test-footer  (SaveExit)="SaveExit()" (SaveNext)="SaveNext()">   </create-test-footer>
+ 
 </div>
