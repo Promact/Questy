@@ -114,13 +114,13 @@ namespace Promact.Trappist.Core.Controllers
             }
             if (testObject == null)
                 return BadRequest();
+            if (!await _testRepository.IsTestExists(id))
+                return NotFound();
             if (!await _testRepository.IsTestNameUniqueAsync(testObject.TestName, id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.TestNameExistsError);
                 return BadRequest(ModelState);
             }
-            if (!await _testRepository.IsTestExists(id))
-                return NotFound();
             await _testRepository.UpdateTestByIdAsync(testObject);
             return Ok(testObject);
         }
