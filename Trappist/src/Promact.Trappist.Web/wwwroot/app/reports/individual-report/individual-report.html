@@ -1,1 +1,200 @@
-﻿<h1>Individual Report</h1>
+﻿<div class="individual-report">
+    <div class="test-create-header clearfix">
+        <div class="container">
+            <h1 class="pull-left">
+                <span>BBIT 10-08-2017</span>
+            </h1>
+            <div class="pull-right">
+                <button type="button" class="btn"><em class="material-icons">file_download</em> Download</button>
+                <button type="button" class="btn"><em class="material-icons">print</em> Print</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="report-title-block clearfix">
+            <div class="pull-left">
+                <h2>Candidate Details</h2>
+            </div>
+            <a class="pull-right back-link" [routerLink]="['/reports']">< back to test report</a>
+        </div>
+        <div class="candidate-details-block">
+            <div class="candidate-details-title">
+                <h1 class="mb5">Jane Roe</h1>
+                <p class="mb0">jane.roe@gmail.com</p>
+            </div>
+            <div class="candidate-details-body clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-5 candidate-test-details">
+                    <p><strong>Test Date</strong> Sun Jan 01 2017</p>
+                    <p><strong>Test Finish Status</strong> Auto Submit</p>
+                    <p><strong>Roll No.</strong> 5</p>
+                    <p><strong>Time Taken</strong> 2 hrs 15 mins</p>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
+                    <div class="score">
+                        <h3 class="mb20">Score</h3>
+                        <h1>230</h1>
+                    </div>
+                    <div class="percentage">
+                        <h3 class="mb20">Percentage</h3>
+                        <h1>80 %</h1>
+                    </div>
+                    <div class="percentile">
+                        <h3 class="mb20">Percentile</h3>
+                        <h1>99</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Analysis</h2>
+        <div class="analysis-block">
+            <div class="analysis-title clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h6>Questions</h6>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h6>Difficulty Level</h6>
+                </div>
+            </div>
+            <div class="analysis-body clearfix">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h5>Graph Goes Here</h5>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h5>Graph Goes Here</h5>
+                </div>
+            </div>
+        </div>
+        <h2>Test Details</h2>
+        <div class="test-details-block">
+            <div class="question-score-box clearfix">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    <div class="qs-container">
+                        <p class="qs-num">Q.1</p>
+                        <div class="qs-text">
+                            <p class="question">What is Git?</p>
+                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
+                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
+                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
+                            <p class="ans-option wrong"><span>d.</span> <span>None of the above</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                    <div class="score negative">Score: -1</div>
+                </div>
+            </div>
+            <div class="question-score-box clearfix">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    <div class="qs-container">
+                        <p class="qs-num">Q.2</p>
+                        <div class="qs-text">
+                            <p class="question">Today is Monday, After 61 days, it will be</p>
+                            <p class="ans-option"><span>a.</span> <span>Wednesday</span></p>
+                            <p class="ans-option correct"><span>b.</span> <span>Saturday</span></p>
+                            <p class="ans-option"><span>c.</span> <span>Tuesday</span></p>
+                            <p class="ans-option"><span>d.</span> <span>Thursday</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                    <div class="score positive">Score: +4</div>
+                </div>
+            </div>
+            <div class="question-score-box clearfix">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    <div class="qs-container">
+                        <p class="qs-num">Q.3</p>
+                        <div class="qs-text">
+                            <p class="question">Which type of C++ object can have its elements changed, added to, or removed?</p>
+                            <p class="ans-option"><span>a.</span> <span>String</span></p>
+                            <p class="ans-option"><span>b.</span> <span>Mutable</span></p>
+                            <p class="ans-option"><span>c.</span> <span>MemDev()</span></p>
+                            <p class="ans-option"><span>d.</span> <span>Immutable</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                    <div class="score">Score: 0</div>
+                </div>
+            </div>
+            <div class="question-score-box clearfix">
+                <div class="col-lg-10 col-md-10 col-sm-10">
+                    <div class="qs-container">
+                        <p class="qs-num">Q.4</p>
+                        <div class="qs-text">
+                            <p class="question mb5">Write a program to find the nth prime number in the number series.</p>
+                            <p class="question mb20">Prime number series: 2,3,5,7,11,13</p>
+                            <h4>Compilation: <strong class="theme-text ml10">Successful</strong></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                    <div class="score positive">Score: +4</div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="grid-container">
+                        <table class="trappist-grid">
+                            <thead>
+                                <tr>
+                                    <th class="h5">Name</th>
+                                    <th class="h5">Marks</th>
+                                    <th class="h5">CPU (ms)</th>
+                                    <th class="h5">Processing (ms)</th>
+                                    <th class="h5">Memory (kb)</th>
+                                    <th class="h5">Inputs</th>
+                                    <th class="h5">Expected Output</th>
+                                    <th class="h5">Actual Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Basic - 3</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                    <td>162</td>
+                                    <td>20</td>
+                                    <td>125</td>
+                                    <td>125</td>
+                                </tr>
+                                <tr>
+                                    <td>Basic - 2</td>
+                                    <td>1</td>
+                                    <td>10</td>
+                                    <td>4</td>
+                                    <td>180</td>
+                                    <td>50</td>
+                                    <td>230</td>
+                                    <td>34</td>
+                                </tr>
+                                <tr>
+                                    <td>Basic - 4</td>
+                                    <td>2</td>
+                                    <td>5</td>
+                                    <td>2</td>
+                                    <td>234</td>
+                                    <td>2</td>
+                                    <td>201</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>Basic</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>6</td>
+                                    <td>211</td>
+                                    <td>1</td>
+                                    <td>104</td>
+                                    <td>104</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="ml40 mt20">Candidate Code (in C Language)</p>
+                    <p class="ml40">Code Compilation: 2 Successful out of 12 attempts</p>
+                    <p class="ml40">Code Complexity: 53</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

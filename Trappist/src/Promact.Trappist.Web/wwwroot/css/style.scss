@@ -122,6 +122,14 @@ h6, .h6 {
   margin-right: 10px;
 }
 
+.ml40 {
+  margin-left: 40px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -547,6 +555,10 @@ md2-accordion-tab {
 
       &.correct {
         color: $color_theme;
+      }
+
+      &.wrong {
+        color: $color_yellow;
       }
     }
   }
@@ -1950,113 +1962,219 @@ footer {
 }
 
 /* Reports */
-.test-report {
-  .report-title-block {
-    h2,
-    select {
-      display: inline-block;
-      vertical-align: middle;
-    }
+.report-title-block {
+  h2,
+  select {
+    display: inline-block;
+    vertical-align: middle;
+  }
 
-    select {
-      width: 200px;
-      margin: 0 15px;
-      border-color: $color_base_secondary;
+  select {
+    width: 200px;
+    margin: 0 15px;
+    border-color: $color_base_secondary;
+    color: $color_base;
+    font-size: 13px;
+
+    &:focus {
+      box-shadow: none;
+      border-color: $color_theme;
+    }
+  }
+}
+
+.grid-container {
+  overflow-x: auto;
+}
+
+.trappist-grid {
+  width: 100%;
+  border: 1px solid $color_border;
+  margin-top: 15px;
+  background-color: $color_white;
+
+  thead {
+    background-color: $color_bg_secondary;
+    border-bottom: 1px solid $color_border;
+
+    th {
+      padding: 10px 20px;
       color: $color_base;
-      font-size: 13px;
 
-      &:focus {
-        box-shadow: none;
-        border-color: $color_theme;
+      &[md2SortBy] svg {
+        padding-bottom: 5px;
+        height: 20px;
+        width: 20px;
       }
     }
   }
 
-  .grid-container {
-    overflow-x: auto;
-  }
-
-  .report-grid {
-    width: 100%;
-    border: 1px solid $color_border;
-    margin-top: 15px;
-    background-color: $color_white;
-
-    thead {
-      background-color: $color_bg_secondary;
+  tbody {
+    td {
+      padding: 10px 20px;
       border-bottom: 1px solid $color_border;
+    }
+  }
 
-      th {
-        padding: 10px 20px;
-        color: $color_base;
+  .mat-checkbox-layout {
+    margin-top: -2px;
+  }
 
-        &[md2SortBy] svg {
-          padding-bottom: 5px;
-          height: 20px;
-          width: 20px;
-        }
+  .material-icons {
+    color: $color_base_secondary;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  tfoot {
+    background-color: $color_bg_secondary;
+
+    td {
+      padding: 10px 20px;
+
+      .records-info {
+        font-size: 11px;
+        color: $color_base_secondary;
       }
-    }
 
-    tbody {
-      td {
-        padding: 10px 20px;
-        border-bottom: 1px solid $color_border;
+      md2-pagination {
+        text-align: right;
 
-        &:last-child {
-          text-align: right;
-        }
-      }
-    }
+        .md2-pagination {
+          margin: 0;
 
-    .mat-checkbox-layout {
-      margin-top: -2px;
-    }
+          li {
+            width: 30px;
+            line-height: 28px;
+            border-radius: 0;
+            background-color: $color_white;
+            color: $color_theme;
+            border: 1px solid $color_border;
+            margin-left: -1px;
 
-    .material-icons {
-      color: $color_base_secondary;
-      vertical-align: middle;
-      cursor: pointer;
-    }
+            &:hover {
+              background-color: $color_theme_hover;
+            }
 
-    tfoot {
-      background-color: $color_bg_secondary;
-
-      td {
-        padding: 10px 20px;
-
-        .records-info {
-          font-size: 11px;
-          color: $color_base_secondary;
-        }
-
-        md2-pagination {
-          text-align: right;
-
-          .md2-pagination {
-            margin: 0;
-
-            li {
-              width: 30px;
-              line-height: 28px;
-              border-radius: 0;
-              background-color: $color_white;
-              color: $color_theme;
-              border: 1px solid $color_border;
-              margin-left: -1px;
-
-              &:hover {
-                background-color: $color_theme_hover;
-              }
-
-              &.active {
-                background-color: $color_theme;
-                border-color: $color_theme;
-                color: $color_white;
-              }
+            &.active {
+              background-color: $color_theme;
+              border-color: $color_theme;
+              color: $color_white;
             }
           }
         }
+      }
+    }
+  }
+}
+
+.individual-report {
+
+  .candidate-details-block,
+  .analysis-block,
+  .test-details-block {
+    background-color: $color_white;
+    border: 1px solid $color_border;
+    margin: 20px 0 30px;
+  }
+
+  .candidate-details-title {
+    padding: 15px;
+    border-bottom: 1px solid $color_border;
+  }
+
+  .candidate-details-body {
+    padding: 15px 0;
+
+    .candidate-test-details {
+      p {
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        strong {
+          display: inline-block;
+          width: 136px;
+        }
+      }
+    }
+
+    .candidate-score-details {
+      & > div {
+        display: inline-block;
+        border: 1px solid;
+        width: 140px;
+        text-align: center;
+        padding: 16px 0;
+
+        & + div {
+          margin-left: 15px;
+        }
+
+        &.score {
+          background-color: $color_theme_hover;
+          border-color: $color_theme_secondary;
+        }
+
+        &.percentage {
+          background-color: $color_yellow_light;
+          border-color: $color_yellow_border;
+        }
+
+        &.percentile {
+          background-color: $color_bg_secondary;
+          border-color: $color_base_secondary;
+        }
+      }
+    }
+  }
+
+  .analysis-title {
+    background-color: $color_bg_secondary;
+    text-align: center;
+
+    & > div {
+      padding: 10px 15px;
+
+      &:first-child {
+        border-right: 1px solid $color_border;
+      }
+    }
+  }
+
+  .analysis-body {
+    text-align: center;
+
+    & > div {
+      padding: 30px 15px;
+
+      &:first-child {
+        border-right: 1px solid $color_border;
+      }
+    }
+  }
+
+  .question-score-box {
+    padding: 20px 10px;
+    border-bottom: 1px solid #ededed;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .score {
+      display: inline-block;
+      background-color: $color_bg_secondary;
+      padding: 5px 15px;
+      width: 86px;
+      text-align: center;
+
+      &.negative {
+        background-color: $color_yellow_light;
+      }
+
+      &.positive {
+        background-color: $color_theme_hover;
       }
     }
   }
@@ -2147,5 +2265,13 @@ footer {
 
   .proceed-link {
     width: 250px;
+  }
+
+  .individual-report .candidate-details-body .candidate-score-details > div {
+    width: 120px;
+
+    & + div {
+      margin-left: 10px;
+    }
   }
 }
