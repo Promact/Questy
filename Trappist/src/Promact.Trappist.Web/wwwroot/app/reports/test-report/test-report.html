@@ -26,7 +26,7 @@
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
         <div class="grid-container">
-            <table class="report-grid" [md2Data]="reportData" #report="md2DataTable" [rowsPerPage]="10">
+            <table class="trappist-grid" [md2Data]="reportData" #report="md2DataTable" [rowsPerPage]="10">
                 <thead>
                     <tr>
                         <th><md-checkbox class="only-checkbox"></md-checkbox></th>
@@ -50,7 +50,7 @@
                         <td>{{i.score}}</td>
                         <td>{{i.percentage}}</td>
                         <td><em class="material-icons">file_download</em></td>
-                        <td><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
+                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
                     </tr>
                 </tbody>
                 <tfoot>
