@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses;
@@ -215,7 +214,7 @@ namespace Promact.Trappist.Test.Questions
 
             //Adding code snippet question
             var codingQuestion = await CreateCodingQuestion();
-            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases()
+            codingQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Add(new CodeSnippetQuestionTestCases()
             {
                 TestCaseTitle = "Default Check",
                 TestCaseDescription = "This case is default case",
@@ -235,8 +234,8 @@ namespace Promact.Trappist.Test.Questions
             //Updating code snippet question 
             updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
             updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
-            updatedQuestion.CodeSnippetQuestion.TestCases.Remove(question.CodeSnippetQuestion.CodeSnippetQuestionTestCases.First());
-            updatedQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases
+            updatedQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Remove(codingQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.First());
+            updatedQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Add(new CodeSnippetQuestionTestCases
             {
                 TestCaseTitle = "New check",
                 TestCaseDescription = "This is a new case",
@@ -317,7 +316,7 @@ namespace Promact.Trappist.Test.Questions
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false,
                     LanguageList = new String[] { "Java", "C" },
-                    TestCases = new List<CodeSnippetQuestionTestCases>()
+                    CodeSnippetQuestionTestCases = new List<CodeSnippetQuestionTestCases>()
                     {
                         new CodeSnippetQuestionTestCases()
                         {

@@ -7,10 +7,10 @@ export class CodeSnippetQuestion {
     runCornerTestCase: boolean;
     runNecessaryTestCase: boolean;
     languageList: string[];
-    testCases: CodeSnippetQuestionsTestCases[];
+    codeSnippetQuestionTestCases: CodeSnippetQuestionsTestCases[];
 
     constructor() {
         this.languageList = new Array<string>();
-        this.testCases = new Array<CodeSnippetQuestionsTestCases>();
+        this.codeSnippetQuestionTestCases = new Array<CodeSnippetQuestionsTestCases>();
     }
 }
