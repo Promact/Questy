@@ -78,5 +78,19 @@
         /// </summary>
         string CategoryNameExistsError { get; }
         #endregion
+
+        #region "TestSettings Constants"
+
+        /// <summary>
+        /// Property TestNameExistsError is used to check Test Name uniqueness
+        /// </summary>
+        string TestNameExistsError { get; }
+
+        /// <summary>
+        /// Property TestNameInvalidError is used to check Test Name is not null and it contains valid characters
+        /// </summary>
+        string TestNameInvalidError { get; }
+        #endregion
+
     }
 }
