@@ -27,11 +27,11 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCategoryReady: boolean;
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
-    isTestCaseAdded: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
+    max: number;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
@@ -45,7 +45,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
-        this.isTestCaseAdded = false;
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
@@ -63,7 +62,24 @@ export class QuestionsProgrammingComponent implements OnInit {
      *  Adds test cases of code snippet question
      */
     addTestCases() {
-        this.testCases.push(new CodeSnippetQuestionsTestCases());
+        let testCase = new CodeSnippetQuestionsTestCases();
+        testCase.id = this.findMaxId() + 1;
+        this.testCases.push(testCase);
+    }
+
+    /**
+     * Finds the greatest Id of testcases and increments it
+     */
+    private findMaxId() {
+        return (this.testCases.length === 0 ? 0 : Math.max.apply(Math, this.testCases.map(function (o) { return o.id; })));
+    }
+
+    /**
+     * Removes the test cases of code snippet question 
+     * @param testCaseIndex
+     */
+    removeTestCases(testCaseIndex: number) {
+        this.testCases.splice(testCaseIndex, 1);
     }
 
     /**
@@ -162,6 +178,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isFormSubmitted = true;
 
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            this.testCases.forEach(x => x.id = 0);//Explicitly converting the id of the testcases to zero
             this.questionModel.codeSnippetQuestion.testCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {

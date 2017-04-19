@@ -1,9 +1,13 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdDialog, MdSnackBar } from '@angular/material';
+﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { TestLaunchDialogComponent } from './test-launch-dialog.component';
+import { Router } from '@angular/router';
+import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
+import { FormGroup } from '@angular/forms';
+import { QuestionOrder } from '../enum-questionorder';
+import { OptionOrder } from '../enum-optionorder';
 
 @Component({
     moduleId: module.id,
@@ -22,14 +26,19 @@ export class TestSettingsComponent implements OnInit {
     editName: boolean;
     testNameUpdatedMessage: string;
     testSettingsUpdatedMessage: string;
-
-    constructor(public dialog: MdDialog, private testService: TestService, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
+    testNameRef: string;
+    isTestNameExist: boolean;
+    QuestionOrder = QuestionOrder;
+    OptionOrder = OptionOrder;
+    response: any;
+    errorMessage: string;
+   
+    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
         this.validEndDate = false;
         this.validTime = false;
         this.validStartDate = false;
         this.currentDate = new Date();
-        this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully';
     }
 
@@ -38,7 +47,17 @@ export class TestSettingsComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.getTestSettings(this.testId);
+        this.getTestById(this.testId);
+    }
+
+    /**
+     * Gets the Settings saved for a particular Test
+     * @param id contains the value of the Id from the route
+     */
+    getTestById(id: number) {
+        this.testService.getTestById(id).subscribe((response) => {
+            this.testSettings = (response);
+        });
     }
 
     /**
@@ -52,54 +71,59 @@ export class TestSettingsComponent implements OnInit {
     }
 
     /**
-     * Gets the Settings saved for a particular Test
-     * @param id contains the value of the Id from the route
-     */
-    getTestSettings(id: number) {
-        this.testService.getTestSettings(id).subscribe((response) => {
-            this.testSettings = (response);
-        });
-    }
-
-    /**
-     * Selects the Test Name from the text box containing it on focus
-     * @param $event is used to select the contents of the target text box
-     */
-    selectAllContent($event: any) {
-        $event.target.select();
-    }
-
-    /**
-     * Updates the Edited Test Name in the Database om removing focus
-     * @param id contains the value of the Id from the route
-     * @param testObject is an object of class Test
-     */
-    updateTestName(id: number, testObject: Test) {
-        this.testService.updateTestName(id, testObject).subscribe((response) => {
-            this.openSnackBar(this.testNameUpdatedMessage);
-        });
-    }
-
-    /**
      * Checks the End Date and Time is valid or not
      * @param endDate contains ths the value of the field End Date and Time
      */
     isEndDateValid(endDate: Date) {
-        this.testSettings.startDate > endDate ? this.validEndDate = true : this.validEndDate = false;
+        if (this.testSettings.startDate > endDate) {
+            this.validEndDate = true;
+            this.validStartDate = false;
+        }
+        else
+            this.validEndDate = false;
     }
 
     /**
      * Checks whether the Start Date selected is valid or not
      */
     isStartDateValid() {
-        new Date(this.testSettings.startDate) < this.currentDate || this.testSettings.startDate > this.testSettings.endDate ? this.validStartDate = true : this.validStartDate = false;
+        if ((new Date(this.testSettings.startDate)) < this.currentDate || this.testSettings.startDate > this.testSettings.endDate) {
+            this.validStartDate = true;
+            this.validEndDate = false;
+        }
+        else
+            this.validStartDate = false;
     }
 
     /**
      * Checks whether the Warning Time set is valid
      */
     isWarningTimeValid() {
-        this.testSettings.warningTime >= this.testSettings.duration ? this.validTime = true : this.validTime = false;
+        this.validTime = +this.testSettings.warningTime >= +this.testSettings.duration ? true : false;
+    }
+
+    /**
+    *  Updates the settings edited for the selected Test and redirects to the test dashboard after the settings of the selected Test has been successfully updated
+    * @param id contains the value of the Id from the route
+    * @param testObject is an object of the class Test
+    */
+    saveTestSettings(id: number, testObject: Test) {
+        this.testService.updateTestById(id, testObject).subscribe((response) => {
+            let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
+                duration: 3000,
+            });
+            snackBarRef.afterDismissed().subscribe(() => {
+                this.router.navigate(['/tests']);
+            });
+        },
+            errorHandling => {
+                this.response = errorHandling.json();
+                this.errorMessage = this.response['error'];
+                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
+                    duration : 3000,
+                });
+            },
+        );
     }
 
     /**
@@ -108,10 +132,18 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.testService.updateTestSettings(id, testObject).subscribe((response) => {
+        this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.openSnackBar(this.testSettingsUpdatedMessage);
-        });
-        let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-        instance.testSettingObject = testObject;
+            let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
+            instance.testSettingObject = testObject;
+        },
+            errorHandling => {
+                this.response = errorHandling.json();
+                this.errorMessage = this.response['error'];
+                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
+                    duration: 3000,
+                });
+            },
+        );
     }
 }

@@ -133,5 +133,23 @@
             }
         }
         #endregion
+
+        #region "TestSettings Constants"
+        public string TestNameExistsError
+        {
+            get
+            {
+                return "Test Name Already Exists";
+            }
+        }
+
+        public string TestNameInvalidError
+        {
+            get
+            {
+                return "Test Name is Invalid";
+            }
+        }
+        #endregion
     }
 }

@@ -199,6 +199,9 @@ namespace Promact.Trappist.Test.Questions
             Assert.True(_trappistDbContext.CodeSnippetQuestionTestCases.Count() == 1);
         }
 
+        /// <summary>
+        /// Test to update code snippet question
+        /// </summary>
         [Fact]
         public async Task UpdateCodeSnippetQuestionAsyncTest()
         {
@@ -209,7 +212,7 @@ namespace Promact.Trappist.Test.Questions
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
-            //Adding 
+            //Adding code snippet question
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
@@ -219,6 +222,7 @@ namespace Promact.Trappist.Test.Questions
 
             codingQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
             codingQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
+            codingQuestion.Question.Id = question.Id;
             codingQuestion.Question.QuestionDetail = "Updated question details";
             codingQuestion.Question.DifficultyLevel = DifficultyLevel.Hard;
             codingQuestion.CodeSnippetQuestion.LanguageList = new string[] { "C" };

@@ -3,21 +3,24 @@ using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
-using Promact.Trappist.Utility.ExtensionMethods;
 
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/category")]
     public class CategoryController : Controller
     {
+        #region Private Members
         private readonly ICategoryRepository _categoryRepository;
         private readonly IStringConstants _stringConstants;
+        #endregion
 
+        #region Constructor
         public CategoryController(ICategoryRepository categoryRepository, IStringConstants stringConstants)
         {
             _categoryRepository = categoryRepository;
             _stringConstants = stringConstants;
         }
+        #endregion
 
         #region Category API
         /// <summary>
@@ -42,7 +45,6 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            category.CategoryName = category.CategoryName.AllTrim();
             if (await _categoryRepository.IsCategoryExistAsync(category.CategoryName, category.Id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
@@ -65,7 +67,6 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-            category.CategoryName = category.CategoryName.AllTrim();
             var categoryToUpdate = await _categoryRepository.GetCategoryByIdAsync(category.Id);
             if (categoryToUpdate == null)
             {
@@ -78,7 +79,7 @@ namespace Promact.Trappist.Core.Controllers
             }
             categoryToUpdate.CategoryName = category.CategoryName;
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
-            return Ok(category);
+            return Ok(categoryToUpdate);
         }
 
         /// <summary>

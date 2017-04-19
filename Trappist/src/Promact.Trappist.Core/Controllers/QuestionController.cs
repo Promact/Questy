@@ -13,14 +13,18 @@ namespace Promact.Trappist.Core.Controllers
     [Authorize]
     public class QuestionController : Controller
     {
+        #region Private Member
         private readonly IQuestionRepository _questionsRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        #endregion
 
+        #region Constructor
         public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager)
         {
             _questionsRepository = questionsRepository;
             _userManager = userManager;
         }
+        #endregion
 
         #region Question API
         /// <summary>
@@ -51,7 +55,7 @@ namespace Promact.Trappist.Core.Controllers
                     await _questionsRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
                 }
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
                 return BadRequest();
             }
