@@ -7,7 +7,6 @@ import { QuestionBase } from '../questions/question';
 
 export class TestService {
     private testApiUrl = 'api/tests';
-    //private questionApiUrl = 'api/question';
     private testNameApiUrl = 'api/tests/isUnique';
     constructor(private httpService: HttpService) {
     }

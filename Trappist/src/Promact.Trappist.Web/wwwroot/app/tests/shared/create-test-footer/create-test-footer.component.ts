@@ -26,6 +26,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
+    @Output() SaveExit: any;
+    @Output() SaveNext: any;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -33,6 +35,8 @@ export class CreateTestFooterComponent implements OnInit {
         this.isTestSettings = false;
         this.saveTestSettings = new EventEmitter();
         this.launchTestDialog = new EventEmitter();
+        this.SaveExit = new EventEmitter();
+        this.SaveNext = new EventEmitter();
     }
 
     /**
@@ -48,7 +52,7 @@ export class CreateTestFooterComponent implements OnInit {
      */
     getComponent() {
         this.isTestSection = this.router.url === '/tests/sections/' + this.testId ? true : false;
-        this.isTestQuestion = this.router.url === '/tests/questions/' + this.testId ? true : false;
+        this.isTestQuestion = this.router.url === '/tests/' + this.testId +'/questions' ? true : false;
         this.isTestSettings = this.router.url === '/tests/' + this.testId + '/settings' ? true : false;
     }
 
@@ -64,5 +68,17 @@ export class CreateTestFooterComponent implements OnInit {
      */
     launchTestDialogBox() {
         this.launchTestDialog.emit();
+    }
+    /**
+     * Emits the event SaveExit in test-questions.component
+     */
+    saveAndExit() {
+        this.SaveExit.emit();
+    }
+    /**
+     * Emits the event AddTestQuestionin test-questions.component
+     */
+    addTestQuestions() {
+        this.SaveNext.emit();
     }
 }
