@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses;
@@ -229,10 +230,13 @@ namespace Promact.Trappist.Test.Questions
                 .Question
                 .FirstOrDefaultAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
 
-            codingQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
-            codingQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
-            codingQuestion.CodeSnippetQuestion.TestCases.Remove(codingQuestion.CodeSnippetQuestion.TestCases.First());
-            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases
+            var updatedQuestion = await _questionRepository.GetQuestionByIdAsync(question.Id);
+
+            //Updating code snippet question 
+            updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
+            updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
+            updatedQuestion.CodeSnippetQuestion.TestCases.Remove(question.CodeSnippetQuestion.CodeSnippetQuestionTestCases.First());
+            updatedQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases
             {
                 TestCaseTitle = "New check",
                 TestCaseDescription = "This is a new case",
@@ -241,23 +245,23 @@ namespace Promact.Trappist.Test.Questions
                 TestCaseInput = "1+1",
                 TestCaseOutput = "2",
             });
-            codingQuestion.Question.QuestionDetail = "Updated question details";
-            codingQuestion.Question.DifficultyLevel = DifficultyLevel.Hard;
-            codingQuestion.CodeSnippetQuestion.LanguageList = new string[] { "C" };
-            codingQuestion.Question.Id = question.Id;
-            await _questionRepository.UpdateCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+            updatedQuestion.Question.QuestionDetail = "Updated question details";
+            updatedQuestion.Question.DifficultyLevel = DifficultyLevel.Hard;
+            updatedQuestion.CodeSnippetQuestion.LanguageList = new string[] { "C" };
+            updatedQuestion.Question.Id = question.Id;
+            await _questionRepository.UpdateCodeSnippetQuestionAsync(updatedQuestion, applicationUser.Id);
 
-            var updatedQuestion = await _trappistDbContext
+            var questionAfterUpdate = await _trappistDbContext
                 .Question
                 .Include(x => x.CodeSnippetQuestion)
                 .ThenInclude(x => x.QuestionLanguangeMapping)
                 .FirstOrDefaultAsync(x => x.Id == question.Id);
 
-            Assert.True(string.Equals(updatedQuestion.QuestionDetail, codingQuestion.Question.QuestionDetail, StringComparison.CurrentCultureIgnoreCase));
-            Assert.True(updatedQuestion.DifficultyLevel == codingQuestion.Question.DifficultyLevel);
-            Assert.True(updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity == codingQuestion.CodeSnippetQuestion.CheckCodeComplexity);
-            Assert.True(updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity == codingQuestion.CodeSnippetQuestion.CheckTimeComplexity);
-            Assert.True(updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping.Count == 1);
+            Assert.True(string.Equals(questionAfterUpdate.QuestionDetail, updatedQuestion.Question.QuestionDetail, StringComparison.CurrentCultureIgnoreCase));
+            Assert.True(questionAfterUpdate.DifficultyLevel == updatedQuestion.Question.DifficultyLevel);
+            Assert.True(questionAfterUpdate.CodeSnippetQuestion.CheckCodeComplexity == updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity);
+            Assert.True(questionAfterUpdate.CodeSnippetQuestion.CheckTimeComplexity == updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity);
+            Assert.True(questionAfterUpdate.CodeSnippetQuestion.QuestionLanguangeMapping.Count == 1);
         }
 
         [Fact]
@@ -279,6 +283,9 @@ namespace Promact.Trappist.Test.Questions
 
             var questionFetched = await _questionRepository.GetQuestionByIdAsync(codeSnippetQuestion.Id);
             Assert.NotNull(questionFetched);
+
+            var nullQuestion = await _questionRepository.GetQuestionByIdAsync(-1);
+            Assert.Null(nullQuestion);
 
             questionFetched = await _questionRepository.GetQuestionByIdAsync(singleMultipleQuestion.Id);
             Assert.NotNull(questionFetched);
