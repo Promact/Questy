@@ -108,8 +108,7 @@ namespace Promact.Trappist.Repository.Questions
             });
             return languageNameList;
         }
-
-
+        
         public async Task UpdateCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var updatedQuestion = await _dbContext.Question.FindAsync(questionAC.Question.Id);
@@ -126,10 +125,10 @@ namespace Promact.Trappist.Repository.Questions
             {
                 _dbContext.Question.Update(updatedQuestion);
                 await _dbContext.SaveChangesAsync();
-                
+
                 _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
-                 
+
                 //Handling updated TestCases
                 //Removing all the existing Test Case from the Database
                 var testCaseToUpdate = testCases.Where(x => questionAC.CodeSnippetQuestion.TestCases.Any(y => y.Id == x.Id)).ToList();
@@ -142,7 +141,7 @@ namespace Promact.Trappist.Repository.Questions
                 _dbContext.CodeSnippetQuestionTestCases.UpdateRange(testCaseToUpdate);
                 await _dbContext.SaveChangesAsync();
 
-                foreach(var testCase in testCaseToAdd)
+                foreach (var testCase in testCaseToAdd)
                 {
                     testCase.CodeSnippetQuestion = updatedCodeSnippetQuestion;
                     testCase.Id = 0;
