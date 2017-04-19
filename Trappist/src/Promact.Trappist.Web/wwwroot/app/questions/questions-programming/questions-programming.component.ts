@@ -29,6 +29,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCategoryReady: boolean;
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
+    isQuestionEditted: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
@@ -48,6 +49,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
+        this.isQuestionEditted = false;
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
@@ -242,29 +244,21 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);
             });
-            if (!this.isQuestionEditted) {
-                this.questionsService.addCodingQuestion(this.questionModel).subscribe(
-                    (response) => {
-                        this.openSnackBar(this.successMessage, true, this.routeToDashboard);
-                    },
-                    err => {
-                        this.openSnackBar(this.failedMessage);
-                        //Release the form for user to retry
-                        this.isFormSubmitted = false;
-                    }
-                );
-            } else {
-                this.questionsService.updateQuestionById(this.questionId, this.questionModel).subscribe(
-                    (response) => {
-                        this.openSnackBar(this.successMessage, true, this.routeToDashboard);
-                    },
-                    err => {
-                        this.openSnackBar(this.failedMessage);
-                        //Release the form for user to retry
-                        this.isFormSubmitted = false;
-                    }
-                );
-            }
+
+            var subscription = this.isQuestionEditted
+                ? this.questionsService.updateQuestionById(this.questionId, this.questionModel)
+                : this.questionsService.addCodingQuestion(this.questionModel);
+
+            subscription.subscribe(
+                (response) => {
+                    this.openSnackBar(this.successMessage, true, this.routeToDashboard);
+                },
+                err => {
+                    this.openSnackBar(this.failedMessage);
+                    //Release the form for user to retry
+                    this.isFormSubmitted = false;
+                }
+            );
         }
     }
 }

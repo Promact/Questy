@@ -114,12 +114,10 @@ namespace Promact.Trappist.Test
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
-                cfg.CreateMap<QuestionDetailAC, Question>();
-                cfg.CreateMap<Question, QuestionDetailAC>();
-                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
-                cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
+                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ReverseMap();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ReverseMap();
+                cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
+                cfg.CreateMap<CodeSnippetQuestionTestCasesAC, CodeSnippetQuestionTestCases>().ReverseMap();
             });
             #endregion
 

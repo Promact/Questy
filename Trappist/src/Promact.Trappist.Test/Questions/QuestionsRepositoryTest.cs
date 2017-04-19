@@ -215,7 +215,7 @@ namespace Promact.Trappist.Test.Questions
 
             //Adding code snippet question
             var codingQuestion = await CreateCodingQuestion();
-            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases()
+            codingQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCasesAC()
             {
                 TestCaseTitle = "Default Check",
                 TestCaseDescription = "This case is default case",
@@ -235,8 +235,8 @@ namespace Promact.Trappist.Test.Questions
             //Updating code snippet question 
             updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity = false;
             updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity = false;
-            updatedQuestion.CodeSnippetQuestion.TestCases.Remove(question.CodeSnippetQuestion.CodeSnippetQuestionTestCases.First());
-            updatedQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCases
+            updatedQuestion.CodeSnippetQuestion.TestCases.Remove(codingQuestion.CodeSnippetQuestion.TestCases.First());
+            updatedQuestion.CodeSnippetQuestion.TestCases.Add(new CodeSnippetQuestionTestCasesAC
             {
                 TestCaseTitle = "New check",
                 TestCaseDescription = "This is a new case",
@@ -317,9 +317,9 @@ namespace Promact.Trappist.Test.Questions
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false,
                     LanguageList = new String[] { "Java", "C" },
-                    TestCases = new List<CodeSnippetQuestionTestCases>()
+                    TestCases = new List<CodeSnippetQuestionTestCasesAC>()
                     {
-                        new CodeSnippetQuestionTestCases()
+                        new CodeSnippetQuestionTestCasesAC()
                         {
                             TestCaseTitle = "Necessary check",
                             TestCaseDescription = "This case must be successfuly passed",
