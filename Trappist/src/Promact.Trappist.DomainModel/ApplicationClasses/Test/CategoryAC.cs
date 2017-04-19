@@ -1,5 +1,4 @@
 ﻿
-
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using System.Collections.Generic;
 
