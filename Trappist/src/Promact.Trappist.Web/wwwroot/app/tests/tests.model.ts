@@ -18,3 +18,19 @@ export class Test {
     public optionOrder: TestOrder;
 }
 
+export class TestCategory {
+    public id: number;
+    public categoryId: number;
+    public testId: number;
+}
+
+export class TestQuestion {
+    public id: number;
+    public testId: number;
+    public questionId: number;
+    public testCategoryId: number;
+    public isSelect: boolean;
+}
+
+
+

@@ -1,4 +1,5 @@
 ﻿export class Category {
         id: number;
-        categoryName: string;   
+        categoryName: string;
+        isSelect: boolean;
 } 
