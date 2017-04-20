@@ -8,9 +8,17 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <summary>
         /// This method used for register test attendee for the test.
         /// </summary>
-        /// <param name="model">This model object contain test attendee credential which are first name, last name, email, roll number, contact number</param>
+        /// <param name="testAttendee">This model object contain test attendee credential which are first name, last name, email, roll number, contact number</param>
         /// <param name="magicString">This parameter contain test link</param>
-        /// <returns> It will return true if test attendee successfully registered else it will return false.</returns>
-        Task<bool> RegisterTestAttendeesAsync(TestAttendees model, string magicString);
+        /// <returns></returns>
+        Task RegisterTestAttendeesAsync(TestAttendees testAttendee, string magicString);
+
+        /// <summary>
+        /// This method used for check test attendee already exist for this test.
+        /// </summary>
+        /// <param name="testAttendee">This model object contain test attendee credential which are first name,last name,email,roll number,contact number</param>
+        /// <param name="magicString">This parameter contain test link</param>
+        /// <returns>If test attendee exist then return true else return false.</returns>
+        Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString);
     }
 }

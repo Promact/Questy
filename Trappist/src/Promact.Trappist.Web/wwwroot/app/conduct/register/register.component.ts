@@ -26,14 +26,9 @@ export class RegisterComponent {
         this.registrationUrl = window.location.pathname;
         this.magicString = this.registrationUrl.substring(this.registrationUrl.indexOf('/conduct/') + 9, this.registrationUrl.indexOf('/register'));
         this.conductService.registerTestAttendee(this.magicString, this.testAttendees).subscribe(response => {
-            if (response === true) {
                 this.isErrorMessage = false;
                 this.loader = false;
                 this.router.navigate(['instructions']);
-            }
-            else
-                this.isErrorMessage = true;
-            this.loader = false;
         }, err => {
             this.isErrorMessage = true;
             this.loader = false;

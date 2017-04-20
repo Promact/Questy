@@ -25,14 +25,21 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// This method used for register test attendee for the current test.
         /// </summary>
-        /// <param name="model">This model object contain test attendee credential which are first name, last name, email, roll number, contact number</param>
+        /// <param name="testAttendee">This model object contain test attendee credential which are first name, last name, email, roll number, contact number</param>
         /// <param name="magicString">This parameter contain test link</param>
-        /// <returns>It will return true if test attendee successfully registered else it will return false.</returns>
+        /// <returns>It will return true response if test attendee successfully registered else it will return bad request.</returns>
         [HttpPost("{magicString}/register")]
-        public async Task<IActionResult> RegisterTestAttendeesAsync([FromBody]TestAttendees model, [FromRoute]string magicString)
+        public async Task<IActionResult> RegisterTestAttendeesAsync([FromBody]TestAttendees testAttendee, [FromRoute]string magicString)
         {
             if (ModelState.IsValid)
-                return Ok(await _testConductRepository.RegisterTestAttendeesAsync(model, magicString));
+            {
+                if (!await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
+                {
+                    await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
+                    return Ok(true);
+                }
+                return BadRequest();
+            }
             return BadRequest();
         }
         #endregion
