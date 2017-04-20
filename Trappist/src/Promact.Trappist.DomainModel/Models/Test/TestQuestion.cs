@@ -7,9 +7,10 @@ namespace Promact.Trappist.DomainModel.Models.Test
     {
         [Key]
         public int Id { get; set; }
-        public int TestId { get; set; }
-        public int QuestionId { get; set; }
 
+        public int TestId { get; set; }
+
+        public int QuestionId { get; set; }
 
         [ForeignKey("QuestionId")]
         public virtual Question.Question Question { get; set; }
