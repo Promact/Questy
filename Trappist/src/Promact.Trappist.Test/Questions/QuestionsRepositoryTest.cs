@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Trappist.Test.Questions
 {
@@ -52,7 +51,7 @@ namespace Promact.Trappist.Test.Questions
             var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id);
             Assert.True(result.Count() == 1);
         }
-        
+
         /// <summary>
         /// Test to add single answer Question
         /// </summary>

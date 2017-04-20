@@ -157,7 +157,7 @@
         {
             get
             {
-                return "Question Exist In Test";
+                return "Question Exist In Test.Question Cannot Be Deleted";
             }
         }
         #endregion
