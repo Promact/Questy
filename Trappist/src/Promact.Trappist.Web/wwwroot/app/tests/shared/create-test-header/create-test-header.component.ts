@@ -19,6 +19,7 @@ export class CreateTestHeaderComponent implements OnInit {
     isTestNameExist: boolean;
     testNameRef: string;
     isEditButtonVisible: boolean;
+    isLabelVisible: boolean;
     id: number;
     @Input('testSettings')
     public testSettings: Test;
@@ -27,6 +28,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.isTestNameExist = false;
         this.isEditButtonVisible = true;
+        this.isLabelVisible = true;
     }
 
     /**
@@ -59,6 +61,7 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     hideEditButton() {
         this.isEditButtonVisible = false;
+        this.isLabelVisible = false;
     }
 
     /**
@@ -67,6 +70,7 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     showEditButton(testName: string) {
         this.isEditButtonVisible = true;
+        this.isLabelVisible = true;
         this.id = this.testSettings.id;
         this.testService.getTestById(this.id).subscribe((name) => {
             this.testSettings = (name);
@@ -88,10 +92,13 @@ export class CreateTestHeaderComponent implements OnInit {
             if (isTestNameUnique) {
                 this.testService.updateTestName(id, testObject).subscribe((response) => {
                     this.openSnackBar(this.testNameUpdatedMessage);
+                    this.isLabelVisible = true;
+                    this.isEditButtonVisible = true;
                 });
             }
             else {
                 this.isTestNameExist = true;
+                this.isLabelVisible = false;
             }
         },
         );

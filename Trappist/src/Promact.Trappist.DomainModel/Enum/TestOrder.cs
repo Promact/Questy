@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Promact.Trappist.DomainModel.Enum
 {
-    public enum QuestionOrder
+    public enum TestOrder
     {
         Fixed,
         Random

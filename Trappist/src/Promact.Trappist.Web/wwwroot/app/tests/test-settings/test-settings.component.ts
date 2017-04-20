@@ -6,8 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
-import { QuestionOrder } from '../enum-questionorder';
-import { OptionOrder } from '../enum-optionorder';
+import { TestOrder } from '../enum-testorder';
 
 @Component({
     moduleId: module.id,
@@ -28,8 +27,8 @@ export class TestSettingsComponent implements OnInit {
     testSettingsUpdatedMessage: string;
     testNameRef: string;
     isTestNameExist: boolean;
-    QuestionOrder = QuestionOrder;
-    OptionOrder = OptionOrder;
+    QuestionOrder = TestOrder;
+    OptionOrder = TestOrder;
     response: any;
     errorMessage: string;
    

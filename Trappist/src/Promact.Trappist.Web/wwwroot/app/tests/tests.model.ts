@@ -1,6 +1,5 @@
-﻿import { QuestionOrder } from './enum-questionorder';
-import { OptionOrder } from './enum-optionorder';
-
+﻿import { TestOrder } from './enum-testorder';
+ 
 export class Test {
     public id: number;
     public testName: string;
@@ -15,7 +14,7 @@ export class Test {
     public correctMarks: string;
     public incorrectMarks: string;
     public browserTolerance: number;
-    public questionOrder: QuestionOrder;
-    public optionOrder: OptionOrder;
+    public questionOrder: TestOrder;
+    public optionOrder: TestOrder;
 }
 
