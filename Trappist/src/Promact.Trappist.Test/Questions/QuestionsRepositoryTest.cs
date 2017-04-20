@@ -284,13 +284,11 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
             //Get code-snippet Question
             var questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
-            var question = await _questionRepository.GetQuestionByIdAsync(questionId);
             //Add single-multiple Question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
             //Get single-Multiple Question
             questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
-            question = await _questionRepository.GetQuestionByIdAsync(questionId);
             //True if single-multiple and code-snippet Questions are found
             Assert.True(_trappistDbContext.Question.Count() == 2);
         }
