@@ -151,6 +151,58 @@ namespace Promact.Trappist.Core.Controllers
             return NoContent();
         }
         #endregion
+        #region Category Selection
+        public async Task<TestAC> GetTestDetailsByIdAsync(int id)
+        {
+            var testobj = await _dbContext.Test.FindAsync(id);
+            var testACObj = Mapper.Map<Test, TestAC>(testobj);
+            testACObj.Category = new List<CategoryAC>();
+            var tests = _dbContext.Test.ToList();
+            var testCategories = _dbContext.TestCategory.Where(x => x.TestId == id).ToList();
+            List<Category> categoryList = _dbContext.Category.ToList();
+            var categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            foreach (var category in categorylist)
+            {
+                if (testCategories.Exists(x => x.CategoryId == category.Id))
+                    category.IsSelect = true;
+            }
+            testACObj.Category = categorylist;
+            return testACObj;
+        }
+
+        /// <summary>
+        /// this method is used to add the selected categories from category list to the TestCategory model
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>testCategory</returns>
+        [HttpPost("addSelectedCategories")]
+        public async Task<ActionResult> AddSelectedCategories([FromBody] List<TestCategory> testCategory)
+        {
+            await _testRepository.AddSelectedCategoryAsync(testCategory);
+            return Ok(testCategory);
+        }
+
+        /// <summary>
+        /// this method is used to check whether question from selected category is added in test or not
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="testId"></param>
+        /// <returns>boolean</returns>
+        [HttpGet("deselectCategory/{categoryId}/{testId}")]
+        public async Task<bool> DeselectCategoryAsync([FromRoute] int categoryId, [FromRoute] int testId)
+        {
+            var category = await _testRepository.DeselectCategoryAync(categoryId, testId);
+            return category;
+        }
+
+        [HttpDelete("deselectCategory/{id}")]
+
+        public async Task<ActionResult> DeleteCategoriesAsync([FromRoute] int id)
+        {
+            await _testRepository.DeleteCategoryAsync(id);
+            return Ok();
+        }
+        #endregion
         #region Test-Question-Selection
         /// <summary>
         /// Gets all the questions present in a category by its id

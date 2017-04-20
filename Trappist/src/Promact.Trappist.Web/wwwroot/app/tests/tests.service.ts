@@ -69,6 +69,20 @@ export class TestService {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
     }
 
+    
+
+    addSelectedCategories(testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories', testCategory);
+    }
+
+    removeDeselectedCategory(id: number) {
+        return this.httpService.delete(this.testApiUrl + '/' + 'deselectCategory' + '/' + id)
+    }
+
+    deselectCategory(categoryId: number, testId: number) {
+        return this.httpService.get(this.testApiUrl + '/' + 'deselectCategory' + '/' + categoryId + '/' + testId)
+    }
+
     /**
      * Gets the questions of a particular category in a "Test"
      * @param testId is passed to identify that particular "Test"
