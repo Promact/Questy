@@ -8,6 +8,7 @@ using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Threading.Tasks;
+
 namespace Promact.Trappist.Core.Controllers
 {
     [Route("api/question")]
@@ -21,7 +22,7 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Constructor
-        public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager)
+        public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager, IStringConstants stringConstants)
         {
             _questionsRepository = questionsRepository;
             _userManager = userManager;
@@ -139,16 +140,19 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
+
             var questionToDelete = await _questionsRepository.GetQuestionByIdAsync(id);
             if (questionToDelete == null)
             {
                 return NotFound();
             }
-            if (await _questionsRepository.IsQuestionExistInTest(id))
+
+            if (await _questionsRepository.IsQuestionExistInTestAsync(id))
             {
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.QuestionExistInTestError);
                 return BadRequest(ModelState);
             }
+
             await _questionsRepository.DeleteQuestionAsync(questionToDelete);
             return NoContent();
         }

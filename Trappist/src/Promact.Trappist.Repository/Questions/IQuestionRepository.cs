@@ -65,11 +65,11 @@ namespace Promact.Trappist.Repository.Questions
         Task<Question> GetQuestionByIdAsync(int id);
 
         /// <summary>
-        /// Method to check Question exists in test or not
+        /// Method to check Question exist in test or not
         /// </summary>
         /// <param name="id">Id to check Question</param>
         /// <returns>True if exist else false</returns>
-        Task<bool> IsQuestionExistInTest(int id);
+        Task<bool> IsQuestionExistInTestAsync(int id);
 
         /// <summary>
         /// Method to delete Question
