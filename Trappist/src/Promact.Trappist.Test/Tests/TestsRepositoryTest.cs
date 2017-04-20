@@ -336,7 +336,7 @@ namespace Promact.Trappist.Test.Tests
             _trappistDbContext.TestCategory.Add(testCategory);
             await _trappistDbContext.SaveChangesAsync();
             var testAC = await _testRepository.GetTestDetailsByIdAsync(test.Id);
-            Assert.Equal(1, testAC.CategoryACList.Count());
+            Assert.Equal(1, testAC.CategoryAcList.Count());
         }
     }
 }
