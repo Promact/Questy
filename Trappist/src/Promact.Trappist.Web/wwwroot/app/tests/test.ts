@@ -5,6 +5,6 @@ import { QuestionBase } from '../questions/question';
 export class TestDetails {
     id: number;
     testName: string;
-    categoryACList: Category[] = [];
+    categoryAcList: Category[] = [];
     questionAC: QuestionBase[] = [];
 }
