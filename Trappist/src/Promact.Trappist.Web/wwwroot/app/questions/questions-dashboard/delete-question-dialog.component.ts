@@ -9,15 +9,15 @@ import { MdDialogRef, MdSnackBar } from '@angular/material';
     templateUrl: 'delete-question-dialog.html'
 })
 export class DeleteQuestionDialogComponent {
-    private response: any;
+    private response: JSON;
 
     successMessage: string;
     errorMessage: string;
     question: Question;
 
     constructor(private questionService: QuestionsService, private dialogRef: MdDialogRef<DeleteQuestionDialogComponent>, public snackBar: MdSnackBar) {
-        this.successMessage = 'Question Deleted Successfully';
-        this.errorMessage = 'Some Error Occured.Question Cannot Be Deleted';
+        this.successMessage = 'Question deleted successfully';
+        this.errorMessage = 'Some error occurred.Question cannot be deleted';
     }
 
     /**
