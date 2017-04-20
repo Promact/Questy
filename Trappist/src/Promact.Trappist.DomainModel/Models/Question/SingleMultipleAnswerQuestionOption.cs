@@ -5,9 +5,12 @@ namespace Promact.Trappist.DomainModel.Models.Question
     {
         [Required]
         public string Option { get; set; }
+
         [Required]
         public bool IsAnswer { get; set; }
+
         public int SingleMultipleAnswerQuestionID { get; set; }
+
         public virtual SingleMultipleAnswerQuestion SingleMultipleAnswerQuestion { get; set; }
    }
 }
