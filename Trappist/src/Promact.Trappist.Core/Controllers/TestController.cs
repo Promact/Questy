@@ -152,23 +152,7 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion
         #region Category Selection
-        public async Task<TestAC> GetTestDetailsByIdAsync(int id)
-        {
-            var testobj = await _dbContext.Test.FindAsync(id);
-            var testACObj = Mapper.Map<Test, TestAC>(testobj);
-            testACObj.Category = new List<CategoryAC>();
-            var tests = _dbContext.Test.ToList();
-            var testCategories = _dbContext.TestCategory.Where(x => x.TestId == id).ToList();
-            List<Category> categoryList = _dbContext.Category.ToList();
-            var categorylist = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
-            foreach (var category in categorylist)
-            {
-                if (testCategories.Exists(x => x.CategoryId == category.Id))
-                    category.IsSelect = true;
-            }
-            testACObj.Category = categorylist;
-            return testACObj;
-        }
+                  
 
         /// <summary>
         /// this method is used to add the selected categories from category list to the TestCategory model
