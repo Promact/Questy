@@ -50,6 +50,11 @@ namespace Promact.Trappist.Repository.Questions
 
                 //Add single/multiple question and option
                 singleMultipleAnswerQuestion.Question = question;
+                singleMultipleAnswerQuestion.CreatedDateTime = DateTime.UtcNow;
+                foreach (SingleMultipleAnswerQuestionOption option in singleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption)
+                {
+                    option.CreatedDateTime = DateTime.UtcNow;
+                }
                 await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleAnswerQuestion);
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
@@ -144,7 +149,6 @@ namespace Promact.Trappist.Repository.Questions
                         LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                     });
                 }
-
                 updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
@@ -153,15 +157,22 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task UpdateSingleMultipleAnswerQuestionAsync(int questionId, QuestionAC questionAC, string userId)
         {
+            var question = new Question();
+            var updatedQuestion = await _dbContext.Question.FindAsync(questionId);
+
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                var updatedQuestion = await _dbContext.Question.FindAsync(questionId);
                 await _dbContext.Entry(updatedQuestion).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
                 await _dbContext.Entry(updatedQuestion.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
 
                 Mapper.Map(questionAC.Question, updatedQuestion);
                 Mapper.Map(questionAC, updatedQuestion);
-                            
+
+                //Update Question details
+                updatedQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(x => x.Id == 0).ToList().ForEach(x => x.CreatedDateTime = DateTime.UtcNow);
+                updatedQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(x => x.Id != 0).ToList().ForEach(x => x.UpdateDateTime = DateTime.UtcNow);
+                questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(x => x.Id = 0);
+                updatedQuestion.SingleMultipleAnswerQuestion.UpdateDateTime = DateTime.UtcNow;
                 updatedQuestion.UpdatedByUserId = userId;
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();

@@ -154,7 +154,6 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
-                cfg.CreateMap<SingleMultipleAnswerQuestionOptionAC, SingleMultipleAnswerQuestionOption>().ReverseMap();
             });
             #endregion
         }
