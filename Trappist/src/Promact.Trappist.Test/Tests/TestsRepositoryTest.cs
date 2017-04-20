@@ -12,7 +12,6 @@ using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Promact.Trappist.Repository.Questions;
 using AutoMapper;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Test.Tests
