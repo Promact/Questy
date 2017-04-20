@@ -22,7 +22,6 @@ export class TestSettingsComponent implements OnInit {
     validTime: boolean;
     validStartDate: boolean;
     currentDate: Date;
-    editName: boolean;
     testNameUpdatedMessage: string;
     testSettingsUpdatedMessage: string;
     testNameRef: string;
