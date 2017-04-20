@@ -76,7 +76,7 @@ export class TestService {
     }
 
     getTestDetails(id: number) {
-        return this.httpService.get(this.testApiUrl + '/' + 'Categories' + '/' + id);
+        return this.httpService.get(this.testApiUrl + '/' + 'categories' + '/' + id);
     }
 
     addSelectedCategories(testCategory: any) {

@@ -21,7 +21,7 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
     imports: [
         SharedModule,
         testsRouting,
-        ClipboardModule
+        ClipboardModule,
     ],
     declarations: [
         TestsComponent,

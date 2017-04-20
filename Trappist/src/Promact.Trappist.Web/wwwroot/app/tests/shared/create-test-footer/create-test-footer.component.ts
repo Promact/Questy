@@ -26,6 +26,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
+    @Output() SaveAndExit: any;
+    @Output() SaveAndNext: any;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -33,6 +35,8 @@ export class CreateTestFooterComponent implements OnInit {
         this.isTestSettings = false;
         this.saveTestSettings = new EventEmitter();
         this.launchTestDialog = new EventEmitter();
+        this.SaveAndExit = new EventEmitter();
+        this.SaveAndNext = new EventEmitter();
     }
 
     /**
@@ -47,7 +51,7 @@ export class CreateTestFooterComponent implements OnInit {
      * Displays the Component whose route matches that of the url
      */
     getComponent() {
-        this.isTestSection = this.router.url === '/tests/sections/' + this.testId ? true : false;
+        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections'  ? true : false;
         this.isTestQuestion = this.router.url === '/tests/questions/' + this.testId ? true : false;
         this.isTestSettings = this.router.url === '/tests/' + this.testId + '/settings' ? true : false;
     }
@@ -64,5 +68,13 @@ export class CreateTestFooterComponent implements OnInit {
      */
     launchTestDialogBox() {
         this.launchTestDialog.emit();
+    }
+
+    saveSelectedCategoryAndExit() {
+        this.SaveAndExit.emit();
+    }
+
+    saveSelectedCategoryAndMoveNext() {
+        this.SaveAndNext.emit();
     }
 }

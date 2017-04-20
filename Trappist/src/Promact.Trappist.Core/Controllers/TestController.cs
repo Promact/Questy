@@ -165,7 +165,7 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion
         #region Category Selection
-        [HttpGet("Categories/{id}")]
+        [HttpGet("categories/{id}")]
         public async Task<ActionResult> GetTestDetail([FromRoute] int id)
         {
             return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
