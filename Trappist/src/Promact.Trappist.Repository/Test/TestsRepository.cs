@@ -23,17 +23,12 @@ namespace Promact.Trappist.Repository.Tests
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         private readonly IStringConstants _stringConstants;
-        private QuestionAC questionAc;
-        private TestAC testACObject;
-        private TestQuestion testQuestionObj;
-        private bool isDeleted = false;
-
 
         public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants)
         {
             _dbContext = dbContext;
             _util = util;
-            _stringConstants = stringConstants;    
+            _stringConstants = stringConstants;
         }
         #region Test
         /// <summary>
@@ -106,73 +101,74 @@ namespace Promact.Trappist.Repository.Tests
         #region Test-Question-Selection
         public async Task<List<QuestionAC>> GetAllTestCategoryQuestionsByIdAsync(int testId, int categoryId)
         {
-            List<QuestionAC> questionListAC = new List<QuestionAC>();
-            var testQuestionList = await _dbContext.TestQuestion.Where(x=>x.TestId == testId).ToListAsync();
+            QuestionAC questionAc = new QuestionAC();
+            List<QuestionAC> questionListAc = new List<QuestionAC>();
+            var testQuestionList = await _dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
             var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
-                     
-                 questionList.ForEach(question=> 
-                 { 
-                
-                    questionAc = new QuestionAC();
-                    questionAc.Question = Mapper.Map<Question, QuestionDetailAC>(question);
-                    questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
-                    if (testQuestionList.Exists(x=> x.QuestionId == questionAc.Question.Id && x.TestId == testId))
-                        questionAc.Question.IsSelect = true;
-                questionListAC.Add(questionAc);
-                });
-            return questionListAC;
+
+            questionList.ForEach(question =>
+            {
+                questionAc = new QuestionAC();
+                questionAc.Question = Mapper.Map<Question, QuestionDetailAC>(question);
+                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+                if (testQuestionList.Exists(x => x.QuestionId == questionAc.Question.Id && x.TestId == testId))
+                    questionAc.Question.IsSelect = true;
+                questionListAc.Add(questionAc);
+            });
+            return questionListAc;
         }
 
-        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> QuestionsToAddTest,int testId)
+        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAddTest, int testId)
         {
+            bool isDeleted = false;
+            TestQuestion testQuestionObj = new TestQuestion();
             List<TestQuestion> testQuestionList = new List<TestQuestion>();
-            foreach (var questionToAdd in QuestionsToAddTest)
+            foreach (var questionToAdd in questionsToAddTest)
             {
                 var question = Mapper.Map<QuestionDetailAC, Question>(questionToAdd.Question);
-                var TestCategory = _dbContext.TestCategory.FirstOrDefault(x=>x.CategoryId==question.CategoryID);
-                var QuestionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == question.Id);
-                if (QuestionExistInTest != null && !questionToAdd.Question.IsSelect)
+                var questionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == question.Id);
+                if (questionExistInTest != null && !questionToAdd.Question.IsSelect)
                 {
-                    _dbContext.TestQuestion.Remove(QuestionExistInTest);
+                    _dbContext.TestQuestion.Remove(questionExistInTest);
                     await _dbContext.SaveChangesAsync();
                     isDeleted = true;
                 }
-                    
+
                 else if (questionToAdd.Question.IsSelect)
                 {
                     testQuestionObj = new TestQuestion();
                     testQuestionObj.QuestionId = question.Id;
                     testQuestionObj.TestId = testId;
-                   
-                    if (!await _dbContext.TestQuestion.AnyAsync(x =>  x.QuestionId == question.Id && x.TestId == testId))
+
+                    if (!await _dbContext.TestQuestion.AnyAsync(x => x.QuestionId == question.Id && x.TestId == testId))
                         testQuestionList.Add(testQuestionObj);
-                }                 
+                }
             }
             if (!testQuestionList.Any() && !isDeleted)
                 return _stringConstants.NoNewChanges;
             else
-            {          
-                    await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
-                    await _dbContext.SaveChangesAsync();
-                    return _stringConstants.SuccessfullySaved;  
-            }                
+            {
+                await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
+                await _dbContext.SaveChangesAsync();
+                return _stringConstants.SuccessfullySaved;
+            }
         }
 
         public async Task<TestAC> GetTestDetailsByIdAsync(int testId)
         {
-            testACObject = new TestAC();
+            TestAC testAcObject = new TestAC();
             var test = await _dbContext.Test.FindAsync(testId);
-            testACObject = Mapper.Map<Test, TestAC>(test);
+            testAcObject = Mapper.Map<Test, TestAC>(test);
             var categoryList = await _dbContext.Category.ToListAsync();
             var categoryListAC = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
-            var testCategoryList =   await _dbContext.TestCategory.Where(x=>x.TestId== testId).Include(x=>x.Category).ToListAsync();
+            var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
             categoryListAC.ForEach(category =>
             {
                 if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     category.IsSelect = true;
             });
-            testACObject.CategoryACList = categoryListAC;
-            return testACObject;
+            testAcObject.CategoryAcList = categoryListAC;
+            return testAcObject;
         }
         #endregion
         #region Test-Question-Selection
