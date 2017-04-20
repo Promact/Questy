@@ -1,0 +1,13 @@
+﻿<div class="dialog">
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left" md-dialog-title>Deselect Confirmation</h1>
+        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+    </div>
+    <md-dialog-content>
+        <h4 class="mb20">Questions are selected for the test from this category. Deselecting category will exclude those questions too from the test. Are you sure you want to continue?</h4>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button type="button" class="btn" (click)="No()" md-dialog-close>No</button>
+        <button type="submit" class="btn btn-primary" (click)="Yes()">Yes</button>
+    </md-dialog-actions>
+</div>

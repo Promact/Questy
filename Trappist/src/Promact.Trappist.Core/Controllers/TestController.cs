@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -161,6 +162,46 @@ namespace Promact.Trappist.Core.Controllers
             }
             await _testRepository.DeleteTestAsync(id);
             return NoContent();
+        }
+        #endregion
+        #region Category Selection
+        [HttpGet("Categories/{id}")]
+        public async Task<ActionResult> GetTestDetail([FromRoute] int id)
+        {
+            return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
+        }
+
+        /// <summary>
+        /// this method is used to add the selected categories from category list to the TestCategory model
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>testCategory</returns>
+        [HttpPost("addSelectedCategories")]
+        public async Task<ActionResult> AddSelectedCategories([FromBody] List<TestCategory> testCategory)
+        {
+            await _testRepository.AddSelectedCategoryAsync(testCategory);
+            return Ok(testCategory);
+        }
+
+        /// <summary>
+        /// this method is used to check whether question from selected category is added in test or not
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="testId"></param>
+        /// <returns>boolean</returns>
+        [HttpGet("deselectCategory/{categoryId}/{testId}")]
+        public async Task<bool> DeselectCategoryAsync([FromRoute] int categoryId, [FromRoute] int testId)
+        {
+            var category = await _testRepository.DeselectCategoryAync(categoryId, testId);
+            return category;
+        }
+
+        [HttpDelete("deselectCategory/{id}")]
+
+        public async Task<ActionResult> DeleteCategoriesAsync([FromRoute] int id)
+        {
+            await _testRepository.DeleteCategoryAsync(id);
+            return Ok();
         }
         #endregion
     }
