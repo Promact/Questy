@@ -243,18 +243,18 @@ h6, .h6 {
       border-color: $color_theme;
     }
 
-    &.half-width {
-      width: $half_size;
-    }
-
     &.width-percent-60 {
       width: 60%;
     }
-
-    &.small-width {
-      width: 220px;
-    }
   }
+}
+
+.half-width {
+  width: $half_size;
+}
+
+.small-width {
+  width: 220px;
 }
 
 .errors-container {
