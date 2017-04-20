@@ -6,6 +6,7 @@ using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Moq;
 using Promact.Trappist.Utility.GlobalUtil;
+using System.Linq;
 
 namespace Promact.Trappist.Test.TestConduct
 {
@@ -37,23 +38,50 @@ namespace Promact.Trappist.Test.TestConduct
         [Fact]
         public async Task ValidRegisterTestAttendeesAsync()
         {
-            var model = InitializeTestAttendeeParameters();
+            var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            var result = await _testConductRepository.RegisterTestAttendeesAsync(model, "H0SGXPOwsR");
-            Assert.True(result);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
+            Assert.True(_trappistDbContext.TestAttendees.Count() == 1);
         }
 
         /// <summary>
-        /// This test case used to check test attendee already exist.
+        /// This test case used to check test attendee successfully not register.
         /// </summary>
         /// <returns></returns>
         [Fact]
         public async Task InvalidRegisterTestAttendeesAsync()
         {
-            var model = InitializeTestAttendeeParameters();
+            var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(model, "H0SGXPOwsR");
-            var result = await _testConductRepository.RegisterTestAttendeesAsync(model, "H0SGXPOwsR");
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// This test case used for check test attendee already exist.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task IsTestAttendeeExist()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// This test case used for check test attendee not exist.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task IsTestAttendeeNotExist()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
             Assert.False(result);
         }
 
@@ -77,15 +105,15 @@ namespace Promact.Trappist.Test.TestConduct
         /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>
         private TestAttendees InitializeTestAttendeeParameters()
         {
-            var model = new TestAttendees()
+            var testAttendee = new TestAttendees()
             {
                 FirstName = "Hardik",
                 LastName = "Patel",
-                Email = "phardik026@gmail.com",
-                ContactNumber = "8469200465",
+                Email = "phardi@gmail.com",
+                ContactNumber = "1234567890",
                 RollNumber = "13it055"
             };
-            return model;
+            return testAttendee;
         }
         #endregion
     }
