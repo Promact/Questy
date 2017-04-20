@@ -92,5 +92,12 @@
         string TestNameInvalidError { get; }
         #endregion
 
+        #region TestConduct Constants
+        /// <summary>
+        /// This property contain magic string of test.
+        /// </summary>
+        string MagicString { get; }
+        #endregion
+
     }
 }

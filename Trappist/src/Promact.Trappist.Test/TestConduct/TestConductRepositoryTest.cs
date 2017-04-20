@@ -7,6 +7,7 @@ using Promact.Trappist.Repository.Tests;
 using Moq;
 using Promact.Trappist.Utility.GlobalUtil;
 using System.Linq;
+using Promact.Trappist.Utility.Constants;
 
 namespace Promact.Trappist.Test.TestConduct
 {
@@ -18,6 +19,7 @@ namespace Promact.Trappist.Test.TestConduct
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
         private readonly Mock<IGlobalUtil> _globalUtil;
+        private readonly IStringConstants _stringConstants;
         #endregion
         #endregion
 
@@ -27,6 +29,7 @@ namespace Promact.Trappist.Test.TestConduct
             _testConductRepository = _scope.ServiceProvider.GetService<ITestConductRepository>();
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             _globalUtil = _scope.ServiceProvider.GetService<Mock<IGlobalUtil>>();
+            _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
         }
         #endregion
 
@@ -40,7 +43,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(_trappistDbContext.TestAttendees.Count() == 1);
         }
 
@@ -53,8 +56,8 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
-            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
         }
 
@@ -67,8 +70,8 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "H0SGXPOwsR");
-            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
         }
 
@@ -81,7 +84,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, "H0SGXPOwsR");
+            var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.False(result);
         }
 
@@ -95,7 +98,7 @@ namespace Promact.Trappist.Test.TestConduct
             {
                 TestName = "GK"
             };
-            _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns("H0SGXPOwsR");
+            _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             await _testRepository.CreateTestAsync(test);
         }
 

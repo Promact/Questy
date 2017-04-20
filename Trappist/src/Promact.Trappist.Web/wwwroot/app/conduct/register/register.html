@@ -4,7 +4,7 @@
         <div class="spinner"></div>
     </div>
     <div class="registration-block">
-        <form #RegistrationForm="ngForm">
+        <form #registrationForm="ngForm">
             <h2>Registration Form</h2>
             <div class="form-group">
                 <label class="h4">First Name</label>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary" [disabled]="!RegistrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
                 <span class="general-error-msg long-msg pull-left" *ngIf="isErrorMessage">Due to some reason you can not continue with this test</span>
             </div>
         </form>

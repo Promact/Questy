@@ -151,5 +151,15 @@
             }
         }
         #endregion
+
+        #region TestConduct Constants
+        public string MagicString
+        {
+            get
+            {
+                return "H0SGXPOwsR";
+            }
+        }
+        #endregion
     }
 }
