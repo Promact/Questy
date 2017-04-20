@@ -93,7 +93,7 @@
                                     <input type="text" [(ngModel)]="testCase.testCaseTitle" class="form-control width-percent-60" required name="title_{{testCase.id}}" #title="ngModel" />
                                     <div class="errors-container">
                                         <div *ngIf="title.errors && (title.dirty || title.touched)">
-                                            <p class="text-danger">Test Case Title is required</p>
+                                            <p class="error-msg">Test Case Title is required</p>
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@
                                     <textarea [(ngModel)]="testCase.testCaseDescription" class="form-control width-percent-60" rows="3" required name="description_{{testCase.id}}" #description="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="description.errors && (description.dirty || description.touched)">
-                                            <p class="text-danger">Test Case Description is required</p>
+                                            <p class="error-msg">Test Case Description is required</p>
                                         </div>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                                     </select>
                                     <div class="errors-container">
                                         <div *ngIf="type.errors && (type.dirty || type.touched)">
-                                            <p class="text-danger">Test Case Type is required</p>
+                                            <p class="error-msg">Test Case Type is required</p>
                                         </div>
                                     </div>
                                 </div>
@@ -126,8 +126,8 @@
                                     <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{testCase.id}}" #marks="ngModel" pattern="\d+\.?\d*" />
                                     <div class="errors-container">
                                         <div *ngIf="marks.errors && (marks.dirty || marks.touched)">
-                                            <p class="text-danger" *ngIf="marks.errors.required">Test Case Marks is required</p>
-                                            <p class="text-danger" *ngIf="marks.errors.pattern">Enter Numbers</p>
+                                            <p class="error-msg" *ngIf="marks.errors.required">Test Case Marks is required</p>
+                                            <p class="error-msg" *ngIf="marks.errors.pattern">Enter Numbers</p>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +136,7 @@
                                     <textarea [(ngModel)]="testCase.testCaseInput" class="form-control width-percent-60" rows="3" required name="input_{{testCase.id}}" #input="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="input.errors && (input.dirty || input.touched)">
-                                            <p class="text-danger">Test Case Input is required</p>
+                                            <p class="error-msg">Test Case Input is required</p>
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                     <textarea [(ngModel)]="testCase.testCaseOutput" class="form-control width-percent-60" rows="3" required name="output_{{testCase.id}}" #output="ngModel"></textarea>
                                     <div class="errors-container">
                                         <div *ngIf="output.errors && (output.dirty || output.touched)">
-                                            <p class="text-danger">Test Case Output is required</p>
+                                            <p class="error-msg">Test Case Output is required</p>
                                         </div>
                                     </div>
                                 </div>
