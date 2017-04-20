@@ -182,27 +182,21 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.optionNoSelected].isAnswer = true;
         }
-        if (!this.isEditQuestion) {
-            this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion).subscribe(
-                (response) => {
-                    this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
-                    this.router.navigate(['/questions']);
-                },
-                err => {
-                    this.snackBar.open('There is some eror. Please try again.', 'Dismiss', { duration: 3000 });
-                }
-            );
-        }
-        else {
-            this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion).subscribe(
-                (response) => {
+        ((this.isEditQuestion) ?
+            (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :
+            (this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion))).subscribe(
+            (response) => {
+                if (this.isEditQuestion) {
                     this.snackBar.open('Question updated successfully', 'Dismiss', { duration: 3000 });
-                    this.router.navigate(['/questions']);
-                },
-                err => {
-                    this.snackBar.open('There is some eror. Please try agai.', 'Dismiss', { duration: 3000 });
                 }
+                else {
+                    this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
+                }
+                this.router.navigate(['/questions']);
+            },
+            err => {
+                this.snackBar.open('There is some error. Please try again.', 'Dismiss', { duration: 3000 });
+            }
             );
-        }
     }
 }
