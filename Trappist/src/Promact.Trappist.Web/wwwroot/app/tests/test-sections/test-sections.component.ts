@@ -21,13 +21,13 @@ export class TestSectionsComponent implements OnInit {
     testDetails: Test;
     testId: number;
     Categories: Category[];
-    test: Test;
     testCategories: TestCategory[];
     testCategoryObj: TestCategory;
     testQuestion: Array<TestQuestion>;
     deselectCategoryError: boolean;
     question: Question[] = new Array<Question>();
     testDetailsObj: TestDetails;
+    categoryObj: Category;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
@@ -46,6 +46,7 @@ export class TestSectionsComponent implements OnInit {
     */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
+        this.getTestSectionsDetails();
         this.getTestById(this.testId);
     }
 
@@ -70,8 +71,9 @@ export class TestSectionsComponent implements OnInit {
        * @param category
        */
     onSelect(category: Category) {
+        this.categoryObj.id = category.id;
         if (!category.isSelect)
-            category.isSelect = true;
+            category.isSelect = true;       
         else {
             this.testService.deselectCategory(category.id, this.test.id).subscribe((IsQuestionAdded) => {
                 if (IsQuestionAdded) {
@@ -81,10 +83,14 @@ export class TestSectionsComponent implements OnInit {
         }
     }
 
+    CategorySelected() {
+        return(this.categoryObj.id);
+    }
+
     /**
      * To Save the Selected Categories and redirect user for question selection
      */
-    SaveNext() {
+    SaveAndNext() {
         this.SaveCategory();
         this.router.navigateByUrl('/tests/' + this.test.id + '/questions');
     }
@@ -92,7 +98,7 @@ export class TestSectionsComponent implements OnInit {
     /**
      * Save the Selected Categories for Question Selection and redirect the user to the test dashboard
      */
-    SaveExit() {
+    SaveAndExit() {
         this.SaveCategory();
         this.router.navigateByUrl('/tests');
     }
