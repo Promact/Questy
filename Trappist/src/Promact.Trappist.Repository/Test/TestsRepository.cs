@@ -56,13 +56,14 @@ namespace Promact.Trappist.Repository.Tests
         public async Task UpdateTestNameAsync(int id, Test testObject)
         {
             var testSettingsToUpdate = _dbContext.Test.FirstOrDefault(x => x.Id == id);
-            testSettingsToUpdate.TestName = testObject.TestName;
+            testSettingsToUpdate.TestName = testObject.TestName.AllTrim();
             _dbContext.Test.Update(testSettingsToUpdate);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateTestByIdAsync(Test testObject)
         {
+            testObject.TestName.AllTrim();
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
