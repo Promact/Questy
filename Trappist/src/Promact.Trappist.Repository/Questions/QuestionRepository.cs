@@ -181,7 +181,7 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task<bool> IsQuestionExistInTestAsync(int id)
         {
-            return await _dbContext.Test.AnyAsync(x => x.Id == id);
+            return await _dbContext.TestQuestion.AnyAsync(x => x.Id == id);
         }
 
         public async Task DeleteQuestionAsync(Question question)
