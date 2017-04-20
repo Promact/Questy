@@ -31,14 +31,10 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("{magicString}/register")]
         public async Task<IActionResult> RegisterTestAttendeesAsync([FromBody]TestAttendees testAttendee, [FromRoute]string magicString)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString)))
             {
-                if (!await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
-                {
-                    await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
-                    return Ok(true);
-                }
-                return BadRequest();
+                await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
+                return Ok(true);
             }
             return BadRequest();
         }
