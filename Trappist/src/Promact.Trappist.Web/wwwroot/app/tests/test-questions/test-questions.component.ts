@@ -55,9 +55,9 @@ export class TestQuestionsComponent implements OnInit {
             if (!category.isAlreadyClicked) {
                 category.isAlreadyClicked = true;
                 this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                    this.testDetails.categoryACList[i].questionList = response;
-                    this.selectedQuestions[i] = this.testDetails.categoryACList[i].questionList.length;
-                    this.testDetails.categoryACList[i].numberOfQuestion = this.testDetails.categoryACList[i].questionList.filter(function (question) {
+                    this.testDetails.categoryAcList[i].questionList = response;
+                    this.selectedQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
+                    this.testDetails.categoryAcList[i].numberOfQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
                         return question.question.isSelect;
                     }).length;
                 });
@@ -104,7 +104,7 @@ export class TestQuestionsComponent implements OnInit {
 
         this.questionsToAdd = new Array<QuestionBase>();
         
-        for (let category of this.testDetails.categoryACList) {
+        for (let category of this.testDetails.categoryAcList) {
             if (category.isSelect && category.questionList !== null) 
                 this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
          }

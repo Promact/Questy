@@ -3,7 +3,7 @@
   <div class="container">
     <h2>Select questions for each section</h2>
     <md2-accordion class="questions-selection" >
-      <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryACList; let k=index">
+      <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryAcList; let k=index">
         <md2-accordion-header class="collapsible-header clearfix"  *ngIf="category.isSelect" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
           <div class="title-info h2 pull-left">
             <span>{{category.categoryName}}</span>

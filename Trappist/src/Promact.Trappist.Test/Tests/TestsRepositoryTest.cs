@@ -12,7 +12,6 @@ using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Promact.Trappist.Repository.Questions;
 using AutoMapper;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Test.Tests
@@ -302,7 +301,7 @@ namespace Promact.Trappist.Test.Tests
             var questionACList = await _testRepository.GetAllTestCategoryQuestionsByIdAsync(test.Id,category1.Id);
             Assert.Equal(1,questionACList.Count);
             Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
-            Assert.True(questionACList[0].Question.IsSelect == true);
+            Assert.True(questionACList[0].Question.IsSelect);
         }
 
         private DomainModel.Models.Category.Category CreateCategory()
@@ -320,7 +319,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetTestDetails()
         {
-            TestAC testAC = new TestAC();
+           
             //Creating Category
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
@@ -336,7 +335,7 @@ namespace Promact.Trappist.Test.Tests
             };
             _trappistDbContext.TestCategory.Add(testCategory);
             await _trappistDbContext.SaveChangesAsync();
-            testAC = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            var testAC = await _testRepository.GetTestDetailsByIdAsync(test.Id);
             Assert.Equal(1, testAC.CategoryACList.Count());
         }
     }
