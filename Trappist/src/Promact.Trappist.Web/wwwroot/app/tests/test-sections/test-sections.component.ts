@@ -58,8 +58,10 @@ export class TestSectionsComponent implements OnInit {
     getTestSectionsDetails() {
         this.testService.getTestDetails(this.testId).subscribe((response) => {
             this.testDetailsObj = response;
-            console.log(this.testDetailsObj);
-        });
+        },
+            err => {
+                this.snackbarRef.open('Something went wrong', 'Dismiss');
+            });        
     }
 
     /**
@@ -78,8 +80,13 @@ export class TestSectionsComponent implements OnInit {
                     dialogRef.afterClosed().subscribe(result => {
                         if (result)
                             category.isSelect = false;
-                    });
+                    },
+                        err => {
+                            this.snackbarRef.open('Something went wrong', 'Dismiss')
+                        });                   
                 }
+                else
+                    category.isSelect = false;
             });
         }
     }
