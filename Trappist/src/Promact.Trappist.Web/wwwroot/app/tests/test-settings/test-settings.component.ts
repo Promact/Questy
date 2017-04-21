@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Test } from '../tests.model';
+//import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
 import { TestOrder } from '../enum-testorder';
-
+import { Test } from '../tests.model';
 @Component({
     moduleId: module.id,
     selector: 'test-settings',
@@ -15,7 +15,7 @@ import { TestOrder } from '../enum-testorder';
 })
 
 export class TestSettingsComponent implements OnInit {
-    testSettings: Test;
+    testDetails: Test;
     testId: number;
     validEndDate: boolean;
     endDate: string;
@@ -32,7 +32,7 @@ export class TestSettingsComponent implements OnInit {
     errorMessage: string;
    
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
+        this.testDetails = new Test();
         this.validEndDate = false;
         this.validTime = false;
         this.validStartDate = false;
@@ -54,7 +54,7 @@ export class TestSettingsComponent implements OnInit {
      */
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
-            this.testSettings = (response);
+            this.testDetails = (response);
         });
     }
 
@@ -73,7 +73,7 @@ export class TestSettingsComponent implements OnInit {
      * @param endDate contains ths the value of the field End Date and Time
      */
     isEndDateValid(endDate: Date) {
-        if (this.testSettings.startDate > endDate) {
+        if (this.testDetails.startDate > endDate) {
             this.validEndDate = true;
             this.validStartDate = false;
         }
@@ -85,7 +85,7 @@ export class TestSettingsComponent implements OnInit {
      * Checks whether the Start Date selected is valid or not
      */
     isStartDateValid() {
-        if ((new Date(this.testSettings.startDate)) < this.currentDate || this.testSettings.startDate > this.testSettings.endDate) {
+        if ((new Date(this.testDetails.startDate)) < this.currentDate || this.testDetails.startDate > this.testDetails.endDate) {
             this.validStartDate = true;
             this.validEndDate = false;
         }
@@ -97,7 +97,7 @@ export class TestSettingsComponent implements OnInit {
      * Checks whether the Warning Time set is valid
      */
     isWarningTimeValid() {
-        this.validTime = +this.testSettings.warningTime >= +this.testSettings.duration ? true : false;
+        this.validTime = +this.testDetails.warningTime >= +this.testDetails.duration ? true : false;
     }
 
     /**
