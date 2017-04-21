@@ -26,6 +26,7 @@ using System;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using System.Collections.Generic;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 
 namespace Promact.Trappist.Test
 {
