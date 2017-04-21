@@ -17,7 +17,7 @@ const conductRoutes: Routes = [
         component: RegisterComponent
     },
     {
-        path: ':link/instructions',
+        path: 'instructions',
         component: InstructionsComponent
     },
     {
