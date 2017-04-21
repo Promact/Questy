@@ -17,7 +17,7 @@ export class DeleteQuestionDialogComponent {
 
     constructor(private questionService: QuestionsService, private dialogRef: MdDialogRef<DeleteQuestionDialogComponent>, public snackBar: MdSnackBar) {
         this.successMessage = 'Question deleted successfully';
-        this.errorMessage = 'Some error occurred.Question cannot be deleted';
+        this.errorMessage = 'Some error occurred. Question can not be deleted.';
     }
 
     /**
