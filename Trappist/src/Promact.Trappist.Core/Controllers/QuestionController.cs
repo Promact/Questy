@@ -125,7 +125,6 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
             return Ok(questionAC);
         }
 

@@ -233,11 +233,7 @@ export class QuestionsDashboardComponent implements OnInit {
      * @param question
      */
     updateQuestion(question: Question) {
-        if (question.questionType === 0) {
-            this.router.navigate(['questions/edit-single-answer' + '/' + question.id]);
-        }
-        if (question.questionType === 1) {
-            this.router.navigate(['questions/edit-multiple-answers' + '/' + question.id]);
-        }
+        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';        
+        this.router.navigate(['questions',questionType,question.id]);
     }
 }
