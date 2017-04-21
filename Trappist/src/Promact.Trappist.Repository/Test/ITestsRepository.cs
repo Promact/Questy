@@ -28,13 +28,6 @@ namespace Promact.Trappist.Repository.Tests
         Task<List<Test>> GetAllTestsAsync();
 
         /// <summary>
-        /// Gets the settings saved of a particular Test
-        /// </summary>
-        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
-        /// <returns>Settings Saved for the selected Test</returns>
-        Task<Test> GetTestByIdAsync(int id);
-
-        /// <summary>
         /// Updates the changes made to the settings of a Test
         /// </summary>
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
@@ -91,6 +84,6 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
         /// <returns>TestAC object</returns>       
-        Task<TestAC> GetTestDetailsByIdAsync(int testId);
+        Task<TestAC> GetTestByIdAsync(int testId);
     }
 }
