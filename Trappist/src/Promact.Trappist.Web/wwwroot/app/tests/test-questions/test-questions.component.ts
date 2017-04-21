@@ -24,12 +24,14 @@ export class TestQuestionsComponent implements OnInit {
     questionsToAdd: QuestionBase[] = [];
     testSettings: Test;
     testId: number;
+    isSaveExit: boolean;
     testDetails: TestDetails;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new TestDetails();
         this.testSettings = new Test();
+        this.isSaveExit = false;
     }
     ngOnInit() {
         this.router.params.subscribe(params => {
@@ -40,7 +42,7 @@ export class TestQuestionsComponent implements OnInit {
     }
 
     openSnackBar(text: string) {
-        this.snackBar.open(text, 'Dismiss', {
+        return this.snackBar.open(text, 'Dismiss', {
             duration: 5000
         });
     }
@@ -69,13 +71,14 @@ export class TestQuestionsComponent implements OnInit {
             return 'correct';
         }
     }
+
     /**
      * Gets the details of a test by passing its Id
      */
     getTestDetails() {
         this.testService.getTestDetails(this.testId).subscribe(response => {
             this.testDetails = response;
-        }); 
+        });
     }
 
     /**
@@ -84,7 +87,6 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(question: QuestionBase, category: Category) {
-
         if (question.question.isSelect) {
             if (category.questionList.every(function (question) {
                 return question.question.isSelect;
@@ -97,8 +99,7 @@ export class TestQuestionsComponent implements OnInit {
             category.numberOfQuestion--;
         }
     }
-  
-   
+
     /**
      * Adds all the questions to to database and navigate to test-settings.component
      */
