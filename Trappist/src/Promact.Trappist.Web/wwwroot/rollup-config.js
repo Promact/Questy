@@ -15,14 +15,16 @@ export default {
         // console.warn everything else
         console.warn(warning.message);
     },
+    external: [
+        'clipboard'
+    ],
+    globals: {
+        'clipboard': 'Clipboard'
+    },
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
         commonjs({
-            include: ['node_modules/**'],
-            
-            namedExports: {
-                'node_modules/clipboard/dist/clipboard.js': ['Clipboard']
-            }
+            include: ['node_modules/**']
         }),
         uglify()
     ]

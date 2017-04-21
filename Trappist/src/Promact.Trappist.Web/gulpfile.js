@@ -63,7 +63,8 @@ gulp.task("tstojs", function () {
 //bundle shim files
 gulp.task('bundle-shims', function () {
     return gulp.src(['./node_modules/core-js/client/shim.js',
-        './node_modules/zone.js/dist/zone.js'])
+        './node_modules/zone.js/dist/zone.js',
+		'./node_modules/clipboard/dist/clipboard.js'])
     .pipe(concat('shims.js'))
     .pipe(uglify())
     .pipe(gulp.dest('./wwwroot/dist'));
