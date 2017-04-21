@@ -15,7 +15,7 @@
         </md2-accordion-header>
         <div class="collapsible-body p0">
           <div class="select-all">
-            <md-checkbox [(ngModel)]="category.selectAll" (change)="SelectAll(category,selectedQuestions[k])"></md-checkbox>
+            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category,selectedQuestions[k])"></md-checkbox>
             <h5>Select All</h5>
             <span class="h7">(total {{selectedQuestions[k]}} questions)</span>
           </div>
@@ -39,6 +39,6 @@
       </md2-accordion-tab>
     </md2-accordion>
   </div>
-    <create-test-footer  (SaveExit)="SaveExit()" (SaveNext)="SaveNext()"></create-test-footer>
+    <create-test-footer  (saveExit)="saveExit()" (saveNext)="saveNext()"></create-test-footer>
  
 </div>

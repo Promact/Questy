@@ -99,7 +99,7 @@ export class TestQuestionsComponent implements OnInit {
     /**
      * Adds all the questions to to database and navigate to test-settings.component
      */
-    SaveNext() {
+    saveNext() {
         this.questionsToAdd = new Array<QuestionBase>();
         for (let category of this.testDetails.categoryAcList) {
             if (category.isSelect && category.questionList !== null)
@@ -128,7 +128,7 @@ export class TestQuestionsComponent implements OnInit {
      * @param category object
      * @param totalNumberOfQuestions number of all the questions of a category
      */
-    SelectAll(category: Category, totalNumberOfQuestions: number) {
+    selectAll(category: Category, totalNumberOfQuestions: number) {
         category.questionList.map(function (questionList) {
             if (category.selectAll) {
                 questionList.question.isSelect = true;
@@ -144,8 +144,8 @@ export class TestQuestionsComponent implements OnInit {
     /**
      * Adds the questions to question table and redirect to test dashboard
      */
-    SaveExit() {
+    saveExit() {
         this.isSaveExit = true;
-        this.SaveNext();
+        this.saveNext();
     }
 }

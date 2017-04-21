@@ -99,7 +99,7 @@ namespace Promact.Trappist.Repository.Tests
         }
         #endregion
         #region Test-Question-Selection
-        public async Task<List<QuestionAC>> GetAllTestCategoryQuestionsByIdAsync(int testId, int categoryId)
+        public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId)
         {
             var questionAc = new QuestionAC();
             var questionListAc = new List<QuestionAC>();
@@ -120,12 +120,12 @@ namespace Promact.Trappist.Repository.Tests
             return questionListAc;
         }
 
-        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAddTest, int testId)
+        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAdd, int testId)
         {
             bool isDeleted = false;
             var testQuestionList = new List<TestQuestion>();
             //Adds each question to TestQuestion Model whose IsSelct property is true
-            foreach (var questionToAdd in questionsToAddTest)
+            foreach (var questionToAdd in questionsToAdd)
             {
                 var question = Mapper.Map<QuestionDetailAC, Question>(questionToAdd.Question);
                 //Checks if the question exists in TestQuestion 
