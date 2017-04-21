@@ -74,19 +74,35 @@ export class TestService {
     isTestAttendeeExist(testId: number) {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
     }
-
+    /**
+     * gets details of the test
+     * @param id: id of the test
+     */
     getTestDetails(id: number) {
         return this.httpService.get(this.testApiUrl + '/' + 'categories' + '/' + id);
     }
 
+    /**
+     * adds the selected category to TestCategory for future reference
+     * @param testCategory
+     */
     addSelectedCategories(testCategory: any) {
         return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories', testCategory);
     }
 
+    /**
+     * deletes the deselected category from TestCategory
+     * @param testCategory
+     */
     removeDeselectedCategory(testCategory: any) {
         return this.httpService.post(this.testApiUrl + '/' + 'deselectCategory', testCategory);
     }
 
+    /**
+     * deselects the category
+     * @param categoryId
+     * @param testId
+     */
     deselectCategory(categoryId: number, testId: number) {
         return this.httpService.get(this.testApiUrl + '/' + 'deselectCategory' + '/' + categoryId + '/' + testId);
     }
