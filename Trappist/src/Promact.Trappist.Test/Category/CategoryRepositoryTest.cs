@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Promact.Trappist.Utility.Constants;
-using System.Collections;
 
 namespace Promact.Trappist.Test.Category
 {
@@ -99,25 +98,34 @@ namespace Promact.Trappist.Test.Category
         }
 
         /// <summary>
-        /// Method to test remove Category
+        /// Method to test Category Exist in Question or not
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task IsCategoryExistInQuestionTest()
+        {
+            var applicationUser = await CreateUserAsync(_stringConstants.UserName);
+            var category = CreateCategory();
+
+            await CreateSingleAnswerQuestionAsync(category.Id, applicationUser.Id);
+            var categoryExistInQuestion = await _categoryRepository.IsCategoryExistInQuestionAsync(category.Id);
+            Assert.True(categoryExistInQuestion);
+        }
+
+        /// <summary>
+        /// Method to test delete Category
         /// </summary>        
         [Fact]
-        public async Task DeleteCategory()
+        public async Task DeleteCategoryTest()
         {
-            List<string> categoryName = new List<string> { "History", "General Knowledge" };
-            var applicationUser = await CreateUserAsync(_stringConstants.UserName);
-            var firstCategory = await CreateCategoryAsync(categoryName[0]);
-            var SecondCategory = await CreateCategoryAsync(categoryName[1]);
-            await CreateSingleAnswerQuestionAsync(SecondCategory.Id, applicationUser.Id);
-            bool categoryExistInQuestion = await _categoryRepository.IsCategoryExistInQuestionAsync(SecondCategory.Id);
-            Assert.True(categoryExistInQuestion);
-            var categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(firstCategory.Id);
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+
+            var categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(category.Id);
             Assert.NotNull(categoryToDelete);
-            if (categoryToDelete != null)
-            {
-                await _categoryRepository.RemoveCategoryAsync(categoryToDelete);
-                Assert.Equal(1, _trappistDbContext.Category.Count());
-            }
+
+            await _categoryRepository.DeleteCategoryAsync(categoryToDelete);
+            Assert.True(_trappistDbContext.Category.Count() == 0);
         }
 
         /// <summary>
@@ -128,7 +136,7 @@ namespace Promact.Trappist.Test.Category
         {
             var category = new DomainModel.Models.Category.Category
             {
-                CategoryName = "test category",
+                CategoryName = "Test Category",
                 CreatedDateTime = DateTime.UtcNow
             };
             return category;
@@ -157,12 +165,12 @@ namespace Promact.Trappist.Test.Category
                         new SingleMultipleAnswerQuestionOption()
                         {
                             IsAnswer = true,
-                            Option = "distributed version control system",
+                            Option = "Distributed version control system",
                         },
                         new SingleMultipleAnswerQuestionOption()
                         {
                             IsAnswer = false,
-                            Option = "continuous integration service",
+                            Option = "Continuous integration service",
                         },
                         new SingleMultipleAnswerQuestionOption()
                         {
@@ -186,22 +194,6 @@ namespace Promact.Trappist.Test.Category
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             return await _userManager.FindByEmailAsync(user.Email);
-        }
-
-        /// <summary>
-        /// Method to create new Category
-        /// </summary>
-        /// <param name="categoryName">Category name</param>
-        /// <returns>Category object</returns>
-        public async Task<DomainModel.Models.Category.Category> CreateCategoryAsync(string name)
-        {
-            var category = new DomainModel.Models.Category.Category
-            {
-                CategoryName = name,
-                CreatedDateTime = DateTime.UtcNow
-            };
-            await _categoryRepository.AddCategoryAsync(category);
-            return category;
         }
     }
 }

@@ -9,7 +9,6 @@ import { MdSnackBar } from '@angular/material';
     selector: 'delete-category-dialog',
     templateUrl: 'delete-category-dialog.html'
 })
-
 export class DeleteCategoryDialogComponent {
     private response: JSON;
 
@@ -24,7 +23,7 @@ export class DeleteCategoryDialogComponent {
     }
 
     /**
-     * Open snackbar
+     * Open a Snackbar
      */
     openSnackBar(message: string) {
         let snackBarRef = this.snackBar.open(message, 'Dismiss', {
@@ -36,8 +35,8 @@ export class DeleteCategoryDialogComponent {
      * Method to delete Category
      */
     deleteCategory() {
-        this.categoryService.removeCategory(this.category.id).subscribe(
-            result => {
+        this.categoryService.deleteCategory(this.category.id).subscribe(
+            response => {
                 this.categoryArray.splice(this.categoryArray.indexOf(this.category), 1);
                 this.openSnackBar(this.successMessage);
             },
@@ -47,8 +46,9 @@ export class DeleteCategoryDialogComponent {
                     this.errorMessage = this.response['error'][0];
                     this.openSnackBar(this.errorMessage);
                 }
-                else
+                else {
                     this.openSnackBar(this.errorMessage);
+                }
             });
         this.dialog.closeAll();
     }
