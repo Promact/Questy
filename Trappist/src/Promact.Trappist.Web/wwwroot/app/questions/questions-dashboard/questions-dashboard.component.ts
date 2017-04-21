@@ -155,13 +155,13 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     // Open delete question dialog
-    deleteQuestionDialog(question: Question) {
+    deleteQuestionDialog(questionToDelete: Question) {
         let deleteDialogRef = this.dialog.open(DeleteQuestionDialogComponent);
-        deleteDialogRef.componentInstance.question = question;
+        deleteDialogRef.componentInstance.question = questionToDelete;
         deleteDialogRef.afterClosed().subscribe(
             deletedQuestion => {
                 if (deletedQuestion) {
-                    this.questionDisplay.splice(this.questionDisplay.indexOf(deletedQuestion), 1);
+                    this.question.splice(this.question.indexOf(deletedQuestion), 1);
                 }
             });
     }

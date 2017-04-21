@@ -255,14 +255,14 @@ namespace Promact.Trappist.Test.Questions
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
             //Delete code-snippet Question
-            var questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
             var questionToDelete = await _questionRepository.GetQuestionByIdAsync(questionId);
             await _questionRepository.DeleteQuestionAsync(questionToDelete);
             //Add single-multiple Question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
             //Delete single-Multiple Question
-            questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
+            questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
             questionToDelete = await _questionRepository.GetQuestionByIdAsync(questionId);
             await _questionRepository.DeleteQuestionAsync(questionToDelete);
             //True single-multiple & code-snippet Questions are both deleted 
@@ -283,13 +283,13 @@ namespace Promact.Trappist.Test.Questions
             var codingQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
             //Get code-snippet Question
-            var questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
             Assert.NotNull(await _questionRepository.GetQuestionByIdAsync(questionId));
             //Add single-multiple Question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
             //Get single-Multiple Question
-            questionId = await _trappistDbContext.Question.Where(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail).Select(x => x.Id).FirstOrDefaultAsync();
+            questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
             Assert.NotNull(await _questionRepository.GetQuestionByIdAsync(questionId));
         }
 
