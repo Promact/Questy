@@ -151,10 +151,9 @@ namespace Promact.Trappist.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ReverseMap();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ReverseMap();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x=>x.SingleMultipleAnswerQuestionOption, opts=>opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
-                cfg.CreateMap<SingleMultipleAnswerQuestionOptionAC, SingleMultipleAnswerQuestionOption>().ReverseMap();
             });
             #endregion
         }

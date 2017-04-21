@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public class SingleMultipleAnswerQuestionOption:BaseModel
+    public class SingleMultipleAnswerQuestionOption : BaseModel
     {
         [Required]
         public string Option { get; set; }
