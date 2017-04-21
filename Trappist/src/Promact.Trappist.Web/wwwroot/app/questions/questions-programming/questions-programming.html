@@ -11,7 +11,7 @@
         <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)">
             <div class="form-fields">
                 <div class="form-group">
-                    <label class="h4">Section</label>
+                    <label>Section</label>
                     <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" ngModel required name="categorySelect" #categorySelect="ngModel">
                         <option [disabled]="categorySelect.dirty" selected value="">Please select a category</option>
                         <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="h4">Difficulty Level</label>
+                    <label>Difficulty Level</label>
                     <select class="form-control small-width" name="difficulty" (change)="selectDifficulty($event.target.value)">
                         <option selected>Easy</option>
                         <option>Medium</option>
@@ -34,7 +34,7 @@
                     <div class="errors-container"></div>
                 </div>
                 <div class="form-group">
-                    <label class="h4">Question Details</label>
+                    <label>Question Details</label>
                     <ckeditor [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
                     <div class="errors-container">
                         <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="h4">Code Languages</label>
+                    <label>Code Languages</label>
                     <md-chip-list class="form-control width-percent-60" (click)="autocomplete.focus()">
                         <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
                         <md-input-container>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="h4">Score Settings</label>
+                    <label>Score Settings</label>
                     <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkCodeComplexity" (change)="questionModel.codeSnippetQuestion.checkCodeComplexity = !questionModel.codeSnippetQuestion.checkCodeComplexity">Check code complexity</md-checkbox>
                     <md-checkbox [checked]="questionModel.codeSnippetQuestion.checkTimeComplexity" (change)="questionModel.codeSnippetQuestion.checkTimeComplexity = !questionModel.codeSnippetQuestion.checkTimeComplexity">Check time complexity</md-checkbox>
                     <md-checkbox [checked]="questionModel.codeSnippetQuestion.runBasicTestCase" (change)="questionModel.codeSnippetQuestion.runBasicTestCase = !questionModel.codeSnippetQuestion.runBasicTestCase">Run basic test cases</md-checkbox>
@@ -71,7 +71,7 @@
                     <div class="errors-container"></div>
                 </div>
                 <div class="form-group">
-                    <label class="h4">Test Case(s)</label>
+                    <label>Test Case(s)</label>
                     <br />
                     <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true;addTestCases()">Add Test Case</button>
                     <md2-accordion *ngFor="let testCase of testCases;let i = index">

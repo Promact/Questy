@@ -5,7 +5,7 @@
   </div>
   <md-dialog-content>
     <div class="form-group">
-      <label class="h4">Global URL</label>
+      <label>Global URL</label>
       <div class="url-container">
         <input type="text" class="form-control" [(ngModel)]="testSettingObject.link" name="Test Link" />
         <em class="material-icons" ngxClipboard [cbContent]="testSettingObject.link" (cbOnSuccess)="copiedContent = true">content_copy</em>

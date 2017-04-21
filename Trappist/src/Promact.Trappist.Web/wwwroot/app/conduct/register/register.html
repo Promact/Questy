@@ -7,7 +7,7 @@
         <form #registrationForm="ngForm">
             <h2>Registration Form</h2>
             <div class="form-group">
-                <label class="h4">First Name</label>
+                <label>First Name</label>
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.firstName" name="firstName" #firstName="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.pattern" class="error-msg">First name must be in alphabets</span>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="h4">Last Name</label>
+                <label>Last Name</label>
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.lastName" name="lastName" #lastName="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.pattern" class="error-msg">Last name must be in alphabets</span>
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="h4">Email</label>
+                <label>Email</label>
                 <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="email" class="form-control" [(ngModel)]="testAttendees.email" name="email" #email="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">Invalid email address</span>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="h4">Roll Number</label>
+                <label>Roll Number</label>
                 <input required pattern="^[a-zA-Z0-9]*$" type="text" class="form-control" [(ngModel)]="testAttendees.rollNumber" name="rollNumber" #rollNumber="ngModel" />
                 <div class="errors-container">
                     <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">Invalid roll number</span>
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="h4">Contact Number</label>
+                <label>Contact Number</label>
                 <input required pattern="[0-9]{10,15}" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" />
                 <div class="errors-container">
                     <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Invalid contact number.</span>
