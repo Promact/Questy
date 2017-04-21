@@ -11,27 +11,16 @@ import { MdSnackBar } from '@angular/material';
 })
 
 export class DeleteCategoryDialogComponent {
+    private response: JSON;
+
+    successMessage: string;
+    errorMessage: string;
     category: Category;
     categoryArray: Category[] = new Array<Category>();
-    constructor(private categoryService: CategoryService, private dialog: MdDialog, private snackBar: MdSnackBar) {
-    }
 
-    // A method to remove a category from dashboard
-    removeCategoryOperation() {
-        this.categoryService.removeCategory(this.category.id).subscribe(
-            result => {
-                if (result.status === 204) {
-                    this.categoryArray.splice(this.categoryArray.indexOf(this.category), 1);
-                    this.openSnackBar('Category successfully removed');
-                }
-            },
-            err => {
-                if (err.status === 400)
-                    this.openSnackBar(err.json()['categoryId'][0]);
-                else
-                    this.openSnackBar('Something went wrong. Please try again later');
-            });
-        this.dialog.closeAll();
+    constructor(private categoryService: CategoryService, private dialog: MdDialog, private snackBar: MdSnackBar) {
+        this.successMessage = 'Category deleted successfully';
+        this.errorMessage = 'Something went wrong. Please try again later';
     }
 
     /**
@@ -41,5 +30,26 @@ export class DeleteCategoryDialogComponent {
         let snackBarRef = this.snackBar.open(message, 'Dismiss', {
             duration: 3000,
         });
+    }
+
+    /**
+     * Method to delete Category
+     */
+    deleteCategory() {
+        this.categoryService.removeCategory(this.category.id).subscribe(
+            result => {
+                this.categoryArray.splice(this.categoryArray.indexOf(this.category), 1);
+                this.openSnackBar(this.successMessage);
+            },
+            err => {
+                if (err.status === 400) {
+                    this.response = err.json();
+                    this.errorMessage = this.response['error'][0];
+                    this.openSnackBar(this.errorMessage);
+                }
+                else
+                    this.openSnackBar(this.errorMessage);
+            });
+        this.dialog.closeAll();
     }
 }
