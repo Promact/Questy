@@ -160,14 +160,14 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(testId);
             testAcObject = Mapper.Map<Test, TestAC>(test);
             var categoryList = await _dbContext.Category.ToListAsync();
-            var categoryListAC = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
             var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
-            categoryListAC.ForEach(category =>
+            categoryListAc.ForEach(category =>
             {
                 if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     category.IsSelect = true;
             });
-            testAcObject.CategoryAcList = categoryListAC;
+            testAcObject.CategoryAcList = categoryListAc;
             return testAcObject;
         }
         #endregion
