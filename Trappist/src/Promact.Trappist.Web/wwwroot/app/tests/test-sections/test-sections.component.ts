@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
-import { DeselectCategoryComponent } from "../test-sections/deselect-category.component";
+import { DeselectCategoryComponent } from '../test-sections/deselect-category.component';
 import { Question } from '../../questions/question.model';
 import { TestDetails } from '../test-details';
 import { Category } from '../../questions/category.model';
@@ -82,7 +82,7 @@ export class TestSectionsComponent implements OnInit {
                             category.isSelect = false;
                     },
                         err => {
-                            this.snackbarRef.open('Something went wrong', 'Dismiss')
+                            this.snackbarRef.open('Something went wrong', 'Dismiss');
                         });                   
                 }
                 else
@@ -118,7 +118,7 @@ export class TestSectionsComponent implements OnInit {
             this.testCategoryObj.categoryId = category.id;
             this.testCategoryObj.testId = this.testSettings.id;
             this.testCategories.push(this.testCategoryObj);
-            this.testCategoryObj = new TestCategory()
+            this.testCategoryObj = new TestCategory();
         }
         this.testService.addSelectedCategories(this.testCategories).subscribe((response) => { },
             err => {
