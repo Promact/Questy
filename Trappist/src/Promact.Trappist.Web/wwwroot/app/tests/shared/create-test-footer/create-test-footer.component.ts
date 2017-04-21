@@ -26,8 +26,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
-    @Output() SaveExit: any;
-    @Output() SaveNext: any;
+    @Output() saveExit: any;
+    @Output() saveNext: any;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -35,8 +35,8 @@ export class CreateTestFooterComponent implements OnInit {
         this.isTestSettings = false;
         this.saveTestSettings = new EventEmitter();
         this.launchTestDialog = new EventEmitter();
-        this.SaveExit = new EventEmitter();
-        this.SaveNext = new EventEmitter();
+        this.saveExit = new EventEmitter();
+        this.saveNext = new EventEmitter();
     }
 
     /**
@@ -73,12 +73,12 @@ export class CreateTestFooterComponent implements OnInit {
      * Emits the event SaveExit in test-questions.component
      */
     saveAndExit() {
-        this.SaveExit.emit();
+        this.saveExit.emit();
     }
     /**
      * Emits the event AddTestQuestionin test-questions.component
      */
     addTestQuestions() {
-        this.SaveNext.emit();
+        this.saveNext.emit();
     }
 }
