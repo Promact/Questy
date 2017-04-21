@@ -68,21 +68,14 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>Boolean:true if an attendee exist or else false</returns>
         Task<bool> IsTestAttendeeExistAsync(int id);
         #endregion
-        #region Category Selection
-
-        /// <summary>
-        /// Get Test Details
-        /// </summary>
-        /// <param name="testCategory"></param>
-        /// <returns>List of Selected Categories</returns>        
-        Task<TestAC> GetTestDetailsByIdAsync(int id);
+        #region Category Selection       
 
         /// <summary>
         /// To add a category to the test when it is selected
         /// </summary>
         /// <param name="testCategory"></param>
         /// <returns>list of categories added</returns>        
-        Task AddSelectedCategoryAsync(List<TestCategory> testCategory);
+        Task AddSelectedCategoryAsync(int testId, List<CategoryAC> categoryAcList);
 
         /// <summary>
         /// To deselect a category
@@ -97,7 +90,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Deletes the category from TestCategory model and save changes to the database</returns>
-        Task DeleteCategoryAsync(TestCategory testCategory);
+        Task RemoveCategoryAndQuestionAsync(TestCategory testCategory);
         #endregion
 
         /// <summary>

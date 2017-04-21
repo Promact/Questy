@@ -63,6 +63,11 @@ export class TestQuestionsComponent implements OnInit {
             } else category.isAlreadyClicked = true;
         } else category.isAccordionOpen = false;
     }
+
+    /**
+     * returns 'correct' class for correct option
+     * @param isAnswer
+     */
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return 'correct';
@@ -118,9 +123,10 @@ export class TestQuestionsComponent implements OnInit {
                     this.loader = false;
                     this.route.navigate(['/tests']);
                 }
-                else
+                else {
                     this.loader = false;
-                this.route.navigate(['tests/' + this.testId + '/settings']);
+                    this.route.navigate(['tests/' + this.testId + '/settings']);
+                }
             }
         },
             error => {

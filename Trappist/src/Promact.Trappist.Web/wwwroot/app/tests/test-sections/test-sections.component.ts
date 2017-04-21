@@ -1,11 +1,11 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TestService } from '../tests.service';
-import { MdDialog, MdSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialog, MdSnackBar, MdSnackBarRef, SimpleSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
-import { DeselectCategoryComponent } from "../test-sections/deselect-category.component";
+import { DeselectCategoryComponent } from '../test-sections/deselect-category.component';
 import { Question } from '../../questions/question.model';
 import { TestDetails } from '../test-details';
 import { Category } from '../../questions/category.model';
@@ -20,18 +20,15 @@ import { Test, TestCategory, TestQuestion } from '../tests.model';
 export class TestSectionsComponent implements OnInit {
     testDetails: Test;
     testId: number;
-    Categories: Category[];   
-    testCategories: TestCategory[];
+    testCategories: TestCategory[] = [];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
 
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
+    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {       
         this.testCategoryObj = new TestCategory();
         this.testCategories = new Array<TestCategory>();
-        this.testDetailsObj = new TestDetails();
-        this.getTestSectionsDetails();
-        this.Categories = this.testDetailsObj.category;
+        //this.testDetailsObj = new TestDetails();
+        //this.getTestSectionsDetails();
         this.testDetails = new Test();
     }
 
@@ -40,7 +37,6 @@ export class TestSectionsComponent implements OnInit {
     */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.getTestSectionsDetails();
         this.getTestById(this.testId);
     }
 
@@ -57,12 +53,14 @@ export class TestSectionsComponent implements OnInit {
     /**
      * To get all the details of a test with list of categories, which can be added in the test
      */
-    getTestSectionsDetails() {
-        this.testService.getTestDetails(this.test.id).subscribe((response) => {
-            this.testDetailsObj = response;
-            console.log(this.testDetailsObj);
-        });
-    }
+    //getTestSectionsDetails() {
+    //    this.testService.getTestDetails(this.testId).subscribe((response) => {
+    //    },
+    //        err => {
+    //            this.openSnackbar('Something went wrong, try again');
+
+    //        });
+    //}
 
     /**
        * To Select or Deselect a Category from list
@@ -72,60 +70,58 @@ export class TestSectionsComponent implements OnInit {
         if (!category.isSelect)
             category.isSelect = true;
         else {
-            this.testService.deselectCategory(category.id, this.testSettings.id).subscribe((IsQuestionAdded) => {
-                if (IsQuestionAdded) {
+            this.testService.deselectCategory(category.id, this.testDetails.id).subscribe((isQuestionAdded) => {
+                if (isQuestionAdded) {
                     this.testCategoryObj.testId = this.testId;
                     this.testCategoryObj.categoryId = category.id;
                     let dialogRef = this.dialog.open(DeselectCategoryComponent, { data: this.testCategoryObj });
                     dialogRef.afterClosed().subscribe(result => {
                         if (result)
                             category.isSelect = false;
-                    });
+                    },
+                        err => {
+                            this.openSnackbar('Something went wrong, try again');
+                        });
+                }
+                else {
+                    category.isSelect = false;
                 }
             });
         }
     }
 
     /**
-     * To Save the Selected Categories and redirect user for question selection
+     * To save the selected categories and move further
      */
-    SaveAndNext() {
-        this.SaveCategory();
-        this.router.navigateByUrl('/tests/' + this.testId + 'questions');
-    }
-
-    /**
-     * To Save the Selected Categories for Question Selection and redirect the user to the test dashboard
-     */
-    SaveAndExit() {
-        this.SaveCategory();
-        this.router.navigateByUrl('/tests');
-    }
-
-    /**
-     * To save the selected category as selected
-     */
-    SaveCategory() {
-        let categories = this.testDetailsObj.categoryAcList.filter(function (x) {
-            return (x.isSelect);
-        });
-        for (let category of categories) {
-            this.testCategoryObj.categoryId = category.id;
-            this.testCategoryObj.testId = this.testSettings.id;
-            this.testCategories.push(this.testCategoryObj);
-            this.testCategoryObj = new TestCategory()
-        }
-        this.testService.addSelectedCategories(this.testCategories).subscribe((response) => { },
+    saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
+        console.log(isSelectButton);
+        //let categories = this.testDetails.categoryAcList.filter(function (x) {
+        //    return (x.isSelect);
+        //});
+        //for (let category of categories) {
+        //    this.testCategoryObj.categoryId = category.id;
+        //    this.testCategoryObj.testId = this.testDetails.id;
+        //    this.testCategories.push(this.testCategoryObj);
+        //    this.testCategoryObj = new TestCategory();
+        //}
+        this.testService.addSelectedCategories(this.testDetails.id, this.testDetails.categoryAcList ).subscribe((response) => {
+            if (response) {
+                if (isSelectButton)
+                    this.router.navigate(['/tests/' + this.testId + '/questions']);
+                else
+                    this.router.navigate(['/tests']);
+            }
+        },
             err => {
-                this.snackbarRef.open('Ooops!, something went wrong', 'Dismiss');
+                this.openSnackbar('Something went wrong, try again');
             });
     }
 
     /**
      *To display error message in snackbar when any  error is caught from server
      */
-    open(message: string) {
-        let config = this.snackbarRef.open(message, 'Dismiss', {
+    openSnackbar(message: string) {
+        return this.snackbarRef.open(message, 'Dismiss', {
             duration: 4000,
         });
     }

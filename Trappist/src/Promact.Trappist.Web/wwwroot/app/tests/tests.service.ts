@@ -71,16 +71,25 @@ export class TestService {
 
     
 
-    addSelectedCategories(testCategory: any) {
-        return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories', testCategory);
+    addSelectedCategories(testId: number, testCategory: any ) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories/' +testId, testCategory);
     }
 
+    /**
+     * deletes the deselected category from TestCategory
+     * @param testCategory
+     */
     removeDeselectedCategory(testCategory: any) {
-        return this.httpService.post(this.testApiUrl + '/' + 'deselectCategory', testCategory)
+        return this.httpService.post(this.testApiUrl + '/' + 'deselectCategory', testCategory);
     }
 
+    /**
+     * deselects the category
+     * @param categoryId
+     * @param testId
+     */
     deselectCategory(categoryId: number, testId: number) {
-        return this.httpService.get(this.testApiUrl + '/' + 'deselectCategory' + '/' + categoryId + '/' + testId)
+        return this.httpService.get(this.testApiUrl + '/' + 'deselectCategory' + '/' + categoryId + '/' + testId);
     }
 
     /**

@@ -10,5 +10,4 @@ export class Category {
         selectAll: boolean;
         numberOfSelectedQuestion: number;
         isSelect: boolean;
-        questionList: QuestionBase[];
 } 

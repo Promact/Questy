@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -159,10 +160,10 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="testCategory"></param>
         /// <returns>testCategory</returns>
-        [HttpPost("addSelectedCategories")]
-        public async Task<ActionResult> AddSelectedCategories([FromBody] List<TestCategory> testCategory)
+        [HttpPost("addSelectedCategories/{testId}")]
+        public async Task<ActionResult> AddSelectedCategories([FromRoute] int testId, [FromBody] List<CategoryAC> testCategory)
         {
-            await _testRepository.AddSelectedCategoryAsync(testCategory);
+            await _testRepository.AddSelectedCategoryAsync(testId, testCategory);
             return Ok(testCategory);
         }
 
@@ -185,57 +186,13 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testCategory"></param>
         /// <returns>testCategory</returns>
         [HttpPost("deselectCategory")]
-        public async Task<ActionResult> DeleteCategoriesAsync([FromBody] TestCategory testCategory)
+        public async Task<ActionResult> RemoveCategoryAndQuestionAsync([FromBody] TestCategory testCategory)
         {            
-                await _testRepository.DeleteCategoryAsync(testCategory);
+                await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
                 return Ok(testCategory);                 
         }
         #endregion
-        #region Test-Question-Selection
-        /// <summary>
-        /// Gets all the questions present in a category by its id
-        /// </summary>
-        /// <param name="testId">Id of test in which category is present</param>
-        /// <param name="categoryId">Id of category whose questions would be fetched</param>
-        /// <returns>List of questions</returns>
-        [HttpGet("questions/{testid}/{categoryid}")]
-        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testId,[FromRoute] int categoryId)
-        {
-            return Ok( await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId));
-        }
-
-        /// <summary>
-        /// Adds the selected question to TestQuestion Model
-        /// </summary>
-        /// <param name="questionToAddTest">List of questions to be added to test</param>
-        /// <param name="testId">id of test in which questions will be added</param>
-        /// <returns>String message if successfull</returns>
-        [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd,[FromRoute] int testId)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            else
-            {
-                var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
-                return Ok(new {message = message});
-            }
-        }
-
-        /// <summary>
-        /// Gets all the details of a test
-        /// </summary>
-        /// <param name="id">id of test</param>
-        /// <returns>Object of TestAC</returns>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
-        {
-            var testAcObject = await _testRepository.GetTestByIdAsync(id);
-            if (testAcObject == null)
-                return NotFound();
-            return Ok(testAcObject);
-        }
-        #endregion
+  
         #region Test-Question-Selection
         /// <summary>
         /// Gets all the questions present in a category by its id
