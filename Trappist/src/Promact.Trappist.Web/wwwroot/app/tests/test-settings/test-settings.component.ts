@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
-//import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
