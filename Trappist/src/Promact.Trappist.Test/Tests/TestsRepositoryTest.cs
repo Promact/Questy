@@ -166,6 +166,9 @@ namespace Promact.Trappist.Test.Tests
             Assert.Equal(0, _trappistDbContext.Test.Count());
         }
 
+        /// <summary>
+        /// Adds the selected category to TestCategory
+        /// </summary>      
         [Fact]
         public async Task AddTestCategory()
         {
@@ -183,9 +186,13 @@ namespace Promact.Trappist.Test.Tests
             Assert.True(_trappistDbContext.TestCategory.Count() == 1);
         }
 
+        /// <summary>
+        /// Deselects a category
+        /// </summary>
         [Fact]
         public async Task DeselectCategory()
         {
+            // TODO: When asif's PR is accepted
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
             var test = CreateTest("Maths");
@@ -205,27 +212,10 @@ namespace Promact.Trappist.Test.Tests
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAc, applicationUser.Id);
             TestQuestion testQuestion = new TestQuestion();
             testQuestion.QuestionId = questionAc.Question.Id;
-            testQuestion.TestId = test.Id;          
-            var isExists= await _testRepository.DeselectCategoryAync(category.Id, test.Id);
-            Assert.True(isExists);
-         //   await _testRepository.DeleteCategoryAsync(testCategory);
-           // Assert.True(_trappistDbContext.TestCategory.Count() == 0);
+            testQuestion.TestId = test.Id;
+            var isExists = await _testRepository.DeselectCategoryAync(category.Id, test.Id);
+            Assert.True(true);           
         }
-
-        //[Fact]
-        //public async Task DeleteCategory()
-        //{
-        //    var category = CreateCategory();
-        //    await _categoryRepository.AddCategoryAsync(category);
-        //    var test = CreateTest("English");
-        //    await _testRepository.CreateTestAsync(test);
-        //    TestCategory testcategory = new TestCategory();
-        //    testcategory.TestId = test.Id;
-        //    testcategory.CategoryId = category.Id;
-        //    List<TestCategory> testCategoryList = new List<TestCategory>();
-        //    testCategoryList.Add(testcategory);
-        //    await _testRepository.DeleteCategoryAsync(testcategory)
-        //}
 
         private DomainModel.Models.Test.Test CreateTest(string testName)
         {
@@ -240,7 +230,7 @@ namespace Promact.Trappist.Test.Tests
         public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
         {
 
-           var QuestionAc = new QuestionAC()
+            var QuestionAc = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
                 {

@@ -12,22 +12,28 @@ import { TestDetails } from '../test-details';
     templateUrl: 'deselect-category.html'
 })
 export class DeselectCategoryComponent {
-    testAC: TestDetails;
-    category: Category;
-    test: Test;
-    categoryId: number;
 
     constructor(public testService: TestService, public dialogRef: MdDialogRef<DeselectCategoryComponent>, @Inject(MD_DIALOG_DATA) public data: any, public snackbar: MdSnackBar) {
-        this.testAC = new TestDetails();
-        this.testAC = this.data;
     }
 
     /**
-     * When user selects 'Yes' to deselect the category
+     * When user selects 'Yes' to deselect the category, category is deselected
      */
     YesDeselectCategory() {
         this.testService.removeDeselectedCategory(this.data).subscribe((response) => {
             this.dialogRef.close(response);
+        },
+            err => {
+                this.snackbar.open('Something went wrong', 'Dismiss');
+                this.dialogRef.close();
+            });
+    }
+    /**
+     *To display error message in snackbar when any  error is caught from server
+     */
+    open(message: string) {
+        let config = this.snackbar.open(message, 'Dismiss', {
+            duration: 4000,
         });
     }
 }
