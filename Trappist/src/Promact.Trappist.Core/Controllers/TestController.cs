@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -189,9 +188,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">id of test</param>
         /// <returns>Object of TestAC</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTestDetailsByIdAsync([FromRoute] int id)
-        {          
-            return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
+        public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
+        {
+            var testAcObject = await _testRepository.GetTestByIdAsync(id);
+            if (testAcObject == null)
+                return NotFound();
+            return Ok(testAcObject);
         }
         #endregion
         #region Test-Question-Selection

@@ -5,10 +5,9 @@ import { TestService } from '../tests.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
-import { TestDetails } from '../test';
+import { Test } from '../tests.model';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { Test } from '../tests.model';
 
 @Component({
     moduleId: module.id,
@@ -22,15 +21,13 @@ export class TestQuestionsComponent implements OnInit {
     QuestionType = QuestionType;
     selectedQuestions: number[] = [];
     questionsToAdd: QuestionBase[] = [];
-    testSettings: Test;
     testId: number;
     isSaveExit: boolean;
-    testDetails: TestDetails;
+    testDetails: Test;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
-        this.testDetails = new TestDetails();
-        this.testSettings = new Test();
+        this.testDetails = new Test();
         this.isSaveExit = false;
     }
     ngOnInit() {
@@ -38,7 +35,6 @@ export class TestQuestionsComponent implements OnInit {
             this.testId = params['id'];
         });
         this.getTestDetails();
-        this.getTestById(this.testId);
     }
 
     openSnackBar(text: string) {
@@ -76,7 +72,7 @@ export class TestQuestionsComponent implements OnInit {
      * Gets the details of a test by passing its Id
      */
     getTestDetails() {
-        this.testService.getTestDetails(this.testId).subscribe(response => {
+        this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
         });
     }
