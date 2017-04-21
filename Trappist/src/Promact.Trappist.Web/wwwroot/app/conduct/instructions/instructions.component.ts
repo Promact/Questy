@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Test } from '../../tests/tests.model';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     selector: 'instructions',
     templateUrl: 'instructions.html',
 })
-export class InstructionsComponent {
+export class InstructionsComponent implements OnInit{
     instruction: Instruction;
     testLink: string;
     loader: boolean;
