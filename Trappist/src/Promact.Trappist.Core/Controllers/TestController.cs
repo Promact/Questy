@@ -167,12 +167,12 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         [HttpGet("questions/{testid}/{categoryid}")]
-        public async Task<IActionResult> GetTestCategoryQuestions([FromRoute] int  testid,[FromRoute] int categoryid)
+        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testid,[FromRoute] int categoryid)
         {
             return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testid, categoryid));
         }
         [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestion([FromBody] List<QuestionAC> QuestionToAddTest,[FromRoute] int testId)
+        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> QuestionToAddTest,[FromRoute] int testId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -183,7 +183,7 @@ namespace Promact.Trappist.Core.Controllers
             }
         }
         [HttpGet("testDetails/{id}")]
-        public async Task<IActionResult> GetTestDetailsById([FromRoute] int id)
+        public async Task<IActionResult> GetTestDetailsByIdAsync([FromRoute] int id)
         {          
             return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
         }
