@@ -100,6 +100,6 @@ export class TestService {
      * @param id is passed to identify that particular "Test"
      */
     getTestDetails(id: number) {
-        return this.httpService.get(this.testApiUrl + '/testDetails/' + id);
+        return this.httpService.get(this.testApiUrl + '/' + id);
     }
 }

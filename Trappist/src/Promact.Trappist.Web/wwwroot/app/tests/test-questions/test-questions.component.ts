@@ -24,12 +24,14 @@ export class TestQuestionsComponent implements OnInit {
     questionsToAdd: QuestionBase[] = [];
     testSettings: Test;
     testId: number;
+    isSaveExit: boolean;
     testDetails: TestDetails;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new TestDetails();
         this.testSettings = new Test();
+        this.isSaveExit = false;
     }
     ngOnInit() {
         this.router.params.subscribe(params => {
@@ -40,7 +42,7 @@ export class TestQuestionsComponent implements OnInit {
     }
 
     openSnackBar(text: string) {
-        this.snackBar.open(text, 'Dismiss', {
+        return this.snackBar.open(text, 'Dismiss', {
             duration: 5000
         });
     }
@@ -69,13 +71,14 @@ export class TestQuestionsComponent implements OnInit {
             return 'correct';
         }
     }
+
     /**
      * Gets the details of a test by passing its Id
      */
     getTestDetails() {
         this.testService.getTestDetails(this.testId).subscribe(response => {
             this.testDetails = response;
-        }); 
+        });
     }
 
     /**
@@ -84,7 +87,6 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(question: QuestionBase, category: Category) {
-
         if (question.question.isSelect) {
             if (category.questionList.every(function (question) {
                 return question.question.isSelect;
@@ -97,34 +99,40 @@ export class TestQuestionsComponent implements OnInit {
             category.numberOfQuestion--;
         }
     }
+
     /**
-     * Adds all the questions to to database and navigate to test-view.component
+     * Adds all the questions to to database and navigate to test-settings.component
      */
     SaveNext() {
-
         this.questionsToAdd = new Array<QuestionBase>();
-        
         for (let category of this.testDetails.categoryAcList) {
-            if (category.isSelect && category.questionList !== null) 
+            if (category.isSelect && category.questionList !== null)
                 this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
-         }
-              
+        }
         this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
-            if (response)
-                this.openSnackBar(response.message);
+            if (response) {
+                let snackBarRef = this.openSnackBar(response.message);
+                if (this.isSaveExit)
+                    snackBarRef.afterDismissed().subscribe(() => {
+                        this.route.navigate(['/tests']);
+                    });
+                else
+                    snackBarRef.afterDismissed().subscribe(() => {
+                        this.route.navigate(['tests/' + this.testId + '/settings']);
+                    });
+            }
         },
             error => {
                 this.openSnackBar('Oops! something went wrong..please try after sometime');
             });
-        this.route.navigate(['tests/' + this.testId + '/view']);
     }
+
     /**
      * Selects and deselect all the questions of a category
      * @param category object
      * @param totalNumberOfQuestions number of all the questions of a category
      */
     SelectAll(category: Category, totalNumberOfQuestions: number) {
-
         category.questionList.map(function (questionList) {
             if (category.selectAll) {
                 questionList.question.isSelect = true;
@@ -136,13 +144,13 @@ export class TestQuestionsComponent implements OnInit {
             }
         });
     }
+
     /**
      * Adds the questions to question table and redirect to test dashboard
      */
-
     SaveExit() {
+        this.isSaveExit = true;
         this.SaveNext();
-        this.route.navigate(['/tests']);
     }
 
     /**
@@ -154,5 +162,4 @@ export class TestQuestionsComponent implements OnInit {
             this.testSettings = (response);
         });
     }
-    
 }
