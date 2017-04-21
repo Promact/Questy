@@ -16,4 +16,12 @@ export class ConductService {
     registerTestAttendee(magicString: any, testAttendee: any) {
         return this.httpService.post(this.registerTestAttendeeApiUrl + magicString + '/register', testAttendee);
     }
+
+    /**
+     * Gets all the instruction details before starting a perticular test
+     * @param link is used to fetch all information related to a perticular test
+     */
+    getAllTestInformation(link: string) {
+        return this.httpService.get(this.registerTestAttendeeApiUrl + link + '/instructions');
+    }
 }
