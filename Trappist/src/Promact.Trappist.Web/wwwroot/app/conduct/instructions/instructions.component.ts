@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 })
 export class InstructionsComponent implements OnInit {
     instruction: Instruction;
-    testLink: string;
     loader: boolean;
     isErrorMessage: boolean;
     magicString: string;
@@ -27,8 +26,9 @@ export class InstructionsComponent implements OnInit {
      *Gets the link from the route and pass it as parameter to the method for fetching all information of a particular test
      */
     ngOnInit() {
-        this.testLink = this.route.snapshot.params['link'];
-        this.getAllTestInformation(this.testLink);
+        let url = window.location.pathname;
+        let magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));
+        this.getAllTestInformation(magicString);
     }
 
     /**
