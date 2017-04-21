@@ -269,10 +269,8 @@ namespace Promact.Trappist.Test.Tests
             var question2 = CreatequestionAC(true, "This is in Category 2", category2.Id, 0);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, applicationUser.Id);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, applicationUser.Id);
-
             var AllQuestions = await _questionRepository.GetAllQuestionsAsync(user.Id);
-            List<Question> ListAC = AllQuestions.ToList();
-    
+            List<Question> ListAC = AllQuestions.ToList();   
             var test = CreateTest("Maths");
             await _testRepository.CreateTestAsync(test);
 
@@ -286,7 +284,6 @@ namespace Promact.Trappist.Test.Tests
             testCategory.CategoryId = category2.Id;
             await _trappistDbContext.TestCategory.AddAsync(testCategory);
             await _trappistDbContext.SaveChangesAsync();
-
             List<QuestionAC> questionListAc = new List<QuestionAC>();
             var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(ListAC);
             foreach (var question in questionDetailList)
@@ -296,7 +293,6 @@ namespace Promact.Trappist.Test.Tests
                 questionAc.Question = question;
                 questionListAc.Add(questionAc);
             }
-     
             await  _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             var questionAcList = await _testRepository.GetAllTestCategoryQuestionsByIdAsync(test.Id,category1.Id);
             Assert.Equal(1,questionAcList.Count);
@@ -319,14 +315,12 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetTestDetails()
         {
-           
             //Creating Category
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
             //Creating Test
             var test = CreateTest("Maths");
             await _testRepository.CreateTestAsync(test);
-
             //Adding category to TestCategory model
             var testCategory = new TestCategory()
             {
