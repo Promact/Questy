@@ -56,7 +56,6 @@ namespace Promact.Trappist.Core.Controllers
                 return result;
         }
         #endregion
-
         #endregion
     }
 }
