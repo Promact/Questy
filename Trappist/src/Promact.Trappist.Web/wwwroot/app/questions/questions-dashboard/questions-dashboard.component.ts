@@ -52,6 +52,9 @@ export class QuestionsDashboardComponent implements OnInit {
     ngOnInit() {
         this.getAllQuestions();
         this.getAllCategories();
+
+        //Scroll to top when navigating back from other components.
+        window.scrollTo(0, 0);
     }
 
     //To check whether the option is correct or not
