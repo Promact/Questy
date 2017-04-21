@@ -165,12 +165,26 @@ namespace Promact.Trappist.Core.Controllers
             await _testRepository.DeleteTestAsync(id);
             return NoContent();
         }
-
+        #endregion
+        #region Test-Question-Selection
+        /// <summary>
+        /// Gets all the questions present in a category by its id
+        /// </summary>
+        /// <param name="testId">Id of test in which category is present</param>
+        /// <param name="categoryId">Id of category whose questions would be fetched</param>
+        /// <returns>List of questions</returns>
         [HttpGet("questions/{testid}/{categoryid}")]
         public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testId,[FromRoute] int categoryId)
         {
             return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testId, categoryId));
         }
+
+        /// <summary>
+        /// Adds the selected question to TestQuestion Model
+        /// </summary>
+        /// <param name="questionToAddTest">List of questions to be added to test</param>
+        /// <param name="testId">id of test in which questions will be added</param>
+        /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
         public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAddTest,[FromRoute] int testId)
         {
@@ -182,7 +196,13 @@ namespace Promact.Trappist.Core.Controllers
                 return Ok(new {message = message});
             }
         }
-        [HttpGet("testDetails/{id}")]
+
+        /// <summary>
+        /// Gets all the details of a test
+        /// </summary>
+        /// <param name="id">id of test</param>
+        /// <returns>Object of TestAC</returns>
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetTestDetailsByIdAsync([FromRoute] int id)
         {          
             return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
