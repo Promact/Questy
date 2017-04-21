@@ -48,6 +48,7 @@ export class TestCreateDialogComponent {
     */
     ChangeError() {
         this.errorMessage = false;
+        this.isWhiteSpaceError = false;
     }
     /**
     to display error message in snackbar when any  error is caught from server
