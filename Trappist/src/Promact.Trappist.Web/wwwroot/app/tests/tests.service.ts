@@ -1,8 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Test } from './tests.model';
-import { TestDetails } from './test';
 import { QuestionBase } from '../questions/question';
+
 @Injectable()
 
 export class TestService {
@@ -33,14 +33,6 @@ export class TestService {
      */
     IsTestNameUnique(testName: string, id: number) {
         return this.httpService.get(this.testNameApiUrl + '/' + testName + '/' + id);
-    }
-
-    /**
-     * Gets the Settings saved for a particular Test
-     * @param id is used to get the Settings of a Test by its Id
-     */
-    getTestById(id: number) {
-        return this.httpService.get(this.testApiUrl + '/' + id + '/' + 'settings');
     }
 
     /**
@@ -77,7 +69,6 @@ export class TestService {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
     }
 
-
     /**
      * Gets the questions of a particular category in a "Test"
      * @param testId is passed to identify that particular "Test"
@@ -95,11 +86,12 @@ export class TestService {
     addTestQuestions(selectedQuestions: QuestionBase[], testId: number) {
         return this.httpService.post(this.testApiUrl + '/questions/' + testId, selectedQuestions);
     }
+
     /**
      * Gets the details of a particular test withs all categories it contains
      * @param id is passed to identify that particular "Test"
      */
-    getTestDetails(id: number) {
+    getTestById(id: number) {
         return this.httpService.get(this.testApiUrl + '/' + id);
     }
 }

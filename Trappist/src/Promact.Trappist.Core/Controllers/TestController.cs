@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -70,20 +69,6 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion 
         #region Test Settings
-        /// <summary>
-        /// Gets the Settings saved for a particular Test
-        /// </summary>
-        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
-        /// <returns>Settings saved for the selected Test</returns>
-        [HttpGet("{id}/settings")]
-        public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
-        {
-            var testSettings = await _testRepository.GetTestByIdAsync(id);
-            if (testSettings == null)
-                return NotFound();
-            return Ok(testSettings);
-        }
-
         /// <summary>
         /// Updates the edited Test Name
         /// </summary>
@@ -203,9 +188,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="id">id of test</param>
         /// <returns>Object of TestAC</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTestDetailsByIdAsync([FromRoute] int id)
-        {          
-            return Ok(await _testRepository.GetTestDetailsByIdAsync(id));
+        public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
+        {
+            var testAcObject = await _testRepository.GetTestByIdAsync(id);
+            if (testAcObject == null)
+                return NotFound();
+            return Ok(testAcObject);
         }
         #endregion
     }
