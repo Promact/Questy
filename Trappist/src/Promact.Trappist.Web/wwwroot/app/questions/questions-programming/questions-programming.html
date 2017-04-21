@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label>Question Details</label>
-                    <ckeditor [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
+                    <ckeditor [config]="{extraPlugins:'divarea'}" [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
                     <div class="errors-container">
                         <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
                             <div [hidden]="!detail.errors.required">
