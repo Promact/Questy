@@ -24,6 +24,7 @@ using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 
 namespace Promact.Trappist.Test
 {
@@ -118,6 +119,8 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
+                cfg.CreateMap<DomainModel.Models.Category.Category, CategoryAC>();
+                cfg.CreateMap<DomainModel.Models.Test.Test, TestAC>();
             });
             #endregion
 

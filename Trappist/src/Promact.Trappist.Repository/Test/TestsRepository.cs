@@ -17,6 +17,7 @@ namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
+        TestAC testAc = new TestAC();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
@@ -24,6 +25,7 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext = dbContext;
             _util = util;
         }
+
         #region Test
         /// <summary>
         /// this method is used to create a new test
@@ -110,19 +112,19 @@ namespace Promact.Trappist.Repository.Tests
         #region Category selection
         public async Task<TestAC> GetTestDetailsByIdAsync(int testId)
         {
-            var testACObject = new TestAC();
+            var testAcObject = new TestAC();
             var test = await _dbContext.Test.FindAsync(testId);
-            testACObject = Mapper.Map<Test, TestAC>(test);
+            testAcObject = Mapper.Map<Test, TestAC>(test);
             var categoryList = await _dbContext.Category.ToListAsync();
-            var categoryListAC = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+            var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
             var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
-            categoryListAC.ForEach(category =>
+            categoryListAc.ForEach(category =>
             {
                 if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     category.IsSelect = true;
             });
-            testACObject.CategoryACList = categoryListAC;
-            return testACObject;
+            testAcObject.CategoryAcList = categoryListAc;
+            return testAcObject;
         }
         public async Task AddSelectedCategoryAsync(List<TestCategory> testCategory)
         {
@@ -147,18 +149,19 @@ namespace Promact.Trappist.Repository.Tests
                 {
                     if (question.CategoryID == categoryId && testQuestion.QuestionId == question.Id && testQuestion.TestId == testId)
                         return true;
-                    else
-                        return false;
                 }
             }
-            return true;
+            return false;
         }
 
-        public async Task DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryAsync(TestCategory testCategory)
         {
-            var testCategory = await _dbContext.TestCategory.FindAsync(id);
-            _dbContext.TestCategory.Remove(testCategory);
+            var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.TestId == testCategory.TestId && x.CategoryId == testCategory.CategoryId);
+            _dbContext.TestCategory.Remove(testCategoryObj);
             await _dbContext.SaveChangesAsync();
+            var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
+            var categoryAc = Mapper.Map<Category, CategoryAC>(category);
+            categoryAc.IsSelect = false;
         }
         #endregion
 

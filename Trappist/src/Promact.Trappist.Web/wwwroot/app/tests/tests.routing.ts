@@ -15,7 +15,7 @@ const testsRoutes: Routes = [
       { path: '', component: TestsDashboardComponent },
       { path: ':id/settings', component: TestSettingsComponent },
       { path: ':id/sections', component: TestSectionsComponent },
-      { path: 'questions/:id', component: TestQuestionsComponent },
+      { path: ':id/questions', component: TestQuestionsComponent },
       { path: 'view', component: TestViewComponent }
     ]
   }
