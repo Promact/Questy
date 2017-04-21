@@ -123,7 +123,7 @@ namespace Promact.Trappist.Repository.Questions
             await _dbContext.Entry(updatedQuestion).Reference(x => x.CodeSnippetQuestion).LoadAsync();
             await _dbContext.Entry(updatedQuestion.CodeSnippetQuestion).Collection(x => x.CodeSnippetQuestionTestCases).LoadAsync();
 
-            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
+            var testCases = updatedQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
             var updatedTestCase = questionAC.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
 
             Mapper.Map(questionAC.Question, updatedQuestion);
@@ -155,7 +155,7 @@ namespace Promact.Trappist.Repository.Questions
                 //Updating TestCases
                 testCaseToUpdate.ForEach(x =>
                 {
-                    var testCase = testCases.Find(test => test.Id == x.Id);
+                    var testCase = testCases.First(test => test.Id == x.Id);
                     var entry = _dbContext.Entry(testCase);
                     entry.CurrentValues.SetValues(x);
                 });
