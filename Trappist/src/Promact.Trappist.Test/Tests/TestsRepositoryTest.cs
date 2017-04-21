@@ -181,7 +181,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task AddTestQuestion()
         {
-            TestCategory testCategory = new TestCategory();
+            var testCategory = new TestCategory();
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
             
@@ -192,7 +192,7 @@ namespace Promact.Trappist.Test.Tests
             _trappistDbContext.TestCategory.Add(testCategory);
             await _trappistDbContext.SaveChangesAsync();
 
-            List<QuestionAC> questionListAc = new List<QuestionAC>();
+            var questionListAc = new List<QuestionAC>();
             questionListAc.Add(CreatequestionAC(true, "This will be added..", category.Id , 1));
             questionListAc.Add(CreatequestionAC(false, "This will not be added.", category.Id , 2));
 
@@ -236,7 +236,7 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetAllTestCategoryQuestionsByIdAsync()
         {
-            TestCategory testCategory = new TestCategory();
+            var testCategory = new TestCategory();
             var category1 = CreateCategory();   
             await _categoryRepository.AddCategoryAsync(category1);
             var category2 = CreateCategory();
@@ -268,17 +268,17 @@ namespace Promact.Trappist.Test.Tests
             testCategory.CategoryId = category2.Id;
             await _trappistDbContext.TestCategory.AddAsync(testCategory);
             await _trappistDbContext.SaveChangesAsync();
-            List<QuestionAC> questionListAc = new List<QuestionAC>();
+            var questionListAc = new List<QuestionAC>();
             var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(ListAC);
             foreach (var question in questionDetailList)
             {
-                QuestionAC questionAc = new QuestionAC();
+                var questionAc = new QuestionAC();
                 question.IsSelect = true;
                 questionAc.Question = question;
                 questionListAc.Add(questionAc);
             }
             await  _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
-            var questionAcList = await _testRepository.GetAllTestCategoryQuestionsByIdAsync(test.Id,category1.Id);
+            var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id,category1.Id);
             Assert.Equal(1,questionAcList.Count);
             Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
             Assert.True(questionAcList[0].Question.IsSelect);

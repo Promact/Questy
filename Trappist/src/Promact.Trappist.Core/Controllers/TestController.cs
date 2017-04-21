@@ -161,7 +161,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("questions/{testid}/{categoryid}")]
         public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testId,[FromRoute] int categoryId)
         {
-            return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testId, categoryId));
+            return Ok( await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId));
         }
 
         /// <summary>
@@ -171,13 +171,13 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testId">id of test in which questions will be added</param>
         /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAddTest,[FromRoute] int testId)
+        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd,[FromRoute] int testId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             else
             {
-                var message = await _testRepository.AddTestQuestionsAsync(questionToAddTest, testId);
+                var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
                 return Ok(new {message = message});
             }
         }
