@@ -1,5 +1,4 @@
-﻿
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
