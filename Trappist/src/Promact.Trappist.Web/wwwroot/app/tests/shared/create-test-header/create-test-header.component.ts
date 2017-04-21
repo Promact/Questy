@@ -59,9 +59,12 @@ export class CreateTestHeaderComponent implements OnInit {
     /**
      * Hides the edit button and makes the check and close buttons visible
      */
-    hideEditButton() {
+    hideEditButton(testName : string) {
         this.isEditButtonVisible = false;
         this.isLabelVisible = false;
+       testName = testName.trim();
+       testName = testName.replace(/\s{2,}/, ' ');
+       this.testSettings.testName = testName;
     }
 
     /**
