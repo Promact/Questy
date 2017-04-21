@@ -153,18 +153,18 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         [HttpGet("questions/{testid}/{categoryid}")]
-        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testid,[FromRoute] int categoryid)
+        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testId,[FromRoute] int categoryId)
         {
-            return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testid, categoryid));
+            return Ok( await _testRepository.GetAllTestCategoryQuestionsByIdAsync(testId, categoryId));
         }
         [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> QuestionToAddTest,[FromRoute] int testId)
+        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAddTest,[FromRoute] int testId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             else
             {
-                var message = await _testRepository.AddTestQuestionsAsync(QuestionToAddTest, testId);
+                var message = await _testRepository.AddTestQuestionsAsync(questionToAddTest, testId);
                 return Ok(new {message = message});
             }
         }
