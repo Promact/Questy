@@ -31,10 +31,10 @@ export class CategoryService {
     }
 
     /**
-    * API to remove Category
-    * @param categoryId: Category id
+    * API to delete Category
+    * @param categoryId:Id to delete Category
     */
-    removeCategory(categoryId: number) {
-        return this.httpService.delete(this.categoriesApiUrl + '/' + categoryId);
+    deleteCategory(id: number) {
+        return this.httpService.delete(this.categoriesApiUrl + '/' + id);
     }
 }

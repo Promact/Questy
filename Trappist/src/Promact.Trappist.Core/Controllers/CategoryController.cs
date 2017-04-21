@@ -107,7 +107,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _categoryRepository.RemoveCategoryAsync(categoryToDelete);
+            await _categoryRepository.DeleteCategoryAsync(categoryToDelete);
             return NoContent();
         }
         #endregion

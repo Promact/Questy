@@ -9,7 +9,7 @@
         string Success { get; }
 
         #region BasicSetup Constants  
-        
+
         /// <summary>
         /// Property SetupConfigFilename is called whenever required SetupConfig file name
         /// </summary>
