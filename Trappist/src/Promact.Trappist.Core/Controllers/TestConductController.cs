@@ -46,10 +46,10 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="link">link to conduct a particular test</param>
         /// <returns></returns>
-        [HttpGet("{link}/instructions")]
-        public async Task<InstructionAC> GetAllTestInformationAsync(string link)
+        [HttpGet("{testLink}/instructions")]
+        public async Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink)
         {
-            var result = await _testConductRepository.GetAllTestInformationAsync(link);
+            var result = await _testConductRepository.GetTestDetailsByLinkAsync(testLink);
             if (result == null)
                 return null;
             else

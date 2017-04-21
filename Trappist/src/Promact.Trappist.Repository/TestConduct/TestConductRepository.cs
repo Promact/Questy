@@ -42,9 +42,9 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task<InstructionAC> GetAllTestInformationAsync(string link)
+        public async Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink)
         {
-            var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == link);
+            var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             var currentTestId = testSettingsDetails.Id;
             var testQuestionDetails = await _dbContext.TestQuestion.Where(x => x.TestId == currentTestId).ToListAsync();
             var totalNumberOfQuestions = testQuestionDetails.Count();
@@ -75,6 +75,4 @@ namespace Promact.Trappist.Repository.TestConduct
         }
         #endregion
     }
-}
-
-        
+}        
