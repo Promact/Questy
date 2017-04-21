@@ -21,6 +21,8 @@ export class CreateTestHeaderComponent implements OnInit {
     isEditButtonVisible: boolean;
     isLabelVisible: boolean;
     id: number;
+    testName: string;
+    editedTestName: string;
     @Input('testSettings')
     public testSettings: Test;
 
@@ -59,12 +61,12 @@ export class CreateTestHeaderComponent implements OnInit {
     /**
      * Hides the edit button and makes the check and close buttons visible
      */
-    hideEditButton(testName : string) {
+    hideEditButton() {
         this.isEditButtonVisible = false;
         this.isLabelVisible = false;
-       testName = testName.trim();
-       testName = testName.replace(/\s{2,}/, ' ');
-       this.testSettings.testName = testName;
+        if (this.editedTestName) {
+            this.testSettings.testName = this.editedTestName;
+        }
     }
 
     /**
@@ -94,6 +96,8 @@ export class CreateTestHeaderComponent implements OnInit {
         this.testService.IsTestNameUnique(this.testNameRef, id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.updateTestName(id, testObject).subscribe((response) => {
+                    this.testName = response.testName;
+                    this.editedTestName = this.testName;
                     this.openSnackBar(this.testNameUpdatedMessage);
                     this.isLabelVisible = true;
                     this.isEditButtonVisible = true;
