@@ -94,14 +94,9 @@
         string CategoryNameExistsError { get; }
 
         /// <summary>
-        /// Property QuestionsDependOnCategory is used to check associated questions
+        /// Property CategoryExistInQuestion is used to check Category exist in Question or not
         /// </summary>
-        string QuestionsDependOnCategory { get; }
-
-        /// <summary>
-        /// Property CategoryId to return categoryId string
-        /// </summary>
-        string CategoryId { get; }
+        string CategoryExistInQuestionError { get; }
         #endregion
 
         #region "TestSettings Constants"

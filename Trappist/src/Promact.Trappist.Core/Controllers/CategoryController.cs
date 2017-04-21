@@ -83,28 +83,31 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// Delete API to remove a Category
+        ///  API to delete Category
         ///</summary>
-        /// <param name="categoryId">The id of the Category to delete.</param>
+        /// <param name="categoryId">Id to delete Category</param>
         /// <returns>No content(204) response if id found else not found(404) response</returns>
         [HttpDelete("{categoryId}")]
-        public async Task<IActionResult> DeleteCategory([FromRoute] int categoryId)
+        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] int categoryId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            Category category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-            if (category == null)
+
+            Category categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (categoryToDelete == null)
             {
                 return NotFound();
             }
+
             if (await _categoryRepository.IsCategoryExistInQuestionAsync(categoryId))
             {
-                ModelState.AddModelError(_stringConstants.CategoryId, _stringConstants.QuestionsDependOnCategory);
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryExistInQuestionError);
                 return BadRequest(ModelState);
             }
-            await _categoryRepository.RemoveCategoryAsync(category);
+
+            await _categoryRepository.RemoveCategoryAsync(categoryToDelete);
             return NoContent();
         }
         #endregion

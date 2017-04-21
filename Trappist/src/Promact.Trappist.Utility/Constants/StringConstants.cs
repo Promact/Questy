@@ -140,19 +140,11 @@
             }
         }
 
-        public string QuestionsDependOnCategory
+        public string CategoryExistInQuestionError
         {
             get
             {
-                return "This category contains questions. You can't delete this category";
-            }
-        }
-
-        public string CategoryId
-        {
-            get
-            {
-                return "categoryId";
+                return "This Category belongs to Questions. You can not delete this Category.";
             }
         }
         #endregion
