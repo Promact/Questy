@@ -83,8 +83,8 @@ export class TestService {
         return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories', testCategory);
     }
 
-    removeDeselectedCategory(id: number) {
-        return this.httpService.delete(this.testApiUrl + '/' + 'deselectCategory' + '/' + id)
+    removeDeselectedCategory(testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'deselectCategory', testCategory)
     }
 
     deselectCategory(categoryId: number, testId: number) {

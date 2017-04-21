@@ -165,6 +165,12 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion
         #region Category Selection
+
+        /// <summary>
+        /// this method is used to get all the details of test
+        /// </summary>
+        /// <param name="id">Id of the test</param>
+        /// <returns>details of test</returns>
         [HttpGet("categories/{id}")]
         public async Task<ActionResult> GetTestDetail([FromRoute] int id)
         {
@@ -192,16 +198,20 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("deselectCategory/{categoryId}/{testId}")]
         public async Task<bool> DeselectCategoryAsync([FromRoute] int categoryId, [FromRoute] int testId)
         {
-            var category = await _testRepository.DeselectCategoryAync(categoryId, testId);
-            return category;
+            var isQuestionExists = await _testRepository.DeselectCategoryAync(categoryId, testId);
+            return isQuestionExists;
         }
 
-        [HttpDelete("deselectCategory/{id}")]
-
-        public async Task<ActionResult> DeleteCategoriesAsync([FromRoute] int id)
-        {
-            await _testRepository.DeleteCategoryAsync(id);
-            return Ok();
+        /// <summary>
+        /// this method is used to deselect a category from test
+        /// </summary>
+        /// <param name="testCategory"></param>
+        /// <returns>testCategory</returns>
+        [HttpPost("deselectCategory")]
+        public async Task<ActionResult> DeleteCategoriesAsync([FromBody] TestCategory testCategory)
+        {            
+                await _testRepository.DeleteCategoryAsync(testCategory);
+                return Ok(testCategory);                 
         }
         #endregion
     }

@@ -7,6 +7,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
     {
         public int Id { get; set; }
         public string TestName { get; set; }
-        public List<CategoryAC> CategoryACList { get; set; }
+        public List<CategoryAC> CategoryAcList { get; set; }
     }
 }
