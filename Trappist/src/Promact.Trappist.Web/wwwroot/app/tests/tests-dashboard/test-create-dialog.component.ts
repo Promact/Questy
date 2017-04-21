@@ -15,6 +15,7 @@ export class TestCreateDialogComponent {
     errorMessage: boolean;
     test: Test;
     testNameReference: string;
+    isWhiteSpaceError: boolean;
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar) {
         this.test = new Test();
     }
@@ -24,18 +25,23 @@ export class TestCreateDialogComponent {
      */
     AddTest(testNameRef: string) {
         this.test.testName = testNameRef;
-        this.testService.IsTestNameUnique(testNameRef, this.test.id ).subscribe((isTestNameUnique) => {
-            if (isTestNameUnique) {
-                this.testService.addTests(this.test).subscribe((responses) => {
-                    this.dialogRef.close(responses);
+        testNameRef = testNameRef.trim();
+        if (testNameRef) {
+            this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
+                if (isTestNameUnique) {
+                    this.testService.addTests(this.test).subscribe((responses) => {
+                        this.dialogRef.close(responses);
+                    });
+                }
+                else
+                    this.errorMessage = true;
+            },
+                errorHandling => {
+                    this.snackbar.open(errorHandling);
                 });
-            }
-            else
-                this.errorMessage = true;
-        },
-            errorHandling => {
-                this.snackbar.open(errorHandling);
-            });
+        }
+        else
+            this.isWhiteSpaceError = true;
     }
     /**
     this method is used to disable the errorMessage
