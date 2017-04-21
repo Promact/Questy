@@ -2,7 +2,7 @@
 import { Test } from '../../tests/tests.model';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute } from '@angular/router';
-import { Instruction } from '../instruction'
+import { Instruction } from '../instruction.model';
 import { Router } from '@angular/router';
 
 
