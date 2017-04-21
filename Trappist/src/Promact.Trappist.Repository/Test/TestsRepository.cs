@@ -79,20 +79,20 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Test> GetTestByIdAsync(int id)
-        {
-            string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-            DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-            var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
-            if (testSettings != null)
-            {
-                testSettings.StartDate = testSettings.StartDate == default(DateTime) ? date : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testSettings.EndDate = testSettings.EndDate == default(DateTime) ? date : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                return testSettings;
-            }
-            else
-                return null;
-        }
+        //public async Task<Test> GetTestByIdAsync(int id)
+        //{
+        //    string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+        //    DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+        //    var testSettings = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
+        //    if (testSettings != null)
+        //    {
+        //        testSettings.StartDate = testSettings.StartDate == default(DateTime) ? date : testSettings.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+        //        testSettings.EndDate = testSettings.EndDate == default(DateTime) ? date : testSettings.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+        //        return testSettings;
+        //    }
+        //    else
+        //        return null;
+        //}
 
         public async Task<bool> IsTestExists(int id)
         {
@@ -176,27 +176,36 @@ namespace Promact.Trappist.Repository.Tests
             }
         }
 
-        public async Task<TestAC> GetTestDetailsByIdAsync(int testId)
+        public async Task<TestAC> GetTestByIdAsync(int testId)
         {
-           
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
-            //Fetches the category list from Category Model
-            var categoryList = await _dbContext.Category.ToListAsync();
-            //Maps Category list to CategoryAC lis
-            var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
-            //Fetches the list of Categories from TestCategory Model
-            var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
-            categoryListAc.ForEach(category =>
+            string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            if (testAcObject != null)
             {
-                //If category present in TestCategory Model,then its IsSelect property made true
-                if (testCategoryList.Exists(x => x.CategoryId == category.Id))
-                    category.IsSelect = true;
-            });
-            testAcObject.CategoryAcList = categoryListAc;
-            return testAcObject;
+                testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? date : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+
+                //Fetches the category list from Category Model
+                var categoryList = await _dbContext.Category.ToListAsync();
+                //Maps Category list to CategoryAC lis
+                var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+                //Fetches the list of Categories from TestCategory Model
+                var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
+                categoryListAc.ForEach(category =>
+                {
+                    //If category present in TestCategory Model,then its IsSelect property made true
+                    if (testCategoryList.Exists(x => x.CategoryId == category.Id))
+                        category.IsSelect = true;
+                });
+                testAcObject.CategoryAcList = categoryListAc;
+                return testAcObject;
+            }
+            else
+                return null;
         }
         #endregion
     }

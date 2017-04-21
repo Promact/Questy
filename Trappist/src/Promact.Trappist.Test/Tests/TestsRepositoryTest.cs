@@ -85,20 +85,6 @@ namespace Promact.Trappist.Test.Tests
         }
 
         /// <summary>
-        /// Test Case for fetching settings of a test from database with the help of Id
-        /// </summary>
-        [Fact]
-        public async Task GetSettingsById()
-        {
-            var test = CreateTest("AOT 669");
-            await _testRepository.CreateTestAsync(test);
-            Assert.NotNull(test);
-            var testSettings = await _testRepository.GetTestByIdAsync(test.Id);
-            var testName = testSettings.TestName;
-            Assert.Equal(testName, "AOT 669");
-        }
-
-        /// <summary>
         /// Test Case for updating the settings set for a test in the database with the help of Id
         /// </summary>
         [Fact]
@@ -106,10 +92,9 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
-            var testSettingsToUpdate = await _testRepository.GetTestByIdAsync(test.Id);
-            testSettingsToUpdate.TestName = "IIT BANGALORE";
-            testSettingsToUpdate.BrowserTolerance = 2;
-            await _testRepository.UpdateTestByIdAsync(testSettingsToUpdate);
+            test.TestName = "IIT BANGALORE";
+            test.BrowserTolerance = 2;
+            await _testRepository.UpdateTestByIdAsync(test);
             var TestName = "IIT BANGALORE";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == 2) == 1);
@@ -123,9 +108,8 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
-            var testNameToUpdate = await _testRepository.GetTestByIdAsync(test.Id);
-            testNameToUpdate.TestName = "MCKV";
-            await _testRepository.UpdateTestNameAsync(test.Id, testNameToUpdate);
+            test.TestName = "MCKV";
+            await _testRepository.UpdateTestNameAsync(test.Id, test);
             var TestName = "MCKV";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
         }
@@ -329,7 +313,7 @@ namespace Promact.Trappist.Test.Tests
             };
             _trappistDbContext.TestCategory.Add(testCategory);
             await _trappistDbContext.SaveChangesAsync();
-            var testAc = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            var testAc = await _testRepository.GetTestByIdAsync(test.Id);
             Assert.Equal(1, testAc.CategoryAcList.Count());
         }
     }
