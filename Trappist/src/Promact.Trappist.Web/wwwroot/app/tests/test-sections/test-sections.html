@@ -3,7 +3,7 @@
     <div class="container">
         <h5>Select sections to add in your test</h5>
         <ul class="sections-list">
-            <li *ngFor="let categories of testDetailsObj.categoryAcList"
+            <li *ngFor="let categories of testDetails.categoryAcList"
                 (click)="onSelect(categories)">
                 <label for="{{categories.categoryName}}">
                     <input type="checkbox" id="" [(ngModel)]="categories.isSelect" />
@@ -15,5 +15,5 @@
             </li>
         </ul>
     </div>
-    <create-test-footer (SaveAndExit)="SaveAndExit()" (SaveAndNext)="SaveAndNext()"></create-test-footer>
+    <create-test-footer (SaveCategory)="saveCategoryToExitOrMoveNext($event)"></create-test-footer>
 </div>

@@ -29,8 +29,7 @@ export class TestCategory {
 export class TestQuestion {
     public id: number;
     public testId: number;
-    public questionId: number;
-    public testCategoryId: number;
+    public questionId: number;    
     public isSelect: boolean;
 }
 

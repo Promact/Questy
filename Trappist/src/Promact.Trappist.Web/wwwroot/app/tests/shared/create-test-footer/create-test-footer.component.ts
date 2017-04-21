@@ -27,9 +27,10 @@ export class CreateTestFooterComponent implements OnInit {
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
     @Output() saveExit: any;
-    @Output() saveNext: any;
-    @Output() SaveAndExit: any;
-    @Output() SaveAndNext: any;
+    @Output() saveNext: any;   
+    @Output() SaveCategory: any
+;
+    isSelectButton: boolean;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -39,8 +40,7 @@ export class CreateTestFooterComponent implements OnInit {
         this.launchTestDialog = new EventEmitter();
         this.saveExit = new EventEmitter();
         this.saveNext = new EventEmitter();
-        this.SaveAndExit = new EventEmitter();
-        this.SaveAndNext = new EventEmitter();
+        this.SaveCategory = new EventEmitter();
     }
 
     /**
@@ -87,10 +87,12 @@ export class CreateTestFooterComponent implements OnInit {
     }
 
     saveSelectedCategoryAndExit() {
-        this.SaveAndExit.emit();
+        this.isSelectButton = false;
+        this.SaveCategory.emit(this.isSelectButton);
     }
 
     saveSelectedCategoryAndMoveNext() {
-        this.SaveAndNext.emit();
+        this.isSelectButton = true;
+        this.SaveCategory.emit(this.isSelectButton);
     }
 }
