@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.Question
 {
-    public class CodeSnippetQuestion
+    public class CodeSnippetQuestion: BaseModel
     {
-        [ForeignKey("Question")]
-        public int Id { get; set; }
-
-        [Required]
-        public DateTime CreatedDateTime { get; set; }
-
-        public DateTime? UpdateDateTime { get; set; }
-
         public bool CheckCodeComplexity { get; set; }
 
         public bool CheckTimeComplexity { get; set; }
@@ -29,6 +19,7 @@ namespace Promact.Trappist.DomainModel.Models.Question
 
         public virtual ICollection<CodeSnippetQuestionTestCases> CodeSnippetQuestionTestCases { get; set; }
 
+        [ForeignKey("Id")]
         public virtual Question Question { get; set; }
     }
 }

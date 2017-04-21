@@ -90,7 +90,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             (response) => {
                 this.questionModel = response;
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
-                this.testCases = this.questionModel.codeSnippetQuestion.testCases;
+                this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
 
                 //If Question has no test case show the button to add new test case
                 if (this.testCases.length > 0)
@@ -236,16 +236,17 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
-
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
-            this.testCases.forEach(x => x.id = 0);//Explicitly converting the id of the testcases to zero
-            this.questionModel.codeSnippetQuestion.testCases = this.testCases;
+            //Explicitly converting the id of the testcases to zero
+            if (!this.isQuestionEditted)
+                this.testCases.forEach(x => x.id = 0);
+            this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);
             });
 
-            var subscription = this.isQuestionEditted
+            let subscription = this.isQuestionEditted
                 ? this.questionsService.updateQuestionById(this.questionId, this.questionModel)
                 : this.questionsService.addCodingQuestion(this.questionModel);
 

@@ -76,9 +76,13 @@ namespace Promact.Trappist.Repository.Questions
 
                 //Add codeSnippet part of question
                 codeSnippetQuestion.Question = question;
-                codeSnippetQuestion.CodeSnippetQuestionTestCases = Mapper.Map<List<CodeSnippetQuestionTestCases>>(questionAC.CodeSnippetQuestion.TestCases);
+                codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAC.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
 
-                codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x => x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2));
+                codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x =>
+                {
+                    x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2);
+                    x.CreatedDateTime = DateTime.UtcNow;
+                });
 
                 await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
                 await _dbContext.SaveChangesAsync();
@@ -115,50 +119,45 @@ namespace Promact.Trappist.Repository.Questions
         public async Task UpdateCodeSnippetQuestionAsync(QuestionAC questionAC, string userId)
         {
             var updatedQuestion = await _dbContext.Question.FindAsync(questionAC.Question.Id);
-            var updatedCodeSnippetQuestion = await _dbContext.CodeSnippetQuestion.FindAsync(questionAC.Question.Id);
-            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == questionAC.Question.Id).ToListAsync();
+
+            await _dbContext.Entry(updatedQuestion).Reference(x => x.CodeSnippetQuestion).LoadAsync();
+            await _dbContext.Entry(updatedQuestion.CodeSnippetQuestion).Collection(x => x.CodeSnippetQuestionTestCases).LoadAsync();
+
+            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
+            var updatedTestCase = questionAC.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
 
             Mapper.Map(questionAC.Question, updatedQuestion);
-            Mapper.Map(questionAC.CodeSnippetQuestion, updatedCodeSnippetQuestion);
-
+            Mapper.Map(questionAC.CodeSnippetQuestion, updatedQuestion.CodeSnippetQuestion);
             updatedQuestion.UpdatedByUserId = userId;
-            updatedCodeSnippetQuestion.Question = updatedQuestion;
-
+            await _dbContext.SaveChangesAsync();
+            
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                _dbContext.Question.Update(updatedQuestion);
-                await _dbContext.SaveChangesAsync();
+                //Handling one to many relationship with TestCase
+                //Finding TestCase to be updated, deleted and added
+                var testCaseToUpdate = updatedTestCase.Where(x => testCases.Any(y => y.Id == x.Id)).ToList();
+                var testCaseToDelete = testCases.Where(x => !updatedTestCase.Any(y => y.Id == x.Id)).ToList();
+                var testCaseToAdd = updatedTestCase.Where(x => !testCases.Any(y => y.Id == x.Id)).ToList();
 
-                _dbContext.CodeSnippetQuestion.Update(updatedCodeSnippetQuestion);
-                await _dbContext.SaveChangesAsync();
-
-                //Handling updated TestCases
-                //Finding modified TestCases 
-                var testCaseToUpdate = testCases.Where(x => questionAC.CodeSnippetQuestion.TestCases.Any(y => y.Id == x.Id)).ToList();
-                var testCaseToDelete = testCases.Where(x => !testCaseToUpdate.Any(y => y.Id == x.Id)).ToList();
-                var testCaseToAdd = Mapper.Map<List<CodeSnippetQuestionTestCases>>(questionAC.CodeSnippetQuestion.TestCases.Where(x => !testCases.Any(y => y.Id == x.Id)).ToList());
-
-                //Removing all the existing Test Case from the Database
+                //Deleting TestCases
                 _dbContext.CodeSnippetQuestionTestCases.RemoveRange(testCaseToDelete);
                 await _dbContext.SaveChangesAsync();
 
-                //AutoMapping each TestCase to CodeSnippetQuestionTestCases class
-                for (var i = 0; i < testCaseToUpdate.Count; i++)
-                {
-                    Mapper.Map(questionAC.CodeSnippetQuestion.TestCases.ElementAt(i), testCaseToUpdate.ElementAt(i));
-                }
-               
-                _dbContext.CodeSnippetQuestionTestCases.UpdateRange(testCaseToUpdate);
+                //Adding TestCases
+                testCaseToAdd.ForEach(x => {
+                    x.CodeSnippetQuestionId = updatedQuestion.CodeSnippetQuestion.Id;
+                    x.Id = 0;
+                });
+                await _dbContext.CodeSnippetQuestionTestCases.AddRangeAsync(testCaseToAdd);
                 await _dbContext.SaveChangesAsync();
 
-                //Adding the new TestCases
-                //Initializing Id of each TestCase to default and creating relationship with CodeSnippetQuestion model
-                foreach (var testCase in testCaseToAdd)
+                //Updating TestCases
+                testCaseToUpdate.ForEach(x =>
                 {
-                    testCase.CodeSnippetQuestion = updatedCodeSnippetQuestion;
-                    testCase.Id = 0;
-                }
-                await _dbContext.CodeSnippetQuestionTestCases.AddRangeAsync(testCaseToAdd);
+                    var testCase = testCases.Find(test => test.Id == x.Id);
+                    var entry = _dbContext.Entry(testCase);
+                    entry.CurrentValues.SetValues(x);
+                });
                 await _dbContext.SaveChangesAsync();
 
                 //Handling many to many relationship entity
@@ -219,7 +218,7 @@ namespace Promact.Trappist.Repository.Questions
                     .Where(x => x.CodeSnippetQuestionId == question.Id)
                     .ToListAsync();
 
-                questionAC.CodeSnippetQuestion.TestCases = Mapper.Map<List<CodeSnippetQuestionTestCasesAC>>(testCases);
+                questionAC.CodeSnippetQuestion.CodeSnippetQuestionTestCases = testCases;
             }
 
             return questionAC;
