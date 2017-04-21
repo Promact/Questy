@@ -1,9 +1,10 @@
-﻿import { Component, Output, EventEmitter } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+﻿import { Component, Output, EventEmitter, Inject } from '@angular/core';
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
 import { TestSectionsComponent } from '../test-sections/test-sections.component';
 import { Test, TestCategory, TestQuestion } from '../tests.model';
 import { TestService } from '../tests.service';
 import { Category } from '../../questions/category.model';
+import { TestDetails } from '../test-details';
 
 @Component({
     moduleId: module.id,
@@ -11,34 +12,22 @@ import { Category } from '../../questions/category.model';
     templateUrl: 'deselect-category.html'
 })
 export class DeselectCategoryComponent {
-    testCategory: TestCategory;
+    testAC: TestDetails;
     category: Category;
     test: Test;
     categoryId: number;
-    @Output() SelectedCategoryId: any;
-    dialogRef: MdDialogRef<DeselectCategoryComponent>;
 
-    constructor( public testService: TestService) {
-        this.testCategory = new TestCategory();
-        this.test = new Test();
-        this.category = new Category();
-        this.SelectedCategoryId = new EventEmitter();
+    constructor(public testService: TestService, public dialogRef: MdDialogRef<DeselectCategoryComponent>, @Inject(MD_DIALOG_DATA) public data: any, public snackbar: MdSnackBar) {
+        this.testAC = new TestDetails();
+        this.testAC = this.data;
     }
 
     /**
-     * To get the id of category to be deselected
+     * When user selects 'Yes' to deselect the category
      */
-    CategoryId() {
-        this.categoryId = this.SelectedCategoryId();
-    }
-
-    /**
-     * When user chooses to deselect the category
-     */
-    Yes() {
-        this.testCategory.id = this.categoryId;
-        this.testService.removeDeselectedCategory(this.testCategory.id).subscribe();
-        this.category.isSelect = false;
-        this.dialogRef.close();
+    YesDeselectCategory() {
+        this.testService.removeDeselectedCategory(this.data).subscribe((response) => {
+            this.dialogRef.close(response);
+        });
     }
 }

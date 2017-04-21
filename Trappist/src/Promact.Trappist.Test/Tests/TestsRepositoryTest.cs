@@ -30,9 +30,8 @@ namespace Promact.Trappist.Test.Tests
         {
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
-            _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
-
+            _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
         }
 
         /// <summary>
@@ -154,6 +153,67 @@ namespace Promact.Trappist.Test.Tests
             Assert.Equal(0, _trappistDbContext.Test.Count());
         }
 
+        [Fact]
+        public async Task AddTestCategory()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            var test = CreateTest("Final");
+            await _testRepository.CreateTestAsync(test);
+            TestCategory testcategory = new TestCategory();
+            testcategory.TestId = test.Id;
+            testcategory.CategoryId = category.Id;
+            List<TestCategory> testCategoryList = new List<TestCategory>();
+            testCategoryList.Add(testcategory);
+            var testAC = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            await _testRepository.AddSelectedCategoryAsync(testCategoryList);
+            Assert.True(_trappistDbContext.TestCategory.Count() == 1);
+        }
+
+        [Fact]
+        public async Task DeselectCategory()
+        {
+            var category = CreateCategory();
+            await _categoryRepository.AddCategoryAsync(category);
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
+            TestCategory testCategory = new TestCategory();
+            testCategory.TestId = test.Id;
+            testCategory.CategoryId = category.Id;
+            List<TestCategory> testCategoryList = new List<TestCategory>();
+            testCategoryList.Add(testCategory);
+            var testAc = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            await _testRepository.AddSelectedCategoryAsync(testCategoryList);
+            var questionAc = CreateQuestionAc(true, "Question in Category", category.Id, 1);
+            string userName = "niharika@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAc, applicationUser.Id);
+            TestQuestion testQuestion = new TestQuestion();
+            testQuestion.QuestionId = questionAc.Question.Id;
+            testQuestion.TestId = test.Id;          
+            var isExists= await _testRepository.DeselectCategoryAync(category.Id, test.Id);
+            Assert.True(isExists);
+         //   await _testRepository.DeleteCategoryAsync(testCategory);
+           // Assert.True(_trappistDbContext.TestCategory.Count() == 0);
+        }
+
+        //[Fact]
+        //public async Task DeleteCategory()
+        //{
+        //    var category = CreateCategory();
+        //    await _categoryRepository.AddCategoryAsync(category);
+        //    var test = CreateTest("English");
+        //    await _testRepository.CreateTestAsync(test);
+        //    TestCategory testcategory = new TestCategory();
+        //    testcategory.TestId = test.Id;
+        //    testcategory.CategoryId = category.Id;
+        //    List<TestCategory> testCategoryList = new List<TestCategory>();
+        //    testCategoryList.Add(testcategory);
+        //    await _testRepository.DeleteCategoryAsync(testcategory)
+        //}
+
         private DomainModel.Models.Test.Test CreateTest(string testName)
         {
             var test = new DomainModel.Models.Test.Test
@@ -162,6 +222,45 @@ namespace Promact.Trappist.Test.Tests
                 BrowserTolerance = 1
             };
             return test;
+        }
+
+        public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
+        {
+
+           var QuestionAc = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = questionDetails,
+                    QuestionType = 0,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = null,
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="A",
+                            IsAnswer=true
+                        },
+                    }
+                }
+            };
+            return QuestionAc;
+        }
+
+        private DomainModel.Models.Category.Category CreateCategory()
+        {
+            var category = new DomainModel.Models.Category.Category
+            {
+                CategoryName = "categoryName"
+            };
+            return category;
         }
 
         private DomainModel.Models.TestConduct.TestAttendees TestAttendee()

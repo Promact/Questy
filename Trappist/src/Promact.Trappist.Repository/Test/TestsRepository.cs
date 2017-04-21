@@ -24,6 +24,7 @@ namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
+        TestAC testAc = new TestAC();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         private readonly IStringConstants _stringConstants;
@@ -34,6 +35,7 @@ namespace Promact.Trappist.Repository.Tests
             _util = util;
             _stringConstants = stringConstants;
         }
+
         #region Test
         /// <summary>
         /// this method is used to create a new test
@@ -127,18 +129,19 @@ namespace Promact.Trappist.Repository.Tests
                 {
                     if (question.CategoryID == categoryId && testQuestion.QuestionId == question.Id && testQuestion.TestId == testId)
                         return true;
-                    else
-                        return false;
                 }
             }
-            return true;
+            return false;
         }
 
-        public async Task DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryAsync(TestCategory testCategory)
         {
-            var testCategory = await _dbContext.TestCategory.FindAsync(id);
-            _dbContext.TestCategory.Remove(testCategory);
+            var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.TestId == testCategory.TestId && x.CategoryId == testCategory.CategoryId);
+            _dbContext.TestCategory.Remove(testCategoryObj);
             await _dbContext.SaveChangesAsync();
+            var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
+            var categoryAc = Mapper.Map<Category, CategoryAC>(category);
+            categoryAc.IsSelect = false;
         }
         #endregion
 
