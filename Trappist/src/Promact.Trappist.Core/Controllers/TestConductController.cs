@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using System.Threading.Tasks;
@@ -38,6 +39,24 @@ namespace Promact.Trappist.Core.Controllers
             }
             return BadRequest();
         }
+
+        #region Test-Instruction API
+        /// <summary>
+        /// This method is used to get all the instruction details before starting of a particular test using testLink
+        /// </summary>
+        /// <param name="link">link to conduct a particular test</param>
+        /// <returns></returns>
+        [HttpGet("{link}/instructions")]
+        public async Task<InstructionAC> GetAllTestInformationAsync(string link)
+        {
+            var result = await _testConductRepository.GetAllTestInformationAsync(link);
+            if (result == null)
+                return null;
+            else
+                return result;
+        }
+        #endregion
+
         #endregion
     }
 }

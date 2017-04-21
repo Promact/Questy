@@ -2,6 +2,9 @@
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -39,6 +42,32 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
+        public async Task<InstructionAC> GetAllTestInformationAsync(string link)
+        {
+            var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == link);
+            var currentTestId = testSettingsDetails.Id;
+            var testQuestionDetails = await _dbContext.TestQuestion.Where(x => x.TestId == currentTestId).ToListAsync();
+            var totalNumberOfQuestions = testQuestionDetails.Count();
+            var testCategoryDetails = await _dbContext.TestCategory.Where(x => x.TestId == currentTestId).ToListAsync();
+            var testCategoryNameList = new List<string>();
+            foreach (var testCategory in testCategoryDetails)
+            {
+                var categoryDetails = await _dbContext.Category.FirstOrDefaultAsync(x => x.Id == testCategory.CategoryId);
+                var categoryName = categoryDetails.CategoryName;
+                testCategoryNameList.Add(categoryName);
+            }
+            InstructionAC instructionAC = new InstructionAC()
+            {
+                Duration = testSettingsDetails.Duration,
+                WarningTime = testSettingsDetails.WarningTime,
+                CorrectMarks = testSettingsDetails.CorrectMarks,
+                IncorrectMarks = testSettingsDetails.IncorrectMarks,
+                TotalNumberOfQuestions = totalNumberOfQuestions,
+                CategoryNameList = testCategoryNameList
+            };
+            return instructionAC;
+        }
+
         public async Task<bool> IsTestLinkExistAsync(string magicString)
         {
             var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => (x.Link == magicString)));
@@ -47,3 +76,5 @@ namespace Promact.Trappist.Repository.TestConduct
         #endregion
     }
 }
+
+        
