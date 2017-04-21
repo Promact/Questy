@@ -130,6 +130,14 @@ h6, .h6 {
   margin-top: 20px;
 }
 
+.mt5 {
+  margin-top: 5px;
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}
+
 .p0 {
   padding: 0 !important;
 }
@@ -217,7 +225,7 @@ h6, .h6 {
   padding: 0;
   background-color: transparent;
   border: 0;
-  vertical-align: top;
+  vertical-align: middle;
 
   &:focus {
     outline: 0;
@@ -229,7 +237,7 @@ h6, .h6 {
   position: relative;
 
   label {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     font-weight: 400;
   }
 
@@ -796,7 +804,7 @@ footer {
     margin-bottom: 40px;
 
     p {
-      margin-bottom: 25px;
+      margin-bottom: 15px;
 
       span {
         display: inline-block;
@@ -1516,7 +1524,7 @@ footer {
 .test-create-header {
   padding-bottom: 15px;
   border-bottom: 1px solid $color_border;
-  margin-bottom: 20px;
+  margin: -5px 0 20px;
 
   h1 {
     position: relative;
@@ -1535,6 +1543,7 @@ footer {
       overflow: hidden;
       text-overflow: ellipsis;
       vertical-align: top;
+      line-height: normal;
 
       &[hidden] {
         display: none;
@@ -1726,17 +1735,17 @@ footer {
 
 /* Test Conduct */
 .test-conduct {
-  padding: 50px 0 100px;
+  padding: 40px 0 100px;
 
   .registration-block {
     width: 600px;
     margin: 0 auto;
     background-color: $color_white;
     border: 1px solid $color_border;
-    padding: 40px 20px;
+    padding: 20px;
 
     h2 {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
   }
 
@@ -1745,7 +1754,7 @@ footer {
     margin: 0 auto;
     background-color: $color_white;
     border: 1px solid $color_border;
-    padding: 40px;
+    padding: 20px 40px;
 
     .test-conduct-subtitle {
       color: $color_base_secondary;
@@ -1763,7 +1772,7 @@ footer {
     }
 
     table {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       width: 100%;
       border: 1px solid $color_border;
 
@@ -1806,12 +1815,12 @@ footer {
 .test-conduct-header {
   img {
     width: 180px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
   }
 }
 
 .test-conduct-footer {
-  margin-top: 40px;
+  margin-top: 30px;
 
   p {
     font-size: 11px;
@@ -1850,7 +1859,7 @@ footer {
   }
 
   .test-body {
-    padding: 70px 0 157px;
+    padding: 70px 0 141px;
 
     .container-fluid {
       .display-table-cell {
@@ -1875,7 +1884,7 @@ footer {
       background-color: $color_white;
 
       .qs-area {
-        height: calc(100vh - 263px);
+        height: calc(100vh - 247px);
       }
     }
   }
@@ -1888,16 +1897,16 @@ footer {
     z-index: 99;
 
     .test-footer-top {
-      max-height: 96px;
+      max-height: 80px;
       overflow: auto;
 
       span {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         display: inline-block;
         text-align: center;
-        padding: 6px 0;
-        margin: 5px 3px;
+        padding: 4px 0;
+        margin: 3px 1px;
 
         &.answered,
         &.review,
@@ -2184,10 +2193,10 @@ footer {
 @media (min-width: 1201px) and (max-width: 1310px) {
   .test {
     .test-body {
-      padding: 70px 0 200px;
+      padding: 70px 0 184px;
 
       .test-body-content .qs-area {
-        height: calc(100vh - 306px);
+        height: calc(100vh - 290px);
       }
     }
 
@@ -2215,10 +2224,10 @@ footer {
     }
 
     .test-body {
-      padding: 95px 0 200px;
+      padding: 95px 0 184px;
 
       .test-body-content .qs-area {
-        height: calc(100vh - 331px);
+        height: calc(100vh - 315px);
       }
     }
   }
