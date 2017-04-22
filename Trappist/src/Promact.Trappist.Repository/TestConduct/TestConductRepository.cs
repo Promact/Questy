@@ -43,7 +43,7 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         public async Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink)
-        {
+            {
             var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             var currentTestId = testSettingsDetails.Id;
             var testQuestionDetails = await _dbContext.TestQuestion.Where(x => x.TestId == currentTestId).ToListAsync();
@@ -56,7 +56,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 var categoryName = categoryDetails.CategoryName;
                 testCategoryNameList.Add(categoryName);
             }
-            InstructionAC instructionAC = new InstructionAC()
+            var instruction = new InstructionAC()
             {
                 Duration = testSettingsDetails.Duration,
                 WarningTime = testSettingsDetails.WarningTime,
@@ -65,7 +65,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 TotalNumberOfQuestions = totalNumberOfQuestions,
                 CategoryNameList = testCategoryNameList
             };
-            return instructionAC;
+            return instruction;
         }
 
         public async Task<bool> IsTestLinkExistAsync(string magicString)

@@ -32,7 +32,7 @@ namespace Promact.Trappist.Repository.TestConduct
         // <summary>
         /// This method is used to get all the instruction details related to a test before starting it
         /// </summary>
-        /// <param name="link">link to conduct a particular test</param>
+        /// <param name="testLink">link to conduct a particular test</param>
         /// <returns></returns>
         Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink);
     }
