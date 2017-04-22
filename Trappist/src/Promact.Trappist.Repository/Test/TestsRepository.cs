@@ -17,7 +17,6 @@ namespace Promact.Trappist.Repository.Tests
 {
     public class TestsRepository : ITestsRepository
     {
-        TestAC testAc = new TestAC();
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util)
@@ -26,11 +25,7 @@ namespace Promact.Trappist.Repository.Tests
             _util = util;
         }
 
-        #region Test
-        /// <summary>
-        /// this method is used to create a new test
-        /// </summary>
-        /// <param name="test">object of Test</param>
+        #region Test 
         public async Task CreateTestAsync(Test test)
         {
             test.TestName = test.TestName.AllTrim();
@@ -126,9 +121,10 @@ namespace Promact.Trappist.Repository.Tests
             testAcObject.CategoryAcList = categoryListAc;
             return testAcObject;
         }
+
         public async Task AddSelectedCategoryAsync(List<TestCategory> testCategory)
         {
-            List<TestCategory> testCategoryList = new List<TestCategory>();
+            var testCategoryList = new List<TestCategory>();
             var testCategories = await _dbContext.TestCategory.ToListAsync();
             foreach (var category in testCategory)
             {
@@ -162,6 +158,5 @@ namespace Promact.Trappist.Repository.Tests
             categoryAc.IsSelect = false;
         }
         #endregion
-
     }
 }

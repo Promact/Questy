@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TestService } from '../tests.service';
-import { MdDialog, MdSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialog, MdSnackBar, MdSnackBarRef, SimpleSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
@@ -20,10 +20,11 @@ import { Test, TestCategory, TestQuestion } from '../tests.model';
 export class TestSectionsComponent implements OnInit {
     testSettings: Test;
     testId: number;
-    Categories: Category[];   
-    testCategories: TestCategory[];
+    Categories: Category[] = [];
+    testCategories: TestCategory[] = [];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
+    snackbarReference: MdSnackBarRef<SimpleSnackBar>;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
@@ -60,8 +61,9 @@ export class TestSectionsComponent implements OnInit {
             this.testDetailsObj = response;
         },
             err => {
-                this.snackbarRef.open('Something went wrong', 'Dismiss');
-            });        
+                this.snackbarReference = this.openSnackbar('Something went wrong, try again');
+
+            });
     }
 
     /**
@@ -82,35 +84,21 @@ export class TestSectionsComponent implements OnInit {
                             category.isSelect = false;
                     },
                         err => {
-                            this.snackbarRef.open('Something went wrong', 'Dismiss');
-                        });                   
+                            this.openSnackbar('Something went wrong, try again');
+                        });
                 }
-                else
+                else {
                     category.isSelect = false;
+                }
             });
         }
     }
 
     /**
-     * To Save the Selected Categories and redirect user for question selection
+     * To save the selected categories and move further
      */
-    saveAndNext() {
-        this.saveCategory();
-        this.router.navigateByUrl('/tests/' + this.testId + 'questions');
-    }
-
-    /**
-     * To Save the Selected Categories for Question Selection and redirect the user to the test dashboard
-     */
-    saveAndExit() {
-        this.saveCategory();
-        this.router.navigateByUrl('/tests');
-    }
-
-    /**
-     * To save the selected category as selected
-     */
-    saveCategory() {
+    saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
+        console.log(isSelectButton);
         let categories = this.testDetailsObj.categoryAcList.filter(function (x) {
             return (x.isSelect);
         });
@@ -120,17 +108,24 @@ export class TestSectionsComponent implements OnInit {
             this.testCategories.push(this.testCategoryObj);
             this.testCategoryObj = new TestCategory();
         }
-        this.testService.addSelectedCategories(this.testCategories).subscribe((response) => { },
+        this.testService.addSelectedCategories(this.testCategories).subscribe((response) => {
+            if (response) {
+                if (isSelectButton)
+                    this.router.navigate(['/tests/' + this.testId + '/questions']);
+                else
+                    this.router.navigate(['/tests']);
+            }
+        },
             err => {
-                this.snackbarRef.open('Ooops!, something went wrong', 'Dismiss');
+                this.openSnackbar('Something went wrong, try again');
             });
     }
 
     /**
      *To display error message in snackbar when any  error is caught from server
      */
-    open(message: string) {
-        let config = this.snackbarRef.open(message, 'Dismiss', {
+    openSnackbar(message: string) {
+        return this.snackbarRef.open(message, 'Dismiss', {
             duration: 4000,
         });
     }
