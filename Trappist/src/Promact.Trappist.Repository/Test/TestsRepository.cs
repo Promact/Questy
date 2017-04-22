@@ -127,9 +127,8 @@ namespace Promact.Trappist.Repository.Tests
             //Adds each question to TestQuestion Model whose IsSelct property is true
             foreach (var questionToAdd in questionsToAdd)
             {
-                var question = Mapper.Map<QuestionDetailAC, Question>(questionToAdd.Question);
-                //Checks if the question exists in TestQuestion 
-                var questionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == question.Id);
+                //Checks if the question exists in TestQuestion for the same test
+                var questionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == questionToAdd.Question.Id && x.TestId == testId);
                 //if question exists in TestQuestion and its IsSelect property is false,then that question will be deleted from TestQuestion
                 if (questionExistInTest != null && !questionToAdd.Question.IsSelect)
                 {
@@ -142,10 +141,10 @@ namespace Promact.Trappist.Repository.Tests
                 {
                     //Creates TestQuestion Object
                     var testQuestionObj = new TestQuestion();
-                    testQuestionObj.QuestionId = question.Id;
+                    testQuestionObj.QuestionId = questionToAdd.Question.Id;
                     testQuestionObj.TestId = testId;
                     //If question is already present in the same Test, it wont be added to TestQuestion 
-                    if (!await _dbContext.TestQuestion.AnyAsync(x => x.QuestionId == question.Id && x.TestId == testId))
+                    if (questionExistInTest == null)
                         testQuestionList.Add(testQuestionObj);
                 }
             }
