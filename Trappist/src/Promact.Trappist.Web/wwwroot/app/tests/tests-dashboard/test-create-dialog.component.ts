@@ -16,7 +16,7 @@ export class TestCreateDialogComponent {
     test: Test;
     testNameReference: string;
     isWhiteSpaceError: boolean;
-    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar) {
+    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar, public route: Router) {
         this.test = new Test();
     }
     /**
@@ -31,6 +31,7 @@ export class TestCreateDialogComponent {
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.dialogRef.close(responses);
+                        this.route.navigateByUrl('test/' + responses.id + '/sections')
                     });
                 }
                 else
