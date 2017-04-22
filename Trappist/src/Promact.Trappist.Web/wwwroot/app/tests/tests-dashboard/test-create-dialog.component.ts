@@ -31,7 +31,7 @@ export class TestCreateDialogComponent {
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.dialogRef.close(responses);
-                        this.route.navigateByUrl('test/' + responses.id + '/sections')
+                        this.route.navigate(['tests/' + responses.id + '/sections']);
                     });
                 }
                 else

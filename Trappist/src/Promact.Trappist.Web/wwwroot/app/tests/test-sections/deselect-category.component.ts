@@ -13,7 +13,7 @@ import { TestDetails } from '../test-details';
 })
 export class DeselectCategoryComponent {
 
-    constructor(public testService: TestService, public dialogRef: MdDialogRef<DeselectCategoryComponent>, @Inject(MD_DIALOG_DATA) public data: any, public snackbar: MdSnackBar) {
+    constructor(public testService: TestService, public dialogRef: MdDialogRef<DeselectCategoryComponent>, @Inject(MD_DIALOG_DATA) public data: any, public snackbarRef: MdSnackBar) {
     }
 
     /**
@@ -24,15 +24,16 @@ export class DeselectCategoryComponent {
             this.dialogRef.close(response);
         },
             err => {
-                this.snackbar.open('Something went wrong', 'Dismiss');
+                this.openSnackbar('Something went wrong');
                 this.dialogRef.close();
             });
     }
+
     /**
      *To display error message in snackbar when any  error is caught from server
      */
-    open(message: string) {
-        let config = this.snackbar.open(message, 'Dismiss', {
+    openSnackbar(message: string) {
+        return this.snackbarRef.open(message, 'Dismiss', {
             duration: 4000,
         });
     }

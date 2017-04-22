@@ -26,8 +26,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
-    @Output() SaveAndExit: any;
-    @Output() SaveAndNext: any;
+    @Output() SaveCategory: any;
+    isSelectButton: boolean;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -35,8 +35,7 @@ export class CreateTestFooterComponent implements OnInit {
         this.isTestSettings = false;
         this.saveTestSettings = new EventEmitter();
         this.launchTestDialog = new EventEmitter();
-        this.SaveAndExit = new EventEmitter();
-        this.SaveAndNext = new EventEmitter();
+        this.SaveCategory = new EventEmitter();
     }
 
     /**
@@ -51,8 +50,8 @@ export class CreateTestFooterComponent implements OnInit {
      * Displays the Component whose route matches that of the url
      */
     getComponent() {
-        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections'  ? true : false;
-        this.isTestQuestion = this.router.url === '/tests/questions/' + this.testId ? true : false;
+        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections' ? true : false;
+        this.isTestQuestion = this.router.url === '/tests/' + this.testId + '/questions' ? true : false;
         this.isTestSettings = this.router.url === '/tests/' + this.testId + '/settings' ? true : false;
     }
 
@@ -71,10 +70,12 @@ export class CreateTestFooterComponent implements OnInit {
     }
 
     saveSelectedCategoryAndExit() {
-        this.SaveAndExit.emit();
+        this.isSelectButton = false;
+        this.SaveCategory.emit(this.isSelectButton);
     }
 
     saveSelectedCategoryAndMoveNext() {
-        this.SaveAndNext.emit();
+        this.isSelectButton = true;
+        this.SaveCategory.emit(this.isSelectButton);
     }
 }
