@@ -5,7 +5,7 @@ export class Category {
         id: number;
         categoryName: string; 
         questionList: QuestionBase[] = [];
-        isAccordionOpen: boolean = false;
+        isAccordionOpen: boolean;
         isAlreadyClicked: boolean;
         selectAll: boolean;
         numberOfQuestion: number;
