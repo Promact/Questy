@@ -44,7 +44,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// This method is used to get all the instruction details before starting of a particular test using testLink
         /// </summary>
-        /// <param name="link">link to conduct a particular test</param>
+        /// <param name="testLink">link to conduct a particular test</param>
         /// <returns></returns>
         [HttpGet("{testLink}/instructions")]
         public async Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink)
