@@ -72,8 +72,8 @@ export class TestSectionsComponent implements OnInit {
         if (!category.isSelect)
             category.isSelect = true;
         else {
-            this.testService.deselectCategory(category.id, this.testSettings.id).subscribe((IsQuestionAdded) => {
-                if (IsQuestionAdded) {
+            this.testService.deselectCategory(category.id, this.testSettings.id).subscribe((isQuestionAdded) => {
+                if (isQuestionAdded) {
                     this.testCategoryObj.testId = this.testId;
                     this.testCategoryObj.categoryId = category.id;
                     let dialogRef = this.dialog.open(DeselectCategoryComponent, { data: this.testCategoryObj });
@@ -94,23 +94,23 @@ export class TestSectionsComponent implements OnInit {
     /**
      * To Save the Selected Categories and redirect user for question selection
      */
-    SaveAndNext() {
-        this.SaveCategory();
+    saveAndNext() {
+        this.saveCategory();
         this.router.navigateByUrl('/tests/' + this.testId + 'questions');
     }
 
     /**
      * To Save the Selected Categories for Question Selection and redirect the user to the test dashboard
      */
-    SaveAndExit() {
-        this.SaveCategory();
+    saveAndExit() {
+        this.saveCategory();
         this.router.navigateByUrl('/tests');
     }
 
     /**
      * To save the selected category as selected
      */
-    SaveCategory() {
+    saveCategory() {
         let categories = this.testDetailsObj.categoryAcList.filter(function (x) {
             return (x.isSelect);
         });
