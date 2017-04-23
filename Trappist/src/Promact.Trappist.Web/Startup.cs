@@ -5,12 +5,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Repository.TestSettings;
+using Promact.Trappist.DomainModel.Seed;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using Promact.Trappist.Repository.Account;
+using Promact.Trappist.Repository.TestDashBoard;
 
 namespace Promact.Trappist.Web
 {
@@ -51,17 +61,25 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
-
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
-        }
+            services.AddMvc(/*config => { config.Filters.Add(typeof(GlobalExceptionFilter)); }*/);
+                
+            services.AddScoped<IQuestionRespository, QuestionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITestsRepository, TestsRepository>();
+            services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
+        
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -69,10 +87,10 @@ namespace Promact.Trappist.Web
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-            else
+            /*else
             {
                 app.UseExceptionHandler("/Home/Error");
-            }
+            }*/
 
             app.UseApplicationInsightsExceptionTelemetry();
 
@@ -91,6 +109,16 @@ namespace Promact.Trappist.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "setup",
+                    template: "setup",
+                    defaults: new { controller = "Home", action = "setup" });
+
+                routes.MapRoute(
+                    name: "login",
+                    template: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
@@ -98,6 +126,19 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+
+            //Delete production db upon every deployment
+            //Temporary fix as we are not including migrations in scm
+            //Will remove after we include migrations in code base
+            if (env.IsProduction())
+            {
+                context.Database.EnsureDeleted();
+            }
+
+            context.Database.Migrate();
+
+            context.Seed();
+
         }
     }
 }
