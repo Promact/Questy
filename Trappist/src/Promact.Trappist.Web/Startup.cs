@@ -5,99 +5,123 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Seed;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
 
 namespace Promact.Trappist.Web
 {
-    public class Startup
-    {
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+	public class Startup
+	{
+		public Startup(IHostingEnvironment env)
+		{
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+			if (env.IsDevelopment())
+			{
+				// For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+				builder.AddUserSecrets();
 
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
+				// This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
+				builder.AddApplicationInsightsSettings(developerMode: true);
+			}
 
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-        }
+			env.ConfigureNLog("nlog.config");
 
-        public IConfigurationRoot Configuration { get; }
+			builder.AddEnvironmentVariables();
+			Configuration = builder.Build();
+		}
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+		public IConfigurationRoot Configuration { get; }
 
-            services.AddDbContext<TrappistDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Promact.Trappist.Web")));
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			// Add framework services.
+			services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<TrappistDbContext>()
-                .AddDefaultTokenProviders();
+			services.AddDbContext<TrappistDbContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Promact.Trappist.Web")));
 
-            services.AddMvc();
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<TrappistDbContext>()
+				.AddDefaultTokenProviders();
 
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
-        }
+			services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+			services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+			services.AddScoped<ITestsRepository, TestsRepository>();
+            services.AddScoped<IStringConstants, StringConstants>();
+		}
 
-            app.UseApplicationInsightsRequestTelemetry();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
+		{
+			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.AddDebug();
+			loggerFactory.AddNLog();
+			app.AddNLogWeb();
+			app.UseApplicationInsightsRequestTelemetry();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseDatabaseErrorPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+			}
 
-            app.UseApplicationInsightsExceptionTelemetry();
+			app.UseApplicationInsightsExceptionTelemetry();
 
-            app.UseStaticFiles();
+			app.UseStaticFiles();
 
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.GetFullPath(Path.Combine(env.ContentRootPath, "node_modules"))),
-                RequestPath = new PathString("/node_modules")
-            });
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(Path.GetFullPath(Path.Combine(env.ContentRootPath, "node_modules"))),
+				RequestPath = new PathString("/node_modules")
+			});
 
-            app.UseIdentity();
+			app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+			// Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+			app.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "setup",
+					template: "setup",
+					defaults: new { controller = "Home", action = "setup" });
 
-                routes.MapSpaFallbackRoute(
-                     name: "spa-fallback",
-                     defaults: new { controller = "Home", action = "Index" });
-            });
-        }
-    }
+				routes.MapRoute(
+					name: "login",
+					template: "login",
+					defaults: new { controller = "Account", action = "Login" });
+
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}");
+
+				routes.MapSpaFallbackRoute(
+					 name: "spa-fallback",
+					 defaults: new { controller = "Home", action = "Index" });
+			});
+			
+		context.Seed();
+
+		}
+	}
 }
