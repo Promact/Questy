@@ -3,7 +3,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { testsRouting } from "./tests.routing";
 import { TestsComponent } from "./tests.component";
-import { TestsDashboardComponent } from "./tests-dashboard/tests-dashboard.component";
+import { TestsDashboardComponent, TestCreateDialogComponent } from "./tests-dashboard/tests-dashboard.component";
 
 @NgModule({
     imports: [
@@ -12,7 +12,11 @@ import { TestsDashboardComponent } from "./tests-dashboard/tests-dashboard.compo
     ],
     declarations: [
         TestsComponent,
-        TestsDashboardComponent
+        TestsDashboardComponent,
+        TestCreateDialogComponent
+    ],
+    entryComponents: [
+        TestCreateDialogComponent
     ],
     providers: [
         

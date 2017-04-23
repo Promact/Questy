@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Data;
 using System.Linq;
+using Promact.Trappist.DomainModel.DbContext;
 
 namespace Promact.Trappist.Repository.Questions
 {
@@ -18,9 +18,9 @@ namespace Promact.Trappist.Repository.Questions
         /// Get all questions
         /// </summary>
         /// <returns>Question list</returns>
-        public List<Question> GetAllQuestions()
+        public List<SingleMultipleAnswerQuestion> GetAllQuestions()
         {
-            var questions = _dbContext.Question.ToList();
+            var questions = _dbContext.SingleMultipleAnswerQuestion.ToList();
             
             return questions;
         }

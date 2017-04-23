@@ -1,16 +1,31 @@
 language: csharp
-os: linux
 dist: trusty
-sudo: required
+os: linux
+mono: none
 dotnet: 1.0.0-preview2-1-003177
+services:
+  - docker
 install:
-- dotnet restore
-- cd ./Trappist/src/Promact.Trappist.Web && npm install
-solution: "./Trappist/Trappist.sln"
-before_script:
-notifications:
-  email:
-    on_success: change
-    on_failure: always
+  - cd ./Trappist/src
+  - dotnet restore
 script:
-- dotnet build
+  - cd  Promact.Trappist.Web
+  - dotnet build
+  - cd ../../../
+deploy:
+  - provider: script
+    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: script
+    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+    skip_cleanup: true
+    on:
+      branch: staging
+  - provider: script
+    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+    skip_cleanup: true
+    on:
+      branch: development
+ 
