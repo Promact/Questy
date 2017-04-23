@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Promact.Trappist.Web.Controllers
 {
-    // [Authorize]
     public class HomeController : Controller
-    {
+    {      
+        public HomeController()
+        {
+            
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -16,8 +20,6 @@ namespace Promact.Trappist.Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
         public IActionResult Setup(string returnUrl = null)
         {
             return View();
