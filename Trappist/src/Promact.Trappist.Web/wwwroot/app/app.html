@@ -1,37 +1,39 @@
-﻿<nav class="navbar navbar-default">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand h1" href="#"><img src="/images/logo.png" alt="Logo" /></a>
+﻿<div class="main-page">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand h1" href="#"><img src="/images/logo.png" alt="Logo" /></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li [routerLinkActive]="['active']"><a href="#" class="h2" [routerLink]="['tests']">Tests</a></li>
+                    <li [routerLinkActive]="['active']"><a href="#" class="h2" [routerLink]="['questions']">Questions</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><i class="material-icons">help</i></li>
+                    <li class="dropdown">
+                        <i class="material-icons" [mdMenuTriggerFor]="userMenu">account_circle</i>
+                        <md-menu #userMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                            <button md-menu-item [routerLink]="['profile']">Profile</button>
+                            <button md-menu-item>Logout</button>
+                        </md-menu>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+    <div class="main-content">
+        <div class="container">
+            <router-outlet></router-outlet>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li [routerLinkActive]="['active']"><a href="#" class="h2" [routerLink]="['tests']">Tests</a></li>
-                <li [routerLinkActive]="['active']"><a href="#" class="h2" [routerLink]="['questions']">Questions</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><i class="material-icons">help</i></li>
-                <li class="dropdown">
-                    <i class="material-icons" [mdMenuTriggerFor]="userMenu">account_circle</i>
-                    <md-menu #userMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                        <button md-menu-item [routerLink]="['profile']">Profile</button>
-                        <button md-menu-item>Logout</button>
-                    </md-menu>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container -->
-</nav>
-<div class="main-content">
-    <div class="container">
-        <router-outlet></router-outlet>
     </div>
+    <footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>
 </div>
-<footer>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</footer>

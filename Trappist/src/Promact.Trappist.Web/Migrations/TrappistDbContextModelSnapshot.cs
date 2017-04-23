@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Promact.Trappist.Web.Data;
+using Promact.Trappist.DomainModel.DbContext;
 
 namespace Promact.Trappist.Web.Migrations
 {
@@ -123,20 +123,75 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.Question", b =>
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Category.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 50);
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<string>("CreateBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedDateTime");
+
+                    b.Property<int>("DifficultyLevel");
+
+                    b.Property<string>("QuestionDetail")
+                        .IsRequired();
+
+                    b.Property<int>("QuestionType");
+
+                    b.Property<DateTime?>("UpdateDateTime");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("SingleMultipleAnswerQuestion");
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<string>("Name");
+                    b.Property<bool>("IsAnswer");
+
+                    b.Property<string>("Option")
+                        .IsRequired();
+
+                    b.Property<int>("SingleMultipleAnswerQuestionID");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Question");
+                    b.HasIndex("SingleMultipleAnswerQuestionID");
+
+                    b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -148,6 +203,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<DateTime>("CreateDateTime");
+
                     b.Property<string>("Email")
                         .HasAnnotation("MaxLength", 256);
 
@@ -157,11 +214,18 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 150);
+
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<string>("NormalizedUserName")
                         .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("OrganizationName")
+                        .HasAnnotation("MaxLength", 150);
 
                     b.Property<string>("PasswordHash");
 
@@ -172,6 +236,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<DateTime?>("UpdatedateTime");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
@@ -222,6 +288,22 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.Web.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
+                        .WithMany("SingleMultipleAnswerQuestion")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestionOption", b =>
+                {
+                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
+                        .WithMany("SingleMutipleAnswerQuestionOption")
+                        .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
