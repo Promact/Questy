@@ -2,8 +2,9 @@
 import { Http } from "@angular/http";
 
 @Component({
+    moduleId: module.id,
     selector: 'app',
-    templateUrl: 'app/app.html',
+    templateUrl: 'app.html',
 })
 export class AppComponent {
 

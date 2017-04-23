@@ -1,8 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿<setup>
+    Loading..
+</setup>
 
+<app>Loading...</app>
 
-}
-<h1>hello</h1>
+<environment names="Development">
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="systemjs.config.js"></script>
+    <script>
+        System.import('app/main-setup.js').catch(function (err) { console.error(err); });
+    </script>
+</environment>
+
+<environment names="Staging,Production">
+    <script src="/shims.js"></script>
+    <script src="/setup-app-bundle.js"></script>
+</environment>
