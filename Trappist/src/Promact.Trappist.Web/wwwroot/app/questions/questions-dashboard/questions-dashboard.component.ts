@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { QuestionsService } from "../questions.service";
-
+import { MdDialog } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -9,8 +9,8 @@ import { QuestionsService } from "../questions.service";
 })
 
 export class QuestionsDashboardComponent {
-
-    constructor(private questionsService: QuestionsService) {
+    
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog) {
         this.getAllQuestions();
     }
 
@@ -20,4 +20,16 @@ export class QuestionsDashboardComponent {
         });
     }
 
+    // Open Add Category Dialog
+    addCategoryDialog() {
+        this.dialog.open(AddCategoryDialogComponent);
+    }
+
 }
+
+@Component({
+    moduleId: module.id,
+    selector: 'add-category-dialog',
+    templateUrl: "add-category-dialog.html"
+})
+export class AddCategoryDialogComponent { }
