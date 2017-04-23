@@ -14,7 +14,10 @@ export class QuestionsService {
     /**
      * get list of questions
      */
-    getQuestions() {
+    //getQuestions() {
+    //    return this.httpService.get(this.questionsApiUrl);
+    //}
+    getAllCategories() {
         return this.httpService.get(this.questionsApiUrl);
     }
 

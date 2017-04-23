@@ -3,7 +3,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { profileRouting } from "./profile.routing";
 import { ProfileComponent } from "./profile.component";
-import { ProfileDashboardComponent } from "./profile-dashboard/profile-dashboard.component";
+import { ProfileDashboardComponent, ChangePasswordDialogComponent } from "./profile-dashboard/profile-dashboard.component";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
 
 @NgModule({
@@ -14,7 +14,11 @@ import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
     declarations: [
         ProfileComponent,
         ProfileDashboardComponent,
-        ProfileEditComponent
+        ProfileEditComponent,
+        ChangePasswordDialogComponent
+    ],
+    entryComponents: [
+        ChangePasswordDialogComponent
     ],
     providers: [
         

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Promact.Trappist.Web.Controllers
 {
-    // [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -15,9 +14,7 @@ namespace Promact.Trappist.Web.Controllers
         {
             return View();
         }
-
-        [HttpGet]
-        [AllowAnonymous]
+        
         public IActionResult Setup(string returnUrl = null)
         {
             return View();
