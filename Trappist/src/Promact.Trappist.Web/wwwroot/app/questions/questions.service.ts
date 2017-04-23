@@ -5,7 +5,7 @@ import { HttpService } from "../core/http.service";
 
 export class QuestionsService {
 
-    private questionsApiUrl = "api/questions";
+    private questionsApiUrl = "api/question";
 
     constructor(private httpService: HttpService) {
         
