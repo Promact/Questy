@@ -4,20 +4,25 @@ import { SharedModule } from '../shared/shared.module';
 import { profileRouting } from "./profile.routing";
 import { ProfileComponent } from "./profile.component";
 import { ProfileDashboardComponent } from "./profile-dashboard/profile-dashboard.component";
+import { ChangePasswordDialogComponent } from "./profile-dashboard/change-password-dialog.component";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
-
+import { ProfileService } from "../profile/profile.service";
 @NgModule({
-    imports: [
-        SharedModule,
-        profileRouting
-    ],
-    declarations: [
-        ProfileComponent,
-        ProfileDashboardComponent,
-        ProfileEditComponent
-    ],
-    providers: [
-        
-    ]
+  imports: [
+    SharedModule,
+    profileRouting
+  ],
+  declarations: [
+    ProfileComponent,
+    ProfileDashboardComponent,
+    ProfileEditComponent,
+    ChangePasswordDialogComponent
+  ],
+  entryComponents: [
+    ChangePasswordDialogComponent
+  ],
+  providers: [
+    ProfileService
+  ]
 })
 export class ProfileModule { }
