@@ -1,0 +1,160 @@
+﻿<div class="container">
+  <div class="question-type programming">
+    <div class="header">
+      <h2>Question</h2>
+      <h5>Programming</h5>
+    </div>
+    <form>
+      <div class="form-fields">
+        <div class="form-group">
+          <label class="h4">Section</label>
+          <select class="form-control half-width">
+            <option>Logical Ability</option>
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="h4">Difficulty Level</label>
+          <select class="form-control small-width">
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="h4">Question Details</label>
+          <textarea class="form-control half-width" placeholder="Question details here" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="h4">Code Languages</label>
+          <md-chip-list class="form-control half-width" (click)="autocomplete.focus()">
+            <md-chip>Objective C <i class="material-icons">close</i></md-chip>
+            <md-chip>C++ <i class="material-icons">close</i></md-chip>
+            <md-input-container>
+              <input mdInput placeholder="Code Languages" [mdAutocomplete]="code" #autocomplete>
+            </md-input-container>
+            <md-autocomplete #code="mdAutocomplete">
+              <md-option value="Objective C">Objective C</md-option>
+              <md-option value="C++">C++</md-option>
+              <md-option value="Option 1">Option 1</md-option>
+              <md-option value="Option 2">Option 2</md-option>
+              <md-option value="Option 3">Option 3</md-option>
+            </md-autocomplete>
+          </md-chip-list>
+        </div>
+        <div class="form-group">
+          <label class="h4">Score Settings</label>
+          <md-checkbox>Check code complexity</md-checkbox>
+          <md-checkbox>Check time complexity</md-checkbox>
+          <md-checkbox>Run basic test cases</md-checkbox>
+          <md-checkbox>Run corner test cases</md-checkbox>
+          <md-checkbox>Run necessary test cases</md-checkbox>
+        </div>
+        <div class="form-group">
+          <label class="h4">Test Case(s)</label>
+          <br />
+          <button type="button" class="btn btn-primary" [hidden]="showTestCase" (click)="showTestCase=true">Add Test Case</button>
+          <div class="test-case-block" [hidden]="!showTestCase">
+            <div class="tc-header clearfix">
+              <div class="title-info h2 pull-left">
+                <span>Type: Basic</span>
+                <span> | </span>
+                <span>Title: </span>
+                <span> | </span>
+                <span>Weightage: 0</span>
+              </div>
+              <div class="pull-right">
+                <span class="delete-option h7"><i class="material-icons">delete</i> <span class="h7">Delete</span></span>
+                <span class="collapsible-icon" (click)="collapseTestCase=!collapseTestCase"><i class="material-icons">remove</i></span>
+              </div>
+            </div>
+            <div class="tc-body" [hidden]="collapseTestCase">
+              <div class="form-group">
+                <label>Test Case Title</label>
+                <input type="text" class="form-control half-width" />
+              </div>
+              <div class="form-group">
+                <label>Test Case Description</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Test Case Type</label>
+                <select class="form-control half-width">
+                  <option>Select Option</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                  <option>Option 3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Test Case Marks</label>
+                <input type="text" class="form-control half-width" placeholder="0" />
+              </div>
+              <div class="form-group">
+                <label>Test Case Input Values</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Test Case Expected Values</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="test-case-block" [hidden]="!showNewTestCase">
+            <div class="tc-header clearfix">
+              <div class="title-info h2 pull-left">
+                <span>Type: Basic</span>
+                <span> | </span>
+                <span>Title: </span>
+                <span> | </span>
+                <span>Weightage: 0</span>
+              </div>
+              <div class="pull-right">
+                <span class="delete-option h7"><i class="material-icons">delete</i> <span class="h7">Delete</span></span>
+                <span class="collapsible-icon" (click)="collapseNewTestCase=!collapseNewTestCase"><i class="material-icons">remove</i></span>
+              </div>
+            </div>
+            <div class="tc-body" [hidden]="collapseNewTestCase">
+              <div class="form-group">
+                <label>Test Case Title</label>
+                <input type="text" class="form-control half-width" />
+              </div>
+              <div class="form-group">
+                <label>Test Case Description</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Test Case Type</label>
+                <select class="form-control half-width">
+                  <option>Select Option</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                  <option>Option 3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Test Case Marks</label>
+                <input type="text" class="form-control half-width" placeholder="0" />
+              </div>
+              <div class="form-group">
+                <label>Test Case Input Values</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Test Case Expected Values</label>
+                <textarea class="form-control half-width" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="add-testcase-btn h2" [hidden]="!showTestCase" (click)="showNewTestCase=!showNewTestCase">Add New Test Case</button>
+        </div>
+      </div>
+      <div class="actions-area">
+        <button type="button" class="btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>

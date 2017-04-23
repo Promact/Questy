@@ -1,4 +1,15 @@
-﻿export class Question {
+﻿import { DifficultyLevel } from "../questions/enum-difficultylevel"
+import { QuestionType } from "../questions/enum-questiontype"
+import { Option } from "../questions/option.model";
+import{Category} from "../questions/category.model"
+export class Question {
     Id: number;
-    Name: string;
+    questionDetail: string;
+    questionType: QuestionType;
+    difficultyLevel: DifficultyLevel;
+    createdBy: string;
+    updatedBy: string;
+    category: Category;
+    singleMultipleAnswerQuestionOption: Option[] = new Array<Option>();
+
 }

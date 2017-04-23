@@ -23,9 +23,9 @@
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
             '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
-
             // other libraries
-            'rxjs': 'npm:rxjs'
+            'rxjs': 'npm:rxjs',
+            'angular2-wizard': 'npm:angular2-wizard/dist/',
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -34,7 +34,12 @@
             },
             rxjs: {
                 defaultExtension: 'js'
-            }
+            },
+            'angular2-wizard': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            '.': { defaultExtension: 'js' },
         }
     });
 })(this);
