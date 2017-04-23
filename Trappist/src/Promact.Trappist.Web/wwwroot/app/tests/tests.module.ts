@@ -1,9 +1,11 @@
 ﻿import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-
 import { testsRouting } from "./tests.routing";
 import { TestsComponent } from "./tests.component";
-import { TestsDashboardComponent } from "./tests-dashboard/tests-dashboard.component";
+import { TestsDashboardComponent, TestCreateDialogComponent } from "./tests-dashboard/tests-dashboard.component";
+import { TestSettingsComponent, TestLaunchDialogComponent } from "./test-settings/test-settings.component";
+import { TestService } from "./tests.service";
+import { FilterPipe } from "./tests-dashboard/test-dashboard.pipe";
 
 @NgModule({
     imports: [
@@ -12,9 +14,20 @@ import { TestsDashboardComponent } from "./tests-dashboard/tests-dashboard.compo
     ],
     declarations: [
         TestsComponent,
-        TestsDashboardComponent
+        TestsDashboardComponent,
+        TestCreateDialogComponent,
+        TestSettingsComponent,
+        TestLaunchDialogComponent,
+        FilterPipe
+        
+    ],
+    entryComponents: [
+        TestCreateDialogComponent,
+        TestLaunchDialogComponent
     ],
     providers: [
+        TestService,
+        FilterPipe
         
     ]
 })

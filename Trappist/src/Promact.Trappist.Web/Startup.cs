@@ -5,12 +5,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Promact.Trappist.Web.Data;
 using Promact.Trappist.Web.Models;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Seed;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using Promact.Trappist.Core.ActionFilters;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Repository.TestDashBoard;
+using Newtonsoft.Json.Serialization;
+using Promact.Trappist.Repository.TestSettings;
 
 namespace Promact.Trappist.Web
 {
@@ -32,6 +42,8 @@ namespace Promact.Trappist.Web
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
+            env.ConfigureNLog("nlog.config");
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -52,16 +64,30 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddMvc(config => { config.Filters.Add(typeof(GlobalExceptionFilter)); });
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITestsRepository, TestsRepository>();
+            services.AddScoped<IStringConstants, StringConstants>();
+            services.AddScoped<ITestDashBoardRepository, TestDashBoardRepository>();
+            services.AddScoped<ITestSettingsRepository, TestSettingsRepository>();
 
-            services.AddScoped<IQuestionsRespository, QuestionsRepository>();
+            //To make json return in camelcase
+            services.AddMvc()           
+           .AddJsonOptions(o => o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)
+           .AddJsonOptions(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())
@@ -91,6 +117,16 @@ namespace Promact.Trappist.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "setup",
+                    template: "setup",
+                    defaults: new { controller = "Home", action = "setup" });
+
+                routes.MapRoute(
+                    name: "login",
+                    template: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
@@ -98,6 +134,11 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+
+            context.Database.Migrate();
+
+            context.Seed();
+
         }
     }
 }
