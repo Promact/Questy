@@ -1536,7 +1536,6 @@ footer {
 
     .test-name {
       display: inline-block;
-      min-width: 184px;
       max-width: 800px;
       min-height: 34px;
       white-space: nowrap;
@@ -1554,7 +1553,7 @@ footer {
       display: inline-block;
       width: inherit;
       font-weight: 400;
-      min-width: 184px;
+      min-width: 200px;
 
       &[hidden] {
         display: none;
