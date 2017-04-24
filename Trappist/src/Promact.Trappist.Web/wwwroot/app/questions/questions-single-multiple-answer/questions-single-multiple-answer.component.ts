@@ -6,7 +6,9 @@ import { QuestionBase } from '../question';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
+import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
+
 
 @Component({
     moduleId: module.id,
@@ -15,31 +17,60 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
-    value: number;
+    noOptionSelected: number;
     categoryName: string;
-    isRadioButtonSelelcted: boolean;
+    questionId: number;
+    isRadioButtonSelected: boolean;
+    difficultyLevelSelected: string;
     noOfOptionShown: number;
     isClose: boolean;
     isSingleAnswerQuestion: boolean;
+    isEditQuestion: boolean;
     isNoOfOptionOverLimit: boolean;
     categoryArray: Category[];
     difficultyLevel: string[];
     singleMultipleAnswerQuestion: QuestionBase;
-    constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar) {
+    constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 4;
         this.isClose = false;
+        this.difficultyLevelSelected = 'default';
         this.categoryArray = new Array<Category>();
         this.singleMultipleAnswerQuestion = new QuestionBase();
         this.difficultyLevel = ['Easy', 'Medium', 'Hard'];
-        this.singleMultipleAnswerQuestion.question.difficultyLevel = 0;
         for (let i = 0; i < this.noOfOptionShown; i++) {
             this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
         }
     }
 
     ngOnInit() {
-        this.getAllCategories();
+        this.questionId = +this.route.snapshot.params['id'];
         this.getQuestionType();
+        this.getAllCategories();
+        if (this.questionId > 0) {
+            this.isEditQuestion = true;
+            this.getQuestionById(this.questionId);
+        }
+    }
+
+    /**
+    * Gets Question of specific Id
+    * @param id: Id of the Question
+    */
+    getQuestionById(id: number) {
+        this.questionService.getQuestionById(id).subscribe((response: QuestionBase) => {
+            this.singleMultipleAnswerQuestion = response;
+            this.getCategoryName();
+            this.isRadioButtonSelected = true;
+            this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
+            this.noOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
+            this.noOfOptionShown = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length;
+            if (this.noOfOptionShown === 2) {
+                this.isClose = true;
+            }
+            if (this.noOfOptionShown === 10) {
+                this.isNoOfOptionOverLimit = true;
+            }
+        });
     }
 
     /**
@@ -71,8 +102,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
-        if (+this.value === optionIndex) {
-            this.value = null;
+        if (+this.noOptionSelected === optionIndex) {
+            this.noOptionSelected = null;
         }
         if (this.noOfOptionShown === 9) {
             this.isNoOfOptionOverLimit = false;
@@ -100,30 +131,19 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.router.url === '/questions/single-answer') {
             this.singleMultipleAnswerQuestion.question.questionType = 0;
             this.isSingleAnswerQuestion = true;
+            this.isEditQuestion = false;
         }
         if (this.router.url === '/questions/multiple-answers') {
             this.singleMultipleAnswerQuestion.question.questionType = 1;
             this.isSingleAnswerQuestion = false;
+            this.isEditQuestion = false;
         }
-    }
-
-    /**
-     * Add single/multiple answer question and redirect to question dashboard page
-     * @param singleAnswerQuestion
-     */
-    saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
-        if (singleMultipleAnswerQuestion.question.questionType === 0) {
-            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.value].isAnswer = true;
+        if (this.router.url.includes('edit-single')) {
+            this.isSingleAnswerQuestion = true;
         }
-        this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion).subscribe(
-            (response) => {
-                this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
-                this.router.navigate(['/questions']);
-            },
-            err => {
-                this.snackBar.open('There is some eror. Please try again.', 'Dismiss', { duration: 3000 });
-            }
-        );
+        if (this.router.url.includes('edit-multiple')) {
+            this.isSingleAnswerQuestion = false;
+        }
     }
 
     /**
@@ -134,14 +154,49 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     /**
+     * Get category name based on category Id
+     */
+    getCategoryName() {
+        this.categoryName = this.categoryArray.find(x => x.id === this.singleMultipleAnswerQuestion.question.categoryID) !.categoryName;
+    }
+
+    /**
      * Check at least one option is selected or not
      */
     isOptionSelected() {
         if (this.singleMultipleAnswerQuestion.question.questionType === 0) {
-            return this.isRadioButtonSelelcted;
+            return this.isRadioButtonSelected;
         }
         if (this.singleMultipleAnswerQuestion.question.questionType === 1) {
             return this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer === true);
         }
+    }
+
+    /**
+     * Add or update single/multiple answer question and redirect to question dashboard page
+     * @param singleAnswerQuestion
+     */
+    saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
+        this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
+        if (singleMultipleAnswerQuestion.question.questionType === 0) {
+            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
+            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.noOptionSelected].isAnswer = true;
+        }
+        ((this.isEditQuestion) ?
+            (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :
+            (this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion))).subscribe(
+            (response) => {
+                if (this.isEditQuestion) {
+                    this.snackBar.open('Question updated successfully', 'Dismiss', { duration: 3000 });
+                }
+                else {
+                    this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
+                }
+                this.router.navigate(['/questions']);
+            },
+            err => {
+                this.snackBar.open('There is some error. Please try again.', 'Dismiss', { duration: 3000 });
+            }
+            );
     }
 }

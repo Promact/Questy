@@ -9,6 +9,7 @@ import { QuestionDisplay } from '../../questions/question-display';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
+import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
 
@@ -37,7 +38,7 @@ export class QuestionsDashboardComponent implements OnInit {
     matchString: string;
     isAllQuestionsSelected: boolean;
 
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService) {
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
@@ -224,5 +225,14 @@ export class QuestionsDashboardComponent implements OnInit {
                     break;
             }
         });
+    }
+
+    /**
+     * Redirect to edit question page
+     * @param question
+     */
+    updateQuestion(question: Question) {
+        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
+        this.router.navigate(['questions', questionType, question.id]);
     }
 }

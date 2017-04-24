@@ -125,7 +125,6 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
             return Ok(questionAC);
         }
 
@@ -141,8 +140,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            var questionToDelete = await _questionsRepository.GetQuestionByIdAsync(id);
-            if (questionToDelete == null)
+            if (await _questionsRepository.IsQuestionExistAsync(id))
             {
                 return NotFound();
             }
@@ -153,8 +151,26 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _questionsRepository.DeleteQuestionAsync(questionToDelete);
+            await _questionsRepository.DeleteQuestionAsync(id);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Returns Question of specific Id
+        /// </summary>
+        /// <param name="id">Id of Question</param>
+        /// <returns>
+        /// QuestionAC class object
+        /// </returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetQuestionByIdAsync([FromRoute]int id)
+        {
+            var questionAC = await _questionsRepository.GetQuestionByIdAsync(id);
+            if (questionAC == null)
+            {
+                return NotFound();
+            }
+            return Ok(questionAC);
         }
         #endregion
     }

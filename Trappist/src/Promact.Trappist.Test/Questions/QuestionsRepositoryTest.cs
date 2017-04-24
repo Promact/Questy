@@ -256,41 +256,15 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
             //Delete code-snippet Question
             var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
-            var questionToDelete = await _questionRepository.GetQuestionByIdAsync(questionId);
-            await _questionRepository.DeleteQuestionAsync(questionToDelete);
+            await _questionRepository.DeleteQuestionAsync(questionId);
             //Add single-multiple Question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
             //Delete single-Multiple Question
             questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
-            questionToDelete = await _questionRepository.GetQuestionByIdAsync(questionId);
-            await _questionRepository.DeleteQuestionAsync(questionToDelete);
+            await _questionRepository.DeleteQuestionAsync(questionId);
             //True single-multiple & code-snippet Questions are both deleted 
             Assert.True(_trappistDbContext.Question.Count() == 0);
-        }
-
-        /// <summary>
-        /// Method to test get Question by id
-        /// </summary>
-        [Fact]
-        public async Task GetQuestionByIdTest()
-        {
-            string userName = "user@domain.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
-            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            //Create code-snippet Question
-            var codingQuestion = await CreateCodingQuestion();
-            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
-            //Get code-snippet Question
-            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
-            Assert.NotNull(await _questionRepository.GetQuestionByIdAsync(questionId));
-            //Add single-multiple Question
-            var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
-            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
-            //Get single-Multiple Question
-            questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
-            Assert.NotNull(await _questionRepository.GetQuestionByIdAsync(questionId));
         }
 
         /// <summary>

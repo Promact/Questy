@@ -29,6 +29,7 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -149,9 +150,10 @@ namespace Promact.Trappist.Web
             #region Auto Mapper Configuration
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>();
-                cfg.CreateMap<QuestionDetailAC, Question>();
+                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ReverseMap();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x=>x.SingleMultipleAnswerQuestionOption, opts=>opts.Ignore()).ReverseMap();
+                cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
+                cfg.CreateMap<QuestionAC, Question>().ReverseMap();
             });
             #endregion
         }

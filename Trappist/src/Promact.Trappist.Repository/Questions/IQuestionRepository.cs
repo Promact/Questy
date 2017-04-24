@@ -58,13 +58,6 @@ namespace Promact.Trappist.Repository.Questions
         Task UpdateCodeSnippetQuestionAsync(int questionId, QuestionAC questionAC, string userId);
 
         /// <summary>
-        /// Method to get Question by Id 
-        /// </summary>
-        /// <param name="id">Id to get Question</param>
-        /// <returns>Question object</returns>
-        Task<Question> GetQuestionByIdAsync(int id);
-
-        /// <summary>
         /// Method to check Question exist in test or not
         /// </summary>
         /// <param name="id">Id to check Question</param>
@@ -75,6 +68,13 @@ namespace Promact.Trappist.Repository.Questions
         /// Method to delete Question
         /// </summary>
         /// <param name="question">Question object</param>
-        Task DeleteQuestionAsync(Question question);
+        Task DeleteQuestionAsync(int id);
+
+        /// <summary>
+        /// Method to get question
+        /// </summary>
+        /// <param name="id">Id of Question</param>
+        /// <returns>Object of QuestionAC</returns>
+        Task<QuestionAC> GetQuestionByIdAsync(int id);
     }
 }
