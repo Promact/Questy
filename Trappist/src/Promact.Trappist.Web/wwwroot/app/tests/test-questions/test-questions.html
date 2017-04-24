@@ -1,4 +1,7 @@
 ﻿<div class="test-create-steps test-questions">
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
   <create-test-header [testDetails]="testDetails"></create-test-header>
   <div class="container">
     <h2>Select questions for each section</h2>
@@ -9,15 +12,15 @@
             <span>{{category.categoryName}}</span>
           </div>
           <div class="pull-right">
-            <span class="h7 qs-selected">{{category.numberOfQuestion}} question(s) selected</span>
+            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s) selected</span>
             <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
           </div>
         </md2-accordion-header>
         <div class="collapsible-body p0">
           <div class="select-all">
-            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category,selectedQuestions[k])"></md-checkbox>
+            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category,totalNumberOfQuestions[k])"></md-checkbox>
             <h5>Select All</h5>
-            <span class="h7">(total {{selectedQuestions[k]}} questions)</span>
+            <span class="h7">(total {{totalNumberOfQuestions[k]}} questions)</span>
           </div>
             <ng-container  *ngFor="let question of category.questionList;let i=index" >
                 <div class="qs-container">

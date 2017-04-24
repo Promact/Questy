@@ -8,6 +8,6 @@ export class Category {
         isAccordionOpen: boolean;
         isAlreadyClicked: boolean;
         selectAll: boolean;
-        numberOfQuestion: number;
+        numberOfSelectedQuestion: number;
         isSelect: boolean;
 } 
