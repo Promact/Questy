@@ -31,6 +31,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
     isQuestionEdited: boolean;
+    isQuestionDuplicated: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
@@ -51,6 +52,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.isCategoryReady = false;
         this.isLanguageReady = false;
         this.isQuestionEdited = false;
+        this.isQuestionDuplicated = false;
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
@@ -67,6 +69,10 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (!this.questionId) {
             this.getCodingLanguage();
             this.getCategory();
+        }
+        else if (this.router.url.includes('duplicate')) {
+            this.isQuestionDuplicated = true;
+            this.prepareToEdit(+this.questionId);
         }
         else {
             this.isQuestionEdited = true;
@@ -144,7 +150,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.codingLanguageList = response;
             this.codingLanguageList.sort();
 
-            if (this.isQuestionEdited) {
+            if (this.isQuestionEdited || this.isQuestionDuplicated) {
                 this.questionModel.codeSnippetQuestion.languageList.forEach(x => {
                     this.selectLanguage(x);
                 });
@@ -162,7 +168,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.categoryList = response;
 
             //If question is being editted then set the category
-            if (this.isQuestionEdited)
+            if (this.isQuestionEdited || this.isQuestionDuplicated)
                 this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID).categoryName;
 
             this.isCategoryReady = true;
@@ -227,7 +233,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param enableRouting: enable routing after snack bar dismissed
      * @param routeTo: routing path 
      */
-    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: (string|number)[] = ['']) {
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: (string | number)[] = ['']) {
         let snackBarAction = this.snackBar.open(message, 'Dismiss', {
             duration: 3000
         });
@@ -246,8 +252,10 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isFormSubmitted = true;
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
             //Explicitly converting the id of the testcases to zero
-            if (!this.isQuestionEdited)
+            if (!this.isQuestionEdited || this.isQuestionDuplicated) {
                 this.testCases.forEach(x => x.id = 0);
+                this.questionModel.question.id = 0;
+            }
             this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
