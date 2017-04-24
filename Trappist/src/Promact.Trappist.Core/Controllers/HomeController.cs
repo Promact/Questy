@@ -51,7 +51,7 @@ namespace Promact.Trappist.Web.Controllers
         /// This method is used to validate magic string.
         /// </summary>
         /// <param name="link">It contain magic string which uniquely identifies test</param>
-        /// <returns>If link is valid than redirect to registration page else redirect to page not found view.</returns>
+        /// <returns>If link is valid than redirect to registration page else redirect to page not found action.</returns>
         [AllowAnonymous]
         public async Task<IActionResult> Conduct(string link)
         {
@@ -60,7 +60,7 @@ namespace Promact.Trappist.Web.Controllers
                 ViewBag.Link = link;
                 return View();
             }
-            return View();
+            return RedirectToAction("PageNotFound");
         }
 
         [AllowAnonymous]
@@ -68,7 +68,6 @@ namespace Promact.Trappist.Web.Controllers
         {
             return View();
         }
-
         #endregion
     }
 }
