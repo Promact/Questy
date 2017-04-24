@@ -130,6 +130,10 @@ namespace Promact.Trappist.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "pagenotfound",
+                    template: "pagenotfound",
+                    defaults: new { controller = "Home", action = "PageNotFound" });
+                routes.MapRoute(
                     name: "conduct",
                     template: "conduct/{link?}/{route?}",
                     defaults: new { controller = "Home", action = "Conduct", route = "register" });
