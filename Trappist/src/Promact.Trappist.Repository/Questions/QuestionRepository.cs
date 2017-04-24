@@ -156,7 +156,7 @@ namespace Promact.Trappist.Repository.Questions
             var updatedQuestion = await _dbContext.Question.FindAsync(questionId);
             await _dbContext.Entry(updatedQuestion).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
             await _dbContext.Entry(updatedQuestion.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
-            var option = updatedQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
+            var singleMultipleQuestionAnswerOption = updatedQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
             var updatedOption = questionAC.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
 
             Mapper.Map(questionAC.Question, updatedQuestion);
@@ -167,9 +167,9 @@ namespace Promact.Trappist.Repository.Questions
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
-                var optionToUpdate = updatedOption.Where(x => option.Any(y => y.Id == x.Id)).ToList();
-                var optionToDelete = option.Where(x => !updatedOption.Any(y => y.Id == x.Id)).ToList();
-                var optionToAdd = updatedOption.Where(x => !option.Any(y => y.Id == x.Id)).ToList();
+                var optionToUpdate = updatedOption.Where(x => singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
+                var optionToDelete = singleMultipleQuestionAnswerOption.Where(x => !updatedOption.Any(y => y.Id == x.Id)).ToList();
+                var optionToAdd = updatedOption.Where(x => !singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
 
                 //Remove options from updated question
                 _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToDelete);
@@ -187,7 +187,7 @@ namespace Promact.Trappist.Repository.Questions
                 //Update options details
                 optionToUpdate.ForEach(x =>
                 {
-                    var entry = _dbContext.Entry(option.First(test => test.Id == x.Id));
+                    var entry = _dbContext.Entry<SingleMultipleAnswerQuestionOption>(singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
                     entry.CurrentValues.SetValues(x);
                 });
                 await _dbContext.SaveChangesAsync();
@@ -218,19 +218,15 @@ namespace Promact.Trappist.Repository.Questions
             return questionAC;
         }
 
-        public async Task<Question> GetQuestionByIdAsync(int id)
-        {
-            return await _dbContext.Question.FindAsync(id);
-        }
-
         public async Task<bool> IsQuestionExistInTestAsync(int id)
         {
             return await _dbContext.TestQuestion.AnyAsync(x => x.QuestionId == id);
         }
 
-        public async Task DeleteQuestionAsync(Question question)
+        public async Task DeleteQuestionAsync(int id)
         {
-            _dbContext.Question.Remove(question);
+            var questionToDelete = await _dbContext.Question.FindAsync(id);
+            _dbContext.Question.Remove(questionToDelete);
             await _dbContext.SaveChangesAsync();
         }
     }
