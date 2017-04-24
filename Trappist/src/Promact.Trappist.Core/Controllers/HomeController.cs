@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.BasicSetup;
+using Promact.Trappist.Repository.TestConduct;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Web.Controllers
 {
@@ -9,16 +11,19 @@ namespace Promact.Trappist.Web.Controllers
         #region Private variables
         #region Dependencies
         private readonly IBasicSetupRepository _basicSetup;
+        private readonly ITestConductRepository _testConduct;
         #endregion
         #endregion
 
         #region Constructor
-        public HomeController(IBasicSetupRepository basicSetup)
+        public HomeController(IBasicSetupRepository basicSetup, ITestConductRepository testConduct)
         {
             _basicSetup = basicSetup;
+            _testConduct = testConduct;
         }
         #endregion
 
+        #region Public methods
         [Authorize]
         public IActionResult Index()
         {
@@ -42,14 +47,17 @@ namespace Promact.Trappist.Web.Controllers
                 return View();
         }
 
+        /// <summary>
+        /// This method is used to validate magic string.
+        /// </summary>
+        /// <param name="link">It contain magic string which uniquely identifies test</param>
+        /// <returns>If link is valid than redirect to registration page else redirect to page not found view.</returns>
         [AllowAnonymous]
-        public IActionResult Conduct(string link)
+        public async Task<IActionResult> Conduct(string link)
         {
-            if (!string.IsNullOrWhiteSpace(link))
+            if (!string.IsNullOrWhiteSpace(link) && await _testConduct.IsTestLinkExistAsync(link))
             {
                 ViewBag.Link = link;
-
-                //logic will go here
                 return View();
             }
             return View();
@@ -61,5 +69,6 @@ namespace Promact.Trappist.Web.Controllers
             return View();
         }
 
+        #endregion
     }
 }
