@@ -140,7 +140,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            if (await _questionsRepository.IsQuestionExistAsync(id))
+            if (!await _questionsRepository.IsQuestionExistAsync(id))
             {
                 return NotFound();
             }
