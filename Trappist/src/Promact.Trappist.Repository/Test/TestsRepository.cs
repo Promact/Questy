@@ -12,6 +12,7 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Category;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -140,18 +141,35 @@ namespace Promact.Trappist.Repository.Tests
             var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
             var testQuestions = await _dbContext.TestQuestion.OrderBy(x => x.QuestionId).ToListAsync();
             foreach (var question in questions)
-            {              
-                    if (question.CategoryID == categoryId)
-                    if(testQuestions.Exists(testQuestion=> testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
-                        return true;                
+            {
+                if (question.CategoryID == categoryId)
+                    if (testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
+                        return true;
             }
             return false;
         }
 
-        public async Task DeleteCategoryAsync(TestCategory testCategory)
+        public async Task RemoveCategoryAndQuestionAsync(TestCategory testCategory)
         {
             var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.TestId == testCategory.TestId && x.CategoryId == testCategory.CategoryId);
             _dbContext.TestCategory.Remove(testCategoryObj);
+            var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
+            var testQuestion = new List<TestQuestion>();
+            testQuestion.ForEach(x =>
+            {
+                if (x.TestId == testCategory.TestId)
+                {
+                    var questionAc = Mapper.Map<List<Question>, List<QuestionDetailAC>>(questions);
+                    questionAc.ForEach(question =>
+                    {
+                        if (question.IsSelect)
+                        {
+                            var questionToBeRemoved = Mapper.Map<QuestionDetailAC, Question>(question);
+                            _dbContext.TestQuestion.Remove(x);
+                        }
+                    });
+                }
+            });
             await _dbContext.SaveChangesAsync();
             var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
             var categoryAc = Mapper.Map<Category, CategoryAC>(category);
