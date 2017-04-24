@@ -103,7 +103,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Deletes the category from TestCategory model and save changes to the database</returns>
-        Task DeleteCategoryAsync(TestCategory testCategory);
+        Task RemoveCategoryAndQuestionAsync(TestCategory testCategory);
         #endregion
     }
 }

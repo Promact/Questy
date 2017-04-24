@@ -208,9 +208,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testCategory"></param>
         /// <returns>testCategory</returns>
         [HttpPost("deselectCategory")]
-        public async Task<ActionResult> DeleteCategoriesAsync([FromBody] TestCategory testCategory)
+        public async Task<ActionResult> RemoveCategoryAndQuestionAsync([FromBody] TestCategory testCategory)
         {            
-                await _testRepository.DeleteCategoryAsync(testCategory);
+                await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
                 return Ok(testCategory);                 
         }
         #endregion
