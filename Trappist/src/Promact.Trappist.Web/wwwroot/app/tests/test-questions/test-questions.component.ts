@@ -56,7 +56,7 @@ export class TestQuestionsComponent implements OnInit {
                 this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
                     this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
                     this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
-                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
+                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {//Counts number of selected questions
                         return question.question.isSelect;
                     }).length;
                 });
@@ -88,10 +88,11 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(questionToSelect: QuestionBase, category: Category) {
-        if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
+        //If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
+        if (questionToSelect.question.isSelect) {
             let isAllSelected = category.questionList.every(function (question) {
                 return question.question.isSelect;
-            })
+            });
             if (isAllSelected)
                 category.selectAll = true;
             category.numberOfSelectedQuestion++;
