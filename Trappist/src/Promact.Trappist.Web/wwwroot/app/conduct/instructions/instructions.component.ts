@@ -23,15 +23,15 @@ export class InstructionsComponent implements OnInit {
     ngOnInit() {
         let url = window.location.pathname;
         let magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));
-        this.getTestDetailsByLink(magicString);
+        this.getTestInstructionsByLink(magicString);
     }
 
     /**
      * This method is used to get all the instruction details before starting of a particular test
      * @param testLink Contains the link to fetch all test-instruction details related to a particular test
      */
-    getTestDetailsByLink(testLink: string) {
-        this.conductService.getTestDetailsByLink(testLink).subscribe(
+    getTestInstructionsByLink(testLink: string) {
+        this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
                 this.instruction = response;
             });

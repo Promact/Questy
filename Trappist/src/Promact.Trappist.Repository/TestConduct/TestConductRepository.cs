@@ -42,7 +42,7 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink)
+        public async Task<InstructionAC> GetTestInstructionsAsync(string testLink)
             {
             var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             var currentTestId = testSettingsDetails.Id;

@@ -34,6 +34,6 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="testLink">link to conduct a particular test</param>
         /// <returns></returns>
-        Task<InstructionAC> GetTestDetailsByLinkAsync(string testLink);
+        Task<InstructionAC> GetTestInstructionsAsync(string testLink);
     }
 }
