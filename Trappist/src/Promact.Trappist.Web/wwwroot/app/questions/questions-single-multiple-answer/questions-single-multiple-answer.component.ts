@@ -20,7 +20,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     indexOfOptionSelected: number;
     categoryName: string;
     questionId: number;
-    isRadioButtonSelected: boolean;
     difficultyLevelSelected: string;
     noOfOptionShown: number;
     isClose: boolean;
@@ -59,7 +58,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     getQuestionById(id: number) {
         this.questionService.getQuestionById(id).subscribe((response: QuestionBase) => {
             this.singleMultipleAnswerQuestion = response;
-            this.isRadioButtonSelected = true;
             this.getCategoryName();
             this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
             this.indexOfOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
@@ -99,6 +97,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     removeOption(optionIndex: number) {
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.splice(optionIndex, 1);
         this.noOfOptionShown--;
+        this.indexOfOptionSelected = null;
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
@@ -165,7 +164,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      */
     isOptionSelected() {
         if (this.singleMultipleAnswerQuestion.question.questionType === 0) {
-            return this.isRadioButtonSelected;
+            return (this.indexOfOptionSelected === null ? false : true);
         }
         if (this.singleMultipleAnswerQuestion.question.questionType === 1) {
             return this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer === true);

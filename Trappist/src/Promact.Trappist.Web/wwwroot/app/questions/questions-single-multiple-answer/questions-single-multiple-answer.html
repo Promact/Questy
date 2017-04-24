@@ -13,10 +13,9 @@
                         <span *ngIf="question.invalid && question.touched" class="error-msg">Question field is required</span>
                     </div>
                 </div>
-                {{indexOfOptionSelected}}
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
-                    <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first" (ngModelChange)="isRadioButtonSelected=true">
-                        <md-radio-button value="{{i}}" [disabled]="choice.pristine && !isEditQuestion" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required>
+                    <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first">
+                        <md-radio-button value="{{i}}" [disabled]="choice.pristine && !isEditQuestion" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i">
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
