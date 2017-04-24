@@ -44,20 +44,21 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
         {
-            var testInstructionDetails = await _dbContext.Test.Where(x => x.Link == testLink)
+            var testDeatilsObj = await _dbContext.Test.Where(x => x.Link == testLink)
                 .Include(x => x.TestQuestion)
                 .Include(x => x.TestCategory)
                 .ThenInclude(x => x.Category).ToListAsync();
-            if (testInstructionDetails != null)
+            if (testDeatilsObj != null)
             {
-                var totalNumberOfQuestions = testInstructionDetails.First().TestQuestion.Count();
-                var testCategoryNameList = testInstructionDetails.First().TestCategory.Select(x => x.Category.CategoryName).ToList();
+                var testInstructionDetails = testDeatilsObj.First();
+                var totalNumberOfQuestions = testInstructionDetails.TestQuestion.Count();
+                var testCategoryNameList = testInstructionDetails.TestCategory.Select(x => x.Category.CategoryName).ToList();
                 var testInstructions = new TestInstructionsAC()
                 {
-                    Duration = testInstructionDetails.First().Duration,
-                    WarningTime = testInstructionDetails.First().WarningTime,
-                    CorrectMarks = testInstructionDetails.First().CorrectMarks,
-                    IncorrectMarks = testInstructionDetails.First().IncorrectMarks,
+                    Duration = testInstructionDetails.Duration,
+                    WarningTime = testInstructionDetails.WarningTime,
+                    CorrectMarks = testInstructionDetails.CorrectMarks,
+                    IncorrectMarks = testInstructionDetails.IncorrectMarks,
                     TotalNumberOfQuestions = totalNumberOfQuestions,
                     CategoryNameList = testCategoryNameList
                 };
