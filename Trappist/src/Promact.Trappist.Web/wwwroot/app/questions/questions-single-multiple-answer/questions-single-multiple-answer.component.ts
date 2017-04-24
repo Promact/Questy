@@ -25,6 +25,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     isClose: boolean;
     isSingleAnswerQuestion: boolean;
     isEditQuestion: boolean;
+    isdulicateQuestion: boolean;
     isNoOfOptionOverLimit: boolean;
     categoryArray: Category[];
     difficultyLevel: string[];
@@ -32,6 +33,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 4;
         this.isClose = false;
+        this.isdulicateQuestion = false;
         this.difficultyLevelSelected = 'default';
         this.categoryArray = new Array<Category>();
         this.singleMultipleAnswerQuestion = new QuestionBase();
@@ -42,12 +44,17 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     ngOnInit() {
+        let currentUrl = this.router.url;
         this.questionId = +this.route.snapshot.params['id'];
         this.getQuestionType();
         this.getAllCategories();
-        if (this.questionId > 0) {
+        if (this.questionId > 0 && !currentUrl.includes('duplicate')) {
             this.isEditQuestion = true;
             this.getQuestionById(this.questionId);
+        }
+        else if (currentUrl.includes('duplicate')) {
+            this.getQuestionById(this.questionId);
+            this.isdulicateQuestion = true;
         }
     }
 
@@ -132,16 +139,26 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isSingleAnswerQuestion = true;
             this.isEditQuestion = false;
         }
-        if (this.router.url === '/questions/multiple-answers') {
+        else if (this.router.url === '/questions/multiple-answers') {
             this.singleMultipleAnswerQuestion.question.questionType = 1;
             this.isSingleAnswerQuestion = false;
             this.isEditQuestion = false;
         }
-        if (this.router.url.includes('edit-single')) {
+        else if (this.router.url.includes('edit-single')) {
             this.isSingleAnswerQuestion = true;
         }
-        if (this.router.url.includes('edit-multiple')) {
+        else if (this.router.url.includes('single-answer/duplicate')) {
+            this.isSingleAnswerQuestion = true;
+            this.isEditQuestion = false;
+            this.isdulicateQuestion = true;
+        }
+        else if (this.router.url.includes('edit-multiple')) {
             this.isSingleAnswerQuestion = false;
+        }
+        else if (this.router.url.includes('multiple-answers/duplicate')) {
+            this.isSingleAnswerQuestion = false;
+            this.isEditQuestion = false;
+            this.isdulicateQuestion = true;
         }
     }
 
@@ -180,6 +197,10 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (singleMultipleAnswerQuestion.question.questionType === 0) {
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.indexOfOptionSelected].isAnswer = true;
+        }
+        if (this.isdulicateQuestion) {
+            singleMultipleAnswerQuestion.question.id = 0;
+            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.id = 0);
         }
         ((this.isEditQuestion) ?
             (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :

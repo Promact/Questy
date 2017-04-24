@@ -65,7 +65,7 @@
                         <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item (click)="editQuestion(question)">Edit</button>
                             <button md-menu-item (click)="deleteQuestionDialog(question)">Delete</button>
-                            <button md-menu-item>Duplicate</button>
+                            <button md-menu-item (click)="duplicateQuestion(question)">Duplicate</button>
                         </md-menu>
                     </div>
                 </div>
