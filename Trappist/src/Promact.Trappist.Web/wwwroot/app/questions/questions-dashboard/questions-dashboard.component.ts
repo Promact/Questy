@@ -172,6 +172,20 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
+     * Routes to respective components for editing Question
+     * @param question: QuestionDisplay object
+     */
+    editQuestion(question: QuestionDisplay) {
+        if (question.questionType === QuestionType.codeSnippetQuestion) {
+            this.router.navigate(['questions', 'programming', question.id]);
+        }
+        else {
+            let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
+            this.router.navigate(['questions', questionType, question.id]);
+        }
+    }
+
+    /**
      * Filter Questions depending on DifficultyLevel, Category and QuestionDetails. 
      * @param question
      * @param category
@@ -229,14 +243,5 @@ export class QuestionsDashboardComponent implements OnInit {
                     break;
             }
         });
-    }
-
-    /**
-     * Redirect to edit question page
-     * @param question
-     */
-    updateQuestion(question: Question) {
-        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
-        this.router.navigate(['questions', questionType, question.id]);
     }
 }

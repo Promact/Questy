@@ -85,7 +85,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Coding language object of type CodingLanguageAC
         /// </returns>
         [HttpGet("codinglanguage")]
-        public async Task<IActionResult> GetAllCodingLanguages()
+        public async Task<IActionResult> GetAllCodingLanguagesAsync()
         {
             var codinglanguages = await _questionsRepository.GetAllCodingLanguagesAsync();
             return Ok(codinglanguages);
@@ -114,7 +114,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 if (questionAC.Question.QuestionType == QuestionType.Programming)
                 {
-                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(id, questionAC, applicationUser.Id);
+                    await _questionsRepository.UpdateCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
                 }
                 else
                 {

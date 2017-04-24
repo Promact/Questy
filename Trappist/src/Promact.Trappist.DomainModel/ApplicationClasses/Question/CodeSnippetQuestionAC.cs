@@ -19,6 +19,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
         [Required]
         public ICollection<string> LanguageList { get; set; }
 
-        public ICollection<CodeSnippetQuestionTestCases> TestCases { get; set; }
+        public List<CodeSnippetQuestionTestCases> CodeSnippetQuestionTestCases { get; set; }
     }
 }

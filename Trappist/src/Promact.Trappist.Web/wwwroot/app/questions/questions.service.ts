@@ -51,6 +51,14 @@ export class QuestionsService {
     }
 
     /**
+     * Gets Question of specific Id
+     * @param id: Id of the Question
+     */
+    getQuestionById(id: number) {
+        return this.httpService.get(this.questionsApiUrl + '/' + id);
+    }
+
+    /**
      * API to delete Question
      * @param id:Id to delete Question
      */
@@ -59,10 +67,11 @@ export class QuestionsService {
     }
 
     /**
-     * Gets Question base on Question id
-     * @param id
+     * Calls API to update question by Id
+     * @param id: Id of question to be updated
+     * @param question: QuestionBase class object
      */
-    getQuestionById(id: number) {
-        return this.httpService.get(this.questionsApiUrl + '/' + id);
+    updateQuestionById(id: number, question: QuestionBase) {
+        return this.httpService.put(this.questionsApiUrl + '/' + id, question);
     }
 }

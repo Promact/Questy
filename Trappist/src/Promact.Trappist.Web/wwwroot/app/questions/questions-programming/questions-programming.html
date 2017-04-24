@@ -12,8 +12,8 @@
             <div class="form-fields">
                 <div class="form-group">
                     <label>Section</label>
-                    <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" ngModel required name="categorySelect" #categorySelect="ngModel">
-                        <option [disabled]="categorySelect.dirty" selected value="">Please select a category</option>
+                    <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" [(ngModel)]="selectedCategory" required name="categorySelect" #categorySelect="ngModel">
+                        <option [disabled]="categorySelect.dirty" default>Please select a Category</option>
                         <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
                     </select>
                     <div class="errors-container">
@@ -26,8 +26,8 @@
                 </div>
                 <div class="form-group">
                     <label>Difficulty Level</label>
-                    <select class="form-control small-width" name="difficulty" (change)="selectDifficulty($event.target.value)">
-                        <option selected>Easy</option>
+                    <select class="form-control small-width" name="difficulty" [(ngModel)]="selectedDifficulty" (change)="selectDifficulty($event.target.value)">
+                        <option default>Easy</option>
                         <option>Medium</option>
                         <option>Hard</option>
                     </select>
@@ -78,12 +78,12 @@
                         <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
                             <md2-accordion-header class="collapsible-header clearfix">
                                 <div class="title-info h2 pull-left">
-                                    <span>Type:{{testCase.testCaseType}}</span>
-                                    <span>Title:{{testCase.testCaseTitle}}</span>
+                                    <span>Type: {{getTestCaseString(testCase.testCaseType)}}</span>
+                                    <span>Title: {{testCase.testCaseTitle}}</span>
                                     <span>Weightage: {{testCase.testCaseMarks}}</span>
                                 </div>
                                 <div class="pull-right">
-                                    <span class="delete-option h7"><em class="material-icons" (click)="removeTestCases(i)">delete</em> <span>Delete</span></span>
+                                    <span class="delete-option h7" (click)="removeTestCases(i)"><em class="material-icons">delete</em> <span>Delete</span></span>
                                     <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
                                 </div>
                             </md2-accordion-header>
@@ -108,12 +108,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Type</label>
-                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType=$event.target.value" ngModel required name="type_{{testCase.id}}" #type="ngModel">
-                                        <option [disabled]="type.dirty" selected value="">Select Option</option>
-                                        <option>Default</option>
-                                        <option>Basic</option>
-                                        <option>Necessary</option>
-                                        <option>Corner</option>
+                                    <select class="form-control width-percent-60" (change)="testCase.testCaseType = $event.target.value" [(ngModel)]="testCase.testCaseType" required name="type_{{testCase.id}}" #type="ngModel">
+                                        <option value="0">Default</option>
+                                        <option value="1">Basic</option>
+                                        <option value="2">Necessary</option>
+                                        <option value="3">Corner</option>
                                     </select>
                                     <div class="errors-container">
                                         <div *ngIf="type.errors && (type.dirty || type.touched)">

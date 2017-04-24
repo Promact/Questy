@@ -5,9 +5,10 @@ import { Category } from '../category.model';
 import { QuestionBase } from '../question';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { MdSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CodeSnippetQuestionsTestCases } from '../../questions/code-snippet-questions-test-cases.model';
 import { TestCaseType } from '../enum-test-case-type';
+import { QuestionType } from '../enum-questiontype';
 
 @Component({
     moduleId: module.id,
@@ -19,6 +20,8 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     selectedLanguageList: string[];
     codingLanguageList: string[];
+    selectedCategory: string;
+    selectedDifficulty: string;
     categoryList: Category[];
     questionModel: QuestionBase;
     formControlModel: FormControlModel;
@@ -27,35 +30,86 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCategoryReady: boolean;
     isLanguageReady: boolean;
     isFormSubmitted: boolean;
+    isQuestionEdited: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template
     testCaseType: TestCaseType;
-    max: number;
+    questionId: number;
 
     private successMessage: string = 'Question saved successfully';
     private failedMessage: string = 'Question failed to save';
-    private routeToDashboard = '/questions';
+    private routeToDashboard = ['questions'];
 
     constructor(private questionsService: QuestionsService,
         private categoryService: CategoryService,
         private snackBar: MdSnackBar,
-        private router: Router) {
+        private router: Router,
+        private route: ActivatedRoute) {
 
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
+        this.isQuestionEdited = false;
         this.selectedLanguageList = new Array<string>();
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
+        this.selectedCategory = 'Please select a Category';
+        this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
     }
 
     ngOnInit() {
-        this.getCodingLanguage();
-        this.getCategory();
+        this.questionId = this.route.snapshot.params['id'];
+
+        if (!this.questionId) {
+            this.getCodingLanguage();
+            this.getCategory();
+        }
+        else {
+            this.isQuestionEdited = true;
+            this.prepareToEdit(+this.questionId);
+        }
+    }
+
+    /**
+     * Prepares the form for editting
+     */
+    prepareToEdit(id: number) {
+        if (isNaN(id)) {
+            this.openSnackBar('Question not found', true, this.routeToDashboard);
+        }
+        this.getQuestionById(id);
+    }
+
+    /**
+     * Gets Question of specific Id
+     * @param id: Id of the Question
+     */
+    getQuestionById(id: number) {
+        this.questionsService.getQuestionById(id).subscribe(
+            (response) => {
+                this.questionModel = response;
+
+                //If question fetched is not a CodeSnippetQuestion the show error message
+                if (this.questionModel.question.questionType !== QuestionType.codeSnippetQuestion)
+                    this.openSnackBar('Question not found', true, this.routeToDashboard);
+
+                this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
+                this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
+
+                //If Question has no test case show the button to add new test case
+                if (this.testCases.length > 0)
+                    this.formControlModel.showTestCase = true;
+
+                this.getCodingLanguage();
+                this.getCategory();
+            },
+            err => {
+                this.openSnackBar('Question not found', true, this.routeToDashboard);
+            });
     }
 
     /**
@@ -89,6 +143,13 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionsService.getCodingLanguage().subscribe((response) => {
             this.codingLanguageList = response;
             this.codingLanguageList.sort();
+
+            if (this.isQuestionEdited) {
+                this.questionModel.codeSnippetQuestion.languageList.forEach(x => {
+                    this.selectLanguage(x);
+                });
+            }
+
             this.isLanguageReady = true;
         });
     }
@@ -99,6 +160,11 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCategory() {
         this.categoryService.getAllCategories().subscribe((response) => {
             this.categoryList = response;
+
+            //If question is being editted then set the category
+            if (this.isQuestionEdited)
+                this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID).categoryName;
+
             this.isCategoryReady = true;
         });
     }
@@ -150,21 +216,23 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionModel.question.difficultyLevel = DifficultyLevel[difficulty];
     }
 
+    //Converts enum of type TestCaseType to string
+    getTestCaseString(testCase: TestCaseType) {
+        return TestCaseType[testCase];
+    }
+
     /**
      * Opens snack bar
      * @param message: message to display
      * @param enableRouting: enable routing after snack bar dismissed
      * @param routeTo: routing path 
      */
-    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: string = '') {
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: (string|number)[] = ['']) {
         let snackBarAction = this.snackBar.open(message, 'Dismiss', {
             duration: 3000
         });
-
         if (enableRouting) {
-            snackBarAction.afterDismissed().subscribe(() => {
-                this.router.navigate([routeTo]);
-            });
+            this.router.navigate(routeTo);
         }
     }
 
@@ -176,15 +244,21 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
-
             this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
-            this.testCases.forEach(x => x.id = 0);//Explicitly converting the id of the testcases to zero
-            this.questionModel.codeSnippetQuestion.testCases = this.testCases;
+            //Explicitly converting the id of the testcases to zero
+            if (!this.isQuestionEdited)
+                this.testCases.forEach(x => x.id = 0);
+            this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases = this.testCases;
             this.questionModel.codeSnippetQuestion.languageList = [];
             this.selectedLanguageList.forEach(language => {
                 this.questionModel.codeSnippetQuestion.languageList.push(language);
             });
-            this.questionsService.addCodingQuestion(this.questionModel).subscribe(
+
+            let subscription = this.isQuestionEdited
+                ? this.questionsService.updateQuestionById(this.questionId, this.questionModel)
+                : this.questionsService.addCodingQuestion(this.questionModel);
+
+            subscription.subscribe(
                 (response) => {
                     this.openSnackBar(this.successMessage, true, this.routeToDashboard);
                 },
