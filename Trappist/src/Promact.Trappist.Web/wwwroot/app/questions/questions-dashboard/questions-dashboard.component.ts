@@ -165,8 +165,9 @@ export class QuestionsDashboardComponent implements OnInit {
         deleteDialogRef.afterClosed().subscribe(
             deletedQuestion => {
                 if (deletedQuestion) {
-                    this.question.slice(this.question.indexOf(deletedQuestion), 1);
-                    this.questionDisplay.splice(this.question.indexOf(deletedQuestion), 1);
+                    this.question.splice(this.question.indexOf(deletedQuestion), 1);
+                    this.questionDisplay.splice(this.questionDisplay.indexOf(deletedQuestion), 1);
+                    this.countQuestion();
                 }
             });
     }
