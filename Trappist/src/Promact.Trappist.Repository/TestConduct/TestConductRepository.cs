@@ -42,30 +42,28 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task<InstructionAC> GetTestInstructionsAsync(string testLink)
+        public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
+        {
+            var testInstructionDetails = await _dbContext.Test.Where(x => x.Link == testLink)
+                .Include(x => x.TestQuestion)
+                .Include(x => x.TestCategory)
+                .ThenInclude(x => x.Category).ToListAsync();
+            if (testInstructionDetails != null)
             {
-            var testSettingsDetails = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
-            var currentTestId = testSettingsDetails.Id;
-            var testQuestionDetails = await _dbContext.TestQuestion.Where(x => x.TestId == currentTestId).ToListAsync();
-            var totalNumberOfQuestions = testQuestionDetails.Count();
-            var testCategoryDetails = await _dbContext.TestCategory.Where(x => x.TestId == currentTestId).ToListAsync();
-            var testCategoryNameList = new List<string>();
-            foreach (var testCategory in testCategoryDetails)
-            {
-                var categoryDetails = await _dbContext.Category.FirstOrDefaultAsync(x => x.Id == testCategory.CategoryId);
-                var categoryName = categoryDetails.CategoryName;
-                testCategoryNameList.Add(categoryName);
+                var totalNumberOfQuestions = testInstructionDetails.First().TestQuestion.Count();
+                var testCategoryNameList = testInstructionDetails.First().TestCategory.Select(x => x.Category.CategoryName).ToList();
+                var testInstructions = new TestInstructionsAC()
+                {
+                    Duration = testInstructionDetails.First().Duration,
+                    WarningTime = testInstructionDetails.First().WarningTime,
+                    CorrectMarks = testInstructionDetails.First().CorrectMarks,
+                    IncorrectMarks = testInstructionDetails.First().IncorrectMarks,
+                    TotalNumberOfQuestions = totalNumberOfQuestions,
+                    CategoryNameList = testCategoryNameList
+                };
+                return testInstructions;
             }
-            var instruction = new InstructionAC()
-            {
-                Duration = testSettingsDetails.Duration,
-                WarningTime = testSettingsDetails.WarningTime,
-                CorrectMarks = testSettingsDetails.CorrectMarks,
-                IncorrectMarks = testSettingsDetails.IncorrectMarks,
-                TotalNumberOfQuestions = totalNumberOfQuestions,
-                CategoryNameList = testCategoryNameList
-            };
-            return instruction;
+            return null;
         }
 
         public async Task<bool> IsTestLinkExistAsync(string magicString)
@@ -75,4 +73,4 @@ namespace Promact.Trappist.Repository.TestConduct
         }
         #endregion
     }
-}        
+}
