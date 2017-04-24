@@ -175,30 +175,6 @@
                 return "H0SGXPOwsR";
             }
         }
-
-        public string SessionKeyEmail
-        {
-            get
-            {
-                return "Email";
-            }
-        }
-
-        public string SessionKeyId
-        {
-            get
-            {
-                return "Id";
-            }
-        }
-
-        public string SessionKeyRollNumber
-        {
-            get
-            {
-                return "RollNumber";
-            }
-        }
         #endregion
 
         #region "Question Constants"
