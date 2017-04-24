@@ -1,8 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { CategoryService } from '../categories.service';
-import { MdDialog } from '@angular/material';
 import { Category } from '../../questions/category.model';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialogRef } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -17,7 +16,7 @@ export class DeleteCategoryDialogComponent {
     category: Category;
     categoryArray: Category[] = new Array<Category>();
 
-    constructor(private categoryService: CategoryService, private dialog: MdDialog, private snackBar: MdSnackBar) {
+    constructor(private categoryService: CategoryService, private dialog: MdDialogRef<DeleteCategoryDialogComponent>, private snackBar: MdSnackBar) {
         this.successMessage = 'Category deleted successfully';
         this.errorMessage = 'Something went wrong. Please try again later';
     }
@@ -34,22 +33,23 @@ export class DeleteCategoryDialogComponent {
     /**
      * Method to delete Category
      */
-    deleteCategory() {
-        this.categoryService.deleteCategory(this.category.id).subscribe(
+    deleteCategory(category:Category) {
+        this.categoryService.deleteCategory(category.id).subscribe(
             response => {
-                this.categoryArray.splice(this.categoryArray.indexOf(this.category), 1);
+                this.dialog.close(Category)
                 this.openSnackBar(this.successMessage);
             },
             err => {
                 if (err.status === 400) {
                     this.response = err.json();
                     this.errorMessage = this.response['error'][0];
+                    this.dialog.close(null);
                     this.openSnackBar(this.errorMessage);
                 }
                 else {
+                    this.dialog.close(null);
                     this.openSnackBar(this.errorMessage);
                 }
             });
-        this.dialog.closeAll();
     }
 }
