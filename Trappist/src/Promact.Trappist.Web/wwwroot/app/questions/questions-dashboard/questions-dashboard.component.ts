@@ -11,7 +11,6 @@ import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
-import { Router } from '@angular/router';
 import { Question } from '../question.model';
 
 @Component({
@@ -177,7 +176,11 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     editQuestion(question: QuestionDisplay) {
         if (question.questionType === QuestionType.codeSnippetQuestion) {
-            this.router.navigate(['questions','programming', question.id]);
+            this.router.navigate(['questions', 'programming', question.id]);
+        }
+        else {
+            let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
+            this.router.navigate(['questions', questionType, question.id]);
         }
     }
 
@@ -239,14 +242,5 @@ export class QuestionsDashboardComponent implements OnInit {
                     break;
             }
         });
-    }
-
-    /**
-     * Redirect to edit question page
-     * @param question
-     */
-    updateQuestion(question: Question) {
-        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
-        this.router.navigate(['questions', questionType, question.id]);
     }
 }

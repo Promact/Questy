@@ -252,15 +252,16 @@ namespace Promact.Trappist.Test.Questions
 
             var questionAfterUpdate = await _trappistDbContext
                 .Question
-                .Include(x => x.CodeSnippetQuestion)
-                .ThenInclude(x => x.QuestionLanguangeMapping)
-                .FirstOrDefaultAsync(x => x.Id == question.Id);
+                .FindAsync(question.Id);
+            await _trappistDbContext.Entry(questionAfterUpdate).Reference(x => x.CodeSnippetQuestion).LoadAsync();
+            await _trappistDbContext.Entry(questionAfterUpdate.CodeSnippetQuestion).Collection(x => x.CodeSnippetQuestionTestCases).LoadAsync();
 
             Assert.True(string.Equals(questionAfterUpdate.QuestionDetail, updatedQuestion.Question.QuestionDetail, StringComparison.CurrentCultureIgnoreCase));
             Assert.True(questionAfterUpdate.DifficultyLevel == updatedQuestion.Question.DifficultyLevel);
             Assert.True(questionAfterUpdate.CodeSnippetQuestion.CheckCodeComplexity == updatedQuestion.CodeSnippetQuestion.CheckCodeComplexity);
             Assert.True(questionAfterUpdate.CodeSnippetQuestion.CheckTimeComplexity == updatedQuestion.CodeSnippetQuestion.CheckTimeComplexity);
             Assert.True(questionAfterUpdate.CodeSnippetQuestion.QuestionLanguangeMapping.Count == 1);
+            Assert.True(questionAfterUpdate.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Count == 2);
         }
 
         [Fact]

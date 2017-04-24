@@ -66,6 +66,11 @@ export class QuestionsService {
         return this.httpService.delete(this.questionsApiUrl + '/' + id);
     }
 
+    /**
+     * Calls API to update question by Id
+     * @param id: Id of question to be updated
+     * @param question: QuestionBase class object
+     */
     updateQuestionById(id: number, question: QuestionBase) {
         return this.httpService.put(this.questionsApiUrl + '/' + id, question);
     }

@@ -227,7 +227,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param enableRouting: enable routing after snack bar dismissed
      * @param routeTo: routing path 
      */
-    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: any[] = ['']) {
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: (string|number)[] = ['']) {
         let snackBarAction = this.snackBar.open(message, 'Dismiss', {
             duration: 3000
         });
