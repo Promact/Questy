@@ -17,7 +17,7 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
-    noOptionSelected: number;
+    indexOfOptionSelected: number;
     categoryName: string;
     questionId: number;
     isRadioButtonSelected: boolean;
@@ -59,10 +59,10 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     getQuestionById(id: number) {
         this.questionService.getQuestionById(id).subscribe((response: QuestionBase) => {
             this.singleMultipleAnswerQuestion = response;
-            this.getCategoryName();
             this.isRadioButtonSelected = true;
+            this.getCategoryName();
             this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
-            this.noOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
+            this.indexOfOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
             this.noOfOptionShown = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length;
             if (this.noOfOptionShown === 2) {
                 this.isClose = true;
@@ -102,8 +102,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
-        if (+this.noOptionSelected === optionIndex) {
-            this.noOptionSelected = null;
+        if (+this.indexOfOptionSelected === optionIndex) {
+            this.indexOfOptionSelected = null;
         }
         if (this.noOfOptionShown === 9) {
             this.isNoOfOptionOverLimit = false;
@@ -180,7 +180,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
         if (singleMultipleAnswerQuestion.question.questionType === 0) {
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
-            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.noOptionSelected].isAnswer = true;
+            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.indexOfOptionSelected].isAnswer = true;
         }
         ((this.isEditQuestion) ?
             (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :
