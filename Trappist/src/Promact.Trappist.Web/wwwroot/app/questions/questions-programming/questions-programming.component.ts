@@ -55,7 +55,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
-        this.selectedCategory = 'Please select a category';
+        this.selectedCategory = 'Please select a Category';
         this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
@@ -227,7 +227,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param enableRouting: enable routing after snack bar dismissed
      * @param routeTo: routing path 
      */
-    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: any[] = ['']) {
+    private openSnackBar(message: string, enableRouting: boolean = false, routeTo: (string|number)[] = ['']) {
         let snackBarAction = this.snackBar.open(message, 'Dismiss', {
             duration: 3000
         });
