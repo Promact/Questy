@@ -19,11 +19,12 @@ export class TestQuestionsComponent implements OnInit {
     editName: boolean;
     DifficultyLevel = DifficultyLevel;
     QuestionType = QuestionType;
-    selectedQuestions: number[] = [];
+    totalNumberOfQuestions: number[] = [];
     questionsToAdd: QuestionBase[] = [];
     testId: number;
     isSaveExit: boolean;
     testDetails: Test;
+    loader: boolean = false;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
@@ -38,8 +39,8 @@ export class TestQuestionsComponent implements OnInit {
     }
 
     openSnackBar(text: string) {
-        return this.snackBar.open(text, 'Dismiss', {
-            duration: 5000
+        this.snackBar.open(text, 'Dismiss', {
+            duration: 3000
         });
     }
     /**
@@ -50,12 +51,12 @@ export class TestQuestionsComponent implements OnInit {
     getAllquestions(category: Category, i: number) {
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
-            if (!category.isAlreadyClicked) {
+            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
                 category.isAlreadyClicked = true;
                 this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                    this.testDetails.categoryAcList[i].questionList = response;
-                    this.selectedQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
-                    this.testDetails.categoryAcList[i].numberOfQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
+                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                    this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
+                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
                         return question.question.isSelect;
                     }).length;
                 });
@@ -82,17 +83,18 @@ export class TestQuestionsComponent implements OnInit {
      * @param question is an object of QuestionBase
      * @param category is an object of Category
      */
-    selectQuestion(question: QuestionBase, category: Category) {
-        if (question.question.isSelect) {
-            if (category.questionList.every(function (question) {
+    selectQuestion(questionToSelect: QuestionBase, category: Category) {
+        if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
+            let isAllSelected = category.questionList.every(function (question) {
                 return question.question.isSelect;
-            }))
+            })
+            if (isAllSelected)
                 category.selectAll = true;
-            category.numberOfQuestion++;
+            category.numberOfSelectedQuestion++;
         } else {
             category.selectAll = false;
-            question.question.isSelect = false;
-            category.numberOfQuestion--;
+            questionToSelect.question.isSelect = false;
+            category.numberOfSelectedQuestion--;
         }
     }
 
