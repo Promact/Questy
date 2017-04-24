@@ -29,7 +29,6 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString)
         {
-            //TO DO:Handling of wrong magic string is required to implement.
             var testObject = (await _dbContext.Test.FirstOrDefaultAsync(x => (x.Link == magicString)));
             if (testObject != null)
             {
@@ -38,6 +37,12 @@ namespace Promact.Trappist.Repository.TestConduct
                 return isTestAttendeeExist;
             }
             return false;
+        }
+
+        public async Task<bool> IsTestLinkExistAsync(string magicString)
+        {
+            var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => (x.Link == magicString)));
+            return isTestLinkExist;
         }
         #endregion
     }

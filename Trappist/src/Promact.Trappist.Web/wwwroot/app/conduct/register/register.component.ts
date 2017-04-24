@@ -10,10 +10,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
     testAttendees: TestAttendees;
-    isErrorMessage: boolean;
-    magicString: string;
-    registrationUrl: string;
     loader: boolean;
+    isErrorMessage: boolean;
 
     constructor(private conductService: ConductService, private router: Router) {
         this.testAttendees = new TestAttendees();
@@ -24,9 +22,9 @@ export class RegisterComponent {
      */
     registerTestAttendee() {
         this.loader = true;
-        this.registrationUrl = window.location.pathname;
-        this.magicString = this.registrationUrl.substring(this.registrationUrl.indexOf('/conduct/') + 9, this.registrationUrl.indexOf('/register'));
-        this.conductService.registerTestAttendee(this.magicString, this.testAttendees).subscribe(response => {
+        let registrationUrl = window.location.pathname;
+        let magicString = registrationUrl.substring(registrationUrl.indexOf('/conduct/') + 9, registrationUrl.indexOf('/register'));
+        this.conductService.registerTestAttendee(magicString, this.testAttendees).subscribe(response => {
             this.isErrorMessage = false;
             this.loader = false;
             this.router.navigate(['instructions']);

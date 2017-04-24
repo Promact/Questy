@@ -89,6 +89,29 @@ namespace Promact.Trappist.Test.TestConduct
         }
 
         /// <summary>
+        /// This test case used to check test magic string is exist.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task IsTestLinkExistAsync()
+        {
+            await CreateTestAsync();
+            var result = await _testConductRepository.IsTestLinkExistAsync(_stringConstants.MagicString);
+            Assert.True(result);
+        }
+
+        /// <summary>
+        /// This test case used to check test magic string is not exist.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task IsTestLinkNotExistAsync()
+        {
+            var result = await _testConductRepository.IsTestLinkExistAsync(_stringConstants.MagicString);
+            Assert.False(result);
+        }
+
+        /// <summary>
         /// This method used for creating a test.
         /// </summary>
         /// <returns></returns>

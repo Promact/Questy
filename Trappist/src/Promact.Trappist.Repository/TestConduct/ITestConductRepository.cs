@@ -20,5 +20,12 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="magicString">This parameter contain test link</param>
         /// <returns>If test attendee exist then return true else return false.</returns>
         Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString);
+
+        /// <summary>
+        /// This method used for check magicString is exist or not for any test
+        /// </summary>
+        /// <param name="magicString">It contain random string which uniquely identifies test</param>
+        /// <returns>If test link exist then return true else return false</returns>
+        Task<bool> IsTestLinkExistAsync(string magicString);
     }
 }

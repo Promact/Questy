@@ -29,6 +29,7 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -69,6 +70,13 @@ namespace Promact.Trappist.Web
 
             services.AddDirectoryBrowser();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.CookieName = "TestAttendeeDetail";
+                options.IdleTimeout = TimeSpan.FromHours(2);
+            });
+
             #region Dependencies
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
@@ -98,6 +106,7 @@ namespace Promact.Trappist.Web
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             app.AddNLogWeb();
+            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -122,7 +131,7 @@ namespace Promact.Trappist.Web
             {
                 routes.MapRoute(
                     name: "conduct",
-                    template: "conduct/{link}/{route?}",
+                    template: "conduct/{link?}/{route?}",
                     defaults: new { controller = "Home", action = "Conduct", route = "register" });
                 routes.MapRoute(
                     name: "setup",
