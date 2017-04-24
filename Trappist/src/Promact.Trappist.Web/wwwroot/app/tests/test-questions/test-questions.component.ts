@@ -63,6 +63,10 @@ export class TestQuestionsComponent implements OnInit {
             } else category.isAlreadyClicked = true;
         } else category.isAccordionOpen = false;
     }
+    /**
+     * returns 'correct' class for correct option
+     * @param isAnswer
+     */
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return 'correct';
