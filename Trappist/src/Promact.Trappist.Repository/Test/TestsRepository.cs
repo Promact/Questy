@@ -153,23 +153,8 @@ namespace Promact.Trappist.Repository.Tests
         {
             var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.TestId == testCategory.TestId && x.CategoryId == testCategory.CategoryId);
             _dbContext.TestCategory.Remove(testCategoryObj);
-            var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
-            var testQuestion = new List<TestQuestion>();
-            testQuestion.ForEach(x =>
-            {
-                if (x.TestId == testCategory.TestId)
-                {
-                    var questionAc = Mapper.Map<List<Question>, List<QuestionDetailAC>>(questions);
-                    questionAc.ForEach(question =>
-                    {
-                        if (question.IsSelect)
-                        {
-                            var questionToBeRemoved = Mapper.Map<QuestionDetailAC, Question>(question);
-                            _dbContext.TestQuestion.Remove(x);
-                        }
-                    });
-                }
-            });
+            var testQuestions = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == testCategory.CategoryId && x.TestId == testCategory.TestId).ToList();
+            _dbContext.TestQuestion.RemoveRange(testQuestions);
             await _dbContext.SaveChangesAsync();
             var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
             var categoryAc = Mapper.Map<Category, CategoryAC>(category);
