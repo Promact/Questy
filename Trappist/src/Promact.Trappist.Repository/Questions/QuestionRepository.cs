@@ -189,7 +189,7 @@ namespace Promact.Trappist.Repository.Questions
 
             if (question == null)
                 return null;
-            if(question.QuestionType == QuestionType.Programming)
+            if (question.QuestionType == QuestionType.Programming)
             {
                 await _dbContext.Entry(question).Reference(x => x.CodeSnippetQuestion).LoadAsync();
             }
@@ -198,7 +198,7 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.Entry(question).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
                 await _dbContext.Entry(question.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
             }
-            
+
             questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
             questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
             questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
@@ -259,8 +259,8 @@ namespace Promact.Trappist.Repository.Questions
                 //Update options details
                 optionToUpdate.ForEach(x =>
                 {
-                    var entry = _dbContext.Entry<SingleMultipleAnswerQuestionOption>(singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
-                    entry.CurrentValues.SetValues(x);
+                    var singleMultipleAnswerQuestionOptionEntry = _dbContext.Entry<SingleMultipleAnswerQuestionOption>(singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
+                    singleMultipleAnswerQuestionOptionEntry.CurrentValues.SetValues(x);
                 });
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();

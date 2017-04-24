@@ -70,6 +70,35 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
+        /// Test to update single answer question
+        /// </summary>
+        [Fact]
+        public async Task UpdateSingleAnswerQuestionAsyncTest()
+        {
+            //Add single answer question
+            var singleAnswerQuestion = await CreateSingleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
+            var question = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == singleAnswerQuestion.Question.QuestionDetail);
+
+            //Update single answer question
+            singleAnswerQuestion.Question.Id = question.Id;
+            singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Option = "Updated Option";
+            singleAnswerQuestion.Question.QuestionDetail = "Updated Single Answer Question";
+            singleAnswerQuestion.Question.DifficultyLevel = DifficultyLevel.Medium;
+            await _questionRepository.UpdateSingleMultipleAnswerQuestionAsync(question.Id, singleAnswerQuestion, applicationUser.Id);
+
+            var updatedSingleAnswerQuestion = await _trappistDbContext.Question.FindAsync(question.Id);
+            var updatedSingleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).ToListAsync();
+            Assert.True(singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Option == updatedSingleAnswerQuestionOption[0].Option);
+            Assert.True(updatedSingleAnswerQuestion.DifficultyLevel == singleAnswerQuestion.Question.DifficultyLevel);
+            Assert.True(updatedSingleAnswerQuestion.QuestionDetail == singleAnswerQuestion.Question.QuestionDetail);
+        }
+
+        /// <summary>
         /// Creating single answer Question
         /// </summary>
         /// <returns>Object of single answer Question</returns>
@@ -131,6 +160,35 @@ namespace Promact.Trappist.Test.Questions
             Assert.True(_trappistDbContext.Question.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestion.Count() == 1);
             Assert.True(_trappistDbContext.SingleMultipleAnswerQuestionOption.Count() == 4);
+        }
+
+        /// <summary>
+        /// Test to update multiple answer question
+        /// </summary>
+        [Fact]
+        public async Task UpdateMultipleAnswerQuestionAsyncTest()
+        {
+            //Add multiple answer question
+            var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
+            string userName = "vihar@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
+            var question = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);
+
+            //Update multiple answer question
+            multipleAnswerQuestion.Question.Id = question.Id;
+            multipleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Option = "Updated Option";
+            multipleAnswerQuestion.Question.QuestionDetail = "Updated Multiple Answer Question";
+            multipleAnswerQuestion.Question.DifficultyLevel = DifficultyLevel.Easy;
+            await _questionRepository.UpdateSingleMultipleAnswerQuestionAsync(question.Id, multipleAnswerQuestion, applicationUser.Id);
+
+            var updatedMultipleAnswerQuestion = await _trappistDbContext.Question.FindAsync(question.Id);
+            var updatedMultipleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).ToListAsync();
+            Assert.True(multipleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Option == updatedMultipleAnswerQuestionOption[1].Option);
+            Assert.True(updatedMultipleAnswerQuestion.DifficultyLevel == multipleAnswerQuestion.Question.DifficultyLevel);
+            Assert.True(updatedMultipleAnswerQuestion.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);
         }
 
         /// <summary>

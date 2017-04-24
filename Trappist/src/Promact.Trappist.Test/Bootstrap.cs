@@ -115,7 +115,7 @@ namespace Promact.Trappist.Test
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore()).ReverseMap();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ReverseMap();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
             });
