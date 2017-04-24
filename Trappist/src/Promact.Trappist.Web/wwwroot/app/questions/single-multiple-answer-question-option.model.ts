@@ -2,5 +2,5 @@
     id: number;
     option: string;
     isAnswer: boolean;
-    singleMultipleAnswerQuestionID: number;
+    singleMultipleAnswerQuestionId: number;
 }
