@@ -2,7 +2,7 @@
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.TestConduct
 {
-    public class InstructionAC
+    public class TestInstructionsAC
     {
         public int Duration { get; set; }
         public int WarningTime { get; set; }

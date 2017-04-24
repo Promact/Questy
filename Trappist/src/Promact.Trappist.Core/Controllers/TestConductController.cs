@@ -42,12 +42,12 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Test-Instruction API
         /// <summary>
-        /// This method is used to get all the instruction details before starting of a particular test using testLink
+        /// This method is used to get all the instructions before starting of a particular test using testLink
         /// </summary>
         /// <param name="testLink">link to conduct a particular test</param>
-        /// <returns></returns>
+        /// <returns>instructions for a particular test</returns>
         [HttpGet("{testLink}/instructions")]
-        public async Task<InstructionAC> GetTestInstructionsAsync(string testLink)
+        public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
         {
             var result = await _testConductRepository.GetTestInstructionsAsync(testLink);
             return result;

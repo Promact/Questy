@@ -2,7 +2,7 @@
 import { Test } from '../../tests/tests.model';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute } from '@angular/router';
-import { Instruction } from '../instruction.model';
+import { TestInstructions } from '../testInstructions.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
 })
 
 export class InstructionsComponent implements OnInit {
-    instruction: Instruction;
+    testInstructions: TestInstructions;
     constructor(private conductService: ConductService, private route: ActivatedRoute) {
-        this.instruction = new Instruction();
+        this.testInstructions = new TestInstructions();
     }
 
     /**
@@ -27,13 +27,13 @@ export class InstructionsComponent implements OnInit {
     }
 
     /**
-     * This method is used to get all the instruction details before starting of a particular test
-     * @param testLink Contains the link to fetch all test-instruction details related to a particular test
+     * This method is used to get all the instructions before starting of a particular test
+     * @param testLink Contains the link to fetch instructions related to a particular test
      */
     getTestInstructionsByLink(testLink: string) {
         this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
-                this.instruction = response;
+                this.testInstructions = response;
             });
     }
 }

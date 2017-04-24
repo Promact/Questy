@@ -26,5 +26,8 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public TestOrder QuestionOrder { get; set; }
         public TestOrder OptionOrder { get; set; }
         public virtual ICollection<TestAttendees> TestAttendees { get; set; }
+        public virtual ICollection<TestQuestion> TestQuestion { get; set; }
+        public virtual ICollection<TestCategory> TestCategory { get; set; }
+
     }
 }

@@ -3,8 +3,8 @@
     <div class="content-block">
         <h2>Test Instructions</h2>
         <p class="test-conduct-subtitle">Please read the Test Instructions carefully before starting the test.</p>
-        <p class="test-info"><span class="h4">Total Test Duration: </span><span class="h2">{{instruction.duration}} mins</span></p>
-        <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{instruction.totalNumberOfQuestions}}</span></p>
+        <p class="test-info"><span class="h4">Total Test Duration: </span><span class="h2">{{testInstructions.duration}} mins</span></p>
+        <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{testInstructions.totalNumberOfQuestions}}</span></p>
         <p class="test-info"><span class="h4">Marking Pattern: </span></p>
         <table>
             <tr>
@@ -13,15 +13,15 @@
                 <th class="h5">Not Attempted</th>
             </tr>
             <tr>
-                <td class="h2">{{instruction.correctMarks}}</td>
-                <td class="h2">{{instruction.incorrectMarks}}</td>
+                <td class="h2">{{testInstructions.correctMarks}}</td>
+                <td class="h2">{{testInstructions.incorrectMarks}}</td>
                 <td class="h2">0</td>
             </tr>
         </table>
         <h5>Please Note:</h5>
         <ul>
-            <li>This test comprises of <strong *ngFor=" let category of instruction.categoryNameList;let i=index">{{category}}{{i==instruction.categoryNameList.length-1 ? ' ': i == instruction.categoryNameList.length -2 ? ' and ' : ' , '}}</strong> questions in no particular order.</li>
-            <li>Do not switch to any other tab/browser/app during your test. If you do so, your test will end after <strong>{{instruction.warningTime}}</strong> warnings.</li>
+            <li>This test comprises of <strong *ngFor=" let category of testInstructions.categoryNameList;let i=index">{{category}}{{i==testInstructions.categoryNameList.length-1 ? ' ': i == testInstructions.categoryNameList.length -2 ? ' and ' : ' , '}}</strong> questions in no particular order.</li>
+            <li>Do not switch to any other tab/browser/app during your test. If you do so, your test will end after <strong>{{testInstructions.warningTime}}</strong> warnings.</li>
         </ul>
         <div class="text-center">
             <h2 class="mb20">All the Best!</h2>

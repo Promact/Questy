@@ -1,4 +1,4 @@
-﻿export class Instruction {
+﻿export class TestInstructions {
     public duration: number;
     public warningTime: number;
     public correctMarks: number;
