@@ -245,4 +245,29 @@ export class QuestionsDashboardComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * Redirect to edit question page
+     * @param question
+     */
+    updateQuestion(question: Question) {
+        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
+        this.router.navigate(['questions', questionType, question.id]);
+    }
+
+    /**
+     * Method to duplicate Question
+     * @param question:QuestionDisplay object
+     */
+    duplicateQuestion(question: QuestionDisplay) {
+        if (question.questionType === QuestionType.codeSnippetQuestion) {
+            this.router.navigate(['questions', 'programming', 'duplicate', question.id]);
+        }
+        else if (question.questionType === QuestionType.singleAnswer) {
+            this.router.navigate(['questions', 'single-answer', 'duplicate', question.id]);
+        }
+        else {
+            this.router.navigate(['questions', 'multiple-answers', 'duplicate', question.id]);
+        }
+    }
 }
