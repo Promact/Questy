@@ -140,8 +140,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            var questionToDelete = await _questionsRepository.GetQuestionByIdAsync(id);
-            if (questionToDelete == null)
+            if (await _questionsRepository.IsQuestionExistAsync(id))
             {
                 return NotFound();
             }
@@ -152,7 +151,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _questionsRepository.DeleteQuestionAsync(questionToDelete);
+            await _questionsRepository.DeleteQuestionAsync(id);
             return NoContent();
         }
 

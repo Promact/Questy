@@ -17,7 +17,7 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
-    optionNoSelected: number;
+    noOptionSelected: number;
     categoryName: string;
     questionId: number;
     isRadioButtonSelected: boolean;
@@ -62,7 +62,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.getCategoryName();
             this.isRadioButtonSelected = true;
             this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
-            this.optionNoSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
+            this.noOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
             this.noOfOptionShown = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length;
             if (this.noOfOptionShown === 2) {
                 this.isClose = true;
@@ -102,8 +102,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
-        if (+this.optionNoSelected === optionIndex) {
-            this.optionNoSelected = null;
+        if (+this.noOptionSelected === optionIndex) {
+            this.noOptionSelected = null;
         }
         if (this.noOfOptionShown === 9) {
             this.isNoOfOptionOverLimit = false;
@@ -180,7 +180,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
         if (singleMultipleAnswerQuestion.question.questionType === 0) {
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
-            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.optionNoSelected].isAnswer = true;
+            singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.noOptionSelected].isAnswer = true;
         }
         ((this.isEditQuestion) ?
             (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :

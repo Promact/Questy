@@ -10,7 +10,6 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
-import { Question } from '../../questions/question.model';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
 
@@ -233,7 +232,7 @@ export class QuestionsDashboardComponent implements OnInit {
      * @param question
      */
     updateQuestion(question: Question) {
-        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';        
-        this.router.navigate(['questions',questionType,question.id]);
+        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
+        this.router.navigate(['questions', questionType, question.id]);
     }
 }

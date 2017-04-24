@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
-                    <md-radio-group [(ngModel)]="optionNoSelected" name="first" (ngModelChange)="isRadioButtonSelected=true">
+                    <md-radio-group [(ngModel)]= "noOptionSelected" name="first" (ngModelChange)="isRadioButtonSelected=true">
                         <md-radio-button value="{{i}}" [disabled]="choice.pristine && !isEditQuestion" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" required >
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
