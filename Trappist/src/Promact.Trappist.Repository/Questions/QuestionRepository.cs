@@ -152,9 +152,9 @@ namespace Promact.Trappist.Repository.Questions
                 //Updating TestCases
                 testCaseToUpdate.ForEach(x =>
                 {
-                    var testCase = testCases.First(test => test.Id == x.Id);
-                    var entry = _dbContext.Entry(testCase);
-                    entry.CurrentValues.SetValues(x);
+                    var testCase = testCases.Single(test => test.Id == x.Id);
+                    var testCaseEntry = _dbContext.Entry(testCase);
+                    testCaseEntry.CurrentValues.SetValues(x);
                 });
                 await _dbContext.SaveChangesAsync();
 
@@ -265,29 +265,6 @@ namespace Promact.Trappist.Repository.Questions
                 await _dbContext.SaveChangesAsync();
                 transaction.Commit();
             }
-        }
-
-        public async Task<QuestionAC> GetQuestionByIdAsync(int id)
-        {
-            var questionAC = new QuestionAC();
-            var question = await _dbContext.Question.FindAsync(id);
-            if (question == null)
-            {
-                return null;
-            }
-            if (question.QuestionType == QuestionType.Programming)
-            {
-                await _dbContext.Entry(question).Reference(x => x.CodeSnippetQuestion).LoadAsync();
-            }
-            else
-            {
-                await _dbContext.Entry(question).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
-                await _dbContext.Entry(question.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
-            }
-            questionAC.Question = Mapper.Map<Question, QuestionDetailAC>(question);
-            questionAC.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
-            questionAC.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestion, CodeSnippetQuestionAC>(question.CodeSnippetQuestion);
-            return questionAC;
         }
 
         public async Task<bool> IsQuestionExistInTestAsync(int id)
