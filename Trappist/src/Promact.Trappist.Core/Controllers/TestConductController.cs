@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
@@ -13,7 +12,6 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Variables
         #region Dependencies
         private readonly ITestConductRepository _testConductRepository;
-        private readonly IStringConstants _stringConstants;
         #endregion
         #endregion
 
@@ -21,7 +19,6 @@ namespace Promact.Trappist.Core.Controllers
         public TestConductController(ITestConductRepository testConductRepository, IStringConstants stringConstants)
         {
             _testConductRepository = testConductRepository;
-            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -38,9 +35,6 @@ namespace Promact.Trappist.Core.Controllers
             if (ModelState.IsValid && !(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString)))
             {
                 await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
-                HttpContext.Session.SetString(_stringConstants.SessionKeyEmail, testAttendee.Email);
-                HttpContext.Session.SetString(_stringConstants.SessionKeyRollNumber, testAttendee.RollNumber);
-                HttpContext.Session.SetInt32(_stringConstants.SessionKeyId, testAttendee.Id);
                 return Ok(true);
             }
             return BadRequest();

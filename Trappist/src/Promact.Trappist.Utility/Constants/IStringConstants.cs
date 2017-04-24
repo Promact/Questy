@@ -117,21 +117,6 @@
         /// This property contain magic string of test.
         /// </summary>
         string MagicString { get; }
-
-        /// <summary>
-        /// This property contain email as session key.
-        /// </summary>
-        string SessionKeyEmail { get; }
-
-        /// <summary>
-        /// This property contain id as session key.
-        /// </summary>
-        string SessionKeyId { get; }
-
-        /// <summary>
-        /// This property contain roll number as session key.
-        /// </summary>
-        string SessionKeyRollNumber { get; }
         #endregion
 
         #region "Question Constants"
