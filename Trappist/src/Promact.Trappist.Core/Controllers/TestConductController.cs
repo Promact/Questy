@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
-using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -16,7 +15,7 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository, IStringConstants stringConstants)
+        public TestConductController(ITestConductRepository testConductRepository)
         {
             _testConductRepository = testConductRepository;
         }
