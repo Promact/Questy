@@ -21,7 +21,7 @@ export class ConductService {
      * Gets all the instruction details before starting of a perticular test
      * @param testLink is used to fetch all information related to a perticular test
      */
-    getTestDetailsByLink(testLink: string) {
+    getTestInstructionsByLink(testLink: string) {
         return this.httpService.get(this.registerTestAttendeeApiUrl + testLink + '/instructions');
     }
 }
