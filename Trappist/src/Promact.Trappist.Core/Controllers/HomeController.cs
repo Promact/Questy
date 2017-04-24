@@ -55,5 +55,11 @@ namespace Promact.Trappist.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
+
     }
 }
