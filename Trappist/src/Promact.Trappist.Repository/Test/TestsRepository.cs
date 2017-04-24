@@ -141,8 +141,7 @@ namespace Promact.Trappist.Repository.Tests
             var testQuestions = await _dbContext.TestQuestion.OrderBy(x => x.QuestionId).ToListAsync();
             foreach (var question in questions)
             {
-                if (question.CategoryID == categoryId)
-                    if (testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
+                if (question.CategoryID == categoryId && testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))                   
                         return true;
             }
             return false;

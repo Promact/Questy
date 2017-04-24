@@ -204,8 +204,7 @@ namespace Promact.Trappist.Test.Tests
             testCategory.TestId = test.Id;
             testCategory.CategoryId = category.Id;
             List<TestCategory> testCategoryList = new List<TestCategory>();
-            testCategoryList.Add(testCategory);
-            var testAc = await _testRepository.GetTestDetailsByIdAsync(test.Id);
+            testCategoryList.Add(testCategory);            
             await _testRepository.AddSelectedCategoryAsync(testCategoryList);
             var questionAc = CreateQuestionAc(true, "Question in Category", category.Id, 1);           
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
