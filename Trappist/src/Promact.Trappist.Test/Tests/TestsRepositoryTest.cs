@@ -193,6 +193,9 @@ namespace Promact.Trappist.Test.Tests
         public async Task DeselectCategory()
         {
             // TODO: When asif's PR is accepted
+            string userName = "niharika@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
             var category = CreateCategory();
             await _categoryRepository.AddCategoryAsync(category);
             var test = CreateTest("Maths");
@@ -204,10 +207,7 @@ namespace Promact.Trappist.Test.Tests
             testCategoryList.Add(testCategory);
             var testAc = await _testRepository.GetTestDetailsByIdAsync(test.Id);
             await _testRepository.AddSelectedCategoryAsync(testCategoryList);
-            var questionAc = CreateQuestionAc(true, "Question in Category", category.Id, 1);
-            string userName = "niharika@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
+            var questionAc = CreateQuestionAc(true, "Question in Category", category.Id, 1);           
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAc, applicationUser.Id);
             TestQuestion testQuestion = new TestQuestion();

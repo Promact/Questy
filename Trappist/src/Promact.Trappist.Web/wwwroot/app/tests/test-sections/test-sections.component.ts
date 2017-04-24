@@ -24,7 +24,6 @@ export class TestSectionsComponent implements OnInit {
     testCategories: TestCategory[] = [];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
-    snackbarReference: MdSnackBarRef<SimpleSnackBar>;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testSettings = new Test();
@@ -58,10 +57,9 @@ export class TestSectionsComponent implements OnInit {
      */
     getTestSectionsDetails() {
         this.testService.getTestDetails(this.testId).subscribe((response) => {
-            this.testDetailsObj = response;
         },
             err => {
-                this.snackbarReference = this.openSnackbar('Something went wrong, try again');
+                this.openSnackbar('Something went wrong, try again');
 
             });
     }

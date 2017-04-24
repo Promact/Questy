@@ -12,7 +12,6 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Models.Category;
-using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Repository.Tests
 {
