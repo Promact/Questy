@@ -254,15 +254,6 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * Redirect to edit question page
-     * @param question
-     */
-    updateQuestion(question: Question) {
-        let questionType = question.questionType === 0 ? 'edit-single-answer' : 'edit-multiple-answers';
-        this.router.navigate(['questions', questionType, question.id]);
-    }
-
-    /**
      * Method to duplicate Question
      * @param question:QuestionDisplay object
      */
