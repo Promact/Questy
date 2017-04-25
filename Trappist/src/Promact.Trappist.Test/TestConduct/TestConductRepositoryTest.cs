@@ -124,15 +124,14 @@ namespace Promact.Trappist.Test.TestConduct
         }
 
         /// <summary>
-        /// This test case is used to test test instructions details
+        /// This test case is used to test the test instructions details
         /// </summary>
         /// <returns></returns>
         [Fact]
         public async Task GetAllTestInformationAsync()
         {
             //Creating test
-            var test = CreateTestAsync();
-
+            var test = await CreateTestAsync();
             //Creating test category
             var categoryList = new List<DomainModel.Models.Category.Category>();
             var category1 = CreateCategory("Mathematics");
@@ -148,16 +147,16 @@ namespace Promact.Trappist.Test.TestConduct
             categoryListAc[0].IsSelect = true;
             categoryListAc[1].IsSelect = false;
             categoryListAc[2].IsSelect = true;
-            await _testRepository.AddTestCategoriesAsync(test.Result.Id, categoryListAc);
-
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
             //Creating test questions
             var questionList = new List<QuestionAC>
             {
                 CreateQuestionAC(true, "Category1 type question", category1.Id, 1),
                 CreateQuestionAC(false,"Category1 type question", category1.Id, 2),
                 CreateQuestionAC(true,"Category3 type question", category3.Id, 3),
+                CreateQuestionAC(true,"Category3 type question", category3.Id, 4),
             };
-            await _testRepository.AddTestQuestionsAsync(questionList, test.Result.Id);
+            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
             TestInstructionsAC testInstruction = new TestInstructionsAC();
             testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
@@ -251,13 +250,9 @@ namespace Promact.Trappist.Test.TestConduct
                         },
                     }
                 }
-
             };
             return questionAC;
         }
         #endregion
     }
-}
-      
-
-        
+}      
