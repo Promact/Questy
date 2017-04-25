@@ -5,7 +5,7 @@ namespace Promact.Trappist.Core.ActionFilters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {
-        private ILogger<GlobalExceptionFilter> _logger;
+        private readonly ILogger<GlobalExceptionFilter> _logger;
 
         public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
