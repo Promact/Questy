@@ -69,6 +69,7 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(tests);
         }
         #endregion 
+
         #region Test Settings
         /// <summary>
         /// Updates the edited Test Name
@@ -114,6 +115,7 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(testObject);
         }
         #endregion
+
         #region Delete Test
         /// <summary>
         /// Check whether there is any test attendee or not
@@ -152,6 +154,7 @@ namespace Promact.Trappist.Core.Controllers
             return NoContent();
         }
         #endregion
+
         #region Category Selection
                   
 

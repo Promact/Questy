@@ -53,6 +53,7 @@ namespace Promact.Trappist.Repository.Tests
             return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
         }
         #endregion
+
         #region Test Settings
         /// <summary>
         /// Updates the edited Test Name
@@ -81,6 +82,7 @@ namespace Promact.Trappist.Repository.Tests
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
         }
         #endregion
+
         #region Delete Test
         public async Task<bool> IsTestAttendeeExistAsync(int id)
         {
@@ -95,6 +97,7 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
         #endregion
+
         #region Category selection
 
         public async Task AddSelectedCategoryAsync(int testId, List<CategoryAC> categoryAcList)
@@ -148,6 +151,7 @@ namespace Promact.Trappist.Repository.Tests
             categoryAc.IsSelect = false;
         }
         #endregion
+
         #region Test-Question-Selection
         public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId)
         {

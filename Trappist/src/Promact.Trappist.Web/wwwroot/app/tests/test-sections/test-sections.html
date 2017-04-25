@@ -1,5 +1,8 @@
 ﻿<div class="test-create-steps test-sections">
     <create-test-header [testDetails]="testDetails"></create-test-header>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
     <div class="container">
         <h5>Select sections to add in your test</h5>
         <ul class="sections-list">
