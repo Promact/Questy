@@ -36,7 +36,7 @@ export class DeleteCategoryDialogComponent {
     deleteCategory(category:Category) {
         this.categoryService.deleteCategory(category.id).subscribe(
             response => {
-                this.dialog.close(Category);
+                this.dialog.close(category);
                 this.openSnackBar(this.successMessage);
             },
             err => {
