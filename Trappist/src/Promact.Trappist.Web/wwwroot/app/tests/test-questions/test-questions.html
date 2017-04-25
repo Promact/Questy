@@ -4,6 +4,7 @@
     </div>
   <create-test-header [testDetails]="testDetails"></create-test-header>
   <div class="container">
+    <h5 style="display: none;">In order to add questions, please select sections from <a href="" class="theme-text">here</a></h5>
     <h2>Select questions for each section</h2>
     <md2-accordion class="questions-selection" >
       <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryAcList; let k=index">
