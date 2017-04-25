@@ -172,7 +172,7 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             categoryListAc[0].IsSelect = true;
             categoryListAc[1].IsSelect = false;          
-            await _testRepository.AddSelectedCategoryAsync(test.Id, categoryListAc);
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
             Assert.True(_trappistDbContext.TestCategory.Count() == 1);
         }
 
@@ -206,7 +206,7 @@ namespace Promact.Trappist.Test.Tests
             var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             categoryListAc[0].IsSelect = true;
             categoryListAc[1].IsSelect = true;
-            await _testRepository.AddSelectedCategoryAsync(test.Id, categoryListAc) ;
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc) ;
             //creating new question under categoryObj
             var questionAc = CreateQuestionAc(true, "Question in Category", categoryObj.Id, 1);
             var questionAcList = new List<QuestionAC>();
@@ -317,7 +317,7 @@ namespace Promact.Trappist.Test.Tests
         public QuestionAC CreatequestionAC(bool isSelect, string questionDetails, int categoryId, int id)
         {
 
-            QuestionAc = new QuestionAC()
+            var questionAc = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
                 {
@@ -341,7 +341,7 @@ namespace Promact.Trappist.Test.Tests
                     }
                 }
             };
-            return QuestionAc;
+            return questionAc;
         }
         /// <summary>
         /// Test Case for getting the questions by passing a particular category Id
