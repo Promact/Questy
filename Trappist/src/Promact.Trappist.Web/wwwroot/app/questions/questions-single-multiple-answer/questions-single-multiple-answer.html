@@ -8,15 +8,15 @@
         <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm">
             <div class="form-fields">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" [ngModelOptions]="{standalone: true}" required />
+                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required />
                     <div class="errors-container">
                         <span *ngIf="question.invalid && question.touched" class="error-msg">Question field is required</span>
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
-                    <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first" (ngModelChange)="indexOfOptionSelected=true">
+                    <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first">
                         <md-radio-button value="{{i}}" [disabled]="choice.pristine && !isEditQuestion && !isdulicateQuestion" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i">
-                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
+                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{i}}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
                                 <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
                     <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="choice.pristine && !isEditQuestion && !isdulicateQuestion">
-                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" [ngModelOptions]="{standalone: true}" required />
+                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{i}}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
                             <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>

@@ -32,6 +32,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     singleMultipleAnswerQuestion: QuestionBase;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 4;
+        this.indexOfOptionSelected = null;
         this.isClose = false;
         this.isdulicateQuestion = false;
         this.difficultyLevelSelected = 'default';
