@@ -138,7 +138,7 @@ namespace Promact.Trappist.Repository.Tests
             // Iterating every question listed category wise.
             foreach (var question in questions)
             {
-                // To check if any question in the belong to the category, which is to be deselected from the test.
+                // To check if any question in the test belongs to the category, which is to be deselected from the test.
                 if (question.CategoryID == categoryId && testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
                     return true;
             }
@@ -156,7 +156,7 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
             var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
             var categoryAc = Mapper.Map<Category, CategoryAC>(category);
-            // After the category is removed from the test it is supposed to be deselected, hence setting the isSelect property to be false.
+            // After the category is removed from the test it is supposed to be deselected, hence setting the isSelect property to false.
             categoryAc.IsSelect = false;
         }
         #endregion
