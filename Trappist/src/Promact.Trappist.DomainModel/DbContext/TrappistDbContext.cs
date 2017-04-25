@@ -34,9 +34,6 @@ namespace Promact.Trappist.DomainModel.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
         }
 
         /// <summary>
@@ -74,6 +71,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestCategory> TestCategory { get; set; }
         public DbSet<TestQuestion> TestQuestion { get; set; }
 
+      
         #region Overridden Methods  
         public override int SaveChanges()
         {
@@ -104,6 +102,6 @@ namespace Promact.Trappist.DomainModel.DbContext
             });
             return base.SaveChangesAsync(cancellationToken);
         }
-        #endregion
+         #endregion
     }
 }

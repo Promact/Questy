@@ -1,11 +1,11 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
+import { Test } from '../tests.model';
 
 @Component({
     moduleId: module.id,
@@ -14,10 +14,10 @@ import { FormGroup } from '@angular/forms';
 })
 
 export class TestSectionsComponent implements OnInit {
-    testSettings: Test;
+    testDetails: Test;
     testId: number;
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testSettings = new Test();
+        this.testDetails = new Test();
     }
 
     /**
@@ -34,7 +34,7 @@ export class TestSectionsComponent implements OnInit {
      */
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
-            this.testSettings = (response);
+            this.testDetails = (response);
         });
     }
 }

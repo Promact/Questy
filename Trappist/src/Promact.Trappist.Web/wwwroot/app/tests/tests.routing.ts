@@ -14,11 +14,11 @@ const testsRoutes: Routes = [
     children: [
       { path: '', component: TestsDashboardComponent },
       { path: ':id/settings', component: TestSettingsComponent },
-      { path: 'sections/:id', component: TestSectionsComponent },
-      { path: 'questions/:id', component: TestQuestionsComponent },
-      { path: 'view', component: TestViewComponent }
+      { path: ':id/sections', component: TestSectionsComponent },
+      { path: ':id/questions', component: TestQuestionsComponent },
+      { path: ':id/view', component: TestViewComponent }
     ]
   }
-];
+];  
 
 export const testsRouting: ModuleWithProviders = RouterModule.forChild(testsRoutes);

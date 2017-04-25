@@ -125,5 +125,17 @@
         /// </summary>
         string QuestionExistInTestError { get; }
         #endregion
+        #region "Test-Question-Selection"
+        /// <summary>
+        /// This property defines that the questions are saved successfully to test
+        /// </summary>
+        string SuccessfullySaved { get; }
+        /// <summary>
+        /// This propert defines that user has not selected any new question to add in test
+        /// </summary>
+        string NoNewChanges { get; }
+
+        #endregion
+
     }
 }

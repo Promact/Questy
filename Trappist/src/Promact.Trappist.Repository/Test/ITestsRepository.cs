@@ -1,6 +1,8 @@
 ﻿using Promact.Trappist.DomainModel.Models.Test;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -24,13 +26,6 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <returns>List Of Tests</returns>
         Task<List<Test>> GetAllTestsAsync();
-
-        /// <summary>
-        /// Gets the settings saved of a particular Test
-        /// </summary>
-        /// <param name="id">The parameter "id" is used to get the Settings of a Test by its Id</param>
-        /// <returns>Settings Saved for the selected Test</returns>
-        Task<Test> GetTestByIdAsync(int id);
 
         /// <summary>
         /// Updates the changes made to the settings of a Test
@@ -67,5 +62,28 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="id">Id of the test</param>
         /// <returns>Boolean:true if an attendee exist or else false</returns>
         Task<bool> IsTestAttendeeExistAsync(int id);
+
+        /// <summary>
+        /// Gets all the questions contained by a particular category in a test
+        /// </summary>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route </param>
+        /// <param name="CategoryId">Parameter "CategoryId" takes value of a Category's Id from route</param>
+        /// <returns>List of QuestionAC objects of particular category</returns>      
+        Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId);
+
+        /// <summary>
+        /// Adds selected question(s) to the particular "Test" 
+        /// </summary>
+        /// <param name="QuestionsToAddTest">Parameter "QuestionsToAddTest" is a list of questions to be added to Test which takes value from body</param>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
+        /// <returns>A string message of Success</returns>
+        Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAdd, int testId);
+
+        /// <summary>
+        /// Get details of a Test
+        /// </summary>
+        /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
+        /// <returns>TestAC object</returns>       
+        Task<TestAC> GetTestByIdAsync(int testId);
     }
 }

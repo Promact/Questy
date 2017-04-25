@@ -21,7 +21,7 @@ import { CreateTestFooterComponent } from './shared/create-test-footer/create-te
     imports: [
         SharedModule,
         testsRouting,
-        ClipboardModule
+        ClipboardModule       
     ],
     declarations: [
         TestsComponent,
