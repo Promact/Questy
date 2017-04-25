@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label>Section</label>
                     <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" [(ngModel)]="selectedCategory" required name="categorySelect" #categorySelect="ngModel">
-                        <option [disabled]="categorySelect.dirty || isQuestionEdited || isQuestionDuplicated" default>Please select a Category</option>
+                        <option [disabled]="categorySelect.dirty || isQuestionEdited || isQuestionDuplicated" default value="">Please select a Category</option>
                         <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
                     </select>
                     <div class="errors-container">
