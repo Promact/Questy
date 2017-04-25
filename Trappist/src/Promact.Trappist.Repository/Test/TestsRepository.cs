@@ -103,7 +103,6 @@ namespace Promact.Trappist.Repository.Tests
         public async Task AddTestCategoriesAsync(int testId, List<CategoryAC> categoryAcList)
         {
             var testCategoryList = new List<TestCategory>();
-            var testCategories = await _dbContext.TestCategory.ToListAsync();
             foreach (var categoryAc in categoryAcList)
             {
                 var category = Mapper.Map<CategoryAC, Category>(categoryAc);
