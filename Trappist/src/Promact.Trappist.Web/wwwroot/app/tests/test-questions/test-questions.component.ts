@@ -26,6 +26,7 @@ export class TestQuestionsComponent implements OnInit {
     testDetails: Test;
     loader: boolean = false;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    testNameReference: string;
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
@@ -91,6 +92,7 @@ export class TestQuestionsComponent implements OnInit {
     getTestDetails() {
         this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
+            this.testNameReference = this.testDetails.testName;
         });
     }
 

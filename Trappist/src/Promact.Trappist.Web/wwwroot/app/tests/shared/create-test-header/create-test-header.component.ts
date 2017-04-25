@@ -24,8 +24,11 @@ export class CreateTestHeaderComponent implements OnInit {
     testName: string;
     editedTestName: string;
     isWhiteSpaceError: boolean;
+    nameOfTest: string;
     @Input('testDetails')
     public testDetails: Test;
+    @Input('testNameReference')
+    public testNameReference: string;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
@@ -77,14 +80,15 @@ export class CreateTestHeaderComponent implements OnInit {
     showEditButton(testName: string) {
         this.isEditButtonVisible = true;
         this.isLabelVisible = true;
-        this.id = this.testDetails.id;
-        this.testService.getTestById(this.id).subscribe((name) => {
-            this.testDetails = (name);
-        });
+        this.nameOfTest = this.testNameReference;
         if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$')) || this.isTestNameExist === true) {
+            if (this.nameOfTest)
+                this.testDetails.testName = this.nameOfTest;
             testName = this.testDetails.testName;
             this.isTestNameExist = false;
         }
+        else
+            this.testDetails.testName = this.testNameReference;
     }
 
     /**

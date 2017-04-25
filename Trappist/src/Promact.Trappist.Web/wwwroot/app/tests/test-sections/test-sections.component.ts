@@ -24,6 +24,7 @@ export class TestSectionsComponent implements OnInit {
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
     loader: boolean;
+    testNameReference: string;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
@@ -46,6 +47,7 @@ export class TestSectionsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            this.testNameReference = this.testDetails.testName;
         });
     }
 
