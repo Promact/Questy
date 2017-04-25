@@ -156,24 +156,25 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Category Selection
-                  
+
 
         /// <summary>
         /// this method is used to add the selected categories from category list to the TestCategory model
         /// </summary>
-        /// <param name="testCategory"></param>
+        /// <param name="testId"></param>
+        /// <param name="categoryAcList"></param>
         /// <returns>testCategory</returns>
-        [HttpPost("addSelectedCategories/{testId}")]
-        public async Task<ActionResult> AddSelectedCategories([FromRoute] int testId, [FromBody] List<CategoryAC> testCategory)
+        [HttpPost("addTestCategories/{testId}")]
+        public async Task<ActionResult> AddTestCategoriesAsync([FromRoute] int testId, [FromBody] List<CategoryAC> categoryAcList)
         {
-            await _testRepository.AddSelectedCategoryAsync(testId, testCategory);
-            return Ok(testCategory);
+            await _testRepository.AddTestCategoriesAsync(testId, categoryAcList);
+            return Ok(categoryAcList);
         }
 
         /// <summary>
         /// this method is used to check whether question from selected category is added in test or not
         /// </summary>
-        /// <param name="categoryId"></param>
+        /// <param name="categoryId">Id of the category to be deselected</param>
         /// <param name="testId"></param>
         /// <returns>boolean</returns>
         [HttpGet("deselectCategory/{categoryId}/{testId}")]
@@ -184,7 +185,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// this method is used to deselect a category from test
+        /// this method is used to deselect a category from test and also removes
         /// </summary>
         /// <param name="testCategory"></param>
         /// <returns>testCategory</returns>

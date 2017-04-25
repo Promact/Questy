@@ -41,7 +41,7 @@ export class TestSectionsComponent implements OnInit {
 
     /**
      * Gets the Settings and details saved for a particular Test
-     * @param id contains the value of the Id from the route
+     * @param id contains the value of the test Id from the route
      */
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
@@ -78,11 +78,12 @@ export class TestSectionsComponent implements OnInit {
     }
 
     /**
-     * To save the selected categories and move further
+     * To save the test categories and move further
+     * @param isSelectButton whose value will indicate what to do next, if it is false it will save changes to the test and exit to the test dashboard. And if the isSelectButton is true, it will save changes and move to the question selection page.
      */
     saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
         this.loader = true;
-        this.testService.addSelectedCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
+        this.testService.addTestCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
             if (response) {
                 if (isSelectButton) {
                     this.loader = false;
@@ -101,7 +102,7 @@ export class TestSectionsComponent implements OnInit {
     }
 
     /**
-     *To display error message in snackbar when any  error is caught from server
+     *To display message in snackbar whenever required
      */
     openSnackbar(message: string) {
         return this.snackbarRef.open(message, 'Dismiss', {

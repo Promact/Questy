@@ -10,5 +10,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
         public string CategoryName { get; set; }
         public List<QuestionAC> QuestionList { get; set; }
         public bool IsSelect { get; set; }
+        public int NumberOfSelectedQuestion { get; set; }
     }
 }

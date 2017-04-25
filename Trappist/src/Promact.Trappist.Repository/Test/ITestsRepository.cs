@@ -76,9 +76,10 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// To add a category to the test when it is selected
         /// </summary>
-        /// <param name="testCategory"></param>
+        /// <param name="testId"
+        /// <param name="categoryAcList"></param>
         /// <returns>list of categories added</returns>        
-        Task AddSelectedCategoryAsync(int testId, List<CategoryAC> categoryAcList);
+        Task AddTestCategoriesAsync(int testId, List<CategoryAC> categoryAcList);
 
         /// <summary>
         /// To deselect a category
@@ -91,8 +92,8 @@ namespace Promact.Trappist.Repository.Tests
         /// <summary>
         /// To delete the deselected category from TestCategory model
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Deletes the category from TestCategory model and save changes to the database</returns>
+        /// <param name="testCategory"></param>
+        /// <returns>Deletes the category from TestCategory model and also deletes if any question from that category exists in the test and save changes to the database</returns>
         Task RemoveCategoryAndQuestionAsync(TestCategory testCategory);
         #endregion
 

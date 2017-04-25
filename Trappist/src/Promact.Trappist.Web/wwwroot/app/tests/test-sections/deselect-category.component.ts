@@ -30,7 +30,7 @@ export class DeselectCategoryComponent {
     }
 
     /**
-     *To display error message in snackbar when any  error is caught from server
+     *To display message in snackbar whenever required
      */
     openSnackbar(message: string) {
         return this.snackbarRef.open(message, 'Dismiss', {

@@ -100,15 +100,16 @@ namespace Promact.Trappist.Repository.Tests
 
         #region Category selection
 
-        public async Task AddSelectedCategoryAsync(int testId, List<CategoryAC> categoryAcList)
+        public async Task AddTestCategoriesAsync(int testId, List<CategoryAC> categoryAcList)
         {
             var testCategoryList = new List<TestCategory>();
             var testCategories = await _dbContext.TestCategory.ToListAsync();
-
             foreach (var categoryAc in categoryAcList)
             {
                 var category = Mapper.Map<CategoryAC, Category>(categoryAc);
+                // to check whether the category already exists 
                 var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.CategoryId == category.Id && x.TestId == testId);
+                // If the category exists and is deselected from the test
                 if (testCategoryObj != null && !categoryAc.IsSelect)
                 {
                     _dbContext.TestCategory.Remove(testCategoryObj);
@@ -116,9 +117,11 @@ namespace Promact.Trappist.Repository.Tests
                 }
                 else
                 {
+                    // If category does not exists               
                     var testCategory = new TestCategory();
                     testCategory.TestId = testId;
                     testCategory.CategoryId = category.Id;
+                    //If the category does not exists and is selected by user, then it will be added
                     if (testCategoryObj == null && categoryAc.IsSelect)
                         testCategoryList.Add(testCategory);
                 }
@@ -129,10 +132,14 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<bool> DeselectCategoryAync(int categoryId, int testId)
         {
+            // Listing all the questions category wise.
             var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
+            // To check if the question from that category is added to the test.
             var testQuestions = await _dbContext.TestQuestion.OrderBy(x => x.QuestionId).ToListAsync();
+            // Iterating every question listed category wise.
             foreach (var question in questions)
             {
+                // To check if any question in the belong to the category, which is to be deselected from the test.
                 if (question.CategoryID == categoryId && testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
                     return true;
             }
@@ -141,13 +148,16 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task RemoveCategoryAndQuestionAsync(TestCategory testCategory)
         {
+            // To find the category to be removed from the test.
             var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.TestId == testCategory.TestId && x.CategoryId == testCategory.CategoryId);
             _dbContext.TestCategory.Remove(testCategoryObj);
+            // To find if any question from the removed category is added to the test or not. If any such question found, it is also removed from the test.
             var testQuestions = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == testCategory.CategoryId && x.TestId == testCategory.TestId).ToList();
             _dbContext.TestQuestion.RemoveRange(testQuestions);
             await _dbContext.SaveChangesAsync();
             var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
             var categoryAc = Mapper.Map<Category, CategoryAC>(category);
+            // After the category is removed from the test it is supposed to be deselected, hence setting the isSelect property to be false.
             categoryAc.IsSelect = false;
         }
         #endregion
@@ -237,7 +247,10 @@ namespace Promact.Trappist.Repository.Tests
                 {
                     //If category present in TestCategory Model,then its IsSelect property made true
                     if (testCategoryList.Exists(x => x.CategoryId == category.Id))
+                    {
+                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == category.Id).ToList().Count();
                         category.IsSelect = true;
+                    }                       
                 });
                 testAcObject.CategoryAcList = categoryListAc;
                 return testAcObject;
