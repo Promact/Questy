@@ -7,5 +7,9 @@ export class Question {
     questionDetail: string;
     questionType: QuestionType;
     difficultyLevel: DifficultyLevel;
+    category: Category;
     categoryID: number;
+    isSelect: boolean;
+  
 }
+

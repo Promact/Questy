@@ -1,4 +1,5 @@
 ﻿import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
@@ -15,7 +16,7 @@ export class TestCreateDialogComponent {
     test: Test;
     testNameReference: string;
     isWhiteSpaceError: boolean;
-    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar) {
+    constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar, public route: Router) {
         this.test = new Test();
     }
     /**
@@ -30,6 +31,7 @@ export class TestCreateDialogComponent {
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.dialogRef.close(responses);
+                        this.route.navigate(['tests/' + responses.id + '/sections']);
                     });
                 }
                 else

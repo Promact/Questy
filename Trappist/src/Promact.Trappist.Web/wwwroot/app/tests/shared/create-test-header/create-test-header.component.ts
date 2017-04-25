@@ -1,10 +1,10 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
-import { Test } from '../../tests.model';
 import { TestService } from '../../tests.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
+import { Test } from '../../tests.model';
 
 @Component({
     moduleId: module.id,
@@ -23,8 +23,9 @@ export class CreateTestHeaderComponent implements OnInit {
     id: number;
     testName: string;
     editedTestName: string;
-    @Input('testSettings')
-    public testSettings: Test;
+    isWhiteSpaceError: boolean;
+    @Input('testDetails')
+    public testDetails: Test;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
@@ -65,7 +66,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.isEditButtonVisible = false;
         this.isLabelVisible = false;
         if (this.editedTestName) {
-            this.testSettings.testName = this.editedTestName;
+            this.testDetails.testName = this.editedTestName;
         }
     }
 
@@ -76,12 +77,12 @@ export class CreateTestHeaderComponent implements OnInit {
     showEditButton(testName: string) {
         this.isEditButtonVisible = true;
         this.isLabelVisible = true;
-        this.id = this.testSettings.id;
+        this.id = this.testDetails.id;
         this.testService.getTestById(this.id).subscribe((name) => {
-            this.testSettings = (name);
+            this.testDetails = (name);
         });
         if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$')) || this.isTestNameExist === true) {
-            testName = this.testSettings.testName;
+            testName = this.testDetails.testName;
             this.isTestNameExist = false;
         }
     }
@@ -92,23 +93,27 @@ export class CreateTestHeaderComponent implements OnInit {
      * @param testObject is an object of the class Test
      */
     updateTestName(id: number, testObject: Test) {
-        this.testNameRef = this.testSettings.testName;
-        this.testService.IsTestNameUnique(this.testNameRef, id).subscribe((isTestNameUnique) => {
-            if (isTestNameUnique) {
-                this.testService.updateTestName(id, testObject).subscribe((response) => {
-                    this.testName = response.testName;
-                    this.editedTestName = this.testName;
-                    this.openSnackBar(this.testNameUpdatedMessage);
-                    this.isLabelVisible = true;
-                    this.isEditButtonVisible = true;
-                });
-            }
-            else {
-                this.isTestNameExist = true;
-                this.isLabelVisible = false;
-            }
-        },
-        );
+        this.testNameRef = this.testDetails.testName.trim();
+        if (this.testNameRef) {
+            this.testService.IsTestNameUnique(this.testNameRef, id).subscribe((isTestNameUnique) => {
+                if (isTestNameUnique) {
+                    this.testService.updateTestName(id, testObject).subscribe((response) => {
+                        this.testName = response.testName;
+                        this.editedTestName = this.testName;
+                        this.openSnackBar(this.testNameUpdatedMessage);
+                        this.isLabelVisible = true;
+                        this.isEditButtonVisible = true;
+                    });
+                }
+                else {
+                    this.isTestNameExist = true;
+                    this.isLabelVisible = false;
+                }
+            },
+            );
+        }
+        else
+            this.isWhiteSpaceError = true;
     }
 
     /**
@@ -116,5 +121,6 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     changeErrorMessage() {
         this.isTestNameExist = false;
+        this.isWhiteSpaceError = false;
     }
 } 

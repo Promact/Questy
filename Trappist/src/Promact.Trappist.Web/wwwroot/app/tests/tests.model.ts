@@ -1,5 +1,6 @@
 ﻿import { TestOrder } from './enum-testorder';
- 
+import { Category } from '../questions/category.model';
+
 export class Test {
     public id: number;
     public testName: string;
@@ -16,5 +17,21 @@ export class Test {
     public browserTolerance: number;
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
+    categoryAcList: Category[] = [];
 }
+
+export class TestCategory {
+    public id: number;
+    public categoryId: number;
+    public testId: number;
+}
+
+export class TestQuestion {
+    public id: number;
+    public testId: number;
+    public questionId: number;    
+    public isSelect: boolean;
+}
+
+
 

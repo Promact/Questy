@@ -1,198 +1,47 @@
 ﻿<div class="test-create-steps test-questions">
-  <create-test-header [testSettings]="testSettings"></create-test-header>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
+  <create-test-header [testDetails]="testDetails"></create-test-header>
   <div class="container">
-    <h5>Select questions for each section</h5>
-    <md2-accordion class="questions-selection">
-      <md2-accordion-tab class="collapsible-block">
-        <md2-accordion-header class="collapsible-header clearfix">
+    <h2>Select questions for each section</h2>
+    <md2-accordion class="questions-selection" >
+      <md2-accordion-tab class="collapsible-block"  *ngFor="let category of testDetails.categoryAcList; let k=index">
+        <md2-accordion-header class="collapsible-header clearfix"  *ngIf="category.isSelect" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
           <div class="title-info h2 pull-left">
-            <span>Quantitative Ability</span>
+            <span>{{category.categoryName}}</span>
           </div>
           <div class="pull-right">
-            <span class="h7 qs-selected">0 question(s) selected</span>
+            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s) selected</span>
             <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
           </div>
         </md2-accordion-header>
         <div class="collapsible-body p0">
           <div class="select-all">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
+            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category,totalNumberOfQuestions[k])"></md-checkbox>
             <h5>Select All</h5>
-            <span class="h7">(total 15 questions)</span>
+            <span class="h7">(total {{totalNumberOfQuestions[k]}} questions)</span>
           </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.1</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.2</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.3</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </md2-accordion-tab>
-      <md2-accordion-tab class="collapsible-block">
-        <md2-accordion-header class="collapsible-header clearfix">
-          <div class="title-info h2 pull-left">
-            <span>Programming</span>
-          </div>
-          <div class="pull-right">
-            <span class="h7 qs-selected">0 question(s) selected</span>
-            <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-          </div>
-        </md2-accordion-header>
-        <div class="collapsible-body p0">
-          <div class="select-all">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <h5>Select All</h5>
-            <span class="h7">(total 15 questions)</span>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.1</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.2</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.3</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </md2-accordion-tab>
-      <md2-accordion-tab class="collapsible-block">
-        <md2-accordion-header class="collapsible-header clearfix">
-          <div class="title-info h2 pull-left">
-            <span>General Awareness</span>
-          </div>
-          <div class="pull-right">
-            <span class="h7 qs-selected">0 question(s) selected</span>
-            <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-          </div>
-        </md2-accordion-header>
-        <div class="collapsible-body p0">
-          <div class="select-all">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <h5>Select All</h5>
-            <span class="h7">(total 15 questions)</span>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.1</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.2</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
-          <div class="qs-container">
-            <md-checkbox class="only-checkbox mr10"></md-checkbox>
-            <p class="qs-num">Q.3</p>
-            <div class="qs-text">
-              <p class="question">What is Git?</p>
-              <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-              <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-              <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-              <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-              <div class="mt10">
-                <p class="tags">Quantitative Ability</p>
-                <p class="tags">Easy</p>
-              </div>
-            </div>
-          </div>
+            <ng-container  *ngFor="let question of category.questionList;let i=index" >
+                <div class="qs-container">
+                    <md-checkbox [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)"></md-checkbox>
+                    <p class="qs-num">Q.{{i+1}}</p>
+                    <div class="qs-text">
+                        <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                        <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                            <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                        </div>
+                        <div class="mt10">
+                            <p class="tags">{{category.categoryName}}</p>
+                            <p class="tags">{{DifficultyLevel[question.question.difficultyLevel]}}</p>
+                        </div>
+                    </div>
+                </div>
+             </ng-container>
         </div>
       </md2-accordion-tab>
     </md2-accordion>
   </div>
-  <create-test-footer></create-test-footer>
+    <create-test-footer  (saveExit)="saveExit()" (saveNext)="saveNext()"></create-test-footer>
+ 
 </div>

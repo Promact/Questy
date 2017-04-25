@@ -1,6 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Test } from './tests.model';
+import { QuestionBase } from '../questions/question';
+
 @Injectable()
 
 export class TestService {
@@ -31,14 +33,6 @@ export class TestService {
      */
     IsTestNameUnique(testName: string, id: number) {
         return this.httpService.get(this.testNameApiUrl + '/' + testName + '/' + id);
-    }
-
-    /**
-     * Gets the Settings saved for a particular Test
-     * @param id is used to get the Settings of a Test by its Id
-     */
-    getTestById(id: number) {
-        return this.httpService.get(this.testApiUrl + '/' + id + '/' + 'settings');
     }
 
     /**
@@ -73,5 +67,54 @@ export class TestService {
      */
     isTestAttendeeExist(testId: number) {
         return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
+    }
+
+    
+
+    addTestCategories(testId: number, testCategory: any ) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addTestCategories/' +testId, testCategory);
+    }
+
+    /**
+     * deletes the deselected category from TestCategory
+     * @param testCategory
+     */
+    removeDeselectedCategory(testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'deselectCategory', testCategory);
+    }
+
+    /**
+     * deselects the category
+     * @param categoryId
+     * @param testId
+     */
+    deselectCategory(categoryId: number, testId: number) {
+        return this.httpService.get(this.testApiUrl + '/' + 'deselectCategory' + '/' + categoryId + '/' + testId);
+    }
+
+    /**
+     * Gets the questions of a particular category in a "Test"
+     * @param testId is passed to identify that particular "Test"
+     * @param categoryId is passed to identify that particular "category"
+     */
+    getQuestions(testId: number, categoryId: number) {
+        return this.httpService.get(this.testApiUrl + '/questions/' + testId + '/' + categoryId);
+    }
+
+    /**
+     * Adds the selected questions to the "Test"
+     * @param selectedQuestions is a list of questions user wants to add to the test
+     * @param testId is passed to identify that particular "Test"
+     */
+    addTestQuestions(selectedQuestions: QuestionBase[], testId: number) {
+        return this.httpService.post(this.testApiUrl + '/questions/' + testId, selectedQuestions);
+    }
+
+    /**
+     * Gets the details of a particular test withs all categories it contains
+     * @param id is passed to identify that particular "Test"
+     */
+    getTestById(id: number) {
+        return this.httpService.get(this.testApiUrl + '/' + id);
     }
 }

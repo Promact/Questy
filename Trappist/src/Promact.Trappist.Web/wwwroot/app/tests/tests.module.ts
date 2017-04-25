@@ -16,12 +16,12 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
-
+import { DeselectCategoryComponent } from './test-sections/deselect-category.component';
 @NgModule({
     imports: [
         SharedModule,
         testsRouting,
-        ClipboardModule
+        ClipboardModule       
     ],
     declarations: [
         TestsComponent,
@@ -35,13 +35,15 @@ import { CreateTestFooterComponent } from './shared/create-test-footer/create-te
         TestViewComponent,
         CreateTestHeaderComponent,
         CreateTestFooterComponent,
-        FilterPipe
+        FilterPipe,
+        DeselectCategoryComponent
 
     ],
     entryComponents: [
         TestCreateDialogComponent,
         DeleteTestDialogComponent,
-        TestLaunchDialogComponent
+        TestLaunchDialogComponent,
+        DeselectCategoryComponent
     ],
     providers: [
         TestService,
