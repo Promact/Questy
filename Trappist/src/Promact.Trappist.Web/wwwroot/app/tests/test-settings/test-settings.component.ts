@@ -7,6 +7,7 @@ import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.c
 import { FormGroup } from '@angular/forms';
 import { TestOrder } from '../enum-testorder';
 import { Test } from '../tests.model';
+
 @Component({
     moduleId: module.id,
     selector: 'test-settings',
@@ -29,6 +30,7 @@ export class TestSettingsComponent implements OnInit {
     OptionOrder = TestOrder;
     response: any;
     errorMessage: string;
+    testNameReference: string;
    
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -54,6 +56,7 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            this.testNameReference = this.testDetails.testName;
         });
     }
 
