@@ -242,7 +242,7 @@ namespace Promact.Trappist.Test.Tests
         public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
         {
 
-            var QuestionAc = new QuestionAC()
+            var questionAc = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
                 {
@@ -266,7 +266,7 @@ namespace Promact.Trappist.Test.Tests
                     }
                 }
             };
-            return QuestionAc;
+            return questionAc;
         }
 
         private DomainModel.Models.Category.Category CreateCategory(string categoryName)
