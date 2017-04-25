@@ -29,7 +29,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <returns>If test link exist then return true else return false</returns>
         Task<bool> IsTestLinkExistAsync(string magicString);
 
-        // <summary>
+        /// <summary>
         /// This method is used to get all the instruction details related to a test before starting it
         /// </summary>
         /// <param name="testLink">link to conduct a particular test</param>

@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 
 export class InstructionsComponent implements OnInit {
     testInstructions: TestInstructions;
-    constructor(private conductService: ConductService, private route: ActivatedRoute) {
+    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testInstructions = new TestInstructions();
     }
 
@@ -35,5 +35,9 @@ export class InstructionsComponent implements OnInit {
             response => {
                 this.testInstructions = response;
             });
+    }
+
+    startTest() {
+        this.router.navigate(['test']);
     }
 }
