@@ -157,7 +157,6 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Category Selection
 
-
         /// <summary>
         /// this method is used to add the selected categories from category list to the TestCategory model
         /// </summary>
