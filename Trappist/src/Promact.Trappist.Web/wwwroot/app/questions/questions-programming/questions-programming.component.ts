@@ -57,7 +57,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
-        this.selectedCategory = 'Please select a Category';
+        this.selectedCategory = '';
         this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
@@ -250,7 +250,8 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
-            this.questionModel.question.questionType = 2; // QuestionType 2 for programming question
+            // QuestionType 2 for programming question
+            this.questionModel.question.questionType = 2; 
             //Explicitly converting the id of the testcases to zero
             if (!this.isQuestionEdited || this.isQuestionDuplicated) {
                 this.testCases.forEach(x => x.id = 0);
