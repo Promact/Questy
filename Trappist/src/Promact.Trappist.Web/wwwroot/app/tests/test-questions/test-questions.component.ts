@@ -49,6 +49,7 @@ export class TestQuestionsComponent implements OnInit {
      * @param i is index of category
      */
     getAllquestions(category: Category, i: number) {
+        this.loader = true;
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
             if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
@@ -59,9 +60,19 @@ export class TestQuestionsComponent implements OnInit {
                     this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
                         return question.question.isSelect;
                     }).length;
+                    category.selectAll = category.questionList.every(function (question) {
+                        return question.question.isSelect;
+                    });
+                    this.loader = false;
                 });
-            } else category.isAlreadyClicked = true;
-        } else category.isAccordionOpen = false;
+            } else {
+                category.isAlreadyClicked = true;
+                this.loader = false;
+            }
+        } else {
+            category.isAccordionOpen = false;
+            this.loader = false;
+        }
     }
 
     /**

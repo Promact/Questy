@@ -247,7 +247,7 @@ namespace Promact.Trappist.Repository.Tests
                     //If category present in TestCategory Model,then its IsSelect property made true
                     if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     {
-                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == category.Id).ToList().Count();
+                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == category.Id && x.TestId== testId).ToList().Count();
                         category.IsSelect = true;
                     }                       
                 });

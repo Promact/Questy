@@ -1,11 +1,11 @@
 ﻿<div class="test-create-footer clearfix">
   <div class="container">
     <ul class="steps pull-left">
-      <li class="h5" [class.active]="router.url==='/tests/'+ testId +'/sections'"><a [routerLink]="['/tests/', testId,'/sections']">Select Sections</a></li>
+      <li class="h5" [class.active]="router.url==='/tests/'+ testId +'/sections'"><a [routerLink]="['/tests', testId,'sections']">Select Sections</a></li>
       <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
       <li class="h5" [class.active]="router.url==='/tests/' + testId + '/questions'"><a [routerLink]="['/tests',testId,'questions']">Select Questions</a></li>
       <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
-      <li class="h5" [class.active]="router.url==='/tests/'+testId + '/settings'"><a [routerLink]="['/tests/',testId,'/settings']">Settings & Schedule</a></li>
+      <li class="h5" [class.active]="router.url==='/tests/'+testId + '/settings'"><a [routerLink]="['/tests',testId,'settings']">Settings & Schedule</a></li>
     </ul>
     <div class="buttons-block pull-right" *ngIf="isTestSection">
       <button type="button" class="btn" (click)="saveSelectedCategoryAndExit()">Save & Exit</button>
