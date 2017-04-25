@@ -1,0 +1,60 @@
+﻿@font-face {font-family: 'prox-reg';src: url('../fonts/prox-reg.otf') format('opentype');}
+@font-face {font-family: 'prox-light';src: url('../fonts/prox-light.otf') format('opentype');}
+@font-face {font-family: 'prox-thin';src: url('../fonts/prox-thin.otf') format('opentype');}
+body{font-family:prox-reg;}
+.m-0{margin:0;}
+.p-0{padding:0;}
+.mt-15{margin-top:15px;}
+h3{font-size:30px;}
+.m-10{margin:10px;}
+.navbar .logo-img{width:170px;}
+#top-menu{background-color:#fff;z-index:10000;border-radius: 0px;border-right: 0;border-left: 0;margin-bottom:0;}
+ #top-menu li a{font-size:20px;}
+.navbar-default .navbar-toggle .icon-bar  {background-color: #FBC213 !important;}
+.navbar-default .navbar-toggle:hover{background-color:transparent;}
+.navbar-default .navbar-toggle {border-color: #FBC213;}
+.pl-mh, .pl-mh .pl-en, .pl-ms {font-weight: bold;color: rgb(29, 62, 129);}
+.pl-v, .pl-smw {color: rgb(237, 106, 67);}
+.pl-e, .pl-en {color: rgb(121, 93, 163);}
+.pl-mb {font-weight: bold;color: rgb(51, 51, 51);}
+.pl-mi {font-style: italic;color: rgb(51, 51, 51);}
+.pl-c1, .pl-s .pl-v {color: rgb(0, 134, 179);}
+.footer{padding:15px;border-top: 1px solid #D6D6D6;}
+.footer .promact-links ul{list-style:none;padding:0;margin:0;}
+.footer .promact-links ul li{display:inline-block}
+.footer .promact-links ul li a{color: #FDD352;font-size: 15px;padding: 0px 15px;}
+.footer p.copyright-promact{color:#ADADAD;font-size:15px;margin:0px;}
+.fixed {position: fixed;top:0; left:0;width: 100%;box-shadow: 0px 0px 5px 0px rgba(100, 100, 100, .3);}
+
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+ #top-menu .navbar-brand{padding:15px;}
+    .promact-links li a {padding:0px 8px;}
+}
+@media(max-width:768px){
+    .smt-15{margin-top:15px;}
+}
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        padding-top: 22px;
+        padding-bottom: 22px;
+    }
+}
+@media (min-width:1025px){
+    #top-menu .navbar-brand{padding: 20px 15px;}
+    .l-pl-10{padding-left:10px;}
+    .l-pr-10{padding-right:10px;}
+    #top-menu li a{font-size:20px;padding-left:36px;padding-right:36px;}
+    .fl-right{float:right;}
+}
+
+
+
+
+
+
+
+
+
+
