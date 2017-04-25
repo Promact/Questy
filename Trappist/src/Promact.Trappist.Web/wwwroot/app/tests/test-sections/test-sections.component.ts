@@ -23,12 +23,11 @@ export class TestSectionsComponent implements OnInit {
     testCategories: TestCategory[] = [];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
+    loader: boolean;
 
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {       
+    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
         this.testCategories = new Array<TestCategory>();
-        //this.testDetailsObj = new TestDetails();
-        //this.getTestSectionsDetails();
         this.testDetails = new Test();
     }
 
@@ -41,7 +40,7 @@ export class TestSectionsComponent implements OnInit {
     }
 
     /**
-     * Gets the Settings saved for a particular Test
+     * Gets the Settings and details saved for a particular Test
      * @param id contains the value of the Id from the route
      */
     getTestById(id: number) {
@@ -49,18 +48,6 @@ export class TestSectionsComponent implements OnInit {
             this.testDetails = (response);
         });
     }
-
-    /**
-     * To get all the details of a test with list of categories, which can be added in the test
-     */
-    //getTestSectionsDetails() {
-    //    this.testService.getTestDetails(this.testId).subscribe((response) => {
-    //    },
-    //        err => {
-    //            this.openSnackbar('Something went wrong, try again');
-
-    //        });
-    //}
 
     /**
        * To Select or Deselect a Category from list
@@ -94,25 +81,21 @@ export class TestSectionsComponent implements OnInit {
      * To save the selected categories and move further
      */
     saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
-        console.log(isSelectButton);
-        //let categories = this.testDetails.categoryAcList.filter(function (x) {
-        //    return (x.isSelect);
-        //});
-        //for (let category of categories) {
-        //    this.testCategoryObj.categoryId = category.id;
-        //    this.testCategoryObj.testId = this.testDetails.id;
-        //    this.testCategories.push(this.testCategoryObj);
-        //    this.testCategoryObj = new TestCategory();
-        //}
-        this.testService.addSelectedCategories(this.testDetails.id, this.testDetails.categoryAcList ).subscribe((response) => {
+        this.loader = true;
+        this.testService.addSelectedCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
             if (response) {
-                if (isSelectButton)
+                if (isSelectButton) {
+                    this.loader = false;
                     this.router.navigate(['/tests/' + this.testId + '/questions']);
-                else
+                }
+                else {
+                    this.loader = false;
                     this.router.navigate(['/tests']);
+                }
             }
         },
             err => {
+                this.loader = false;
                 this.openSnackbar('Something went wrong, try again');
             });
     }

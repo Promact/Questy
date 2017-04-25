@@ -28,6 +28,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>List Of Tests</returns>
         Task<List<Test>> GetAllTestsAsync();
         #endregion
+
         #region TestSettings
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace Promact.Trappist.Repository.Tests
         Task UpdateTestNameAsync(int id, Test testObject);
 
         #endregion
+
         #region Delete Test
         /// <summary>
         /// Delete test from the test model
@@ -68,6 +70,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>Boolean:true if an attendee exist or else false</returns>
         Task<bool> IsTestAttendeeExistAsync(int id);
         #endregion
+
         #region Category Selection       
 
         /// <summary>
@@ -93,6 +96,7 @@ namespace Promact.Trappist.Repository.Tests
         Task RemoveCategoryAndQuestionAsync(TestCategory testCategory);
         #endregion
 
+        #region Test-Question-Selection
         /// <summary>
         /// Gets all the questions contained by a particular category in a test
         /// </summary>
@@ -115,5 +119,6 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
         /// <returns>TestAC object</returns>       
         Task<TestAC> GetTestByIdAsync(int testId);
+        #endregion
     }
 }
