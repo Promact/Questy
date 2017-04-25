@@ -71,8 +71,8 @@ export class TestService {
 
     
 
-    addSelectedCategories(testId: number, testCategory: any ) {
-        return this.httpService.post(this.testApiUrl + '/' + 'addSelectedCategories/' +testId, testCategory);
+    addTestCategories(testId: number, testCategory: any ) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addTestCategories/' +testId, testCategory);
     }
 
     /**
