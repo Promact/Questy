@@ -10,8 +10,8 @@ const reportsRoutes: Routes = [
         path: 'reports',
         component: ReportsComponent,
         children: [
-            { path: '', component: TestReportComponent },
-            { path: 'individual-report', component: IndividualReportComponent }
+            { path: ':id', component: TestReportComponent },
+            { path: ':id/individual-report', component: IndividualReportComponent }
         ]
     }
 ];
