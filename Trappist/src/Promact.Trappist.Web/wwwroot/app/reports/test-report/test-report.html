@@ -16,9 +16,9 @@
                 <h2>Test Report</h2>
                 <select class="form-control">
                     <option>All Candidates (50)</option>
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                    <option>Completed Test</option>
+                    <option>Expired Test</option>
+                    <option>Expired Test</option>
                 </select>
                 <button type="button" class="btn">Download Excel</button>
                 <button type="button" class="btn">Download PDF</button>
@@ -41,14 +41,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let i of report.data">
+                    <tr *ngFor="let testAttendee of testAttendeeArray">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
                         <td><em class="material-icons">star_border</em></td>
-                        <td class="theme-text font-semibold">{{i.name}}</td>
-                        <td>{{i.email}}</td>
-                        <td>{{i.date}}</td>
-                        <td>{{i.score}}</td>
-                        <td>{{i.percentage}}</td>
+                        <td class="theme-text font-semibold">{{testAttendee.firstName}} {{testAttendee.lastName}}</td>
+                        <td>{{testAttendee.email}}</td>
+                        <td>{{testAttendee.createdDateTime}}</td>
                         <td><em class="material-icons">file_download</em></td>
                         <td class="text-right"><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
                     </tr>
