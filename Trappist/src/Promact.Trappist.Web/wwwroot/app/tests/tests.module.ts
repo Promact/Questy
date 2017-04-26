@@ -20,6 +20,8 @@ import { CreateTestFooterComponent } from './shared/create-test-footer/create-te
 import { DuplicateTestDialogComponent } from './tests-dashboard/duplicate-test-dialog.component';
 
 import { DeselectCategoryComponent } from './test-sections/deselect-category.component';
+import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
+
 @NgModule({
     imports: [
         SharedModule,
@@ -40,7 +42,8 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
         CreateTestHeaderComponent,
         CreateTestFooterComponent,
         FilterPipe,
-        DeselectCategoryComponent
+        DeselectCategoryComponent,
+        IncompleteTestCreationDialogComponent
 
     ],
     entryComponents: [
@@ -48,6 +51,7 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
         DeleteTestDialogComponent,
         TestLaunchDialogComponent,
         DeselectCategoryComponent,
+        IncompleteTestCreationDialogComponent
         DuplicateTestDialogComponent
     ],
     providers: [

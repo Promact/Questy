@@ -1,12 +1,13 @@
 ﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TestService } from '../tests.service';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MdDialog, MdSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
 import { TestOrder } from '../enum-testorder';
-import { Test } from '../tests.model';
+import { Test} from '../tests.model';
+import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -31,7 +32,8 @@ export class TestSettingsComponent implements OnInit {
     response: any;
     errorMessage: string;
     testNameReference: string;
-   
+    isSectionOrQuestionAdded: boolean;
+
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
         this.validEndDate = false;
@@ -39,6 +41,7 @@ export class TestSettingsComponent implements OnInit {
         this.validStartDate = false;
         this.currentDate = new Date();
         this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully';
+
     }
 
     /**
@@ -120,7 +123,7 @@ export class TestSettingsComponent implements OnInit {
                 this.response = errorHandling.json();
                 this.errorMessage = this.response['error'];
                 this.snackbarRef.open(this.errorMessage, 'Dismiss', {
-                    duration : 3000,
+                    duration: 3000,
                 });
             },
         );
@@ -132,18 +135,36 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        this.testService.updateTestById(id, testObject).subscribe((response) => {
-            this.openSnackBar(this.testSettingsUpdatedMessage);
-            let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-            instance.testSettingObject = testObject;
-        },
-            errorHandling => {
-                this.response = errorHandling.json();
-                this.errorMessage = this.response['error'];
-                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
-                    duration: 3000,
-                });
-            },
-        );
+        var categories = this.testDetails.categoryAcList.filter(function (x) {
+            return x.isSelect;
+        })
+        if (categories.length !== 0) {
+            var questions = this.testDetails.categoryAcList.filter(function (x) {
+                return (x.numberOfSelectedQuestion !== 0)
+            });
+            if (questions.length !== 0) {
+                this.testService.updateTestById(id, testObject).subscribe((response) => {
+                    this.openSnackBar(this.testSettingsUpdatedMessage);
+                    let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
+                    instance.testSettingObject = testObject;
+                },
+                    errorHandling => {
+                        this.response = errorHandling.json();
+                        this.errorMessage = this.response['error'];
+                        this.snackbarRef.open(this.errorMessage, 'Dismiss', {
+                            duration: 3000,
+                        });
+                    },
+                );
+            }
+            else {
+                this.testDetails.isQuestionMissisng = true;
+                let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
+            }
+        }
+        else {
+            this.testDetails.isQuestionMissisng = false;
+            let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
+        }
     }
 }
