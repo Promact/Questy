@@ -24,6 +24,7 @@ using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -84,6 +85,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IFileUtility, FileUtility>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<ITestConductRepository, TestConductRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             #endregion
 
             #region Options configuration
