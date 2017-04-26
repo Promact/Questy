@@ -18,6 +18,7 @@ export class Test {
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
     categoryAcList: Category[] = [];
+    isQuestionMissisng: boolean;
 }
 
 export class TestCategory {
