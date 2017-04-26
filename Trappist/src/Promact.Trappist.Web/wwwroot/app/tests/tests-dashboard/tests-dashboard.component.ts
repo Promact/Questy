@@ -14,7 +14,7 @@ import { TestCreateDialogComponent } from './test-create-dialog.component';
     templateUrl: 'tests-dashboard.html'
 })
 
-export class TestsDashboardComponent{
+export class TestsDashboardComponent {
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
     searchTest: string;
