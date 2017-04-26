@@ -200,19 +200,36 @@ h6, .h6 {
     outline: 0;
   }
 
+  &:hover, &:focus, &:active {
+    background-color: darken($color_white, 5);
+  }
+
+  &:hover:active, &:focus:active {
+    background-color: darken($color_white, 10);
+  }
+
+  &[disabled]:hover {
+    background-color: $color_white;
+  }
+
   &.btn-primary {
     background-color: $color_theme;
     border-color: $color_theme;
     color: $color_white;
     font-weight: 400;
 
-    &:hover {
-      background-color: rgba($color_theme, 0.8);
+    &:hover, &:focus, &:active {
+      background-color: darken($color_theme, 5);
+      border-color: darken($color_theme, 5);
     }
 
-    &:active:hover, &:active:focus, &[disabled]:hover {
+    &:active:hover, &:active:focus {
+      background-color: darken($color_theme, 10);
+      border-color: darken($color_theme, 10);
+    }
+
+    &[disabled]:hover {
       background-color: $color_theme;
-      border-color: $color_theme;
     }
   }
 
@@ -2032,6 +2049,10 @@ footer {
     color: $color_base_secondary;
     vertical-align: middle;
     cursor: pointer;
+
+    &.starred {
+      color: $color_theme;
+    }
   }
 
   tfoot {
