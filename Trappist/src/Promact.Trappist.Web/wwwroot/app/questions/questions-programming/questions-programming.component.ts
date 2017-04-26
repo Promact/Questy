@@ -34,7 +34,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     isQuestionDuplicated: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
-    //To enable enum testCaseType in template
+    //To enable enum testCaseType in template 
     testCaseType: TestCaseType;
     questionId: number;
 
@@ -250,8 +250,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
-            // QuestionType 2 for programming question
-            this.questionModel.question.questionType = 2; 
+            this.questionModel.question.questionType = QuestionType.codeSnippetQuestion; 
             //Explicitly converting the id of the testcases to zero
             if (!this.isQuestionEdited || this.isQuestionDuplicated) {
                 this.testCases.forEach(x => x.id = 0);
