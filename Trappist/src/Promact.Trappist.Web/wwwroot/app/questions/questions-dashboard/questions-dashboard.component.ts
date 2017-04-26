@@ -77,6 +77,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     //To get all the Questions
     getAllQuestions() {
+        this.loader = true;
         this.questionsService.getQuestions().subscribe((questionsList) => {
             this.question = questionsList;
             this.selectedCategory = new Category();
@@ -102,9 +103,11 @@ export class QuestionsDashboardComponent implements OnInit {
      * @param category
      */
     categoryWiseFilter(category: Category) {
+        this.loader = true;
         this.selectedCategory = category;
         this.countQuestion();
         this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
+        this.loader = false;
     }
 
     /**
