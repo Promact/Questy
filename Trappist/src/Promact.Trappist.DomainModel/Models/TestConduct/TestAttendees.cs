@@ -24,6 +24,14 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
         [Required]
         public string RollNumber { get; set; }
 
+        public bool StarredCandidate { get; set; }
+
+        public bool BlockedTest { get; set; }
+
+        public bool ExpiredTest { get; set; }
+
+        public bool CompletedTest { get; set; }
+
         public int TestId { get; set; }
 
         [ForeignKey("TestId")]
