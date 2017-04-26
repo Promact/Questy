@@ -100,7 +100,7 @@ export class TestQuestionsComponent implements OnInit {
             });
             this.loader = false;
         }, err => {  
-                this.openSnackBar("No test found for this Id");
+                this.openSnackBar('No test found for this Id');
                 this.route.navigate(['/tests']);
                 this.loader = false;
             });      
