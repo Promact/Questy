@@ -135,12 +135,12 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        var categories = this.testDetails.categoryAcList.filter(function (x) {
+        let categories = this.testDetails.categoryAcList.filter(function (x) {
             return x.isSelect;
-        })
+        });
         if (categories.length !== 0) {
-            var questions = this.testDetails.categoryAcList.filter(function (x) {
-                return (x.numberOfSelectedQuestion !== 0)
+            let questions = this.testDetails.categoryAcList.filter(function (x) {
+                return (x.numberOfSelectedQuestion !== 0);
             });
             if (questions.length !== 0) {
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
