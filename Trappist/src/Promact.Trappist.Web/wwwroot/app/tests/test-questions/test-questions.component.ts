@@ -27,6 +27,7 @@ export class TestQuestionsComponent implements OnInit {
     loader: boolean = false;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     testNameReference: string;
+    isCategoryNull: boolean;
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
@@ -90,10 +91,19 @@ export class TestQuestionsComponent implements OnInit {
      * Gets the details of a test by passing its Id
      */
     getTestDetails() {
+        this.loader = true;
         this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
             this.testNameReference = this.testDetails.testName;
-        });
+            this.isCategoryNull = this.testDetails.categoryAcList.some(function (category) {
+                return category.isSelect;
+            });
+            this.loader = false;
+        }, err => {  
+                this.openSnackBar("No test found for this Id");
+                this.route.navigate(['/tests']);
+                this.loader = false;
+            });      
     }
 
     /**

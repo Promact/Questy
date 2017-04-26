@@ -51,7 +51,7 @@
             },
             'ng2-ckeditor': {
                 'main': 'lib/index.js',
-                'defaultExtension': 'js',
+                'defaultExtension': 'js'
             },
             '.': {
                 defaultExtension: 'js'
