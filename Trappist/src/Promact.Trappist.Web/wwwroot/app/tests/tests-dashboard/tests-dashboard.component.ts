@@ -43,12 +43,7 @@ export class TestsDashboardComponent {
     deleteTestDialog(test: Test) {
         // Checks if any candidate has taken the test
         this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            if (response.response) {
-                this.isDeleteAllowed = false;
-            }
-            else {
-                this.isDeleteAllowed = true;
-            }
+            this.isDeleteAllowed = response.response ? false : true;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.Tests;
