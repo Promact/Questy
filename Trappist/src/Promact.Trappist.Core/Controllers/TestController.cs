@@ -121,14 +121,12 @@ namespace Promact.Trappist.Core.Controllers
         /// Check whether there is any test attendee or not
         /// </summary>
         /// <param name="id">Id of the test</param>
-        /// <returns>Ok if an attendee exist else BadRequest</returns>
+        /// <returns>Ok if an attendee exist with response of true and false</returns>
         [HttpGet("{id}/testAttendee")]
         public async Task<IActionResult> IsTestAttendeeExistAsync(int id)
         {
             var isAttendeeExist = await _testRepository.IsTestAttendeeExistAsync(id);
-            //if (await _testRepository.IsTestAttendeeExistAsync(id))
             return Ok(new { response = isAttendeeExist });
-            //return BadRequest();
         }
 
         /// <summary>
