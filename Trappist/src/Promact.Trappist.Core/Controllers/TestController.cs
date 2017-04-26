@@ -125,9 +125,10 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{id}/testAttendee")]
         public async Task<IActionResult> IsTestAttendeeExistAsync(int id)
         {
-            if (await _testRepository.IsTestAttendeeExistAsync(id))
-                return Ok(id);
-            return BadRequest();
+            var isAttendeeExist = await _testRepository.IsTestAttendeeExistAsync(id);
+            //if (await _testRepository.IsTestAttendeeExistAsync(id))
+            return Ok(new { response = isAttendeeExist });
+            //return BadRequest();
         }
 
         /// <summary>
@@ -190,12 +191,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <returns>testCategory</returns>
         [HttpPost("deselectCategory")]
         public async Task<ActionResult> RemoveCategoryAndQuestionAsync([FromBody] TestCategory testCategory)
-        {            
-                await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
-                return Ok(testCategory);                 
+        {
+            await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
+            return Ok(testCategory);
         }
         #endregion
-  
+
         #region Test-Question-Selection
         /// <summary>
         /// Gets all the questions present in a category by its id
@@ -204,9 +205,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="categoryId">Id of category whose questions would be fetched</param>
         /// <returns>List of questions</returns>
         [HttpGet("questions/{testid}/{categoryid}")]
-        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int  testId,[FromRoute] int categoryId)
+        public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int testId, [FromRoute] int categoryId)
         {
-            return Ok( await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId));
+            return Ok(await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId));
         }
 
         /// <summary>
@@ -216,14 +217,14 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testId">id of test in which questions will be added</param>
         /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd,[FromRoute] int testId)
+        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd, [FromRoute] int testId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             else
             {
                 var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
-                return Ok(new {message = message});
+                return Ok(new { message = message });
             }
         }
 
