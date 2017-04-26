@@ -37,6 +37,7 @@ export class QuestionsDashboardComponent implements OnInit {
     selectedDifficulty: DifficultyLevel;
     matchString: string;
     isAllQuestionsSelected: boolean;
+    loader: boolean;
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
@@ -49,6 +50,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.easy = 0;
         this.medium = 0;
         this.hard = 0;
+        this.loader = true;
     }
 
     ngOnInit() {
@@ -81,6 +83,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.isAllQuestionsSelected = true;
             this.countQuestion();
             this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
+            this.loader = false;
         });
     }
 
