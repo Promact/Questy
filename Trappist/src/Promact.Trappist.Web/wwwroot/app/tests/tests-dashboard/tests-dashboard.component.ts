@@ -14,18 +14,20 @@ import { TestCreateDialogComponent } from './test-create-dialog.component';
     templateUrl: 'tests-dashboard.html'
 })
 
-export class TestsDashboardComponent {
+export class TestsDashboardComponent{
     showSearchInput: boolean;
     Tests: Test[] = new Array<Test>();
     searchTest: string;
     isDeleteAllowed: boolean;
-
+    loader: boolean;
     constructor(public dialog: MdDialog, private testService: TestService) {
+        this.loader = true;
         this.getAllTests();
-    }
+    }  
     // get All The Tests From Server
-    getAllTests() {
+    getAllTests() {   
         this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+        this.loader = false;  
     }
     // open Create Test Dialog
     createTestDialog() {
