@@ -66,7 +66,7 @@ export class TestService {
      * @param testId: type number and has the id of the test to be deleted
      */
     isTestAttendeeExist(testId: number) {
-        return this.httpService.get(this.testApiUrl + '/' + testId +'/testAttendee');
+        return this.httpService.get(this.testApiUrl + '/' + testId + '/testAttendee');
     }
 
     

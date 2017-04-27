@@ -27,11 +27,15 @@ export class TestsDashboardComponent {
     constructor(public dialog: MdDialog, private testService: TestService) {
         this.loader = true;
         this.getAllTests();
-    }  
+        this.editArray = new Array<boolean>();
+    }
     // get All The Tests From Server
-    getAllTests() {   
-        this.testService.getTests().subscribe((response) => { this.Tests = (response); });
-        this.loader = false;  
+    getAllTests() {
+        this.testService.getTests().subscribe((response) => {
+            this.Tests = (response);
+            this.isTestAttendeeExist();
+        });
+        this.loader = false;
     }
     // open Create Test Dialog
     createTestDialog() {
@@ -54,7 +58,7 @@ export class TestsDashboardComponent {
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.Tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
-        }); 
+        });
     }
 
     /**
@@ -67,5 +71,34 @@ export class TestsDashboardComponent {
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
         duplicateTestDialog.testArray = this.Tests;
         duplicateTestDialog.testToDuplicate = test;
+    }
+
+    /**
+     * Checks if any test attendee exists for the test or not
+     */
+    isTestAttendeeExist() {
+        this.Tests.forEach(x => {
+            this.testService.isTestAttendeeExist(x.id).subscribe((response) => {
+                if (response.response) {
+                    x.isEditTestEnable = false;
+                }
+                else {
+                    x.isEditTestEnable = true;
+                }
+            });
+        })
+        console.log(this.editArray);
+    }
+
+    /**
+     * Navigates the user to the select sections page 
+     * @param test: an object of Test class
+     */
+    editTest(test: Test) {
+        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
+            if (response.response) {
+                this.router.navigate(['/tests/' + test.id + '/sections'])
+            }
+        });
     }
 }
