@@ -102,11 +102,11 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
             test.TestName = "IIT BANGALORE";
-            test.BrowserTolerance = 2;
+            test.BrowserTolerance = DomainModel.Enum.BrowserTolerance.High;
             await _testRepository.UpdateTestByIdAsync(test);
             var TestName = "IIT BANGALORE";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
-            Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == 2) == 1);
+            Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == DomainModel.Enum.BrowserTolerance.High) == 1);
         }
 
         /// <summary>
@@ -248,7 +248,65 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
 
-        #region Add Test Question
+        private DomainModel.Models.Test.Test CreateTest(string testName)
+        {
+            var test = new DomainModel.Models.Test.Test
+            {
+                TestName = testName,
+                BrowserTolerance = DomainModel.Enum.BrowserTolerance.NotApplicable
+            };
+            return test;
+        }
+
+        public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
+        {
+
+            var questionAc = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = questionDetails,
+                    QuestionType = 0,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = null,
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="A",
+                            IsAnswer=true
+                        },
+                    }
+                }
+            };
+            return questionAc;
+        }
+
+        private DomainModel.Models.Category.Category CreateCategory(string categoryName)
+        {
+            var category = new DomainModel.Models.Category.Category
+            {
+                CategoryName = categoryName
+            };
+            return category;
+        }
+
+        private DomainModel.Models.TestConduct.TestAttendees TestAttendee()
+        {
+            var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
+            {
+                FirstName = "Ritika",
+                LastName = "Mohata",
+                Email = "ritika@gmail.com"
+            };
+            return testAttendee;
+        }
         /// <summary>
         /// Test For Adding Questions to TestQuestion Model
         /// </summary>
