@@ -5,10 +5,10 @@
     </div>
     <md-dialog-content>
         <div class="mb20">
-            <span *ngIf="isQuestionMissing">No questions have been selected for this test. Please add questions to the test. Click here to add questions 
-                <a [routerLink]="['/tests',testId,'questions']" (click)="closeDialog()">Select Questions</a>     </span>
-            <span *ngIf="!isQuestionMissing">No sections have been selected for this test. Please add sections to the test. Click here to add sections 
-                <a [routerLink]="['/tests', testId,'sections']" (click)="closeDialog()">Select Sections</a></span>
+            <span *ngIf="isQuestionMissing">No questions have been selected for this test. Please add questions to the test. Click
+                <a [routerLink]="['/tests',testId,'questions']" (click)="closeDialog()">Select Questions</a></span>
+            <span *ngIf="!isQuestionMissing">No sections have been selected for this test. Please add sections to the test. Click 
+                <a [routerLink]="['/tests', testId,'sections']" (click)="closeDialog()">Select Sections</a> </span>
         </div>
     </md-dialog-content>
     <md-dialog-actions>
