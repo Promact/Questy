@@ -15,6 +15,6 @@
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" (click)="addCategory(category)">Create</button>
-    </md-dialog-actions>
+        <button type="submit" class="btn btn-primary" [disabled]="CategoryName.errors" (click)="addCategory(category)">Create</button>
+    </md-dialog-actions> 
 </div>
