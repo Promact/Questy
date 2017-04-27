@@ -363,7 +363,7 @@ namespace Promact.Trappist.Test.Tests
             };
             var testCategoryObject2 = new TestCategory()
             {
-                CategoryId = category1.Id,
+                CategoryId = category2.Id,
                 TestId = oldTest.Id,
                 Test = oldTest
             };
@@ -379,7 +379,7 @@ namespace Promact.Trappist.Test.Tests
             };
             var testQuestionObject2 = new TestQuestion()
             {
-                QuestionId = question1.Id,
+                QuestionId = question2.Id,
                 TestId = oldTest.Id,
                 Test = oldTest,
             };
