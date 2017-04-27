@@ -1,5 +1,6 @@
 ﻿import { TestOrder } from './enum-testorder';
 import { Category } from '../questions/category.model';
+import { BrowserTolerance } from './enum-browsertolerance';
 
 export class Test {
     public id: number;
@@ -14,10 +15,11 @@ export class Test {
     public warningMessage: string;
     public correctMarks: string;
     public incorrectMarks: string;
-    public browserTolerance: number;
+    public browserTolerance: BrowserTolerance;
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
     categoryAcList: Category[] = [];
+    public numberOfTestAttendees: number;
 }
 
 export class TestCategory {

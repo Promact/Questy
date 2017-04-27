@@ -25,7 +25,10 @@ export class TestsDashboardComponent {
     }
     // get All The Tests From Server
     getAllTests() {
-        this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+        this.testService.getTests().subscribe((response) => {
+            this.Tests = (response);
+            console.log(this.Tests);
+        });
     }
     // open Create Test Dialog
     createTestDialog() {

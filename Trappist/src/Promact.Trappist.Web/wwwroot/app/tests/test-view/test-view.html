@@ -1,200 +1,63 @@
 ﻿<div class="test-create-steps test-view">
-    <div class="test-create-header clearfix">
-        <div class="container">
-            <h1 class="pull-left">
-                <span class="test-name">BBIT 10-08-2017</span>
-            </h1>
-            <div class="pull-right">
-                <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
-                    <em class="material-icons">settings_applications</em>
-                    <em class="material-icons">arrow_drop_down</em>
-                </div>
-                <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                    <a md-menu-item>Edit</a>
-                    <a md-menu-item (click)="deleteTestDialog()">Delete</a>
-                    <a md-menu-item>Duplicate</a>
-                    <a md-menu-item>Settings</a>
-                </md-menu>
-                <button type="button" class="btn"><em class="material-icons">link</em> Share</button>
-                <button type="button" class="btn btn-primary"><em class="material-icons">remove_red_eye</em> Preview</button>
-            </div>
-        </div>
-    </div>
+  <div class="test-create-header clearfix">
     <div class="container">
-        <div class="clearfix">
-            <h5 class="pull-left">Test Duration: 90 mins</h5>
-            <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
+      <h1 class="pull-left">
+        <span class="test-name">{{testDetails.testName}}</span>
+      </h1>
+      <div class="pull-right">
+        <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
+          <em class="material-icons">settings_applications</em>
+          <em class="material-icons">arrow_drop_down</em>
         </div>
-        <md2-accordion class="questions-selection">
-            <md2-accordion-tab class="collapsible-block">
-                <md2-accordion-header class="collapsible-header clearfix">
-                    <div class="title-info h2 pull-left">
-                        <span>Quantitative Ability</span>
-                    </div>
-                    <div class="pull-right">
-                        <span class="h7 qs-selected">20 question(s)</span>
-                        <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-                    </div>
-                </md2-accordion-header>
-                <div class="collapsible-body p0">
-                    <div class="qs-container">
-                        <p class="qs-num">Q.1</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.2</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.3</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </md2-accordion-tab>
-            <md2-accordion-tab class="collapsible-block">
-                <md2-accordion-header class="collapsible-header clearfix">
-                    <div class="title-info h2 pull-left">
-                        <span>Programming</span>
-                    </div>
-                    <div class="pull-right">
-                        <span class="h7 qs-selected">10 question(s)</span>
-                        <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-                    </div>
-                </md2-accordion-header>
-                <div class="collapsible-body p0">
-                    <div class="qs-container">
-                        <p class="qs-num">Q.1</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.2</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.3</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </md2-accordion-tab>
-            <md2-accordion-tab class="collapsible-block">
-                <md2-accordion-header class="collapsible-header clearfix">
-                    <div class="title-info h2 pull-left">
-                        <span>General Awareness</span>
-                    </div>
-                    <div class="pull-right">
-                        <span class="h7 qs-selected">50 question(s)</span>
-                        <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-                    </div>
-                </md2-accordion-header>
-                <div class="collapsible-body p0">
-                    <div class="qs-container">
-                        <p class="qs-num">Q.1</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.2</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qs-container">
-                        <p class="qs-num">Q.3</p>
-                        <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option"><span>d.</span> <span>None of the above</span></p>
-                            <div class="mt10">
-                                <p class="tags">Quantitative Ability</p>
-                                <p class="tags">Easy</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </md2-accordion-tab>
-        </md2-accordion>
-        <div class="bottom-info">
-            <span>123 Candidates</span>
-            <button type="button" class="btn btn-primary" [routerLink]="['/reports']">View Report</button>
-        </div>
+        <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+          <a md-menu-item (click)="navigateToTestSections()">Edit</a>
+          <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
+          <a md-menu-item>Duplicate</a>
+          <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
+        </md-menu>
+        <button type="button" class="btn" (click)="launchTestDialog()"><em class="material-icons">link</em> Share</button>
+        <button type="button" class="btn btn-primary"><em class="material-icons">remove_red_eye</em> Preview</button>
+      </div>
     </div>
+  </div>
+  <div class="container">
+    <div class="clearfix">
+      <h5 class="pull-left">Test Duration: {{testDetails.duration}} mins</h5>
+      <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
+    </div>
+    <md2-accordion class="questions-selection" *ngFor="let category of testDetails.categoryAcList;let k=index">
+      <md2-accordion-tab class="collapsible-block">
+        <md2-accordion-header class="collapsible-header clearfix" *ngIf="category.isSelect" (click)="getAllquestions(category,k)">
+          <div class="title-info h2 pull-left">
+            <span>{{category.categoryName}}</span>
+          </div>
+          <div class="pull-right">
+            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s)</span>
+            <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+          </div>
+        </md2-accordion-header>
+       
+          <div class="collapsible-body p0" *ngFor="let question of category.questionList;let i=index">
+            <div class="qs-container" *ngIf="question.question.isSelect">
+              <p class="qs-num">Q.{{i+1}}</p>
+              <div class="qs-text">
+                <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                  <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                </div>
+                <div class="mt10">
+                  <p class="tags">{{category.categoryName}}</p>
+                  <p class="tags">{{DifficultyLevel[question.question.difficultyLevel]}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+      </md2-accordion-tab>
+    </md2-accordion>
+    <div class="bottom-info">
+      <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
+      <button type="button" class="btn btn-primary" [routerLink]="['/reports',testDetails.id]">View Report</button>
+    </div>
+  </div>
 </div>

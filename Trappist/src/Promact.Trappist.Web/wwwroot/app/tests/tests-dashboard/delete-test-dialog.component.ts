@@ -2,12 +2,14 @@
 import { Test } from '../tests.model';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { TestService } from '../tests.service';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
     selector: 'delete-test-dialog',
     templateUrl: 'delete-test-dialog.html'
 })
+
 export class DeleteTestDialogComponent {
     testToDelete: Test;
     testArray: Test[] = new Array<Test>();
@@ -16,7 +18,7 @@ export class DeleteTestDialogComponent {
     errorMessage: string;
     successMessage: string;
 
-    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) {
+    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar, private router:Router) {
         this.errorMessage = 'Something went wrong.Please try again later';
         this.successMessage = 'The selected test is deleted';
     }
@@ -31,6 +33,9 @@ export class DeleteTestDialogComponent {
             this.snackBar.open(this.successMessage, 'Dismiss', {
                 duration: 3000,
             });
+            let url = window.location.pathname;
+            if (url.includes('view'))
+            this.router.navigate(['/tests']);
         },
             err => {
                 this.snackBar.open(this.errorMessage, 'Dismiss', {

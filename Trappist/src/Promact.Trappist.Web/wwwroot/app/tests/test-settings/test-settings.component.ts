@@ -7,6 +7,7 @@ import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.c
 import { FormGroup } from '@angular/forms';
 import { TestOrder } from '../enum-testorder';
 import { Test } from '../tests.model';
+import { BrowserTolerance } from '../enum-browsertolerance';
 
 @Component({
     moduleId: module.id,
@@ -28,9 +29,11 @@ export class TestSettingsComponent implements OnInit {
     isTestNameExist: boolean;
     QuestionOrder = TestOrder;
     OptionOrder = TestOrder;
+    BrowserTolerance = BrowserTolerance;
     response: any;
     errorMessage: string;
     testNameReference: string;
+    loader: boolean;
    
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -108,15 +111,19 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
+        this.loader = true;
         this.testService.updateTestById(id, testObject).subscribe((response) => {
+            this.loader = true;
             let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
                 duration: 3000,
             });
             snackBarRef.afterDismissed().subscribe(() => {
                 this.router.navigate(['/tests']);
+                this.loader = false;
             });
         },
             errorHandling => {
+                this.loader = false;
                 this.response = errorHandling.json();
                 this.errorMessage = this.response['error'];
                 this.snackbarRef.open(this.errorMessage, 'Dismiss', {
@@ -132,12 +139,15 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
+        this.loader = true;
         this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.openSnackBar(this.testSettingsUpdatedMessage);
             let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
             instance.testSettingObject = testObject;
+            this.loader = false;
         },
             errorHandling => {
+                this.loader = false;
                 this.response = errorHandling.json();
                 this.errorMessage = this.response['error'];
                 this.snackbarRef.open(this.errorMessage, 'Dismiss', {
