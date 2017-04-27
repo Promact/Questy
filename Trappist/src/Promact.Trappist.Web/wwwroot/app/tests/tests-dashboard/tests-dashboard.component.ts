@@ -58,7 +58,7 @@ export class TestsDashboardComponent {
     }
     // Open duplicate test dialog
     duplicateTestDialog(test: Test) {
-        var newTestObject = (JSON.parse(JSON.stringify(test)));
+        let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
         duplicateTestDialog.testArray = this.Tests;
