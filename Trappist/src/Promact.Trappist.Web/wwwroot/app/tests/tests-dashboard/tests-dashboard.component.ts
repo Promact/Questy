@@ -56,7 +56,11 @@ export class TestsDashboardComponent {
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
         }); 
     }
-    // Open duplicate test dialog
+
+    /**
+     * Open duplicate test dialog
+     * @param test: an object of Test class
+     */
     duplicateTestDialog(test: Test) {
         let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;

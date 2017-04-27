@@ -19,7 +19,6 @@ export class DuplicateTestDialogComponent {
     successMessage: string;
     id: number;
 
-
     constructor(public testService: TestService, public snackBar: MdSnackBar, public dialog: MdDialogRef<any>, private route:Router) {
         this.errorMessage = 'Something went worng.Please try agiain later';
         this.successMessage = 'The selected test has been duplicated successfully';
