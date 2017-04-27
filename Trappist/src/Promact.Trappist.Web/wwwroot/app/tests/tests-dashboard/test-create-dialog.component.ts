@@ -32,13 +32,16 @@ export class TestCreateDialogComponent {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.dialogRef.close(responses);
                         this.route.navigate(['tests/' + responses.id + '/sections']);
-                    });
+                    },
+                        errorhandling => {
+                            this.openSnackbar('Something went wrong');
+                        });
                 }
                 else
                     this.errorMessage = true;
             },
                 errorHandling => {
-                    this.snackbar.open(errorHandling);
+                    this.openSnackbar('Something went wrong');
                 });
         }
         else
@@ -54,7 +57,7 @@ export class TestCreateDialogComponent {
     /**
     to display error message in snackbar when any  error is caught from server
     */
-    open(message: string) {
+    openSnackbar(message: string) {
         let config = this.snackbar.open(message, 'Dismiss', {
             duration: 4000,
         });
