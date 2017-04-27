@@ -3,7 +3,6 @@ using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Promact.Trappist.Repository.TestConduct
@@ -56,7 +55,6 @@ namespace Promact.Trappist.Repository.TestConduct
                 var testInstructions = new TestInstructionsAC()
                 {
                     Duration = testInstructionDetails.Duration,
-                    WarningTime = testInstructionDetails.WarningTime,
                     CorrectMarks = testInstructionDetails.CorrectMarks,
                     IncorrectMarks = testInstructionDetails.IncorrectMarks,
                     TotalNumberOfQuestions = totalNumberOfQuestions,
