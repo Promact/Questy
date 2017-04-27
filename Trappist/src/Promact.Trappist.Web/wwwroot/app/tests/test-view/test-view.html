@@ -25,18 +25,19 @@
       <h5 class="pull-left">Test Duration: {{testDetails.duration}} mins</h5>
       <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
     </div>
-    <md2-accordion class="questions-selection" *ngFor="let category of testDetails.categoryAcList;let k=index">
-      <md2-accordion-tab class="collapsible-block">
-        <md2-accordion-header class="collapsible-header clearfix" *ngIf="category.isSelect" (click)="getAllquestions(category,k)">
-          <div class="title-info h2 pull-left">
-            <span>{{category.categoryName}}</span>
-          </div>
-          <div class="pull-right">
-            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s)</span>
-            <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-          </div>
-        </md2-accordion-header>
-       
+    <ng-container *ngFor="let category of testDetails.categoryAcList;let k=index">
+      <md2-accordion class="questions-selection" *ngIf="category.isSelect">
+        <md2-accordion-tab class="collapsible-block">
+          <md2-accordion-header class="collapsible-header clearfix" *ngIf="category.isSelect" (click)="getAllquestions(category,k)">
+            <div class="title-info h2 pull-left">
+              <span>{{category.categoryName}}</span>
+            </div>
+            <div class="pull-right">
+              <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s)</span>
+              <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+            </div>
+          </md2-accordion-header>
+
           <div class="collapsible-body p0" *ngFor="let question of category.questionList;let i=index">
             <div class="qs-container" *ngIf="question.question.isSelect">
               <p class="qs-num">Q.{{i+1}}</p>
@@ -52,9 +53,10 @@
               </div>
             </div>
           </div>
-      
-      </md2-accordion-tab>
-    </md2-accordion>
+
+        </md2-accordion-tab>
+      </md2-accordion>
+    </ng-container>
     <div class="bottom-info">
       <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
       <button type="button" class="btn btn-primary" [routerLink]="['/reports',testDetails.id]">View Report</button>
