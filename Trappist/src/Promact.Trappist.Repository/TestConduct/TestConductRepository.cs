@@ -56,7 +56,6 @@ namespace Promact.Trappist.Repository.TestConduct
                 var testInstructions = new TestInstructionsAC()
                 {
                     Duration = testInstructionDetails.Duration,
-                    WarningTime = testInstructionDetails.WarningTime,
                     CorrectMarks = testInstructionDetails.CorrectMarks,
                     IncorrectMarks = testInstructionDetails.IncorrectMarks,
                     TotalNumberOfQuestions = totalNumberOfQuestions,

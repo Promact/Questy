@@ -229,13 +229,14 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(testId);
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
+            var testObject = await _dbContext.Test.Where(y => y.Id == testId).Include(x => x.TestAttendees).ToListAsync();
+            testAcObject.NumberOfTestAttendees = testObject.First().TestAttendees.Count();
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             if (testAcObject != null)
             {
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? date : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-
                 //Fetches the category list from Category Model
                 var categoryList = await _dbContext.Category.ToListAsync();
                 //Maps Category list to CategoryAC list
