@@ -33,6 +33,7 @@ export class TestSettingsComponent implements OnInit {
     errorMessage: string;
     testNameReference: string;
     isSectionOrQuestionAdded: boolean;
+    loader: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -48,6 +49,7 @@ export class TestSettingsComponent implements OnInit {
      * Gets the Id of the Test from the route and fills the Settings saved for the selected Test in their respective fields
      */
     ngOnInit() {
+        this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestById(this.testId);
     }
@@ -60,6 +62,7 @@ export class TestSettingsComponent implements OnInit {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
             this.testNameReference = this.testDetails.testName;
+            this.loader = false;
         });
     }
 
