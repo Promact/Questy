@@ -27,7 +27,7 @@ export class TestQuestionsComponent implements OnInit {
     loader: boolean = false;
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     testNameReference: string;
-    isCategoryNull: boolean;
+    isAnyCategorySelectedForTest: boolean;
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
@@ -95,7 +95,7 @@ export class TestQuestionsComponent implements OnInit {
         this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
             this.testNameReference = this.testDetails.testName;
-            this.isCategoryNull = this.testDetails.categoryAcList.some(function (category) {
+            this.isAnyCategorySelectedForTest = this.testDetails.categoryAcList.some(function (category) {
                 return category.isSelect;
             });
             this.loader = false;

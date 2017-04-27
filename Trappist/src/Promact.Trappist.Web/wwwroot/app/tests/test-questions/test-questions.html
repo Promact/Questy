@@ -4,8 +4,8 @@
     </div>
   <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
   <div class="container">
-    <h3 *ngIf="!isCategoryNull">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here</a></h3>
-    <h2 *ngIf="isCategoryNull">Select questions for each section</h2>
+    <h5 *ngIf="!isAnyCategorySelectedForTest">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here</a></h5>
+    <h2 *ngIf="isAnyCategorySelectedForTest">Select questions for each section</h2>
     <md2-accordion class="questions-selection"  *ngFor="let category of testDetails.categoryAcList; let k=index">
       <md2-accordion-tab class="collapsible-block" *ngIf="category.isSelect">
         <md2-accordion-header class="collapsible-header clearfix"  [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
