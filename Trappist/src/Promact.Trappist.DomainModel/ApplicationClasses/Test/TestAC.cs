@@ -13,7 +13,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public string Link { get; set; }
 
-        public int BrowserTolerance { get; set; }
+        public BrowserTolerance BrowserTolerance { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -21,7 +21,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public int Duration { get; set; }
 
-        public int WarningTime { get; set; }
+        public int? WarningTime { get; set; }
 
         public string FromIpAddress { get; set; }
 
@@ -38,5 +38,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
         public TestOrder OptionOrder { get; set; }
 
         public List<CategoryAC> CategoryAcList { get; set; }
+
+        public int NumberOfTestAttendees { get; set; }
     }
 }

@@ -175,9 +175,7 @@ namespace Promact.Trappist.Test.TestConduct
                 Duration = 70,
                 WarningTime = 2,
                 CorrectMarks = 4,
-                IncorrectMarks = -1,
-                BrowserTolerance = 1
-
+                IncorrectMarks = -1
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             await _testRepository.CreateTestAsync(test);
