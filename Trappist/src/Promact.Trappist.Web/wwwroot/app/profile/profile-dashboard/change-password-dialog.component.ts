@@ -16,28 +16,32 @@ export class ChangePasswordDialogComponent {
     response: any;
     errorMesseage: any;
     errorCorrection: boolean = true;
+    loader: boolean;
 
     /**
      * update the database with new password
      * @param userPassword of type ChangePasswordModel which has the new password of the user
      */
     changePassword(userPassword: ChangePasswordModel) {
+        this.loader = true;
         if (userPassword.newPassword === userPassword.confirmPassword) {
             this.isPasswordSame = true;
             this.profileService.updateUserPassword(userPassword).subscribe((response) => {
-                console.log(response);
+                this.loader = false;
                 this.dialog.close();
                 let snackBarRef = this.snackBar.open('Your Password has been changed', 'Dismiss', {
                     duration: 3000,
                 });
             },
                 err => {
+                    this.loader = false;
                     this.errorCorrection = true;
                     this.response = (err.json());
                     this.errorMesseage = this.response['error'][0];
                 });
         }
         else {
+            this.loader = false;
             this.isPasswordSame = false;
         }
     }

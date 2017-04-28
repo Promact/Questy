@@ -12,6 +12,7 @@ import { ProfileService } from '../profile.service';
 export class ProfileEditComponent implements OnInit {
     editUser: ApplicationUser = new ApplicationUser();
     nameLength: boolean = false;
+    loader: boolean;
     constructor(public profileService: ProfileService, private router: Router, public snackBar: MdSnackBar) { }
 
     ngOnInit() {
@@ -31,14 +32,14 @@ export class ProfileEditComponent implements OnInit {
     * update the  details of the user
     */
     updateUserDetails() {
+        this.loader = true;
         this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
+            this.loader = false;
             // Open Snackbar
-            let snackBarRef = this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
+            this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
                 duration: 3000,
             });
-            snackBarRef.afterDismissed().subscribe(() => {
-                this.router.navigate(['/profile']);
-            });
+            this.router.navigate(['/profile']);
         });
     }
 }

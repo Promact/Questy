@@ -11,13 +11,11 @@ import { ChangePasswordDialogComponent } from './change-password-dialog.componen
 })
 export class ProfileDashboardComponent implements OnInit {
     user: ApplicationUser = new ApplicationUser;
-    loader: boolean;
 
     ngOnInit() {
         this.getUserDetails();
     }
     constructor(public profileService: ProfileService, public dialog: MdDialog) {
-        this.loader = true;
     }
 
     /**
@@ -25,7 +23,6 @@ export class ProfileDashboardComponent implements OnInit {
     */
     getUserDetails() {
         this.profileService.getUserDetails().subscribe((response) => {
-            this.loader = false;
             this.user = response;
         });
     }
