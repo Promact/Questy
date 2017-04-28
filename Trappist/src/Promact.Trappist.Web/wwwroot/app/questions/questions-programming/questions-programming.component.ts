@@ -123,6 +123,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     addTestCases() {
         let testCase = new CodeSnippetQuestionsTestCases();
+        testCase.testCaseType = TestCaseType.Default;
         testCase.id = this.findMaxId() + 1;
         this.testCases.push(testCase);
     }
