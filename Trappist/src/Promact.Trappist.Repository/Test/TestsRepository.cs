@@ -263,32 +263,38 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<Test> DuplicateTest(int testId, Test newTest)
         {
             //Fetch categories present in that particular test and satores it in a variable of list type
-            var testCategoryList = new List<TestCategory>(_dbContext.TestCategory.Where(x => x.TestId == testId));
+            var testCategoryList = _dbContext.TestCategory.Where(x => x.TestId == testId);
             // Fetch questions present in that particular test and satores it in a variable of list type
-            var testQuestionList = new List<TestQuestion>(_dbContext.TestQuestion.Where(x => x.TestId == testId));
+            var testQuestionList = _dbContext.TestQuestion.Where(x => x.TestId == testId);
             var test = await _dbContext.Test.FindAsync(newTest.Id);
-            var categoryList = new List<TestCategory>();
-            foreach (TestCategory categoryObject in testCategoryList)
+            if (testCategoryList.Any())
             {
-                var categoryObj = new TestCategory();
-                categoryObj.CategoryId = categoryObject.CategoryId;
-                categoryObj.Test = test;
-                categoryObj.TestId = test.Id;
-                categoryList.Add(categoryObj);
+                var categoryList = new List<TestCategory>();
+                foreach (TestCategory categoryObject in testCategoryList)
+                {
+                    var categoryObj = new TestCategory();
+                    categoryObj.CategoryId = categoryObject.CategoryId;
+                    categoryObj.Test = test;
+                    categoryObj.TestId = test.Id;
+                    categoryList.Add(categoryObj);
+                }
+                await _dbContext.TestCategory.AddRangeAsync(categoryList);
+                await _dbContext.SaveChangesAsync();
+                var questionList = new List<TestQuestion>();
+                if (testQuestionList.Any())
+                {
+                    foreach (TestQuestion questionObject in testQuestionList)
+                    {
+                        var questionObj = new TestQuestion();
+                        questionObj.QuestionId = questionObject.QuestionId;
+                        questionObj.Test = test;
+                        questionObj.TestId = test.Id;
+                        questionList.Add(questionObj);
+                    }
+                    await _dbContext.TestQuestion.AddRangeAsync(questionList);
+                    await _dbContext.SaveChangesAsync();
+                }
             }
-            await _dbContext.TestCategory.AddRangeAsync(categoryList);
-            await _dbContext.SaveChangesAsync();
-            var questionList = new List<TestQuestion>();
-            foreach (TestQuestion questionObject in testQuestionList)
-            {
-                var questionObj = new TestQuestion();
-                questionObj.QuestionId = questionObject.QuestionId;
-                questionObj.Test = test;
-                questionObj.TestId = test.Id;
-                questionList.Add(questionObj);
-            }
-            await _dbContext.TestQuestion.AddRangeAsync(questionList);
-            await _dbContext.SaveChangesAsync();
             return test;
         }
         #endregion
