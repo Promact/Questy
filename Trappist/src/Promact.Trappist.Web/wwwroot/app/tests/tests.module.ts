@@ -51,7 +51,7 @@ import { IncompleteTestCreationDialogComponent } from './test-settings/incomplet
         DeleteTestDialogComponent,
         TestLaunchDialogComponent,
         DeselectCategoryComponent,
-        IncompleteTestCreationDialogComponent
+        IncompleteTestCreationDialogComponent,
         DuplicateTestDialogComponent
     ],
     providers: [
