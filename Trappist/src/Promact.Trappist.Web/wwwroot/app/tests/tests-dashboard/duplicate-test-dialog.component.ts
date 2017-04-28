@@ -18,6 +18,7 @@ export class DuplicateTestDialogComponent {
     errorMessage: string;
     successMessage: string;
     id: number;
+    loader: boolean;
 
     constructor(public testService: TestService, public snackBar: MdSnackBar, public dialog: MdDialogRef<any>, private route:Router) {
         this.errorMessage = 'Something went worng.Please try agiain later';
@@ -33,23 +34,30 @@ export class DuplicateTestDialogComponent {
         this.duplicatedTest = JSON.parse(JSON.stringify(this.testToDuplicate));
         this.duplicatedTest.id = 0;
         this.duplicatedTest.testName = this.testName;
+        this.loader = true;
         //Verifies that the test mame is unique
         this.testService.IsTestNameUnique(this.duplicatedTest.testName,this.duplicatedTest.id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.duplicateTest(this.id, this.duplicatedTest).subscribe((response) => {
+                    this.loader = false;
                     this.testArray.unshift(response);
-                    this.dialog.close();
                     this.snackBar.open(this.successMessage, 'Dismiss', {
                         duration: 3000,
                     });
+                    this.dialog.close();
                     this.route.navigate(['tests/' + response.id + '/sections']);
-                });
+                },
+                    err => {
+                        this.loader = false;
+                    });
             }
             else {
+                this.loader = false;
                 this.error = true;
             }
         },
             err => {
+                this.loader = false;
                 this.snackBar.open(this.errorMessage, 'Dismiss', {
                     duration: 3000,
                 });
