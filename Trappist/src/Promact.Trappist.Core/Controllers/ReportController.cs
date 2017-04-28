@@ -9,15 +9,29 @@ namespace Promact.Trappist.Core.Controllers
     {
         private readonly IReportRepository _reportRepository;
 
-        public  ReportController(IReportRepository reportRepository)
+        public ReportController(IReportRepository reportRepository)
         {
             _reportRepository = reportRepository;
         }
 
-        [HttpGet("multiple/{id}")]
-        public async Task<IActionResult> getAllTestAttendeesAsync([FromRoute] int id)
+        [HttpGet("multiple/{testId}")]
+        public async Task<IActionResult> GetAllTestAttendeesAsync([FromRoute] int testId)
         {
-            return Ok(await _reportRepository.GetAllTestAttendeesAsync(id));
+            return Ok(await _reportRepository.GetAllTestAttendeesAsync(testId));
+        }
+
+        [HttpPost("star/{attendeeId}")]
+        public async Task<IActionResult> SetStarredCandidateAsync([FromBody] int attendeeId)
+        {
+            await _reportRepository.SetStarredCandidateAsync(attendeeId);
+            return Ok(attendeeId);
+        }
+
+        [HttpPut("star/all/{testId}")]
+        public async Task<IActionResult> SetAllCandidateStarredAsync([FromRoute] int testId, [FromBody] bool status)
+        {
+            await _reportRepository.SetAllCandidateStarredAsync(testId, status);
+            return Ok(testId);
         }
     }
 }

@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -20,8 +21,20 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<ICollection<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
-           var result= await _dbContext.TestAttendees.Where(t => t.TestId == id).ToListAsync();
-            return result;
+            return await _dbContext.TestAttendees.Where(t => t.TestId == id).ToListAsync();
+        }
+
+        public async Task SetStarredCandidateAsync(int id)
+        {
+            var studentToBeStarred = await _dbContext.TestAttendees.Where(x => x.Id == id).FirstOrDefaultAsync();
+            studentToBeStarred.StarredCandidate = studentToBeStarred.StarredCandidate ? false : true;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SetAllCandidateStarredAsync(int id, bool status)
+        {
+            await _dbContext.TestAttendees.Where(t => t.TestId == id).ForEachAsync(k => k.StarredCandidate = status);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

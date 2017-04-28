@@ -7,7 +7,13 @@ export class ReportService {
     private reportsApiUrl = 'api/report';
     constructor(private httpService: HttpService) {
     }
-    getAllTestAttendees(id: number) {
-        return this.httpService.get(this.reportsApiUrl+'/multiple'+'/'+id);
+    getAllTestAttendees(testId: number) {
+        return this.httpService.get(this.reportsApiUrl+'/multiple'+'/'+testId);
+    }
+    setStarredCandidate(attendeeId: number) {
+        return this.httpService.post(this.reportsApiUrl+'/star'+'/'+attendeeId,attendeeId);
+    }
+    setAllCandidatesStarred(testId: number, status: boolean) {
+        return this.httpService.put(this.reportsApiUrl + '/star/all/' + testId, status);
     }
 } 
