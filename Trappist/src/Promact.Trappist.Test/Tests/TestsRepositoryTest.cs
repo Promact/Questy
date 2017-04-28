@@ -249,65 +249,6 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
 
-        private DomainModel.Models.Test.Test CreateTest(string testName)
-        {
-            var test = new DomainModel.Models.Test.Test
-            {
-                TestName = testName,
-                BrowserTolerance = 0
-            };
-            return test;
-        }
-
-        public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
-        {
-
-            var questionAc = new QuestionAC()
-            {
-                Question = new QuestionDetailAC()
-                {
-                    Id = id,
-                    IsSelect = isSelect,
-                    QuestionDetail = questionDetails,
-                    QuestionType = 0,
-                    DifficultyLevel = 0,
-                    CategoryID = categoryId
-                },
-                CodeSnippetQuestion = null,
-                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
-                {
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
-                    {
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            Option="A",
-                            IsAnswer=true
-                        },
-                    }
-                }
-            };
-            return questionAc;
-        }
-
-        private DomainModel.Models.Category.Category CreateCategory(string categoryName)
-        {
-            var category = new DomainModel.Models.Category.Category
-            {
-                CategoryName = categoryName
-            };
-            return category;
-        }
-
-        private DomainModel.Models.TestConduct.TestAttendees TestAttendee()
-        {
-            var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
-            {
-                FirstName = "Ritika",
-                LastName = "Mohata",
-                Email = "ritika@gmail.com"
-            };
-            return testAttendee;
-        }
         /// <summary>
         /// Test For Adding Questions to TestQuestion Model
         /// </summary>
@@ -379,7 +320,6 @@ namespace Promact.Trappist.Test.Tests
             Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
             Assert.True(questionAcList[0].Question.IsSelect);
         }
-        #endregion
 
         #region Get Test Details
         /// <summary>
@@ -465,7 +405,7 @@ namespace Promact.Trappist.Test.Tests
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName,
-                BrowserTolerance = 1
+                BrowserTolerance = 0
             };
             return test;
         }
