@@ -7,7 +7,7 @@ import { IndividualReportComponent } from './individual-report/individual-report
 
 const reportsRoutes: Routes = [
     {
-        path: 'reports',
+        path: 'tests',
         component: ReportsComponent,
         children: [
             { path: 'test/:id', component: TestReportComponent },
