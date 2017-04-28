@@ -9,7 +9,7 @@
       <div class="form-area">
         <div class="form-group">
           <label>Time Duration (mins)</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00" max="180" min="0" #Duration="ngModel" required pattern="^\d{0,4}?$" (keyup)="isWarningTimeValid()" />
+          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00"  #Duration="ngModel" required pattern="^(0*[1-9])\d{0,3}?$" (keyup)="isWarningTimeValid()" />
           <div class="errors-container">
             <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.required">Test Duration is required</span>
             <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
@@ -19,7 +19,7 @@
           <label>Start Date & Time</label>
           <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.startDate" name="Start Date" (mouseup)="isStartDateValid()" />
           <div class="errors-container">
-            <span class="error-msg small-width" *ngIf="validStartDate">Start Date must be lesser than End Date and Time and greater than current Date and Time</span>
+            <span class="error-msg small-width" *ngIf="validStartDate">Start Date and Time must be greater than current Date and Time</span>
           </div>
         </div>
         <div class="form-group inline-field">
@@ -75,7 +75,7 @@
         </div>
         <div class="form-group inline-field">
           <label>Correct Marks</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" required pattern="^\d{0,4}(\.\d{1,2})?$" min="0" />
+          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" required pattern="^(0*[1-9])\d{0,3}(\.{1}\d{1,2})?$" min="0" />
           <div class="errors-container">
             <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.required">Correct Marks is required</span>
             <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks</span>
@@ -83,7 +83,7 @@
         </div>
         <div class="form-group inline-field">
           <label>Incorrect Marks</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" required pattern="^\d{0,4}(\.\d{1,2})?$" min="0" />
+          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" required pattern="^\d{0,3}(\.\d{1,2})?$" min="0" />
           <div class="errors-container">
             <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.required">Incorrect Marks is required</span>
             <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks</span>
