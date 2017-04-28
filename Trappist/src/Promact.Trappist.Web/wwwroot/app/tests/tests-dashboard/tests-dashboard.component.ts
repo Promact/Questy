@@ -22,12 +22,10 @@ export class TestsDashboardComponent {
     isDeleteAllowed: boolean;
     loader: boolean;
     test: Test;
-    testName: string;
 
-    constructor(public dialog: MdDialog, private testService: TestService) {
+    constructor(public dialog: MdDialog, private testService: TestService, private router:Router) {
         this.loader = true;
         this.getAllTests();
-        this.editArray = new Array<boolean>();
     }
     // get All The Tests From Server
     getAllTests() {
@@ -74,7 +72,7 @@ export class TestsDashboardComponent {
     }
 
     /**
-     * Checks if any test attendee exists for the test or not
+     * Checks if any candidate has taken the test
      */
     isTestAttendeeExist() {
         this.Tests.forEach(x => {
@@ -86,8 +84,7 @@ export class TestsDashboardComponent {
                     x.isEditTestEnable = true;
                 }
             });
-        })
-        console.log(this.editArray);
+        });
     }
 
     /**
@@ -95,9 +92,10 @@ export class TestsDashboardComponent {
      * @param test: an object of Test class
      */
     editTest(test: Test) {
+        // Checks if any candidate has taken the test
         this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            if (response.response) {
-                this.router.navigate(['/tests/' + test.id + '/sections'])
+            if (!response.response) {
+                this.router.navigate(['/tests/' + test.id + '/sections']);
             }
         });
     }
