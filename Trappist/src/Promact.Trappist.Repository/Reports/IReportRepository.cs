@@ -12,5 +12,19 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="id">Id of the respective Test</param>
         /// <returns></returns>
         Task<ICollection<TestAttendees>> GetAllTestAttendeesAsync(int id);
+
+        /// <summary>
+        /// Method to set a candidate as Starred candidate
+        /// </summary>
+        /// <param name="id">Id of the candidate</param>
+        /// <returns></returns>
+        Task SetStarredCandidateAsync(int id);
+
+        /// <summary>
+        /// Method to set all candidates as starred candidate
+        /// </summary>
+        /// <param name="id">Id of the respective Test</param>
+        /// <returns></returns>
+        Task SetAllCandidateStarredAsync(int id, bool status);
     }
 }
