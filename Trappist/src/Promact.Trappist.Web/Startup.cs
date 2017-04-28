@@ -40,7 +40,7 @@ namespace Promact.Trappist.Web
     public class Startup
     {
         public Startup(IHostingEnvironment env)
-        {   
+        {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -163,12 +163,12 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
-                cfg.CreateMap<Question, QuestionDetailAC> ();
+                cfg.CreateMap<Question, QuestionDetailAC>();
                 cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<Category, CategoryAC>();
                 cfg.CreateMap<CategoryAC, Category>();
                 cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
-                cfg.CreateMap<Question,QuestionAC>();
+                cfg.CreateMap<Question, QuestionAC>();
                 cfg.CreateMap<Test, TestAC>();
                 cfg.CreateMap<TestAC, Test>();
             });
