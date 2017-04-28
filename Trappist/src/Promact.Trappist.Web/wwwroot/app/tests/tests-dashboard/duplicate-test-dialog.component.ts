@@ -33,7 +33,7 @@ export class DuplicateTestDialogComponent {
         this.duplicatedTest.id = 0;
         this.duplicatedTest.testName = this.testName;
         this.loader = true;
-        //Verifies that the test mame is unique
+        //Verifies that the test name is unique
         this.testService.IsTestNameUnique(this.duplicatedTest.testName, this.duplicatedTest.id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
                 this.testService.duplicateTest(this.id, this.duplicatedTest).subscribe((response) => {
