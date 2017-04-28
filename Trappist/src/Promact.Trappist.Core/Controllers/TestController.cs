@@ -256,8 +256,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
             await _testRepository.CreateTestAsync(test);
-            var newTest = test;
-            return Ok(await _testRepository.DuplicateTest(id, newTest));
+            return Ok(await _testRepository.DuplicateTest(id, test));
         }
         #endregion
     }
