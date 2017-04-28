@@ -7,11 +7,11 @@ import { IndividualReportComponent } from './individual-report/individual-report
 
 const reportsRoutes: Routes = [
     {
-        path: 'reports',
+        path: 'tests',
         component: ReportsComponent,
         children: [
-            { path: ':id', component: TestReportComponent },
-            { path: ':id/individual-report', component: IndividualReportComponent }
+            { path: ':id/reports', component: TestReportComponent },
+            { path: ':id/reports/individual-report', component: IndividualReportComponent }
         ]
     }
 ];
