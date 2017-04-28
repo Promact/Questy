@@ -5,7 +5,7 @@
                 <span class="test-name">BBIT 10-08-2017</span>
             </h1>
             <div class="search-area pull-right mt5">
-                <input type="text" placeholder="Search reports" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
+                <input type="text" placeholder="Search reports"  [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
                 <button type="button" (click)="showSearchInput = true"><i class="material-icons">search</i></button>
             </div>
         </div>
@@ -14,11 +14,11 @@
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
-                <select class="form-control">
-                    <option>All Candidates (50)</option>
-                    <option>Completed Test</option>
-                    <option>Expired Test</option>
-                    <option>Expired Test</option>
+                <select class="form-control" [(ngModel)]="typeOfTest" (change)="setTypeOfTest(typeOfTest)">
+                    <option value="0">All Candidates ({{count}})</option>
+                    <option value="1">Completed Test</option>
+                    <option value="2">Expired Test</option>
+                    <option value="3">Blocked Test</option>
                 </select>
                 <button type="button" class="btn">Download Excel</button>
                 <button type="button" class="btn">Download PDF</button>
@@ -26,11 +26,11 @@
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
         <div class="grid-container">
-            <table class="data-grid" [md2Data]="reportData" #report="md2DataTable" [rowsPerPage]="10">
+            <table class="data-grid"[md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
-                        <th><md-checkbox class="only-checkbox"></md-checkbox></th>
-                        <th><em class="material-icons">star_border</em></th>
+                        <th><md-checkbox class="only-checkbox" ></md-checkbox></th>
+                        <th><em class="material-icons" (click) = "setAllCandidatesStarred(testId)">{{globalStarStatus}}</em></th>
                         <th class="h5" md2SortBy="name">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
                         <th class="h5" md2SortBy="date">Test Date</th>
@@ -41,9 +41,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let testAttendee of testAttendeeArray">
+                    <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
-                        <td><em class="material-icons">star_border</em></td>
+                        <td><em class="material-icons" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold">{{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td>{{testAttendee.email}}</td>
                         <td>{{testAttendee.createdDateTime}}</td>
@@ -54,7 +54,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="4">
-                            <span class="records-info">Showing 1 to 10 of 50 records</span>
+                            <span class="records-info">Showing {{pageHandling(activePage,count)}} to {{pageHandling2(activePage,count)}} of {{count}} records </span>
                         </td>
                         <td colspan="5">
                             <md2-pagination></md2-pagination>

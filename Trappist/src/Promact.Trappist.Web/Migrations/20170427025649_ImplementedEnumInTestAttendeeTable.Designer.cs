@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
 
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170427025649_ImplementedEnumInTestAttendeeTable")]
+    partial class ImplementedEnumInTestAttendeeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -310,13 +312,9 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AllowTestResume");
-
                     b.Property<int>("BrowserTolerance");
 
                     b.Property<decimal>("CorrectMarks");
-
-                    b.Property<string>("CreatedByUserId");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -327,10 +325,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("FromIpAddress");
 
                     b.Property<decimal>("IncorrectMarks");
-
-                    b.Property<bool>("IsLaunched");
-
-                    b.Property<bool>("IsPaused");
 
                     b.Property<string>("Link");
 
@@ -350,11 +344,9 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("WarningMessage");
 
-                    b.Property<int?>("WarningTime");
+                    b.Property<int>("WarningTime");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Test");
                 });
@@ -395,43 +387,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("TestQuestion");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.AttendeeAnswers", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Answers");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AttendeeAnswers");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAnswers", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnsweredCodeSnippet");
-
-                    b.Property<int>("AnsweredOption");
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<int>("TestConductId");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestConductId");
-
-                    b.ToTable("TestAnswers");
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
                 {
                     b.Property<int>("Id")
@@ -470,30 +425,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TestAttendees");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestConduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<int>("QuestionId");
-
-                    b.Property<int>("QuestionStatus");
-
-                    b.Property<int>("TestAttendeeId");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("TestAttendeeId");
-
-                    b.ToTable("TestConduct");
                 });
 
             modelBuilder.Entity("Promact.Trappist.Web.Models.ApplicationUser", b =>
@@ -655,13 +586,6 @@ namespace Promact.Trappist.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
-                {
-                    b.HasOne("Promact.Trappist.Web.Models.ApplicationUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId");
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
                 {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Category.Category", "Category")
@@ -688,40 +612,11 @@ namespace Promact.Trappist.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.AttendeeAnswers", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", "TestAttendees")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAnswers", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.TestConduct.TestConduct", "TestCoduct")
-                        .WithMany()
-                        .HasForeignKey("TestConductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", b =>
                 {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
                         .WithMany("TestAttendees")
                         .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.TestConduct.TestConduct", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Question.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", "TestAttendees")
-                        .WithMany()
-                        .HasForeignKey("TestAttendeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
