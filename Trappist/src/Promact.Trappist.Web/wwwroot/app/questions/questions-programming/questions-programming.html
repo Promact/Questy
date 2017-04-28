@@ -75,7 +75,7 @@
                     <br />
                     <button type="button" class="btn btn-primary" [hidden]="formControlModel.showTestCase" (click)="formControlModel.showTestCase=true;addTestCases()">Add Test Case</button>
                     <md2-accordion *ngFor="let testCase of testCases;let i = index">
-                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase">
+                        <md2-accordion-tab class="collapsible-block" [hidden]="!formControlModel.showTestCase" [active]="true">
                             <md2-accordion-header class="collapsible-header clearfix">
                                 <div class="title-info h2 pull-left">
                                     <span>Type: {{getTestCaseString(testCase.testCaseType)}}</span>
@@ -122,11 +122,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Test Case Marks</label>
-                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{testCase.id}}" #marks="ngModel" pattern="\d+\.?\d*" />
+                                    <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{testCase.id}}" #marks="ngModel" pattern="\d{0,2}(\.\d*)?" />
                                     <div class="errors-container">
                                         <div *ngIf="marks.errors && (marks.dirty || marks.touched)">
                                             <p class="error-msg" *ngIf="marks.errors.required">Test Case Marks is required</p>
-                                            <p class="error-msg" *ngIf="marks.errors.pattern">Enter Numbers</p>
+                                            <p class="error-msg" *ngIf="marks.errors.pattern"> Please Enter A two Digit Decimal Number</p>
                                         </div>
                                     </div>
                                 </div>
