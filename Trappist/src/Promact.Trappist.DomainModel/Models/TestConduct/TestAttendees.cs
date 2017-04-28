@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Promact.Trappist.DomainModel.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.TestConduct
@@ -26,12 +27,8 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         public bool StarredCandidate { get; set; }
 
-        public bool BlockedTest { get; set; }
-
-        public bool ExpiredTest { get; set; }
-
-        public bool CompletedTest { get; set; }
-
+        public TestState TestState { get; set; }
+        
         public int TestId { get; set; }
 
         [ForeignKey("TestId")]
