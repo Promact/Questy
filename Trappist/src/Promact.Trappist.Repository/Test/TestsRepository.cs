@@ -262,9 +262,9 @@ namespace Promact.Trappist.Repository.Tests
         #region Duplicate Test
         public async Task<Test> DuplicateTest(int testId, Test newTest)
         {
-            //Fetch categories present in that particular test and satores it in a variable of list type
+            //Fetch categories present in that particular test and store it in a variable of type list
             var testCategoryList = _dbContext.TestCategory.Where(x => x.TestId == testId);
-            // Fetch questions present in that particular test and satores it in a variable of list type
+            // Fetch questions present in that particular test and store it in a variable of type list
             var testQuestionList = _dbContext.TestQuestion.Where(x => x.TestId == testId);
             var test = await _dbContext.Test.FindAsync(newTest.Id);
             if (testCategoryList.Any())
