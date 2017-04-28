@@ -1,16 +1,16 @@
-﻿<div class="loader-container" *ngIf="loader">
+﻿<div class="loader-container" *ngIf="loader" oncontextmenu="return false">
     <div class="spinner">
     </div>
 </div>
 <div class="dialog">
-    <div class="dialog-title clearfix">
+    <div class="dialog-title clearfix" oncontextmenu="return false">
         <h1 class="pull-left" md-dialog-title>Duplicate Test</h1>
         <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
     </div>
     <md-dialog-content>
         <div class="form-group">
             <label class="h4">Test Name</label>
-            <input type="text" name="name" class="form-control" [(ngModel)]="testName" #name="ngModel" require maxlength="150" pattern="^[a-zA-Z0-9_@ ]*$" (ngModelChange)="onErrorChange()" />
+            <input type="text" name="name" class="form-control" [(ngModel)]="testName" #name="ngModel" required maxlength="150" pattern="^[a-zA-Z0-9_@ ]*$" (ngModelChange)="onErrorChange()" />
             <div class="errors-container">
                 <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.required">Name is required</span>
                 <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special characters are @, _ and white space</span>
