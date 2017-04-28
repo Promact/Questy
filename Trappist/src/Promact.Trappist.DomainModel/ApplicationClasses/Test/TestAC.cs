@@ -8,7 +8,9 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
     public class TestAC
     {
         public int Id { get; set; }
-       
+
+        public DateTime CreatedDateTime { get; set; }
+
         public string TestName { get; set; }
 
         public string Link { get; set; }

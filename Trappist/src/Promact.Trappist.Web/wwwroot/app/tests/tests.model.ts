@@ -15,10 +15,11 @@ export class Test {
     public correctMarks: string;
     public incorrectMarks: string;
     public browserTolerance: number;
+    public createdDateTime: Date;
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
     categoryAcList: Category[] = [];
-    isQuestionMissisng: boolean;
+    isQuestionMissing: boolean;
 }
 
 export class TestCategory {

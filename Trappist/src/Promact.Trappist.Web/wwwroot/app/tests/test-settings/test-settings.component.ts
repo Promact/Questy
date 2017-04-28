@@ -138,14 +138,14 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test) {
-        let categories = this.testDetails.categoryAcList.some(function (x) {
+        let isCategoryAdded = this.testDetails.categoryAcList.some(function (x) {
             return x.isSelect;
         });
-        if (categories) {
-            let questions = this.testDetails.categoryAcList.some(function (x) {
+        if (isCategoryAdded) {
+            let isQuestionAdded = this.testDetails.categoryAcList.some(function (x) {
                 return (x.numberOfSelectedQuestion !== 0);
             });
-            if (questions) {
+            if (isQuestionAdded) {
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.openSnackBar(this.testSettingsUpdatedMessage);
                     let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
@@ -157,16 +157,15 @@ export class TestSettingsComponent implements OnInit {
                         this.snackbarRef.open(this.errorMessage, 'Dismiss', {
                             duration: 3000,
                         });
-                    },
-                );
+                    });
             }
             else {
-                this.testDetails.isQuestionMissisng = true;
+                this.testDetails.isQuestionMissing = true;
                 let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
             }
         }
         else {
-            this.testDetails.isQuestionMissisng = false;
+            this.testDetails.isQuestionMissing = false;
             let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
         }
     }
