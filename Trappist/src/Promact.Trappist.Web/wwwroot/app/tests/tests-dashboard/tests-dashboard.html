@@ -25,7 +25,7 @@
                                 <h5 class="pull-left" title="{{test.testName}}">{{test.testName}}</h5>
                                 <em class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-                                    <button md-menu-item [disabled]="!test.isEditTestEnable" (click)="editTest(test)">Edit</button>
+                                    <button md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
                                     <button md-menu-item (click)="deleteTestDialog(test)">Delete</button>
                                     <button md-menu-item (click)="duplicateTestDialog(test)">Duplicate</button>
                                     <button md-menu-item [routerLink]="[test.id,'settings']">Settings</button>

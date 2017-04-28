@@ -19,7 +19,7 @@ export class Test {
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
     categoryAcList: Category[] = [];
-    isEditTestEnable: boolean;
+    isEditTestEnabled: boolean;
     isQuestionMissing: boolean;
 }
 

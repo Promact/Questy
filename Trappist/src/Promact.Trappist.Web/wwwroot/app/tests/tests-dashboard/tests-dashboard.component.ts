@@ -78,10 +78,10 @@ export class TestsDashboardComponent {
         this.Tests.forEach(x => {
             this.testService.isTestAttendeeExist(x.id).subscribe((response) => {
                 if (response.response) {
-                    x.isEditTestEnable = false;
+                    x.isEditTestEnabled = false;
                 }
                 else {
-                    x.isEditTestEnable = true;
+                    x.isEditTestEnabled = true;
                 }
             });
         });
