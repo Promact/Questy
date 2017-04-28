@@ -103,10 +103,11 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             test.TestName = "IIT BANGALORE";
             test.BrowserTolerance = DomainModel.Enum.BrowserTolerance.High;
+            int value = (int)test.BrowserTolerance;
             await _testRepository.UpdateTestByIdAsync(test);
             var TestName = "IIT BANGALORE";
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
-            Assert.True(_trappistDbContext.Test.Count(x => x.BrowserTolerance == DomainModel.Enum.BrowserTolerance.High) == 1);
+            Assert.True(_trappistDbContext.Test.Count(x => (int)x.BrowserTolerance == value) == 1);
         }
 
         /// <summary>
@@ -253,7 +254,7 @@ namespace Promact.Trappist.Test.Tests
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName,
-                BrowserTolerance = DomainModel.Enum.BrowserTolerance.NotApplicable
+                BrowserTolerance = 0
             };
             return test;
         }

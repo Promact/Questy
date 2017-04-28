@@ -233,10 +233,19 @@ namespace Promact.Trappist.Repository.Tests
             testAcObject.NumberOfTestAttendees = testObject.First().TestAttendees.Count();
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            string defaultMessage = "Your test is going to end. Hurry up!!";
+            int defaultTime = 5;
+            int defaultDuration = 60;
+            int defaultCorrectMarks = 1;
+            DateTime defaultEndDate = date.AddDays(1);
             if (testAcObject != null)
             {
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? date : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
+                testAcObject.WarningTime = testAcObject.WarningTime == null ? defaultTime : testAcObject.WarningTime;
+                testAcObject.WarningMessage = testAcObject.WarningMessage == null ? defaultMessage : testAcObject.WarningMessage;
+                testAcObject.CorrectMarks = testAcObject.CorrectMarks == 0 ? defaultCorrectMarks : testAcObject.CorrectMarks;
                 //Fetches the category list from Category Model
                 var categoryList = await _dbContext.Category.ToListAsync();
                 //Maps Category list to CategoryAC list
