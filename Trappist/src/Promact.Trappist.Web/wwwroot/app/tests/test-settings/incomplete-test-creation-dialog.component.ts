@@ -20,7 +20,7 @@ export class IncompleteTestCreationDialogComponent implements OnInit {
         let test = new Test();
         test= this.data;        
         this.testId = test.id;
-        this.isQuestionMissing = test.isQuestionMissisng;      
+        this.isQuestionMissing = test.isQuestionMissing;      
     }
 
     closeDialog() {
