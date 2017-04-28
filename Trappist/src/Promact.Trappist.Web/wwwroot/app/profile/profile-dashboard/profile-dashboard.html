@@ -1,4 +1,8 @@
-﻿<div class="container">
+﻿<div class="loader-container" *ngIf="loader">
+    <div class="spinner">
+    </div>
+</div>
+<div class="container" *ngIf="!loader">
     <div class="userprofile">
         <div class="title-area mb20">
             <h1>Profile <a href="#" [routerLink]="['edit']"><em class="material-icons">mode_edit</em></a></h1>
