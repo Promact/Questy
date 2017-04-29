@@ -87,6 +87,8 @@ export class CreateTestHeaderComponent implements OnInit {
             testName = this.testDetails.testName;
             this.isTestNameExist = false;
         }
+        else if (this.editedTestName)
+            this.testDetails.testName = this.editedTestName;
         else
             this.testDetails.testName = this.testNameReference;
     }
