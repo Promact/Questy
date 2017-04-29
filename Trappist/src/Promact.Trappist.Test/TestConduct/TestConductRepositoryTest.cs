@@ -205,7 +205,42 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
 
-            Assert.True(attendeeAnswer.QuestionId == 1 && attendeeAnswer.OptionChoice.Count() == 1 && attendeeAnswer.QuestionStatus == QuestionStatus.review);
+            Assert.True(attendeeAnswer.Count == 1);
+        }
+
+        [Fact]
+        public async Task GetTestAttendeeByIdAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+            var attendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
+
+            Assert.NotNull(attendee);
+        }
+
+        [Fact]
+        public async Task IsTestAttendeeExistByIdAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            Assert.True(await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId));
+        }
+
+        [Fact]
+        public async Task SetElapsedTimeAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId);
+
         }
         #endregion
 

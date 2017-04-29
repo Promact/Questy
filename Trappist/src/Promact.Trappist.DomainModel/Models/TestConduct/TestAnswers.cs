@@ -11,6 +11,6 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
         public string AnsweredCodeSnippet { get; set; }
 
         [ForeignKey("TestConductId")]
-        public virtual TestConduct TestCoduct { get; set; }
+        public virtual TestConduct TestConduct { get; set; }
     }
 }

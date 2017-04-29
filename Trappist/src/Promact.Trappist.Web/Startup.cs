@@ -32,7 +32,7 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
-using System.Collections.Generic;
+using System;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -71,6 +71,12 @@ namespace Promact.Trappist.Web
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDirectoryBrowser();
+
+            services.AddSession(options =>
+            {
+                options.CookieName = ".Trappist.session";
+                options.IdleTimeout = TimeSpan.FromDays(1);
+            });
 
             #region Dependencies
             services.AddScoped<IQuestionRepository, QuestionRepository>();
@@ -120,6 +126,9 @@ namespace Promact.Trappist.Web
                 });
             }
             app.UseIdentity();
+            
+            app.UseSession();
+
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
             app.UseMvc(routes =>
             {
@@ -146,6 +155,7 @@ namespace Promact.Trappist.Web
                      name: "spa-fallback",
                      defaults: new { controller = "Home", action = "Index" });
             });
+
             //Delete production db upon every deployment
             //Temporary fix as we are not including migrations in scm
             //Will remove after we include migrations in code base
