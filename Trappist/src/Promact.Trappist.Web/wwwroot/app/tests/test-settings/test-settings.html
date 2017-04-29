@@ -93,6 +93,14 @@
           </div>
         </div>
         <div class="form-group">
+          <label>Allow Test Resume</label>
+          <select class="form-control half-width" [(ngModel)]="testDetails.allowTestResume" name="allowTestResume">
+            <option value="0">Supervised</option>
+            <option value="1">Unsupervised</option>
+          </select>
+          <div class="errors-container"></div>
+        </div>
+        <div class="form-group">
           <label>Warning Message</label>
           <textarea class="form-control half-width" rows="3" #textarea placeholder="Your message here" [(ngModel)]="testDetails.warningMessage" name="Warning Message" maxlength="255"></textarea>
           <div class="errors-container"></div>
