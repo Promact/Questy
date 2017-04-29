@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 
 namespace Promact.Trappist.Repository.Tests
 {
@@ -130,7 +131,14 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="testId">Id of Test</param>
         /// <returns>Collection of QuestionAC object</returns>
-        Task<ICollection<QuestionAC>> GetTestQuestionByTestIdAsync(int testId);
+        Task<ICollection<TestConductAC>> GetTestQuestionByTestIdAsync(int testId);
+
+        /// <summary>
+        /// Gets test by link  
+        /// </summary>
+        /// <param name="link">Link of the test</param>
+        /// <returns>TestAC object</returns>
+        Task<TestAC> GetTestByLinkAsync(string link);
         #endregion
         #region Duplicate Test
         /// <summary>

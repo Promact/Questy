@@ -5,6 +5,8 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -89,11 +91,47 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TestAnswerAC> GetAnswerAsync(int attendeeId)
+        public async Task<ICollection<TestAnswerAC>> GetAnswerAsync(int attendeeId)
         {
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-            var deserializedAttendeeAnswers = JsonConvert.DeserializeObject<TestAnswerAC>(attendee.Answers);
+
+            if (attendee == null)
+                return null;
+
+            var deserializedAttendeeAnswers = JsonConvert.DeserializeObject<ICollection<TestAnswerAC>>(attendee.Answers);
             return deserializedAttendeeAnswers;
+        }
+
+        public async Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId)
+        {
+            return await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
+        }
+
+        public async Task<bool> IsTestAttendeeExistByIdAsync(int attendeeId)
+        {
+            return await _dbContext.TestAttendees.AnyAsync(x => x.Id == attendeeId);
+        }
+
+        public async Task SetElapsedTimeAsync(int attendeeId)
+        {
+            var attendee = await _dbContext.AttendeeAnswers.FirstOrDefaultAsync(x => x.Id == attendeeId);
+            if (attendee != null)
+            {
+                var createdTime = attendee.CreatedDateTime;
+                var currentTime = DateTime.UtcNow;
+                var timeSpan = currentTime.Subtract(createdTime);
+                attendee.TimeElapsed = timeSpan.TotalMinutes;
+                await _dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                await AddAnswerAsync(attendeeId, null);
+            }
+        }
+
+        public async Task<double> GetElapsedTimeAsync(int attendeeId)
+        {
+            return await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).Select(x => x.TimeElapsed).FirstOrDefaultAsync(); 
         }
         #endregion
     }
