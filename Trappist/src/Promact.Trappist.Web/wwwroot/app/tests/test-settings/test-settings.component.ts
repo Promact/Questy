@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 import { TestOrder } from '../enum-testorder';
 import { Test } from '../tests.model';
 import { BrowserTolerance } from '../enum-browsertolerance';
+import { AllowTestResume } from '../enum-allowtestresume';
 import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
 
 @Component({
@@ -31,6 +32,7 @@ export class TestSettingsComponent implements OnInit {
     QuestionOrder = TestOrder;
     OptionOrder = TestOrder;
     BrowserTolerance = BrowserTolerance;
+    AllowTestResume = AllowTestResume;
     response: any;
     errorMessage: string;
     testNameReference: string;

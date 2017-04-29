@@ -1,6 +1,7 @@
 ﻿import { TestOrder } from './enum-testorder';
 import { Category } from '../questions/category.model';
 import { BrowserTolerance } from './enum-browsertolerance';
+import { AllowTestResume } from './enum-allowtestresume';
 
 export class Test {
     public id: number;
@@ -19,6 +20,7 @@ export class Test {
     public createdDateTime: Date;
     public questionOrder: TestOrder;
     public optionOrder: TestOrder;
+    public allowTestResume: AllowTestResume;
     categoryAcList: Category[] = [];
     isEditTestEnabled: boolean;
     isQuestionMissing: boolean;

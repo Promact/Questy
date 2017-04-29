@@ -39,6 +39,8 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public TestOrder OptionOrder { get; set; }
 
+        public AllowTestResume AllowTestResume { get; set; }
+
         public List<CategoryAC> CategoryAcList { get; set; }
 
         public int NumberOfTestAttendees { get; set; }
