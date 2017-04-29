@@ -16,10 +16,10 @@
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
                     <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first">
                         <md-radio-button value="{{i}}" [disabled]="option.option === undefined || option.option === ''" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i">
-                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{i}}" required />
+                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
-                                <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
+                                <span *ngIf="choice.touched && choice.invalid " class="error-msg mt9 ml10">This field is required</span>
                             </div>
                         </md-radio-button>
                     </md-radio-group>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
                     <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="option.option === undefined || option.option === ''">
-                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{i}}" required />
+                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
                             <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>

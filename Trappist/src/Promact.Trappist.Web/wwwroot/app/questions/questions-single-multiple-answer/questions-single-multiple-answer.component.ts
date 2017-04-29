@@ -9,7 +9,6 @@ import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
 
-
 @Component({
     moduleId: module.id,
     selector: 'questions-single-multiple-answer',
@@ -40,7 +39,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.singleMultipleAnswerQuestion = new QuestionBase();
         this.difficultyLevel = ['Easy', 'Medium', 'Hard'];
         for (let i = 0; i < this.noOfOptionShown; i++) {
-            this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
+            let option = new SingleMultipleAnswerQuestionOption();
+            option.id = Math.random();
+            this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(option);
         }
     }
 
@@ -125,7 +126,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isClose = false;
         }
         this.noOfOptionShown++;
-        this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(new SingleMultipleAnswerQuestionOption());
+        let newOption = new SingleMultipleAnswerQuestionOption();
+        newOption.id = Math.random();
+        this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(newOption);
         if (this.noOfOptionShown === 10) {
             this.isNoOfOptionOverLimit = true;
         }
@@ -195,6 +198,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      */
     saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
+        this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.id = 0);
         if (singleMultipleAnswerQuestion.question.questionType === 0) {
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
             singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[this.indexOfOptionSelected].isAnswer = true;
