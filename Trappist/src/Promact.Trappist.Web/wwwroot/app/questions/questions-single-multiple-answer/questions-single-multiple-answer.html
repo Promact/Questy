@@ -8,7 +8,7 @@
         <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm">
             <div class="form-fields">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Question Test" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required />
+                    <input type="text" class="form-control" placeholder="Question Text" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required />
                     <div class="errors-container">
                         <span *ngIf="question.invalid && question.touched" class="error-msg">Question field is required</span>
                     </div>
