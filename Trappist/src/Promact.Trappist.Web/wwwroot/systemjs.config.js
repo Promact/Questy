@@ -32,7 +32,8 @@
             'clipboard': 'npm:clipboard/dist/clipboard.js',
             'ngx-clipboard': 'npm:ngx-clipboard',
             'md2': 'npm:md2/bundles/md2.umd.js',
-            'ng2-ckeditor': 'npm:ng2-ckeditor'
+            'ng2-ckeditor': 'npm:ng2-ckeditor',
+            'angular2-infinite-scroll': 'npm:angular2-infinite-scroll'     
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -52,6 +53,11 @@
             'ng2-ckeditor': {
                 'main': 'lib/index.js',
                 'defaultExtension': 'js'
+            },
+            'angular2-infinite-scroll': {
+                main: 'src/index.js',
+                defaultExtension: 'js'
+
             },
             '.': {
                 defaultExtension: 'js'
