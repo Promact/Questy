@@ -392,9 +392,9 @@ namespace Promact.Trappist.Test.Tests
             testQuestionList.Add(testQuestionObject1);
             testQuestionList.Add(testQuestionObject2);
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
-            var newtest = CreateTest("Maths_Copy");
-            await _testRepository.CreateTestAsync(newtest);
-            await _testRepository.DuplicateTest(oldTest.Id, newtest);
+            var newTest = CreateTest("Maths_Copy");
+            await _testRepository.CreateTestAsync(newTest);
+            await _testRepository.DuplicateTest(oldTest.Id, newTest);
             Assert.Equal(4, _trappistDbContext.TestQuestion.Count());
             Assert.Equal(4, _trappistDbContext.TestCategory.Count());
         }
