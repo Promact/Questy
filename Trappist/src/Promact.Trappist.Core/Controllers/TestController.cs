@@ -239,6 +239,22 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             return Ok(testAcObject);
         }
+
+        /// <summary>
+        /// Gets all the Question in a Test. Answers of the questions are excluded.
+        /// </summary>
+        /// <param name="id">Id of the Test</param>
+        /// <returns>List of QuestionAC object</returns>
+        [HttpGet("testquestion/{id}")]
+        public async Task<IActionResult> GetTestQuestionByTestIdAsync([FromRoute] int id)
+        {
+            if (!await _testRepository.IsTestExists(id))
+            {
+                return NotFound();
+            }
+
+            return Ok(await _testRepository.GetTestQuestionByTestIdAsync(id));
+        }
         #endregion
 
         #region Duplicate Test
