@@ -173,7 +173,7 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
-            var attendeeId = await _trappistDbContext.TestAttendees.Where(x=>x.Email==testAttendee.Email).Select(x=>x.Id).FirstOrDefaultAsync();
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email == testAttendee.Email).Select(x => x.Id).FirstOrDefaultAsync();
             var answer = "This is an answer";
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
@@ -297,4 +297,4 @@ namespace Promact.Trappist.Test.TestConduct
         }
         #endregion
     }
-}      
+}

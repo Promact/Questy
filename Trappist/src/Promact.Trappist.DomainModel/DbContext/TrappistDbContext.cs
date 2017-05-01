@@ -71,7 +71,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestCategory> TestCategory { get; set; }
         public DbSet<TestQuestion> TestQuestion { get; set; }
         public DbSet<TestConduct> TestConduct { get; set; }
-        public DbSet<Answers> Answers { get; set; }
+        public DbSet<TestAnswers> TestAnswers { get; set; }
         public DbSet<AttendeeAnswers> AttendeeAnswers { get; set; }
       
         #region Overridden Methods  
