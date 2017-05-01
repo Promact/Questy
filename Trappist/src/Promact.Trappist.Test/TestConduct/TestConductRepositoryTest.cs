@@ -18,6 +18,8 @@ using System;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Promact.Trappist.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.Enum;
 
@@ -33,6 +35,7 @@ namespace Promact.Trappist.Test.TestConduct
         private readonly Mock<IGlobalUtil> _globalUtil;
         private readonly IStringConstants _stringConstants;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
         #endregion
 
@@ -44,6 +47,7 @@ namespace Promact.Trappist.Test.TestConduct
             _globalUtil = _scope.ServiceProvider.GetService<Mock<IGlobalUtil>>();
             _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
+            _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
         }
         #endregion
 
@@ -159,9 +163,7 @@ namespace Promact.Trappist.Test.TestConduct
                 CreateQuestionAC(true,"Category3 type question", category3.Id, 4),
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
-
-            TestInstructionsAC testInstruction = new TestInstructionsAC();
-            testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
+            var testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
             Assert.NotNull(testInstruction);
         }
 
@@ -225,7 +227,11 @@ namespace Promact.Trappist.Test.TestConduct
 
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             return test;
         }
 

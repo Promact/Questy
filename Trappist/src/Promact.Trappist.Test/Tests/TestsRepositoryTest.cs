@@ -59,7 +59,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task AddTest()
         {
             var test = CreateTest("testname");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test,applicationUser.Id);
             Assert.True(_trappistDbContext.Test.Count() == 1);
         }
 
@@ -70,7 +74,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task UniqueNameTest()
         {
             var test = CreateTest("testname");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test,applicationUser.Id);
             var name = "nameOfTest";
             var id = 0;
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name, id);
@@ -84,7 +92,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task IsNotUniqueNameTest()
         {
             var test = CreateTest("test name");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id); 
             var name = "Test name";
             var id = 0;
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name, id);
@@ -100,7 +112,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task UpdateTestSettingsById()
         {
             var test = CreateTest("AOT 669");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             test.TestName = "IIT BANGALORE";
             test.BrowserTolerance = 2;
             await _testRepository.UpdateTestByIdAsync(test);
@@ -116,7 +132,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task UpdateTestName()
         {
             var test = CreateTest("AOT 669");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             test.TestName = "MCKV";
             await _testRepository.UpdateTestNameAsync(test.Id, test);
             var TestName = "MCKV";
@@ -133,7 +153,11 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("Aptitude");
             var testAttendee = TestAttendee();
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             testAttendee.Test = test;
             testAttendee.TestId = test.Id;
             _trappistDbContext.TestAttendees.Add(testAttendee);
@@ -148,7 +172,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task IsAttendeeNotExistAsync()
         {
             var test = CreateTest("Aptitude");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             var isNotExist = await _testRepository.IsTestAttendeeExistAsync(test.Id);
             Assert.False(isNotExist);
         }
@@ -160,7 +188,11 @@ namespace Promact.Trappist.Test.Tests
         public async Task DeleteTestAsync()
         {
             var test = CreateTest("Logical");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.DeleteTestAsync(test.Id);
             Assert.Equal(0, _trappistDbContext.Test.Count());
         }
@@ -182,7 +214,11 @@ namespace Promact.Trappist.Test.Tests
             categoryList.Add(categoryObject);
             var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             var test = CreateTest("Final");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             categoryListAc[0].IsSelect = true;
             categoryListAc[1].IsSelect = false;
             var testCategoryList = new List<TestCategory>();
@@ -211,7 +247,7 @@ namespace Promact.Trappist.Test.Tests
             await _categoryRepository.AddCategoryAsync(categoryObject);
             categoryList.Add(categoryObject);
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test,user.Id);
             var testCategoryList = new List<TestCategory>();
             var testCategory = new TestCategory();
             testCategory.TestId = test.Id;
@@ -262,7 +298,11 @@ namespace Promact.Trappist.Test.Tests
             categoryList.Add(category);
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var questionListAc = new List<QuestionAC>();
             questionListAc.Add(CreateQuestionAc(true, "This will be added..", category.Id, 1));
@@ -301,7 +341,7 @@ namespace Promact.Trappist.Test.Tests
             var AllQuestions = await _questionRepository.GetAllQuestionsAsync(user.Id);
             List<Question> ListAC = AllQuestions.ToList();
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
 
             //Adding categories to test
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
@@ -375,7 +415,11 @@ namespace Promact.Trappist.Test.Tests
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             //Creating Test
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var testAc = await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
             Assert.Equal(1, testAc.CategoryAcList.Count());
@@ -397,7 +441,11 @@ namespace Promact.Trappist.Test.Tests
             var questiontoCreate2 = "Question2";
             var question2 = CreateSingleAnswerQuestion(category1, questiontoCreate2);
             var oldTest = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(oldTest);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(oldTest, applicationUser.Id);
             var testCategoryObject1 = new TestCategory()
             {
                 CategoryId = category1.Id,
