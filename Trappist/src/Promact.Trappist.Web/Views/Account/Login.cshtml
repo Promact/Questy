@@ -12,7 +12,7 @@
         <h2>Sign In</h2>
     </div>
 
-    <form asp-controller="Account" asp-action="Login" method="post">
+    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
         <span class="general-error-msg">@ViewBag.Error</span>
         <div class="form-group">
             <input asp-for="Email" class="form-control" placeholder="Email"/>
