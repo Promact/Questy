@@ -185,6 +185,11 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             categoryListAc[0].IsSelect = true;
             categoryListAc[1].IsSelect = false;
+            var testCategoryList = new List<TestCategory>();
+            var testCategory = new TestCategory();
+            testCategory.TestId = test.Id;
+            testCategory.CategoryId = categoryObject.Id;
+            testCategoryList.Add(testCategory);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
             Assert.True(_trappistDbContext.TestCategory.Count() == 1);
         }
