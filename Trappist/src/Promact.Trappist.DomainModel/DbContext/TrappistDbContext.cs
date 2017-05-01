@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.Web.Models;
-using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
-using System;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Linq;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Web.Models;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.DomainModel.DbContext
 {
@@ -70,7 +70,9 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestAttendees> TestAttendees { get; set; }
         public DbSet<TestCategory> TestCategory { get; set; }
         public DbSet<TestQuestion> TestQuestion { get; set; }
-
+        public DbSet<TestConduct> TestConduct { get; set; }
+        public DbSet<Answers> Answers { get; set; }
+        public DbSet<AttendeeAnswers> AttendeeAnswers { get; set; }
       
         #region Overridden Methods  
         public override int SaveChanges()
