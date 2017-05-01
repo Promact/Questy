@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
-using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -18,16 +16,14 @@ namespace Promact.Trappist.Core.Controllers
         #region Dependencies
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, UserManager<ApplicationUser> userManager)
+        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository)
         {
             _testConductRepository = testConductRepository;
             _testRepository = testRepository;
-            _userManager = userManager;
         }
         #endregion
 
