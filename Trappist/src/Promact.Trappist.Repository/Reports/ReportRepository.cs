@@ -21,7 +21,7 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<ICollection<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
-            return await _dbContext.TestAttendees.Where(t => t.TestId == id).ToListAsync();
+            return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
         }
 
         public async Task SetStarredCandidateAsync(int id)
@@ -31,9 +31,13 @@ namespace Promact.Trappist.Repository.Reports
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SetAllCandidateStarredAsync(int id, bool status)
+        public async Task SetAllCandidateStarredAsync(int id, bool status, List<int> idList)
         {
-            await _dbContext.TestAttendees.Where(t => t.TestId == id).ForEachAsync(k => k.StarredCandidate = status);
+            for (int i = 0; i < idList.Count; i++)
+            {
+                var attendee = await _dbContext.TestAttendees.FindAsync(idList[i]);
+                attendee.StarredCandidate = status;
+            }
             await _dbContext.SaveChangesAsync();
         }
     }
