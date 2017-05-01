@@ -63,7 +63,7 @@ namespace Promact.Trappist.Test.Tests
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            await _testRepository.CreateTestAsync(test,applicationUser.Id);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             Assert.True(_trappistDbContext.Test.Count() == 1);
         }
 
@@ -78,7 +78,7 @@ namespace Promact.Trappist.Test.Tests
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            await _testRepository.CreateTestAsync(test,applicationUser.Id);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             var name = "nameOfTest";
             var id = 0;
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name, id);
@@ -96,7 +96,7 @@ namespace Promact.Trappist.Test.Tests
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            await _testRepository.CreateTestAsync(test, applicationUser.Id); 
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             var name = "Test name";
             var id = 0;
             bool isExist = await _testRepository.IsTestNameUniqueAsync(name, id);
@@ -247,7 +247,7 @@ namespace Promact.Trappist.Test.Tests
             await _categoryRepository.AddCategoryAsync(categoryObject);
             categoryList.Add(categoryObject);
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test,user.Id);
+            await _testRepository.CreateTestAsync(test, user.Id);
             var testCategoryList = new List<TestCategory>();
             var testCategory = new TestCategory();
             testCategory.TestId = test.Id;
@@ -479,7 +479,7 @@ namespace Promact.Trappist.Test.Tests
             testQuestionList.Add(testQuestionObject2);
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
             var newTest = CreateTest("Maths_Copy");
-            await _testRepository.CreateTestAsync(newTest);
+            await _testRepository.CreateTestAsync(newTest, applicationUser.Id);
             await _testRepository.DuplicateTest(oldTest.Id, newTest);
             Assert.Equal(4, _trappistDbContext.TestQuestion.Count());
             Assert.Equal(4, _trappistDbContext.TestCategory.Count());
