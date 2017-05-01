@@ -1,24 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
 {
+    [Authorize]
     [Route("api/conduct")]
     public class TestConductController : Controller
     {
         #region Private Variables
         #region Dependencies
         private readonly ITestConductRepository _testConductRepository;
+        private readonly ITestsRepository _testRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository)
+        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, UserManager<ApplicationUser> userManager)
         {
             _testConductRepository = testConductRepository;
+            _testRepository = testRepository;
+            _userManager = userManager;
         }
         #endregion
 
@@ -38,6 +47,39 @@ namespace Promact.Trappist.Core.Controllers
                 return Ok(true);
             }
             return BadRequest();
+        }
+
+        /// <summary>
+        /// Adds answer to the Database as a Key-Value pair
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        /// <param name="answer">Answer submitted</param>
+        /// <returns></returns>
+        [HttpPut("answer/{attendeeId}")]
+        public async Task<IActionResult> AddAnswerAsync([FromRoute]int attendeeId, [FromBody]string answer)
+        {
+            if(answer.Length == 0)
+            {
+                return BadRequest();
+            }
+            if(!await _testRepository.IsTestAttendeeExistAsync(attendeeId))
+            {
+                return NotFound();
+            }
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+
+            return Ok(answer);
+        }
+
+        [HttpGet("answer/{attendeeId}")]
+        public async Task<IActionResult> GetAnswerAsync([FromRoute]int attendeeId)
+        {
+            if(!await _testRepository.IsTestAttendeeExistAsync(attendeeId))
+            {
+                return NotFound();
+            }
+
+            return Ok(await _testConductRepository.GetAnswerAsync(attendeeId));
         }
 
         #region Test-Instruction API
