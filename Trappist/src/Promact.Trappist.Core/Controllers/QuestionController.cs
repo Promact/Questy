@@ -71,11 +71,11 @@ namespace Promact.Trappist.Core.Controllers
         /// API to get all the Questions
         /// </summary>
         /// <returns>Questions List</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetAllQuestionsAsync()
+        [HttpGet("{numberOfCalls}/{categoryId}/{difficultyLevel}/{searchQuestion?}")]
+        public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int numberOfCalls, [FromRoute] int categoryId,[FromRoute] string difficultyLevel,[FromRoute] string searchQuestion )
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
-            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id));
+            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, numberOfCalls, categoryId, difficultyLevel, searchQuestion));
         }
 
         /// <summary>
@@ -171,6 +171,13 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
             return Ok(questionAC);
+        }
+
+        [HttpGet("numberOfQuestions/{categoryId}")]
+        public async Task<IActionResult> GetNumberOfQuestions([FromRoute] int categoryId)
+        {
+            var question = await _questionsRepository.GetNumberOfQuestionsAsync(categoryId);
+            return Ok(question);
         }
         #endregion
     }

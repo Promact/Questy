@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,39 @@ namespace Promact.Trappist.Repository.Questions
             return await _dbContext.Question.AnyAsync(x => x.Id == questionId);
         }
 
-        public async Task<ICollection<Question>> GetAllQuestionsAsync(string userId)
+        public async Task<ICollection<Question>> GetAllQuestionsAsync(string userId, int numberOfCalls, int categoryId, string difficultyLevel, string searchQuestion)
         {
-            return (await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId)).Include(x => x.Category).Include(x => x.CodeSnippetQuestion).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).ToListAsync());
+
+            if (categoryId == 0 && difficultyLevel.Equals("All"))
+            {
+                if (searchQuestion != null)
+                    return await _dbContext.Question.Where(x => x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant())).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                else
+                    return await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId)).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+            }
+            else if (categoryId != 0 && difficultyLevel.Equals("All"))
+            {
+                if (searchQuestion != null)
+                    return await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant())).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                else
+                    return await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId) && u.CategoryID == categoryId).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+            }
+            else if (categoryId == 0 && !difficultyLevel.Equals("All"))
+            {
+                var difficultyLevelCode = (DifficultyLevel)Enum.Parse(typeof(DifficultyLevel), difficultyLevel);
+                if (searchQuestion != null)
+                    return await _dbContext.Question.Where(x => x.DifficultyLevel == difficultyLevelCode && x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant())).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                else
+                    return await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId) && u.DifficultyLevel == difficultyLevelCode).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+            }
+            else
+            {
+                var difficultyLevelCode = (DifficultyLevel)Enum.Parse(typeof(DifficultyLevel), difficultyLevel);
+                if (searchQuestion != null)
+                    return await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.DifficultyLevel == difficultyLevelCode && x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant())).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                else
+                    return await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId) && u.DifficultyLevel == difficultyLevelCode && u.CategoryID == categoryId).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+            }
         }
 
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
@@ -277,6 +308,25 @@ namespace Promact.Trappist.Repository.Questions
             _dbContext.Question.Remove(questionToDelete);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<NumberOfQuestions> GetNumberOfQuestionsAsync(int categoryId)
+        {
+            var numberOfQuestions = new NumberOfQuestions();
+            if (categoryId != 0)
+            {
+                numberOfQuestions.NumberOfEasyQuestions = await _dbContext.Question.Where(y => y.CategoryID == categoryId && y.DifficultyLevel == DifficultyLevel.Easy).CountAsync();
+                numberOfQuestions.NumberOfMediumQuestions = await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.DifficultyLevel == DifficultyLevel.Medium).CountAsync();
+                numberOfQuestions.NumberOfHardQuestions =  await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.DifficultyLevel == DifficultyLevel.Hard).CountAsync();
+            }
+            else
+            {
+                numberOfQuestions.NumberOfEasyQuestions = await _dbContext.Question.Where(y => y.DifficultyLevel == DifficultyLevel.Easy).CountAsync();
+                numberOfQuestions.NumberOfMediumQuestions = await _dbContext.Question.Where(x => x.DifficultyLevel == DifficultyLevel.Medium).CountAsync();
+                numberOfQuestions.NumberOfHardQuestions = await _dbContext.Question.Where(x => x.DifficultyLevel == DifficultyLevel.Hard).CountAsync();
+            }
+            return numberOfQuestions;
+        }
     }
+
     #endregion
 }
