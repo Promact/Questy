@@ -13,6 +13,8 @@ namespace Promact.Trappist.Repository.Tests
         /// this method is used to create a new test
         /// </summary>
         /// <param name="test">object of Test</param>
+        /// <param name="userId">id of the user who created the test</param>
+        /// <returns></returns>
         Task CreateTestAsync(Test test, string userId);
 
         /// <summary>

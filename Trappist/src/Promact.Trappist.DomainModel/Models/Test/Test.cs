@@ -1,5 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,5 +30,6 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public virtual ICollection<TestQuestion> TestQuestion { get; set; }
         public virtual ICollection<TestCategory> TestCategory { get; set; }
         public string CreatedByUserId { get; set; }
+        public virtual ApplicationUser CreatedByUser { get; set; }
     }
 }
