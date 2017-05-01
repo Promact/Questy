@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.TestConduct;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -75,7 +75,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task AddAnswerAsync(int attendeeId, string answers)
         {
-            if(await _dbContext.AttendeeAnswers.AnyAsync(x=>x.Id == attendeeId))
+            if (await _dbContext.AttendeeAnswers.AnyAsync(x => x.Id == attendeeId))
             {
                 var answersToUpdate = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
                 answersToUpdate.Answers = answers;
@@ -90,10 +90,11 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<string> GetAnswerAsync(int attendeeId)
+        public async Task<TestAnswerAC> GetAnswerAsync(int attendeeId)
         {
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-            return attendee.Answers;
+            var deserializedAttendeeAnswers = JsonConvert.DeserializeObject<TestAnswerAC>(attendee.Answers);
+            return deserializedAttendeeAnswers;
         }
         #endregion
     }

@@ -19,6 +19,7 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.Enum;
 
 namespace Promact.Trappist.Test.TestConduct
 {
@@ -173,7 +174,8 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
-            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email == testAttendee.Email).Select(x => x.Id).FirstOrDefaultAsync();
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+            
             var answer = "This is an answer";
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
@@ -195,12 +197,13 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
-            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email == testAttendee.Email).Select(x => x.Id).FirstOrDefaultAsync();
-            var answer = "This is an answer";
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+            //JSON string
+            var answer = "{ \"questionId\":1,\"optionChoice\":[1],\"code\":null,\"questionStatus\":1}";
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
 
-            Assert.True(attendeeAnswer.Equals(answer));
+            Assert.True(attendeeAnswer.QuestionId == 1 && attendeeAnswer.OptionChoice.Count() == 1 && attendeeAnswer.QuestionStatus == QuestionStatus.review);
         }
         #endregion
 
