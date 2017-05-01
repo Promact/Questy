@@ -85,6 +85,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.countQuestion();
             this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
             this.loader = false;
+            window.scrollTo(0, 0);
         });
     }
 
@@ -108,6 +109,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.countQuestion();
         this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
         this.loader = false;
+        window.scrollTo(0, 0);
     }
 
     /**
