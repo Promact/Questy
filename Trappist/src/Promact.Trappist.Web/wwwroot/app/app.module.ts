@@ -1,8 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { PageNotFoundModule } from '../app/page-not-found/page-not-found.module';
-
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from '../app/page-not-found/page-not-found.component';
@@ -24,7 +22,6 @@ import { ReportsModule } from './reports/reports.module';
         TestsModule,
         ProfileModule,
         ReportsModule,
-        PageNotFoundModule
     ],
     providers: [
 
@@ -32,6 +29,7 @@ import { ReportsModule } from './reports/reports.module';
 
     declarations: [
         AppComponent,
+        PageNotFoundComponent
     ]
 })
 export class AppModule { }

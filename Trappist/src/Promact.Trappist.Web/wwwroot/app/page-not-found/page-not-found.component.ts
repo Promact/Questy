@@ -6,7 +6,4 @@
     templateUrl: 'page-not-found.html'
 })
 
-export class PageNotFoundComponent {
-
-    constructor(){}
-}
+export class PageNotFoundComponent {}
