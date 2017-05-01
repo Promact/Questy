@@ -56,7 +56,7 @@ namespace Promact.Trappist.Core.Controllers
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             if (ModelState.IsValid)
             {
-                await _testRepository.CreateTestAsync(test,applicationUser.Id);
+                await _testRepository.CreateTestAsync(test, applicationUser.Id);
                 return Ok(test);
             }
             else
@@ -279,7 +279,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            await _testRepository.CreateTestAsync(test,applicationUser.Id);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
             return Ok(await _testRepository.DuplicateTest(id, test));
         }
         #endregion
