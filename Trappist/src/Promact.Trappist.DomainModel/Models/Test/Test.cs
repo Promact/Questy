@@ -29,6 +29,5 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public virtual ICollection<TestQuestion> TestQuestion { get; set; }
         public virtual ICollection<TestCategory> TestCategory { get; set; }
         public string CreatedByUserId { get; set; }
-
     }
 }
