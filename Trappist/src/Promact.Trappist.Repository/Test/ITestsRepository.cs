@@ -120,6 +120,13 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
         /// <returns>TestAC object</returns>       
         Task<TestAC> GetTestByIdAsync(int testId);
+        
+        /// <summary>
+        /// Gets all the question by Test Id. No answers are returned with the question.
+        /// </summary>
+        /// <param name="testId">Id of Test</param>
+        /// <returns>Collection of QuestionAC object</returns>
+        Task<ICollection<QuestionAC>> GetTestQuestionByTestIdAsync(int testId);
         #endregion
         #region Duplicate Test
         /// <summary>

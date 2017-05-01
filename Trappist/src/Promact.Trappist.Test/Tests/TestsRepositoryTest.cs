@@ -322,6 +322,37 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
 
+        #region Get Test Question
+        [Fact]
+        public async Task GetTestQuestionByTestIdAsyncTest()
+        {
+            string userName = "deepankar@promactinfo.com";
+            var user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+            var categoryObj = CreateCategory("category1");
+            await _categoryRepository.AddCategoryAsync(categoryObj);
+
+            var questionAC = CreateQuestionAc(true, "This is some question detail", categoryObj.Id, 1);
+            var questionACList = new List<QuestionAC>();
+            questionACList.Add(questionAC);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
+
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
+
+            var testQuestion = new TestQuestion();
+            testQuestion.QuestionId = questionAC.Question.Id;
+            testQuestion.TestId = test.Id;
+            await _testRepository.AddTestQuestionsAsync(questionACList, test.Id);
+
+            var questionList = await _testRepository.GetTestQuestionByTestIdAsync(test.Id);
+
+            Assert.True(questionList.Count == 1);
+        }
+        #endregion
+
         #region Get Test Details
         /// <summary>
         ///Test case for  getting test details containing categories only
