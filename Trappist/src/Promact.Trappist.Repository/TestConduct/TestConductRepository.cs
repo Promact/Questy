@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Promact.Trappist.DomainModel.Models.TestConduct;
-using Promact.Trappist.DomainModel.DbContext;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
-using System.Collections.Generic;
+using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.TestConduct;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -71,6 +71,29 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => (x.Link == magicString)));
             return isTestLinkExist;
+        }
+
+        public async Task AddAnswerAsync(int attendeeId, string answers)
+        {
+            if(await _dbContext.AttendeeAnswers.AnyAsync(x=>x.Id == attendeeId))
+            {
+                var answersToUpdate = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+                answersToUpdate.Answers = answers;
+            }
+            else
+            {
+                var attendeeAnswers = new AttendeeAnswers();
+                attendeeAnswers.Id = attendeeId;
+                attendeeAnswers.Answers = answers;
+                await _dbContext.AddAsync(attendeeAnswers);
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<string> GetAnswerAsync(int attendeeId)
+        {
+            var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+            return attendee.Answers;
         }
         #endregion
     }

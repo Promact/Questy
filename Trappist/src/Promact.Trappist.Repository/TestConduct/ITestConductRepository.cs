@@ -35,5 +35,18 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testLink">link to conduct a particular test</param>
         /// <returns>instructions for a particular test</returns>
         Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink);
+        
+        /// <summary>
+        /// Stores answers as Key-Value pair in the Database
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        Task AddAnswerAsync(int attendeeId, string answers);
+
+        /// <summary>
+        /// Gets answers from the Database
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        /// <returns>Answers as a string type</returns>
+        Task<string> GetAnswerAsync(int attendeeId);
     }
 }
