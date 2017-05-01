@@ -18,6 +18,7 @@ using System;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Trappist.Test.TestConduct
 {
@@ -163,6 +164,47 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.NotNull(testInstruction);
         }
 
+        /// <summary>
+        /// Test to add answer
+        /// </summary>
+        [Fact]
+        public async Task AddAnswersAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x=>x.Email==testAttendee.Email).Select(x=>x.Id).FirstOrDefaultAsync();
+            var answer = "This is an answer";
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+            var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
+
+            Assert.True(attendeeAnswer.Answers.Equals(answer));
+
+            var newAnswer = "This is a new answer";
+            await _testConductRepository.AddAnswerAsync(attendeeId, newAnswer);
+
+            Assert.True(attendeeAnswer.Answers.Equals(newAnswer));
+        }
+
+        /// <summary>
+        /// Test to get answer
+        /// </summary>
+        [Fact]
+        public async Task GetAnswersAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email == testAttendee.Email).Select(x => x.Id).FirstOrDefaultAsync();
+            var answer = "This is an answer";
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+            var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
+
+            Assert.True(attendeeAnswer.Equals(answer));
+        }
+        #endregion
+
+        #region Private Methods
         /// <summary>
         /// This method used for creating a test.
         /// </summary>
