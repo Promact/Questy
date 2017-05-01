@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Promact.Trappist.Core.Controllers
 {
     [Authorize]
-    [Route("api/conduct")]
+    [Route("api/testconduct")]
     public class TestConductController : Controller
     {
         #region Private Variables

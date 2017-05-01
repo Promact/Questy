@@ -3,7 +3,7 @@ import { HttpService } from '../core/http.service';
 
 @Injectable()
 export class ConductService {
-    private registerTestAttendeeApiUrl: string = '/api/conduct/';
+    private registerTestAttendeeApiUrl: string = '/api/testconduct/';
 
     constructor(private httpService: HttpService) {
     }
