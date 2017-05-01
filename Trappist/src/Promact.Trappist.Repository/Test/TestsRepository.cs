@@ -264,12 +264,13 @@ namespace Promact.Trappist.Repository.Tests
             var questionList = new List<QuestionAC>();
 
             await _dbContext.TestQuestion
-                .Include(x=>x.Question)
-                .ThenInclude(x=>x.SingleMultipleAnswerQuestion)
-                .ThenInclude(x=>x.SingleMultipleAnswerQuestionOption)
-                .Include(x=>x.Question.CodeSnippetQuestion)
-                .ForEachAsync(x =>{
-                    question.Question =  Mapper.Map<QuestionDetailAC>(x.Question);
+                .Include(x => x.Question)
+                .ThenInclude(x => x.SingleMultipleAnswerQuestion)
+                .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
+                .Include(x => x.Question.CodeSnippetQuestion)
+                .ForEachAsync(x =>
+                {
+                    question.Question = Mapper.Map<QuestionDetailAC>(x.Question);
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
                     //Hinding answers

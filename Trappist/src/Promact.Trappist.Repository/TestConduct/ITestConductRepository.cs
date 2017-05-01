@@ -37,16 +37,16 @@ namespace Promact.Trappist.Repository.TestConduct
         Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink);
         
         /// <summary>
-        /// Stores answers as Key-Value pair in the Database
+        /// Store answers as Key-Value pair in the Database
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
         Task AddAnswerAsync(int attendeeId, string answers);
 
         /// <summary>
-        /// Gets answers from the Database
+        /// Get answers from the Database
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <returns>Answers as a string type</returns>
-        Task<string> GetAnswerAsync(int attendeeId);
+        Task<TestAnswerAC> GetAnswerAsync(int attendeeId);
     }
 }
