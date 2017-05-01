@@ -32,10 +32,11 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         #region Test 
-        public async Task CreateTestAsync(Test test)
+        public async Task CreateTestAsync(Test test, string userId)
         {
             test.TestName = test.TestName.AllTrim();
             test.Link = _util.GenerateRandomString(10);
+            test.CreatedByUserId = userId;
             _dbContext.Test.Add(test);
             await _dbContext.SaveChangesAsync();
         }

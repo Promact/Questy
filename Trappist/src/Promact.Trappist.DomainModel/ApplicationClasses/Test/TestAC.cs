@@ -40,5 +40,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
         public TestOrder OptionOrder { get; set; }
 
         public List<CategoryAC> CategoryAcList { get; set; }
+
+        public string CreatedByUserId { get; set; }
     }
 }
