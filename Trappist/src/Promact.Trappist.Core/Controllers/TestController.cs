@@ -53,9 +53,10 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTest([FromBody] Test test)
         {
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             if (ModelState.IsValid)
             {
-                await _testRepository.CreateTestAsync(test);
+                await _testRepository.CreateTestAsync(test,applicationUser.Id);
                 return Ok(test);
             }
             else
@@ -273,11 +274,12 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("{id}/duplicateTest")]
         public async Task<IActionResult> DuplicateTest([FromRoute]int id, [FromBody]Test test)
         {
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test,applicationUser.Id);
             return Ok(await _testRepository.DuplicateTest(id, test));
         }
         #endregion
