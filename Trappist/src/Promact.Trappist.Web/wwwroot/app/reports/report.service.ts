@@ -13,7 +13,7 @@ export class ReportService {
     setStarredCandidate(attendeeId: number) {
         return this.httpService.post(this.reportsApiUrl+'/star'+'/'+attendeeId,attendeeId);
     }
-    setAllCandidatesStarred(testId: number, status: boolean) {
-        return this.httpService.put(this.reportsApiUrl + '/star/all/' + testId, status);
+    setAllCandidatesStarred(testId: number, status: boolean, idList: number[]) {
+        return this.httpService.put(this.reportsApiUrl + '/star/all/' + testId + '/' + status, idList);
     }
 } 
