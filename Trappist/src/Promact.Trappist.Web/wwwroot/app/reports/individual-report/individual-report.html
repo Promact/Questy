@@ -1,8 +1,12 @@
-﻿<div class="individual-report">
+﻿<div class="loader-container" *ngIf="loader">
+    <div class="spinner">
+    </div>
+</div>
+<div class="individual-report">
     <div class="test-create-header clearfix">
         <div class="container">
             <h1 class="pull-left">
-                <span class="test-name">BBIT 10-08-2017</span>
+                <span class="test-name">{{testName}}</span>
             </h1>
             <div class="pull-right">
                 <button type="button" class="btn"><em class="material-icons">file_download</em> Download</button>
@@ -19,14 +23,14 @@
         </div>
         <div class="candidate-details-block">
             <div class="candidate-details-title">
-                <h1 class="mb5">Jane Roe</h1>
-                <p class="mb0">jane.roe@gmail.com</p>
+                <h1 class="mb5">{{testAttendee?.firstName}} {{testAttendee?.lastName}}</h1>
+                <p class="mb0">{{testAttendee?.email}}</p>
             </div>
             <div class="candidate-details-body clearfix">
                 <div class="col-lg-6 col-md-6 col-sm-5 candidate-test-details">
-                    <p><strong>Test Date</strong> Sun Jan 01 2017</p>
-                    <p><strong>Test Finish Status</strong> Auto Submit</p>
-                    <p><strong>Roll No.</strong> 5</p>
+                    <p><strong>Test Date</strong>{{testAttendee?.createdDateTime |date:'fullDate'}}</p>
+                    <p><strong>Test Finish Status</strong>{{testState}}</p>
+                    <p><strong>Roll No.</strong>{{testAttendee?.rollNumber}}</p>
                     <p><strong>Time Taken</strong> 2 hrs 15 mins</p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
@@ -66,55 +70,23 @@
         </div>
         <h2>Test Details</h2>
         <div class="test-details-block">
-            <div class="question-score-box clearfix">
+            <div class="question-score-box clearfix" *ngFor="let question of testQuestions;let i=index">
                 <div class="col-lg-10 col-md-10 col-sm-10">
                     <div class="qs-container">
-                        <p class="qs-num">Q.1</p>
+                        <p class="qs-num">Q.{{i+1}}</p>
                         <div class="qs-text">
-                            <p class="question">What is Git?</p>
-                            <p class="ans-option correct"><span>a.</span> <span>Distributed Source Control System</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
+                            <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                            <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption;let j=index">
+                                <p *ngIf="QuestionType[question.question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{j+1}}) </span> <span>{{option.option}}</span></p>
+                            </div>
+                            <!--<p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
                             <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option wrong"><span>d.</span> <span>None of the above</span></p>
+                            <p class="ans-option wrong"><span>d.</span> <span>None of the above</span></p>-->
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-2 text-right">
                     <div class="score negative">Score: -1</div>
-                </div>
-            </div>
-            <div class="question-score-box clearfix">
-                <div class="col-lg-10 col-md-10 col-sm-10">
-                    <div class="qs-container">
-                        <p class="qs-num">Q.2</p>
-                        <div class="qs-text">
-                            <p class="question">Today is Monday, After 61 days, it will be</p>
-                            <p class="ans-option"><span>a.</span> <span>Wednesday</span></p>
-                            <p class="ans-option correct"><span>b.</span> <span>Saturday</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Tuesday</span></p>
-                            <p class="ans-option"><span>d.</span> <span>Thursday</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
-                    <div class="score positive">Score: +4</div>
-                </div>
-            </div>
-            <div class="question-score-box clearfix">
-                <div class="col-lg-10 col-md-10 col-sm-10">
-                    <div class="qs-container">
-                        <p class="qs-num">Q.3</p>
-                        <div class="qs-text">
-                            <p class="question">Which type of C++ object can have its elements changed, added to, or removed?</p>
-                            <p class="ans-option"><span>a.</span> <span>String</span></p>
-                            <p class="ans-option"><span>b.</span> <span>Mutable</span></p>
-                            <p class="ans-option"><span>c.</span> <span>MemDev()</span></p>
-                            <p class="ans-option"><span>d.</span> <span>Immutable</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
-                    <div class="score">Score: 0</div>
                 </div>
             </div>
             <div class="question-score-box clearfix">

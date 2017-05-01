@@ -41,16 +41,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let i of report.data">
+                    <tr *ngFor="let i of testAttendeeArray">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
                         <td><em class="material-icons">star_border</em></td>
-                        <td class="theme-text font-semibold">{{i.name}}</td>
+                        <td class="theme-text font-semibold">{{i.firstName}} {{i.lastName}}</td>
                         <td>{{i.email}}</td>
-                        <td>{{i.date}}</td>
+                        <td>{{i.createdDateTime}}</td>
                         <td>{{i.score}}</td>
                         <td>{{i.percentage}}</td>
                         <td><em class="material-icons">file_download</em></td>
-                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
+                        <td class="text-right"><em class="material-icons" (click)="viewIndividualReport(i)">remove_red_eye</em></td>
                     </tr>
                 </tbody>
                 <tfoot>

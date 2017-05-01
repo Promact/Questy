@@ -1,4 +1,7 @@
 ﻿import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReportService } from '../report.service';
+import { TestAttendee } from '../testattendee.model';
 
 @Component({
     moduleId: module.id,
@@ -7,8 +10,23 @@
 })
 
 export class TestReportComponent {
-
+    testId: number;
     showSearchInput: boolean;
+    testAttendeeArray: TestAttendee[] = new Array<TestAttendee>();
+    constructor(private route: ActivatedRoute, private reportsService: ReportService, private router: Router) {
+        this.testId = this.route.snapshot.params['id'];
+        console.log(this.testId);
+        this.testReport();
+
+    }
+
+    testReport() {
+        this.reportsService.getAllTestAttendees(this.testId).subscribe((response) => {
+            console.log(response);
+            this.testAttendeeArray = response;
+            console.log(this.testAttendeeArray);
+        });
+    }
 
     /**
      * Data for Report Table
@@ -30,4 +48,8 @@ export class TestReportComponent {
         { name: 'John Doe', email: 'joh.doe@gmail.com', date: 'Sun Jan 13 2017', score: 125, percentage: '62 %' },
         { name: 'John Doe', email: 'joh.doe@gmail.com', date: 'Sun Jan 14 2017', score: 125, percentage: '62 %' }
     ];
+
+    viewIndividualReport(testAttendee: TestAttendee) {
+        this.router.navigate(['/reports/' + testAttendee.id + '/individual-report']);
+    }
 }

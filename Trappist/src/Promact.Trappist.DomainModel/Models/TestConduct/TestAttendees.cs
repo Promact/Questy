@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Promact.Trappist.DomainModel.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.TestConduct
@@ -28,5 +29,7 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         [ForeignKey("TestId")]
         public virtual Test.Test Test { get; set; }
+
+        public TestState TestState { get; set; }
     }
 }
