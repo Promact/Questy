@@ -3,6 +3,7 @@ import { HttpService } from '../core/http.service';
 import { Question } from './question.model';
 import { QuestionBase } from './question';
 import { QuestionDisplay } from '../questions/question-display';
+import { DifficultyLevel } from '../questions/enum-difficultylevel';
 
 @Injectable()
 export class QuestionsService {
@@ -31,8 +32,8 @@ export class QuestionsService {
     /**
      *To get list of Questions
      */
-    getQuestions() {
-        return this.httpService.get(this.questionsApiUrl);
+    getQuestions(index: number, categoryId: number, difficultyLevel: string, searchQuestion: string) {
+        return this.httpService.get(this.questionsApiUrl + '/' + index + '/' + categoryId + '/' + difficultyLevel + '/' + searchQuestion);
     }
 
     /**
@@ -74,4 +75,12 @@ export class QuestionsService {
     updateQuestionById(id: number, question: QuestionBase) {
         return this.httpService.put(this.questionsApiUrl + '/' + id, question);
     }
+    /**
+     * Calls API to get number of questions
+     * @param categoryId
+     */
+    countTheQuestion(categoryId: number) {
+        return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId);
+    }
+
 }

@@ -35,7 +35,7 @@
                 <div class="block-subtitle clearfix">
                     <button type="button" class="btn-link h5 hidden-md hidden-lg" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <ul class="difficulty-levels pull-left">
-                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['']}" (click)="difficultyWiseSearch('')" class="h5">Total ({{easy+medium+hard}})</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['All']}" (click)="difficultyWiseSearch('All')" class="h5">Total ({{easy+medium+hard}})</li>
                         <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Easy']}" (click)="difficultyWiseSearch('Easy')" class="h5">Easy ({{easy}})</li>
                         <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Medium']}" (click)="difficultyWiseSearch('Medium')" class="h5">Medium ({{medium}})</li>
                         <li [ngClass]="{active: selectedDifficulty === DifficultyLevel['Hard']}" (click)="difficultyWiseSearch('Hard')" class="h5">Hard ({{hard}})</li>
@@ -47,7 +47,11 @@
                         <a md-menu-item [routerLink]="['programming']"><em class="material-icons">code</em> Programming</a>
                     </md-menu>
                 </div>
-                <div class="questions-area">
+                <div  class="questions-area" infinite-scroll
+                     [infiniteScrollDistance]="0"
+                     [infiniteScrollThrottle]="20"
+                     [infiniteScrollDisabled]="isAllQuestionsHaveCome"
+                     (scrolled)="getQuestionsOnScrolling()">
                     <div *ngFor="let question of questionDisplay;let i = index" class="qs-block clearfix">
                         <div class="pull-left">
                             <div class="qs-container">
