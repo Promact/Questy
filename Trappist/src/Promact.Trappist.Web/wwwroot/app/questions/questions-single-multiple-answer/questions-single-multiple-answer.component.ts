@@ -40,7 +40,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.difficultyLevel = ['Easy', 'Medium', 'Hard'];
         for (let i = 0; i < this.noOfOptionShown; i++) {
             let option = new SingleMultipleAnswerQuestionOption();
-            option.id = Math.random();
+            option.id = this.findMaxId() + 1;
             this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(option);
         }
     }
@@ -78,6 +78,13 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 this.isNoOfOptionOverLimit = true;
             }
         });
+    }
+
+    /**
+     * Finds the greatest Id of option and increments it
+     */
+    private findMaxId() {
+        return (this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length === 0 ? 0 : Math.max.apply(Math, this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.map(function (o) { return o.id; })));
     }
 
     /**
@@ -127,7 +134,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
         this.noOfOptionShown++;
         let newOption = new SingleMultipleAnswerQuestionOption();
-        newOption.id = Math.random();
+        newOption.id = this.findMaxId() + 1;
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(newOption);
         if (this.noOfOptionShown === 10) {
             this.isNoOfOptionOverLimit = true;
