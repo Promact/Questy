@@ -9,6 +9,8 @@ namespace Promact.Trappist.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+
             migrationBuilder.CreateTable(
                 name: "AttendeeAnswers",
                 columns: table => new
@@ -59,7 +61,7 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Answers",
+                name: "TestAnswers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -72,9 +74,9 @@ namespace Promact.Trappist.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Answers", x => x.Id);
+                    table.PrimaryKey("PK_TestAnswers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answers_TestConduct_TestConductId",
+                        name: "FK_TestAnswers_TestConduct_TestConductId",
                         column: x => x.TestConductId,
                         principalTable: "TestConduct",
                         principalColumn: "Id",
@@ -82,8 +84,8 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answers_TestConductId",
-                table: "Answers",
+                name: "IX_TestAnswers_TestConductId",
+                table: "TestAnswers",
                 column: "TestConductId");
 
             migrationBuilder.CreateIndex(
@@ -100,10 +102,10 @@ namespace Promact.Trappist.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Answers");
+                name: "AttendeeAnswers");
 
             migrationBuilder.DropTable(
-                name: "AttendeeAnswers");
+                name: "TestAnswers");
 
             migrationBuilder.DropTable(
                 name: "TestConduct");
