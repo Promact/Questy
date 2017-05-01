@@ -80,7 +80,10 @@ export class CreateTestHeaderComponent implements OnInit {
     showEditButton(testName: string) {
         this.isEditButtonVisible = true;
         this.isLabelVisible = true;
-        this.nameOfTest = this.testNameReference;
+        if (this.editedTestName)
+            this.nameOfTest = this.editedTestName;
+        else
+            this.nameOfTest = this.testNameReference;
         if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$')) || this.isTestNameExist === true) {
             if (this.nameOfTest)
                 this.testDetails.testName = this.nameOfTest;
