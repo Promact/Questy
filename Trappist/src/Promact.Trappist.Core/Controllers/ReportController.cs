@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.Reports;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -27,10 +28,10 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(attendeeId);
         }
 
-        [HttpPut("star/all/{testId}")]
-        public async Task<IActionResult> SetAllCandidateStarredAsync([FromRoute] int testId, [FromBody] bool status)
+        [HttpPut("star/all/{testId}/{status}")]
+        public async Task<IActionResult> SetAllCandidateStarredAsync([FromRoute] int testId, [FromRoute] bool status, [FromBody] List<int> idList)
         {
-            await _reportRepository.SetAllCandidateStarredAsync(testId, status);
+            await _reportRepository.SetAllCandidateStarredAsync(testId, status, idList);
             return Ok(testId);
         }
     }

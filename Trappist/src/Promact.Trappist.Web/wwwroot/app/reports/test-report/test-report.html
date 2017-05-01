@@ -5,7 +5,7 @@
                 <span class="test-name">BBIT 10-08-2017</span>
             </h1>
             <div class="search-area pull-right mt5">
-                <input type="text" placeholder="Search reports"  [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
+                <input type="text" placeholder="Search reports" [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
                 <button type="button" (click)="showSearchInput = true"><i class="material-icons">search</i></button>
             </div>
         </div>
@@ -26,11 +26,11 @@
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
         <div class="grid-container">
-            <table class="data-grid"[md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
+            <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
-                        <th><md-checkbox class="only-checkbox" ></md-checkbox></th>
-                        <th><em class="material-icons" (click) = "setAllCandidatesStarred(testId)">{{globalStarStatus}}</em></th>
+                        <th><md-checkbox class="only-checkbox"></md-checkbox></th>
+                        <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred(testId)">{{headerStarStatus}}</em></th>
                         <th class="h5" md2SortBy="name">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
                         <th class="h5" md2SortBy="date">Test Date</th>
@@ -43,10 +43,12 @@
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
-                        <td><em class="material-icons" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
+                        <td><em class="material-icons" [ngClass]="{starred : isCandidateStarred}"  (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report']"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report']">{{testAttendee.email}}</td>
                         <td>{{testAttendee.createdDateTime}}</td>
+                        <td>{{testAttendee.report.totalMarksScored}}</td>
+                        <td>{{testAttendee.report.percentage}}
                         <td><em class="material-icons">file_download</em></td>
                         <td class="text-right"><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
                     </tr>
