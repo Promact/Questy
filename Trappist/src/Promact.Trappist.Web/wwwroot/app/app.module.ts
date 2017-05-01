@@ -1,10 +1,11 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { PageNotFoundModule } from '../app/page-not-found/page-not-found.module';
 
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
-
+import { PageNotFoundComponent } from '../app/page-not-found/page-not-found.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { QuestionsModule } from './questions/questions.module';
@@ -22,14 +23,15 @@ import { ReportsModule } from './reports/reports.module';
         QuestionsModule,
         TestsModule,
         ProfileModule,
-        ReportsModule
+        ReportsModule,
+        PageNotFoundModule
     ],
     providers: [
 
     ],
 
     declarations: [
-        AppComponent
+        AppComponent,
     ]
 })
 export class AppModule { }
