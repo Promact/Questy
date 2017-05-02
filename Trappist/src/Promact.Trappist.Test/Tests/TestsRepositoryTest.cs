@@ -265,61 +265,71 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var questionListAc = new List<QuestionAC>();
-            questionListAc.Add(CreateQuestionAc(true, "This will be added..", category.Id, 1));
-            questionListAc.Add(CreateQuestionAc(false, "This will not be added.", category.Id, 2));
+            var question1 = CreateQuestionAc(true, "This will be added..", category.Id, 1);
+            questionListAc.Add(question1);
+            var question2 = CreateQuestionAc(false, "This will not be added.", category.Id, 2);
+            questionListAc.Add(question2);
 
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(_trappistDbContext.TestQuestion.Count() == 1);
+            question1.Question.IsSelect = false;
+            await _testRepository.AddTestQuestionsAsync(questionListAc,test.Id);
+            Assert.True(_trappistDbContext.TestQuestion.Count()==0);
+
         }
 
         /// <summary>
         /// Test Case for getting the questions by passing a particular category Id
         /// </summary>
         /// <returns></returns>
-        //[Fact]
-        //public async Task GetAllTestCategoryQuestionsByIdAsync()
-        //{
-        //    var categoryList = new List<DomainModel.Models.Category.Category>();           
-        //    var category1 = CreateCategory("category1");
-        //    await _categoryRepository.AddCategoryAsync(category1);
-        //    categoryList.Add(category1);
-        //    var category2 = CreateCategory("category2");
-        //    await _categoryRepository.AddCategoryAsync(category2);
-        //    categoryList.Add(category2);
-        //    var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
-        //    string userName = "asifkhan.ak95.ak@gmail.com";           
-        //    //Configuring Application User
-        //    ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-        //    await _userManager.CreateAsync(user);
-        //    var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+        [Fact]
+        public async Task GetAllTestCategoryQuestionsByIdAsync()
+        {
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var category1 = CreateCategory("category1");
+            await _categoryRepository.AddCategoryAsync(category1);
+            categoryList.Add(category1);
+            var category2 = CreateCategory("category2");
+            await _categoryRepository.AddCategoryAsync(category2);
+            categoryList.Add(category2);
+            var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            categoryAcList.ForEach(categoryAc =>
+            {
+                categoryAc.IsSelect = true;
+            });
+            string userName = "asif@gmail.com";
+            //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
-        //    //Creating questions
-        //    var question1 = CreateQuestionAc(true, "This is in Category 1", category1.Id, 0);
-        //    var question2 = CreateQuestionAc(true, "This is in Category 2", category2.Id, 0);
-        //    await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, applicationUser.Id);
-        //    await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, applicationUser.Id);
-        //    var AllQuestions = await _questionRepository.GetAllQuestionsAsync(user.Id);
-        //    List<Question> ListAC = AllQuestions.ToList();
-        //    var test = CreateTest("Maths");
-        //    await _testRepository.CreateTestAsync(test);
+            //Creating questions
+            var question1 = CreateQuestionAc(true, "This is in Category 1", category1.Id, 0);
+            var question2 = CreateQuestionAc(true, "This is in Category 2", category2.Id, 0);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, applicationUser.Id);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, applicationUser.Id);
+            var AllQuestions = await _questionRepository.GetAllQuestionsAsync(user.Id, 0, 0, "All", "");
+            var listAC = AllQuestions.ToList();
+            var test = CreateTest("Maths");
+            await _testRepository.CreateTestAsync(test);
 
-        //    //Adding categories to test
-        //    await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-        //    var questionListAc = new List<QuestionAC>();
-        //    var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(ListAC);
-        //    foreach (var question in questionDetailList)
-        //    {
-        //        var questionAc = new QuestionAC();
-        //        question.IsSelect = true;
-        //        questionAc.Question = question;
-        //        questionListAc.Add(questionAc);
-        //    }
-        //    await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
-        //    var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id, category1.Id);
-        //    Assert.Equal(1, questionAcList.Count);
-        //    Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
-        //    Assert.True(questionAcList[0].Question.IsSelect);
-        //}
+            //Adding categories to test
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
+            var questionListAc = new List<QuestionAC>();
+            var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(listAC);
+            foreach (var question in questionDetailList)
+            {
+                var questionAc = new QuestionAC();
+                question.IsSelect = true;
+                questionAc.Question = question;
+                questionListAc.Add(questionAc);
+            }
+            await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
+            var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id, category1.Id);
+            Assert.Equal(1, questionAcList.Count);
+            Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
+            Assert.True(questionAcList[0].Question.IsSelect);
+        }
 
         #region Get Test Question
         [Fact]
@@ -360,18 +370,22 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetTestDetails()
         {
-            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var categoryAcList = new List<CategoryAC>();
             //Creating Category
             var category = CreateCategory("category Name");
             await _categoryRepository.AddCategoryAsync(category);
-            categoryList.Add(category);
-            var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            var categoryAc = Mapper.Map<DomainModel.Models.Category.Category, CategoryAC>(category);
+            categoryAc.IsSelect = true;
+            categoryAcList.Add(categoryAc);
             //Creating Test
             var test = CreateTest("Maths");
             await _testRepository.CreateTestAsync(test);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var testAc = await _testRepository.GetTestByIdAsync(test.Id);
-            Assert.Equal(1, testAc.CategoryAcList.Count());
+            Assert.True(testAc.CategoryAcList[0].IsSelect == true);
+            await _testRepository.DeleteTestAsync(test.Id);
+            var testAcObject = await _testRepository.GetTestByIdAsync(test.Id);
+            Assert.Null(testAcObject);
         }
         #endregion
 
@@ -535,4 +549,5 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
     }
+    #endregion
 }

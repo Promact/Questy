@@ -116,7 +116,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.question = questionsList;
             if (this.question.length === 0)
-                this.isAllQuestionsHaveCome = true
+                this.isAllQuestionsHaveCome = true;
             else
                 this.isAllQuestionsHaveCome = false;
             this.questionDisplay = this.questionDisplay.concat(this.question);

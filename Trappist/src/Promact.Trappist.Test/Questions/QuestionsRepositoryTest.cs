@@ -36,21 +36,28 @@ namespace Promact.Trappist.Test.Questions
         ///Test to get all Questions 
         /// </summary>
         /// <returns></returns>
-        //[Fact]
-        //public async Task GetAllQuestionsAsyncTest()
-        //{
-        //    string userName = "sandipan@promactinfo.com";
+        [Fact]
+        public async Task GetAllQuestionsAsyncTest()
+        {
+            string userName = "sandipan@promactinfo.com";
 
-        //    ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-        //    await _userManager.CreateAsync(user);
-        //    var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
-        //    var codingQuestion = await CreateCodingQuestion();
-        //    await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
-        //    var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id,2,2,"","");
-        //    Assert.True(result.Count() == 1);
-        //}
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+            string searchQuestion = null;
+            var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "All", searchQuestion);
+            Assert.Equal(1, result.Count());
+            var resultForCategory = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", searchQuestion);
+            Assert.Equal(1, resultForCategory.Count());
+            var resultWithDifficultyLevel = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "Easy", searchQuestion);
+            Assert.Equal(1, resultWithDifficultyLevel.Count());
+            var resultWithSearchInput = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", "Write");
+            Assert.Equal(1, resultWithSearchInput.Count());
+        }
 
         /// <summary>
         /// Test to add single answer Question
@@ -417,6 +424,30 @@ namespace Promact.Trappist.Test.Questions
                 SingleMultipleAnswerQuestion = null
             };
             return codingQuestion;
+        }
+        /// <summary>
+        /// Test Case for getting number of questions difficulty wise
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task GetNUmberOfQuestion()
+        {
+            string userName = "asif@gmail.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            var codinQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codinQuestion, applicationUser.Id);
+
+            var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(0);
+            Assert.Equal(1, numberOfQuestions.NumberOfEasyQuestions);
+            Assert.Equal(0, numberOfQuestions.NumberOfMediumQuestions);
+            Assert.Equal(0, numberOfQuestions.NumberOfHardQuestions);
+            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(codinQuestion.Question.CategoryID);
+            Assert.Equal(1, numberOfQuestionsWithCategory.NumberOfEasyQuestions);
+            Assert.Equal(0, numberOfQuestionsWithCategory.NumberOfMediumQuestions);
+            Assert.Equal(0, numberOfQuestionsWithCategory.NumberOfHardQuestions);
+
         }
 
         /// <summary>

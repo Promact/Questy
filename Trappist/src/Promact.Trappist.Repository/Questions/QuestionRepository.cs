@@ -40,7 +40,11 @@ namespace Promact.Trappist.Repository.Questions
                 if (searchQuestion != null)
                     return await _dbContext.Question.Where(x => x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant())).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Skip(numberOfCalls * 10).Take(10).ToListAsync();
                 else
-                    return await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId)).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                {
+                    var question = await _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId)).Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(g => g.CreatedDateTime).Skip(numberOfCalls * 10).Take(10).ToListAsync();
+                    return question;
+                }
+                   
             }
             else if (categoryId != 0 && difficultyLevel.Equals("All"))
             {
