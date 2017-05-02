@@ -39,14 +39,14 @@ export class TestCreateDialogComponent {
                         this.route.navigate(['tests/' + responses.id + '/sections']);
                     },
                         errorhandling => {
-                            this.openSnackbar('Something went wrong');
+                            this.openSnackbar('Something went wrong!');
                         });
                 }
                 else
                     this.errorMessage = true;
             },
                 errorHandling => {
-                    this.openSnackbar('Something went wrong');
+                    this.openSnackbar('Something went wrong!');
                 });
         }
         else
