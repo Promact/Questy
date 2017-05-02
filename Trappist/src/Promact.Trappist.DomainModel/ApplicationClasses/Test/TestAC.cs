@@ -35,6 +35,10 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public decimal IncorrectMarks { get; set; }
 
+        public bool IsPaused { get; set; }
+
+        public bool IsLaunched { get; set; }
+
         public TestOrder QuestionOrder { get; set; }
 
         public TestOrder OptionOrder { get; set; }

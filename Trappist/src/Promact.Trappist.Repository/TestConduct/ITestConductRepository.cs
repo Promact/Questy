@@ -27,11 +27,11 @@ namespace Promact.Trappist.Repository.TestConduct
         Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString);
 
         /// <summary>
-        /// This method used for check magicString is exist or not for any test
+        /// This method used to check magicString exist or not for any test, and whether the same test is paused or not
         /// </summary>
         /// <param name="magicString">It contain random string which uniquely identifies test</param>
         /// <returns>If test link exist then return true else return false</returns>
-        Task<bool> IsTestLinkExistAsync(string magicString);
+        Task<bool> IsTestLinkExistForTestConductionAsync(string magicString);
 
         /// <summary>
         /// This method is used to get all the instruction details related to a test before starting it
