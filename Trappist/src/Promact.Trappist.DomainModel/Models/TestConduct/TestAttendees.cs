@@ -1,5 +1,4 @@
-﻿using Promact.Trappist.DomainModel.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.TestConduct
@@ -26,8 +25,6 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
         public string RollNumber { get; set; }
 
         public bool StarredCandidate { get; set; }
-
-        public TestStatus TestStatus { get; set; }
         
         public int TestId { get; set; }
 
