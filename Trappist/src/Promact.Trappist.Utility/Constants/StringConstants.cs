@@ -170,7 +170,7 @@
         {
             get
             {
-                return "Your test is going to end. Hurry up!!";
+                return "Your test is about to end. Hurry up!!";
             }
         }
         #endregion
