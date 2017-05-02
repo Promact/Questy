@@ -32,8 +32,8 @@ export class QuestionsService {
     /**
      *To get list of Questions
      */
-    getQuestions(index: number, categoryId: number, difficultyLevel: string, searchQuestion: string) {
-        return this.httpService.get(this.questionsApiUrl + '/' + index + '/' + categoryId + '/' + difficultyLevel + '/' + searchQuestion);
+    getQuestions(id: number, categoryId: number, difficultyLevel: string, searchQuestion: string) {
+        return this.httpService.get(this.questionsApiUrl + '/' + id + '/' + categoryId + '/' + difficultyLevel + '/' + searchQuestion);
     }
 
     /**
@@ -79,8 +79,7 @@ export class QuestionsService {
      * Calls API to get number of questions
      * @param categoryId
      */
-    countTheQuestion(categoryId: number) {
-        return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId);
+    countTheQuestion(categoryId: number, searchQuestion: string) {
+        return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId + '/' + searchQuestion);
     }
-
 }

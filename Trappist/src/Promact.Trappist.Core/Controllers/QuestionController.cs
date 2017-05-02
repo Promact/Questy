@@ -71,11 +71,11 @@ namespace Promact.Trappist.Core.Controllers
         /// API to get all the Questions
         /// </summary>
         /// <returns>Questions List</returns>
-        [HttpGet("{numberOfCalls}/{categoryId}/{difficultyLevel}/{searchQuestion?}")]
-        public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int numberOfCalls, [FromRoute] int categoryId,[FromRoute] string difficultyLevel,[FromRoute] string searchQuestion )
+        [HttpGet("{id}/{categoryId}/{difficultyLevel}/{searchQuestion?}")]
+        public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int id, [FromRoute] int categoryId, [FromRoute] string difficultyLevel, [FromRoute] string searchQuestion)
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
-            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, numberOfCalls, categoryId, difficultyLevel, searchQuestion));
+            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, id, categoryId, difficultyLevel, searchQuestion));
         }
 
         /// <summary>
@@ -173,10 +173,11 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(questionAC);
         }
 
-        [HttpGet("numberOfQuestions/{categoryId}")]
-        public async Task<IActionResult> GetNumberOfQuestions([FromRoute] int categoryId)
+        [HttpGet("numberOfQuestions/{categoryId}/{searchQuestion?}")]
+        public async Task<IActionResult> GetNumberOfQuestions([FromRoute] int categoryId, [FromRoute] string searchQuestion)
         {
-            var question = await _questionsRepository.GetNumberOfQuestionsAsync(categoryId);
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+            var question = await _questionsRepository.GetNumberOfQuestionsAsync(applicationUser.Id, categoryId, searchQuestion);
             return Ok(question);
         }
         #endregion
