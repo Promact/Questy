@@ -382,7 +382,7 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var testAc = await _testRepository.GetTestByIdAsync(test.Id);
-            Assert.True(testAc.CategoryAcList[0].IsSelect == true);
+            Assert.True(testAc.CategoryAcList[0].IsSelect);
             await _testRepository.DeleteTestAsync(test.Id);
             var testAcObject = await _testRepository.GetTestByIdAsync(test.Id);
             Assert.Null(testAcObject);
