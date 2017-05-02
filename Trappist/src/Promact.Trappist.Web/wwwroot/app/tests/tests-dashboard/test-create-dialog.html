@@ -16,6 +16,6 @@
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close tabindex="1">Cancel</button>
-        <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError" (click)="AddTest(testNameReference)">Create Test</button>
+        <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError || isButtonClicked" (click)="AddTest(testNameReference)">Create Test</button>
     </md-dialog-actions>
 </div>
