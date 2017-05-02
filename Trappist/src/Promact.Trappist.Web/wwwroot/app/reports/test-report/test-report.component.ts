@@ -168,7 +168,7 @@ export class TestReportComponent implements OnInit {
         }
 
         starAttendeeArray.forEach(x => {
-            if (x.testStatus === selectedTestStatus) {
+            if (x.report.testStatus === selectedTestStatus) {
                 tempAttendeeArray.push(x);
             }
         });
