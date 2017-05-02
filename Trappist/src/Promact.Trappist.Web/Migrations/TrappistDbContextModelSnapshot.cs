@@ -349,6 +349,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedByUserId");
+
                     b.ToTable("Test");
                 });
 
@@ -642,6 +644,13 @@ namespace Promact.Trappist.Web.Migrations
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
+                {
+                    b.HasOne("Promact.Trappist.Web.Models.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
