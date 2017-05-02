@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { Md2AccordionModule, Md2DataTableModule, Md2TooltipModule } from 'md2';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         Md2AccordionModule.forRoot(),
         Md2DataTableModule.forRoot(),
         Md2TooltipModule.forRoot(),
-        CKEditorModule
+        CKEditorModule,
+        ChartsModule
     ],
     declarations: [
     ],
@@ -28,7 +30,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         Md2AccordionModule,
         Md2DataTableModule,
         Md2TooltipModule,
-        CKEditorModule
+        CKEditorModule,
+        ChartsModule
     ]
 })
 export class SharedModule { }

@@ -19,7 +19,7 @@
             <div class="pull-left">
                 <h2>Candidate Details</h2>
             </div>
-            <a class="pull-right back-link" [routerLink]="['/reports']">< back to test report</a>
+            <a class="pull-right back-link" [routerLink]="['/reports',testId]">< back to test report</a>
         </div>
         <div class="candidate-details-block">
             <div class="candidate-details-title">
@@ -60,8 +60,14 @@
                 </div>
             </div>
             <div class="analysis-body clearfix">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <h5>Graph Goes Here</h5>
+                <div class="col-lg-6 col-md-6 col-sm-6" style="display: block">
+                    <h5>
+                        <canvas baseChart
+                                [data]="pieChartValue()"
+                                [labels]="pieChartLabels"
+                                [chartType]="pieChartType"
+                                (chartHover)="pieChartValue()"></canvas>
+                    </h5>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <h5>Graph Goes Here</h5>
@@ -77,7 +83,7 @@
                         <div class="qs-text">
                             <p class="question" [innerHtml]="question.question.questionDetail"></p>
                             <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption;let j=index">
-                                <p *ngIf="QuestionType[question.question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{j+1}}) </span> <span>{{option.option}}</span></p>
+                                <p *ngIf="question.question.questionType != 2" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
                             </div>
                             <!--<p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
                             <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
