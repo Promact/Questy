@@ -23,14 +23,14 @@
                 </div>
                 <div class="form-group">
                     <label>Contact Number</label>
-                    <input type="text" class="form-control half-width" name="phonenumber" [(ngModel)]="editUser.phoneNumber" #phonenumber="ngModel" pattern="^[+]?([0-9]{10,20})$" maxlength="20"/>
+                    <input type="text" class="form-control half-width" name="phonenumber" [(ngModel)]="editUser.phoneNumber" #phonenumber="ngModel" pattern="^[+]?([0-9]{10,20})$" maxlength="20" />
                     <div class="errors-container">
                         <span *ngIf='phonenumber.errors && (phonenumber.dirty || phonenumber.touched)' class='error-msg'>Phone Numnber must have atleast 10 digits with an optional country code</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Organization</label>
-                    <input type="text" class="form-control half-width" name="organizationname" [(ngModel)]="editUser.organizationName" #organizationname="ngModel" pattern="[A-Za-z\s]+$" maxlength="150"/>
+                    <input type="text" class="form-control half-width" name="organizationname" [(ngModel)]="editUser.organizationName" #organizationname="ngModel" pattern="[A-Za-z\s]+$" maxlength="150" />
                     <div class="errors-container">
                         <span *ngIf='organizationname.errors && (organizationname.dirty || organizationname.touched)' class='error-msg'>Organization Name must contain only alphabets</span>
                     </div>
