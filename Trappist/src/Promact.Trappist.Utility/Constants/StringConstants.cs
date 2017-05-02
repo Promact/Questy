@@ -165,6 +165,14 @@
                 return "Test Name is Invalid";
             }
         }
+
+        public string WarningMessage
+        {
+            get
+            {
+                return "Your test is going to end. Hurry up!!";
+            }
+        }
         #endregion
 
         #region TestConduct Constants
