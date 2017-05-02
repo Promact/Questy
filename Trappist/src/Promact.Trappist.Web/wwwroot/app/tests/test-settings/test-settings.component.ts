@@ -85,7 +85,7 @@ export class TestSettingsComponent implements OnInit {
      * @param endDate contains ths the value of the field End Date and Time
      */
     isEndDateValid(endDate: Date) {
-        if (this.testDetails.startDate >= endDate) {
+        if (new Date(this.testDetails.startDate) >= new Date(endDate)) {
             this.validEndDate = true;
             this.validStartDate = false;
         }
@@ -98,7 +98,7 @@ export class TestSettingsComponent implements OnInit {
      */
     isStartDateValid() {
         this.validStartDate = new Date(this.testDetails.startDate) < this.currentDate ? true : false;
-        this.validEndDate = this.testDetails.startDate >= this.testDetails.endDate ? true : false;
+        this.validEndDate = new Date(this.testDetails.startDate) >= new Date(this.testDetails.endDate) ? true : false;
     }
 
     /**
