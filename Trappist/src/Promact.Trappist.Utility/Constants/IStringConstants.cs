@@ -110,6 +110,11 @@
         /// Property TestNameInvalidError is used to check Test Name is not null and it contains valid characters
         /// </summary>
         string TestNameInvalidError { get; }
+
+        /// <summary>
+        /// Property WarningMessage is used to set the default warning message
+        /// </summary>
+        string WarningMessage { get; }
         #endregion
 
         #region TestConduct Constants
