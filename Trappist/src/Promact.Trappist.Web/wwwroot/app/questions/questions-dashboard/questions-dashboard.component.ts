@@ -12,7 +12,7 @@ import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
-import { NumberOfQuestion } from '../numberOfQuestion';
+import { QuestionCount } from '../numberOfQuestion';
 
 @Component({
     moduleId: module.id,
@@ -39,7 +39,7 @@ export class QuestionsDashboardComponent implements OnInit {
     matchString: string;
     isAllQuestionsSelected: boolean;
     loader: boolean;
-    numberOfQuestions: NumberOfQuestion;
+    numberOfQuestions: QuestionCount;
     isAllQuestionsHaveCome: boolean;
     index: number;
     difficultyLevel: string;
@@ -49,7 +49,7 @@ export class QuestionsDashboardComponent implements OnInit {
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
         this.selectedCategory = new Category();
-        this.numberOfQuestions = new NumberOfQuestion();
+        this.numberOfQuestions = new QuestionCount();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.categoryArray = new Array<Category>();
         this.question = new Array<QuestionDisplay>();
@@ -70,7 +70,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.countTheQuestion();
         this.getQuestionsOnScrolling();
         this.getAllCategories();
-
 
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
@@ -122,7 +121,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = this.questionDisplay.concat(this.question);
             this.index++;
             this.loader = false;
-            window.scrollTo(0, 0);
         });
     }
 
@@ -145,7 +143,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.difficultyLevel = 'All';
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
         window.scrollTo(0, 0);
-        this.questionDisplay = new Array<QuestionDisplay>();
         this.categroyId = category.id;
         this.countTheQuestion();
         this.index = 0;
@@ -167,13 +164,11 @@ export class QuestionsDashboardComponent implements OnInit {
         this.loader = true;
         this.selectedDifficulty = DifficultyLevel[difficulty];
         window.scrollTo(0, 0);
-        this.questionDisplay = new Array<QuestionDisplay>();
         this.index = 0;
         this.difficultyLevel = difficulty;
         this.isAllQuestionsHaveCome = false;
         this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.questionDisplay = questionsList;
-            this.matchString = '';
             this.index++;
             this.loader = false;
         });
@@ -187,16 +182,17 @@ export class QuestionsDashboardComponent implements OnInit {
         this.matchString = matchString;
         if (matchString.trim().length > 2) {
             this.index = 0;
-            this.questionDisplay = new Array<QuestionDisplay>();
-            this.isAllQuestionsHaveCome = true;
+            this.isAllQuestionsHaveCome = false;
             this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
                 this.questionDisplay = questionsList;
+                this.countTheQuestion();
                 this.index++;
             });
         }
         else if (matchString.trim().length === 0) {
             this.index = 0;
             this.isAllQuestionsHaveCome = false;
+            this.countTheQuestion();
             this.questionDisplay = new Array<QuestionDisplay>();
             this.getQuestionsOnScrolling();
         }
@@ -272,12 +268,12 @@ export class QuestionsDashboardComponent implements OnInit {
 
 
     countTheQuestion() {
-        this.questionsService.countTheQuestion(this.categroyId).subscribe((numberOfAllTypesOfQuestions) => {
+        this.questionsService.countTheQuestion(this.categroyId, this.matchString).subscribe((numberOfAllTypesOfQuestions) => {
             this.numberOfQuestions = numberOfAllTypesOfQuestions;
             console.log(this.numberOfQuestions);
-            this.easy = this.numberOfQuestions.numberOfEasyQuestions;
-            this.medium = this.numberOfQuestions.numberOfMediumQuestions;
-            this.hard = this.numberOfQuestions.numberOfHardQuestions;
+            this.easy = this.numberOfQuestions.easyCount;
+            this.medium = this.numberOfQuestions.mediumCount;
+            this.hard = this.numberOfQuestions.hardCount;
         });
 
     }

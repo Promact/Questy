@@ -79,8 +79,8 @@ export class QuestionsService {
      * Calls API to get number of questions
      * @param categoryId
      */
-    countTheQuestion(categoryId: number) {
-        return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId);
+    countTheQuestion(categoryId: number, searchQuestion: string) {
+        return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId + '/' + searchQuestion);
     }
 
 }

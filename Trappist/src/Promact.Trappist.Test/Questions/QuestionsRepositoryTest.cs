@@ -439,14 +439,14 @@ namespace Promact.Trappist.Test.Questions
             var codinQuestion = await CreateCodingQuestion();
             await _questionRepository.AddCodeSnippetQuestionAsync(codinQuestion, applicationUser.Id);
 
-            var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(0);
-            Assert.Equal(1, numberOfQuestions.NumberOfEasyQuestions);
-            Assert.Equal(0, numberOfQuestions.NumberOfMediumQuestions);
-            Assert.Equal(0, numberOfQuestions.NumberOfHardQuestions);
-            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(codinQuestion.Question.CategoryID);
-            Assert.Equal(1, numberOfQuestionsWithCategory.NumberOfEasyQuestions);
-            Assert.Equal(0, numberOfQuestionsWithCategory.NumberOfMediumQuestions);
-            Assert.Equal(0, numberOfQuestionsWithCategory.NumberOfHardQuestions);
+            var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, 0, null);
+            Assert.Equal(1, numberOfQuestions.EasyCount);
+            Assert.Equal(0, numberOfQuestions.MediumCount);
+            Assert.Equal(0, numberOfQuestions.HardCount);
+            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id,codinQuestion.Question.CategoryID, "Write");
+            Assert.Equal(1, numberOfQuestionsWithCategory.EasyCount);
+            Assert.Equal(0, numberOfQuestionsWithCategory.MediumCount);
+            Assert.Equal(0, numberOfQuestionsWithCategory.HardCount);
 
         }
 

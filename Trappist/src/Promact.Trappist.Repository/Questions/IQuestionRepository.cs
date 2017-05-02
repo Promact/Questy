@@ -1,6 +1,4 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.Enum;
-using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,7 +26,7 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="userId">Id of logged in user</param>
         /// <returns></returns>
-        Task<ICollection<Question>> GetAllQuestionsAsync(string userId, int index, int categoryId, string difficultyLevel,string searchQuestion);
+        Task<ICollection<Question>> GetAllQuestionsAsync(string userId, int id, int categoryId, string difficultyLevel, string searchQuestion);
 
         /// <summary>
         /// Gets all the coding languages as string from Database
@@ -82,6 +80,6 @@ namespace Promact.Trappist.Repository.Questions
         /// </summary>
         /// <param name="categodryId">categoryId if not equals to 0 to get number of questions of each category has</param>
         /// <returns>object of NumberOfQuestions</returns>
-        Task<NumberOfQuestions> GetNumberOfQuestionsAsync(int categodryId);
+        Task<QuestionCount> GetNumberOfQuestionsAsync(string userId, int categodryId, string matchString);
     }
 }

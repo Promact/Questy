@@ -1,6 +1,6 @@
-﻿export class NumberOfQuestion {
-    numberOfEasyQuestions: number = 0;
-    numberOfHardQuestions: number = 0;
-    numberOfMediumQuestions: number = 0;
+﻿export class QuestionCount {
+    easyCount: number = 0;
+    mediumCount: number = 0;
+    hardCount: number = 0;
 
 }
