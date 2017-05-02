@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170502063818_UpdatedTestAttendeeModelAndReportModel")]
+    partial class UpdatedTestAttendeeModelAndReportModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -321,7 +322,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<int>("TestStatus");
 
-                    b.Property<decimal>("TimeTakenByAttendee");
+                    b.Property<DateTime>("TimeTakenByTheAttendee");
 
                     b.Property<int>("TotalMarksScored");
 
@@ -343,8 +344,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("BrowserTolerance");
 
                     b.Property<decimal>("CorrectMarks");
-
-                    b.Property<string>("CreatedByUserId");
 
                     b.Property<DateTime>("CreatedDateTime");
 
@@ -377,8 +376,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("WarningTime");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Test");
                 });
@@ -675,13 +672,6 @@ namespace Promact.Trappist.Web.Migrations
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
-                {
-                    b.HasOne("Promact.Trappist.Web.Models.ApplicationUser", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserId");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Report.Report", b =>
