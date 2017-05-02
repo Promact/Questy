@@ -27,7 +27,7 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         public bool StarredCandidate { get; set; }
 
-        public TestState TestState { get; set; }
+        public TestStatus TestStatus { get; set; }
         
         public int TestId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Promact.Trappist.DomainModel.Enum
 {
-    public enum TestState
+    public enum TestStatus
     {
         AllCandidates, CompletedTest, ExpiredTest, BlockedTest
     }
