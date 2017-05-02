@@ -18,11 +18,13 @@ export class AddCategoryDialogComponent {
     errorMessage: string;
     category: Category;
     responseObject: Category;
+    isButtonClicked: boolean;
 
     constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<AddCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
         this.category = new Category();
         this.successMessage = 'Category Name Added Successfully';
+        this.isButtonClicked = false;
     }
 
     /**
@@ -39,6 +41,7 @@ export class AddCategoryDialogComponent {
      * @param category:Category object
      */
     addCategory(category: Category) {
+        this.isButtonClicked = true;
         category.categoryName = category.categoryName.trim();
         if (category.categoryName) {
             this.categoryService.addCategory(category).subscribe(
@@ -51,6 +54,7 @@ export class AddCategoryDialogComponent {
                     this.isCategoryNameExist = true;
                     this.response = (err.json());
                     this.errorMessage = this.response['error'][0];
+                    this.isButtonClicked = false;
                 });
         }
     }
