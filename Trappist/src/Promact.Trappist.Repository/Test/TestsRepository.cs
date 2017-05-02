@@ -233,7 +233,7 @@ namespace Promact.Trappist.Repository.Tests
             testAcObject.NumberOfTestAttendees = testObject.First().TestAttendees.Count();
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-            string defaultMessage = "Your test is going to end. Hurry up!!";
+            string defaultMessage = _stringConstants.WarningMessage;
             int defaultTime = 5;
             int defaultDuration = 60;
             int defaultCorrectMarks = 1;
