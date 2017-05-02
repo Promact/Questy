@@ -34,8 +34,7 @@ export class DeleteTestDialogComponent {
             this.snackBar.open(this.successMessage, 'Dismiss', {
                 duration: 3000,
             });
-            let url = window.location.pathname;
-            if (url.includes('view'))
+            if (this.router.url === '/tests/' + this.testToDelete.id + '/view')
                 this.router.navigate(['/tests']);
         },
             err => {
