@@ -71,9 +71,9 @@ namespace Promact.Trappist.Repository.TestConduct
             return null;
         }
 
-        public async Task<bool> IsTestLinkExistAsync(string magicString)
+        public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
         {
-            var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => (x.Link == magicString)));
+            var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => x.Link == magicString && x.IsPaused==false ));
             return isTestLinkExist;
         }
 
