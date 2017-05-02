@@ -12,7 +12,7 @@ import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
-import { NumberOfQuestion } from '../numberOfQuestion';
+import { QuestionCount } from '../numberOfQuestion';
 
 @Component({
     moduleId: module.id,
@@ -39,17 +39,16 @@ export class QuestionsDashboardComponent implements OnInit {
     matchString: string;
     isAllQuestionsSelected: boolean;
     loader: boolean;
-    numberOfQuestions: NumberOfQuestion;
+    numberOfQuestions: QuestionCount;
     isAllQuestionsHaveCome: boolean;
-    index: number;
+    id: number;
     difficultyLevel: string;
     categroyId: number;
-
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
         this.selectedCategory = new Category();
-        this.numberOfQuestions = new NumberOfQuestion();
+        this.numberOfQuestions = new QuestionCount();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.categoryArray = new Array<Category>();
         this.question = new Array<QuestionDisplay>();
@@ -59,7 +58,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.medium = 0;
         this.hard = 0;
         this.isAllQuestionsHaveCome = false;
-        this.index = 0;
+        this.id = 0;
         this.selectedDifficulty = DifficultyLevel['All'];
         this.difficultyLevel = 'All';
         this.categroyId = 0;
@@ -70,8 +69,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.countTheQuestion();
         this.getQuestionsOnScrolling();
         this.getAllCategories();
-
-
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
@@ -97,30 +94,32 @@ export class QuestionsDashboardComponent implements OnInit {
         this.difficultyLevel = 'All';
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
         this.questionDisplay = new Array<QuestionDisplay>();
-        this.index = 0;
-        this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
+        this.id = 0;
+        this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.question = questionsList;
             this.questionDisplay = this.questionDisplay.concat(this.question);
+            if (this.questionDisplay.length !== 0)
+                this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.loader = false;
-            this.index++;
+            this.id++;
             this.selectedCategory = new Category();
             this.isAllQuestionsHaveCome = false;
             this.matchString = '';
         });
-
     }
 
     //To get Questions while scrolling
     getQuestionsOnScrolling() {
         this.isAllQuestionsHaveCome = true;
-        this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
+        this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.question = questionsList;
             if (this.question.length === 0)
                 this.isAllQuestionsHaveCome = true;
             else
                 this.isAllQuestionsHaveCome = false;
             this.questionDisplay = this.questionDisplay.concat(this.question);
-            this.index++;
+            if (this.questionDisplay.length !== 0)
+                this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.loader = false;
         });
     }
@@ -141,19 +140,19 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     categoryWiseFilter(category: Category) {
         this.loader = true;
+        window.scrollTo(0, 0);
         this.difficultyLevel = 'All';
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
-        window.scrollTo(0, 0);
-        this.questionDisplay = new Array<QuestionDisplay>();
         this.categroyId = category.id;
         this.countTheQuestion();
-        this.index = 0;
+        this.id = 0;
         this.isAllQuestionsHaveCome = false;
-        this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
+        this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.questionDisplay = questionsList;
+            if (this.questionDisplay.length !== 0)
+                this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.loader = false;
             this.matchString = '';
-            this.index++;
         });
         this.selectedCategory = category;
     }
@@ -166,14 +165,13 @@ export class QuestionsDashboardComponent implements OnInit {
         this.loader = true;
         this.selectedDifficulty = DifficultyLevel[difficulty];
         window.scrollTo(0, 0);
-        this.questionDisplay = new Array<QuestionDisplay>();
-        this.index = 0;
+        this.id = 0;
         this.difficultyLevel = difficulty;
         this.isAllQuestionsHaveCome = false;
-        this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
+        this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
             this.questionDisplay = questionsList;
-            this.matchString = '';
-            this.index++;
+            if (this.questionDisplay.length !== 0)
+                this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.loader = false;
         });
     }
@@ -185,21 +183,22 @@ export class QuestionsDashboardComponent implements OnInit {
     getQuestionsMatchingSearchCriteria(matchString: string) {
         this.matchString = matchString;
         if (matchString.trim().length > 2) {
-            this.index = 0;
-            this.questionDisplay = new Array<QuestionDisplay>();
-            this.isAllQuestionsHaveCome = true;
-            this.questionsService.getQuestions(this.index, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
+            this.id = 0;
+            this.isAllQuestionsHaveCome = false;
+            this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
                 this.questionDisplay = questionsList;
-                this.index++;
+                if (this.questionDisplay.length !== 0)
+                    this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
+                this.countTheQuestion();
             });
         }
         else if (matchString.trim().length === 0) {
-            this.index = 0;
+            this.id = 0;
             this.isAllQuestionsHaveCome = false;
+            this.countTheQuestion();
             this.questionDisplay = new Array<QuestionDisplay>();
             this.getQuestionsOnScrolling();
         }
-
     }
 
     // Open Add Category Dialog
@@ -269,16 +268,17 @@ export class QuestionsDashboardComponent implements OnInit {
         }
     }
 
-
+    /**
+     * Calls server Api to count the number of questions
+     */
     countTheQuestion() {
-        this.questionsService.countTheQuestion(this.categroyId).subscribe((numberOfAllTypesOfQuestions) => {
+        this.questionsService.countTheQuestion(this.categroyId, this.matchString).subscribe((numberOfAllTypesOfQuestions) => {
             this.numberOfQuestions = numberOfAllTypesOfQuestions;
             console.log(this.numberOfQuestions);
-            this.easy = this.numberOfQuestions.numberOfEasyQuestions;
-            this.medium = this.numberOfQuestions.numberOfMediumQuestions;
-            this.hard = this.numberOfQuestions.numberOfHardQuestions;
+            this.easy = this.numberOfQuestions.easyCount;
+            this.medium = this.numberOfQuestions.mediumCount;
+            this.hard = this.numberOfQuestions.hardCount;
         });
-
     }
 
 

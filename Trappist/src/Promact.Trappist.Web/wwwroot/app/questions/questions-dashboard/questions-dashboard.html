@@ -48,8 +48,8 @@
                     </md-menu>
                 </div>
                 <div  class="questions-area" infinite-scroll
-                     [infiniteScrollDistance]="0"
-                     [infiniteScrollThrottle]="20"
+                     [infiniteScrollDistance]="2"
+                     [infiniteScrollThrottle]="10"
                      [infiniteScrollDisabled]="isAllQuestionsHaveCome"
                      (scrolled)="getQuestionsOnScrolling()">
                     <div *ngFor="let question of questionDisplay;let i = index" class="qs-block clearfix">

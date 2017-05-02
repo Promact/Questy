@@ -57,7 +57,6 @@
             'angular2-infinite-scroll': {
                 main: 'src/index.js',
                 defaultExtension: 'js'
-
             },
             '.': {
                 defaultExtension: 'js'
