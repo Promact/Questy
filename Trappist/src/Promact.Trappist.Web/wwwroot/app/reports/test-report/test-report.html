@@ -14,12 +14,13 @@
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
-                <select class="form-control" [(ngModel)]="typeOfTest" (change)="setTypeOfTest(typeOfTest)">
+                <select class="form-control" [(ngModel)]="typeOfTest" (change)="setTestStatusType(typeOfTest)">
                     <option value="0">All Candidates ({{count}})</option>
                     <option value="1">Completed Test</option>
                     <option value="2">Expired Test</option>
                     <option value="3">Blocked Test</option>
                 </select>
+                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
                 <button type="button" class="btn">Download Excel</button>
                 <button type="button" class="btn">Download PDF</button>
             </div>
@@ -31,11 +32,11 @@
                     <tr>
                         <th><md-checkbox class="only-checkbox"></md-checkbox></th>
                         <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred(testId)">{{headerStarStatus}}</em></th>
-                        <th class="h5" md2SortBy="name">Name</th>
+                        <th class="h5" md2SortBy="firstName">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
-                        <th class="h5" md2SortBy="date">Test Date</th>
-                        <th class="h5" md2SortBy="score">Score</th>
-                        <th class="h5" md2SortBy="percentage">Percentage</th>
+                        <th class="h5" md2SortBy="createdDateTime">Test Date</th>
+                        <th class="h5" md2SortBy="report.totalMarksScored">Score</th>
+                        <th class="h5" md2SortBy="report.percentage">Percentage</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -43,7 +44,7 @@
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
-                        <td><em class="material-icons" [ngClass]="{starred : isCandidateStarred}"  (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
+                        <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}"  (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report']"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report']">{{testAttendee.email}}</td>
                         <td>{{testAttendee.createdDateTime}}</td>
@@ -56,7 +57,7 @@
                 <tfoot>
                     <tr>
                         <td colspan="4">
-                            <span class="records-info">Showing {{pageHandling(activePage,count)}} to {{pageHandling2(activePage,count)}} of {{count}} records </span>
+                            <span class="records-info">Showing {{startingIndexOfActivePage(activePage,count)}} to {{endingIndexOfActivePage(activePage,count)}} of {{count}} records </span>
                         </td>
                         <td colspan="5">
                             <md2-pagination></md2-pagination>

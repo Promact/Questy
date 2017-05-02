@@ -1,5 +1,5 @@
 ﻿import { Report } from '../reports/report';
-import { TestState } from '../reports/enum-test-state';
+import { TestStatus } from '../reports/enum-test-state';
 export class TestAttendee {
     id: number;
     firstName: string;
@@ -7,7 +7,7 @@ export class TestAttendee {
     email: string;
     createdDateTime: Date;
     starredCandidate: boolean;
-    testState: TestState;
+    testStatus: TestStatus;
     report: Report;
 
     constructor() {
