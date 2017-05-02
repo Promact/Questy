@@ -16,18 +16,23 @@ export class TestCreateDialogComponent {
     test: Test;
     testNameReference: string;
     isWhiteSpaceError: boolean;
+    isButtonClicked: boolean;
+
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar, public route: Router) {
         this.test = new Test();
+        this.isButtonClicked = false;
     }
     /**
      * this method is used to add a new test
      * @param testNameRef is name of the test
      */
     AddTest(testNameRef: string) {
+        this.isButtonClicked = true;
         this.test.testName = testNameRef;
         testNameRef = testNameRef.trim();
         if (testNameRef) {
             this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
+                this.isButtonClicked = false;
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.dialogRef.close(responses);
