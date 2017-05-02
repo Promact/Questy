@@ -36,7 +36,7 @@ export class DeleteTestDialogComponent {
             });
             let url = window.location.pathname;
             if (url.includes('view'))
-            this.router.navigate(['/tests']);
+                this.router.navigate(['/tests']);
         },
             err => {
                 this.snackBar.open(this.errorMessage, 'Dismiss', {
