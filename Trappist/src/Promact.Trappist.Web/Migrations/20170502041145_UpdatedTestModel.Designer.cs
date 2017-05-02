@@ -9,7 +9,7 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    [Migration("20170501060246_UpdatedTestModel")]
+    [Migration("20170502041145_UpdatedTestModel")]
     partial class UpdatedTestModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -350,6 +350,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedByUserId");
+
                     b.ToTable("Test");
                 });
 
@@ -582,6 +584,13 @@ namespace Promact.Trappist.Web.Migrations
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
+                {
+                    b.HasOne("Promact.Trappist.Web.Models.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestCategory", b =>
