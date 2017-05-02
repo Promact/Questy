@@ -110,7 +110,7 @@
             <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
           </div>
         </div>
-        <create-test-footer (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+        <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails)" (saveLaunch)="saveAndLaunch($event)" (pause)=" pause($event)" (resume)="resume($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
       </div>
     </div> 
   </form>

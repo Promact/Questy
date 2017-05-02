@@ -162,7 +162,7 @@ export class TestSettingsComponent implements OnInit {
                         });
                     });
             }
-            else {
+            else {             
                 this.testDetails.isQuestionMissing = true;
                 let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
             }
@@ -171,5 +171,29 @@ export class TestSettingsComponent implements OnInit {
             this.testDetails.isQuestionMissing = false;
             let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
         }
+    }
+
+    pause(isTestPaused: boolean) {
+        this.testDetails.isPaused = isTestPaused;        
+        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
+    }
+
+    resume(isTestPaused: boolean) {
+        this.testDetails.isPaused = isTestPaused;
+        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
+    }
+
+    saveAndLaunch(isTestLaunched: boolean) {
+        this.testDetails.isLaunched = isTestLaunched;
+        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe((response) => {
+            this.router.navigate(['/tests']);
+        },
+            errorHandling => {
+                this.response = errorHandling.json();
+                this.errorMessage = this.response['error'];
+                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
+                    duration: 3000,
+                });
+            });
     }
 }
