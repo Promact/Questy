@@ -10,7 +10,9 @@ namespace Promact.Trappist.Repository.Reports
 {
     public class ReportRepository : IReportRepository
     {
+        #region Private Members
         private readonly TrappistDbContext _dbContext;
+        #endregion
 
         #region Constructor
         public ReportRepository(TrappistDbContext dbContext)
@@ -19,6 +21,7 @@ namespace Promact.Trappist.Repository.Reports
         }
         #endregion
 
+        #region Public Method
         public async Task<ICollection<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
             return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
@@ -33,12 +36,10 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task SetAllCandidateStarredAsync(int id, bool status, List<int> idList)
         {
-            for (int i = 0; i < idList.Count; i++)
-            {
-                var attendee = await _dbContext.TestAttendees.FindAsync(idList[i]);
-                attendee.StarredCandidate = status;
-            }
+            var attendees = await _dbContext.TestAttendees.Where(x => idList.Contains(x.Id)).ToListAsync(); ;
+            attendees.ForEach(x => x.StarredCandidate = status);
             await _dbContext.SaveChangesAsync();
         }
+        #endregion
     }
 }
