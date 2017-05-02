@@ -8,13 +8,18 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/report")]
     public class ReportController : Controller
     {
+        #region Private Member
         private readonly IReportRepository _reportRepository;
+        #endregion
 
+        #region Constructor
         public ReportController(IReportRepository reportRepository)
         {
             _reportRepository = reportRepository;
         }
+        #endregion
 
+        #region Report API
         [HttpGet("multiple/{testId}")]
         public async Task<IActionResult> GetAllTestAttendeesAsync([FromRoute] int testId)
         {
@@ -34,5 +39,6 @@ namespace Promact.Trappist.Core.Controllers
             await _reportRepository.SetAllCandidateStarredAsync(testId, status, idList);
             return Ok(testId);
         }
+        #endregion
     }
 }
