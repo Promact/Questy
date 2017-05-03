@@ -39,6 +39,7 @@ export class TestCreateDialogComponent {
                         this.route.navigate(['tests/' + responses.id + '/sections']);
                     },
                         errorhandling => {
+                            this.isButtonClicked = false;
                             this.openSnackbar('Something went wrong!');
                         });
                 }
@@ -46,6 +47,7 @@ export class TestCreateDialogComponent {
                     this.errorMessage = true;
             },
                 errorHandling => {
+                    this.isButtonClicked = false;
                     this.openSnackbar('Something went wrong!');
                 });
         }
