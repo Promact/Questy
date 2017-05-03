@@ -12,6 +12,7 @@ import { Test } from '../tests.model';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { TestAttendees } from '../../conduct/register/register.model';
+import { DuplicateTestDialogComponent } from '../tests-dashboard/duplicate-test-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -28,6 +29,7 @@ export class TestViewComponent implements OnInit {
     optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     isDeleteAllowed: boolean;
     Tests: Test[] = new Array<Test>();
+    isEditTestEnabled: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
@@ -42,6 +44,7 @@ export class TestViewComponent implements OnInit {
     // get All The Tests From Server
     getAllTests() {
         this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+        this.isTestAttendeeExist();
     }
 
     /**
@@ -127,6 +130,45 @@ export class TestViewComponent implements OnInit {
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.Tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
+        });
+    }
+
+    /**
+     * Checks if any candidate has taken the test
+     */
+    isTestAttendeeExist() {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((response) => {
+            if (response.response) {
+                this.isEditTestEnabled = false;
+            }
+            else {
+                this.isEditTestEnabled = true;
+            }
+        });
+    }
+
+    /**
+     * Open duplicate test dialog
+     * @param test: an object of Test class
+     */
+    duplicateTestDialog(test: Test) {
+        let newTestObject = (JSON.parse(JSON.stringify(test)));
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
+        duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        duplicateTestDialog.testArray = this.Tests;
+        duplicateTestDialog.testToDuplicate = test;
+    }
+
+    /**
+     * Navigates the user to the select sections page 
+     * @param test: an object of Test class
+     */
+    editTest(test: Test) {
+        // Checks if any candidate has taken the test
+        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
+            if (!response.response) {
+                this.router.navigate(['/tests/' + test.id + '/sections']);
+            }
         });
     }
 }
