@@ -9,24 +9,24 @@ namespace Promact.Trappist.Repository.Reports
         /// <summary>
         /// Method to get the details of all the Test-Attendees of the respective test
         /// </summary>
-        /// <param name="id">Id of the respective test</param>
-        /// <returns></returns>
+        /// <param name="testId">Id of the respective test</param>
+        /// <returns>All test attendees of that respective test</returns>
         Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id);
-
+        
         /// <summary>
         /// Method to set a candidate as Starred candidate
         /// </summary>
         /// <param name="id">Id of the candidate</param>
-        /// <returns></returns>
+        /// <returns>Attendee Id</returns>
         Task SetStarredCandidateAsync(int id);
 
         /// <summary>
-        /// Method to set a list of candidates as starred candidate.
+        /// Method to set all candidates with matching criteria as starred candidate
         /// </summary>
-        /// <param name="id">Id if the test</param>
-        /// <param name="status">Star status of the student</param>
-        /// <param name="idList">List of id of test attendees</param>
-        /// <returns></returns>
+        /// <param name="status">Star status of the candidates</param>
+        /// <param name="selectedTestStatus">Test end status of the candidates</param>
+        /// <param name="searchString">The search string provided by the user</param>
+        /// <returns>Star status of the candidates</returns>
         Task SetAllCandidateStarredAsync(bool status,  int selectedTestStatus, string SearchString);
     }
 }
