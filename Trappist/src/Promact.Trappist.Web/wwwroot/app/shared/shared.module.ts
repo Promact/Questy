@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { Md2AccordionModule, Md2DataTableModule } from 'md2';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { Ng2PageScrollModule } from 'ng2-page-scroll';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         RouterModule,
         Md2AccordionModule.forRoot(),
         Md2DataTableModule.forRoot(),
-        CKEditorModule
+        CKEditorModule,
+        Ng2PageScrollModule.forRoot()
     ],
     declarations: [
     ],
@@ -26,7 +28,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         MaterialModule,
         Md2AccordionModule,
         Md2DataTableModule,
-        CKEditorModule
+        CKEditorModule,
+        Ng2PageScrollModule
     ]
 })
 export class SharedModule { }

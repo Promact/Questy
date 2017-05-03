@@ -12,6 +12,7 @@ import { Category } from '../../questions/category.model';
 import { Router } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
+import { PageScrollConfig } from 'ng2-page-scroll';
 
 @Component({
     moduleId: module.id,
@@ -85,7 +86,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.countQuestion();
             this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
             this.loader = false;
-            window.scrollTo(0, 0);
         });
     }
 
@@ -109,7 +109,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.countQuestion();
         this.questionDisplay = this.filterQuestion(this.question, this.selectedCategory, this.selectedDifficulty, this.matchString);
         this.loader = false;
-        window.scrollTo(0, 0);
     }
 
     /**
