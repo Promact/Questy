@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170501095838_AddedModelForConductingTest")]
+    partial class AddedModelForConductingTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -306,35 +307,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.ToTable("SingleMultipleAnswerQuestionOption");
                 });
 
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Report.Report", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<double>("Percentage");
-
-                    b.Property<double>("Percentile");
-
-                    b.Property<int>("TestAttendeeId");
-
-                    b.Property<int>("TestStatus");
-
-                    b.Property<int>("TimeTakenByAttendee");
-
-                    b.Property<double>("TotalMarksScored");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestAttendeeId")
-                        .IsUnique();
-
-                    b.ToTable("Report");
-                });
-
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.Test", b =>
                 {
                     b.Property<int>("Id")
@@ -476,8 +448,6 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<string>("RollNumber")
                         .IsRequired();
-
-                    b.Property<bool>("StarredCandidate");
 
                     b.Property<int>("TestId");
 
@@ -670,14 +640,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasOne("Promact.Trappist.DomainModel.Models.Question.SingleMultipleAnswerQuestion", "SingleMultipleAnswerQuestion")
                         .WithMany("SingleMultipleAnswerQuestionOption")
                         .HasForeignKey("SingleMultipleAnswerQuestionID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Report.Report", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.TestConduct.TestAttendees", "TestAttendee")
-                        .WithOne("Report")
-                        .HasForeignKey("Promact.Trappist.DomainModel.Models.Report.Report", "TestAttendeeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
