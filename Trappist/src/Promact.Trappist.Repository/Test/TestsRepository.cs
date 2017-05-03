@@ -231,7 +231,7 @@ namespace Promact.Trappist.Repository.Tests
            
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
-            var testObject = await _dbContext.TestAttendees.FindAsync(testId);
+            await _dbContext.TestAttendees.FindAsync(testId);
             await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
             testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
 
