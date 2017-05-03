@@ -31,7 +31,7 @@ export class TestCreateDialogComponent {
         this.test.testName = testNameRef;
         testNameRef = testNameRef.trim();
         if (testNameRef) {
-            this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {               
+            this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.isButtonClicked = false;
@@ -66,5 +66,14 @@ export class TestCreateDialogComponent {
         let config = this.snackbar.open(message, 'Dismiss', {
             duration: 4000,
         });
+    }
+
+    /**
+     * When user press enter key, it will be checked first isButtonClicked is false and then test will be created so that multiple time pressing enter key will not create test with same name.
+     * @param testName
+     */
+    onEnter(testName: string) {
+        if (!this.isButtonClicked)
+            this.AddTest(testName);
     }
 }
