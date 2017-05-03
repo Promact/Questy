@@ -70,7 +70,6 @@ export class TestReportComponent implements OnInit {
                 [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
             },
             err => {
-
             }
         );
     }
