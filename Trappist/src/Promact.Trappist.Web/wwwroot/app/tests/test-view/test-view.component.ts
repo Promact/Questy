@@ -24,15 +24,17 @@ export class TestViewComponent implements OnInit {
     testDetails: Test;
     testId: number;
     totalNumberOfQuestions: number[] = [];
-    QuestionType = QuestionType;
-    DifficultyLevel = DifficultyLevel;
-    optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    questionType = QuestionType;
+    difficultyLevel = DifficultyLevel;
+    optionName: string[];
     isDeleteAllowed: boolean;
-    Tests: Test[] = new Array<Test>();
+    tests: Test[];
     isEditTestEnabled: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
+        this.tests = new Array<Test>();
+        this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     }
 
     ngOnInit() {
@@ -43,7 +45,7 @@ export class TestViewComponent implements OnInit {
 
     // get All The Tests From Server
     getAllTests() {
-        this.testService.getTests().subscribe((response) => { this.Tests = (response); });
+        this.testService.getTests().subscribe((response) => { this.tests = (response); });
         this.isTestAttendeeExist();
     }
 
@@ -128,7 +130,7 @@ export class TestViewComponent implements OnInit {
             this.isDeleteAllowed = response.response ? false : true;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
             deleteTestDialog.testToDelete = test;
-            deleteTestDialog.testArray = this.Tests;
+            deleteTestDialog.testArray = this.tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
         });
     }
@@ -155,7 +157,7 @@ export class TestViewComponent implements OnInit {
         let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
-        duplicateTestDialog.testArray = this.Tests;
+        duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
     }
 

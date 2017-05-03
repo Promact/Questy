@@ -121,8 +121,8 @@ namespace Promact.Trappist.Test.Tests
             test.BrowserTolerance = BrowserTolerance.High;
             int value = (int)test.BrowserTolerance;
             await _testRepository.UpdateTestByIdAsync(test);
-            var TestName = test.TestName;
-            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
+            var testName = test.TestName;
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == testName) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => (int)x.BrowserTolerance == value) == 1);
         }
 
