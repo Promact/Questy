@@ -26,7 +26,7 @@ export class TestCreateDialogComponent {
      * this method is used to add a new test
      * @param testNameRef is name of the test
      */
-    AddTest(testNameRef: string) {
+    addTest(testNameRef: string) {
         this.isButtonClicked = true;
         this.test.testName = testNameRef;
         testNameRef = testNameRef.trim();
@@ -59,7 +59,7 @@ export class TestCreateDialogComponent {
     /**
     this method is used to disable the errorMessage
     */
-    ChangeError() {
+    changeError() {
         this.errorMessage = false;
         this.isWhiteSpaceError = false;
     }
@@ -78,6 +78,6 @@ export class TestCreateDialogComponent {
      */
     onEnter(testName: string) {
         if (!this.isButtonClicked)
-            this.AddTest(testName);
+            this.addTest(testName);
     }
 }
