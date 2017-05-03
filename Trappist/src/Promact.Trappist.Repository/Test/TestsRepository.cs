@@ -7,6 +7,7 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.GlobalUtil;
@@ -228,10 +229,13 @@ namespace Promact.Trappist.Repository.Tests
         {
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
+           
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
-            var testObject = await _dbContext.Test.Where(y => y.Id == testId).Include(x => x.TestAttendees).ToListAsync();
-            testAcObject.NumberOfTestAttendees = testObject.First().TestAttendees.Count();
+            var testObject = await _dbContext.TestAttendees.FindAsync(testId);
+            await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
+            testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
+
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             string defaultMessage = _stringConstants.WarningMessage;
