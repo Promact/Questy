@@ -114,7 +114,6 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
-        this.loader = true;
         this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.loader = true;
             let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
