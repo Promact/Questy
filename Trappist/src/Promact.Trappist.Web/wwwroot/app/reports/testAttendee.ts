@@ -1,4 +1,5 @@
 ﻿import { Report } from '../reports/report';
+
 export class TestAttendee {
     id: number;
     firstName: string;

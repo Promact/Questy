@@ -25,8 +25,8 @@ namespace Promact.Trappist.Repository.Reports
         #region Public Method
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
-            var result = await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
-            return result;
+            return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
+           
         }
 
         public async Task SetStarredCandidateAsync(int id)
