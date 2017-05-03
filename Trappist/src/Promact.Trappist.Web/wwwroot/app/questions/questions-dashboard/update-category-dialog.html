@@ -6,15 +6,15 @@
     <md-dialog-content>
         <div class="form-group">
             <label>Section Name</label>
-            <input type="text" class="form-control" id="name" [(ngModel)]="category.categoryName" (keyup.enter)="onEnter(category)" (keyup)="changeErrorMessage()" name="name" #name="ngModel" maxlength="150" required />
+            <input type="text" class="form-control" id="categoryName" [(ngModel)]="category.categoryName" (keyup.enter)="onEnter(category)" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" required />
             <div class="errors-container">
                 <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
-                <span *ngIf="name.errors && (name.dirty || name.touched)" [hidden]="!name.errors.required" class="error-msg">Category Name Required</span>
+                <span *ngIf="categoryName.errors && (categoryName.dirty || categoryName.touched)" [hidden]="!categoryName.errors.required" class="error-msg">Category Name Required</span>
             </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close>Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="name.errors || isButtonClicked" (click)="updateCategory(category)">Update</button>
+        <button type="submit" class="btn btn-primary" [disabled]="categoryName.errors || isButtonClicked" (click)="updateCategory(category)">Update</button>
     </md-dialog-actions>
 </div>

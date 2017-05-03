@@ -70,7 +70,7 @@ export class UpdateCategoryDialogComponent {
      * @param category:Category object
      */
     onEnter(category: Category) {
-        if (!this.isButtonClicked) {
+        if (!this.isButtonClicked && category.categoryName) {
             this.updateCategory(category);
         }
     }

@@ -71,7 +71,7 @@ export class AddCategoryDialogComponent {
      * @param category:Category object
      */
     onEnter(category: Category) {
-        if (!this.isButtonClicked)
+        if (!this.isButtonClicked && category.categoryName)
             this.addCategory(category);
     }
 }
