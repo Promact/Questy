@@ -68,8 +68,6 @@ export class TestReportComponent implements OnInit {
             response => {
                 this.testAttendeeArray.forEach(k => k.starredCandidate = status);
                 [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
-            },
-            err => {
             }
         );
     }
@@ -83,8 +81,6 @@ export class TestReportComponent implements OnInit {
             response => {
                 this.testAttendeeArray.find(x => x.id === testAttendee.id).starredCandidate = !testAttendee.starredCandidate;
                 [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
-            },
-            err => {
             }
         );
     }
