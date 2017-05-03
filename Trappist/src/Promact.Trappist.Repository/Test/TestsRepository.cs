@@ -162,13 +162,13 @@ namespace Promact.Trappist.Repository.Tests
         #endregion
 
         #region Test-Question-Selection
-        public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId)
+        public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId, string userId)
         {
             var questionAc = new QuestionAC();
             var questionListAc = new List<QuestionAC>();
             var testQuestionList = await _dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
             //Fetches the list of questions from Question Model
-            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
+            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.CreatedByUserId == userId).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
             //Maps the each question in Question Model to QuestionAC object and make list of type QuestionAC
             questionList.ForEach(question =>
             {
@@ -223,7 +223,7 @@ namespace Promact.Trappist.Repository.Tests
             }
         }
 
-        public async Task<TestAC> GetTestByIdAsync(int testId)
+        public async Task<TestAC> GetTestByIdAsync(int testId, string userId)
         {
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
@@ -244,6 +244,7 @@ namespace Promact.Trappist.Repository.Tests
                 var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
                 categoryListAc.ForEach(category =>
                 {
+                    category.QuestionCount = _dbContext.Question.Where(x => x.CategoryID == category.Id && x.CreatedByUserId == userId).ToList().Count();
                     //If category present in TestCategory Model,then its IsSelect property made true
                     if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     {
