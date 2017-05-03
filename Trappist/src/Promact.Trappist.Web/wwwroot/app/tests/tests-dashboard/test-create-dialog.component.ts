@@ -32,7 +32,9 @@ export class TestCreateDialogComponent {
         testNameRef = testNameRef.trim();
         if (testNameRef) {
             this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
+                this.isButtonClicked = false;
                 if (isTestNameUnique) {
+                    this.isButtonClicked = true;
                     this.testService.addTests(this.test).subscribe((responses) => {
                         this.isButtonClicked = false;
                         this.dialogRef.close(responses);
