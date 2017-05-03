@@ -238,7 +238,7 @@ namespace Promact.Trappist.Repository.Tests
 
                 //Fetches the category list from Category Model
                 var categoryList = await _dbContext.Category.ToListAsync();
-                //Maps Category list to CategoryAC lis
+                //Maps Category list to CategoryAC list
                 var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
                 //Fetches the list of Categories from TestCategory Model
                 var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
