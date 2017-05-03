@@ -65,4 +65,13 @@ export class AddCategoryDialogComponent {
     changeErrorMessage() {
         this.isCategoryNameExist = false;
     }
+
+    /**
+     * Method to call addCategory() method when enter key will be pressed
+     * @param category:Category object
+     */
+    onEnter(category: Category) {
+        if (!this.isButtonClicked)
+            this.addCategory(category);
+    }
 }

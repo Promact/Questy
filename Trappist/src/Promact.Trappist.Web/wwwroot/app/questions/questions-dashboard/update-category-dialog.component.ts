@@ -64,4 +64,14 @@ export class UpdateCategoryDialogComponent {
     changeErrorMessage() {
         this.isCategoryNameExist = false;
     }
+
+    /**
+     * Method to call updateCategory() method when enter key will be pressed
+     * @param category:Category object
+     */
+    onEnter(category: Category) {
+        if (!this.isButtonClicked) {
+            this.updateCategory(category);
+        }
+    }
 }
