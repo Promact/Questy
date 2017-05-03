@@ -415,10 +415,6 @@ namespace Promact.Trappist.Test.Tests
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             //Creating Test
             var test = CreateTest("Maths");
-            string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
-            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
             var testAc = await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
