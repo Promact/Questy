@@ -32,7 +32,7 @@ namespace Promact.Trappist.Repository.Reports
         public async Task SetStarredCandidateAsync(int id)
         {
             var studentToBeStarred = await _dbContext.TestAttendees.FindAsync(id);
-            studentToBeStarred.StarredCandidate = studentToBeStarred.StarredCandidate ? false : true;
+            studentToBeStarred.StarredCandidate = !studentToBeStarred.StarredCandidate;
             await _dbContext.SaveChangesAsync();
         }
 
