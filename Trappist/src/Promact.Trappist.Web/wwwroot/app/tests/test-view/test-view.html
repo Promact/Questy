@@ -44,11 +44,11 @@
               <div class="qs-text">
                 <p class="question" [innerHtml]="question.question.questionDetail"></p>
                 <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
-                  <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                  <p *ngIf="questionType[question.questionType] != questionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
                 </div>
                 <div class="mt10">
                   <p class="tags">{{category.categoryName}}</p>
-                  <p class="tags">{{DifficultyLevel[question.question.difficultyLevel]}}</p>
+                  <p class="tags">{{difficultyLevel[question.question.difficultyLevel]}}</p>
                 </div>
               </div>
             </div>
@@ -59,7 +59,7 @@
     </ng-container>
     <div class="bottom-info">
       <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
-      <button type="button" class="btn btn-primary" [routerLink]="['/reports',testDetails.id]">View Report</button>
+      <button type="button" class="btn btn-primary" [routerLink]="['/reports/test',testDetails.id]">View Report</button>
     </div>
   </div>
 </div>
