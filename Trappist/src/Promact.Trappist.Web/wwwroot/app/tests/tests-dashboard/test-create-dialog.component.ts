@@ -77,7 +77,7 @@ export class TestCreateDialogComponent {
      * @param testName
      */
     onEnter(testName: string) {
-        if (!this.isButtonClicked)
+        if (!this.isButtonClicked && testName)
             this.addTest(testName);
     }
 }
