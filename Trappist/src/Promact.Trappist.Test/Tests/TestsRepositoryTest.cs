@@ -102,10 +102,10 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("AOT 669");
             await _testRepository.CreateTestAsync(test);
             test.TestName = "IIT BANGALORE";
-            test.BrowserTolerance = DomainModel.Enum.BrowserTolerance.High;
+            test.BrowserTolerance = BrowserTolerance.High;
             int value = (int)test.BrowserTolerance;
             await _testRepository.UpdateTestByIdAsync(test);
-            var TestName = "IIT BANGALORE";
+            var TestName = test.TestName;
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => (int)x.BrowserTolerance == value) == 1);
         }

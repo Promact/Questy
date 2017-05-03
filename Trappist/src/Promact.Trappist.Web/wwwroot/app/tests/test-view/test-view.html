@@ -10,9 +10,9 @@
           <em class="material-icons">arrow_drop_down</em>
         </div>
         <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-          <a md-menu-item (click)="navigateToTestSections()">Edit</a>
+          <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
           <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
-          <a md-menu-item>Duplicate</a>
+          <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
           <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
         </md-menu>
         <button type="button" class="btn" (click)="launchTestDialog()"><em class="material-icons">link</em> Share</button>
