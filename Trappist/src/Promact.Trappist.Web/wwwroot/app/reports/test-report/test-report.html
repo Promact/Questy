@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th><md-checkbox class="only-checkbox"></md-checkbox></th>
-                        <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred(testId)">{{headerStarStatus}}</em></th>
+                        <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred()">{{headerStarStatus}}</em></th>
                         <th class="h5" md2SortBy="firstName">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
                         <th class="h5" md2SortBy="createdDateTime">Test Date</th>
