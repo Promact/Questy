@@ -287,7 +287,7 @@ namespace Promact.Trappist.Test.Tests
             await _categoryRepository.AddCategoryAsync(category2);
             categoryList.Add(category2);
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
-            string userName = "asifkhan.ak95.ak@gmail.com";
+            string userName = "asif@gmail.com";
             //Configuring Application User
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
@@ -315,7 +315,7 @@ namespace Promact.Trappist.Test.Tests
                 questionListAc.Add(questionAc);
             }
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
-            var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id, category1.Id);
+            var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id, category1.Id, applicationUser.Id);
             Assert.Equal(1, questionAcList.Count);
             Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
             Assert.True(questionAcList[0].Question.IsSelect);
@@ -361,6 +361,12 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task GetTestDetails()
         {
+            string userName = "asif@gmail.com";
+            //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
             var categoryList = new List<DomainModel.Models.Category.Category>();
             //Creating Category
             var category = CreateCategory("category Name");
@@ -371,8 +377,9 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("Maths");
             await _testRepository.CreateTestAsync(test);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-            var testAc = await _testRepository.GetTestByIdAsync(test.Id);
+            var testAc = await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
             Assert.Equal(1, testAc.CategoryAcList.Count());
+            Assert.Equal(0, testAc.CategoryAcList[0].QuestionCount);
         }
         #endregion
 
