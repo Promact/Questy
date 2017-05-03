@@ -40,9 +40,9 @@
             </div>
             <div class="form-group">
                 <label>Contact Number</label>
-                <input required pattern="^[+]?([0-9]{10,20})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" ng-maxlength="20" />
+                <input required pattern="^[+]?([0-9]{10,20})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" maxlength="20" />
                 <div class="errors-container">
-                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Invalid contact number</span>
+                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Phone Numnber must have atleast 10 digits with an optional country code</span>
                     <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">required</span>
                 </div>
             </div>
