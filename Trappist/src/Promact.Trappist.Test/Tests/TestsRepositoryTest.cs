@@ -380,7 +380,7 @@ namespace Promact.Trappist.Test.Tests
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
 
             var test = CreateTest("Maths");
-            await _testRepository.CreateTestAsync(test,applicationUser.Id);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
 
             var testQuestion = new TestQuestion();
             testQuestion.QuestionId = questionAC.Question.Id;
