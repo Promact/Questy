@@ -31,10 +31,10 @@ export class TestCreateDialogComponent {
         this.test.testName = testNameRef;
         testNameRef = testNameRef.trim();
         if (testNameRef) {
-            this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {
-                this.isButtonClicked = false;
+            this.testService.IsTestNameUnique(testNameRef, this.test.id).subscribe((isTestNameUnique) => {               
                 if (isTestNameUnique) {
                     this.testService.addTests(this.test).subscribe((responses) => {
+                        this.isButtonClicked = false;
                         this.dialogRef.close(responses);
                         this.route.navigate(['tests/' + responses.id + '/sections']);
                     },
