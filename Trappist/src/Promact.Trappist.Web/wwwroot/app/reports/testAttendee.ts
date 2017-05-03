@@ -1,4 +1,4 @@
-﻿import { Report } from '../reports/report';
+﻿import {Report} from '../reports/report';
 
 export class TestAttendee {
     id: number;
