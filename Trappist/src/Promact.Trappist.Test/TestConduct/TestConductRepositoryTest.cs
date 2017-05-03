@@ -112,7 +112,7 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task IsTestLinkExistAsync()
         {
             await CreateTestAsync();
-            var result = await _testConductRepository.IsTestLinkExistAsync(_stringConstants.MagicString);
+            var result = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
             Assert.True(result);
         }
 
@@ -123,7 +123,7 @@ namespace Promact.Trappist.Test.TestConduct
         [Fact]
         public async Task IsTestLinkNotExistAsync()
         {
-            var result = await _testConductRepository.IsTestLinkExistAsync(_stringConstants.MagicString);
+            var result = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
             Assert.False(result);
         }
 
