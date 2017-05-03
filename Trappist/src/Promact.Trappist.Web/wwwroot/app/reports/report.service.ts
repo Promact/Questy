@@ -5,8 +5,10 @@ import { TestReportComponent } from '../reports/test-report/test-report.componen
 @Injectable()
 export class ReportService {
     private reportsApiUrl = 'api/report';
+
     constructor(private httpService: HttpService) {
     }
+
     getAllTestAttendees(testId: number) {
         return this.httpService.get(this.reportsApiUrl+'/'+testId);
     }
