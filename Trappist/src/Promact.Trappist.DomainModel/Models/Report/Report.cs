@@ -19,7 +19,7 @@ namespace Promact.Trappist.DomainModel.Models.Report
         
         public TestStatus TestStatus { get; set; }
 
-        public decimal TimeTakenByAttendee { get; set; }
+        public int TimeTakenByAttendee { get; set; }
 
         public int TestAttendeeId { get; set; }
 
