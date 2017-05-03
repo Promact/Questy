@@ -4,6 +4,7 @@ using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.Test
 {
@@ -30,6 +31,8 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public virtual ICollection<TestQuestion> TestQuestion { get; set; }
         public virtual ICollection<TestCategory> TestCategory { get; set; }
         public string CreatedByUserId { get; set; }
+
+        [ForeignKey("CreatedByUserId")]
         public virtual ApplicationUser CreatedByUser { get; set; }
     }
 }
