@@ -9,13 +9,13 @@ namespace Promact.Trappist.DomainModel.Models.Report
     public class Report : BaseModel
     {
         [Required]
-        public int TotalMarksScored { get; set; }
+        public double TotalMarksScored { get; set; }
 
         [Required]
-        public int Percentage { get; set; }
+        public double Percentage { get; set; }
 
         [Required]
-        public int Percentile { get; set; }
+        public double Percentile { get; set; }
         
         public TestStatus TestStatus { get; set; }
 
@@ -25,6 +25,5 @@ namespace Promact.Trappist.DomainModel.Models.Report
 
         [ForeignKey("TestAttendeeId")]
         public virtual TestAttendees TestAttendee { get; set; }
-
     }
 }
