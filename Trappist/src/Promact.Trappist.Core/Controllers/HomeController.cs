@@ -55,7 +55,7 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Conduct(string link)
         {
-            if (!string.IsNullOrWhiteSpace(link) && await _testConduct.IsTestLinkExistAsync(link))
+            if (!string.IsNullOrWhiteSpace(link) && await _testConduct.IsTestLinkExistForTestConductionAsync(link))
             {
                 ViewBag.Link = link;
                 return View();
