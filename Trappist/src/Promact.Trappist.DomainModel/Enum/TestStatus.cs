@@ -2,6 +2,9 @@
 {
     public enum TestStatus
     {
-        AllCandidates, CompletedTest, ExpiredTest, BlockedTest
+        AllCandidates=0,
+        CompletedTest=1,
+        ExpiredTest=2,
+        BlockedTest=3
     }
 }

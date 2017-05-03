@@ -20,12 +20,23 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Report API
-        [HttpGet("multiple/{testId}")]
+        
+        /// <summary>
+        /// Method to get the details of all the Test-Attendees of the respective test
+        /// </summary>
+        /// <param name="testId">Id of the respective test</param>
+        /// <returns></returns>
+        [HttpGet("{testId}")]
         public async Task<IActionResult> GetAllTestAttendeesAsync([FromRoute] int testId)
         {
             return Ok(await _reportRepository.GetAllTestAttendeesAsync(testId));
         }
 
+        /// <summary>
+        /// Method to set a candidate as Starred candidate
+        /// </summary>
+        /// <param name="id">Id of the candidate</param>
+        /// <returns></returns>
         [HttpPost("star/{attendeeId}")]
         public async Task<IActionResult> SetStarredCandidateAsync([FromBody] int attendeeId)
         {
@@ -33,11 +44,18 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(attendeeId);
         }
 
-        [HttpPut("star/all/{testId}/{status}")]
-        public async Task<IActionResult> SetAllCandidateStarredAsync([FromRoute] int testId, [FromRoute] bool status, [FromBody] List<int> idList)
+        /// <summary>
+        /// Method to set a list of candidates as starred candidate.
+        /// </summary>
+        /// <param name="id">Id if the test</param>
+        /// <param name="status">Star status of the student</param>
+        /// <param name="idList">List of id of test attendees</param>
+        /// <returns></returns>
+        [HttpPut("star/all/{selectedTestStatus}/{search}")]
+        public async Task<IActionResult> SetAllCandidateStarredAsync([FromBody] bool status, [FromRoute] int selectedTestStatus,[FromQuery] string searchString)
         {
-            await _reportRepository.SetAllCandidateStarredAsync(testId, status, idList);
-            return Ok(testId);
+            await _reportRepository.SetAllCandidateStarredAsync(status, selectedTestStatus, searchString);
+            return Ok(status);
         }
         #endregion
     }
