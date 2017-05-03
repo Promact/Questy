@@ -32,8 +32,7 @@
             'clipboard': 'npm:clipboard/dist/clipboard.js',
             'ngx-clipboard': 'npm:ngx-clipboard',
             'md2': 'npm:md2/bundles/md2.umd.js',
-            'ng2-ckeditor': 'npm:ng2-ckeditor',
-            'ng2-page-scroll': 'npm:ng2-page-scroll/bundles/ng2-page-scroll.umd.js'
+            'ng2-ckeditor': 'npm:ng2-ckeditor'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {

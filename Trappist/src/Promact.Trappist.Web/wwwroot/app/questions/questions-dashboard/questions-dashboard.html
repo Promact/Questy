@@ -19,7 +19,7 @@
                 <ul class="category-list">
                     <li class="h5" (click)="getAllQuestions()" [ngClass]="{'active' : selectedCategory.categoryName === undefined}">All Questions</li>
                     <li *ngFor="let category of categoryArray" class="clearfix h5" [ngClass]="isCategorySelected(category)">
-                        <a pageScroll [pageScrollDuration]="800" href="#top" style="all: unset"><span title="{{category.categoryName}}" (click)="categoryWiseFilter(category)">{{category.categoryName}}</span></a>
+                        <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category)">{{category.categoryName}}</span>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
                         <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
                             <button md-menu-item (click)="updateCategoryDialog(category)">Update</button>
