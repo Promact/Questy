@@ -132,16 +132,40 @@ namespace Promact.Trappist.Test.Tests
         [Fact]
         public async Task UpdateTestName()
         {
-            var test = CreateTest("AOT 669");
+            var test = CreateTest("Computer");
             string userName = "suparna@promactinfo.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
-            test.TestName = "MCKV";
+            test.TestName = "Computer";
             await _testRepository.UpdateTestNameAsync(test.Id, test);
-            var TestName = "MCKV";
-            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == TestName) == 1);
+            var testName = test.TestName;
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == testName) == 1);
+        }
+
+        [Fact]
+        public async Task IsTestExists()
+        {
+            string userName = "dasmadhurima48@gmail.com";
+            //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            //Creating Category
+            var category = CreateCategory("category Name");
+            await _categoryRepository.AddCategoryAsync(category);
+            categoryList.Add(category);
+            var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            //Creating Test
+            var test = CreateTest("English");
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
+            var testAc = await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
+            var result = await _testRepository.IsTestExists(test.Id);
+            Assert.True(result);
         }
         #endregion
 
