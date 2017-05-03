@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,13 +20,15 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Members
         private readonly ITestsRepository _testRepository;
         private readonly IStringConstants _stringConstants;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
         #region Constructor
-        public TestsController(ITestsRepository testRepository, IStringConstants stringConstants)
+        public TestsController(ITestsRepository testRepository, IStringConstants stringConstants, UserManager<ApplicationUser> userManager)
         {
             _testRepository = testRepository;
             _stringConstants = stringConstants;
+            _userManager = userManager;
         }
         #endregion
 
@@ -205,7 +209,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("questions/{testid}/{categoryid}")]
         public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int testId, [FromRoute] int categoryId)
         {
-            return Ok(await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId));
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+            return Ok(await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId, applicationUser.Id));
         }
 
         /// <summary>
@@ -234,7 +239,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTestByIdAsync([FromRoute] int id)
         {
-            var testAcObject = await _testRepository.GetTestByIdAsync(id);
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+            var testAcObject = await _testRepository.GetTestByIdAsync(id, applicationUser.Id);
             if (testAcObject == null)
                 return NotFound();
             return Ok(testAcObject);

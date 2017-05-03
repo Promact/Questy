@@ -19,7 +19,6 @@ export class TestQuestionsComponent implements OnInit {
     editName: boolean;
     DifficultyLevel = DifficultyLevel;
     QuestionType = QuestionType;
-    totalNumberOfQuestions: number[] = [];
     questionsToAdd: QuestionBase[] = [];
     testId: number;
     isSaveExit: boolean;
@@ -58,7 +57,6 @@ export class TestQuestionsComponent implements OnInit {
                 category.isAlreadyClicked = true;
                 this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
                     this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                    this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
                     this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
                         return question.question.isSelect;
                     }).length;
@@ -161,15 +159,15 @@ export class TestQuestionsComponent implements OnInit {
     /**
      * Selects and deselect all the questions of a category
      * @param category object
-     * @param totalNumberOfQuestions number of all the questions of a category
+     * @param questionCount number of all the questions of a category
      */
-    selectAll(category: Category, totalNumberOfQuestions: number) {
+    selectAll(category: Category) {
         category.questionList.map(function (questionList) {
             //If selectAll checkbox is selected
             if (category.selectAll) {
                 //every question is selected
                 questionList.question.isSelect = true;
-                category.numberOfSelectedQuestion = totalNumberOfQuestions;
+                category.numberOfSelectedQuestion = category.questionCount;
             }
             else {
                 //If selectAll checkbox is unselected ,then every question is deselected

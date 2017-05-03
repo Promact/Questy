@@ -14,15 +14,15 @@
                             <span>{{category.categoryName}}</span>
                         </div>
                         <div class="pull-right">
-                            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s) selected</span>
+                            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}}/{{category.questionCount}} question(s) selected</span>
                             <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
                         </div>
                     </md2-accordion-header>
                     <div class="collapsible-body p0">
                         <div class="select-all">
-                            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category,totalNumberOfQuestions[k])"></md-checkbox>
+                            <md-checkbox [(ngModel)]="category.selectAll" (change)="selectAll(category)"></md-checkbox>
                             <h5>Select All</h5>
-                            <span class="h7">(total {{totalNumberOfQuestions[k]}} questions)</span>
+                            <span class="h7">(total {{category.questionCount}} questions)</span>
                         </div>
                         <ng-container *ngFor="let question of category.questionList;let i=index">
                             <div class="qs-container">
