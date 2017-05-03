@@ -7,11 +7,11 @@ namespace Promact.Trappist.Repository.Reports
     public interface IReportRepository
     {
         /// <summary>
-        /// Method to get the details of all the Test-Attendees
+        /// Method to get the details of all the Test-Attendees of the respective test
         /// </summary>
-        /// <param name="id">Id of the respective Test</param>
+        /// <param name="id">Id of the respective test</param>
         /// <returns></returns>
-        Task<ICollection<TestAttendees>> GetAllTestAttendeesAsync(int id);
+        Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id);
 
         /// <summary>
         /// Method to set a candidate as Starred candidate
@@ -27,6 +27,6 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="status">Star status of the student</param>
         /// <param name="idList">List of id of test attendees</param>
         /// <returns></returns>
-        Task SetAllCandidateStarredAsync(int id, bool status, List<int> idList);
+        Task SetAllCandidateStarredAsync(bool status,  int selectedTestStatus, string SearchString);
     }
 }
