@@ -62,12 +62,9 @@ export class TestReportComponent implements OnInit {
      * Sets all the candidates as starred candidates
      * @param testId
      */
-    setAllCandidatesStarred(testId: number) {
-        for (let i = 0; i < this.testAttendeeArray.length; i++) {
-            this.starredCandidateIdList[i] = this.testAttendeeArray[i].id;
-        }
+    setAllCandidatesStarred() {
         let status = this.headerStarStatus === 'star_border' ? true : false;
-        this.reportService.setAllCandidatesStarred(this.testId, status, this.starredCandidateIdList).subscribe(
+        this.reportService.setAllCandidatesStarred(status, this.searchString, this.selectedTestStatus).subscribe(
             response => {
                 this.testAttendeeArray.forEach(k => k.starredCandidate = status);
                 [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
@@ -76,7 +73,6 @@ export class TestReportComponent implements OnInit {
 
             }
         );
-       
     }
 
     /**
@@ -195,7 +191,6 @@ export class TestReportComponent implements OnInit {
      * @param count
      */
     startingIndexOfActivePage(activePage: number, count: number) {
-
         return count === 0 ? 0 : (activePage - 1) * 10 + 1;
     }
 
