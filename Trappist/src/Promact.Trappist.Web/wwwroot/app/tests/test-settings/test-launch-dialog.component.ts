@@ -31,7 +31,9 @@ export class TestLaunchDialogComponent implements OnInit {
      */
     showTooltipMessage($event: Event, testLink: any) {
         $event.stopPropagation();
-        testLink.select();
+        setTimeout(() => {
+            testLink.select();
+        }, 0);
         this.tooltipMessage = 'Copied';
     }
 
