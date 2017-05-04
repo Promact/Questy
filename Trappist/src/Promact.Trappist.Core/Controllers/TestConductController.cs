@@ -6,7 +6,6 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
