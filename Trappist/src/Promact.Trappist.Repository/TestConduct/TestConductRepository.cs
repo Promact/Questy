@@ -55,6 +55,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 var testCategoryNameList = testInstructionDetails.TestCategory.Select(x => x.Category.CategoryName).ToList();
                 var testInstructions = new TestInstructionsAC()
                 {
+                    Duration= testInstructionDetails.Duration,
                     BrowserTolerance = testInstructionDetails.BrowserTolerance,
                     CorrectMarks = testInstructionDetails.CorrectMarks,
                     IncorrectMarks = testInstructionDetails.IncorrectMarks,
