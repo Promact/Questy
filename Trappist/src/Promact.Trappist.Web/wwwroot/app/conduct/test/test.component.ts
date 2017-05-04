@@ -136,7 +136,8 @@ export class TestComponent implements OnInit {
         this.conductService.getTestStatus(this.testAttendee.id).subscribe((response) => {
             let testStatus = response;
             if (testStatus !== TestStatus.allCandidates) {
-                this.endTest(testStatus);
+                //Close the window if Test is already completed
+                window.close();
             }
 
             this.ResumeTest();
@@ -418,10 +419,12 @@ export class TestComponent implements OnInit {
      * @param testStatus: TestStatus object
      */
     private endTest(testStatus: TestStatus) {
-        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe();
-        //A measure taken to add answer of question attempted just before the Test end
-        this.navigateToQuestionIndex(0);
-        window.close();
+        this.isTestReady = false;
+        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+            //A measure taken to add answer of question attempted just before the Test end
+            this.navigateToQuestionIndex(0);
+            window.close();
+        });
     }
 
     /**
