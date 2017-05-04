@@ -1,5 +1,6 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using System;
 using System.Collections.Generic;
@@ -78,5 +79,19 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of Attendee</param>
         /// <returns>DateTime objects</returns>
         Task<double> GetElapsedTimeAsync(int attendeeId);
+
+        /// <summary>
+        /// Sets the Test Status of the Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the Attendee</param>
+        /// <param name="testStatus">TestStatus enum</param>
+        Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus);
+
+        /// <summary>
+        /// Gets the Test Status of the Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the Attendee</param>
+        /// <return>TestStatus object</return>
+        Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId);
     }
 }
