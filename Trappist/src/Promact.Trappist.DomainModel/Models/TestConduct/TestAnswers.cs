@@ -6,7 +6,7 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
     {
         public int TestConductId { get; set; }
 
-        public int AnsweredOption { get; set; }
+        public int? AnsweredOption { get; set; }
 
         public string AnsweredCodeSnippet { get; set; }
 
