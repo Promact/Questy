@@ -1,19 +1,23 @@
 ﻿<div class="test-create-header clearfix">
   <div class="container">
     <h1 class="pull-left">
-      <span class="test-name" [hidden]="!isLabelVisible">{{testDetails.testName}}</span>
-      <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" (keyup)="changeErrorMessage()"
-             [(ngModel)]="testDetails.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focus)="selectAllContent($event)"
-             [hidden]="isLabelVisible"  (click)="$event.preventDefault()"/>
-      <button type="button" class="icon-btn ml10" (click)="hideEditButton()" *ngIf="isEditButtonVisible"><em class="material-icons">edit</em></button>
-      <span class="update-btns">
-        <button type="submit" class="icon-btn ml10" (click)="updateTestName(testDetails.id,testDetails)" *ngIf="!isEditButtonVisible" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>
-        <button type="button" class="icon-btn ml10" (click)="showEditButton(box.value)" *ngIf="!isEditButtonVisible"><em class="material-icons danger-text">close</em></button>
+      <span [hidden]="!isLabelVisible">
+        <span class="test-name">{{testDetails.testName}}</span>
+        <button type="button" class="icon-btn ml10" (click)="hideEditButton()"><em class="material-icons">edit</em></button>
       </span>
-      <span class="errors-container">
-        <span class="error-msg" *ngIf="isWhiteSpaceError || name.errors && name.dirty && !name.valid && name.errors.required">Name is required</span>
-        <span class="error-msg" *ngIf="name.errors && (name. touched || name.untouched)  && !name.valid && name.errors.pattern && name.dirty">Enter a valid Test Name</span>
-        <span class="error-msg" *ngIf="isTestNameExist">Test with this name already exists</span>
+      <span [hidden]="isLabelVisible">
+        <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" (keyup)="changeErrorMessage()"
+               [(ngModel)]="testDetails.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focus)="selectAllContent($event)"
+               (click)="$event.preventDefault()" (keyup.enter)="onEnter(box.value)" />
+        <span class="update-btns">
+          <button type="submit" class="icon-btn ml10" (click)="updateTestName(testDetails.id,testDetails)" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>
+          <button type="button" class="icon-btn ml10" (click)="showEditButton(box.value)"><em class="material-icons danger-text">close</em></button>
+        </span>
+        <span class="errors-container">
+          <span class="error-msg" *ngIf="isWhiteSpaceError || (name.dirty && !name.valid && name.errors.required)">Name is required</span>
+          <span class="error-msg" *ngIf="name.dirty && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special symbols are @, _ and white space</span>
+          <span class="error-msg" *ngIf="isTestNameExist">Test with this name already exists</span>
+        </span>
       </span>
     </h1>
     <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
