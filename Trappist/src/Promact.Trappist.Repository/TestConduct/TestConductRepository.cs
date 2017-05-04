@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Report;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -133,6 +135,28 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<double> GetElapsedTimeAsync(int attendeeId)
         {
             return await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).Select(x => x.TimeElapsed).FirstOrDefaultAsync(); 
+        }
+
+        public async Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
+        {
+            var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            if(report == null)
+            {
+                report = new Report();
+                report.TestAttendeeId = attendeeId;
+            }
+            report.TestStatus = testStatus;
+            await _dbContext.Report.AddAsync(report);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
+        {
+            var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            if (report == null)
+                return TestStatus.AllCandidates;
+
+            return report.TestStatus;
         }
         #endregion
     }

@@ -12,6 +12,7 @@ import { QuestionType } from '../../questions/enum-questiontype';
 import { QuestionBase } from '../../questions/question';
 import { TestAttendee } from '../test_attendee.model';
 import { TestAnswer } from '../test_answer.model';
+import { TestStatus } from '../teststatus.enum';
 
 //Temporary imports
 import { QuestionDisplay } from '../../questions/question-display';
@@ -69,7 +70,6 @@ export class TestComponent implements OnInit {
         this.questionIndex = 0;
         this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
-        this.timeOutCounter = this.TIMEOUT_TIME;
     }
 
     ngOnInit() {
@@ -78,6 +78,9 @@ export class TestComponent implements OnInit {
 
     }
 
+    /**
+     * Gets Test by Test Link
+     */
     getTestByLink() {
         let url = window.location.pathname;
         let link = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
@@ -90,6 +93,10 @@ export class TestComponent implements OnInit {
         });
     }
 
+    /**
+     * Gets Test Attendee
+     * @param testId: Id of Test
+     */
     getTestAttendee(testId: number) {
         this.conductService.getTestAttendeeByTestId(testId).subscribe((response) => {
             this.testAttendee = response;
@@ -117,7 +124,25 @@ export class TestComponent implements OnInit {
 
             this.isTestReady = true;
 
+            this.getTestStatus(this.testAttendee.id);
+        });
+    }
+
+    /**
+     * Gets the TestStatus of Attendee
+     * @param attendeeId: Id of Attendee
+     */
+    getTestStatus(attendeeId: number) {
+        this.conductService.getTestStatus(this.testAttendee.id).subscribe((response) => {
+            let testStatus = response;
+            if (testStatus != TestStatus.allCandidates) {
+                this.endTest(testStatus);
+            }
+
             this.ResumeTest();
+        }, err => {
+            this.navigateToQuestionIndex(0);
+            this.timeOutCounter = this.TIMEOUT_TIME;
         });
     }
 
@@ -135,16 +160,19 @@ export class TestComponent implements OnInit {
                     answer.optionChoice.forEach(y => x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.find(z => z.id === y).isAnswer = true);
                 }
             });
-
+            
             this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
                 let spanTime = response;
+                let spanTimeInSeconds = spanTime * 60;
                 this.seconds -= spanTime * 60;
             });
 
             this.testAnswers
             this.navigateToQuestionIndex(0);
+            this.timeOutCounter = this.TIMEOUT_TIME;
         }, err => {
             this.navigateToQuestionIndex(0);
+            this.timeOutCounter = this.TIMEOUT_TIME;
         });
     }
 
@@ -171,8 +199,13 @@ export class TestComponent implements OnInit {
             this.addAnswer(this.testQuestions[this.questionIndex]);
         else
             this.isTestReady = true;
+
         //Save status of new question
         this.questionStatus = this.testQuestions[index].questionStatus;
+        //Remove review status if Attendee re-visits the question
+        if (this.questionStatus == QuestionStatus.review)
+            this.questionStatus = QuestionStatus.unanswered;
+
         //Mark new question as selected
         this.markAsSelected(index);
         //Update question index
@@ -202,8 +235,10 @@ export class TestComponent implements OnInit {
             });
         }
 
-        if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)) {
+        if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus != QuestionStatus.review) {
+
             testAnswer.questionStatus = QuestionStatus.answered;
+
             this.questionStatus = QuestionStatus.answered;
         }
         else {
@@ -324,8 +359,10 @@ export class TestComponent implements OnInit {
         let duration: number = 0;
         message = this.focusLost > this.test.browserTolerance ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
 
-        if (this.focusLost > this.test.browserTolerance)
-            this.openSnackBar(message, duration, true, ['test-end']);
+        if (this.focusLost > this.test.browserTolerance) {
+            this.openSnackBar(message, duration);
+            this.endTest(TestStatus.blockedTest);
+        }
         else
             this.openSnackBar(message, duration);
     }
@@ -354,8 +391,15 @@ export class TestComponent implements OnInit {
 
         if (this.seconds < 0) {
             this.navigateToQuestionIndex(0);
-            this.endTest();
+            this.endTest(TestStatus.expiredTest);
         }
+    }
+
+    /**
+     * Called when end test button is clicked
+     */
+    endTestButtonClicked() {
+        this.endTest(TestStatus.completedTest);
     }
 
     /**
@@ -372,8 +416,10 @@ export class TestComponent implements OnInit {
 
     /**
      * Ends test and route to test-end page
+     * @param testStatus: TestStatus object
      */
-    private endTest() {
+    private endTest(testStatus: TestStatus) {
+        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe();
         //A measure taken to add answer of question attempted just before the Test end
         this.navigateToQuestionIndex(0);
         window.close();
