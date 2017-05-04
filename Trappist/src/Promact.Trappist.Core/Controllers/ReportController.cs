@@ -40,6 +40,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("star/{attendeeId}")]
         public async Task<IActionResult> SetStarredCandidateAsync([FromBody] int attendeeId)
         {
+            if (!await _reportRepository.IsCandidateExistAsync(attendeeId))
+                return NotFound();
+
             await _reportRepository.SetStarredCandidateAsync(attendeeId);
             return Ok(attendeeId);
         }
