@@ -15,32 +15,52 @@ import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component'
     templateUrl: 'tests-dashboard.html'
 })
 
-export class TestsDashboardComponent {
+export class TestsDashboardComponent implements OnInit {
     showSearchInput: boolean;
-    Tests: Test[] = new Array<Test>();
+    tests: Test[] = new Array<Test>();
     searchTest: string;
     isDeleteAllowed: boolean;
     loader: boolean;
-    test: Test;
+    testObj: Test;
+    i: number;
 
-    constructor(public dialog: MdDialog, private testService: TestService, private router:Router) {
+    constructor(public dialog: MdDialog, private testService: TestService, private router: Router) {
+        this.i = 0;
+        this.testObj = new Test();
+    }
+    ngOnInit() {
         this.loader = true;
         this.getAllTests();
     }
+
     // get All The Tests From Server
     getAllTests() {
         this.testService.getTests().subscribe((response) => {
-            this.Tests = (response);
+            this.tests = (response);
             this.isTestAttendeeExist();
+            this.tests.forEach(test => {
+                test.numberofTestQuestions = 0;
+                this.testService.getTestById(test.id).subscribe(result => {
+                    this.testObj = result;
+                    test.numberOfTestSections = this.testObj.categoryAcList.filter(function (category) {
+                        return category.isSelect;
+                    }).length;
+                    test.numberOfTestAttendees = this.testObj.numberOfTestAttendees;
+                    this.testObj.categoryAcList.filter(function (category) {
+                        test.numberofTestQuestions = test.numberofTestQuestions + category.numberOfSelectedQuestion;
+                    });
+                });
+            });
+            this.loader = false;
         });
-        this.loader = false;
     }
+
     // open Create Test Dialog
     createTestDialog() {
         let dialogRef = this.dialog.open(TestCreateDialogComponent);
         dialogRef.afterClosed().subscribe(test => {
             if (test)
-                this.Tests.unshift(test);
+                this.tests.unshift(test);
         });
     }
 
@@ -54,7 +74,7 @@ export class TestsDashboardComponent {
             this.isDeleteAllowed = response.response ? false : true;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
             deleteTestDialog.testToDelete = test;
-            deleteTestDialog.testArray = this.Tests;
+            deleteTestDialog.testArray = this.tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
         });
     }
@@ -67,7 +87,7 @@ export class TestsDashboardComponent {
         let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
-        duplicateTestDialog.testArray = this.Tests;
+        duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
     }
 
@@ -75,7 +95,7 @@ export class TestsDashboardComponent {
      * Checks if any candidate has taken the test
      */
     isTestAttendeeExist() {
-        this.Tests.forEach(x => {
+        this.tests.forEach(x => {
             this.testService.isTestAttendeeExist(x.id).subscribe((response) => {
                 if (response.response) {
                     x.isEditTestEnabled = false;

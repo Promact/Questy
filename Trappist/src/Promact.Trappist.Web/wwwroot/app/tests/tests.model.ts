@@ -25,6 +25,8 @@ export class Test {
     isEditTestEnabled: boolean;
     isQuestionMissing: boolean;
     numberOfTestAttendees: number;
+    numberOfTestSections: number;
+    numberofTestQuestions: number;
 }
 
 export class TestCategory {

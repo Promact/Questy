@@ -1,7 +1,7 @@
-﻿<div class="container">
-    <div class="loader-container" *ngIf="loader">
-        <div class="spinner"></div>
-    </div>
+﻿<div class="loader-container" *ngIf="loader">
+    <div class="spinner"></div>
+</div>
+<div class="container">
     <div class="tests-dashboard">
         <div class="title-area mb20 clearfix">
             <h1 class="pull-left">Tests</h1>
@@ -18,7 +18,7 @@
                         <h5>Create New Test</h5>
                     </div>
                 </div>
-                <div *ngFor="let test of Tests | filter: searchTest let i=index">
+                <div *ngFor="let test of tests | filter: searchTest let i=index">
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
                             <div class="test-title clearfix">
@@ -32,9 +32,9 @@
                                 </md-menu>
                             </div>
                             <div class="test-details">
-                                <p class="light-text">150 Questions</p>
-                                <p class="light-text">3 Sections</p>
-                                <p class="light-text">123 Candidates</p>
+                                <p class="light-text">{{test.numberofTestQuestions}} Questions</p>
+                                <p class="light-text">{{test.numberOfTestSections}} Sections</p>
+                                <p class="light-text">{{test.numberOfTestAttendees}} Candidates</p>
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary" [routerLink]="['/reports']">View Report</button>
