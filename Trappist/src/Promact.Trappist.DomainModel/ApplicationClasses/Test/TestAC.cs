@@ -44,6 +44,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
         public List<CategoryAC> CategoryAcList { get; set; }
 
         public int NumberOfTestAttendees { get; set; }
+
         public string CreatedByUserId { get; set; }
     }
 }
