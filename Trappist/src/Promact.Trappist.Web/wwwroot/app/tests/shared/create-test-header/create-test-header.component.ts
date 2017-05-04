@@ -64,7 +64,6 @@ export class CreateTestHeaderComponent implements OnInit {
      * Hides the edit button and makes the check and close buttons visible
      */
     hideEditButton() {
-        //this.isEditButtonVisible = false;
         this.isLabelVisible = false;
         if (this.editedTestName) {
             this.testDetails.testName = this.editedTestName;
