@@ -26,6 +26,7 @@ using System;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using System.Collections.Generic;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.Repository.Reports;
 
 namespace Promact.Trappist.Test
 {
@@ -79,6 +80,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<IBasicSetupRepository, BasicSetupRepository>();
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestConductRepository, TestConductRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
             #endregion
 
             #region Mocking
