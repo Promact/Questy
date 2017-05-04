@@ -4,27 +4,27 @@ import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
 
 export class Test {
-    public id: number;
-    public testName: string;
-    public link: string;
-    public startDate: Date;
-    public endDate: Date;
-    public duration: number;
-    public warningTime: number;
-    public fromIpAddress: string;
-    public toIpAddress: string;
-    public warningMessage: string;
-    public correctMarks: string;
-    public incorrectMarks: string;
-    public browserTolerance: number;
-    public createdDateTime: Date;
-    public questionOrder: TestOrder;
-    public optionOrder: TestOrder;
-    public allowTestResume: AllowTestResume;
+    id: number;
+    testName: string;
+    link: string;
+    startDate: Date;
+    endDate: Date;
+    duration: number;
+    warningTime: number;
+    fromIpAddress: string;
+    toIpAddress: string;
+    warningMessage: string;
+    correctMarks: string;
+    incorrectMarks: string;
+    browserTolerance: number;
+    createdDateTime: Date;
+    questionOrder: TestOrder;
+    optionOrder: TestOrder;
+    allowTestResume: AllowTestResume;
     categoryAcList: Category[] = [];
     isEditTestEnabled: boolean;
     isQuestionMissing: boolean;
-    public numberOfTestAttendees: number;
+    numberOfTestAttendees: number;
 }
 
 export class TestCategory {
