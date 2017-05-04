@@ -6,7 +6,7 @@
         <div class="title-area mb20 clearfix">
             <h1 class="pull-left">Questions</h1>
             <div class="search-area pull-right">
-                <input type="text" placeholder="Search questions" [(ngModel)]="matchString" (keyup)="getQuestionsMatchingSearchCriteria(matchString)" [hidden]="!showSearchInput" (blur)="showSearchInput = false" />
+                <input type="text" placeholder="Search questions" [(ngModel)]="matchString" (keyup)="getQuestionsMatchingSearchCriteria(matchString)" [hidden]="!showSearchInput" (blur)="showStatus()" />
                 <button type="button" (click)="showSearchInput = true"><em class="material-icons">search</em></button>
             </div>
         </div>
