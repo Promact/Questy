@@ -32,6 +32,7 @@ export class TestViewComponent implements OnInit {
     isDeleteAllowed: boolean;
     tests: Test[];
     isEditTestEnabled: boolean;
+    loader: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
@@ -41,6 +42,7 @@ export class TestViewComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestDetails(this.testId);
         this.getAllTests();
@@ -59,6 +61,7 @@ export class TestViewComponent implements OnInit {
     getTestDetails(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = response;
+            this.loader = false;
         });
     }
 

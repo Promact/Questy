@@ -28,11 +28,13 @@ export class CreateTestHeaderComponent implements OnInit {
     public testDetails: Test;
     @Input('testNameReference')
     public testNameReference: string;
+    isButtonClicked: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.isTestNameExist = false;
         this.isLabelVisible = true;
+        this.isButtonClicked = false;
     }
 
     /**
@@ -98,17 +100,22 @@ export class CreateTestHeaderComponent implements OnInit {
      * @param testObject is an object of the class Test
      */
     updateTestName(id: number, testObject: Test) {
+        this.isButtonClicked = true;
         this.testNameRef = this.testDetails.testName.trim();
         if (this.testNameRef) {
             this.testService.IsTestNameUnique(this.testNameRef, id).subscribe((isTestNameUnique) => {
+                this.isButtonClicked = false;
                 if (isTestNameUnique) {
+                    this.isButtonClicked = true;
                     this.testService.updateTestName(id, testObject).subscribe((response) => {
+                        this.isButtonClicked = false;
                         this.testName = response.testName;
                         this.editedTestName = this.testName;
                         this.openSnackBar(this.testNameUpdatedMessage);
                         this.isLabelVisible = true;
                     },
                         errorHandling => {
+                            this.isButtonClicked = false;
                             this.openSnackBar('Something went wrong');
                         });
                 }
@@ -127,7 +134,7 @@ export class CreateTestHeaderComponent implements OnInit {
      * @param testName contains the test name 
      */
     onEnter(testName: string) {
-        if (testName)
+        if (!this.isButtonClicked && testName)
             this.updateTestName(this.testId, this.testDetails);
     }
 
