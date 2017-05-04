@@ -201,7 +201,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
             //JSON string
-            var answer = "{ \"questionId\":1,\"optionChoice\":[1],\"code\":null,\"questionStatus\":1}";
+            var answer = "[{ \"questionId\":1,\"optionChoice\":[1],\"code\":null,\"questionStatus\":1}]";
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
 
@@ -275,6 +275,24 @@ namespace Promact.Trappist.Test.TestConduct
 
             var elapsedTime = await _testConductRepository.GetElapsedTimeAsync(attendeeId);
             Assert.True(elapsedTime > 0.0d);
+        }
+
+        /// <summary>
+        /// Test to get and set test Attendee's TestStatus
+        /// </summary>
+        [Fact]
+        public async Task GetSetAttendeeTestStatusAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            //Setting Attendee TestStatus
+            await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
+            var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+
+            Assert.True(testStatus == TestStatus.CompletedTest);            
         }
         #endregion
 

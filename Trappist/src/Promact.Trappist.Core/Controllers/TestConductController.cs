@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -56,7 +58,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <param name="answer">Answer submitted</param>
         [HttpPut("answer/{attendeeId}")]
-        public async Task<IActionResult> AddAnswerAsync([FromRoute]int attendeeId, [FromBody] TestAnswerAC[] answer)
+        public async Task<IActionResult> AddAnswerAsync([FromRoute]int attendeeId, [FromBody] List<TestAnswerAC> answer)
         {
             if (!ModelState.IsValid)
             {
@@ -64,6 +66,13 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            {
+                return BadRequest();
+            }
+
+            //If the Attendee has completed the Test
+            var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+            if(attendeeTestStatus != TestStatus.AllCandidates)
             {
                 return BadRequest();
             }
@@ -86,6 +95,13 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> SetElapsedTimeAsync([FromRoute]int attendeeId)
         {
             if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            {
+                return BadRequest();
+            }
+
+            //If the Attendee has completed the Test
+            var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+            if (attendeeTestStatus != TestStatus.AllCandidates)
             {
                 return BadRequest();
             }
@@ -192,6 +208,56 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             return Ok(await _testRepository.GetTestByLinkAsync(link));
+        }
+
+        /// <summary>
+        /// Sets the TestStatus of Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of Attendee</param>
+        /// <param name="testStatus">TestStatus object</param>
+        [HttpPut("teststatus/{attendeeId}")]
+        public async Task<IActionResult> SetTestStatusAsync([FromRoute]int attendeeId, [FromBody]TestStatus testStatus)
+        {
+            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            {
+                return BadRequest();
+            }
+
+            //If the Attendee has completed the Test
+            var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+            if (attendeeTestStatus != TestStatus.AllCandidates)
+            {
+                return BadRequest();
+            }
+
+            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            {
+                return NotFound();
+            }
+            await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
+
+            return Ok(attendeeId);
+        }
+
+        /// <summary>
+        /// Gets TestStatus of Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of Attendee</param>
+        /// <returns>TestStatus object</returns>
+        [HttpGet("teststatus/{attendeeId}")]
+        public async Task<IActionResult> GetTestStatusAsync([FromRoute]int attendeeId)
+        {
+            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            {
+                return BadRequest();
+            }
+
+            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            {
+                return NotFound();
+            }
+
+            return Ok(await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId));
         }
 
         #region Test-Instruction API
