@@ -19,24 +19,29 @@ export class TestQuestionsComponent implements OnInit {
     editName: boolean;
     DifficultyLevel = DifficultyLevel;
     QuestionType = QuestionType;
-    questionsToAdd: QuestionBase[] = [];
+    questionsToAdd: QuestionBase[];
     testId: number;
     isSaveExit: boolean;
     testDetails: Test;
     loader: boolean = false;
-    optionName: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+    optionName: string[]; 
     testNameReference: string;
     isAnyCategorySelectedForTest: boolean;
+    isEditTestEnabled: boolean;
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
         this.isSaveExit = false;
+        this.questionsToAdd = [];
+        this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
     }
+
     ngOnInit() {
         this.router.params.subscribe(params => {
             this.testId = params['id'];
         });
         this.getTestDetails();
+        this.isTestAttendeeExist();
     }
 
     openSnackBar(text: string) {
@@ -44,37 +49,38 @@ export class TestQuestionsComponent implements OnInit {
             duration: 3000
         });
     }
+
     /**
      * Gets all the questions of particular category by passing its Id
      * @param category
      * @param i is index of category
      */
     getAllquestions(category: Category, i: number) {
-        this.loader = true;
-        if (!category.isAccordionOpen) {
-            category.isAccordionOpen = true;
-            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
-                category.isAlreadyClicked = true;
-                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
-                        return question.question.isSelect;
-                    }).length;
-                    category.selectAll = category.questionList.every(function (question) {
-                        return question.question.isSelect;
+            this.loader = true;
+            if (!category.isAccordionOpen) {
+                category.isAccordionOpen = true;
+                if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
+                    category.isAlreadyClicked = true;
+                    this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
+                        this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                        this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
+                            return question.question.isSelect;
+                        }).length;
+                        category.selectAll = category.questionList.every(function (question) {
+                            return question.question.isSelect;
+                        });
+                        this.loader = false;
                     });
+                } else {
+                    category.isAlreadyClicked = true;
                     this.loader = false;
-                });
+                }
             } else {
-                category.isAlreadyClicked = true;
+                category.isAccordionOpen = false;
                 this.loader = false;
             }
-        } else {
-            category.isAccordionOpen = false;
-            this.loader = false;
         }
-    }
-
+    
     /**
      * returns 'correct' class for correct option
      * @param isAnswer
@@ -110,19 +116,20 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(questionToSelect: QuestionBase, category: Category) {
-        if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
-            let isAllSelected = category.questionList.every(function (question) {
-                return question.question.isSelect;
-            });
-            if (isAllSelected)
-                category.selectAll = true;
-            category.numberOfSelectedQuestion++;
-        } else {
-            category.selectAll = false;
-            questionToSelect.question.isSelect = false;
-            category.numberOfSelectedQuestion--;
+            questionToSelect.question.isSelect = true;
+            if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
+                let isAllSelected = category.questionList.every(function (question) {
+                    return question.question.isSelect;
+                });
+                if (isAllSelected)
+                    category.selectAll = true;
+                category.numberOfSelectedQuestion++;
+            } else {
+                category.selectAll = false;
+                questionToSelect.question.isSelect = false;
+                category.numberOfSelectedQuestion--;
+            }
         }
-    }
 
     /**
      * Adds all the questions to to database and navigate to test-settings.component
@@ -137,23 +144,27 @@ export class TestQuestionsComponent implements OnInit {
                 //Every question from category are concatenated to single array which will be sent to add to test
                 this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
         }
-        this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
-            if (response) {
-                this.openSnackBar(response.message);
-                if (this.isSaveExit) {
-                    this.loader = false;
-                    this.route.navigate(['/tests']);
+        if (this.isEditTestEnabled) {
+            this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
+                if (response) {
+                    this.openSnackBar(response.message);
+                    if (this.isSaveExit) {
+                        this.loader = false;
+                        this.route.navigate(['/tests']);
+                    }
+                    else {
+                        this.loader = false;
+                        this.route.navigate(['tests/' + this.testId + '/settings']);
+                    }
                 }
-                else {
+            },
+                error => {
                     this.loader = false;
-                    this.route.navigate(['tests/' + this.testId + '/settings']);
-                }
-            }
-        },
-            error => {
-                this.loader = false;
-                this.openSnackBar('Oops! something went wrong..please try after sometime');
-            });
+                    this.openSnackBar('Oops! something went wrong..please try after sometime');
+                });
+        }
+        else
+            this.route.navigate(['tests/' + this.testId + '/settings']);
     }
 
     /**
@@ -162,19 +173,19 @@ export class TestQuestionsComponent implements OnInit {
      * @param questionCount number of all the questions of a category
      */
     selectAll(category: Category) {
-        category.questionList.map(function (questionList) {
-            //If selectAll checkbox is selected
-            if (category.selectAll) {
-                //every question is selected
-                questionList.question.isSelect = true;
-                category.numberOfSelectedQuestion = category.questionCount;
-            }
-            else {
-                //If selectAll checkbox is unselected ,then every question is deselected
-                questionList.question.isSelect = false;
-                category.numberOfSelectedQuestion = 0;
-            }
-        });
+            category.questionList.map(function (questionList) {
+                //If selectAll checkbox is selected
+                if (category.selectAll) {
+                    //every question is selected
+                    questionList.question.isSelect = true;
+                    category.numberOfSelectedQuestion = category.questionCount;
+                }
+                else {
+                    //If selectAll checkbox is unselected ,then every question is deselected
+                    questionList.question.isSelect = false;
+                    category.numberOfSelectedQuestion = 0;
+                }
+            });
     }
 
     /**
@@ -182,6 +193,23 @@ export class TestQuestionsComponent implements OnInit {
      */
     saveExit() {
         this.isSaveExit = true;
-        this.saveNext();
+        if (this.isEditTestEnabled)
+            this.saveNext();
+        else
+            this.route.navigate(['/tests']);
+    }
+
+    /**
+    * Checks if any candidate has taken the test
+    */
+    isTestAttendeeExist() {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((response) => {
+            if (response.response) {
+                this.isEditTestEnabled = false;
+            }
+            else {
+                this.isEditTestEnabled = true;
+            }
+        });
     }
 }

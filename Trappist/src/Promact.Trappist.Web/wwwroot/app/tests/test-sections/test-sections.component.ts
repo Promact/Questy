@@ -20,15 +20,17 @@ import { Test, TestCategory, TestQuestion } from '../tests.model';
 export class TestSectionsComponent implements OnInit {
     testDetails: Test;
     testId: number;
-    testCategories: TestCategory[] = [];
+    testCategories: TestCategory[];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
     loader: boolean;
     testNameReference: string;
+    isEditTestEnabled: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
         this.testCategories = new Array<TestCategory>();
+        this.testCategories = [];
         this.testDetails = new Test();
     }
 
@@ -39,6 +41,7 @@ export class TestSectionsComponent implements OnInit {
         this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestById(this.testId);
+        this.isTestAttendeeExist();
     }
 
     /**
@@ -58,26 +61,28 @@ export class TestSectionsComponent implements OnInit {
        * @param category
        */
     onSelect(category: Category) {
-        if (!category.isSelect)
-            category.isSelect = true;
-        else {
-            this.testService.deselectCategory(category.id, this.testDetails.id).subscribe((isQuestionAdded) => {
-                if (isQuestionAdded) {
-                    this.testCategoryObj.testId = this.testId;
-                    this.testCategoryObj.categoryId = category.id;
-                    let dialogRef = this.dialog.open(DeselectCategoryComponent, { data: this.testCategoryObj });
-                    dialogRef.afterClosed().subscribe(result => {
-                        if (result)
-                            category.isSelect = false;
-                    },
-                        err => {
-                            this.openSnackbar('Something went wrong, try again');
-                        });
-                }
-                else {
-                    category.isSelect = false;
-                }
-            });
+        if (this.isEditTestEnabled) {
+            if (!category.isSelect)
+                category.isSelect = true;
+            else {
+                this.testService.deselectCategory(category.id, this.testDetails.id).subscribe((isQuestionAdded) => {
+                    if (isQuestionAdded) {
+                        this.testCategoryObj.testId = this.testId;
+                        this.testCategoryObj.categoryId = category.id;
+                        let dialogRef = this.dialog.open(DeselectCategoryComponent, { data: this.testCategoryObj });
+                        dialogRef.afterClosed().subscribe(result => {
+                            if (result)
+                                category.isSelect = false;
+                        },
+                            err => {
+                                this.openSnackbar('Something went wrong, try again');
+                            });
+                    }
+                    else {
+                        category.isSelect = false;
+                    }
+                });
+            }
         }
     }
 
@@ -87,22 +92,28 @@ export class TestSectionsComponent implements OnInit {
      */
     saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
         this.loader = true;
-        this.testService.addTestCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
-            if (response) {
-                if (isSelectButton) {
-                    this.loader = false;
-                    this.router.navigate(['/tests/' + this.testId + '/questions']);
+        if (this.isEditTestEnabled) {
+            this.testService.addTestCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
+                if (response) {
+                    if (isSelectButton) {
+                        this.loader = false;
+                        this.router.navigate(['/tests/' + this.testId + '/questions']);
+                    }
+                    else {
+                        this.loader = false;
+                        this.router.navigate(['/tests']);
+                    }
                 }
-                else {
+            },
+                err => {
                     this.loader = false;
-                    this.router.navigate(['/tests']);
-                }
-            }
-        },
-            err => {
-                this.loader = false;
-                this.openSnackbar('Something went wrong, try again');
-            });
+                    this.openSnackbar('Something went wrong, try again');
+                });
+        }
+        else if (isSelectButton)
+            this.router.navigate(['/tests/' + this.testId + '/questions']);
+        else
+            this.router.navigate(['/tests']);
     }
 
     /**
@@ -111,6 +122,20 @@ export class TestSectionsComponent implements OnInit {
     openSnackbar(message: string) {
         return this.snackbarRef.open(message, 'Dismiss', {
             duration: 4000,
+        });
+    }
+
+    /**
+     * Checks if any candidate has taken the test
+     */
+    isTestAttendeeExist() {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((response) => {
+            if (response.response) {
+                this.isEditTestEnabled = false;
+            }
+            else {
+                this.isEditTestEnabled = true;
+            }
         });
     }
 }

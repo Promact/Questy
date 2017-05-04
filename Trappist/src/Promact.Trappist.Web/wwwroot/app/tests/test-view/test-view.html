@@ -1,5 +1,8 @@
 ﻿<div class="test-create-steps test-view">
   <div class="test-create-header clearfix">
+    <div class="loader-container" *ngIf="loader">
+      <div class="spinner"></div>
+    </div>
     <div class="container">
       <h1 class="pull-left">
         <span class="test-name">{{testDetails.testName}}</span>
