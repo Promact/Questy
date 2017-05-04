@@ -118,7 +118,6 @@ export class CreateTestHeaderComponent implements OnInit {
                     this.isLabelVisible = false;
                 }
             });
-
         }
         else
             this.isWhiteSpaceError = true;
