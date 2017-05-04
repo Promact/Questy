@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { TestAnswer } from './test_answer.model';
+import { TestStatus } from './teststatus.enum';
 
 @Injectable()
 export class ConductService {
@@ -80,5 +81,23 @@ export class ConductService {
      */
     getElapsedTime(attendeeId: number) {
         return this.httpService.get(this.testConductUrl + 'elapsetime/' + attendeeId);
+    }
+
+    /**
+     * Sets the TestStatus of the Attendee 
+     * @param attendeeId: Id of Attendee
+     * @param testStatus: TestStatus object
+     */
+    setTestStatus(attendeeId: number, testStatus: TestStatus) {
+        return this.httpService.put(this.testConductUrl + 'teststatus/' + attendeeId, testStatus);
+    }
+
+    /**
+     * Sets the TestStatus of the Attendee 
+     * @param attendeeId: Id of Attendee
+     * @param testStatus: TestStatus object
+     */
+    getTestStatus(attendeeId: number) {
+        return this.httpService.get(this.testConductUrl + 'teststatus/' + attendeeId);
     }
 }
