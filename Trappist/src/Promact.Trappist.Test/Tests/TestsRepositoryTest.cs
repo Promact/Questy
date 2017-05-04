@@ -122,7 +122,7 @@ namespace Promact.Trappist.Test.Tests
             int value = (int)test.BrowserTolerance;
             await _testRepository.UpdateTestByIdAsync(test);
             var testName = test.TestName;
-            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == testName) == 1);
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName.Equals(testName)) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => (int)x.BrowserTolerance == value) == 1);
         }
 
@@ -141,7 +141,7 @@ namespace Promact.Trappist.Test.Tests
             test.TestName = "Computer";
             await _testRepository.UpdateTestNameAsync(test.Id, test);
             var testName = test.TestName;
-            Assert.True(_trappistDbContext.Test.Count(x => x.TestName == testName) == 1);
+            Assert.True(_trappistDbContext.Test.Count(x => x.TestName.Equals(testName)) == 1);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("English");
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-            var testAc = await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
+            await _testRepository.GetTestByIdAsync(test.Id, applicationUser.Id);
             var result = await _testRepository.IsTestExists(test.Id);
             Assert.True(result);
         }
