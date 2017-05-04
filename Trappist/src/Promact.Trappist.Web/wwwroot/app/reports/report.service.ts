@@ -12,9 +12,11 @@ export class ReportService {
     getAllTestAttendees(testId: number) {
         return this.httpService.get(this.reportsApiUrl+'/'+testId);
     }
+
     setStarredCandidate(attendeeId: number) {
         return this.httpService.post(this.reportsApiUrl+'/star'+'/'+attendeeId,attendeeId);
     }
+
     setAllCandidatesStarred(status: boolean, searchString: string, selectedTestStatus: number) {
         return this.httpService.put(this.reportsApiUrl + '/star/all/' +selectedTestStatus+'/{search}?criteria=searchString',status);
     }

@@ -4,7 +4,6 @@ using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using Promact.Trappist.DomainModel.Enum;
 
 namespace Promact.Trappist.Repository.Reports
@@ -26,7 +25,6 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
             return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
-           
         }
 
         public async Task SetStarredCandidateAsync(int id)
@@ -38,11 +36,11 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task SetAllCandidateStarredAsync(bool status, int selectedTestStatus, string searchString)
         {
-            if(searchString == null)
+            if (searchString == null)
             {
                 searchString = "";
             }
-            var attendeeList = await _dbContext.TestAttendees.Where(x => x.Report.TestStatus == (TestStatus)selectedTestStatus 
+            var attendeeList = await _dbContext.TestAttendees.Where(x => x.Report.TestStatus == (TestStatus)selectedTestStatus
             && (x.FirstName.Contains(searchString)
             || x.LastName.Contains(searchString)
             || x.Email.Contains(searchString)
@@ -51,6 +49,11 @@ namespace Promact.Trappist.Repository.Reports
             attendeeList.ForEach(x => x.StarredCandidate = status);
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsCandidateExistAsync(int attendeeId)
+        {
+            return await _dbContext.TestAttendees.AnyAsync(s => s.Id == attendeeId);
         }
         #endregion
     }

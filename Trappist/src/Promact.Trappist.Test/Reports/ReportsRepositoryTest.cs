@@ -83,7 +83,7 @@ namespace Promact.Trappist.Test.Reports
         {
             var testAttendee = new TestAttendees()
             {
-                Id=1,
+                Id = 1,
                 FirstName = "Hardik",
                 LastName = "Patel",
                 Email = "phardi@gmail.com",

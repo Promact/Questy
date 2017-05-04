@@ -115,6 +115,16 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
+     * To determine whether search field will visible or hidden
+     */
+    showStatus() {
+        if (this.searchString.length > 0)
+            return this.showSearchInput = true;
+        else
+            return this.showSearchInput = false;
+    }
+
+    /**
      * Sets the test status of the candidate
      * @param typeOfTest
      */
