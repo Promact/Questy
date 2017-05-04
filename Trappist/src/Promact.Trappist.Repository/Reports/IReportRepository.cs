@@ -30,7 +30,7 @@ namespace Promact.Trappist.Repository.Reports
         Task SetAllCandidateStarredAsync(bool status, int selectedTestStatus, string SearchString);
 
         /// <summary>
-        /// Method to check whether to candidate exist or not
+        /// Method to check whether a candidate exist or not
         /// </summary>
         /// <param name="attendeeId">Id of the candidate</param>
         /// <returns></returns>
