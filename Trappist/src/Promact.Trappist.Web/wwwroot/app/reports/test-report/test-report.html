@@ -5,7 +5,7 @@
     <div class="test-create-header clearfix">
         <div class="container">
             <h1 class="pull-left">
-                <span class="test-name">BBIT 10-08-2017</span>
+                <span class="test-name">{{testArray.testName}}</span>
             </h1>
             <div class="search-area pull-right mt5">
                 <input type="text" placeholder="Search reports" [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showStatus()" />
@@ -47,7 +47,7 @@
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
-                        <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}"  (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
+                        <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report']"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report']">{{testAttendee.email}}</td>
                         <td>{{testAttendee.createdDateTime}}</td>

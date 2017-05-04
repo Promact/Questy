@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Models.TestConduct;
+﻿using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,5 +36,12 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="attendeeId">Id of the candidate</param>
         /// <returns></returns>
         Task <bool> IsCandidateExistAsync(int attendeeId);
+        
+        /// <summary>
+        ///Method to get test name 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Test> GetTestNameAsync(int id);
     }
 }

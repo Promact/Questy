@@ -3,6 +3,7 @@ import { ReportService } from '../report.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
+import { Test } from '../../tests/tests.model';
 
 @Component({
     moduleId: module.id,
@@ -27,6 +28,7 @@ export class TestReportComponent implements OnInit {
     isAllCandidateStarred: boolean;
     showStarCandidates: boolean;
     loader: boolean;
+    testArray: Test[];
 
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -40,14 +42,25 @@ export class TestReportComponent implements OnInit {
         this.starredCandidateIdList = new Array<number>();
         this.isAllCandidateStarred = false;
         this.showStarCandidates = false;
+        this.testArray = new Array<Test>();
         this.loader = true;
+
     }
 
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
+        this.getTestName();
         this.getAllTestCandidates();
     }
 
+    /**
+     * Fetches test name of particular test
+     */
+    getTestName() {
+        this.reportService.getTestName(this.testId).subscribe((testName) => {
+            this.testArray = testName;
+        })
+    }
     /**
      * Fetches all the candidates of any particular test
      */
@@ -67,13 +80,15 @@ export class TestReportComponent implements OnInit {
      * @param testId
      */
     setAllCandidatesStarred() {
-        let status = this.headerStarStatus === 'star_border' ? true : false;
-        this.reportService.setAllCandidatesStarred(status, this.searchString, this.selectedTestStatus).subscribe(
-            response => {
-                this.testAttendeeArray.forEach(k => k.starredCandidate = status);
-                [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
-            }
-        );
+        let status = this.headerStarStatus === 'star_border';
+        if (this.testAttendeeArray.length > 0) {
+            this.reportService.setAllCandidatesStarred(status, this.searchString, this.selectedTestStatus).subscribe(
+                response => {
+                    this.testAttendeeArray.forEach(k => k.starredCandidate = status);
+                    [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
+                }
+            );
+        }
     }
 
     /**
@@ -118,7 +133,7 @@ export class TestReportComponent implements OnInit {
      * To determine whether search field will be visible or hidden
      */
     showStatus() {
-        return this.showSearchInput = this.searchString.length > 0 ? true : false;
+        return this.showSearchInput = this.searchString.length > 0;
     }
 
     /**
@@ -176,10 +191,12 @@ export class TestReportComponent implements OnInit {
         });
 
         tempAttendeeArray.forEach(x => {
-            if (x.email.toLowerCase().includes(searchString)
-                || x.firstName.toLowerCase().includes(searchString)
-                || x.lastName.toLowerCase().includes(searchString)) {
-                this.testAttendeeArray.push(x);
+            {
+                if (x.email.toLowerCase().includes(searchString)
+                    || x.firstName.toLowerCase().includes(searchString)
+                    || x.lastName.toLowerCase().includes(searchString)) {
+                    this.testAttendeeArray.push(x);
+                }
             }
         });
     }

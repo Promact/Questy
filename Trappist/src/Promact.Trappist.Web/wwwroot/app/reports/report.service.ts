@@ -9,6 +9,10 @@ export class ReportService {
     constructor(private httpService: HttpService) {
     }
 
+    getTestName(testId: number) {
+        return this.httpService.get(this.reportsApiUrl+'/testName' + '/' + testId);
+    }
+
     getAllTestAttendees(testId: number) {
         return this.httpService.get(this.reportsApiUrl+'/'+testId);
     }
@@ -18,6 +22,6 @@ export class ReportService {
     }
 
     setAllCandidatesStarred(status: boolean, searchString: string, selectedTestStatus: number) {
-        return this.httpService.put(this.reportsApiUrl + '/star/all/' +selectedTestStatus+'/{search}?criteria=searchString',status);
+        return this.httpService.put(this.reportsApiUrl + '/star/all/' +selectedTestStatus+'/' +searchString,status);
     }
 } 
