@@ -115,13 +115,10 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * To determine whether search field will visible or hidden
+     * To determine whether search field will be visible or hidden
      */
     showStatus() {
-        if (this.searchString.length > 0)
-            return this.showSearchInput = true;
-        else
-            return this.showSearchInput = false;
+        return this.showSearchInput = this.searchString.length > 0 ? true : false;
     }
 
     /**
@@ -137,7 +134,7 @@ export class TestReportComponent implements OnInit {
      * Initiates filtering of candidates
      */
     filterList() {
-        this.filter(this.selectedTestStatus, this.searchString,this.showStarCandidates);
+        this.filter(this.selectedTestStatus, this.searchString, this.showStarCandidates);
         [this.headerStarStatus, this.isAllCandidateStarred] = (this.testAttendeeArray.some(x => !x.starredCandidate) || (this.testAttendeeArray.length === 0)) ? ['star_border', false] : ['star', true];
         this.countAttendees();
     }
