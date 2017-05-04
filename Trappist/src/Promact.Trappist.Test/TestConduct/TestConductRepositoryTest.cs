@@ -220,7 +220,7 @@ namespace Promact.Trappist.Test.TestConduct
             {
                 TestName = "GK",
                 Duration = 70,
-                WarningTime = 2,
+                BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
                 IncorrectMarks = -1
             };
