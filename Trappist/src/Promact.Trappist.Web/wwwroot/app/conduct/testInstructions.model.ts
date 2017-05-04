@@ -1,6 +1,7 @@
-﻿
+﻿import { BrowserTolerance } from '../tests/enum-browsertolerance';
+
 export class TestInstructions {
-    public duration: number;
+    public browserTolerance: BrowserTolerance;
     public correctMarks: number;
     public incorrectMarks: number;
     public totalNumberOfQuestions: number;
