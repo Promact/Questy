@@ -48,18 +48,29 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
+        /// Method to get test name
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>Test name</returns>
+        [HttpGet("testName/{Id}")]
+        public async Task<IActionResult>GetTestName([FromRoute] int Id)
+        {
+            return Ok(await _reportRepository.GetTestNameAsync(Id));
+        }
+
+        /// <summary>
         /// Method to set all candidates with matching criteria as starred candidate
         /// </summary>
         /// <param name="status">Star status of the candidates</param>
         /// <param name="selectedTestStatus">Test end status of the candidates</param>
         /// <param name="searchString">The search string provided by the user</param>
         /// <returns>Star status of the candidates</returns>
-        [HttpPut("star/all/{selectedTestStatus}/{search}")]
-        public async Task<IActionResult> SetAllCandidateStarredAsync([FromBody] bool status, [FromRoute] int selectedTestStatus,[FromQuery] string searchString)
+        [HttpPut("star/all/{selectedTestStatus}/{searchString}")]
+        public async Task<IActionResult> SetAllCandidateStarredAsync([FromBody] bool status, [FromRoute] int selectedTestStatus,[FromRoute]string searchString)
         {
             await _reportRepository.SetAllCandidateStarredAsync(status, selectedTestStatus, searchString);
             return Ok(status);
-        }
+            }
         #endregion
     }
 }

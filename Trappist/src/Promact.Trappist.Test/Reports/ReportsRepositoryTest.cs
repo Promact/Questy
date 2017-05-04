@@ -76,6 +76,17 @@ namespace Promact.Trappist.Test.Reports
         }
 
         /// <summary>
+        /// Test to fetch a test name
+        /// </summary>
+        [Fact]
+        public async Task GetTestNameAsyncTest()
+        {
+            var createTest = await CreateTestAsync();
+            var testName = await _reportRepository.GetTestNameAsync(createTest.Id);
+            Assert.True(testName.TestName.Equals("GK"));
+        }
+
+        /// <summary>
         ///This method used to initialize test attendee model parameters.  
         /// </summary>
         /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -22,6 +23,12 @@ namespace Promact.Trappist.Repository.Reports
         #endregion
 
         #region Public Method
+        public async Task<Test> GetTestNameAsync(int id)
+        {
+            return await _dbContext.Test.FindAsync(id);
+            
+        }
+
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
             return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
@@ -36,15 +43,23 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task SetAllCandidateStarredAsync(bool status, int selectedTestStatus, string searchString)
         {
+            List <TestAttendees> attendeeList;
+
             if (searchString == null)
             {
                 searchString = "";
             }
-            var attendeeList = await _dbContext.TestAttendees.Where(x => x.Report.TestStatus == (TestStatus)selectedTestStatus
-            && (x.FirstName.Contains(searchString)
-            || x.LastName.Contains(searchString)
-            || x.Email.Contains(searchString)
-            )).ToListAsync();
+           
+            if ((TestStatus)selectedTestStatus == TestStatus.AllCandidates)
+            {
+                attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.Contains(searchString) || x.FirstName.Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
+            }
+
+            else
+            {
+                attendeeList = await _dbContext.TestAttendees.Include(x => x.Report).Where(x => x.Report.TestStatus == (TestStatus)selectedTestStatus
+                && (x.FirstName.Contains(searchString)|| x.LastName.Contains(searchString)|| x.Email.Contains(searchString))).ToListAsync();
+            }
 
             attendeeList.ForEach(x => x.StarredCandidate = status);
 
