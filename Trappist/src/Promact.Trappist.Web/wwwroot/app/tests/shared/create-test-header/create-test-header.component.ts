@@ -18,7 +18,6 @@ export class CreateTestHeaderComponent implements OnInit {
     testNameUpdatedMessage: string;
     isTestNameExist: boolean;
     testNameRef: string;
-    isEditButtonVisible: boolean;
     isLabelVisible: boolean;
     id: number;
     testName: string;
@@ -33,7 +32,6 @@ export class CreateTestHeaderComponent implements OnInit {
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.isTestNameExist = false;
-        this.isEditButtonVisible = true;
         this.isLabelVisible = true;
     }
 
@@ -66,7 +64,7 @@ export class CreateTestHeaderComponent implements OnInit {
      * Hides the edit button and makes the check and close buttons visible
      */
     hideEditButton() {
-        this.isEditButtonVisible = false;
+        //this.isEditButtonVisible = false;
         this.isLabelVisible = false;
         if (this.editedTestName) {
             this.testDetails.testName = this.editedTestName;
@@ -78,7 +76,6 @@ export class CreateTestHeaderComponent implements OnInit {
      * @param testName contains the value of the text box containing the Test name
      */
     showEditButton(testName: string) {
-        this.isEditButtonVisible = true;
         this.isLabelVisible = true;
         if (this.editedTestName)
             this.nameOfTest = this.editedTestName;
@@ -111,18 +108,29 @@ export class CreateTestHeaderComponent implements OnInit {
                         this.editedTestName = this.testName;
                         this.openSnackBar(this.testNameUpdatedMessage);
                         this.isLabelVisible = true;
-                        this.isEditButtonVisible = true;
-                    });
+                    },
+                        errorHandling => {
+                            this.openSnackBar('Something went wrong');
+                        });
                 }
                 else {
                     this.isTestNameExist = true;
                     this.isLabelVisible = false;
                 }
-            },
-            );
+            });
+
         }
         else
             this.isWhiteSpaceError = true;
+    }
+
+    /**
+     * On pressing the enter key the test name will be updated if test name is valid
+     * @param testName contains the test name 
+     */
+    onEnter(testName: string) {
+        if (testName)
+            this.updateTestName(this.testId, this.testDetails);
     }
 
     /**
