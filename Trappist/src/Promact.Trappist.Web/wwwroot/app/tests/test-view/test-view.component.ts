@@ -25,7 +25,7 @@ import { IncompleteTestCreationDialogComponent } from '../test-settings/incomple
 export class TestViewComponent implements OnInit {
     testDetails: Test;
     testId: number;
-    totalNumberOfQuestions: number[] = [];
+    totalNumberOfQuestions: number[];
     questionType = QuestionType;
     difficultyLevel = DifficultyLevel;
     optionName: string[];
@@ -37,6 +37,7 @@ export class TestViewComponent implements OnInit {
         this.testDetails = new Test();
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        this.totalNumberOfQuestions = [];
     }
 
     ngOnInit() {
@@ -67,7 +68,6 @@ export class TestViewComponent implements OnInit {
     * @param i is index of category
     */
     getAllquestions(category: Category, i: number) {
-
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
             if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
@@ -81,7 +81,6 @@ export class TestViewComponent implements OnInit {
                     category.selectAll = category.questionList.every(function (question) {
                         return question.question.isSelect;
                     });
-
                 });
             }
             else {
