@@ -208,6 +208,9 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.True(attendeeAnswer.Count == 1);
         }
 
+        /// <summary>
+        /// Test to get Test Attendee
+        /// </summary>
         [Fact]
         public async Task GetTestAttendeeByIdAsyncTest()
         {
@@ -220,6 +223,9 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.NotNull(attendee);
         }
 
+        /// <summary>
+        /// Test to check if Test Attendee exist
+        /// </summary>
         [Fact]
         public async Task IsTestAttendeeExistByIdAsyncTest()
         {
@@ -231,6 +237,9 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.True(await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId));
         }
 
+        /// <summary>
+        /// Test to set elapsed time 
+        /// </summary>
         [Fact]
         public async Task SetElapsedTimeAsyncTest()
         {
@@ -239,8 +248,33 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
+            //New entry to AttendeeAnswer table will be made since no answer is saved
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId);
+            //AttendeeAnswer entry will be updated with elapsed time
             await _testConductRepository.SetElapsedTimeAsync(attendeeId);
 
+            var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
+            Assert.NotNull(attendeeAnswer.TimeElapsed);
+        }
+
+        /// <summary>
+        /// Test to get elapsed time
+        /// </summary>
+        [Fact]
+        public async Task GetElapsedTimeAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await CreateTestAsync();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            //New entry to AttendeeAnswer table will be made since no answer is saved
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId);
+            //AttendeeAnswer entry will be updated with elapsed time
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId);
+
+            var elapsedTime = await _testConductRepository.GetElapsedTimeAsync(attendeeId);
+            Assert.True(elapsedTime > 0.0d);
         }
         #endregion
 

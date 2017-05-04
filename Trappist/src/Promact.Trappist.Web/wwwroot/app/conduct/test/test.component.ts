@@ -161,6 +161,8 @@ export class TestComponent implements OnInit {
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
         this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
+        //Sets boolean if question is single choice
+        this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
 
         //Restore status of previous question
         this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
@@ -285,12 +287,15 @@ export class TestComponent implements OnInit {
     }
 
     /**
-     * Shuffle testQuestions and thier Options
+     * Shuffle testQuestions 
      */
     private shuffleQuestion() {
         this.testQuestions = this.shuffleArray(this.testQuestions);
     }
 
+    /**
+     * Shuffle options
+     */
     private shuffleOption() {
         this.testQuestions.forEach(x => {
             x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption = this.shuffleArray(x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption);
