@@ -12,7 +12,7 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="testId">Id of the respective test</param>
         /// <returns>All test attendees of that respective test</returns>
         Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id);
-        
+
         /// <summary>
         /// Method to set a candidate as Starred candidate
         /// </summary>
@@ -27,6 +27,13 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="selectedTestStatus">Test end status of the candidates</param>
         /// <param name="searchString">The search string provided by the user</param>
         /// <returns>Star status of the candidates</returns>
-        Task SetAllCandidateStarredAsync(bool status,  int selectedTestStatus, string SearchString);
+        Task SetAllCandidateStarredAsync(bool status, int selectedTestStatus, string SearchString);
+
+        /// <summary>
+        /// Method to check whether to candidate exist or not
+        /// </summary>
+        /// <param name="attendeeId">Id of the candidate</param>
+        /// <returns></returns>
+        Task <bool> IsCandidateExistAsync(int attendeeId);
     }
 }
