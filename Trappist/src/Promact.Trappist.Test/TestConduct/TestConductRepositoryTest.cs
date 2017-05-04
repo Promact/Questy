@@ -177,7 +177,7 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-            
+
             var answer = "This is an answer";
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
