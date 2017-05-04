@@ -65,9 +65,9 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            if (!await isAttendeeValid(attendeeId))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             //If the Attendee has completed the Test
@@ -76,12 +76,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
-            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
-            {
-                return NotFound();
-            }
-                       
+                                   
             await _testConductRepository.AddAnswerAsync(attendeeId, JsonConvert.SerializeObject(answer));
 
             return Ok(answer);
@@ -94,9 +89,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("elapsetime/{attendeeId}")]
         public async Task<IActionResult> SetElapsedTimeAsync([FromRoute]int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            if (!await isAttendeeValid(attendeeId))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             //If the Attendee has completed the Test
@@ -119,9 +114,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("elapsetime/{attendeeId}")]
         public async Task<IActionResult> GetElapsedTimeAsync([FromRoute]int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            if (!await isAttendeeValid(attendeeId))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             return Ok(await _testConductRepository.GetElapsedTimeAsync(attendeeId));
@@ -135,12 +130,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("answer/{attendeeId}")]
         public async Task<IActionResult> GetAnswerAsync([FromRoute]int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
-            {
-                return BadRequest();
-            }
-
-            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            if (!await isAttendeeValid(attendeeId))
             {
                 return NotFound();
             }
@@ -170,7 +160,7 @@ namespace Promact.Trappist.Core.Controllers
 
             var attendeeId = HttpContext.Session.GetInt32(ATTENDEE_ID).Value;
 
-            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            if (!await isAttendeeValid(attendeeId))
             {
                 return NotFound();
             }
@@ -218,9 +208,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("teststatus/{attendeeId}")]
         public async Task<IActionResult> SetTestStatusAsync([FromRoute]int attendeeId, [FromBody]TestStatus testStatus)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
+            if (!await isAttendeeValid(attendeeId))
             {
-                return BadRequest();
+                return NotFound();
             }
 
             //If the Attendee has completed the Test
@@ -229,11 +219,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
-            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
-            {
-                return NotFound();
-            }
+            
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
 
             return Ok(attendeeId);
@@ -247,12 +233,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("teststatus/{attendeeId}")]
         public async Task<IActionResult> GetTestStatusAsync([FromRoute]int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value != attendeeId)
-            {
-                return BadRequest();
-            }
-
-            if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            if(!await isAttendeeValid(attendeeId))
             {
                 return NotFound();
             }
@@ -273,6 +254,19 @@ namespace Promact.Trappist.Core.Controllers
             return result;
         }
         #endregion
+        #endregion
+
+        #region Private Method
+        private async Task<bool> isAttendeeValid(int attendeeId)
+        {
+            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value == attendeeId
+                && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            {
+                return true;
+            }
+
+            return false;
+        }
         #endregion
     }
 }
