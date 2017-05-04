@@ -233,9 +233,7 @@ namespace Promact.Trappist.Repository.Tests
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
-            await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
-            testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
-
+            
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             string defaultMessage = _stringConstants.WarningMessage;
@@ -245,6 +243,8 @@ namespace Promact.Trappist.Repository.Tests
             DateTime defaultEndDate = date.AddDays(1);
             if (testAcObject != null)
             {
+                await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
+                testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
