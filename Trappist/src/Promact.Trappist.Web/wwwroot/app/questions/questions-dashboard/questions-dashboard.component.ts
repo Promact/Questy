@@ -205,7 +205,7 @@ export class QuestionsDashboardComponent implements OnInit {
      * To determine whether search field will be visible or hidden
      */
     showStatus() {
-        return this.showSearchInput = this.matchString.length > 0 ? true : false;
+        return this.showSearchInput = this.matchString.length > 0;
     }
 
     // Open Add Category Dialog
