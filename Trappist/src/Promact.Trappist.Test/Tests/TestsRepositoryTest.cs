@@ -138,7 +138,7 @@ namespace Promact.Trappist.Test.Tests
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
-            test.TestName = "Computer";
+            test.TestName = "Maths";
             await _testRepository.UpdateTestNameAsync(test.Id, test);
             var testName = test.TestName;
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName.Equals(testName)) == 1);
