@@ -26,6 +26,7 @@ export class TestReportComponent implements OnInit {
     starredCandidateIdList: number[];
     isAllCandidateStarred: boolean;
     showStarCandidates: boolean;
+    loader: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -39,6 +40,7 @@ export class TestReportComponent implements OnInit {
         this.starredCandidateIdList = new Array<number>();
         this.isAllCandidateStarred = false;
         this.showStarCandidates = false;
+        this.loader = true;
     }
 
     ngOnInit() {
@@ -50,11 +52,13 @@ export class TestReportComponent implements OnInit {
      * Fetches all the candidates of any particular test
      */
     getAllTestCandidates() {
+        this.loader = true;
         this.reportService.getAllTestAttendees(this.testId).subscribe((attendeeList) => {
             this.attendeeArray = attendeeList;
             this.testAttendeeArray = this.attendeeArray;
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
+            this.loader = false;
         });
     }
 
