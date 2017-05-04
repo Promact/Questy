@@ -274,7 +274,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.SetElapsedTimeAsync(attendeeId);
 
             var elapsedTime = await _testConductRepository.GetElapsedTimeAsync(attendeeId);
-            Assert.True(elapsedTime > 0.0d);
+            Assert.True(elapsedTime >= 0.0d);
         }
 
         /// <summary>

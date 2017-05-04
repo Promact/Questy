@@ -303,7 +303,7 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
             var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));
-            return await GetTestByIdAsync(test.Id);
+            return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
         #endregion
 
