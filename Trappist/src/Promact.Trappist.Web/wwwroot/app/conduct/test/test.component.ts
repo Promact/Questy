@@ -73,7 +73,7 @@ export class TestComponent implements OnInit {
     }
 
     ngOnInit() {
-        window.addEventListener('blur', (event) => { this.windowFocusLost(event) });
+        window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         this.getTestByLink();
 
     }
@@ -135,7 +135,7 @@ export class TestComponent implements OnInit {
     getTestStatus(attendeeId: number) {
         this.conductService.getTestStatus(this.testAttendee.id).subscribe((response) => {
             let testStatus = response;
-            if (testStatus != TestStatus.allCandidates) {
+            if (testStatus !== TestStatus.allCandidates) {
                 this.endTest(testStatus);
             }
 
@@ -166,8 +166,7 @@ export class TestComponent implements OnInit {
                 let spanTimeInSeconds = spanTime * 60;
                 this.seconds -= spanTime * 60;
             });
-
-            this.testAnswers
+            
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
         }, err => {
@@ -203,7 +202,7 @@ export class TestComponent implements OnInit {
         //Save status of new question
         this.questionStatus = this.testQuestions[index].questionStatus;
         //Remove review status if Attendee re-visits the question
-        if (this.questionStatus == QuestionStatus.review)
+        if (this.questionStatus === QuestionStatus.review)
             this.questionStatus = QuestionStatus.unanswered;
 
         //Mark new question as selected
@@ -235,7 +234,7 @@ export class TestComponent implements OnInit {
             });
         }
 
-        if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus != QuestionStatus.review) {
+        if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus !== QuestionStatus.review) {
 
             testAnswer.questionStatus = QuestionStatus.answered;
 
@@ -303,7 +302,7 @@ export class TestComponent implements OnInit {
      * @param isSingleChoice
      */
     selectOption(questionIndex: number, optionIndex: number, isSingleChoice: boolean = false) {
-        if (this.questionStatus != QuestionStatus.answered) {
+        if (this.questionStatus !== QuestionStatus.answered) {
             if (isSingleChoice) {
                 this.clearResponse(questionIndex);
                 this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
@@ -343,7 +342,7 @@ export class TestComponent implements OnInit {
             let pickIndex = Math.floor(Math.random() * max);
 
             //swap options
-            [arrayToShuffle[i], arrayToShuffle[pickIndex]] = [arrayToShuffle[pickIndex], arrayToShuffle[i]]
+            [arrayToShuffle[i], arrayToShuffle[pickIndex]] = [arrayToShuffle[pickIndex], arrayToShuffle[i]];
         }
 
         return arrayToShuffle;

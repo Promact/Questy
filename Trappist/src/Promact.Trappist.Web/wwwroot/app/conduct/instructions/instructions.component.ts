@@ -41,8 +41,7 @@ export class InstructionsComponent implements OnInit {
     startTest() {
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
-        var newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'channelmode=1,scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0,fullscreen=1');
-        newWindow.onunload = () => { this.router.navigate(['test-end']) };
-        //this.router.navigate(['test']);
+        let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
+        newWindow.onunload = () => { this.router.navigate(['test-end']); };
     }
 }
