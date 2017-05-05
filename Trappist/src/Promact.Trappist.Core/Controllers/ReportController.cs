@@ -50,7 +50,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Method to get test name
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Id">Id of the test</param>
         /// <returns>Test name</returns>
         [HttpGet("testName/{Id}")]
         public async Task<IActionResult> GetTestName([FromRoute] int Id)
