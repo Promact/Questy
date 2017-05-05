@@ -142,5 +142,16 @@
 
         #endregion
 
+        #region Session Key
+        /// <summary>
+        /// Session Key to get or set Attendee Id
+        /// </summary>
+        string AttendeeIdSessionKey { get; }
+
+        /// <summary>
+        /// Session Key to get or set Test Link 
+        /// </summary>
+        string TestLinkSessionKey { get; }
+        #endregion
     }
 }
