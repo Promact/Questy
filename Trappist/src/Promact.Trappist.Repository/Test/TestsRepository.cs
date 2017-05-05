@@ -50,9 +50,21 @@ namespace Promact.Trappist.Repository.Tests
             return !isTestExists;
         }
 
-        public async Task<List<Test>> GetAllTestsAsync()
+        public async Task<List<TestAC>> GetAllTestsAsync()
         {
-            return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            var testAcList = new List<TestAC>();
+            TestAC testAcObject;
+            var tests = await _dbContext.Test.Include(x => x.TestQuestion).Include(x => x.TestCategory).Include(x => x.TestAttendees).OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            tests.ForEach(test =>
+            {
+                testAcObject = new TestAC();
+                testAcObject = Mapper.Map<Test, TestAC>(test);
+                testAcObject.NumberOfTestAttendees = test.TestAttendees.Count;
+                testAcObject.NumberOfTestSections = test.TestCategory.Count;
+                testAcObject.NumberofTestQuestions = test.TestQuestion.Count;
+                testAcList.Add(testAcObject);
+            });
+            return testAcList;
         }
         #endregion
 
@@ -229,11 +241,11 @@ namespace Promact.Trappist.Repository.Tests
         {
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
-           
+
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
-            
+
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             string defaultMessage = _stringConstants.WarningMessage;
