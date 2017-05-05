@@ -27,7 +27,7 @@ namespace Promact.Trappist.Repository.TestConduct
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext,ITestsRepository testRepository)
+        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository)
         {
             _dbContext = dbContext;
             _testRepository = testRepository;
@@ -57,16 +57,16 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
                     .Include(x => x.TestQuestion).ToListAsync();
-            if(testObject.Any())
+            if (testObject.Any())
             {
                 var testInstructionsDetails = testObject.First();
                 var totalNumberOfQuestions = testInstructionsDetails.TestQuestion.Count();
                 var testCategoryANameList = new List<string>();
-                var testByIdObj= await _testRepository.GetTestByIdAsync(testInstructionsDetails.Id, testInstructionsDetails.CreatedByUserId);
+                var testByIdObj = await _testRepository.GetTestByIdAsync(testInstructionsDetails.Id, testInstructionsDetails.CreatedByUserId);
                 var categoryAcList = testByIdObj.CategoryAcList;
-                foreach(var category in categoryAcList)
+                foreach (var category in categoryAcList)
                 {
-                    if(category.NumberOfSelectedQuestion!=0 && !category.IsSelect)
+                    if (category.NumberOfSelectedQuestion != 0 && category.IsSelect)
                     {
                         testCategoryANameList.Add(category.CategoryName);
                     }

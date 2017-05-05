@@ -36,9 +36,8 @@ export class InstructionsComponent implements OnInit {
     getTestInstructionsByLink(testLink: string) {
         this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
-                if (this.testInstructions.incorrectMarks == 0)
-                {
-                    this.negativeSign = " ";
+                if (this.testInstructions.incorrectMarks === 0) {
+                    this.negativeSign = ' ';
                 }
                 this.testInstructions = response;
             });
