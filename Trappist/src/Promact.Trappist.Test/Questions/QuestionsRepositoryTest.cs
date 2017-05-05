@@ -7,6 +7,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Promact.Trappist.Test.Questions
         private readonly IQuestionRepository _questionRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITestsRepository _testRepository;
 
         public QuestionsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
@@ -29,6 +31,7 @@ namespace Promact.Trappist.Test.Questions
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
@@ -357,6 +360,60 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
+        /// Method to test IsQuestionExistInTestAsync() method
+        /// </summary>
+        [Fact]
+        public async Task IsQuestionExistInTestTest()
+        {
+            var questionList = new List<QuestionAC>();
+            string userName = "user@domain@.com";
+            ApplicationUser user = new ApplicationUser()
+            {
+                Email = userName,
+                UserName = userName
+            };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            //create code-snippetQuestion
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
+            var question = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
+            codingQuestion.Question.Id = question.Id;
+            codingQuestion.Question.IsSelect = true;
+            questionList.Add(codingQuestion);
+            //create Test
+            var test = CreateTest("DemoTest");
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
+            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
+
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
+            Assert.True(await _questionRepository.IsQuestionExistInTestAsync(questionId));
+        }
+
+        /// <summary>
+        /// Method to test IsQuestionExistAsync() method
+        /// </summary>
+        [Fact]
+        public async Task IsQuestionExistTest()
+        {
+            string userName = "user@domain@.com";
+            ApplicationUser user = new ApplicationUser()
+            {
+                Email = userName,
+                UserName = userName
+            };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            //create code-snippetQuestion
+            var codingQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
+            Assert.True(await _questionRepository.IsQuestionExistAsync(questionId));
+        }
+
+        /// <summary>
         /// Method to test delete Question
         /// </summary>
         [Fact]
@@ -461,6 +518,16 @@ namespace Promact.Trappist.Test.Questions
                 CategoryName = "Test Category"
             };
             return category;
+        }
+
+        private DomainModel.Models.Test.Test CreateTest(string testName)
+        {
+            var test = new DomainModel.Models.Test.Test
+            {
+                TestName = testName,
+                BrowserTolerance = 0
+            };
+            return test;
         }
     }
 }
