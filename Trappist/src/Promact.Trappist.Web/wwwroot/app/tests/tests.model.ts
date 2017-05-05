@@ -26,7 +26,7 @@ export class Test {
     isQuestionMissing: boolean;
     numberOfTestAttendees: number;
     numberOfTestSections: number;
-    numberofTestQuestions: number;
+    numberOfTestQuestions: number;
 }
 
 export class TestCategory {

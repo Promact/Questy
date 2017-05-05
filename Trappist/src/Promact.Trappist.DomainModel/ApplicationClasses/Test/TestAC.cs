@@ -47,7 +47,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public int NumberOfTestSections { get; set; }
 
-        public int NumberofTestQuestions { get; set; }
+        public int NumberOfTestQuestions { get; set; }
 
         public string CreatedByUserId { get; set; }
     }
