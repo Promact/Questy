@@ -165,6 +165,13 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.NotNull(testInstruction);
         }
 
+        [Fact]
+        public async Task GetAllNotValidTestInformationAsync()
+        {
+            var testInstruction = await _testConductRepository.GetTestInstructionsAsync("abcdefghij");
+            Assert.Null(testInstruction);
+        }
+
         /// <summary>
         /// Test to add answer
         /// </summary>
