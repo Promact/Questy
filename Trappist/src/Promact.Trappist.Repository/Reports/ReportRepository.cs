@@ -48,7 +48,7 @@ namespace Promact.Trappist.Repository.Reports
             if (searchString == null)
                 searchString = "";
             else
-                searchString = searchString.ToLower();
+                searchString = searchString.ToLowerInvariant();
 
             if ((TestStatus)selectedTestStatus == TestStatus.AllCandidates)
                 attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.ToLower().Contains(searchString) || x.LastName.ToLower().Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
