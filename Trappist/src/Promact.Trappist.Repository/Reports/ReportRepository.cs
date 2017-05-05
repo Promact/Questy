@@ -26,7 +26,7 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<Test> GetTestNameAsync(int id)
         {
             return await _dbContext.Test.FindAsync(id);
-            
+
         }
 
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
@@ -43,23 +43,19 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task SetAllCandidateStarredAsync(bool status, int selectedTestStatus, string searchString)
         {
-            List <TestAttendees> attendeeList;
+            List<TestAttendees> attendeeList;
 
             if (searchString == null)
-            {
                 searchString = "";
-            }
-           
+            else
+                searchString = searchString.ToLower();
+
             if ((TestStatus)selectedTestStatus == TestStatus.AllCandidates)
-            {
-                attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.Contains(searchString) || x.LastName.Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
-            }
+                attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.ToLower().Contains(searchString) || x.LastName.ToLower().Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
 
             else
-            {
                 attendeeList = await _dbContext.TestAttendees.Include(x => x.Report).Where(x => x.Report.TestStatus == (TestStatus)selectedTestStatus
-                && (x.FirstName.Contains(searchString)|| x.LastName.Contains(searchString)|| x.Email.Contains(searchString))).ToListAsync();
-            }
+                && (x.FirstName.ToLower().Contains(searchString) || x.LastName.ToLower().Contains(searchString) || x.Email.Contains(searchString))).ToListAsync();
 
             attendeeList.ForEach(x => x.StarredCandidate = status);
 
