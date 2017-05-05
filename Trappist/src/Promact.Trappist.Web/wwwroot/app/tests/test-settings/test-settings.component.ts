@@ -38,6 +38,10 @@ export class TestSettingsComponent implements OnInit {
     testNameReference: string;
     isSectionOrQuestionAdded: boolean;
     loader: boolean;
+    isAttendeeExistForTest: boolean;
+    testLink: string;
+    copiedContent: boolean;
+    tooltipMessage: string;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -46,6 +50,9 @@ export class TestSettingsComponent implements OnInit {
         this.validStartDate = false;
         this.currentDate = new Date();
         this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully';
+        this.isAttendeeExistForTest = false;
+        this.copiedContent = true;
+        this.tooltipMessage = 'Copy to Clipboard';
 
     }
 
@@ -56,6 +63,7 @@ export class TestSettingsComponent implements OnInit {
         this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestById(this.testId);
+        this.isAttendeeExists();
     }
 
     /**
@@ -67,6 +75,9 @@ export class TestSettingsComponent implements OnInit {
             this.testDetails = (response);
             this.testNameReference = this.testDetails.testName;
             this.loader = false;
+            let magicString = this.testDetails.link;
+            let domain = window.location.origin;
+            this.testLink = domain + '/conduct/' + magicString;
         });
     }
 
@@ -162,7 +173,7 @@ export class TestSettingsComponent implements OnInit {
                         });
                     });
             }
-            else {             
+            else {
                 this.testDetails.isQuestionMissing = true;
                 let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
             }
@@ -173,27 +184,59 @@ export class TestSettingsComponent implements OnInit {
         }
     }
 
+    /**
+     * To check if any attendee for the test exixt or not
+     */
+    isAttendeeExists() {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((isTestAttendeeExists) => {
+            if (isTestAttendeeExists.response)
+                this.isAttendeeExistForTest = true;
+        });
+    }
+
+    /**
+     * To pause a test, no new registration can be done after a test is paused
+     * @param isTestPaused
+     */
     pause(isTestPaused: boolean) {
-        this.testDetails.isPaused = isTestPaused;        
+        this.testDetails.isPaused = isTestPaused;
         this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
     }
 
+    /**
+     * To resume a test
+     * @param isTestPaused
+     */
     resume(isTestPaused: boolean) {
         this.testDetails.isPaused = isTestPaused;
         this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
     }
 
+    /**
+     * save changes and launch the test
+     * @param isTestLaunched
+     */
     saveAndLaunch(isTestLaunched: boolean) {
         this.testDetails.isLaunched = isTestLaunched;
-        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe((response) => {
-            this.router.navigate(['/tests']);
-        },
-            errorHandling => {
-                this.response = errorHandling.json();
-                this.errorMessage = this.response['error'];
-                this.snackbarRef.open(this.errorMessage, 'Dismiss', {
-                    duration: 3000,
-                });
-            });
+        this.saveTestSettings(this.testDetails.id, this.testDetails);
+    }
+
+    /**
+     * Displays the tooltip message
+     * @param $event is of type Event and is used to call stopPropagation()
+     */
+    showTooltipMessage($event: Event, testLink: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            testLink.select();
+        }, 0);
+        this.tooltipMessage = 'Copied';
+    }
+
+    /**
+     * Changes the tooltip message
+     */
+    changeTooltipMessage() {
+        this.tooltipMessage = 'Copy to Clipboard';
     }
 }
