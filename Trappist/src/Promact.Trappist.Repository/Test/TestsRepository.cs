@@ -63,7 +63,7 @@ namespace Promact.Trappist.Repository.Tests
                 testAcObject = Mapper.Map<Test, TestAC>(test);
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count;
                 testAcObject.NumberOfTestSections = test.TestCategory.Count;
-                testAcObject.NumberofTestQuestions = test.TestQuestion.Count;
+                testAcObject.NumberOfTestQuestions = test.TestQuestion.Count;
                 testAcList.Add(testAcObject);
             });
             return testAcList;
