@@ -22,6 +22,6 @@ export class ReportService {
     }
 
     setAllCandidatesStarred(status: boolean, searchString: string, selectedTestStatus: number) {
-        return this.httpService.put(this.reportsApiUrl + '/star/all/' +selectedTestStatus+'/' +searchString,status);
+        return this.httpService.put(this.reportsApiUrl + '/star/all/' + selectedTestStatus + '?searchString=' + searchString,status);
     }
 } 
