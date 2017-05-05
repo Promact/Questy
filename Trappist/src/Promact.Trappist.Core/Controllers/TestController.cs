@@ -170,8 +170,13 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("addTestCategories/{testId}")]
         public async Task<ActionResult> AddTestCategoriesAsync([FromRoute] int testId, [FromBody] List<CategoryAC> categoryAcList)
         {
-            await _testRepository.AddTestCategoriesAsync(testId, categoryAcList);
-            return Ok(categoryAcList);
+            if (!await _testRepository.IsTestAttendeeExistAsync(testId))
+            {
+                await _testRepository.AddTestCategoriesAsync(testId, categoryAcList);
+                return Ok(categoryAcList);
+            }
+            else
+                return BadRequest();
         }
 
         /// <summary>
@@ -183,8 +188,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("deselectCategory/{categoryId}/{testId}")]
         public async Task<bool> DeselectCategoryAsync([FromRoute] int categoryId, [FromRoute] int testId)
         {
-            var isQuestionExists = await _testRepository.DeselectCategoryAync(categoryId, testId);
-            return isQuestionExists;
+                var isQuestionExists = await _testRepository.DeselectCategoryAync(categoryId, testId);
+                return isQuestionExists;
         }
 
         /// <summary>
@@ -195,8 +200,13 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("deselectCategory")]
         public async Task<ActionResult> RemoveCategoryAndQuestionAsync([FromBody] TestCategory testCategory)
         {
-            await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
-            return Ok(testCategory);
+            if (!await _testRepository.IsTestAttendeeExistAsync(testCategory.TestId))
+            {
+                await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
+                return Ok(testCategory);
+            }
+            else
+                return BadRequest();
         }
         #endregion
 
@@ -223,9 +233,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("questions/{testId}")]
         public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd, [FromRoute] int testId)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid && await _testRepository.IsTestAttendeeExistAsync(testId))
                 return BadRequest(ModelState);
-            else
+            else 
             {
                 var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
                 return Ok(new { message = message });
