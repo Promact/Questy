@@ -117,7 +117,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task SetElapsedTimeAsync(int attendeeId)
         {
-            var attendee = await _dbContext.AttendeeAnswers.FirstOrDefaultAsync(x => x.Id == attendeeId);
+            var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
             if (attendee != null)
             {
                 var createdTime = attendee.CreatedDateTime;
@@ -134,12 +134,13 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<double> GetElapsedTimeAsync(int attendeeId)
         {
-            return await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).Select(x => x.TimeElapsed).FirstOrDefaultAsync(); 
+            var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+            return attendeeAnswer.TimeElapsed;
         }
 
         public async Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
         {
-            var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var report = await _dbContext.Report.OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             if(report == null)
             {
                 report = new Report();
@@ -152,7 +153,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
         {
-            var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var report = await _dbContext.Report.OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             if (report == null)
                 return TestStatus.AllCandidates;
 

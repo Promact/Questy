@@ -19,16 +19,16 @@ namespace Promact.Trappist.Core.Controllers
         #region Dependencies
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
-        private StringConstants constants;        
+        private readonly IStringConstants _stringConstants;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository)
+        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, IStringConstants stringConstants)
         {
             _testConductRepository = testConductRepository;
             _testRepository = testRepository;
-            constants = new StringConstants();
+            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -45,8 +45,8 @@ namespace Promact.Trappist.Core.Controllers
             if (ModelState.IsValid && !(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString)))
             {
                 await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
-                HttpContext.Session.SetInt32(constants.AttendeeIdSessionKey, testAttendee.Id);
-                HttpContext.Session.SetString(constants.TestLinkSessionKey, magicString);
+                HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
+                HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
                 return Ok(true);
             }
             return BadRequest();
@@ -72,11 +72,11 @@ namespace Promact.Trappist.Core.Controllers
 
             //If the Attendee has completed the Test
             var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
-            if(attendeeTestStatus != TestStatus.AllCandidates)
+            if (attendeeTestStatus != TestStatus.AllCandidates)
             {
                 return BadRequest();
             }
-                                   
+
             await _testConductRepository.AddAnswerAsync(attendeeId, JsonConvert.SerializeObject(answer));
 
             return Ok(answer);
@@ -153,12 +153,17 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("attendee/{testid}")]
         public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId)
         {
-            if(!await _testRepository.IsTestExists(testId))
+            if (!await _testRepository.IsTestExists(testId))
             {
                 return NotFound();
             }
 
-            var attendeeId = HttpContext.Session.GetInt32(constants.AttendeeIdSessionKey).Value;
+            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+            {
+                return NotFound();
+            }
+
+            var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
 
             if (!await IsAttendeeValid(attendeeId))
             {
@@ -183,7 +188,7 @@ namespace Promact.Trappist.Core.Controllers
 
             return Ok(await _testRepository.GetTestQuestionByTestIdAsync(id));
         }
-        
+
         /// <summary>
         /// Returns Test by Test Link
         /// </summary>
@@ -219,7 +224,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            
+
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
 
             return Ok(attendeeId);
@@ -233,7 +238,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("teststatus/{attendeeId}")]
         public async Task<IActionResult> GetTestStatusAsync([FromRoute]int attendeeId)
         {
-            if(!await IsAttendeeValid(attendeeId))
+            if (!await IsAttendeeValid(attendeeId))
             {
                 return NotFound();
             }
@@ -259,7 +264,12 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Method
         private async Task<bool> IsAttendeeValid(int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(constants.AttendeeIdSessionKey).Value == attendeeId
+            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+            {
+                return false;
+            }
+
+            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value == attendeeId
                 && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
             {
                 return true;

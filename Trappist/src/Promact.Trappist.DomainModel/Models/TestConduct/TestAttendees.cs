@@ -34,6 +34,8 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         public virtual ICollection<TestConduct> TestConduct { get; set; }
 
+        public virtual AttendeeAnswers AttendeeAnswers { get; set; }
+
         public virtual Report.Report Report { get; set; }
     }
 }
