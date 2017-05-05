@@ -165,10 +165,14 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.NotNull(testInstruction);
         }
 
+        /// <summary>
+        /// This test case is used to test the test instruction details for invalid testLink
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task GetAllNotValidTestInformationAsync()
         {
-            var testInstruction = await _testConductRepository.GetTestInstructionsAsync("abcdefghij");
+            var testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
             Assert.Null(testInstruction);
         }
 
