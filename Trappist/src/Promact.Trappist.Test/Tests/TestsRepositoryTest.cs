@@ -1,20 +1,20 @@
-﻿using Xunit;
-using Microsoft.Extensions.DependencyInjection;
-using Promact.Trappist.Repository.Tests;
-using System.Linq;
-using System.Threading.Tasks;
-using Promact.Trappist.Repository.Categories;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using System.Collections.Generic;
-using Promact.Trappist.DomainModel.ApplicationClasses;
-using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Models;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Promact.Trappist.Repository.Questions;
-using AutoMapper;
-using Promact.Trappist.DomainModel.Models.Test;
+using Microsoft.Extensions.DependencyInjection;
+using Promact.Trappist.DomainModel.ApplicationClasses;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Question;
+using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Web.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Promact.Trappist.Test.Tests
 {

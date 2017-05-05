@@ -1,5 +1,6 @@
-﻿import { TestState } from './enum-teststate';
+﻿import { Report } from './report.model';
 import { Test } from '../tests/tests.model';
+import { TestLogs } from './testlog.model';
 
 export class TestAttendee {
     firstName: string;
@@ -10,6 +11,7 @@ export class TestAttendee {
     contactNumber: string;
     createdDateTime: string;
     id: number;
-    testState: TestState;
     test: Test;
+    report: Report;
+    testLogs: TestLogs;
 }

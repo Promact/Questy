@@ -31,6 +31,7 @@ namespace Promact.Trappist.Test.Profile
             var user = UserDetails();
             await _userManager.CreateAsync(user);
             var result = await _profileRepository.GetUserDetailsAsync(user.Email);
+            result.Email = "abc@abc.com";
             Assert.Equal(result, user);
         }
 

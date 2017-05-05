@@ -1,5 +1,4 @@
-﻿/// <reference path="report.service.ts" />
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { reportsRouting } from './reports.routing';

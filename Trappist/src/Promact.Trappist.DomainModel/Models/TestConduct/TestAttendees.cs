@@ -30,6 +30,8 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
         [ForeignKey("TestId")]
         public virtual Test.Test Test { get; set; }
 
-        public TestState TestState { get; set; }
+        public virtual Report.Report Report { get; set; }
+
+        public virtual TestLogs.TestLogs TestLogs { get; set; }
     }
 }

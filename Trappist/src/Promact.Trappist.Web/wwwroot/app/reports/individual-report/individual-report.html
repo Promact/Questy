@@ -29,22 +29,22 @@
             <div class="candidate-details-body clearfix">
                 <div class="col-lg-6 col-md-6 col-sm-5 candidate-test-details">
                     <p><strong>Test Date</strong>{{testAttendee?.createdDateTime |date:'fullDate'}}</p>
-                    <p><strong>Test Finish Status</strong>{{testState}}</p>
+                    <p><strong>Test Finish Status</strong>{{testStatus}}</p>
                     <p><strong>Roll No.</strong>{{testAttendee?.rollNumber}}</p>
-                    <p><strong>Time Taken</strong> 2 hrs 15 mins</p>
+                    <p><strong>Time Taken</strong> {{timeTakenInHours}} hrs {{timeTakenInMinutes}} mins</p>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
                     <div class="score">
                         <h3 class="mb20">Score</h3>
-                        <h1>230</h1>
+                        <h1>{{marks}}</h1>
                     </div>
                     <div class="percentage">
                         <h3 class="mb20">Percentage</h3>
-                        <h1>80 %</h1>
+                        <h1>{{percentage}} %</h1>
                     </div>
                     <div class="percentile">
                         <h3 class="mb20">Percentile</h3>
-                        <h1>99</h1>
+                        <h1>{{percentile}}</h1>
                     </div>
                 </div>
             </div>
@@ -63,14 +63,20 @@
                 <div class="col-lg-6 col-md-6 col-sm-6" style="display: block">
                     <h5>
                         <canvas baseChart
-                                [data]="pieChartValue()"
-                                [labels]="pieChartLabels"
+                                [data]="questionPieChartValue()"
+                                [labels]="questionPieChartLabels"
                                 [chartType]="pieChartType"
-                                (chartHover)="pieChartValue()"></canvas>
+                                (chartHovered)="questionPieChartValue()"></canvas>
                     </h5>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
-                    <h5>Graph Goes Here</h5>
+                    <h5>
+                        <canvas baseChart
+                                [data]="correctPieChartValue()"
+                                [labels]="correctPieChartLabels"
+                                [chartType]="pieChartType"
+                                (chartHovered)="correctPieChartValue()"></canvas>
+                    </h5>
                 </div>
             </div>
         </div>
@@ -81,18 +87,24 @@
                     <div class="qs-container">
                         <p class="qs-num">Q.{{i+1}}</p>
                         <div class="qs-text">
-                            <p class="question" [innerHtml]="question.question.questionDetail"></p>
-                            <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption;let j=index">
-                                <p *ngIf="question.question.questionType != 2" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
+                            <p class="question" [innerHtml]="question.question?.questionDetail"></p>
+
+                            <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j=index">
+                                <p *ngIf="question.question?.questionType != 2" [ngClass]="{correct:isCorrectAnswer(option.isAnswer),wrong:isAttendeeAnswerCorrect(option.id,option.isAnswer)==false}" class="ans-option"><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
                             </div>
-                            <!--<p class="ans-option"><span>b.</span> <span>Distributed Project Management System</span></p>
-                            <p class="ans-option"><span>c.</span> <span>Global Integer Track</span></p>
-                            <p class="ans-option wrong"><span>d.</span> <span>None of the above</span></p>-->
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
-                    <div class="score negative">Score: -1</div>
+                <div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==1">
+                        <div class="score negative">Score: -{{incorrectmarks}}</div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==0">
+                        <div class="score positive">Score: +{{correctMarks}}</div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==2">
+                        <div class="score">Score: 0</div>
+                    </div>
                 </div>
             </div>
             <div class="question-score-box clearfix">
@@ -172,6 +184,18 @@
                     <p class="ml40">Code Compilation: 2 Successful out of 12 attempts</p>
                     <p class="ml40">Code Complexity: 53</p>
                 </div>
+            </div>
+            <div>
+                <p>Test Logs</p>
+                <p>{{testAttendee?.testLogs.visitTestLink |date:'medium'}} : The user visit the test link</p>
+                <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'medium'}} : The user fills the registration form</p>
+                <p>{{testAttendee?.testLogs.passInstructionpage |date:'medium'}} : The user passes the Instruction Page</p>
+                <p>{{testAttendee?.testLogs.startTest | date:'medium'}} : The user starts the test</p>
+                <p>{{testAttendee?.testLogs.finishTest |date:'medium'}} : The User finishes the test</p>
+                <p>{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : User is away from the test window (Highlighted</p>
+                <p>{{testAttendee?.testLogs.fisconnectedFromServer |date:'medium'}} : User is away from the test window (Highlighted)</p>
+                <p>{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} : User closes the test window without finishing the test (Highlighted)</p>
+                <p>{{testAttendee?.testLogs.resumeTest |date:'medium'}} : User resumes the test</p>
             </div>
         </div>
     </div>

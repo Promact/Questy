@@ -1,9 +1,9 @@
-﻿/// <reference path="../questions/question-display.ts" />
-import { TestOrder } from './enum-testorder';
+﻿import { TestOrder } from './enum-testorder';
 import { Category } from '../questions/category.model';
 import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
 import { QuestionDisplay } from '../questions/question-display';
+import { QuestionStatus } from './enum-questionstatus';
 
 export class Test {
     id: number;
@@ -43,6 +43,7 @@ export class TestQuestion {
     public questionId: number;
     public isSelect: boolean;
     public question: QuestionDisplay;
+    public questionStatus: QuestionStatus;
 }
 
 
