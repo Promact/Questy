@@ -1,117 +1,120 @@
 ﻿<div class="test-create-steps test-settings">
-  <div class="loader-container" *ngIf="loader">
-    <div class="spinner"></div>
-  </div>
-  <form #settingsForm="ngForm">
-    <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
-    <div class="container">
-      <h5>Settings & Schedule</h5>
-      <div class="form-area">
-        <div class="form-group">
-          <label>Time Duration (mins)</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00"  #Duration="ngModel" required pattern="^(0*[1-9])\d{0,3}?$" (keyup)="isWarningTimeValid()" />
-          <div class="errors-container">
-            <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.required">Test Duration is required</span>
-            <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
-          </div>
-        </div>
-        <div class="form-group inline-field">
-          <label>Start Date & Time</label>
-          <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.startDate" name="Start Date" (mouseup)="isStartDateValid()" />
-          <div class="errors-container">
-            <span class="error-msg small-width" *ngIf="validStartDate">Start DateTime must be greater than Current DateTime</span>
-          </div>
-        </div>
-        <div class="form-group inline-field">
-          <label>End Date & Time</label>
-          <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.endDate" name="End Date" (mouseup)="isEndDateValid(testDetails.endDate)" />
-          <div class="errors-container">
-            <span class="error-msg" *ngIf="validEndDate">End DateTime must be greater than Start DateTime</span>
-          </div>
-        </div>
-        <div class="form-group ip-restrictions-field">
-          <label>IP Restrictions</label>
-          <br />
-          <div>
-            <input type="text" class="form-control small-width" id="From" name="From" placeholder="From IP" #From=ngModel [(ngModel)]="testDetails.fromIpAddress" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
-            <br />
-            <div class="errors-container">
-              <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP Address in correct format</span>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
+    <form #settingsForm="ngForm">
+        <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+        <div class="container">
+            <h5>Settings & Schedule</h5>
+            <span class="error-msg" *ngIf="isAttendeeExistForTest">Attendees for this test exist</span>
+            <div class="form-area">
+                <div class="form-group">
+                    <label>Time Duration (mins)</label>
+                    <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00" #Duration="ngModel" required pattern="^(0*[1-9])\d{0,3}?$" (keyup)="isWarningTimeValid()" />
+                    <div class="errors-container">
+                        <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.required">Test Duration is required</span>
+                        <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
+                    </div>
+                </div>
+                <div class="form-group inline-field">
+                    <label>Start Date & Time</label>
+                    <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.startDate" name="Start Date" (mouseup)="isStartDateValid()" />
+                    <div class="errors-container">
+                        <span class="error-msg small-width" *ngIf="validStartDate">Start DateTime must be greater than Current DateTime</span>
+                    </div>
+                </div>
+                <div class="form-group inline-field">
+                    <label>End Date & Time</label>
+                    <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.endDate" name="End Date" (mouseup)="isEndDateValid(testDetails.endDate)" />
+                    <div class="errors-container">
+                        <span class="error-msg" *ngIf="validEndDate">End DateTime must be greater than Start DateTime</span>
+                    </div>
+                </div>
+                <div class="form-group ip-restrictions-field">
+                    <label>IP Restrictions</label>
+                    <br />
+                    <div>
+                        <input type="text" class="form-control small-width" id="From" name="From" placeholder="From IP" #From=ngModel [(ngModel)]="testDetails.fromIpAddress" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
+                        <br />
+                        <div class="errors-container">
+                            <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP Address in correct format</span>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control small-width" id="To" name="To" placeholder="To IP" [(ngModel)]="testDetails.toIpAddress" #To=ngModel pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
+                        <br />
+                        <div class="errors-container">
+                            <span class="error-msg" *ngIf="To.errors && To.dirty" [hidden]="!To.errors.pattern">Enter IP Address in valid format</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Browser Tolerance</label>
+                    <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" name="Browser Tolerance">
+                        <option value="0">Not Applicable</option>
+                        <option value="3">Low</option>
+                        <option value="7">Medium</option>
+                        <option value="12">High</option>
+                    </select>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Question Order</label>
+                    <select class="form-control half-width" [(ngModel)]="testDetails.questionOrder" name="questionOrder">
+                        <option value="0">Fixed</option>
+                        <option value="1">Random</option>
+                    </select>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Option Order</label>
+                    <select class="form-control half-width" [(ngModel)]="testDetails.optionOrder" name="optionOrder">
+                        <option value="0">Fixed</option>
+                        <option value="1">Random</option>
+                    </select>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group inline-field">
+                    <label>Correct Marks</label>
+                    <input type="text" class="form-control small-width" [(ngModel)]="testDetails.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" required pattern="^(0*[1-9])\d{0,3}(\.{1}\d{1,2})?$" min="0" />
+                    <div class="errors-container">
+                        <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.required">Correct Marks is required</span>
+                        <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks</span>
+                    </div>
+                </div>
+                <div class="form-group inline-field">
+                    <label>Incorrect Marks</label>
+                    <input type="text" class="form-control small-width" [(ngModel)]="testDetails.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" required pattern="^\d{0,3}(\.\d{1,2})?$" min="0" />
+                    <div class="errors-container">
+                        <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.required">Incorrect Marks is required</span>
+                        <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Allow Test Resume</label>
+                    <select class="form-control half-width" [(ngModel)]="testDetails.allowTestResume" name="allowTestResume">
+                        <option value="0">Supervised</option>
+                        <option value="1">Unsupervised</option>
+                    </select>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Warning Message</label>
+                    <textarea class="form-control half-width" rows="3" #textarea placeholder="Your message here" [(ngModel)]="testDetails.warningMessage" name="Warning Message" maxlength="255"></textarea>
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Warning Time (mins)</label>
+                    <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.warningTime" name="WarningTime" min="0" #WarningTime="ngModel" (keyup)="isWarningTimeValid()" />
+                    <div class="errors-container">
+                        <span class="error-msg" *ngIf="WarningTime.errors && WarningTime.dirty && !WarningTime.valid && WarningTime.errors.pattern">Invalid Time</span>
+                        <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
+                    </div>
+                </div>
+                <input type="text" class="form-control half-width" value={{testLink}} #link>
+                <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" tooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>               
+                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails)" (saveLaunch)="saveAndLaunch($event)" (pause)=" pause($event)" (resume)="resume($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
-          </div>
-          <div>
-            <input type="text" class="form-control small-width" id="To" name="To" placeholder="To IP" [(ngModel)]="testDetails.toIpAddress" #To=ngModel pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
-            <br />
-            <div class="errors-container">
-              <span class="error-msg" *ngIf="To.errors && To.dirty" [hidden]="!To.errors.pattern">Enter IP Address in valid format</span>
-            </div>
-          </div>
         </div>
-        <div class="form-group">
-          <label>Browser Tolerance</label>
-          <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" name="Browser Tolerance">
-            <option value="0">Not Applicable</option>
-            <option value="3">Low</option>
-            <option value="7">Medium</option>
-            <option value="12">High</option>
-          </select>
-          <div class="errors-container"></div>
-        </div>
-        <div class="form-group">
-          <label>Question Order</label>
-          <select class="form-control half-width" [(ngModel)]="testDetails.questionOrder" name="questionOrder">
-            <option value="0">Fixed</option>
-            <option value="1">Random</option>
-          </select>
-          <div class="errors-container"></div>
-        </div>
-        <div class="form-group">
-          <label>Option Order</label>
-          <select class="form-control half-width" [(ngModel)]="testDetails.optionOrder" name="optionOrder">
-            <option value="0">Fixed</option>
-            <option value="1">Random</option>
-          </select>
-          <div class="errors-container"></div>
-        </div>
-        <div class="form-group inline-field">
-          <label>Correct Marks</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" required pattern="^(0*[1-9])\d{0,3}(\.{1}\d{1,2})?$" min="0" />
-          <div class="errors-container">
-            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.required">Correct Marks is required</span>
-            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks</span>
-          </div>
-        </div>
-        <div class="form-group inline-field">
-          <label>Incorrect Marks</label>
-          <input type="text" class="form-control small-width" [(ngModel)]="testDetails.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" required pattern="^\d{0,3}(\.\d{1,2})?$" min="0" />
-          <div class="errors-container">
-            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.required">Incorrect Marks is required</span>
-            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Allow Test Resume</label>
-          <select class="form-control half-width" [(ngModel)]="testDetails.allowTestResume" name="allowTestResume">
-            <option value="0">Supervised</option>
-            <option value="1">Unsupervised</option>
-          </select>
-          <div class="errors-container"></div>
-        </div>
-        <div class="form-group">
-          <label>Warning Message</label>
-          <textarea class="form-control half-width" rows="3" #textarea placeholder="Your message here" [(ngModel)]="testDetails.warningMessage" name="Warning Message" maxlength="255"></textarea>
-          <div class="errors-container"></div>
-        </div>
-        <div class="form-group">
-          <label>Warning Time (mins)</label>
-          <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.warningTime" name="WarningTime" min="0" #WarningTime="ngModel" (keyup)="isWarningTimeValid()" />
-          <div class="errors-container">
-            <span class="error-msg" *ngIf="WarningTime.errors && WarningTime.dirty && !WarningTime.valid && WarningTime.errors.pattern">Invalid Time</span>
-            <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
-          </div>
-        </div>
-        <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails)" (saveLaunch)="saveAndLaunch($event)" (pause)=" pause($event)" (resume)="resume($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
-      </div>
-    </div> 
-  </form>
+    </form>
 </div>

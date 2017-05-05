@@ -37,7 +37,7 @@ export class CreateTestFooterComponent implements OnInit {
     isSelectButton: boolean;
     isTestLaunched: boolean;
     isPaused: boolean;
-
+   
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
         this.isTestQuestion = false;
@@ -51,7 +51,7 @@ export class CreateTestFooterComponent implements OnInit {
         this.pause = new EventEmitter();
         this.resume = new EventEmitter();
         this.isPaused = false;        
-        this.isTestLaunched = false;
+        this.isTestLaunched = false;        
     }
 
     /**
@@ -60,6 +60,7 @@ export class CreateTestFooterComponent implements OnInit {
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
         this.getComponent();
+        
     }
 
     /**
@@ -109,7 +110,7 @@ export class CreateTestFooterComponent implements OnInit {
 
     saveAndLaunchTest() {
         this.isTestLaunched = true;
-        this.saveLaunch.emit(this.isTestLaunched);       
+        this.saveLaunch.emit(this.isTestLaunched);          
     }
 
     pauseTest() {        
