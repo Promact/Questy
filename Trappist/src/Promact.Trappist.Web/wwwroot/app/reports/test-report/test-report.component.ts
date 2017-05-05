@@ -28,7 +28,7 @@ export class TestReportComponent implements OnInit {
     isAllCandidateStarred: boolean;
     showStarCandidates: boolean;
     loader: boolean;
-    testArray: Test[];
+    test: Test;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -42,9 +42,8 @@ export class TestReportComponent implements OnInit {
         this.starredCandidateIdList = new Array<number>();
         this.isAllCandidateStarred = false;
         this.showStarCandidates = false;
-        this.testArray = new Array<Test>();
+        this.test = new Test();
         this.loader = true;
-
     }
 
     ngOnInit() {
@@ -57,10 +56,11 @@ export class TestReportComponent implements OnInit {
      * Fetches test name of particular test
      */
     getTestName() {
-        this.reportService.getTestName(this.testId).subscribe((testName) => {
-            this.testArray = testName;
-        })
+        this.reportService.getTestName(this.testId).subscribe((test) => {
+            this.test = test;
+        });
     }
+
     /**
      * Fetches all the candidates of any particular test
      */
