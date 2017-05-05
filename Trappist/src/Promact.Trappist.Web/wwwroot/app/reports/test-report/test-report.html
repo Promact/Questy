@@ -5,7 +5,7 @@
     <div class="test-create-header clearfix">
         <div class="container">
             <h1 class="pull-left">
-                <span class="test-name">{{testArray.testName}}</span>
+                <span class="test-name">{{test.testName}}</span>
             </h1>
             <div class="search-area pull-right mt5">
                 <input type="text" placeholder="Search reports" [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showStatus()" />
