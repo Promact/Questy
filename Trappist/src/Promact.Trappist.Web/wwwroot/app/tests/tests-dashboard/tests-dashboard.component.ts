@@ -34,8 +34,7 @@ export class TestsDashboardComponent implements OnInit {
     getAllTests() {
         this.testService.getTests().subscribe((response) => {
             this.tests = (response);
-            console.log(this.tests);
-            this.isTestAttendeeExist();
+            this.disableEditForTheTestsIfAttendeesExist();
             this.loader = false;
         });
     }
@@ -79,7 +78,7 @@ export class TestsDashboardComponent implements OnInit {
     /**
      * Checks if any candidate has taken the test
      */
-    isTestAttendeeExist() {
+    disableEditForTheTestsIfAttendeesExist() {
         this.tests.forEach(test => {
             test.isEditTestEnabled = !(test.numberOfTestAttendees > 0);
         });
