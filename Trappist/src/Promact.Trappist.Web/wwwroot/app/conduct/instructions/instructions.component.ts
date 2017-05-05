@@ -17,7 +17,7 @@ export class InstructionsComponent implements OnInit {
     magicString: string;
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testInstructions = new TestInstructions();
-        this.negativeSign = "- ";
+        this.negativeSign = '- ';
     }
 
     /**

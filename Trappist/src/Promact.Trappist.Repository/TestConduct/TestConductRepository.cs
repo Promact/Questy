@@ -6,6 +6,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Repository.Tests;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,13 +22,15 @@ namespace Promact.Trappist.Repository.TestConduct
         #region Private Variables
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
+        private readonly ITestsRepository _testRepository;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext)
+        public TestConductRepository(TrappistDbContext dbContext,ITestsRepository testRepository)
         {
             _dbContext = dbContext;
+            _testRepository = testRepository;
         }
         #endregion
 
@@ -51,16 +54,23 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
-        {  
+        {
             var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
-                    .Include(x => x.TestQuestion)
-                    .Include(x => x.TestCategory)
-                    .ThenInclude(x => x.Category).ToListAsync();
+                    .Include(x => x.TestQuestion).ToListAsync();
             if(testObject.Any())
             {
                 var testInstructionsDetails = testObject.First();
                 var totalNumberOfQuestions = testInstructionsDetails.TestQuestion.Count();
-                var testCategoryANameList = testInstructionsDetails.TestCategory.Select(x => x.Category.CategoryName).ToList();
+                var testCategoryANameList = new List<string>();
+                var testByIdObj= await _testRepository.GetTestByIdAsync(testInstructionsDetails.Id, testInstructionsDetails.CreatedByUserId);
+                var categoryAcList = testByIdObj.CategoryAcList;
+                foreach(var category in categoryAcList)
+                {
+                    if(category.NumberOfSelectedQuestion!=0 && !category.IsSelect)
+                    {
+                        testCategoryANameList.Add(category.CategoryName);
+                    }
+                }
                 var testInstructions = new TestInstructionsAC()
                 {
                     Duration = testInstructionsDetails.Duration,
