@@ -50,7 +50,7 @@
                         <td>{{i.score}}</td>
                         <td>{{i.percentage}}</td>
                         <td><em class="material-icons">file_download</em></td>
-                        <td class="text-right"><em class="material-icons" (click)="viewIndividualReport(i)">remove_red_eye</em></td>
+                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report',i.id]">remove_red_eye</em></td>
                     </tr>
                 </tbody>
                 <tfoot>

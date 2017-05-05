@@ -37,7 +37,7 @@ namespace Promact.Trappist.Test.Reports
         public async Task GetTestAttendeeDetailsByIdAsync()
         {
             var test = CreateTest("Mathematics");
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test, "1");
             var testAttendee = CreateTestAttendee(test.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added Successfully");
             var testAttendeeObject = await _reportRepository.GetTestAttendeeDetailsByIdAsync(testAttendee.Id);
@@ -51,7 +51,7 @@ namespace Promact.Trappist.Test.Reports
         public async Task GetTestQuestions()
         {
             var test = CreateTest("Mathematics");
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test, "4");
             var category = CreateCategory("Maths");
             var questionToCreate1 = "Question1";
             var question1 = CreateSingleAnswerQuestion(category, questionToCreate1);
@@ -97,7 +97,7 @@ namespace Promact.Trappist.Test.Reports
         public async Task GetTestAttendeeAnswers()
         {
             var test = CreateTest("Mathematics");
-            await _testRepository.CreateTestAsync(test);
+            await _testRepository.CreateTestAsync(test, "5");
             var testAttendee = CreateTestAttendee(test.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
             var testConduct1 = new DomainModel.Models.TestConduct.TestConduct()
@@ -135,7 +135,7 @@ namespace Promact.Trappist.Test.Reports
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName,
-                BrowserTolerance = 1
+                IncorrectMarks = 1
             };
             return test;
         }

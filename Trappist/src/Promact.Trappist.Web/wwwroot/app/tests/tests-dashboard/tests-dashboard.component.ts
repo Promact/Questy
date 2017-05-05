@@ -119,8 +119,4 @@ export class TestsDashboardComponent implements OnInit {
             }
         });
     }
-
-    viewReport(test: Test) {
-        this.router.navigate(['/reports/'+test.id]);
-    }
 }
