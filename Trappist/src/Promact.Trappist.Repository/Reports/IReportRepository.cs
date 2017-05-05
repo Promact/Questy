@@ -34,14 +34,14 @@ namespace Promact.Trappist.Repository.Reports
         /// Method to check whether a candidate exist or not
         /// </summary>
         /// <param name="attendeeId">Id of the candidate</param>
-        /// <returns></returns>
+        /// <returns>returns boolean type result depending on whether the candidate exist or not</returns>
         Task <bool> IsCandidateExistAsync(int attendeeId);
         
         /// <summary>
         ///Method to get test name 
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Id of the test</param>
+        /// <returns>Returns the name of the test matching with the Id</returns>
         Task<Test> GetTestNameAsync(int id);
     }
 }
