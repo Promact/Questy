@@ -1,8 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
@@ -47,24 +51,24 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
-        {
-            var testDeatilsObj = await _dbContext.Test.Where(x => x.Link == testLink)
-                .Include(x => x.TestQuestion)
-                .Include(x => x.TestCategory)
-                .ThenInclude(x => x.Category).ToListAsync();
-            if (testDeatilsObj != null)
+        {  
+            var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
+                    .Include(x => x.TestQuestion)
+                    .Include(x => x.TestCategory)
+                    .ThenInclude(x => x.Category).ToListAsync();
+            if(testObject.Any())
             {
-                var testInstructionDetails = testDeatilsObj.First();
-                var totalNumberOfQuestions = testInstructionDetails.TestQuestion.Count();
-                var testCategoryNameList = testInstructionDetails.TestCategory.Select(x => x.Category.CategoryName).ToList();
+                var testInstructionsDetails = testObject.First();
+                var totalNumberOfQuestions = testInstructionsDetails.TestQuestion.Count();
+                var testCategoryANameList = testInstructionsDetails.TestCategory.Select(x => x.Category.CategoryName).ToList();
                 var testInstructions = new TestInstructionsAC()
                 {
-                    Duration = testInstructionDetails.Duration,
-                    BrowserTolerance = testInstructionDetails.BrowserTolerance,
-                    CorrectMarks = testInstructionDetails.CorrectMarks,
-                    IncorrectMarks = testInstructionDetails.IncorrectMarks,
+                    Duration = testInstructionsDetails.Duration,
+                    BrowserTolerance = testInstructionsDetails.BrowserTolerance,
+                    CorrectMarks = testInstructionsDetails.CorrectMarks,
+                    IncorrectMarks = testInstructionsDetails.IncorrectMarks,
                     TotalNumberOfQuestions = totalNumberOfQuestions,
-                    CategoryNameList = testCategoryNameList
+                    CategoryNameList = testCategoryANameList
                 };
                 return testInstructions;
             }

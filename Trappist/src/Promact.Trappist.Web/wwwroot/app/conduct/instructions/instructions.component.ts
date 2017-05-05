@@ -13,9 +13,11 @@ import { Router } from '@angular/router';
 
 export class InstructionsComponent implements OnInit {
     testInstructions: TestInstructions;
+    negativeSign: string;
     magicString: string;
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testInstructions = new TestInstructions();
+        this.negativeSign = "- ";
     }
 
     /**
@@ -34,6 +36,10 @@ export class InstructionsComponent implements OnInit {
     getTestInstructionsByLink(testLink: string) {
         this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
+                if (this.testInstructions.incorrectMarks == 0)
+                {
+                    this.negativeSign = " ";
+                }
                 this.testInstructions = response;
             });
     }
