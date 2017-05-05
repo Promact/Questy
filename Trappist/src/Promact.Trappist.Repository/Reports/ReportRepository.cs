@@ -52,7 +52,7 @@ namespace Promact.Trappist.Repository.Reports
            
             if ((TestStatus)selectedTestStatus == TestStatus.AllCandidates)
             {
-                attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.Contains(searchString) || x.FirstName.Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
+                attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.Contains(searchString) || x.LastName.Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
             }
 
             else
