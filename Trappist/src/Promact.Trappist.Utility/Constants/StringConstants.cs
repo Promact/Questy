@@ -211,5 +211,23 @@
             }
         }
         #endregion
+
+        #region Session Keys
+        public string AttendeeIdSessionKey
+        {
+            get
+            {
+                return "ATTENDEE_ID";
+            }
+        }
+
+        public string TestLinkSessionKey
+        {
+            get
+            {
+                return "MAGIC_LINK";
+            }
+        }
+        #endregion
     }
 }

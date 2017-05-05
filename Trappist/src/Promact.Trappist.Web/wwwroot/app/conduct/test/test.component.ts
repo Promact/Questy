@@ -90,6 +90,8 @@ export class TestComponent implements OnInit {
             this.seconds = this.test.duration * 60;
             this.tolerance = this.test.browserTolerance;
             this.getTestAttendee(this.test.id);
+        }, err => {
+            this.router.navigate(['']);
         });
     }
 
@@ -101,6 +103,8 @@ export class TestComponent implements OnInit {
         this.conductService.getTestAttendeeByTestId(testId).subscribe((response) => {
             this.testAttendee = response;
             this.getTestQuestion(this.test.id);
+        }, err => {
+            this.router.navigate(['']);
         });
     }
 
@@ -137,7 +141,7 @@ export class TestComponent implements OnInit {
             let testStatus = response;
             if (testStatus !== TestStatus.allCandidates) {
                 //Close the window if Test is already completed
-                window.close();
+                this.closeWindow();
             }
 
             this.ResumeTest();
@@ -322,6 +326,13 @@ export class TestComponent implements OnInit {
     }
 
     /**
+     * Called when end test button is clicked
+     */
+    endTestButtonClicked() {
+        this.endTest(TestStatus.completedTest);
+    }
+
+    /**
      * Shuffle testQuestions 
      */
     private shuffleQuestion() {
@@ -396,13 +407,6 @@ export class TestComponent implements OnInit {
     }
 
     /**
-     * Called when end test button is clicked
-     */
-    endTestButtonClicked() {
-        this.endTest(TestStatus.completedTest);
-    }
-
-    /**
      * Updates time on the server
      */
     private timeOut() {
@@ -423,8 +427,17 @@ export class TestComponent implements OnInit {
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             //A measure taken to add answer of question attempted just before the Test end
             this.navigateToQuestionIndex(0);
-            window.close();
+            this.closeWindow();
         });
+    }
+
+    /**
+     * Closes window 
+     */
+    private closeWindow() {
+        window.close();
+        //If the window close fails navigate to end test page 
+        this.router.navigate(['test-end']);
     }
 
     /**
