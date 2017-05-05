@@ -17,7 +17,7 @@
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
-                <select class="form-control" [(ngModel)]="typeOfTest" (change)="setTestStatusType(typeOfTest)">
+                <select class="form-control" [(ngModel)]="testCompletionStatus" (change)="setTestStatusType(testCompletionStatus)">
                     <option value="0">All Candidates ({{count}})</option>
                     <option value="1">Completed Test</option>
                     <option value="2">Expired Test</option>

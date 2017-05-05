@@ -18,7 +18,7 @@ export class TestReportComponent implements OnInit {
     attendeeArray: TestAttendee[];
     testId: number;
     starredCandidateArray: string[];
-    typeOfTest: string;
+    testCompletionStatus: string;
     count: number;
     selectedTestStatus: TestStatus;
     headerStarStatus: string;
@@ -33,7 +33,7 @@ export class TestReportComponent implements OnInit {
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
-        this.typeOfTest = '0';
+        this.testCompletionStatus = '0';
         this.selectedTestStatus = TestStatus.allCandidates;
         this.searchString = '';
         this.headerStarStatus = 'star_border';
@@ -140,8 +140,8 @@ export class TestReportComponent implements OnInit {
      * Sets the test status of the candidate
      * @param typeOfTest
      */
-    setTestStatusType(typeOfTest: string) {
-        this.selectedTestStatus = +typeOfTest;
+    setTestStatusType(testCompletionStatus: string) {
+        this.selectedTestStatus = +testCompletionStatus;
         this.filterList();
     }
 
