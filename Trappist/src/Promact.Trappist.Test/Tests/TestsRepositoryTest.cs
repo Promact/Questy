@@ -336,6 +336,8 @@ namespace Promact.Trappist.Test.Tests
 
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(_trappistDbContext.TestQuestion.Count() == 1);
+            var message = await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
+            Assert.True(message == "No new questions selected..");
             question1.Question.IsSelect = false;
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(_trappistDbContext.TestQuestion.Count() == 0);
