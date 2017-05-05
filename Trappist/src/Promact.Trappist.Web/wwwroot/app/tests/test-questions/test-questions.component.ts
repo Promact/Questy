@@ -116,7 +116,6 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(questionToSelect: QuestionBase, category: Category) {
-            questionToSelect.question.isSelect = true;
             if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
                 let isAllSelected = category.questionList.every(function (question) {
                     return question.question.isSelect;
