@@ -443,7 +443,7 @@ namespace Promact.Trappist.Test.Questions
             Assert.Equal(1, numberOfQuestions.EasyCount);
             Assert.Equal(0, numberOfQuestions.MediumCount);
             Assert.Equal(0, numberOfQuestions.HardCount);
-            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id,codinQuestion.Question.CategoryID, "Write");
+            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, codinQuestion.Question.CategoryID, "Write");
             Assert.Equal(1, numberOfQuestionsWithCategory.EasyCount);
             Assert.Equal(0, numberOfQuestionsWithCategory.MediumCount);
             Assert.Equal(0, numberOfQuestionsWithCategory.HardCount);
