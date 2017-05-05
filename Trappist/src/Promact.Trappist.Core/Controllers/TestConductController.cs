@@ -6,6 +6,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,8 +19,7 @@ namespace Promact.Trappist.Core.Controllers
         #region Dependencies
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
-        private const string ATTENDEE_ID = "ATTENDEE_ID";
-        private const string TEST_LINK = "MAGIC_LINK";
+        private StringConstants constants;        
         #endregion
         #endregion
 
@@ -28,6 +28,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             _testConductRepository = testConductRepository;
             _testRepository = testRepository;
+            constants = new StringConstants();
         }
         #endregion
 
@@ -44,8 +45,8 @@ namespace Promact.Trappist.Core.Controllers
             if (ModelState.IsValid && !(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString)))
             {
                 await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
-                HttpContext.Session.SetInt32(ATTENDEE_ID, testAttendee.Id);
-                HttpContext.Session.SetString(TEST_LINK, magicString);
+                HttpContext.Session.SetInt32(constants.AttendeeIdSessionKey, testAttendee.Id);
+                HttpContext.Session.SetString(constants.TestLinkSessionKey, magicString);
                 return Ok(true);
             }
             return BadRequest();
@@ -157,7 +158,7 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            var attendeeId = HttpContext.Session.GetInt32(ATTENDEE_ID).Value;
+            var attendeeId = HttpContext.Session.GetInt32(constants.AttendeeIdSessionKey).Value;
 
             if (!await IsAttendeeValid(attendeeId))
             {
@@ -258,7 +259,7 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Method
         private async Task<bool> IsAttendeeValid(int attendeeId)
         {
-            if (HttpContext.Session.GetInt32(ATTENDEE_ID).Value == attendeeId
+            if (HttpContext.Session.GetInt32(constants.AttendeeIdSessionKey).Value == attendeeId
                 && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
             {
                 return true;
