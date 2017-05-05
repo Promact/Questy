@@ -203,8 +203,8 @@ export class TestQuestionsComponent implements OnInit {
     * Checks if any candidate has taken the test
     */
     isTestAttendeeExist() {
-        this.testService.isTestAttendeeExist(this.testId).subscribe((response) => {
-            if (response.response) {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
+            if (res.response) {
                 this.isEditTestEnabled = false;
             }
             else {

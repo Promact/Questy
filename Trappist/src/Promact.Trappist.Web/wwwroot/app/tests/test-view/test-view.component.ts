@@ -151,8 +151,8 @@ export class TestViewComponent implements OnInit {
     // Open Delete Test Dialog
     deleteTestDialog(test: Test) {
         // Checks if any candidate has taken the test
-        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            this.isDeleteAllowed = response.response ? false : true;
+        this.testService.isTestAttendeeExist(test.id).subscribe((res) => {
+            this.isDeleteAllowed = res.response ? false : true;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.tests;
@@ -164,8 +164,8 @@ export class TestViewComponent implements OnInit {
      * Checks if any candidate has taken the test
      */
     isTestAttendeeExist() {
-        this.testService.isTestAttendeeExist(this.testId).subscribe((response) => {
-            if (response.response) {
+        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
+            if (res.response) {
                 this.isEditTestEnabled = false;
             }
             else {
@@ -192,8 +192,8 @@ export class TestViewComponent implements OnInit {
      */
     editTest(test: Test) {
         // Checks if any candidate has taken the test
-        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            if (!response.response) {
+        this.testService.isTestAttendeeExist(test.id).subscribe((res) => {
+            if (!res.response) {
                 this.router.navigate(['/tests/' + test.id + '/sections']);
             }
         });

@@ -70,8 +70,8 @@ export class TestsDashboardComponent implements OnInit {
     */
     deleteTestDialog(test: Test) {
         // Checks if any candidate has taken the test
-        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            this.isDeleteAllowed = response.response ? false : true;
+        this.testService.isTestAttendeeExist(test.id).subscribe((res) => {
+            this.isDeleteAllowed = res.response ? false : true;
             let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.tests;
@@ -96,8 +96,8 @@ export class TestsDashboardComponent implements OnInit {
      */
     isTestAttendeeExist() {
         this.tests.forEach(x => {
-            this.testService.isTestAttendeeExist(x.id).subscribe((response) => {
-                if (response.response) {
+            this.testService.isTestAttendeeExist(x.id).subscribe((res) => {
+                if (res.response) {
                     x.isEditTestEnabled = false;
                 }
                 else {
@@ -113,8 +113,8 @@ export class TestsDashboardComponent implements OnInit {
      */
     editTest(test: Test) {
         // Checks if any candidate has taken the test
-        this.testService.isTestAttendeeExist(test.id).subscribe((response) => {
-            if (!response.response) {
+        this.testService.isTestAttendeeExist(test.id).subscribe((res) => {
+            if (!res.response) {
                 this.router.navigate(['/tests/' + test.id + '/sections']);
             }
         });

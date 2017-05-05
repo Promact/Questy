@@ -176,7 +176,7 @@ namespace Promact.Trappist.Core.Controllers
                 return Ok(categoryAcList);
             }
             else
-                return BadRequest();
+                return NotFound();
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Promact.Trappist.Core.Controllers
                 return Ok(testCategory);
             }
             else
-                return BadRequest();
+                return NotFound();
         }
         #endregion
 
