@@ -34,6 +34,8 @@ export class CreateTestFooterComponent implements OnInit {
     @Output() resume: any;
     @Input('testDetails')
     public testDetails: Test;
+    @Input('isValid')
+    public isValid: boolean;
     isSelectButton: boolean;
     isTestLaunched: boolean;
     isPaused: boolean;

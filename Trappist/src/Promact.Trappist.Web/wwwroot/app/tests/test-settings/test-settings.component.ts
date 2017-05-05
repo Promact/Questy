@@ -53,7 +53,7 @@ export class TestSettingsComponent implements OnInit {
         this.isAttendeeExistForTest = false;
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
-
+ 
     }
 
     /**
@@ -98,11 +98,12 @@ export class TestSettingsComponent implements OnInit {
     isEndDateValid(endDate: Date) {
         if (new Date(this.testDetails.startDate) >= new Date(endDate)) {
             this.validEndDate = true;
-            this.validStartDate = false;
+            this.validStartDate = false;         
+            }
+               else
+                this.validEndDate = false;
         }
-        else
-            this.validEndDate = false;
-    }
+
 
     /**
      * Checks whether the Start Date selected is valid or not
@@ -126,10 +127,10 @@ export class TestSettingsComponent implements OnInit {
     */
     saveTestSettings(id: number, testObject: Test) {
         this.testService.updateTestById(id, testObject).subscribe((response) => {
-            this.loader = true;
+            this.loader = true;          
             let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
                 duration: 3000,
-            });
+            });           
             snackBarRef.afterDismissed().subscribe(() => {
                 this.router.navigate(['/tests']);
                 this.loader = false;
