@@ -33,12 +33,14 @@ export class TestViewComponent implements OnInit {
     tests: Test[];
     isEditTestEnabled: boolean;
     loader: boolean;
+    disable: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.totalNumberOfQuestions = [];
+        this.disable = false;
     }
 
     ngOnInit() {
@@ -61,6 +63,12 @@ export class TestViewComponent implements OnInit {
     getTestDetails(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = response;
+            this.testDetails.categoryAcList.forEach(x => {
+                if (x.numberOfSelectedQuestion === 0)
+                    x.isQuestionAbsent = true;
+                else
+                    x.isQuestionAbsent = false;
+            });
             this.loader = false;
         });
     }
@@ -70,31 +78,31 @@ export class TestViewComponent implements OnInit {
     * @param category
     * @param i is index of category
     */
-    getAllquestions(category: Category, i: number) {
-        if (!category.isAccordionOpen) {
-            category.isAccordionOpen = true;
-            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
-                category.isAlreadyClicked = true;
-                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                    this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
-                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
-                        return question.question.isSelect;
-                    }).length;
-                    category.selectAll = category.questionList.every(function (question) {
-                        return question.question.isSelect;
+    getAllquestions(category: Category, i: number) {     
+            if (!category.isAccordionOpen) {
+                category.isAccordionOpen = true;
+                if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
+                    category.isAlreadyClicked = true;
+                    this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
+                        this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                        this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
+                        this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
+                            return question.question.isSelect;
+                        }).length;
+                        category.selectAll = category.questionList.every(function (question) {
+                            return question.question.isSelect;
+                        });
                     });
-                });
+                }
+                else {
+                    category.isAlreadyClicked = true;
+                }
             }
             else {
-                category.isAlreadyClicked = true;
+                category.isAccordionOpen = false;
             }
-        }
-        else {
-            category.isAccordionOpen = false;
-        }
     }
-
+            
     /**
      * returns 'correct' class for correct option
      * @param isAnswer

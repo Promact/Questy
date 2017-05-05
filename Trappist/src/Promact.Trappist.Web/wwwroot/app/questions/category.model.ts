@@ -11,4 +11,5 @@ export class Category {
         numberOfSelectedQuestion: number;
         isSelect: boolean;
         questionCount: number;
+        isQuestionAbsent: boolean;
 } 
