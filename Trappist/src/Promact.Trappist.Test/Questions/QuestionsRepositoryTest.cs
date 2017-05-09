@@ -109,6 +109,16 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
+        /// Test to get all the Coding Language
+        /// </summary>
+        [Fact]
+        public async Task GetAllCodingLanguagesAsyncTest()
+        {
+            var codingLanguages = await _questionRepository.GetAllCodingLanguagesAsync();
+            Assert.True(codingLanguages.Count > 0);
+        }
+
+        /// <summary>
         /// Creating single answer Question
         /// </summary>
         /// <returns>Object of single answer Question</returns>

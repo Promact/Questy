@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
@@ -50,9 +52,21 @@ namespace Promact.Trappist.Repository.Tests
             return !isTestExists;
         }
 
-        public async Task<List<Test>> GetAllTestsAsync()
+        public async Task<List<TestAC>> GetAllTestsAsync()
         {
-            return await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            var testAcList = new List<TestAC>();
+            TestAC testAcObject;
+            var tests = await _dbContext.Test.Include(x => x.TestQuestion).Include(x => x.TestCategory).Include(x => x.TestAttendees).OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            tests.ForEach(test =>
+            {
+                testAcObject = new TestAC();
+                testAcObject = Mapper.Map<Test, TestAC>(test);
+                testAcObject.NumberOfTestAttendees = test.TestAttendees.Count;
+                testAcObject.NumberOfTestSections = test.TestCategory.Count;
+                testAcObject.NumberOfTestQuestions = test.TestQuestion.Count;
+                testAcList.Add(testAcObject);
+            });
+            return testAcList;
         }
         #endregion
 
@@ -229,11 +243,11 @@ namespace Promact.Trappist.Repository.Tests
         {
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
-           
+
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
-            
+
             string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             string defaultMessage = _stringConstants.WarningMessage;
@@ -274,27 +288,34 @@ namespace Promact.Trappist.Repository.Tests
                 return null;
         }
 
-        public async Task<ICollection<QuestionAC>> GetTestQuestionByTestIdAsync(int testId)
+        public async Task<ICollection<TestConductAC>> GetTestQuestionByTestIdAsync(int testId)
         {
-            var question = new QuestionAC();
-            var questionList = new List<QuestionAC>();
+            var questionList = new List<TestConductAC>();
 
             await _dbContext.TestQuestion
+                .Where(x => x.TestId == testId)
                 .Include(x => x.Question)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestion)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.Question.CodeSnippetQuestion)
                 .ForEachAsync(x =>
                 {
+                    var question = new QuestionAC();
                     question.Question = Mapper.Map<QuestionDetailAC>(x.Question);
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
                     //Removing correct answer(s)
                     question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
-                    questionList.Add(question);
+                    questionList.Add(new TestConductAC() { Question = question, QuestionStatus = QuestionStatus.unanswered });
                 });
 
             return questionList;
+        }
+        
+        public async Task<TestAC> GetTestByLinkAsync(string link)
+        {
+            var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));
+            return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
         #endregion
 

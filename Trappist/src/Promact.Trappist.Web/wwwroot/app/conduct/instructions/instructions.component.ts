@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 
 export class InstructionsComponent implements OnInit {
     testInstructions: TestInstructions;
+    magicString: string;
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testInstructions = new TestInstructions();
     }
@@ -22,8 +23,8 @@ export class InstructionsComponent implements OnInit {
      */
     ngOnInit() {
         let url = window.location.pathname;
-        let magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));
-        this.getTestInstructionsByLink(magicString);
+        this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));
+        this.getTestInstructionsByLink(this.magicString);
     }
 
     /**
@@ -38,6 +39,9 @@ export class InstructionsComponent implements OnInit {
     }
 
     startTest() {
-        this.router.navigate(['test']);
+        let url = window.location.pathname;
+        let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
+        let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
+        newWindow.onunload = () => { this.router.navigate(['test-end']); };
     }
 }

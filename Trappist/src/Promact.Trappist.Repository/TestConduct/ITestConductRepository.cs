@@ -1,5 +1,9 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestConduct
@@ -47,6 +51,47 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <returns>Answers as a string type</returns>
-        Task<TestAnswerAC> GetAnswerAsync(int attendeeId);
+        Task<ICollection<TestAnswerAC>> GetAnswerAsync(int attendeeId);
+
+        /// <summary>
+        /// Gets Test Attendee information by Id
+        /// </summary>
+        /// <param name="testId">Id of Test</param>
+        /// <returns>TestAttendee object</returns>
+        Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId);
+
+        /// <summary>
+        /// Checks if Test Attendee exist
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        /// <returns>Boolean value true if Test Attendee exist else false</returns>
+        Task<bool> IsTestAttendeeExistByIdAsync(int attendeeId);
+
+        /// <summary>
+        /// Set the time elapsed from start of Test
+        /// </summary>
+        /// <param name="attendeeId">Id of Attendee</param>
+        Task SetElapsedTimeAsync(int attendeeId);
+
+        /// <summary>
+        /// Get the time elapsed from start of Test
+        /// </summary>
+        /// <param name="attendeeId">Id of Attendee</param>
+        /// <returns>DateTime objects</returns>
+        Task<double> GetElapsedTimeAsync(int attendeeId);
+
+        /// <summary>
+        /// Sets the Test Status of the Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the Attendee</param>
+        /// <param name="testStatus">TestStatus enum</param>
+        Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus);
+
+        /// <summary>
+        /// Gets the Test Status of the Attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the Attendee</param>
+        /// <return>TestStatus object</return>
+        Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId);
     }
 }

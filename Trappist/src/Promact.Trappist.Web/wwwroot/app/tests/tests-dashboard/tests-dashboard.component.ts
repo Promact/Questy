@@ -17,16 +17,13 @@ import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component'
 
 export class TestsDashboardComponent implements OnInit {
     showSearchInput: boolean;
-    tests: Test[] = new Array<Test>();
+    tests: Test[];
     searchTest: string;
     isDeleteAllowed: boolean;
     loader: boolean;
-    testObj: Test;
-    i: number;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router) {
-        this.i = 0;
-        this.testObj = new Test();
+        this.tests = new Array<Test>();
     }
     ngOnInit() {
         this.loader = true;
@@ -37,20 +34,7 @@ export class TestsDashboardComponent implements OnInit {
     getAllTests() {
         this.testService.getTests().subscribe((response) => {
             this.tests = (response);
-            this.isTestAttendeeExist();
-            this.tests.forEach(test => {
-                test.numberofTestQuestions = 0;
-                this.testService.getTestById(test.id).subscribe(result => {
-                    this.testObj = result;
-                    test.numberOfTestSections = this.testObj.categoryAcList.filter(function (category) {
-                        return category.isSelect;
-                    }).length;
-                    test.numberOfTestAttendees = this.testObj.numberOfTestAttendees;
-                    this.testObj.categoryAcList.filter(function (category) {
-                        test.numberofTestQuestions = test.numberofTestQuestions + category.numberOfSelectedQuestion;
-                    });
-                });
-            });
+            this.disableEditForTheTestsIfAttendeesExist();
             this.loader = false;
         });
     }
@@ -94,16 +78,9 @@ export class TestsDashboardComponent implements OnInit {
     /**
      * Checks if any candidate has taken the test
      */
-    isTestAttendeeExist() {
-        this.tests.forEach(x => {
-            this.testService.isTestAttendeeExist(x.id).subscribe((res) => {
-                if (res.response) {
-                    x.isEditTestEnabled = false;
-                }
-                else {
-                    x.isEditTestEnabled = true;
-                }
-            });
+    disableEditForTheTestsIfAttendeesExist() {
+        this.tests.forEach(test => {
+            test.isEditTestEnabled = !(test.numberOfTestAttendees > 0);
         });
     }
 
