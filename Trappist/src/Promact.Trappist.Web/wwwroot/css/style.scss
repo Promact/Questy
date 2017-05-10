@@ -212,6 +212,10 @@ h6, .h6 {
     background-color: $color_white;
   }
 
+  &[hidden] {
+    display: none;
+  }
+
   &.btn-primary {
     background-color: $color_theme;
     border-color: $color_theme;
@@ -318,6 +322,12 @@ h6, .h6 {
         height: inherit;
         padding: 6px 30px 6px 16px;
         color: $color_base;
+
+        &[disabled] {
+          background-color: $color_bg_secondary;
+          color: $color_base_secondary;
+          pointer-events: none;
+        }
 
         &:hover, &:focus {
           background-color: $color_theme_hover;
@@ -586,6 +596,41 @@ md2-accordion-tab {
         color: $color_yellow;
       }
     }
+  }
+}
+
+.test-link-popover {
+  width: 400px;
+  padding: 20px;
+  margin: 12px;
+  background-color: $color_white;
+  border: 1px solid darken($color_border, 5);
+  position: absolute;
+  top: 34px;
+  right: 140px;
+  z-index: 99;
+  box-shadow: 0 3px 12px rgba($color_footer_secondary, 0.15);
+  border-radius: 4px;
+
+  &:before,
+  &:after {
+    position: absolute;
+    display: inline-block;
+    content: "";
+  }
+
+  &:before {
+    border: 8px solid transparent;
+    border-bottom-color: darken($color_border, 5);
+    top: -16px;
+    right: 30px;
+  }
+
+  &:after {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    top: -14px;
+    right: 31px;
   }
 }
 
@@ -887,6 +932,10 @@ footer {
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           word-break: break-all;
+
+          &:focus {
+            outline: none;
+          }
         }
 
         .material-icons {
@@ -1543,17 +1592,22 @@ footer {
   border-bottom: 1px solid $color_border;
   margin: -5px 0 20px;
 
+  .container {
+    position: relative;
+  }
+
   h1 {
     position: relative;
 
     .errors-container {
       position: absolute;
       bottom: -16px;
+      white-space: nowrap;
     }
 
     .test-name {
       display: inline-block;
-      max-width: 800px;
+      max-width: 600px;
       min-height: 34px;
       white-space: nowrap;
       overflow: hidden;
@@ -1650,8 +1704,12 @@ footer {
   }
 }
 
-.dialog .url-container {
+.url-container {
   position: relative;
+
+  .form-control {
+    padding-right: 36px;
+  }
 
   .material-icons {
     position: absolute;
@@ -1673,10 +1731,6 @@ footer {
 
       .btn {
         margin: 10px 0;
-
-        &[hidden] {
-          display: none;
-        }
       }
 
       .mat-checkbox .mat-checkbox-layout {
@@ -1923,6 +1977,7 @@ footer {
         text-align: center;
         padding: 4px 0;
         margin: 3px 1px;
+        cursor: pointer;
 
         &.answered,
         &.review,
@@ -2250,6 +2305,10 @@ footer {
         height: calc(100vh - 315px);
       }
     }
+  }
+
+  .test-create-header h1 .test-name {
+    max-width: 300px;
   }
 }
 
