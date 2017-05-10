@@ -29,6 +29,7 @@ export class CreateTestHeaderComponent implements OnInit {
     @Input('testNameReference')
     public testNameReference: string;
     isButtonClicked: boolean;
+    showTestLink: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';

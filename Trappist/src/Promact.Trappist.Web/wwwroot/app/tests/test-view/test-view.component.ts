@@ -34,6 +34,7 @@ export class TestViewComponent implements OnInit {
     isEditTestEnabled: boolean;
     loader: boolean;
     disable: boolean;
+    showTestLink: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();

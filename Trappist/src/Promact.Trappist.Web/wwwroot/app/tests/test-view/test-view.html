@@ -18,9 +18,10 @@
           <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
           <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
         </md-menu>
-        <button type="button" class="btn" (click)="launchTestDialog(testDetails.id,testDetails)"><em class="material-icons">link</em> Share</button>
+        <button type="button" class="btn" (click)="showTestLink = true"><em class="material-icons">link</em> Get Test Link</button>
         <button type="button" class="btn btn-primary"><em class="material-icons">remove_red_eye</em> Preview</button>
       </div>
+      <test-link-popover [hidden]="!showTestLink"></test-link-popover>
     </div>
   </div>
   <div class="container">

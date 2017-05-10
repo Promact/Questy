@@ -16,6 +16,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
+import { TestLinkPopoverComponent } from './shared/test-link-popover/test-link-popover.component';
 
 import { DuplicateTestDialogComponent } from './tests-dashboard/duplicate-test-dialog.component';
 
@@ -41,6 +42,7 @@ import { IncompleteTestCreationDialogComponent } from './test-settings/incomplet
         TestViewComponent,
         CreateTestHeaderComponent,
         CreateTestFooterComponent,
+        TestLinkPopoverComponent,
         FilterPipe,
         DeselectCategoryComponent,
         IncompleteTestCreationDialogComponent
