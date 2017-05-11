@@ -12,9 +12,8 @@ export class TestLinkPopoverComponent {
         this.elementRef = myElement;
     }
 
-    @HostListener('document:click', ['$event'])
-
     // Checks whether clicked inside this component or outside
+    @HostListener('document:click', ['$event'])
     handleClick(event:any) {
         let clickedComponent = event.target;
         let inside = false;
