@@ -266,3 +266,10 @@ _references.js
 **/setup.json
 
 **/aot/
+
+dist
+build
+*.ngfactory.ts
+*.ngstyle.ts
+*.shim.ts
+*.ngsummary.json
