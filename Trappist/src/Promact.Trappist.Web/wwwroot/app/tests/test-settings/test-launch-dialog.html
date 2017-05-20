@@ -8,7 +8,7 @@
       <label>Global URL</label>
       <div class="url-container">
         <input type="text" class="form-control" [(ngModel)]="testLink" name="link" id="link" #link />
-        <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" tooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>
+        <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" mdTooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>
       </div>
           <div class="errors-container"></div>
     </div>

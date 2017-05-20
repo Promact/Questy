@@ -20,6 +20,10 @@
         </span>
       </span>
     </h1>
-    <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
+    <div class="pull-right">
+        <button type="button" class="btn" (click)="showTestLink = true"><em class="material-icons">link</em> Get Test Link</button>
+        <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
+    </div>
+    <test-link-popover [hidden]="!showTestLink"></test-link-popover>
   </div>
 </div>
