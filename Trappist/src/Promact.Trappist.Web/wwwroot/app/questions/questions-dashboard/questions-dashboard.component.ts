@@ -15,7 +15,7 @@ import { Question } from '../question.model';
 import { QuestionCount } from '../numberOfQuestion';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'questions-dashboard',
     templateUrl: 'questions-dashboard.html'
 })

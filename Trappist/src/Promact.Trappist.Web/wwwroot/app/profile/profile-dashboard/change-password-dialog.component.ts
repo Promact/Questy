@@ -5,7 +5,7 @@ import { ProfileService } from '../profile.service';
 import { MdSnackBar } from '@angular/material';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'change-password-dialog',
     templateUrl: 'change-password-dialog.html'
 })

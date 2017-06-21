@@ -5,7 +5,7 @@ import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { QuestionsDashboardComponent } from './questions-dashboard.component';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'add-category-dialog',
     templateUrl: 'add-category-dialog.html'
 })

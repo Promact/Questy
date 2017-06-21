@@ -6,7 +6,7 @@ import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-report',
     templateUrl: 'test-report.html'
 })

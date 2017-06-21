@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Promact.Trappist.Web
@@ -61,6 +63,7 @@ namespace Promact.Trappist.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddNodeServices();
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
 
@@ -111,11 +114,27 @@ namespace Promact.Trappist.Web
             app.AddNLogWeb();
             if (env.IsDevelopment())
             {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                    HotModuleReplacementClientOptions = new Dictionary<string, string> {
+                    { "reload", "true" },
+                },
+                    ConfigFile = "webpack.jit.config.js"
+                });
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
             else
             {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true,
+                    HotModuleReplacementClientOptions = new Dictionary<string, string> {
+                    { "reload", "true" },
+                },
+                    ConfigFile = "webpack.aot.config.js"
+                });
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();

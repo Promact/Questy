@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.BaseHref = "/";
 }
-
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <app>
     <div class="loader-container main-loader">
         <div class="loader-block">
@@ -11,21 +11,7 @@
     </div>
 </app>
 <form asp-controller="Profile" asp-action="LogOut" method="post" id="logoutForm" class="navbar-right"></form>
-<environment names="Development">
-    <!-- Polyfill(s) for older browsers -->
-    <script src="/node_modules/core-js/client/shim.min.js"></script>
-    <script src="/node_modules/zone.js/dist/zone.js"></script>
 
-    <script src="/node_modules/systemjs/dist/system.src.js"></script>
-
-    <script src="/systemjs.config.js"></script>
-    <script>
-        System.import('/app/main.js').catch(function (err) { console.error(err); });
-    </script>
-</environment>
-
-<environment names="Staging,Production">
-    <script>window.module = "aot";</script>
-    <script src="/dist/shims.js"></script>
-    <script src="/dist/app.bundle.js"></script>
-</environment>
+<script type="text/javascript" src="~/dist/main.bundle.js"></script>
+<script type="text/javascript" src="~/dist/polyfill.bundle.js"></script>
+<script type="text/javascript" src="~/dist/vendor.bundle.js"></script>

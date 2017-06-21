@@ -2,7 +2,7 @@
 import { Http } from '@angular/http';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'app',
     templateUrl: 'app.html',
 })

@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\app\polyfill.ts" />
+    <Content Include="wwwroot\app\vendor.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.Core\Promact.Trappist.Core.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Repository\Promact.Trappist.Repository.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />
@@ -44,7 +49,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.3.1" />
   </ItemGroup>
 

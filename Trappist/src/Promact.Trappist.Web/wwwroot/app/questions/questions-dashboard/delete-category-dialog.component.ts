@@ -4,7 +4,7 @@ import { Category } from '../../questions/category.model';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'delete-category-dialog',
     templateUrl: 'delete-category-dialog.html'
 })

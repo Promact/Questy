@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { Test } from '../../tests.model';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'create-test-header',
     templateUrl: 'create-test-header.html',
 })

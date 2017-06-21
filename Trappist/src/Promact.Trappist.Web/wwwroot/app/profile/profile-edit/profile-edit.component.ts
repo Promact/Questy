@@ -5,7 +5,7 @@ import { ApplicationUser } from '../profile.model';
 import { ProfileService } from '../profile.service';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'profile-edit',
     templateUrl: 'profile-edit.html'
 })

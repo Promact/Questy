@@ -11,7 +11,7 @@ import { TestCaseType } from '../enum-test-case-type';
 import { QuestionType } from '../enum-questiontype';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'questions-programming',
     templateUrl: 'questions-programming.html'
 })
