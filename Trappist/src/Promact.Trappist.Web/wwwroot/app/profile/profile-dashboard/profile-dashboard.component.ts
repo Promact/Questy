@@ -5,7 +5,7 @@ import { ProfileService } from '../profile.service';
 import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'profile-dashboard',
     templateUrl: 'profile-dashboard.html'
 })

@@ -18,7 +18,7 @@ import { TestStatus } from '../teststatus.enum';
 import { QuestionDisplay } from '../../questions/question-display';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test',
     templateUrl: 'test.html',
 })

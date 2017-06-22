@@ -10,7 +10,7 @@ import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'tests-dashboard',
     templateUrl: 'tests-dashboard.html'
 })

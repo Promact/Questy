@@ -10,7 +10,7 @@ import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-questions',
     templateUrl: 'test-questions.html'
 })

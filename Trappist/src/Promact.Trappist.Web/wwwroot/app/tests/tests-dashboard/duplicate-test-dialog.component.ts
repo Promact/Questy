@@ -5,7 +5,7 @@ import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'duplicate-test-dialog',
     templateUrl: 'duplicate-test-dialog.html'
 })

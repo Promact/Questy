@@ -7,7 +7,7 @@ var sass = require('gulp-sass');
 var Builder = require('systemjs-builder');
 var inlineNg2Template = require("gulp-inline-ng2-template");
 var ts = require("gulp-typescript");
-var tsProject = ts.createProject("./wwwroot/tsconfig.json");
+var tsProject = ts.createProject("./tsconfig.json");
 var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var ngc = require('gulp-ngc');
@@ -72,7 +72,7 @@ gulp.task('bundle-shims', function () {
 
 //bundle main dashboard app
 gulp.task('ngc', function (done) {
-    return ngc('./wwwroot/tsconfig.aot.json');
+    return ngc('./tsconfig.aot.json');
 });
 
 gulp.task('bundle-app', () => {
