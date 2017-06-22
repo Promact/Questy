@@ -14,7 +14,7 @@ module.exports = [
         path.join(process.cwd(), 'wwwroot')
     ),
     new ngTool.AotPlugin({
-        tsConfigPath: './tsconfig.json'
+        tsConfigPath: './tsconfig-aot.json'
     }),
     new ExtractTextPlugin('style.bundle.css')
 ];

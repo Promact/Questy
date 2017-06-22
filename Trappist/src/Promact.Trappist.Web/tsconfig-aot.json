@@ -1,8 +1,8 @@
-{
+﻿{
   "compilerOptions": {
     "baseUrl": "",
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "sourceMap": true,
@@ -15,20 +15,21 @@
   },
   "compileOnSave": false,
   "buildOnSave": false,
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.ngfactory.ts",
-    "**/*.shim.ts",
+  "files": [
+    "wwwroot/app/app.module.ts",
+    "wwwroot/app/conduct/conduct.module.ts",
+    "wwwroot/app/setup/setup.module.ts",
     "wwwroot/app/main.aot.ts",
     "wwwroot/app/main.conduct.aot.ts",
-    "wwwroot/app/main.setup.aot.ts",
-    "wwwroot/app/polyfill.ts",
-    "wwwroot/app/vendor.ts",
-    "build"
+    "wwwroot/app/main.setup.aot.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
     "useWebpackText": true
+  },
+  "angularCompilerOptions": {
+    "genDir": ".",
+    "entryModule": "wwwroot/app/app.module#AppModule",
+    "skipMetadataEmit": true
   }
 }

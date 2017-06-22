@@ -268,3 +268,7 @@ _references.js
 **/aot/
 **/build
 **/dist
+**/app/*.ngfactory.ts
+**/app/*.ngsummary.json
+**/app/**/*.ngfactory.ts
+**/app/**/*.ngsummary.json
