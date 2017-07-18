@@ -79,29 +79,30 @@ export class TestViewComponent implements OnInit {
     * @param category
     * @param i is index of category
     */
-    getAllquestions(category: Category, i: number) {     
-            if (!category.isAccordionOpen) {
-                category.isAccordionOpen = true;
-                if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
-                    category.isAlreadyClicked = true;
-                    this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                        this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                        this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
-                        this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
-                            return question.question.isSelect;
-                        }).length;
-                        category.selectAll = category.questionList.every(function (question) {
-                            return question.question.isSelect;
-                        });
+    getAllquestions(category: Category, i: number) {
+        if (!category.isAccordionOpen) {
+            category.isAccordionOpen = true;
+            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
+                category.isAlreadyClicked = true;
+                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
+                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                    this.testDetails.categoryAcList[i].questionList = this.testDetails.categoryAcList[i].questionList.filter(function (x) {
+                        return x.question.isSelect;
                     });
-                }
-                else {
-                    category.isAlreadyClicked = true;
-                }
+                    this.totalNumberOfQuestions[i] = this.testDetails.categoryAcList[i].questionList.length;
+                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.length;
+                    category.selectAll = category.questionList.every(function (question) {
+                        return question.question.isSelect;
+                    });
+                });
             }
             else {
-                category.isAccordionOpen = false;
+                category.isAlreadyClicked = true;
             }
+        }
+        else {
+            category.isAccordionOpen = false;
+        }
     }
             
     /**
