@@ -175,8 +175,10 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
 
     /**
      * Get category id based on category name
+     * @param category: Category selected by the user
      */
-    getCategoryId() {
+    getCategoryId(category: string) {
+        this.categoryName = category;
         this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName) !.id;
     }
 
@@ -185,6 +187,14 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      */
     getCategoryName() {
         this.categoryName = this.categoryArray.find(x => x.id === this.singleMultipleAnswerQuestion.question.categoryID) !.categoryName;
+    }
+
+    /**
+     * Sets the difficulty level
+     * @param difficulty: Difficulty level selected by the user
+     */
+    setDifficultyLevel(difficulty: string) {
+        this.difficultyLevelSelected = difficulty;
     }
 
     /**
