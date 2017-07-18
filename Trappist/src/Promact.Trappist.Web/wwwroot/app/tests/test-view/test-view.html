@@ -42,21 +42,21 @@
             </div>
           </md2-accordion-header>
 
-          <div class="collapsible-body p0" *ngFor="let question of category.questionList;let i=index">
-            <div class="qs-container" *ngIf="question.question.isSelect">
-              <p class="qs-num">Q.{{i+1}}</p>
-              <div class="qs-text">
-                <p class="question" [innerHtml]="question.question.questionDetail"></p>
-                <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
-                  <p *ngIf="questionType[question.questionType] != questionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+            <div class="collapsible-body p0">
+                <div class="qs-container" *ngFor="let question of category.questionList;let i=index">
+                    <p class="qs-num">Q.{{i+1}}</p>
+                    <div class="qs-text">
+                        <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                        <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                            <p *ngIf="questionType[question.questionType] != questionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                        </div>
+                        <div class="mt10">
+                            <p class="tags">{{category.categoryName}}</p>
+                            <p class="tags">{{difficultyLevel[question.question.difficultyLevel]}}</p>
+                        </div>
+                      </div>
                 </div>
-                <div class="mt10">
-                  <p class="tags">{{category.categoryName}}</p>
-                  <p class="tags">{{difficultyLevel[question.question.difficultyLevel]}}</p>
-                </div>
-              </div>
             </div>
-          </div>
 
         </md2-accordion-tab>
       </md2-accordion>
