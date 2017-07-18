@@ -3,7 +3,7 @@
     <div class="spinner"></div>
   </div>
   <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
-  <div class="container">
+  <div class="container" *ngIf="!loader">
     <span *ngIf="!isEditTestEnabled">
       You can not edit on going Test. Click
       <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
