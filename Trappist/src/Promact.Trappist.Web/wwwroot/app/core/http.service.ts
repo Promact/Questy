@@ -11,7 +11,13 @@ import 'rxjs/add/operator/toPromise';
 
 export class HttpService {
 
-    constructor(private http: Http) {
+    constructor(private http: Http, defaultOptions: RequestOptions) {
+
+        //Prevent request caching for internet explorer
+        defaultOptions.headers.append("Cache-control", "no-cache");
+        defaultOptions.headers.append("Cache-control", "no-store");
+        defaultOptions.headers.append("Pragma", "no-cache");
+        defaultOptions.headers.append("Expires", "0");     
     }
 
     get(url: string) {
