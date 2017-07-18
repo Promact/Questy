@@ -64,15 +64,6 @@ export class SetupComponent {
     }
 
     /**
-     * This method used to redirect user to admin registration page if admin want to
-       proceed further in case of email setting are invalid due to the server or any issue.
-     * @param setup
-     */
-    proccedFurtherWithoutEmailSettings(setup: any) {
-        setup.next();
-    }
-
-    /**
      * This method used for validating Password and Confirm Password matched or not.
      */
     isValidPassword() {
