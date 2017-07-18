@@ -267,6 +267,10 @@ h6, .h6 {
     color: $color_base;
     font-size: 13px;
 
+    &.textarea-input {
+        resize: vertical;
+    }
+
     &:focus {
       box-shadow: none;
       border-color: $color_theme;
@@ -570,6 +574,10 @@ md2-accordion-tab {
     display: inline-block;
     width: 85%;
     word-break: break-all;
+
+    .question {
+        white-space: pre-line;
+    }
 
     .ans-option {
       margin-bottom: 5px;
