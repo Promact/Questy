@@ -50,6 +50,7 @@ namespace Promact.Trappist.Utility.EmailServices
                         else
                             await client.ConnectAsync(_emailSettings.Server, _emailSettings.Port, securityType);
                     }
+                    client.AuthenticationMechanisms.Remove("PLAIN");
                     await client.AuthenticateAsync(_emailSettings.UserName, _emailSettings.Password);
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);

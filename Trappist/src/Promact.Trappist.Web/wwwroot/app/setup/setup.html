@@ -70,7 +70,6 @@
                         <div class="action-buttons">
                             <div class="pull-left proceed-link">
                                 <span class="general-error-msg" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
-                                <p *ngIf="stepTwoErrorMessage">To proceed further without Email Settings, please <a (click)="proccedFurtherWithoutEmailSettings(setup)">Click Here</a></p>
                             </div>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button>
