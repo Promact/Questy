@@ -1,69 +1,78 @@
 ﻿<div class="test-create-steps test-view">
-  <div class="test-create-header clearfix">
-    <div class="loader-container" *ngIf="loader">
-      <div class="spinner"></div>
-    </div>
-    <div class="container">
-      <h1 class="pull-left">
-        <span class="test-name">{{testDetails.testName}}</span>
-      </h1>
-      <div class="pull-right">
-        <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
-          <em class="material-icons">settings_applications</em>
-          <em class="material-icons">arrow_drop_down</em>
+    <div class="test-create-header clearfix">
+        <div class="loader-container" *ngIf="loader">
+            <div class="spinner"></div>
         </div>
-        <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
-          <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
-          <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
-          <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
-          <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
-        </md-menu>
-        <button type="button" class="btn" (click)="showTestLink = true"><em class="material-icons">link</em> Get Test Link</button>
-        <button type="button" class="btn btn-primary"><em class="material-icons">remove_red_eye</em> Preview</button>
-      </div>
-      <test-link-popover [hidden]="!showTestLink"></test-link-popover>
-    </div>
-  </div>
-  <div class="container">
-    <div class="clearfix">
-      <h5 class="pull-left">Test Duration: {{testDetails.duration}} mins</h5>
-      <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
-    </div>
-    <ng-container *ngFor="let category of testDetails.categoryAcList;let k=index">
-      <md2-accordion class="questions-selection" *ngIf="category.isSelect">
-        <md2-accordion-tab class="collapsible-block" [disabled]="category.isQuestionAbsent">
-          <md2-accordion-header class="collapsible-header clearfix" *ngIf="category.isSelect" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
-            <div class="title-info h2 pull-left">
-              <span>{{category.categoryName}}</span>
-            </div>
+        <div class="container">
+            <h1 class="pull-left">
+                <span class="test-name">{{testDetails.testName}}</span>
+            </h1>
             <div class="pull-right">
-              <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s)</span>
-              <span class="collapsible-icon" *ngIf="!category.isQuestionAbsent"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-            </div>
-          </md2-accordion-header>
-
-          <div class="collapsible-body p0" *ngFor="let question of category.questionList;let i=index">
-            <div class="qs-container" *ngIf="question.question.isSelect">
-              <p class="qs-num">Q.{{i+1}}</p>
-              <div class="qs-text">
-                <p class="question" [innerHtml]="question.question.questionDetail"></p>
-                <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
-                  <p *ngIf="questionType[question.questionType] != questionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
+                    <em class="material-icons">settings_applications</em>
+                    <em class="material-icons">arrow_drop_down</em>
                 </div>
-                <div class="mt10">
-                  <p class="tags">{{category.categoryName}}</p>
-                  <p class="tags">{{difficultyLevel[question.question.difficultyLevel]}}</p>
-                </div>
-              </div>
+                <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                    <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
+                    <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
+                    <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
+                    <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
+                </md-menu>
+                <button type="button" class="btn" [popover]="myPopover"><em class="material-icons">link</em>Get Test Link</button>
+                <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
             </div>
-          </div>
+            <div>
+                <popover-content #myPopover
+                                 [closeOnClickOutside]="true">
+                    <label>Test Link</label>
+                    <div class="url-container">
+                        <input type="text" class="form-control" [(ngModel)]="testLink" name="link" id="link" #link />
+                        <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" mdTooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>
+                    </div>
+                </popover-content>
+            </div>
+        </div>
+        <div class="container">
+            <div class="clearfix">
+                <h5 class="pull-left">Test Duration: {{testDetails.duration}} mins</h5>
+                <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
+            </div>
+            <ng-container *ngFor="let category of testDetails.categoryAcList;let k=index">
+                <md2-accordion class="questions-selection" *ngIf="category.isSelect">
+                    <md2-accordion-tab class="collapsible-block" [disabled]="category.isQuestionAbsent">
+                        <md2-accordion-header class="collapsible-header clearfix" *ngIf="category.isSelect" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
+                            <div class="title-info h2 pull-left">
+                                <span>{{category.categoryName}}</span>
+                            </div>
+                            <div class="pull-right">
+                                <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}} question(s)</span>
+                                <span class="collapsible-icon" *ngIf="!category.isQuestionAbsent"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+                            </div>
+                        </md2-accordion-header>
 
-        </md2-accordion-tab>
-      </md2-accordion>
-    </ng-container>
-    <div class="bottom-info">
-      <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
-      <button type="button" class="btn btn-primary" [routerLink]="['/reports/test',testDetails.id]">View Report</button>
+                        <div class="collapsible-body p0" *ngFor="let question of category.questionList;let i=index">
+                            <div class="qs-container" *ngIf="question.question.isSelect">
+                                <p class="qs-num">Q.{{i+1}}</p>
+                                <div class="qs-text">
+                                    <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                                    <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                                        <p *ngIf="questionType[question.questionType] != questionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                                    </div>
+                                    <div class="mt10">
+                                        <p class="tags">{{category.categoryName}}</p>
+                                        <p class="tags">{{difficultyLevel[question.question.difficultyLevel]}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </md2-accordion-tab>
+                </md2-accordion>
+            </ng-container>
+            <div class="bottom-info">
+                <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
+                <button type="button" class="btn btn-primary" [routerLink]="['/reports/test',testDetails.id]">View Report</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
