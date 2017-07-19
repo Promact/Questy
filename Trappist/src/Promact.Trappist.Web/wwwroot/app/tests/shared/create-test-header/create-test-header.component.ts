@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Test } from '../../tests.model';
+import { PopoverModule } from 'ngx-popover';
 
 @Component({
     moduleId: module.id,
@@ -29,13 +30,16 @@ export class CreateTestHeaderComponent implements OnInit {
     @Input('testNameReference')
     public testNameReference: string;
     isButtonClicked: boolean;
-    showTestLink: boolean;
+    tooltipMessage: string;
+    testLink: string;
+    copiedContent: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
         this.isTestNameExist = false;
         this.isLabelVisible = true;
         this.isButtonClicked = false;
+        this.tooltipMessage = 'Copy to Clipboard';
     }
 
     /**
@@ -43,6 +47,15 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
+    }
+
+    /**
+     * Converts the magic string obtained to the format of a link
+     */
+    getTestLink() {
+        let magicString = this.testDetails.link;
+        let domain = window.location.origin;
+        this.testLink = domain + '/conduct/' + magicString;
     }
 
     /**
@@ -145,5 +158,24 @@ export class CreateTestHeaderComponent implements OnInit {
     changeErrorMessage() {
         this.isTestNameExist = false;
         this.isWhiteSpaceError = false;
+    }
+
+    /**
+    * Displays the tooltip message
+    * @param $event is of type Event and is used to call stopPropagation()
+    */
+    showTooltipMessage($event: Event, testLink: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            testLink.select();
+        }, 0);
+        this.tooltipMessage = 'Copied';
+    }
+
+    /**
+     * Changes the tooltip message
+     */
+    changeTooltipMessage() {
+        this.tooltipMessage = 'Copy to Clipboard';
     }
 } 

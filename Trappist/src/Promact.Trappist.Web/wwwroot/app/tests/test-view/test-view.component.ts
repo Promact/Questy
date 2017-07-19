@@ -14,6 +14,7 @@ import { QuestionType } from '../../questions/enum-questiontype';
 import { TestAttendees } from '../../conduct/register/register.model';
 import { DuplicateTestDialogComponent } from '../tests-dashboard/duplicate-test-dialog.component';
 import { IncompleteTestCreationDialogComponent } from '../test-settings/incomplete-test-creation-dialog.component';
+import { PopoverModule } from 'ngx-popover';
 
 
 @Component({
@@ -33,13 +34,18 @@ export class TestViewComponent implements OnInit {
     tests: Test[];
     isEditTestEnabled: boolean;
     loader: boolean;
-    showTestLink: boolean;
+    
+    copiedContent: boolean;
+    testLink: string;
+    tooltipMessage: string;
 
     constructor(public dialog: MdDialog, private testService: TestService, public snackBar: MdSnackBar, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-        this.totalNumberOfQuestions = [];  
+        this.totalNumberOfQuestions = [];
+    
+        this.tooltipMessage = 'Copy to Clipboard';
     }
 
     ngOnInit() {
@@ -67,6 +73,9 @@ export class TestViewComponent implements OnInit {
     getTestDetails(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = response;
+            let magicString = response.link;
+            let domain = window.location.origin;
+            this.testLink = domain + '/conduct/' + magicString;
             this.testDetails.categoryAcList.forEach(x => {
                 if (x.numberOfSelectedQuestion === 0)
                     x.isQuestionAbsent = true;
@@ -224,5 +233,24 @@ export class TestViewComponent implements OnInit {
                 this.router.navigate(['/tests/' + test.id + '/sections']);
             }
         });
+    }
+
+    /**
+   * Displays the tooltip message
+   * @param $event is of type Event and is used to call stopPropagation()
+   */
+    showTooltipMessage($event: Event, testLink: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            testLink.select();
+        }, 0);
+        this.tooltipMessage = 'Copied';
+    }
+
+    /**
+     * Changes the tooltip message
+     */
+    changeTooltipMessage() {
+        this.tooltipMessage = 'Copy to Clipboard';
     }
 }

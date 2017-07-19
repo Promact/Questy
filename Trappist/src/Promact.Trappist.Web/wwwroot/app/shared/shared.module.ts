@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { Md2AccordionModule, Md2DataTableModule } from 'md2';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { PopoverModule } from 'ngx-popover';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         RouterModule,
         Md2AccordionModule.forRoot(),
         Md2DataTableModule.forRoot(),
-        CKEditorModule
+        CKEditorModule,
+        PopoverModule
     ],
     declarations: [
     ],
@@ -26,7 +28,8 @@ import { CKEditorModule } from 'ng2-ckeditor';
         MaterialModule,
         Md2AccordionModule,
         Md2DataTableModule,
-        CKEditorModule
+        CKEditorModule,
+        PopoverModule
     ]
 })
 export class SharedModule { }
