@@ -49,7 +49,7 @@
             'angular2-infinite-scroll': 'npm:angular2-infinite-scroll',
             'angular2-tinymce': 'npm:angular2-tinymce/dist',
             'tinymce': 'npm:tinymce',
-                     
+            '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
