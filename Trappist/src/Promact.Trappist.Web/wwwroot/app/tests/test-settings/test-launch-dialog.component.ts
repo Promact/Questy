@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Test } from '../tests.model';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -13,7 +14,7 @@ export class TestLaunchDialogComponent implements OnInit {
     testLink: string;
     tooltipMessage: string;
 
-    constructor() {
+    constructor(private router: Router) {
         this.testSettingObject = new Test();
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';

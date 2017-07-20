@@ -119,6 +119,12 @@ namespace Promact.Trappist.Core.Controllers
             await _testRepository.UpdateTestByIdAsync(testObject);
             return Ok(testObject);
         }
+        [HttpGet("isPausedResume/{id}/{isPause}")]
+        public async Task<IActionResult> PauseTest([FromRoute] int id,[FromRoute] bool isPause)
+        {
+            await _testRepository.PauseResumeTest(id,isPause);
+            return Ok(isPause);
+        }
         #endregion
 
         #region Delete Test

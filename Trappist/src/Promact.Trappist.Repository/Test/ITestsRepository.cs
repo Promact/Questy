@@ -57,7 +57,16 @@ namespace Promact.Trappist.Repository.Tests
         Task UpdateTestNameAsync(int id, Test testObject);
 
         #endregion
+        #region Test-Pause-Resume
 
+        /// <summary>
+        /// Pauses the launched Test and resumes the pauesd test
+        /// </summary>
+        /// <param name="id">id is test Id</param>
+        /// <param name="isPause">isPaused is boolean Test property</param>
+        /// <returns></returns>
+        Task PauseResumeTest(int id, bool isPause);
+        #endregion
         #region Delete Test
         /// <summary>
         /// Delete test from the test model
