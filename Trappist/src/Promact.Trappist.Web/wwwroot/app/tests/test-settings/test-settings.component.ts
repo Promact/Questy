@@ -104,7 +104,6 @@ export class TestSettingsComponent implements OnInit {
                 this.validEndDate = false;
         }
 
-
     /**
      * Checks whether the Start Date selected is valid or not
      */
@@ -152,8 +151,8 @@ export class TestSettingsComponent implements OnInit {
      * @param id contains the value of the Id from the route
      * @param testObject is an object of class Test
      */
-    launchTestDialog(id: number, testObject: Test) {
-        let isCategoryAdded = this.testDetails.categoryAcList.some(function (x) {
+    launchTestDialog(id: number, testObject: Test, isTestLaunched: boolean) {
+        let isCategoryAdded = this.testDetails.categoryAcList.some(x=> {
             return x.isSelect;
         });
         if (isCategoryAdded) {
@@ -161,6 +160,7 @@ export class TestSettingsComponent implements OnInit {
                 return (x.numberOfSelectedQuestion !== 0);
             });
             if (isQuestionAdded) {
+                this.testDetails.isLaunched = isTestLaunched;
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.openSnackBar(this.testSettingsUpdatedMessage);
                     let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
@@ -185,41 +185,14 @@ export class TestSettingsComponent implements OnInit {
         }
     }
 
-    /**
-     * To check if any attendee for the test exixt or not
-     */
+    ///**
+    // * To check if any attendee for the test exixt or not
+    // */
     isAttendeeExists() {
         this.testService.isTestAttendeeExist(this.testId).subscribe((isTestAttendeeExists) => {
             if (isTestAttendeeExists.response)
                 this.isAttendeeExistForTest = true;
         });
-    }
-
-    /**
-     * To pause a test, no new registration can be done after a test is paused
-     * @param isTestPaused
-     */
-    pause(isTestPaused: boolean) {
-        this.testDetails.isPaused = isTestPaused;
-        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
-    }
-
-    /**
-     * To resume a test
-     * @param isTestPaused
-     */
-    resume(isTestPaused: boolean) {
-        this.testDetails.isPaused = isTestPaused;
-        this.testService.updateTestById(this.testDetails.id, this.testDetails).subscribe();
-    }
-
-    /**
-     * save changes and launch the test
-     * @param isTestLaunched
-     */
-    saveAndLaunch(isTestLaunched: boolean) {
-        this.testDetails.isLaunched = isTestLaunched;
-        this.saveTestSettings(this.testDetails.id, this.testDetails);
     }
 
     /**
