@@ -33,15 +33,13 @@ export class TestViewComponent implements OnInit {
     tests: Test[];
     isEditTestEnabled: boolean;
     loader: boolean;
-    disable: boolean;
     showTestLink: boolean;
 
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute) {
+    constructor(public dialog: MdDialog, private testService: TestService, public snackBar: MdSnackBar, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
-        this.totalNumberOfQuestions = [];
-        this.disable = false;
+        this.totalNumberOfQuestions = [];  
     }
 
     ngOnInit() {
@@ -55,6 +53,11 @@ export class TestViewComponent implements OnInit {
     getAllTests() {
         this.testService.getTests().subscribe((response) => { this.tests = (response); });
         this.isTestAttendeeExist();
+    }
+    openSnackBar(text: string) {
+        this.snackBar.open(text, 'Dismiss', {
+            duration: 3000
+        });
     }
 
     /**
@@ -172,6 +175,28 @@ export class TestViewComponent implements OnInit {
             else {
                 this.isEditTestEnabled = true;
             }
+        });
+    }
+
+    /**
+     * Pause the test 
+     */
+    pauseTest() {
+        this.testDetails.isPaused = true;
+        this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
+            if (response) 
+                this.openSnackBar('Your Test is paused');  
+        });
+    }
+
+    /**
+     * Resumes the test
+     */
+    resumeTest() {
+        this.testDetails.isPaused = false;
+        this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
+            if (!response)
+                this.openSnackBar('Your Test is resumed');
         });
     }
 

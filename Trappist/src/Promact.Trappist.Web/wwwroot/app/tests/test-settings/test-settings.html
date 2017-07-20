@@ -114,7 +114,7 @@
                 </div>
                 <input type="text" class="form-control half-width" value={{testLink}} #link>
                 <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" tooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>               
-                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails)" (saveLaunch)="saveAndLaunch($event)" (pause)=" pause($event)" (resume)="resume($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (saveLaunch)="saveAndLaunch($event)" (pause)=" pause($event)" (resume)="resume($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
         </div>
     </form>

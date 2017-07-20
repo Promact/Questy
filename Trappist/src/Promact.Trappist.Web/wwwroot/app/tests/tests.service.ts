@@ -45,6 +45,15 @@ export class TestService {
     }
 
     /**
+     * Updates the status of test ie. pause or resume
+     * @param id
+     * @param isPause
+     */
+    updateTestPauseResume(id: number, isPause: boolean) {
+        return this.httpService.get(this.testApiUrl + '/isPausedResume/' + id + '/' + isPause);
+    }
+
+    /**
      * Updates the edited Test Name
      * @param id is used to access the Name of that Test
      * @param body is used as an object for the Model Test
