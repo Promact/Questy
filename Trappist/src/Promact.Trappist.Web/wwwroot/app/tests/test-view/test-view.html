@@ -8,6 +8,9 @@
         <span class="test-name">{{testDetails.testName}}</span>
       </h1>
       <div class="pull-right">
+          <button type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)"  (click)="pauseTest()">Pause</button>
+          <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" (click)="resumeTest()">Resume</button>
+
         <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
           <em class="material-icons">settings_applications</em>
           <em class="material-icons">arrow_drop_down</em>
@@ -16,7 +19,7 @@
           <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
           <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
           <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
-          <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
+          <a md-menu-item [disabled]="!isEditTestEnabled" (click)="navigateToTestSettings()">Settings</a>
         </md-menu>
         <button type="button" class="btn" (click)="showTestLink = true"><em class="material-icons">link</em> Get Test Link</button>
         <button type="button" class="btn btn-primary"><em class="material-icons">remove_red_eye</em> Preview</button>

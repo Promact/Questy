@@ -27,7 +27,7 @@ export class CreateTestFooterComponent implements OnInit {
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
     @Output() saveExit: any;
-    @Output() saveNext: any;   
+    @Output() saveNext: any;
     @Output() SaveCategory: any;
     @Output() saveLaunch: any;
     @Output() pause: any;
@@ -39,7 +39,7 @@ export class CreateTestFooterComponent implements OnInit {
     isSelectButton: boolean;
     isTestLaunched: boolean;
     isPaused: boolean;
-   
+
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
         this.isTestQuestion = false;
@@ -52,8 +52,8 @@ export class CreateTestFooterComponent implements OnInit {
         this.saveLaunch = new EventEmitter();
         this.pause = new EventEmitter();
         this.resume = new EventEmitter();
-        this.isPaused = false;        
-        this.isTestLaunched = false;        
+        this.isPaused = false;
+        this.isTestLaunched = false;
     }
 
     /**
@@ -62,14 +62,14 @@ export class CreateTestFooterComponent implements OnInit {
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
         this.getComponent();
-        
+
     }
 
     /**
      * Displays the Component whose route matches that of the url
      */
     getComponent() {
-        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections'  ? true : false;
+        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections' ? true : false;
         this.isTestQuestion = this.router.url === '/tests/' + this.testId + '/questions' ? true : false;
         this.isTestSettings = this.router.url === '/tests/' + this.testId + '/settings' ? true : false;
     }
@@ -85,7 +85,8 @@ export class CreateTestFooterComponent implements OnInit {
      * Emits the event launchTestDialog
      */
     launchTestDialogBox() {
-        this.launchTestDialog.emit();
+        this.isTestLaunched = true;
+        this.launchTestDialog.emit(this.isTestLaunched);
     }
     /**
      * Emits the event SaveExit in test-questions.component
@@ -109,19 +110,5 @@ export class CreateTestFooterComponent implements OnInit {
         this.isSelectButton = true;
         this.SaveCategory.emit(this.isSelectButton);
     }
-
-    saveAndLaunchTest() {
-        this.isTestLaunched = true;
-        this.saveLaunch.emit(this.isTestLaunched);          
-    }
-
-    pauseTest() {        
-        this.isPaused = true;
-        this.pause.emit(this.isPaused);      
-    }
-
-    resumeTest() { 
-        this.isPaused = false;      
-        this.resume.emit(this.isPaused);       
-    }
 }
+
