@@ -29,9 +29,6 @@ export class CreateTestFooterComponent implements OnInit {
     @Output() saveExit: any;
     @Output() saveNext: any;
     @Output() SaveCategory: any;
-    @Output() saveLaunch: any;
-    @Output() pause: any;
-    @Output() resume: any;
     @Input('testDetails')
     public testDetails: Test;
     @Input('isValid')
@@ -49,9 +46,6 @@ export class CreateTestFooterComponent implements OnInit {
         this.saveExit = new EventEmitter();
         this.saveNext = new EventEmitter();
         this.SaveCategory = new EventEmitter();
-        this.saveLaunch = new EventEmitter();
-        this.pause = new EventEmitter();
-        this.resume = new EventEmitter();
         this.isPaused = false;
         this.isTestLaunched = false;
     }
