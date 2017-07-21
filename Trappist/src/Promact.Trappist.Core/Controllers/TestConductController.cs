@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -58,7 +56,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <param name="answer">Answer submitted</param>
         [HttpPut("answer/{attendeeId}")]
-        public async Task<IActionResult> AddAnswerAsync([FromRoute]int attendeeId, [FromBody] List<TestAnswerAC> answer)
+        public async Task<IActionResult> AddAnswerAsync([FromRoute]int attendeeId, [FromBody] TestAnswerAC answer)
         {
             if (!ModelState.IsValid)
             {
@@ -77,7 +75,12 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            await _testConductRepository.AddAnswerAsync(attendeeId, JsonConvert.SerializeObject(answer));
+            if(!await _testConductRepository.IsAnswerValidAsync(attendeeId, answer))
+            {
+                return BadRequest();
+            }
+
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
 
             return Ok(answer);
         }
