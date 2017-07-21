@@ -199,7 +199,8 @@ namespace Promact.Trappist.Repository.TestConduct
 
             if(testStatus != TestStatus.AllCandidates)
             {
-                
+                //Begin transformation
+                await TransformAttendeeAnswer(attendeeId);
             }
         }
 
@@ -218,27 +219,56 @@ namespace Promact.Trappist.Repository.TestConduct
         private async Task TransformAttendeeAnswer(int attendeeId)
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
+
             if(attendeeAnswer != null)
             {
                 if(attendeeAnswer.Answers != null)
                 {
                     var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
-                    var questionId = new List<int>();
-                    var questionStatus = new List<QuestionStatus>();
-                    var answeredOption = new List<int>();
-                    var answeredCode = new List<string>();
-
-                    deserializedAnswer.ForEach(answer =>
+                    
+                    foreach(var answer in deserializedAnswer)
                     {
-                        questionId.Add(answer.QuestionId);
-                        questionStatus.Add(answer.QuestionStatus);
-                        answeredOption.AddRange(answer.OptionChoice);
-                        answeredCode.Add(answer.Code);
-                    });
+                        var testAnswers = new TestAnswers();
+                        //Adding attempted Question to TestConduct table
+                        var testConduct = new DomainModel.Models.TestConduct.TestConduct()
+                        {
+                            QuestionId = answer.QuestionId,
+                            QuestionStatus = answer.QuestionStatus,
+                            TestAttendeeId = attendeeId
+                        };
+                        await _dbContext.TestConduct.AddAsync(testConduct);
+                        await _dbContext.SaveChangesAsync();
 
-                    await _dbContext.TestConduct.AddAsync();
+                        //Adding answer to TestAnswer Table
+                        if (answer.OptionChoice.Count() > 0)
+                        {
+                            //A question can have multiple answer
+                            foreach(var option in answer.OptionChoice)
+                            {
+                                testAnswers = new TestAnswers()
+                                {
+                                    AnsweredOption = option,
+                                    TestConduct = testConduct
+                                };
+                                await _dbContext.TestAnswers.AddAsync(testAnswers);
+                                await _dbContext.SaveChangesAsync();
+                            }
+                        }
+                        else
+                        {
+                            //Save answer for code snippet question
+                            testAnswers.AnsweredCodeSnippet = answer.Code;
+                            testAnswers.TestConduct = testConduct;
+                            await _dbContext.TestAnswers.AddAsync(testAnswers);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
                 }
             }
+
+            //Remove the answer from the AttendeeAnswer once Transformation is commenced 
+            _dbContext.AttendeeAnswers.Remove(attendeeAnswer);
+            await _dbContext.SaveChangesAsync();
         }
 
         #endregion
