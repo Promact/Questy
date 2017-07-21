@@ -55,8 +55,8 @@ export class ConductService {
      * Call API to add answers to the Database
      * @param attendeeId: Id of Attendee
      */
-    addAnswer(attendeeId: number, testAnswers: TestAnswer[]) {
-        return this.httpService.put(this.testConductUrl + 'answer/' + attendeeId, testAnswers);
+    addAnswer(attendeeId: number, testAnswer: TestAnswer) {
+        return this.httpService.put(this.testConductUrl + 'answer/' + attendeeId, testAnswer);
     }
 
     /**

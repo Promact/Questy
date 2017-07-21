@@ -12,7 +12,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
         CommonModule,
         FormsModule,
         BrowserAnimationsModule,
-        MaterialModule.forRoot(),
+        MaterialModule,
         RouterModule,
         Md2AccordionModule.forRoot(),
         Md2DataTableModule.forRoot(),
