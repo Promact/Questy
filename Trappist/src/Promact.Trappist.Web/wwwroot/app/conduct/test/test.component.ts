@@ -44,7 +44,7 @@ export class TestComponent implements OnInit {
 
     private WARNING_TIME: number = 300;
     private WARNING_MSG: string = 'Hurry up!';
-    private TIMEOUT_TIME: number = 180;
+    private TIMEOUT_TIME: number = 10;
     private ALERT_MARK: string = 'You can\'t mark already answered question';
     private ALERT_CLEAR: string = 'You can\'t clear already answered question';
     private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus';
@@ -75,7 +75,6 @@ export class TestComponent implements OnInit {
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         this.getTestByLink();
-
     }
 
     /**
@@ -89,6 +88,8 @@ export class TestComponent implements OnInit {
             this.test = response;
             this.seconds = this.test.duration * 60;
             this.tolerance = this.test.browserTolerance;
+            this.WARNING_MSG = this.test.warningMessage;
+            this.WARNING_TIME = this.test.warningTime * 60;
             this.getTestAttendee(this.test.id);
         }, err => {
             this.router.navigate(['']);
@@ -155,6 +156,7 @@ export class TestComponent implements OnInit {
      * Resumes Test if Attendee had already answered some question
      */
     ResumeTest() {
+        this.isTestReady = false;
         this.conductService.getAnswer(this.testAttendee.id).subscribe((response) => {
             this.testAnswers = response;
 
@@ -174,9 +176,11 @@ export class TestComponent implements OnInit {
             
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
+            this.isTestReady = true;
         }, err => {
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
+            this.isTestReady = true;
         });
     }
 
@@ -196,13 +200,16 @@ export class TestComponent implements OnInit {
         //Sets boolean if question is single choice
         this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
 
-        //Restore status of previous question
-        this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
+        
         //Save answer to database 
-        if (this.questionIndex !== index)
+        if (this.questionIndex !== index) {
             this.addAnswer(this.testQuestions[this.questionIndex]);
-        else
+            //Restore status of previous question
+            this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
+        }
+        else {
             this.isTestReady = true;
+        }
 
         //Save status of new question
         this.questionStatus = this.testQuestions[index].questionStatus;
@@ -246,17 +253,24 @@ export class TestComponent implements OnInit {
             this.questionStatus = QuestionStatus.answered;
         }
         else {
-            testAnswer.questionStatus = testQuestion.questionStatus;
+            if (testQuestion.questionStatus === QuestionStatus.selected) {
+                testAnswer.questionStatus = QuestionStatus.unanswered
+            } else {
+                testAnswer.questionStatus = testQuestion.questionStatus;
+            }
         }
 
         this.testAnswers.push(testAnswer);
-
-        this.conductService.addAnswer(this.testAttendee.id, this.testAnswers).subscribe((response) => {
+        
+        this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
             this.isTestReady = true;
             let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
             if (testAnswer.questionStatus === QuestionStatus.answered) {
                 this.markAsAnswered(questionIndex);
             }
+        }, err => {
+            console.log(err);
+            this.isTestReady = true;
         });
     }
 
@@ -427,7 +441,8 @@ export class TestComponent implements OnInit {
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             //A measure taken to add answer of question attempted just before the Test end
             this.navigateToQuestionIndex(0);
-            this.closeWindow();
+
+            this.router.navigate(['test-end']);
         });
     }
 
@@ -436,8 +451,6 @@ export class TestComponent implements OnInit {
      */
     private closeWindow() {
         window.close();
-        //If the window close fails navigate to end test page 
-        this.router.navigate(['test-end']);
     }
 
     /**
