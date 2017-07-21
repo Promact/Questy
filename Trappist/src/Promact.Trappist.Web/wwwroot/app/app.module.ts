@@ -11,6 +11,7 @@ import { TestsModule } from './tests/tests.module';
 import { ProfileModule } from './profile/profile.module';
 import { ReportsModule } from './reports/reports.module';
 
+
 @NgModule({
     bootstrap: [AppComponent],
     imports: [
@@ -21,7 +22,8 @@ import { ReportsModule } from './reports/reports.module';
         QuestionsModule,
         TestsModule,
         ProfileModule,
-        ReportsModule,
+        ReportsModule
+       
     ],
     providers: [
 

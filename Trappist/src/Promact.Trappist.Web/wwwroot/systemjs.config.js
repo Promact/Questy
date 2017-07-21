@@ -10,6 +10,19 @@
             // paths serve as alias
             'npm:': 'node_modules/'
         },
+ meta: {
+    
+    'node_modules/tinymce/plugins/advlist/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/autoresize/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/code/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/link/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
+    'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
+    'node_modules/tinymce/themes/modern/theme.js': { format: 'global' },	
+  },
+     
+
         // map tells the System loader where to look for things
         map: {
             // angular bundles
@@ -33,7 +46,10 @@
             'ngx-clipboard': 'npm:ngx-clipboard',
             'md2': 'npm:md2/bundles/md2.umd.js',
             'ng2-ckeditor': 'npm:ng2-ckeditor',
-            'angular2-infinite-scroll': 'npm:angular2-infinite-scroll'     
+            'angular2-infinite-scroll': 'npm:angular2-infinite-scroll',
+            'angular2-tinymce': 'npm:angular2-tinymce/dist',
+            'tinymce': 'npm:tinymce',
+                     
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -58,6 +74,12 @@
                 main: 'src/index.js',
                 defaultExtension: 'js'
             },
+            'angular2-tinymce':{
+             main:'index.js',
+            defaultExtension: 'js'
+          },
+          'tinymce': { defaultExtension: 'js' },
+
             '.': {
                 defaultExtension: 'js'
             }

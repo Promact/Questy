@@ -12,11 +12,15 @@ import { QuestionsProgrammingComponent } from './questions-programming/questions
 import { QuestionsService } from './questions.service';
 import { CategoryService } from './categories.service';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { TinymceModule } from 'angular2-tinymce';
+
 @NgModule({
     imports: [
         SharedModule,
         questionsRouting,
-        InfiniteScrollModule
+        InfiniteScrollModule,
+        TinymceModule.withConfig({})
+        
     ],
     declarations: [
         QuestionsComponent,
