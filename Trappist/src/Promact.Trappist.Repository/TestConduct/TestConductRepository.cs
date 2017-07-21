@@ -86,21 +86,59 @@ namespace Promact.Trappist.Repository.TestConduct
             return await (_dbContext.Test.AnyAsync(x => x.Link == magicString && !x.IsPaused));
         }
 
-        public async Task AddAnswerAsync(int attendeeId, string answers)
+        public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
         {
             if (await _dbContext.AttendeeAnswers.AnyAsync(x => x.Id == attendeeId))
             {
-                var answersToUpdate = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-                answersToUpdate.Answers = answers;
+                var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+                var deserializedAnswer = new List<TestAnswerAC>();
+
+                if (attendeeAnswer.Answers != null)
+                {
+                    deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
+                }
+
+                //Remove answer if already exist
+                var answerToUpdate = deserializedAnswer.SingleOrDefault(x => x.QuestionId == answer.QuestionId);
+                if (answerToUpdate != null)
+                {
+                    deserializedAnswer.Remove(answerToUpdate);
+                }
+                
+                //Add answer
+                deserializedAnswer.Add(answer);
+                var serializedAnswer = JsonConvert.SerializeObject(deserializedAnswer);
+                attendeeAnswer.Answers = serializedAnswer;
+                _dbContext.AttendeeAnswers.Update(attendeeAnswer);
             }
             else
             {
                 var attendeeAnswers = new AttendeeAnswers();
                 attendeeAnswers.Id = attendeeId;
-                attendeeAnswers.Answers = answers;
+
+                if (answer != null)
+                {
+                    var testAnswerArray = new List<TestAnswerAC>();
+                    testAnswerArray.Add(answer);
+                    attendeeAnswers.Answers = JsonConvert.SerializeObject(testAnswerArray);
+                }
                 await _dbContext.AddAsync(attendeeAnswers);
             }
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsAnswerValidAsync(int attendeeId, TestAnswerAC answer)
+        {
+            var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+            if(attendeeAnswer.Answers != null)
+            {
+                var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers);
+                if(deserializedAnswer[0] != null)
+                {
+                    return !(deserializedAnswer.Where(x => x.QuestionId == answer.QuestionId && x.QuestionStatus == QuestionStatus.answered).Count() > 0);
+                }
+            }
+            return true;
         }
 
         public async Task<ICollection<TestAnswerAC>> GetAnswerAsync(int attendeeId)
@@ -158,6 +196,11 @@ namespace Promact.Trappist.Repository.TestConduct
             report.TestStatus = testStatus;
             await _dbContext.Report.AddAsync(report);
             await _dbContext.SaveChangesAsync();
+
+            if(testStatus != TestStatus.AllCandidates)
+            {
+                
+            }
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
@@ -168,6 +211,36 @@ namespace Promact.Trappist.Repository.TestConduct
 
             return report.TestStatus;
         }
+        #endregion
+
+        #region Private Method
+
+        private async Task TransformAttendeeAnswer(int attendeeId)
+        {
+            var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
+            if(attendeeAnswer != null)
+            {
+                if(attendeeAnswer.Answers != null)
+                {
+                    var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
+                    var questionId = new List<int>();
+                    var questionStatus = new List<QuestionStatus>();
+                    var answeredOption = new List<int>();
+                    var answeredCode = new List<string>();
+
+                    deserializedAnswer.ForEach(answer =>
+                    {
+                        questionId.Add(answer.QuestionId);
+                        questionStatus.Add(answer.QuestionStatus);
+                        answeredOption.AddRange(answer.OptionChoice);
+                        answeredCode.Add(answer.Code);
+                    });
+
+                    await _dbContext.TestConduct.AddAsync();
+                }
+            }
+        }
+
         #endregion
     }
 }
