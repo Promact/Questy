@@ -6,6 +6,7 @@ using Moq;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.TestConduct;
@@ -186,17 +187,17 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-
-            var answer = "This is an answer";
+            
+            var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
 
-            Assert.True(attendeeAnswer.Answers.Equals(answer));
+            Assert.True(attendeeAnswer.Answers != null);
 
-            var newAnswer = "This is a new answer";
+            var newAnswer = new TestAnswerAC() { OptionChoice = new List<int>() { 4, 5 } };
             await _testConductRepository.AddAnswerAsync(attendeeId, newAnswer);
 
-            Assert.True(attendeeAnswer.Answers.Equals(newAnswer));
+            Assert.True(attendeeAnswer.Answers != null);
         }
 
         /// <summary>
@@ -209,8 +210,8 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-            //JSON string
-            var answer = "[{ \"questionId\":1,\"optionChoice\":[1],\"code\":null,\"questionStatus\":1}]";
+            
+            var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
 

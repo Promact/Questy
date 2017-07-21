@@ -269,11 +269,11 @@ namespace Promact.Trappist.Repository.TestConduct
                         }
                     }
                 }
-            }
 
-            //Remove the answer from the AttendeeAnswer once Transformation is commenced 
-            _dbContext.AttendeeAnswers.Remove(attendeeAnswer);
-            await _dbContext.SaveChangesAsync();
+                //Remove the answer from the AttendeeAnswer once Transformation is commenced 
+                _dbContext.AttendeeAnswers.Remove(attendeeAnswer);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         #endregion

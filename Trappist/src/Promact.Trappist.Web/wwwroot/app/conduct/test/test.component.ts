@@ -254,7 +254,7 @@ export class TestComponent implements OnInit {
         }
         else {
             if (testQuestion.questionStatus === QuestionStatus.selected) {
-                testAnswer.questionStatus = QuestionStatus.unanswered
+                testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
                 testAnswer.questionStatus = testQuestion.questionStatus;
             }
