@@ -304,6 +304,54 @@ namespace Promact.Trappist.Test.TestConduct
 
             Assert.True(testStatus == TestStatus.CompletedTest);            
         }
+
+        [Fact]
+        public async Task TransformationTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            // Creating test
+            var test = await CreateTestAsync();
+            //Creating test category
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var category1 = CreateCategory("Mathematics");
+            await _categoryRepository.AddCategoryAsync(category1);
+            categoryList.Add(category1);
+            var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            categoryListAc[0].IsSelect = true;
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
+            //Creating test questions
+            var questionList = new List<QuestionAC>
+            {
+                CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1),
+                CreateQuestionAC(true, "Category1 type question 2", category1.Id, 1),
+            };
+            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
+            
+            var answer = new TestAnswerAC() {
+                OptionChoice = new List<int>() { 1 },
+                QuestionId = 1,
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+
+            answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>() {  },
+                QuestionId = 2,
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+
+            //Setting Attendee TestStatus
+            await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
+            var testStatus = await _trappistDbContext.TestConduct.Where(x => x.TestAttendeeId == attendeeId).ToListAsync();
+
+            Assert.NotNull(testStatus);
+
+        }
         #endregion
 
         #region Private Methods
