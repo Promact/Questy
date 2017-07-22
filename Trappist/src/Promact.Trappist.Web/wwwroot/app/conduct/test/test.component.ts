@@ -145,7 +145,7 @@ export class TestComponent implements OnInit {
                 this.closeWindow();
             }
 
-            this.ResumeTest();
+            this.resumeTest();
         }, err => {
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
@@ -155,7 +155,7 @@ export class TestComponent implements OnInit {
     /**
      * Resumes Test if Attendee had already answered some question
      */
-    ResumeTest() {
+    resumeTest() {
         this.isTestReady = false;
         this.conductService.getAnswer(this.testAttendee.id).subscribe((response) => {
             this.testAnswers = response;
@@ -269,7 +269,6 @@ export class TestComponent implements OnInit {
                 this.markAsAnswered(questionIndex);
             }
         }, err => {
-            console.log(err);
             this.isTestReady = true;
         });
     }
@@ -382,7 +381,7 @@ export class TestComponent implements OnInit {
         this.focusLost += 1;
         let message: string;
         let duration: number = 0;
-        message = this.focusLost > this.test.browserTolerance ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
+        message = (this.focusLost > this.test.browserTolerance && this.test.browserTolerance !== 0) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
 
         if (this.focusLost > this.test.browserTolerance) {
             this.openSnackBar(message, duration);
@@ -450,7 +449,7 @@ export class TestComponent implements OnInit {
      * Closes window 
      */
     private closeWindow() {
-        window.close();
+        this.router.navigate(['test-end']);
     }
 
     /**
