@@ -87,8 +87,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
         {
-            var isTestLinkExist = await (_dbContext.Test.AnyAsync(x => x.Link == magicString && x.IsPaused==false ));
-            return isTestLinkExist;
+            return await (_dbContext.Test.AnyAsync(x => x.Link == magicString && x.IsPaused == false));
         }
 
         public async Task AddAnswerAsync(int attendeeId, string answers)
@@ -101,6 +100,7 @@ namespace Promact.Trappist.Repository.TestConduct
             else
             {
                 var attendeeAnswers = new AttendeeAnswers();
+                attendeeAnswers.Id = attendeeId;
                 attendeeAnswers.Answers = answers;
                 await _dbContext.AddAsync(attendeeAnswers);
             }
@@ -154,7 +154,7 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
         {
             var report = await _dbContext.Report.OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            if(report == null)
+            if (report == null)
             {
                 report = new Report();
                 report.TestAttendeeId = attendeeId;
