@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TestInstructions } from '../testInstructions.model';
 import { Router } from '@angular/router';
 import { BrowserTolerance } from '../../tests/enum-browsertolerance';
+import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
@@ -53,9 +54,9 @@ export class InstructionsComponent implements OnInit {
     startTest() {
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
-        let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
-        newWindow.onunload = () => {
-            window.location.replace(url.substring(0, url.indexOf('/instructions')) + '/test-summary');
-        };
+        if (screenfull.enabled) {
+            screenfull.toggle();
+        }
+        this.router.navigate(['test']);
     }
 }
