@@ -269,7 +269,6 @@ export class TestComponent implements OnInit {
                 this.markAsAnswered(questionIndex);
             }
         }, err => {
-            console.log(err);
             this.isTestReady = true;
         });
     }
