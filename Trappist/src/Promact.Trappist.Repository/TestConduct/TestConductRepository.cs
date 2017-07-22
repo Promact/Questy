@@ -101,7 +101,6 @@ namespace Promact.Trappist.Repository.TestConduct
             else
             {
                 var attendeeAnswers = new AttendeeAnswers();
-                attendeeAnswers.Id = attendeeId;
                 attendeeAnswers.Answers = answers;
                 await _dbContext.AddAsync(attendeeAnswers);
             }
