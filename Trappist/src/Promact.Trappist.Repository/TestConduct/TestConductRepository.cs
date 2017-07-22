@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Report;
 
@@ -87,7 +86,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
         {
-            return await (_dbContext.Test.AnyAsync(x => x.Link == magicString && x.IsPaused == false));
+            return await (_dbContext.Test.AnyAsync(x => x.Link == magicString && !x.IsPaused));
         }
 
         public async Task AddAnswerAsync(int attendeeId, string answers)
