@@ -9,7 +9,6 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.GlobalUtil;
