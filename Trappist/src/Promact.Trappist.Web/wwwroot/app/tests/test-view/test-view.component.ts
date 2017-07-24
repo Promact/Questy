@@ -73,9 +73,9 @@ export class TestViewComponent implements OnInit {
     getTestDetails(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = response;
-            let magicString = response.link;
+            let linkOfTest = response.link;
             let domain = window.location.origin;
-            this.testLink = domain + '/conduct/' + magicString;
+            this.testLink = domain + '/conduct/' + linkOfTest;
             this.testDetails.categoryAcList.forEach(x => {
                 if (x.numberOfSelectedQuestion === 0)
                     x.isQuestionAbsent = true;

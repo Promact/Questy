@@ -53,9 +53,9 @@ export class CreateTestHeaderComponent implements OnInit {
      * Converts the magic string obtained to the format of a link
      */
     getTestLink() {
-        let magicString = this.testDetails.link;
+        let linkOfTest = this.testDetails.link;
         let domain = window.location.origin;
-        this.testLink = domain + '/conduct/' + magicString;
+        this.testLink = domain + '/conduct/' + linkOfTest;
     }
 
     /**
