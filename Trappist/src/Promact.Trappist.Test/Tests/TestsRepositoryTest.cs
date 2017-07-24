@@ -169,6 +169,25 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
 
+        #region Pause-Resume Test
+
+        [Fact]
+        public async Task PauseResumeTest()
+        {
+            var test = CreateTest("Test 1");
+            string userName = "asif@gmail.com";
+            //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
+            await _testRepository.PauseResumeTest(test.Id, true);
+            var testObject = _trappistDbContext.Test.FirstOrDefault(x => x.Id == test.Id);
+            Assert.True(testObject.IsPaused);
+        }
+
+        #endregion
+
         #region Delete Test
         /// <summary>
         /// Check if any test attendee exist for a particular test
@@ -325,7 +344,7 @@ namespace Promact.Trappist.Test.Tests
             categoryList.Add(category);
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             var test = CreateTest("Maths");
-            string userName = "suparna@promactinfo.com";
+            string userName = "asif@gmail.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
