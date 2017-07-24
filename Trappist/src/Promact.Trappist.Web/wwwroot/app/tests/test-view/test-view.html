@@ -18,7 +18,7 @@
                     <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
                     <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
                     <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
-                    <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
+                    <a md-menu-item (click)="navigateToTestSettings()"  [disabled]="!isEditTestEnabled">Settings</a>
                 </md-menu>
                 <button type="button" class="btn" [popover]="myPopover"><em class="material-icons">link</em>Get Test Link</button>
                 <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>

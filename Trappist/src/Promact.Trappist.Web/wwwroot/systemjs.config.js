@@ -19,7 +19,7 @@
     'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
     'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
     'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
-    'node_modules/tinymce/themes/modern/theme.js': { format: 'global' },	
+    'node_modules/tinymce/themes/modern/theme.js': { format: 'global' }	
   },
      
 
