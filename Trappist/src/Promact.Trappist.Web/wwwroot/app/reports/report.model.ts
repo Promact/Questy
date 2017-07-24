@@ -1,4 +1,4 @@
-﻿import { TestStatus } from './enum-teststate';
+﻿import { TestStatus } from './enum-test-state';
 
 export class Report {
     totalMarksScored: number;

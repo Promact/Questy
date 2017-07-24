@@ -1,4 +1,4 @@
-﻿import { TestConduct } from './testconduct.model';
+﻿import { TestConduct } from './testConduct.model';
 
 export class TestAnswers {
     id: number;
