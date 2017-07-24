@@ -66,6 +66,30 @@ namespace Promact.Trappist.Repository.Reports
         {
             return await _dbContext.TestAttendees.AnyAsync(s => s.Id == attendeeId);
         }
+
+        public async Task<TestAttendees> GetTestAttendeeDetailsByIdAsync(int testAttendeeId)
+        {
+            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+            return testAttendee;
+        }
+
+        public async Task<List<TestQuestion>> GetTestQuestions(int testId)
+        {
+            return await _dbContext.TestQuestion.Include(x => x.Question).Include(x => x.Question.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestId == testId).ToListAsync();
+        }
+
+        public async Task<List<TestAnswers>> GetTestAttendeeAnswers(int testAttendeeId)
+        {
+            var testAttendeeQuestionList = await _dbContext.TestConduct.Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+            var testAttendeeFullAnswerList = new List<TestAnswers>();
+
+            foreach (DomainModel.Models.TestConduct.TestConduct testAttendeeQuestion in testAttendeeQuestionList)
+            {
+                var testAttendeeAnswerList = await _dbContext.TestAnswers.Where(x => x.TestConductId == testAttendeeQuestion.Id).ToListAsync();
+                testAttendeeFullAnswerList.AddRange(testAttendeeAnswerList);
+            }
+            return testAttendeeFullAnswerList;
+        }
         #endregion
     }
 }

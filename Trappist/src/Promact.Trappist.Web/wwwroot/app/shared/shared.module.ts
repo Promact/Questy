@@ -6,7 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { Md2AccordionModule, Md2DataTableModule } from 'md2';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { ChartsModule } from 'ng2-charts';
 import { PopoverModule } from 'ngx-popover';
+
 
 @NgModule({
     imports: [
@@ -18,7 +20,8 @@ import { PopoverModule } from 'ngx-popover';
         Md2AccordionModule.forRoot(),
         Md2DataTableModule.forRoot(),
         CKEditorModule,
-        PopoverModule
+        PopoverModule,
+        ChartsModule
     ],
     declarations: [
     ],
@@ -29,6 +32,7 @@ import { PopoverModule } from 'ngx-popover';
         Md2AccordionModule,
         Md2DataTableModule,
         CKEditorModule,
+        ChartsModule,
         PopoverModule
     ]
 })

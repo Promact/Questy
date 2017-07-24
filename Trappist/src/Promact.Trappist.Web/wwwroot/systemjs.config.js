@@ -50,6 +50,7 @@
             'angular2-tinymce': 'npm:angular2-tinymce/dist',
             'tinymce': 'npm:tinymce',
             'ngx-popover': 'npm:ngx-popover',
+            'ng2-charts': 'npm:ng2-charts',
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js'
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -74,6 +75,10 @@
             'angular2-infinite-scroll': {
                 main: 'src/index.js',
                 defaultExtension: 'js'
+            },
+            'ng2-charts': {
+                'main': 'ng2-charts.js',
+                'defaultExtension': 'js'
             },
             'angular2-tinymce':{
              main:'index.js',
