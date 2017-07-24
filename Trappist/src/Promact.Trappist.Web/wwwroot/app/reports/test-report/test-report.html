@@ -48,13 +48,13 @@
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
-                        <td class="theme-text font-semibold" [routerLink]="['individual-report']"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
-                        <td [routerLink]="['individual-report']">{{testAttendee.email}}</td>
+                        <td class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
+                        <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
                         <td>{{testAttendee.createdDateTime}}</td>
                         <td>{{testAttendee.report.totalMarksScored}}</td>
                         <td>{{testAttendee.report.percentage}}
                         <td><em class="material-icons">file_download</em></td>
-                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report']">remove_red_eye</em></td>
+                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">remove_red_eye</em></td>
                     </tr>
                 </tbody>
                 <tfoot>
