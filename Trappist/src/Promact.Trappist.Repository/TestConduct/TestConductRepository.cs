@@ -214,6 +214,12 @@ namespace Promact.Trappist.Repository.TestConduct
 
         #region Private Method
 
+        /// <summary>
+        /// Transform Attendee's JSON formatted Answer stored in AttendeeAnswers table
+        /// to reliable TestAnswer and TestConduct tables.
+        /// After completion of transformation Attendee's record from AttendeeAnswer is removed.
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
         private async Task TransformAttendeeAnswer(int attendeeId)
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
