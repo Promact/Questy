@@ -2,6 +2,8 @@
 import { Category } from '../questions/category.model';
 import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
+import { QuestionStatus } from "../conduct/question_status.enum";
+import { QuestionDisplay } from "../questions/question-display";
 
 export class Test {
     id: number;
@@ -42,6 +44,8 @@ export class TestQuestion {
     public testId: number;
     public questionId: number;    
     public isSelect: boolean;
+    public question: QuestionDisplay;
+    public questionStatus: QuestionStatus;
 }
 
 
