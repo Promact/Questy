@@ -45,7 +45,7 @@ export class IndividualReportComponent implements OnInit {
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
         this.testQuestions = new Array<TestQuestion>();
-        this.testAttendeeId = this.route.snapshot.params['testAttendeeId'];
+        this.testAttendeeId = this.route.snapshot.params['id'];
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.testAnswers = new Array<TestAnswers>();
         this.questionPieChartLabels = ['Correct', 'InCorrect', 'Not Attempted'];
