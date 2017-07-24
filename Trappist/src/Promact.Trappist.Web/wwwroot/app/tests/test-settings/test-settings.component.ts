@@ -12,7 +12,7 @@ import { AllowTestResume } from '../enum-allowtestresume';
 import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-settings',
     templateUrl: 'test-settings.html'
 })

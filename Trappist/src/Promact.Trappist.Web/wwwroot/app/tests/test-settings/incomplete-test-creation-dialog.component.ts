@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Test } from '../tests.model';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'incomplete-test-creation',
     templateUrl: 'incomplete-test-creation-dialog.html'
 })

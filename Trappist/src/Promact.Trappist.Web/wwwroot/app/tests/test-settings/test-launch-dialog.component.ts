@@ -3,7 +3,7 @@ import { Test } from '../tests.model';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-launch-dialog',
     templateUrl: 'test-launch-dialog.html'
 })

@@ -7,7 +7,7 @@ import { Category } from '../../questions/category.model';
 import { TestDetails } from '../test-details';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'deselect-category',
     templateUrl: 'deselect-category.html'
 })

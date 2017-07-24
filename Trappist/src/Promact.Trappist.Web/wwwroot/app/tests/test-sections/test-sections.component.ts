@@ -12,7 +12,7 @@ import { Category } from '../../questions/category.model';
 import { Test, TestCategory, TestQuestion } from '../tests.model';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-sections',
     templateUrl: 'test-sections.html'
 })

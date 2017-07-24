@@ -1,7 +1,7 @@
 ﻿import { Component, ElementRef, HostListener } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-link-popover',
     templateUrl: 'test-link-popover.html'
 })

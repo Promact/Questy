@@ -10,7 +10,7 @@ import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'questions-single-multiple-answer',
     templateUrl: 'questions-single-multiple-answer.html'
 })

@@ -4,7 +4,7 @@ import { ConductService } from '../conduct.service';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'register',
     templateUrl: 'register.html',
 })

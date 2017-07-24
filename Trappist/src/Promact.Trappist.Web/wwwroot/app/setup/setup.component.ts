@@ -6,7 +6,7 @@ import { BasicSetup } from './setup.model';
 import { RegistrationFields } from './setup.model';
 import { ServiceResponse } from './setup.model';
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'setup',
     templateUrl: 'setup.html',
 })

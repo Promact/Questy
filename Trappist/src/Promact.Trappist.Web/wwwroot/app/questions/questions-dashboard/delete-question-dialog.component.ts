@@ -4,7 +4,7 @@ import { QuestionsService } from '../questions.service';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'delete-question-dialog',
     templateUrl: 'delete-question-dialog.html'
 })

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'create-test-footer',
     templateUrl: 'create-test-footer.html',
 })

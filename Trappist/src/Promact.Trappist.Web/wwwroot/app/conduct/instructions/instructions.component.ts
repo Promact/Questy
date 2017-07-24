@@ -6,7 +6,7 @@ import { TestInstructions } from '../testInstructions.model';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'instructions',
     templateUrl: 'instructions.html',
 })

@@ -12,12 +12,12 @@
   },
 
   "files": [
-    "app/app.module.ts",
-    "app/setup/setup.module.ts",
-    "app/conduct/conduct.module.ts",
-    "app/main.aot.ts",
-    "app/main.setup.aot.ts",
-    "app/main.conduct.aot.ts"
+    "wwwroot/app/app.module.ts",
+    "wwwroot/app/setup/setup.module.ts",
+    "wwwroot/app/conduct/conduct.module.ts",
+    "wwwroot/app/main.aot.ts",
+    "wwwroot/app/main.setup.aot.ts",
+    "wwwroot/app/main.conduct.aot.ts"
   ],
 
   "angularCompilerOptions": {

@@ -17,7 +17,7 @@ import { IncompleteTestCreationDialogComponent } from '../test-settings/incomple
 
 
 @Component({
-    moduleId: module.id,
+    moduleId: module.id.toString(),
     selector: 'test-view',
     templateUrl: 'test-view.html'
 })
