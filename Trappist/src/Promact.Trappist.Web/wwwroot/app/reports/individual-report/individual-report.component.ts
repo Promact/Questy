@@ -116,29 +116,29 @@ export class IndividualReportComponent implements OnInit {
             let answerStatus: boolean;
             for (let option = 0; option < options.length; option++) {
                 answerStatus = this.isAttendeeAnswerCorrect(options[option].id, options[option].isAnswer);
-                if (this.testQuestions[question].question.questionType == 0) {
-                    if (answerStatus == undefined)
+                if (this.testQuestions[question].question.questionType === 0) {
+                    if (answerStatus === undefined)
                         answerStatus = oldAnswerStatus;
                     oldAnswerStatus = answerStatus;
                 }
                 else {
-                    if (this.testQuestions[question].question.questionType == 1) {
+                    if (this.testQuestions[question].question.questionType === 1) {
                         let option = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
                         let answerCorrect = this.noOfAnswersCorrectGivenbyAttendee(option);
-                        if (answerStatus == false ||(answerCorrect>0 && answerCorrect < 2)) {
+                        if (answerStatus === false ||(answerCorrect>0 && answerCorrect < 2)) {
                             answerStatus = false;
                             break;
                         }
                     }
                 }
             }
-            if (answerStatus == true) {
+            if (answerStatus === true) {
                 this.correctAnswers++;
                 this.testQuestions[question].questionStatus = 0;
                 this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
             }
             else {
-                if (answerStatus == false) {
+                if (answerStatus === false) {
                     this.incorrectAnswers++;
                     this.testQuestions[question].questionStatus = 1;
                 }
@@ -157,7 +157,7 @@ export class IndividualReportComponent implements OnInit {
         let isTestAttendeeAnswerCorrect: boolean;
         for (let option = 0; option < this.testAnswers.length; option++) {
             for (let i = 0; i < options.length; i++) {
-                if (this.testAnswers[option].answeredOption == options[i].id ) {
+                if (this.testAnswers[option].answeredOption === options[i].id ) {
                     if (options[i].isAnswer) {
                         isTestAttendeeAnswerCorrect = true;
                         noOfAnswersCorrect++;
@@ -181,7 +181,7 @@ export class IndividualReportComponent implements OnInit {
     isAttendeeAnswerCorrect(optionId: number, isAnswer: boolean) {
         let isTestAttendeeAnswerCorrect: boolean;
         for (let option = 0; option < this.testAnswers.length; option++) {
-            if (this.testAnswers[option].answeredOption == optionId) {
+            if (this.testAnswers[option].answeredOption === optionId) {
                 if (isAnswer) {
                     isTestAttendeeAnswerCorrect = true;
                 }
@@ -229,7 +229,7 @@ export class IndividualReportComponent implements OnInit {
 
     //Sets the values of the pie chart that displays the no of correct answers in each difficulty level
     correctPieChartValue() {
-        return [this.easy, this.medium, this.hard]
+        return [this.easy, this.medium, this.hard];
     }
 
     printIndividualReport() {

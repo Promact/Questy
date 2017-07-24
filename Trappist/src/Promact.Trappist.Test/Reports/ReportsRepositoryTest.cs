@@ -198,7 +198,6 @@ namespace Promact.Trappist.Test.Reports
             testQuestionList.Add(testQuestionObject2);
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
             await _trappistDbContext.SaveChangesAsync();
-            var testAttendee = CreateTestAttendee(test.Id);
             var testQuestions = await _reportRepository.GetTestQuestions(test.Id);
             Assert.Equal(2, testQuestions.Count());
         }
