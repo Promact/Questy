@@ -540,6 +540,32 @@ md2-accordion-tab {
   }
 }
 
+md-tooltip-component .mat-tooltip {
+  font-family: $font_open_sans;
+  margin: 10px;
+}
+
+.popover {
+  font-family: $font_open_sans;
+  width: 450px;
+  max-width: inherit;
+  z-index: inherit;
+
+  .popover-content {
+    padding: 14px;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    input:focus {
+      border-color: $color_theme;
+      box-shadow: none;
+    } 
+  }
+}
+
 .collapsible-block {
   margin-bottom: 10px;
 
@@ -1737,7 +1763,7 @@ footer {
   .steps {
     list-style: none;
     padding-left: 0;
-    margin: 6px 0 6px -5px;
+    margin: 6px 0;
 
     li {
       display: inline-block;
@@ -1764,10 +1790,6 @@ footer {
         }
       }
     }
-  }
-
-  .buttons-block {
-    margin-right: 8px;
   }
 }
 
