@@ -82,8 +82,18 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
-        {
-            return await (_dbContext.Test.AnyAsync(x => x.Link == magicString && !x.IsPaused));
+        {        
+            var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == magicString);
+            var currentDate = DateTime.UtcNow;
+            if (testObject != null)
+            {
+                var compareEndDate = DateTime.Compare(currentDate, testObject.EndDate);
+                if (testObject.IsPaused || (compareEndDate > 0))
+                    return false;
+                return true;
+            }
+            else
+                return false;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
