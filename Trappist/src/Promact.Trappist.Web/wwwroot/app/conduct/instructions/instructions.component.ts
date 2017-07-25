@@ -47,6 +47,8 @@ export class InstructionsComponent implements OnInit {
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
         let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
-        newWindow.onunload = () => { this.router.navigate(['test-end']); };
+        newWindow.onunload = () => {
+            window.location.href = url.substring(0, url.indexOf('/instructions')) + 'test-summary';
+        };
     }
 }
