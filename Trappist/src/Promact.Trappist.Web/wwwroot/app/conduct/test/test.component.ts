@@ -82,7 +82,7 @@ export class TestComponent implements OnInit {
      */
     getTestByLink() {
         let url = window.location.pathname;
-        let link = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
+        let link = url.substring(url.indexOf('/conduc/t') + 9, url.indexOf('/test'));
 
         this.conductService.getTestByLink(link).subscribe((response) => {
             this.test = response;
@@ -92,7 +92,7 @@ export class TestComponent implements OnInit {
             this.WARNING_TIME = this.test.warningTime * 60;
             this.getTestAttendee(this.test.id);
         }, err => {
-            this.router.navigate(['']);
+            window.location.href = window.location.origin + '/pageNotFound';
         });
     }
 

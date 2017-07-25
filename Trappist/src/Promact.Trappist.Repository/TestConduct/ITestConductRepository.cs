@@ -101,5 +101,15 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of the Attendee</param>
         /// <return>TestStatus object</return>
         Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId);
+
+        /// <summary>
+        /// Checks if the Test is in valid date window.
+        /// </summary>
+        /// <param name="testLink">link to conduct a particular test</param>
+        /// <returns>
+        /// True if current date lies between Test's start date and end date.
+        /// False otherwise.
+        /// </returns>
+        Task<bool> IsTestInValidDateWindow(string testLink);
     }
 }
