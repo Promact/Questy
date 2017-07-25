@@ -40,7 +40,7 @@ export class ConductService {
      * @param id is passed to identify that particular "Test"
      */
     getTestByLink(link: string) {
-        return this.httpService.get(this.testConductUrl + '/testbylink/' + link);
+        return this.httpService.get(this.testConductUrl + 'testbylink' + link);
     }
 
     /**
