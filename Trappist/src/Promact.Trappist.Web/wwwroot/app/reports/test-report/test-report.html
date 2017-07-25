@@ -25,7 +25,7 @@
                 </select>
                 <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
                 <button type="button" class="btn">Download Excel</button>
-                <button type="button" class="btn">Download PDF</button>
+                <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
@@ -33,7 +33,7 @@
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
-                        <th><md-checkbox class="only-checkbox"></md-checkbox></th>
+                        <th><md-checkbox class="only-checkbox" [(ngModel)]="checkedAllCandidate" (change)="selectAllChandidates()"></md-checkbox></th>
                         <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred()">{{headerStarStatus}}</em></th>
                         <th class="h5" md2SortBy="firstName">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
-                        <td><md-checkbox class="only-checkbox"></md-checkbox></td>
+                        <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="checkIfAllSelected(testAttendee,testAttendee.checkedCandidate)"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
