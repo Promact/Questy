@@ -5,7 +5,7 @@ import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 
-declare var jsPDF: any;
+declare let jsPDF: any;
 
 @Component({
     moduleId: module.id,
