@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
-                        <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="checkIfAllSelected(testAttendee,testAttendee.checkedCandidate)"></md-checkbox></td>
+                        <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="selectIndividualCandidate(testAttendee,testAttendee.checkedCandidate)"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
