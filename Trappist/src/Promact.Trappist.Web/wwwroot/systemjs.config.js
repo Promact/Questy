@@ -51,6 +51,10 @@
             'tinymce': 'npm:tinymce',
             'ngx-popover': 'npm:ngx-popover',
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js'
+            'services': '/services',
+            'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
+            'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js'
+
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
