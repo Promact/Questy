@@ -53,7 +53,6 @@ export class TestSettingsComponent implements OnInit {
         this.isAttendeeExistForTest = false;
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
- 
     }
 
     /**
@@ -62,8 +61,9 @@ export class TestSettingsComponent implements OnInit {
     ngOnInit() {
         this.loader = true;
         this.testId = this.route.snapshot.params['id'];
-        this.getTestById(this.testId);
         this.isAttendeeExists();
+        this.getTestById(this.testId);
+
     }
 
     /**
@@ -98,11 +98,11 @@ export class TestSettingsComponent implements OnInit {
     isEndDateValid(endDate: Date) {
         if (new Date(this.testDetails.startDate) >= new Date(endDate)) {
             this.validEndDate = true;
-            this.validStartDate = false;         
-            }
-               else
-                this.validEndDate = false;
+            this.validStartDate = false;
         }
+        else
+            this.validEndDate = false;
+    }
 
     /**
      * Checks whether the Start Date selected is valid or not
@@ -126,10 +126,10 @@ export class TestSettingsComponent implements OnInit {
     */
     saveTestSettings(id: number, testObject: Test) {
         this.testService.updateTestById(id, testObject).subscribe((response) => {
-            this.loader = true;          
+            this.loader = true;
             let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
                 duration: 3000,
-            });           
+            });
             snackBarRef.afterDismissed().subscribe(() => {
                 this.router.navigate(['/tests']);
                 this.loader = false;
@@ -152,7 +152,7 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test, isTestLaunched: boolean) {
-        let isCategoryAdded = this.testDetails.categoryAcList.some(x=> {
+        let isCategoryAdded = this.testDetails.categoryAcList.some(x => {
             return x.isSelect;
         });
         if (isCategoryAdded) {
@@ -162,9 +162,8 @@ export class TestSettingsComponent implements OnInit {
             if (isQuestionAdded) {
                 this.testDetails.isLaunched = isTestLaunched;
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
-                    this.openSnackBar(this.testSettingsUpdatedMessage);
-                    let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-                    instance.testSettingObject = testObject;
+                    this.openSnackBar('Your test has been launched');
+                    this.router.navigate(['/tests/' + this.testDetails.id + '/view']);
                 },
                     errorHandling => {
                         this.response = errorHandling.json();
@@ -191,26 +190,26 @@ export class TestSettingsComponent implements OnInit {
     isAttendeeExists() {
         this.testService.isTestAttendeeExist(this.testId).subscribe((isTestAttendeeExists) => {
             if (isTestAttendeeExists.response)
-                this.isAttendeeExistForTest = true;
+                this.isAttendeeExistForTest = true;      
         });
-    }
+}
 
-    /**
-     * Displays the tooltip message
-     * @param $event is of type Event and is used to call stopPropagation()
-     */
-    showTooltipMessage($event: Event, testLink: any) {
-        $event.stopPropagation();
-        setTimeout(() => {
-            testLink.select();
-        }, 0);
-        this.tooltipMessage = 'Copied';
-    }
+/**
+ * Displays the tooltip message
+ * @param $event is of type Event and is used to call stopPropagation()
+ */
+showTooltipMessage($event: Event, testLink: any) {
+    $event.stopPropagation();
+    setTimeout(() => {
+        testLink.select();
+    }, 0);
+    this.tooltipMessage = 'Copied';
+}
 
-    /**
-     * Changes the tooltip message
-     */
-    changeTooltipMessage() {
-        this.tooltipMessage = 'Copy to Clipboard';
-    }
+/**
+ * Changes the tooltip message
+ */
+changeTooltipMessage() {
+    this.tooltipMessage = 'Copy to Clipboard';
+}
 }
