@@ -5,6 +5,8 @@ import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 
+declare var jsPDF: any;
+
 @Component({
     moduleId: module.id,
     selector: 'test-report',
@@ -29,6 +31,7 @@ export class TestReportComponent implements OnInit {
     showStarCandidates: boolean;
     loader: boolean;
     test: Test;
+    checkedAllCandidate: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -44,6 +47,7 @@ export class TestReportComponent implements OnInit {
         this.showStarCandidates = false;
         this.test = new Test();
         this.loader = true;
+        this.checkedAllCandidate = false;
     }
 
     ngOnInit() {
@@ -226,4 +230,74 @@ export class TestReportComponent implements OnInit {
         let pagetracker = activePage * 10;
         return pagetracker > count ? count : pagetracker;
     }
+
+    /**
+     * Download test report in  pdf format
+     */
+    downloadTestReportPdf()
+    {
+        let testName = this.test.testName;
+        let reports = new Array();
+        let space = ' ';
+        this.testAttendeeArray.forEach(x => {
+                if (x.checkedCandidate) {
+                    let report = {
+                        'name': x.firstName + space + x.lastName,
+                        'email': x.email,
+                        'createdDateTime': x.createdDateTime,
+                        'score': x.report.totalMarksScored,
+                        'percentage': x.report.percentage
+                    }
+                    reports.push(report);
+                }
+            });
+        let columns = [
+                    { title: 'Name', dataKey: 'name' },
+                    { title: 'Email', dataKey: 'email' },
+                    { title: 'Test Date', dataKey: 'createdDateTime' },
+                    { title: 'Score', dataKey: 'score' },
+                    { title: 'Percentage', dataKey: 'percentage' },];
+        var doc = new jsPDF('p', 'pt');
+        doc.autoTable(columns, reports, {
+            styles: {
+                pageBreak: 'auto',
+                tableWidth: 'auto',
+            },
+            margin: { top: 50 },
+            theme: 'grid',
+            addPageContent: function () {
+                doc.text(testName, 40, 30);
+            }
+        });
+        doc.save('TestReport.pdf');
+    }
+
+    /**
+     * Select and deselect all candidates of a test
+     */
+    selectAllChandidates() {
+          if(this.checkedAllCandidate){ 
+             this.testAttendeeArray.forEach(k => {
+                k.checkedCandidate = true;
+                });
+            }
+            else
+            {
+              this.testAttendeeArray.forEach(k => {
+                   k.checkedCandidate = false;
+              });
+
+            }
+        }
+
+    /**
+     * Select individual candidate of a test
+     * @param testAttendee is object of the testAttendee table
+     * @param select is the checkbox value of the checked candidate
+     */
+    checkIfAllSelected(testAttendee: TestAttendee, select: boolean) {
+        testAttendee.checkedCandidate = select;
+      
+    }
+        
 }

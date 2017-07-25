@@ -7,6 +7,7 @@ export class TestAttendee {
     email: string;
     createdDateTime: Date;
     starredCandidate: boolean;
+    checkedCandidate: boolean;
     report: Report;
 
     constructor() {
