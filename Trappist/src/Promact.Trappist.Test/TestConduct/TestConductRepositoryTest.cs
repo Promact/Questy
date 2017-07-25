@@ -113,8 +113,8 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task IsTestLinkExistAsync()
         {
             await CreateTestAsync();
-            var result = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
-            Assert.True(result);
+            var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
+            Assert.True(linkExist);
         }
 
         /// <summary>
@@ -367,7 +367,8 @@ namespace Promact.Trappist.Test.TestConduct
                 Duration = 70,
                 BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
-                IncorrectMarks = -1
+                IncorrectMarks = -1,
+                EndDate = new DateTime(2017, 7, 26)
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
