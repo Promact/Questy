@@ -35,6 +35,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.isClose = false;
         this.isdulicateQuestion = false;
         this.difficultyLevelSelected = 'default';
+        this.categoryName = 'default';
         this.categoryArray = new Array<Category>();
         this.singleMultipleAnswerQuestion = new QuestionBase();
         this.difficultyLevel = ['Easy', 'Medium', 'Hard'];

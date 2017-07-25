@@ -39,7 +39,7 @@
             <div class="container-fluid">
                 <div class="display-table">
                     <div class="display-table-cell qs-area ptb20">
-                        <p>{{questionDetail}}</p>
+                        <p [innerHTML]="questionDetail"></p>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice">
                         <md-radio-group>
