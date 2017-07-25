@@ -234,8 +234,7 @@ export class TestReportComponent implements OnInit {
     /**
      * Download test report in  pdf format
      */
-    downloadTestReportPdf()
-    {
+    downloadTestReportPdf() {
         let testName = this.test.testName;
         let reports = new Array();
         let space = ' ';
@@ -247,7 +246,7 @@ export class TestReportComponent implements OnInit {
                         'createdDateTime': x.createdDateTime,
                         'score': x.report.totalMarksScored,
                         'percentage': x.report.percentage
-                    }
+                    };
                     reports.push(report);
                 }
             });
@@ -257,7 +256,7 @@ export class TestReportComponent implements OnInit {
                     { title: 'Test Date', dataKey: 'createdDateTime' },
                     { title: 'Score', dataKey: 'score' },
                     { title: 'Percentage', dataKey: 'percentage' },];
-        var doc = new jsPDF('p', 'pt');
+        let doc = new jsPDF('p', 'pt');
         doc.autoTable(columns, reports, {
             styles: {
                 pageBreak: 'auto',
@@ -276,18 +275,14 @@ export class TestReportComponent implements OnInit {
      * Select and deselect all candidates of a test
      */
     selectAllChandidates() {
-          if(this.checkedAllCandidate){ 
+          if(this.checkedAllCandidate) 
              this.testAttendeeArray.forEach(k => {
                 k.checkedCandidate = true;
                 });
-            }
             else
-            {
               this.testAttendeeArray.forEach(k => {
                    k.checkedCandidate = false;
               });
-
-            }
         }
 
     /**
@@ -296,8 +291,6 @@ export class TestReportComponent implements OnInit {
      * @param select is the checkbox value of the checked candidate
      */
     selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
-        testAttendee.checkedCandidate = select;
-      
-    }
-        
+        testAttendee.checkedCandidate = select;   
+    }      
 }
