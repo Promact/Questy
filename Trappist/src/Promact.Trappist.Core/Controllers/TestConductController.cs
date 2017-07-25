@@ -205,6 +205,11 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
+            if(!await _testConductRepository.IsTestInValidDateWindow(link))
+            {
+                return NotFound();
+            }
+
             return Ok(await _testRepository.GetTestByLinkAsync(link));
         }
 

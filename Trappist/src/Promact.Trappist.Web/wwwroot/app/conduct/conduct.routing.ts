@@ -5,6 +5,7 @@ import { InstructionsComponent } from './instructions/instructions.component';
 import { TestSummaryComponent } from './test-summary/test-summary.component';
 import { TestEndComponent } from './test-end/test-end.component';
 import { TestComponent } from './test/test.component';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 const conductRoutes: Routes = [
     {
@@ -31,6 +32,10 @@ const conductRoutes: Routes = [
     {
         path: 'test',
         component: TestComponent
+    },
+    {
+        path: '**',
+        component: PageNotFoundComponent 
     }
 ];
 
