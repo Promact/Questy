@@ -295,7 +295,7 @@ export class TestReportComponent implements OnInit {
      * @param testAttendee is object of the testAttendee table
      * @param select is the checkbox value of the checked candidate
      */
-    checkIfAllSelected(testAttendee: TestAttendee, select: boolean) {
+    selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
         testAttendee.checkedCandidate = select;
       
     }
