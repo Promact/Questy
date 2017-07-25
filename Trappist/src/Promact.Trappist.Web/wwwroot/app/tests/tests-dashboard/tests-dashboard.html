@@ -24,7 +24,7 @@
                             <div class="test-title clearfix">
                                 <h5 class="pull-left" title="{{test.testName}}" [routerLink]="[test.id,'view']">{{test.testName}}</h5>
                                 <em class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
-                                <md-menu #testMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                                <md-menu #testMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                                     <button md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
                                     <button md-menu-item (click)="deleteTestDialog(test)">Delete</button>
                                     <button md-menu-item (click)="duplicateTestDialog(test)">Duplicate</button>

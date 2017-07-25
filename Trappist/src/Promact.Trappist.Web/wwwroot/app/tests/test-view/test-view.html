@@ -14,7 +14,7 @@
                     <em class="material-icons">settings_applications</em>
                     <em class="material-icons">arrow_drop_down</em>
                 </div>
-                <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                <md-menu #settingsMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                     <button md-menu-item [disabled]="!isEditTestEnabled" (click)="editTest(testDetails)">Edit</button>
                     <a md-menu-item (click)="deleteTestDialog(testDetails)">Delete</a>
                     <a md-menu-item (click)="duplicateTestDialog(testDetails)">Duplicate</a>
@@ -39,6 +39,7 @@
                 <h5 class="pull-left">Test Duration: {{testDetails.duration}} mins</h5>
                 <a class="pull-right back-link" [routerLink]="['/tests']">< back to home</a>
             </div>
+            <h5 class="mt20 mb20" *ngIf="!isCategorySelected">No Sections/Questions have been selected yet. To do so, please click <a class="theme-text" [routerLink]="['/tests',testDetails.id,'sections']">here</a>.</h5>
             <ng-container *ngFor="let category of testDetails.categoryAcList;let k=index">
                 <md2-accordion class="questions-selection" *ngIf="category.isSelect">
                     <md2-accordion-tab class="collapsible-block" [disabled]="category.isQuestionAbsent">

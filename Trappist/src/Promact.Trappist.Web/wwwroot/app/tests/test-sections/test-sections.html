@@ -4,15 +4,17 @@
         <div class="spinner"></div>
     </div>
     <div class="container" *ngIf="!loader">
-      <span *ngIf="!isEditTestEnabled">You can not edit on going Test. Click
-        <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
-      </span>
-        <h5>Select sections to add in your test</h5>
+        <span *ngIf="!isEditTestEnabled">
+            You can not edit on going Test. Click
+            <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
+        </span>
+        <h5 *ngIf="!isCategoryExist">No Sections have been created yet. To do so, please click <a class="theme-text"  [routerLink]="['/questions']">here</a>.</h5>
+        <h5 *ngIf="isCategoryExist">Select sections to add in your test</h5>
         <ul class="sections-list">
             <li *ngFor="let categories of testDetails.categoryAcList"
                 (click)="onSelect(categories)">
                 <label for="{{categories.categoryName}}">
-                    <input type="checkbox" id="" [(ngModel)]="categories.isSelect"/>
+                    <input type="checkbox" id="" [(ngModel)]="categories.isSelect" />
                     <span class="section-box clearfix">
                         <span class="h4 pull-left">{{categories.categoryName}}</span>
                         <em class="material-icons pull-right">check</em>

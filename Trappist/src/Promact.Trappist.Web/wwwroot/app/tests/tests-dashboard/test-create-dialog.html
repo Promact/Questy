@@ -8,9 +8,9 @@
             <label>Test Name</label>
             <input type="text" id="name" name="name" class="form-control" (ngModelChange)="changeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (keyup.enter)="onEnter(testNameReference)" />
             <div class="errors-container">
-                <span class="error-msg" *ngIf="isWhiteSpaceError || (name.touched && !name.valid && name.errors.required)">Name is required</span>
-                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special symbols are @, _ and white space</span>
-                <span class="error-msg" *ngIf="errorMessage">Test with this name already exists</span>
+                <span class="error-msg" *ngIf="isWhiteSpaceError || (name.touched && !name.valid && name.errors.required)">Test name is required.</span>
+                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special symbols are @, _ and white space.</span>
+                <span class="error-msg" *ngIf="errorMessage">Test with this name already exists.</span>
             </div>
         </div>
     </md-dialog-content>

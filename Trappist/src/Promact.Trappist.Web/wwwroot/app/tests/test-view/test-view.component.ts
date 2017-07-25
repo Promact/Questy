@@ -38,6 +38,7 @@ export class TestViewComponent implements OnInit {
     copiedContent: boolean;
     testLink: string;
     tooltipMessage: string;
+    isCategorySelected: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, public snackBar: MdSnackBar, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
@@ -46,6 +47,7 @@ export class TestViewComponent implements OnInit {
         this.totalNumberOfQuestions = [];
     
         this.tooltipMessage = 'Copy to Clipboard';
+        this.isCategorySelected = false;
     }
 
     ngOnInit() {
@@ -73,6 +75,9 @@ export class TestViewComponent implements OnInit {
     getTestDetails(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = response;
+            this.isCategorySelected = this.testDetails.categoryAcList.some(function (x) {
+                return x.isSelect;
+            });
             let linkOfTest = response.link;
             let domain = window.location.origin;
             this.testLink = domain + '/conduct/' + linkOfTest;
