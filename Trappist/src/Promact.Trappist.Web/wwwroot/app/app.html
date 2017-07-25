@@ -21,7 +21,7 @@
           <li><em class="material-icons">help</em></li>
           <li class="dropdown">
             <em class="material-icons" [mdMenuTriggerFor]="userMenu">account_circle</em>
-            <md-menu #userMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+            <md-menu #userMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
               <button md-menu-item [routerLink]="['profile']">Profile</button>
               <button md-menu-item (click)="logOff()">Logout</button>
             </md-menu>

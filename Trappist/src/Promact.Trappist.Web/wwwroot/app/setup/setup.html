@@ -15,7 +15,7 @@
                             <label>Connection String</label>
                             <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" #connectionStringName="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="connectionStringName.touched && !connectionStringName.valid && connectionStringName.errors.required" class="error-msg">required</span>
+                                <span *ngIf="connectionStringName.touched && !connectionStringName.valid && connectionStringName.errors.required" class="error-msg">Required</span>
                                 <span class="error-msg" *ngIf="stepOneErrorMessage">Invalid ConnectionString</span>
                             </div>
                         </div>
@@ -68,9 +68,7 @@
                             <div class="errors-container"></div>
                         </div>
                         <div class="action-buttons">
-                            <div class="pull-left proceed-link">
-                                <span class="general-error-msg" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
-                            </div>
+                            <span class="general-error-msg pull-left" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
                             <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button>
                         </div>

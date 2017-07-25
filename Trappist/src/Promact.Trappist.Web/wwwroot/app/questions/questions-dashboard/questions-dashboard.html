@@ -21,7 +21,7 @@
                     <li *ngFor="let category of categoryArray" class="clearfix h5" [ngClass]="isCategorySelected(category)">
                         <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category)">{{category.categoryName}}</span>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
-                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                             <button md-menu-item (click)="updateCategoryDialog(category)">Update</button>
                             <button md-menu-item (click)="deleteCategoryDialog(category)">Delete</button>
                         </md-menu>
@@ -41,7 +41,7 @@
                         <li [ngClass]="{active: selectedDifficulty === DifficultyLevel['Hard']}" (click)="difficultyWiseSearch('Hard')" class="h5">Hard ({{hard}})</li>
                     </ul>
                     <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
-                    <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                    <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                         <a md-menu-item [routerLink]="['single-answer']"><em class="material-icons">radio_button_checked</em> Single Answer</a>
                         <a md-menu-item [routerLink]="['multiple-answers']"><em class="material-icons">check_box</em> Multiple Answer</a>
                         <a md-menu-item [routerLink]="['programming']"><em class="material-icons">code</em> Programming</a>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</em>
-                        <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" x-position="before">
+                        <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                             <button md-menu-item (click)="editQuestion(question)">Edit</button>
                             <button md-menu-item (click)="deleteQuestionDialog(question)">Delete</button>
                             <button md-menu-item (click)="duplicateQuestion(question)">Duplicate</button>

@@ -38,6 +38,7 @@ body {
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h7 {
   margin: 0;
+  line-height: normal;
 }
 
 h1, .h1 {
@@ -439,6 +440,10 @@ md2-accordion-tab {
   width: 60%;
   border: 0;
 
+  .cke_wysiwyg_div {
+    padding: 8px;
+  }
+
   .cke_top {
     background-color: transparent;
     border: 1px solid $color_border;
@@ -474,6 +479,63 @@ md2-accordion-tab {
   .cke_dialog_ui_button_ok,
   .cke_dialog_ui_button_ok:hover {
     background-color: $color_theme;
+    border-color: $color_theme;
+  }
+
+  input.cke_dialog_ui_input_text:focus,
+  input.cke_dialog_ui_input_password:focus,
+  textarea.cke_dialog_ui_input_textarea:focus,
+  select.cke_dialog_ui_input_select:focus,
+  a.cke_smile:focus,
+  a.cke_smile:active,
+  a.cke_specialchar:focus,
+  a.cke_specialchar:active {
+    border-color: $color_theme;
+  }
+
+  .cke_dialog_ui_html {
+    a.cke_btn_over,
+    a.cke_btn_locked:hover,
+    a.cke_btn_locked:focus,
+    a.cke_btn_locked:active,
+    a.cke_btn_unlocked:hover,
+    a.cke_btn_unlocked:focus,
+    a.cke_btn_unlocked:active,
+    a.cke_btn_reset:hover,
+    a.cke_btn_reset:focus,
+    a.cke_btn_reset:active {
+      border-color: $color_theme;
+    }
+  }
+
+  a.cke_dialog_tab:focus {
+    border-color: $color_theme;
+    border-bottom-color: $color_white;
+  }
+}
+
+.mce-panel {
+  .mce-menu-item:hover,
+  .mce-menu-item.mce-selected,
+  .mce-menu-item:focus,
+  .mce-menu-item-normal.mce-active,
+  .mce-primary,
+  .mce-primary:hover, 
+  .mce-primary:focus,
+  .mce-primary.mce-active, 
+  .mce-primary.mce-active:hover, 
+  .mce-primary:not(.mce-disabled):active {
+    background-color: $color_theme;
+  }
+
+  .mce-grid-border a:hover,
+  .mce-grid-border a.mce-active {
+    background-color: $color_theme;
+    border-color: $color_theme;
+  }
+
+  .mce-textbox:focus,
+  .mce-textbox.mce-focus {
     border-color: $color_theme;
   }
 }
@@ -1137,6 +1199,10 @@ footer {
 
           padding: 25px 10px 15px 25px;
           border-bottom: 1px solid $color_border;
+
+          &:last-child {
+            border-bottom: 0;
+          }
         }
 
         .material-icons {
@@ -1612,7 +1678,7 @@ footer {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      vertical-align: top;
+      vertical-align: middle;
       line-height: normal;
 
       &[hidden] {
@@ -1625,6 +1691,7 @@ footer {
       width: inherit;
       font-weight: 400;
       min-width: 200px;
+      vertical-align: middle;
 
       &[hidden] {
         display: none;
@@ -1648,7 +1715,7 @@ footer {
   .settings-menu {
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
+    margin: 0 10px;
     cursor: pointer;
 
     .material-icons:last-child {
@@ -1773,9 +1840,11 @@ footer {
 
             .mat-input-infix {
               top: 1px;
+              padding: 0;
+              border: 0;
             }
 
-            .mat-input-underline, .mat-input-placeholder-wrapper {
+            .mat-input-underline, .mat-input-placeholder-wrapper, .mat-input-subscript-wrapper {
               display: none;
             }
           }
