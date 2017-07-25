@@ -1,53 +1,56 @@
 ﻿<div class="test-create-steps test-questions">
-  <div class="loader-container" *ngIf="loader">
-    <div class="spinner"></div>
-  </div>
-  <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
-  <div class="container" *ngIf="!loader">
-    <span *ngIf="!isEditTestEnabled">
-      You can not edit on going Test. Click
-      <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
-    </span>
-    <h5 *ngIf="!isAnyCategorySelectedForTest">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here</a>.</h5>
-    <h5 *ngIf="isAnyCategorySelectedForTest">Select questions for each section</h5>
-    <ng-container *ngFor="let category of testDetails.categoryAcList; let k=index">
-      <md2-accordion class="questions-selection" *ngIf="category.isSelect">
-        <md2-accordion-tab class="collapsible-block">
-          <md2-accordion-header class="collapsible-header clearfix" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
-            <div class="title-info h2 pull-left">
-              <span>{{category.categoryName}}</span>
-            </div>
-            <div class="pull-right">
-              <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}}/{{category.questionCount}} question(s) selected</span>
-              <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
-            </div>
-          </md2-accordion-header>
-          <div class="collapsible-body p0">
-            <div class="select-all">
-              <md-checkbox class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
-              <h5>Select All</h5>
-              <span class="h7">(total {{category.questionCount}} questions)</span>
-            </div>
-            <ng-container *ngFor="let question of category.questionList;let i=index">
-              <div class="qs-container">
-                <md-checkbox class="only-checkbox mr10" [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)" [disabled]="!isEditTestEnabled"></md-checkbox>
-                <p class="qs-num">Q.{{i+1}}</p>
-                <div class="qs-text">
-                  <p class="question" [innerHtml]="question.question.questionDetail"></p>
-                  <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
-                    <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
-                  </div>
-                  <div class="mt10">
-                    <p class="tags">{{category.categoryName}}</p>
-                    <p class="tags">{{DifficultyLevel[question.question.difficultyLevel]}}</p>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-        </md2-accordion-tab>
-      </md2-accordion>
-    </ng-container>
-  </div>
-  <create-test-footer (saveExit)="saveExit()" (saveNext)="saveNext()"></create-test-footer>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
+    <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+    <div class="container" *ngIf="!loader">
+        <div class="loader-container" *ngIf="loader_question">
+            <div class="spinner"></div>
+        </div>
+        <span *ngIf="!isEditTestEnabled">
+            You can not edit on going Test. Click
+            <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
+        </span>
+        <h5 *ngIf="!isAnyCategorySelectedForTest">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here</a></h5>
+        <h5 *ngIf="isAnyCategorySelectedForTest">Select questions for each section</h5>
+        <ng-container *ngFor="let category of testDetails.categoryAcList; let k=index">
+            <md2-accordion class="questions-selection" *ngIf="category.isSelect">
+                <md2-accordion-tab class="collapsible-block">
+                    <md2-accordion-header class="collapsible-header clearfix" [class.active]="category.isAccordionOpen" (click)="getAllquestions(category,k)">
+                        <div class="title-info h2 pull-left">
+                            <span>{{category.categoryName}}</span>
+                        </div>
+                        <div class="pull-right">
+                            <span class="h7 qs-selected">{{category.numberOfSelectedQuestion}}/{{category.questionCount}} question(s) selected</span>
+                            <span class="collapsible-icon"><em class="material-icons add-icon">add</em><em class="material-icons remove-icon">remove</em></span>
+                        </div>
+                    </md2-accordion-header>
+                    <div class="collapsible-body p0">
+                        <div class="select-all">
+                            <md-checkbox class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
+                            <h5>Select All</h5>
+                            <span class="h7">(total {{category.questionCount}} questions)</span>
+                        </div>
+                        <ng-container *ngFor="let question of category.questionList;let i=index">
+                            <div class="qs-container">
+                                <md-checkbox class="only-checkbox mr10" [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)" [disabled]="!isEditTestEnabled"></md-checkbox>
+                                <p class="qs-num">Q.{{i+1}}</p>
+                                <div class="qs-text">
+                                    <p class="question" [innerHtml]="question.question.questionDetail"></p>
+                                    <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                                        <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option"><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                                    </div>
+                                    <div class="mt10">
+                                        <p class="tags">{{category.categoryName}}</p>
+                                        <p class="tags">{{DifficultyLevel[question.question.difficultyLevel]}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </md2-accordion-tab>
+            </md2-accordion>
+        </ng-container>
+    </div>
+    <create-test-footer (saveExit)="saveExit()" (saveNext)="saveNext()"></create-test-footer>
 </div>
