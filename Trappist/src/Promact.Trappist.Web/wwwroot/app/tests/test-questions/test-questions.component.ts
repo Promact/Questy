@@ -24,7 +24,8 @@ export class TestQuestionsComponent implements OnInit {
     isSaveExit: boolean;
     testDetails: Test;
     loader: boolean = false;
-    optionName: string[]; 
+    loader_question: boolean = false;
+    optionName: string[];
     testNameReference: string;
     isAnyCategorySelectedForTest: boolean;
     isEditTestEnabled: boolean;
@@ -56,31 +57,31 @@ export class TestQuestionsComponent implements OnInit {
      * @param i is index of category
      */
     getAllquestions(category: Category, i: number) {
-            this.loader = true;
-            if (!category.isAccordionOpen) {
-                category.isAccordionOpen = true;
-                if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
-                    category.isAlreadyClicked = true;
-                    this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
-                        this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
-                        this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(function (question) {
-                            return question.question.isSelect;
-                        }).length;
-                        category.selectAll = category.questionList.every(function (question) {
-                            return question.question.isSelect;
-                        });
-                        this.loader = false;
+        this.loader_question = true;
+        if (!category.isAccordionOpen) {
+            category.isAccordionOpen = true;
+            if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
+                category.isAlreadyClicked = true;
+                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
+                    this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                    this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(question => {
+                        return question.question.isSelect;
+                    }).length;
+                    category.selectAll = category.questionList.every(question => {
+                        return question.question.isSelect;
                     });
-                } else {
-                    category.isAlreadyClicked = true;
-                    this.loader = false;
-                }
+                    this.loader_question = false;
+                });
             } else {
-                category.isAccordionOpen = false;
-                this.loader = false;
+                category.isAlreadyClicked = true;
+                this.loader_question = false;
             }
+        } else {
+            category.isAccordionOpen = false;
+            this.loader_question = false;
         }
-    
+    }
+
     /**
      * returns 'correct' class for correct option
      * @param isAnswer
@@ -103,11 +104,11 @@ export class TestQuestionsComponent implements OnInit {
                 return category.isSelect;
             });
             this.loader = false;
-        }, err => {  
-                this.openSnackBar('No test found for this Id');
-                this.route.navigate(['/tests']);
-                this.loader = false;
-            });      
+        }, err => {
+            this.openSnackBar('No test found for this Id');
+            this.route.navigate(['/tests']);
+            this.loader = false;
+        });
     }
 
     /**
@@ -116,19 +117,19 @@ export class TestQuestionsComponent implements OnInit {
      * @param category is an object of Category
      */
     selectQuestion(questionToSelect: QuestionBase, category: Category) {
-            if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
-                let isAllSelected = category.questionList.every(function (question) {
-                    return question.question.isSelect;
-                });
-                if (isAllSelected)
-                    category.selectAll = true;
-                category.numberOfSelectedQuestion++;
-            } else {
-                category.selectAll = false;
-                questionToSelect.question.isSelect = false;
-                category.numberOfSelectedQuestion--;
-            }
+        if (questionToSelect.question.isSelect) {//If all questions are selected except one,and If user selects that question, then selectAll checkbox will be selected
+            let isAllSelected = category.questionList.every(function (question) {
+                return question.question.isSelect;
+            });
+            if (isAllSelected)
+                category.selectAll = true;
+            category.numberOfSelectedQuestion++;
+        } else {
+            category.selectAll = false;
+            questionToSelect.question.isSelect = false;
+            category.numberOfSelectedQuestion--;
         }
+    }
 
     /**
      * Adds all the questions to to database and navigate to test-settings.component
@@ -172,19 +173,19 @@ export class TestQuestionsComponent implements OnInit {
      * @param questionCount number of all the questions of a category
      */
     selectAll(category: Category) {
-            category.questionList.map(function (questionList) {
-                //If selectAll checkbox is selected
-                if (category.selectAll) {
-                    //every question is selected
-                    questionList.question.isSelect = true;
-                    category.numberOfSelectedQuestion = category.questionCount;
-                }
-                else {
-                    //If selectAll checkbox is unselected ,then every question is deselected
-                    questionList.question.isSelect = false;
-                    category.numberOfSelectedQuestion = 0;
-                }
-            });
+        category.questionList.map(function (questionList) {
+            //If selectAll checkbox is selected
+            if (category.selectAll) {
+                //every question is selected
+                questionList.question.isSelect = true;
+                category.numberOfSelectedQuestion = category.questionCount;
+            }
+            else {
+                //If selectAll checkbox is unselected ,then every question is deselected
+                questionList.question.isSelect = false;
+                category.numberOfSelectedQuestion = 0;
+            }
+        });
     }
 
     /**
