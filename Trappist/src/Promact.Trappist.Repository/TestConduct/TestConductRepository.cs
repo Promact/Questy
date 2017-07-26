@@ -90,10 +90,10 @@ namespace Promact.Trappist.Repository.TestConduct
                 var compareEndDate = DateTime.Compare(currentDate, testObject.EndDate);
                 if (testObject.IsPaused || (compareEndDate > 0))
                     return false;
-                return true;
+                else return true;
             }
-            else
-                return false;
+            else return false;
+           
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
