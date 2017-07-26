@@ -29,11 +29,13 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     categoryArray: Category[];
     difficultyLevel: string[];
     singleMultipleAnswerQuestion: QuestionBase;
+    isTwoOptionSame: boolean;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 4;
         this.indexOfOptionSelected = null;
         this.isClose = false;
         this.isdulicateQuestion = false;
+        this.isTwoOptionSame = false;
         this.difficultyLevelSelected = 'default';
         this.categoryName = 'default';
         this.categoryArray = new Array<Category>();
@@ -142,6 +144,12 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
     }
 
+
+    isTwoOptionsSame(optionName: string) {
+        this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.option === optionName)
+        console.log(this.isTwoOptionSame);
+    }
+
     /**
      * Get question type of question based on current url
      */
@@ -180,14 +188,14 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      */
     getCategoryId(category: string) {
         this.categoryName = category;
-        this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName) !.id;
+        this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName)!.id;
     }
 
     /**
      * Get category name based on category Id
      */
     getCategoryName() {
-        this.categoryName = this.categoryArray.find(x => x.id === this.singleMultipleAnswerQuestion.question.categoryID) !.categoryName;
+        this.categoryName = this.categoryArray.find(x => x.id === this.singleMultipleAnswerQuestion.question.categoryID)!.categoryName;
     }
 
     /**
