@@ -8,7 +8,7 @@
         <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm">
             <div class="form-fields">
                 <div class="form-group">
-                    <app-tinymce  placeholder="Question Text" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required></app-tinymce>
+                    <app-tinymce placeholder="Question Text" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required></app-tinymce>
                     <div class="errors-container">
                         <span *ngIf="question.invalid && question.touched" class="error-msg">Question field is required</span>
                     </div>
@@ -16,7 +16,7 @@
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
                     <md-radio-group [(ngModel)]="indexOfOptionSelected" name="first">
                         <md-radio-button value="{{i}}" [disabled]="option.option === undefined || option.option === ''" *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i">
-                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" (keyup)="isTwoOptionsSame(option.option)" required />
+                            <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" (keyup)="isTwoOptionsSame(option.option , i)" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
                                 <span *ngIf="choice.touched && choice.invalid " class="error-msg mt9 ml10">This field is required</span>
@@ -54,7 +54,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-                <button type="submit" *ngIf="!isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficultyLevelSelected === 'default' || categoryName === 'default' ||!isOptionSelected() || 'isTwoOptionSame'">Save</button>
+                <button type="submit" *ngIf="!isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficultyLevelSelected === 'default' || categoryName === 'default' ||!isOptionSelected() || isTwoOptionSame ">Save</button>
                 <button type="submit" *ngIf="isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || !isOptionSelected()">Update</button>
             </div>
         </form>
