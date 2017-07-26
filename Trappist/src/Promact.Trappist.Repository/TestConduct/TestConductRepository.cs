@@ -85,15 +85,10 @@ namespace Promact.Trappist.Repository.TestConduct
         {        
             var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == magicString);
             var currentDate = DateTime.UtcNow;
-            if (testObject != null)
-            {
-                var compareEndDate = DateTime.Compare(currentDate, testObject.EndDate);
-                if (testObject.IsPaused || (compareEndDate > 0))
-                    return false;
-                else return true;
-            }
+            var compareEndDate = DateTime.Compare(currentDate, testObject.EndDate);
+            if ((testObject != null && (compareEndDate < 0)) && (!testObject.IsPaused))
+                return true;
             else return false;
-           
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
