@@ -274,7 +274,7 @@ export class TestReportComponent implements OnInit {
     /**
      * Select and deselect all candidates of a test
      */
-    selectAllChandidates() {
+    selectAllCandidates() {
           if(this.checkedAllCandidate) 
              this.testAttendeeArray.forEach(k => {
                 k.checkedCandidate = true;

@@ -51,8 +51,8 @@
             'tinymce': 'npm:tinymce',
             'ngx-popover': 'npm:ngx-popover',
             'ng2-charts': 'npm:ng2-charts',
-            '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js'
-            'services': '/services',
+            
+            '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
             'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js'
 
