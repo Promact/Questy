@@ -368,7 +368,7 @@ namespace Promact.Trappist.Test.TestConduct
                 BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
                 IncorrectMarks = -1,
-                EndDate = new DateTime(2017, 7, 26)
+                EndDate = new DateTime(2040, 7, 26)
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
