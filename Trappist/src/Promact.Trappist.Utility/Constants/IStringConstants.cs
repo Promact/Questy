@@ -67,6 +67,11 @@
         /// Property UserName to return "Trappist123@gmail.com" string
         /// </summary>
         string UserName { get; }
+
+        /// <summary>
+        /// Property FailedTosendEmailError is used when mail cannot be send due to server connection problem 
+        /// </summary>
+        string FailedToSendEmailError { get; }
         #endregion
 
         #region Profile Constants

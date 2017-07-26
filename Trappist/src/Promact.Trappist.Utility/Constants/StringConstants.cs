@@ -104,6 +104,13 @@
                 return "Trappist123@gmail.com";
             }
         }
+        public string FailedToSendEmailError
+        {
+            get
+            {
+                return "Failed to send the mail! Please try again";
+            }
+        }
         #endregion
 
         #region Profile Constants

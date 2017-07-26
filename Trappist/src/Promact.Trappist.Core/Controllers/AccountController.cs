@@ -123,9 +123,14 @@ namespace Promact.Trappist.Core.Controllers
                 }
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName,
+                var result = await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName,
                      body: $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>",
                     subject: "Reset Password");
+                if(!result)
+                {
+                    ViewBag.EmailError = _stringConstant.FailedToSendEmailError;
+                    return View(forgotPasswordModel);
+                }
                 return View("ForgotPasswordConfirmation");
             }
             return View(forgotPasswordModel);
