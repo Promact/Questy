@@ -82,7 +82,7 @@ export class TestComponent implements OnInit {
      */
     getTestByLink() {
         let url = window.location.pathname;
-        let link = url.substring(url.indexOf('/conduc/t') + 9, url.indexOf('/test'));
+        let link = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
 
         this.conductService.getTestByLink(link).subscribe((response) => {
             this.test = response;

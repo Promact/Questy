@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
+using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using System;
