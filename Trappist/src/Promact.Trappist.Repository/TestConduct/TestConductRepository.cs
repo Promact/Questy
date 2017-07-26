@@ -82,13 +82,11 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
-        {        
+        {
             var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == magicString);
-            var currentDate = DateTime.UtcNow;
-            var compareEndDate = DateTime.Compare(currentDate, testObject.EndDate);
-            if ((testObject != null && (compareEndDate < 0)) && (!testObject.IsPaused))
-                return true;
-            else return false;
+            var currentDate = DateTime.UtcNow; 
+            // if Test is not paused and current date is not greater than EndDate of a test then it returns true and test link exist otherwise link does not exist
+            return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused ? true : false;          
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
@@ -109,7 +107,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 {
                     deserializedAnswer.Remove(answerToUpdate);
                 }
-                
+
                 //Add answer
                 deserializedAnswer.Add(answer);
                 var serializedAnswer = JsonConvert.SerializeObject(deserializedAnswer);
@@ -135,10 +133,10 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<bool> IsAnswerValidAsync(int attendeeId, TestAnswerAC answer)
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-            if(attendeeAnswer.Answers != null)
+            if (attendeeAnswer.Answers != null)
             {
                 var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers);
-                if(deserializedAnswer[0] != null)
+                if (deserializedAnswer[0] != null)
                 {
                     return !(deserializedAnswer.Where(x => x.QuestionId == answer.QuestionId && x.QuestionStatus == QuestionStatus.answered).Count() > 0);
                 }
@@ -202,7 +200,7 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.Report.AddAsync(report);
             await _dbContext.SaveChangesAsync();
 
-            if(testStatus != TestStatus.AllCandidates)
+            if (testStatus != TestStatus.AllCandidates)
             {
                 //Begin transformation
                 await TransformAttendeeAnswer(attendeeId);
@@ -224,7 +222,7 @@ namespace Promact.Trappist.Repository.TestConduct
             var startTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.StartDate).SingleAsync();
             var endTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.EndDate).SingleAsync();
 
-            if(currentDate.CompareTo(startTime) >= 0 && currentDate.CompareTo(endTime) <= 0)
+            if (currentDate.CompareTo(startTime) >= 0 && currentDate.CompareTo(endTime) <= 0)
             {
                 return true;
             }
@@ -245,13 +243,13 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
 
-            if(attendeeAnswer != null)
+            if (attendeeAnswer != null)
             {
-                if(attendeeAnswer.Answers != null)
+                if (attendeeAnswer.Answers != null)
                 {
                     var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
-                    
-                    foreach(var answer in deserializedAnswer)
+
+                    foreach (var answer in deserializedAnswer)
                     {
                         var testAnswers = new TestAnswers();
                         //Adding attempted Question to TestConduct table
@@ -268,7 +266,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         if (answer.OptionChoice.Count() > 0)
                         {
                             //A question can have multiple answer
-                            foreach(var option in answer.OptionChoice)
+                            foreach (var option in answer.OptionChoice)
                             {
                                 testAnswers = new TestAnswers()
                                 {
