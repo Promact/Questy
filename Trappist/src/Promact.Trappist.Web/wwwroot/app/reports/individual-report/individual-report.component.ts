@@ -231,8 +231,4 @@ export class IndividualReportComponent implements OnInit {
     correctPieChartValue() {
         return [this.easy, this.medium, this.hard];
     }
-
-    printIndividualReport() {
-        window.print();
-    }
 }
