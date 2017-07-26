@@ -33,7 +33,7 @@
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
-                        <th><md-checkbox class="only-checkbox" [(ngModel)]="checkedAllCandidate" (change)="selectAllChandidates()"></md-checkbox></th>
+                        <th><md-checkbox class="only-checkbox" [(ngModel)]="checkedAllCandidate" (change)="selectAllCandidates()"></md-checkbox></th>
                         <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred()">{{headerStarStatus}}</em></th>
                         <th class="h5" md2SortBy="firstName">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
