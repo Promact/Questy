@@ -145,8 +145,13 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
 
-    isTwoOptionsSame(optionName: string) {
-        this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.option === optionName)
+    isTwoOptionsSame(optionName: string, optionIndex: number) {
+        for (let i = 0; i < this.noOfOptionShown; i++) {
+            if (i !== optionIndex)
+                this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option === optionName;
+            if (this.isTwoOptionSame)
+                break;
+        }
         console.log(this.isTwoOptionSame);
     }
 
