@@ -112,21 +112,14 @@ namespace Promact.Trappist.Test.TestConduct
         [Fact]
         public async Task IsTestLinkExistAsync()
         {
-            await CreateTestAsync();
+            var testObject = await CreateTestAsync();
             var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
             Assert.True(linkExist);
+            testObject.IsPaused = true;
+            var linkNotExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
+            Assert.False(linkNotExist);
         }
 
-        /// <summary>
-        /// This test case used to check test magic string is not exist.
-        /// </summary>
-        /// <returns></returns>
-        [Fact]
-        public async Task IsTestLinkNotExistAsync()
-        {
-            var result = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
-            Assert.False(result);
-        }
 
         /// <summary>
         /// This test case is used to test the test instructions details
@@ -368,7 +361,7 @@ namespace Promact.Trappist.Test.TestConduct
                 BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
                 IncorrectMarks = -1,
-                EndDate = new DateTime(2040, 7, 26)
+                EndDate = new DateTime(2044,12,24)
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
