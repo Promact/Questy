@@ -33,29 +33,29 @@
                             <label>Server Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.server" name="nameOfServer" #nameOfServer="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">required</span>
+                                <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Port</label>
                             <input required pattern="[0-9]*" type="text" class="form-control small-width" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">required</span>
-                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.pattern" class="error-msg">Invalid port number</span>
+                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">Required</span>
+                                <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.pattern" class="error-msg">Port number should be in digits only</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>User Name</label>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersEmailAddress" #usersEmailAddress="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">required</span>
+                                <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
                             <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userMailPassword" #userMailPassword="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">required</span>
+                                <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,7 +82,7 @@
                             <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="registrationFields.name" name="usersName" #usersName="ngModel" maxlength="150" />
                             <div class="errors-container">
                                 <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
-                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">required</span>
+                                <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -90,7 +90,7 @@
                             <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="text" class="form-control" [(ngModel)]="registrationFields.email" name="userEmail" #userEmail="ngModel" maxlength="255" />
                             <div class="errors-container">
                                 <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
-                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">required</span>
+                                <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,7 +99,7 @@
                                    [(ngModel)]="registrationFields.password" name="userPassword" #userPassword="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Password must be alphanumeric including at least 1 uppercase letter and a special character with 8 to 14 characters</span>
-                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">required</span>
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,7 +107,7 @@
                             <input required type="password" class="form-control" [(ngModel)]="registrationFields.confirmPassword"
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
                             <div class="errors-container">
-                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">required</span>
+                                <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">Required</span>
                                 <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">New password and Confirm password do not match</span>
                             </div>
                         </div>
