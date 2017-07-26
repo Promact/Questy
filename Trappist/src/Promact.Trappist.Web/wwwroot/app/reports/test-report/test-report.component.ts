@@ -32,6 +32,7 @@ export class TestReportComponent implements OnInit {
     loader: boolean;
     test: Test;
     checkedAllCandidate: boolean;
+    isAnyCandidateSelected: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -48,6 +49,7 @@ export class TestReportComponent implements OnInit {
         this.test = new Test();
         this.loader = true;
         this.checkedAllCandidate = false;
+        this.isAnyCandidateSelected = false;
     }
 
     ngOnInit() {
@@ -238,24 +240,32 @@ export class TestReportComponent implements OnInit {
         let testName = this.test.testName;
         let reports = new Array();
         let space = ' ';
-        this.testAttendeeArray.forEach(x => {
-                if (x.checkedCandidate) {
-                    let report = {
-                        'name': x.firstName + space + x.lastName,
-                        'email': x.email,
-                        'createdDateTime': x.createdDateTime,
-                        'score': x.report.totalMarksScored,
-                        'percentage': x.report.percentage
-                    };
-                    reports.push(report);
-                }
+        if (!this.checkedAllCandidate) {
+            this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
+                return x.checkedCandidate;
             });
+            if (!this.isAnyCandidateSelected) {
+                this.selectAllCandidates();
+            }
+        }
+        this.testAttendeeArray.forEach(x => {
+            if (x.checkedCandidate) {
+                let report = {
+                    'name': x.firstName + space + x.lastName,
+                    'email': x.email,
+                    'createdDateTime': x.createdDateTime,
+                    'score': x.report.totalMarksScored,
+                    'percentage': x.report.percentage
+                };
+                reports.push(report);
+            }
+        });
         let columns = [
-                    { title: 'Name', dataKey: 'name' },
-                    { title: 'Email', dataKey: 'email' },
-                    { title: 'Test Date', dataKey: 'createdDateTime' },
-                    { title: 'Score', dataKey: 'score' },
-                    { title: 'Percentage', dataKey: 'percentage' },];
+            { title: 'Name', dataKey: 'name' },
+            { title: 'Email', dataKey: 'email' },
+            { title: 'Test Date', dataKey: 'createdDateTime' },
+            { title: 'Score', dataKey: 'score' },
+            { title: 'Percentage', dataKey: 'percentage' },];
         let doc = new jsPDF('p', 'pt');
         doc.autoTable(columns, reports, {
             styles: {
@@ -275,15 +285,18 @@ export class TestReportComponent implements OnInit {
      * Select and deselect all candidates of a test
      */
     selectAllCandidates() {
-          if(this.checkedAllCandidate) 
-             this.testAttendeeArray.forEach(k => {
+        if (this.checkedAllCandidate || !this.isAnyCandidateSelected) {
+            this.testAttendeeArray.forEach(k => {
                 k.checkedCandidate = true;
-                });
-            else
-              this.testAttendeeArray.forEach(k => {
-                   k.checkedCandidate = false;
-              });
+            });
+            this.isAnyCandidateSelected = true;
+            this.checkedAllCandidate = true;
         }
+        else
+            this.testAttendeeArray.forEach(k => {
+                k.checkedCandidate = false;
+            });
+    }
 
     /**
      * Select individual candidate of a test
@@ -291,6 +304,6 @@ export class TestReportComponent implements OnInit {
      * @param select is the checkbox value of the checked candidate
      */
     selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
-        testAttendee.checkedCandidate = select;   
-    }      
+        testAttendee.checkedCandidate = select;
+    }
 }
