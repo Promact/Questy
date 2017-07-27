@@ -7,6 +7,7 @@ import { TestQuestion } from '../../tests/tests.model';
 import { TestAnswers } from '../testanswers.model';
 import { SingleMultipleAnswerQuestionOption } from '../../questions/single-multiple-answer-question-option.model';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+declare var jsPDF: any;
 
 @Component({
     moduleId: module.id,
@@ -230,5 +231,52 @@ export class IndividualReportComponent implements OnInit {
     //Sets the values of the pie chart that displays the no of correct answers in each difficulty level
     correctPieChartValue() {
         return [this.easy, this.medium, this.hard];
+    }
+
+    /**
+   * Prints Individual report for a test attendee 
+   * @param printSectionId is a string for getting the required element to be printed from the html
+   */
+    printIndividualReport(printSectionId: string) {
+        this.loader = true;
+        let elementToPrint = document.getElementById('printSectionId');
+        let pdf = new jsPDF('p', 'mm', 'a4');
+        let styles = {
+            background: '#FFFFFF'
+        };
+        pdf.addHTML(elementToPrint, 0, 15, styles, () => {
+           
+            pdf.setProperties({
+                title: 'Individual-test-report'
+            });
+            pdf.text(this.testAttendee.test.testName, 20, 13);
+            pdf.setFontSize(5);
+            pdf.autoPrint();
+            pdf.output('dataurlnewwindow');
+            this.loader = false;
+        });
+        
+    }
+
+    /**
+     * Downloads the individual report of a test attendee in the form of a pdf
+     * @param printSectionId is a string for getting the required element to be downloaded from the html
+     */
+    downloadIndividualReport(printSectionId: string) {
+        this.loader = true;
+        let dataToDownload = document.getElementById('printSectionId');
+        let doc = new jsPDF('p', 'mm', 'a4');
+        let styles = {
+            background: '#FFFFFF',
+        };
+        doc.addHTML(dataToDownload, 0, 15, styles, () => {
+            doc.setProperties({
+                title: 'Individual-test-report'
+            });
+            doc.text(this.testAttendee.test.testName, 20, 13);
+            doc.setFontSize(5);
+            doc.save('individual-report.pdf');
+            this.loader = false;
+        });
     }
 }
