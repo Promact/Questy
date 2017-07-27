@@ -8,8 +8,6 @@
                 <span class="test-name">{{testDetails.testName}}</span>
             </h1>
             <div class="pull-right">
-                <button type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)" (click)="pauseTest()">Pause</button>
-                <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" (click)="resumeTest()">Resume</button>
                 <div class="settings-menu" [mdMenuTriggerFor]="settingsMenu">
                     <em class="material-icons">settings_applications</em>
                     <em class="material-icons">arrow_drop_down</em>

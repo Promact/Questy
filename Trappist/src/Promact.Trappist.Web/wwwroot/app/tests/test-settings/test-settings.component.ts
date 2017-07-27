@@ -162,8 +162,7 @@ export class TestSettingsComponent implements OnInit {
             if (isQuestionAdded) {
                 this.testDetails.isLaunched = isTestLaunched;
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
-                    this.openSnackBar('Your test has been launched');
-                    this.router.navigate(['/tests/' + this.testDetails.id + '/view']);
+                    this.openSnackBar('Your test has een launched successfully');
                 },
                     errorHandling => {
                         this.response = errorHandling.json();
@@ -183,7 +182,27 @@ export class TestSettingsComponent implements OnInit {
             let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
         }
     }
+    /**
+    * Pause the test 
+    */
+    pauseTest() {
+        this.testDetails.isPaused = true;
+        this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
+            if (response)
+                this.openSnackBar('Your Test is paused');
+        });
+    }
 
+    /**
+    * Resumes the test
+    */
+    resumeTest() {
+        this.testDetails.isPaused = false;
+        this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
+            if (response)
+                this.openSnackBar('Saved changes and resumed test');
+        });
+    }
     ///**
     // * To check if any attendee for the test exixt or not
     // */

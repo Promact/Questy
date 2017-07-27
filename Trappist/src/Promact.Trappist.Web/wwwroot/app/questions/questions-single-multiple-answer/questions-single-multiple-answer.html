@@ -20,6 +20,7 @@
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
                                 <span *ngIf="choice.touched && choice.invalid " class="error-msg mt9 ml10">This field is required</span>
+                                <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same</span>
                             </div>
                         </md-radio-button>
                     </md-radio-group>

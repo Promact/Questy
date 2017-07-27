@@ -3,4 +3,5 @@
     option: string;
     isAnswer: boolean;
     singleMultipleAnswerQuestionId: number;
+    isTwoOptionsSame: boolean;
 }
