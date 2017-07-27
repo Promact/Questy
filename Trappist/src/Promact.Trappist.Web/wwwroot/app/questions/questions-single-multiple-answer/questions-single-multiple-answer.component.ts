@@ -18,6 +18,7 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
     indexOfOptionSelected: number;
     categoryName: string;
+    optionIndex: number;
     questionId: number;
     difficultyLevelSelected: string;
     noOfOptionShown: number;
@@ -149,10 +150,11 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         for (let i = 0; i < this.noOfOptionShown; i++) {
             if (i !== optionIndex)
                 this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option === optionName;
-            if (this.isTwoOptionSame)
+            this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isTwoOptionsSame = this.isTwoOptionSame;
+            if (this.isTwoOptionSame) {
                 break;
+            }
         }
-        console.log(this.isTwoOptionSame);
     }
 
     /**

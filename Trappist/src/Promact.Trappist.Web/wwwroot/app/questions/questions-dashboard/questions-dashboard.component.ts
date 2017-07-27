@@ -44,6 +44,7 @@ export class QuestionsDashboardComponent implements OnInit {
     id: number;
     difficultyLevel: string;
     categroyId: number;
+    isCategoryPresent: boolean;
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
@@ -62,6 +63,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.selectedDifficulty = DifficultyLevel['All'];
         this.difficultyLevel = 'All';
         this.categroyId = 0;
+        this.isCategoryPresent;
     }
 
     ngOnInit() {
@@ -84,6 +86,7 @@ export class QuestionsDashboardComponent implements OnInit {
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
+            this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
         });
     }
     // get All questions
@@ -214,6 +217,7 @@ export class QuestionsDashboardComponent implements OnInit {
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
             if (categoryToAdd !== '' && categoryToAdd !== undefined)
                 this.categoryArray.unshift(categoryToAdd);
+            this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
         });
     }
 
@@ -242,7 +246,8 @@ export class QuestionsDashboardComponent implements OnInit {
             deletedCategory => {
                 if (deletedCategory) {
                     this.categoryArray.splice(this.categoryArray.indexOf(deletedCategory), 1);
-                    this.getQuestionsOnScrolling();
+                    this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
+                    console.log(this.isCategoryPresent);
                 }
             });
     }

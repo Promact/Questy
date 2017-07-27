@@ -26,8 +26,10 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
+    @Output() resumeTest : any;
     @Output() saveExit: any;
     @Output() saveNext: any;
+    @Output() pauseTest : any;
     @Output() SaveCategory: any;
     @Input('testDetails')
     public testDetails: Test;
@@ -43,6 +45,8 @@ export class CreateTestFooterComponent implements OnInit {
         this.isTestSettings = false;
         this.saveTestSettings = new EventEmitter();
         this.launchTestDialog = new EventEmitter();
+        this.pauseTest = new EventEmitter();
+        this.resumeTest = new EventEmitter();
         this.saveExit = new EventEmitter();
         this.saveNext = new EventEmitter();
         this.SaveCategory = new EventEmitter();
@@ -93,6 +97,14 @@ export class CreateTestFooterComponent implements OnInit {
      */
     addTestQuestions() {
         this.saveNext.emit();
+    }
+
+    pausTest() {
+        this.pauseTest.emit(this.isPaused);
+    }
+
+    resumTest() {
+        this.resumeTest.emit(this.isPaused);
     }
 
     saveSelectedCategoryAndExit() {

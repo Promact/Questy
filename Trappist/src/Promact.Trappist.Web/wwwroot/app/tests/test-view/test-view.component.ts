@@ -193,27 +193,9 @@ export class TestViewComponent implements OnInit {
         });
     }
 
-    /**
-     * Pause the test 
-     */
-    pauseTest() {
-        this.testDetails.isPaused = true;
-        this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
-            if (response) 
-                this.openSnackBar('Your Test is paused');  
-        });
-    }
+   
 
-    /**
-     * Resumes the test
-     */
-    resumeTest() {
-        this.testDetails.isPaused = false;
-        this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
-            if (!response)
-                this.openSnackBar('Your Test is resumed');
-        });
-    }
+   
 
     /**
      * Open duplicate test dialog
