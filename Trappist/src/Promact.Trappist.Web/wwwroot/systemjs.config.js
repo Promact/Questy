@@ -50,8 +50,8 @@
             'angular2-tinymce': 'npm:angular2-tinymce/dist',
             'tinymce': 'npm:tinymce',
             'ngx-popover': 'npm:ngx-popover',
+            'chart.js': 'npm:chart.js',
             'ng2-charts': 'npm:ng2-charts',
-            
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
             'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js'
@@ -89,7 +89,10 @@
             defaultExtension: 'js'
           },
           'tinymce': { defaultExtension: 'js' },
-
+          'chart.js': {
+              main: 'dist/Chart.bundle.min.js',
+              defaultExtension: 'js'
+          },
             'ngx-popover': {
                 main: 'index.js',
                 defaultExtension: 'js'
