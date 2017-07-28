@@ -338,9 +338,11 @@ namespace Promact.Trappist.Repository.TestConduct
             
             var report = new Report()
             {
+                TestAttendeeId = testAttendeeId,
                 TotalMarksScored = (double)marks
             };
-            await _dbContext.Report.AddAsync(report);
+            _dbContext.Report.Update(report);
+            await _dbContext.SaveChangesAsync();
         }
         #endregion
     }
