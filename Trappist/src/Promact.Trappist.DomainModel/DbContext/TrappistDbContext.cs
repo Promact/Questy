@@ -7,6 +7,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Linq;
@@ -75,6 +76,8 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestAnswers> TestAnswers { get; set; }
         public DbSet<AttendeeAnswers> AttendeeAnswers { get; set; }
         public DbSet<Report> Report { get; set; }
+        public DbSet<TestLogs> TestLogs { get; set; }
+      
         public DbSet<TestIpAddress> TestIpAddresses { get; set; } 
         #region Overridden Methods  
         public override int SaveChanges()
