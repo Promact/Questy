@@ -3,8 +3,10 @@ using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using System;
 using System.Collections.Generic;
@@ -21,14 +23,16 @@ namespace Promact.Trappist.Repository.TestConduct
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
         private readonly ITestsRepository _testRepository;
+        private readonly IQuestionRepository _questionRepository;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository)
+        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IQuestionRepository questionRepository)
         {
             _dbContext = dbContext;
             _testRepository = testRepository;
+            _questionRepository = questionRepository;
         }
         #endregion
 
@@ -199,6 +203,7 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 report = new Report();
                 report.TestAttendeeId = attendeeId;
+                report.TotalMarksScored = 0;
             }
             report.TestStatus = testStatus;
             await _dbContext.Report.AddAsync(report);
@@ -208,6 +213,7 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 //Begin transformation
                 await TransformAttendeeAnswer(attendeeId);
+                await GetTotalMarks(attendeeId);
             }
         }
 
@@ -298,6 +304,44 @@ namespace Promact.Trappist.Repository.TestConduct
             }
         }
 
+        private async Task GetTotalMarks(int testAttendeeId)
+        {
+            var option = await _dbContext.SingleMultipleAnswerQuestionOption.FirstOrDefaultAsync();
+            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+            decimal marks = 0;
+
+            var qID = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+
+            foreach(var attendedQuestion in qID)
+            {
+                var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
+                decimal tempScore = 0;
+                foreach(var answers in attendedQuestion.TestAnswers)
+                {
+                    var answeredOption = answers.AnsweredOption;
+
+                    if(question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
+                    {
+                        tempScore = tempScore + testAttendee.Test.CorrectMarks;
+                    }
+                    else
+                    {
+                        tempScore = 0;
+                        tempScore = tempScore - testAttendee.Test.IncorrectMarks;
+                        break;
+                    }
+                }
+
+                marks += tempScore;
+            }
+
+            
+            var report = new Report()
+            {
+                TotalMarksScored = (double)marks
+            };
+            await _dbContext.Report.AddAsync(report);
+        }
         #endregion
     }
 }
