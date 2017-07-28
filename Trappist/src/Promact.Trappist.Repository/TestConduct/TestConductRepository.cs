@@ -306,41 +306,44 @@ namespace Promact.Trappist.Repository.TestConduct
 
         private async Task GetTotalMarks(int testAttendeeId)
         {
-            var option = await _dbContext.SingleMultipleAnswerQuestionOption.FirstOrDefaultAsync();
             var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
             decimal marks = 0;
-
+            decimal fullMarks = 0;
             var qID = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+            var numberOfQuestionsAttended = qID.Count();
 
             foreach(var attendedQuestion in qID)
             {
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
-                decimal tempScore = 0;
+                fullMarks = numberOfQuestionsAttended * testAttendee.Test.CorrectMarks;
+                bool flag = true;
                 foreach(var answers in attendedQuestion.TestAnswers)
                 {
                     var answeredOption = answers.AnsweredOption;
 
-                    if(question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                    {
-                        tempScore = tempScore + testAttendee.Test.CorrectMarks;
-                    }
-                    else
-                    {
-                        tempScore = 0;
-                        tempScore = tempScore - testAttendee.Test.IncorrectMarks;
+                    if(!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
+                    { 
+                        flag = false;
                         break;
                     }
                 }
 
-                marks += tempScore;
+                if (flag)
+                {
+                    marks += testAttendee.Test.CorrectMarks;
+                }
+                else
+                {
+                    marks += testAttendee.Test.IncorrectMarks;
+                }                
             }
 
+
+
+            var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
+            report.TotalMarksScored = (double)marks;
+            report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
             
-            var report = new Report()
-            {
-                TestAttendeeId = testAttendeeId,
-                TotalMarksScored = (double)marks
-            };
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
         }
