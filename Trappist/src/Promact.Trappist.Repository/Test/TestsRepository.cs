@@ -9,7 +9,6 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.GlobalUtil;
@@ -97,14 +96,6 @@ namespace Promact.Trappist.Repository.Tests
         {
             var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             testObject.IsPaused = isPause;
-            //var testLogsObject = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendee.TestId == testObject.Id);
-            //var testLogsObject = new TestLogs();
-            //if (testLogsObject != null)
-            //{
-            //    if (!isPause)
-            //        testLogsObject.ResumeTest = DateTime.UtcNow;
-            //    _dbContext.TestLogs.Update(testLogsObject);
-            //}
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
@@ -342,9 +333,14 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
+           
             var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));
+            var testAttendeeDetails = await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.TestId == test.Id);
+            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == testAttendeeDetails.Id);
+            testLogs.StartTest = DateTime.UtcNow;
+            _dbContext.TestLogs.Update(testLogs);
+            await _dbContext.SaveChangesAsync();
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
-            await GetStartTestTimeAsync();
         }
         #endregion
 
@@ -385,17 +381,6 @@ namespace Promact.Trappist.Repository.Tests
                 }
             }
             return test;
-        }
-
-        private async Task GetStartTestTimeAsync()
-        {
-            var testLogs = new TestLogs();
-            if(testLogs != null)
-            {
-                testLogs.StartTest = DateTime.UtcNow;
-                _dbContext.TestLogs.Update(testLogs);
-                await _dbContext.SaveChangesAsync();
-            }
         }
         #endregion
     }

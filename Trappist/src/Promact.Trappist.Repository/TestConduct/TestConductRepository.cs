@@ -225,13 +225,10 @@ namespace Promact.Trappist.Repository.TestConduct
                 await TransformAttendeeAnswer(attendeeId);
                 await GetTotalMarks(attendeeId);
             }
-            //var testLogs = new TestLogs();
-            //if (testLogs != null)
-            //{
-            //    testLogs.FinishTest = DateTime.UtcNow;
-            //    _dbContext.TestLogs.Update(testLogs);
-            //    await _dbContext.SaveChangesAsync();
-            //}
+            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            testLogs.FinishTest = DateTime.UtcNow;
+            _dbContext.TestLogs.Update(testLogs);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
