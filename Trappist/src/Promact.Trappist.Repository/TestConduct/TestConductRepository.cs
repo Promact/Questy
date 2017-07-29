@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestConduct
@@ -88,7 +89,7 @@ namespace Promact.Trappist.Repository.TestConduct
             var currentDate = DateTime.UtcNow;
             var hostName = Dns.GetHostName();
             var ipAddress = await Dns.GetHostAddressesAsync(hostName);
-            var ipForthisPc = ipAddress[1].ToString();
+            var ipForthisPc = ipAddress.First(a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
             await _dbContext.TestIPAddress.Where(x => x.TestId == testObject.Id).ToListAsync();
 
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
