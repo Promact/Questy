@@ -10,6 +10,7 @@ import { Test } from '../tests.model';
 import { BrowserTolerance } from '../enum-browsertolerance';
 import { AllowTestResume } from '../enum-allowtestresume';
 import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
+import { TestIPAddress } from '../test-IPAdddress';
 
 @Component({
     moduleId: module.id,
@@ -42,6 +43,8 @@ export class TestSettingsComponent implements OnInit {
     testLink: string;
     copiedContent: boolean;
     tooltipMessage: string;
+    ipAddressArray: TestIPAddress[] = [];
+    numberOfIpFields: number[] = [];
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -73,6 +76,7 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            console.log(this.testDetails);
             this.testNameReference = this.testDetails.testName;
             this.loader = false;
             let magicString = this.testDetails.link;
@@ -199,10 +203,34 @@ export class TestSettingsComponent implements OnInit {
     resumeTest() {
         this.testDetails.isPaused = false;
         this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
-            if (response)
+            if (response) {
+                this.ngOnInit();
                 this.openSnackBar('Saved changes and resumed test');
+            }
+                
         });
     }
+    /**
+     * Adds the IP address fields
+     */
+    addIpFields() {
+        let ip = new TestIPAddress();
+        this.testDetails.testIPAddress.push(ip);
+    }
+    /**
+     * Removes ip address fields 
+     * @param index
+     * @param ipId
+     */
+    removeIpAddress(index: number, ipId: number) {
+        this.testDetails.testIPAddress.splice(index, 1);
+        if (ipId !== undefined)
+        this.testService.deleteTestipAddress(ipId).subscribe(response => {
+        });
+        
+    }
+
+
     ///**
     // * To check if any attendee for the test exixt or not
     // */
@@ -213,24 +241,24 @@ export class TestSettingsComponent implements OnInit {
                 window.location.href = window.location.origin + '/pageNotFound';
             }
         });
-}
+    }
 
-/**
- * Displays the tooltip message
- * @param $event is of type Event and is used to call stopPropagation()
- */
-showTooltipMessage($event: Event, testLink: any) {
-    $event.stopPropagation();
-    setTimeout(() => {
-        testLink.select();
-    }, 0);
-    this.tooltipMessage = 'Copied';
-}
+    /**
+     * Displays the tooltip message
+     * @param $event is of type Event and is used to call stopPropagation()
+     */
+    showTooltipMessage($event: Event, testLink: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            testLink.select();
+        }, 0);
+        this.tooltipMessage = 'Copied';
+    }
 
-/**
- * Changes the tooltip message
- */
-changeTooltipMessage() {
-    this.tooltipMessage = 'Copy to Clipboard';
-}
+    /**
+     * Changes the tooltip message
+     */
+    changeTooltipMessage() {
+        this.tooltipMessage = 'Copy to Clipboard';
+    }
 }

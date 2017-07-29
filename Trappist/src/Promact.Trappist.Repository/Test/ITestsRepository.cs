@@ -65,7 +65,15 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="id">id is test Id</param>
         /// <param name="isPause">isPaused is boolean Test property</param>
         /// <returns></returns>
-        Task PauseResumeTest(int id, bool isPause);
+        Task PauseResumeTestAsync(int id, bool isPause);
+        #endregion
+        #region Delete-Test-Ip-Address
+        /// <summary>
+        /// Deletes Ip Address field for a test
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteIpAddressAsync(int id);
         #endregion
         #region Delete Test
         /// <summary>

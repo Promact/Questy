@@ -92,7 +92,7 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
         #region Test-Pause-Resume
-        public async Task PauseResumeTest(int id, bool isPause)
+        public async Task PauseResumeTestAsync(int id, bool isPause)
         {
             var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             testObject.IsPaused = isPause;
@@ -103,6 +103,13 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<bool> IsTestExists(int id)
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task DeleteIpAddressAsync(int id)
+        {
+            var ipAddress = await _dbContext.TestIPAddress.FindAsync(id);
+            _dbContext.TestIPAddress.Remove(ipAddress);
+            await _dbContext.SaveChangesAsync();
         }
         #endregion
 
@@ -251,6 +258,9 @@ namespace Promact.Trappist.Repository.Tests
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
 
+            var testIPAddress = await _dbContext.TestIPAddress.Where(x => x.TestId == testId).ToListAsync();
+            var testIPAddressAc = Mapper.Map<List<TestIpAddress>,List<TestIPAddressAC>>(testIPAddress);
+
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
@@ -264,7 +274,9 @@ namespace Promact.Trappist.Repository.Tests
             DateTime defaultEndDate = date.AddDays(1);
             if (testAcObject != null)
             {
+
                 await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
+                testAcObject.TestIPAddress = testIPAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
@@ -318,7 +330,7 @@ namespace Promact.Trappist.Repository.Tests
 
             return questionList;
         }
-        
+
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
             var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));

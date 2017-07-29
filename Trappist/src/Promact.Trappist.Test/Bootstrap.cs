@@ -27,6 +27,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using System.Collections.Generic;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Reports;
+using Promact.Trappist.DomainModel.Models.Test;
 
 namespace Promact.Trappist.Test
 {
@@ -135,7 +136,7 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<DomainModel.Models.Category.Category, CategoryAC>();
                 cfg.CreateMap<CategoryAC, DomainModel.Models.Category.Category>();
-
+                cfg.CreateMap<TestIpAddress, TestIPAddressAC>();
             });
             #endregion
 

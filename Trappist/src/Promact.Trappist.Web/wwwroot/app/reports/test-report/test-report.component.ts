@@ -31,6 +31,7 @@ export class TestReportComponent implements OnInit {
     showStarCandidates: boolean;
     loader: boolean;
     test: Test;
+    isAnyCandidateExist: boolean;
     checkedAllCandidate: boolean;
     isAnyCandidateSelected: boolean;
 
@@ -47,6 +48,7 @@ export class TestReportComponent implements OnInit {
         this.isAllCandidateStarred = false;
         this.showStarCandidates = false;
         this.test = new Test();
+        this.isAnyCandidateExist = false;
         this.loader = true;
         this.checkedAllCandidate = false;
         this.isAnyCandidateSelected = false;
@@ -74,6 +76,7 @@ export class TestReportComponent implements OnInit {
         this.loader = true;
         this.reportService.getAllTestAttendees(this.testId).subscribe((attendeeList) => {
             this.attendeeArray = attendeeList;
+            this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
             this.testAttendeeArray = this.attendeeArray;
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();

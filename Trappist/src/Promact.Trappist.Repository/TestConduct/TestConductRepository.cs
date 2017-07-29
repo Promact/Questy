@@ -9,6 +9,7 @@ using Promact.Trappist.Repository.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.TestConduct
@@ -84,9 +85,14 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString)
         {
             var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == magicString);
-            var currentDate = DateTime.UtcNow; 
-            // if Test is not paused and current date is not greater than EndDate of a test then it returns true and test link exist otherwise link does not exist
-            return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused ? true : false;          
+            var currentDate = DateTime.UtcNow;
+            var hostName = Dns.GetHostName();
+            var ipAddress = await Dns.GetHostAddressesAsync(hostName);
+            var ipForthisPc = ipAddress[1].ToString();
+            await _dbContext.TestIPAddress.Where(x => x.TestId == testObject.Id).ToListAsync();
+
+            // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
+            return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIPAddress.ToList().Exists(x => x.IPAddress == ipForthisPc) ? true : false;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)

@@ -20,8 +20,6 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public DateTime EndDate { get; set; }
         public int Duration { get; set; }
         public int? WarningTime { get; set; }
-        public string FromIpAddress { get; set; }
-        public string ToIpAddress { get; set; }
         public string WarningMessage { get; set; }
         public decimal CorrectMarks { get; set; }
         public decimal IncorrectMarks { get; set; }
@@ -33,6 +31,7 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public virtual ICollection<TestAttendees> TestAttendees { get; set; }
         public virtual ICollection<TestQuestion> TestQuestion { get; set; }
         public virtual ICollection<TestCategory> TestCategory { get; set; }
+        public virtual ICollection<TestIpAddress> TestIPAddress { get; set; }
         public string CreatedByUserId { get; set; }
 
         [ForeignKey("CreatedByUserId")]

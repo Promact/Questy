@@ -13,7 +13,8 @@
             </div>
         </div>
     </div>
-    <div class="container">
+    <h3 *ngIf="!isAnyCandidateExist">No attendee exist for this test</h3>
+    <div class="container" *ngIf="isAnyCandidateExist">
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
@@ -29,7 +30,7 @@
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
-        <div class="grid-container">
+        <div class="grid-container" >
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>

@@ -4,6 +4,7 @@ import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
 import { QuestionStatus } from '../conduct/question_status.enum';
 import { QuestionDisplay } from '../questions/question-display';
+import { TestIPAddress } from './test-IPAdddress';
 
 export class Test {
     id: number;
@@ -13,8 +14,6 @@ export class Test {
     endDate: Date;
     duration: number;
     warningTime: number;
-    fromIpAddress: string;
-    toIpAddress: string;
     warningMessage: string;
     correctMarks: string;
     incorrectMarks: string;
@@ -24,6 +23,7 @@ export class Test {
     optionOrder: TestOrder;
     allowTestResume: AllowTestResume;
     categoryAcList: Category[] = [];
+    testIPAddress: TestIPAddress[] = [];
     isEditTestEnabled: boolean;
     isQuestionMissing: boolean;
     public isPaused: boolean;
@@ -42,7 +42,7 @@ export class TestCategory {
 export class TestQuestion {
     public id: number;
     public testId: number;
-    public questionId: number;    
+    public questionId: number;
     public isSelect: boolean;
     public question: QuestionDisplay;
     public questionStatus: QuestionStatus;

@@ -120,10 +120,17 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(testObject);
         }
         [HttpGet("isPausedResume/{id}/{isPause}")]
-        public async Task<IActionResult> PauseTest([FromRoute] int id,[FromRoute] bool isPause)
+        public async Task<IActionResult> PauseTestAsync([FromRoute] int id,[FromRoute] bool isPause)
         {
-            await _testRepository.PauseResumeTest(id,isPause);
+            await _testRepository.PauseResumeTestAsync(id,isPause);
             return Ok(isPause);
+        }
+
+        [HttpDelete("deleteIp/{id}")]
+        public async Task<IActionResult> DeleteIPAsync([FromRoute] int id)
+        {
+            await _testRepository.DeleteIpAddressAsync(id);
+            return Ok();
         }
         #endregion
 
