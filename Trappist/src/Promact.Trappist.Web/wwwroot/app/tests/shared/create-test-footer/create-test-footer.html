@@ -18,9 +18,8 @@
         <div class="buttons-block pull-right" *ngIf="isTestSettings">
             <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="updateTestSettings()">Save & Exit</button>
             <button type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="launchTestDialogBox()">Save & Launch</button>
-            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)" (click)="pausTest()">Pause</button>
-            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" (click)="resumTest()">Resume</button>
-
+            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)"  (click)="pausTest()">Pause</button>
+            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime" (click)="resumTest()">Resume</button>
         </div>
     </div>
 </div>

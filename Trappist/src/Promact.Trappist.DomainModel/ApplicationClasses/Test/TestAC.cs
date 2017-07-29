@@ -1,5 +1,6 @@
 ﻿
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Test;
 using System;
 using System.Collections.Generic;
 
@@ -46,6 +47,8 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
         public AllowTestResume AllowTestResume { get; set; }
 
         public List<CategoryAC> CategoryAcList { get; set; }
+
+        public List<TestIPAddressAC> TestIPAddress { get; set; }
 
         public int NumberOfTestAttendees { get; set; }
 

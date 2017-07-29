@@ -181,7 +181,7 @@ namespace Promact.Trappist.Test.Tests
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
-            await _testRepository.PauseResumeTest(test.Id, true);
+            await _testRepository.PauseResumeTestAsync(test.Id, true);
             var testObject = _trappistDbContext.Test.FirstOrDefault(x => x.Id == test.Id);
             Assert.True(testObject.IsPaused);
         }

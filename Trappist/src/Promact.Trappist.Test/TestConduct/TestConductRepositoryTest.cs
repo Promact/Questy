@@ -113,7 +113,12 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task IsTestLinkExistAsync()
         {
             var testObject = await CreateTestAsync();
-            var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(_stringConstants.MagicString);
+            var testIP = new DomainModel.Models.Test.TestIpAddress();
+            testIP.IPAddress = "10.1.81.89";
+            testIP.TestId = testObject.Id;
+            await _trappistDbContext.TestIPAddress.AddAsync(testIP);
+            testObject.EndDate = new DateTime(2044, 12, 24);
+            var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
             Assert.True(linkExist);
             testObject.IsPaused = true;
             var linkNotExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
@@ -180,7 +185,7 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-            
+
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
@@ -203,7 +208,7 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-            
+
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
@@ -295,7 +300,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
 
-            Assert.True(testStatus == TestStatus.CompletedTest);            
+            Assert.True(testStatus == TestStatus.CompletedTest);
         }
 
         [Fact]
@@ -322,8 +327,9 @@ namespace Promact.Trappist.Test.TestConduct
                 CreateQuestionAC(true, "Category1 type question 2", category1.Id, 1),
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
-            
-            var answer = new TestAnswerAC() {
+
+            var answer = new TestAnswerAC()
+            {
                 OptionChoice = new List<int>() { 1 },
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
@@ -332,7 +338,7 @@ namespace Promact.Trappist.Test.TestConduct
 
             answer = new TestAnswerAC()
             {
-                OptionChoice = new List<int>() {  },
+                OptionChoice = new List<int>() { },
                 QuestionId = 2,
                 QuestionStatus = QuestionStatus.answered
             };
@@ -360,8 +366,7 @@ namespace Promact.Trappist.Test.TestConduct
                 Duration = 70,
                 BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
-                IncorrectMarks = -1,
-                EndDate = new DateTime(2044,12,24)
+                IncorrectMarks = -1
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";

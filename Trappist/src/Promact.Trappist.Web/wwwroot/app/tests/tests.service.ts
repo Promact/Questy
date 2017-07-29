@@ -52,6 +52,13 @@ export class TestService {
     updateTestPauseResume(id: number, isPause: boolean) {
         return this.httpService.get(this.testApiUrl + '/isPausedResume/' + id + '/' + isPause);
     }
+    /**
+     * Deletes the ip address of a test
+     * @param id
+     */
+    deleteTestipAddress(id: number) {
+        return this.httpService.delete(this.testApiUrl + '/deleteIp/' + id);
+    }
 
     /**
      * Updates the edited Test Name
