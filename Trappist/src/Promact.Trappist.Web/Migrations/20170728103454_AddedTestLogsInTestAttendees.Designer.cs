@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170728103454_AddedTestLogsInTestAttendees")]
+    partial class AddedTestLogsInTestAttendees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -354,6 +355,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime>("EndDate");
 
+                    b.Property<string>("FromIpAddress");
+
                     b.Property<decimal>("IncorrectMarks");
 
                     b.Property<bool>("IsLaunched");
@@ -371,6 +374,8 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<string>("TestName")
                         .IsRequired()
                         .HasMaxLength(150);
+
+                    b.Property<string>("ToIpAddress");
 
                     b.Property<DateTime?>("UpdateDateTime");
 
@@ -401,26 +406,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TestCategory");
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestIpAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDateTime");
-
-                    b.Property<string>("IpAddress");
-
-                    b.Property<int>("TestId");
-
-                    b.Property<DateTime?>("UpdateDateTime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TestId");
-
-                    b.ToTable("TestIpAddresses");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
@@ -559,7 +544,8 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime>("FillRegistrationForm");
 
-                    b.Property<DateTime?>("FinishTest");
+                    b.Property<DateTime?>("FinishTest")
+                        .IsRequired();
 
                     b.Property<DateTime?>("ResumeTest");
 
@@ -762,14 +748,6 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
                         .WithMany("TestCategory")
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestIpAddress", b =>
-                {
-                    b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
-                        .WithMany("TestIpAddress")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -6,16 +6,12 @@ namespace Promact.Trappist.DomainModel.Models.TestLogs
 {
     public class TestLogs : BaseModel
     {
-        [Required]
         public DateTime VisitTestLink { get; set; }
 
-        [Required]
         public DateTime FillRegistrationForm { get; set; }
 
-        [Required]
         public DateTime StartTest { get; set; }
 
-        [Required]
         public DateTime? FinishTest { get; set; }
 
         public DateTime? AwayFromTestWindow { get; set; }
