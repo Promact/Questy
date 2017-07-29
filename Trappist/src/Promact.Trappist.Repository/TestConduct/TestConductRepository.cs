@@ -7,6 +7,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Questions;
+using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Tests;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,15 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             await _dbContext.TestAttendees.AddAsync(testAttendee);
             await _dbContext.SaveChangesAsync();
+            var testLogsObject = new TestLogs();
+            if (testLogsObject != null)
+            {
+                testLogsObject.TestAttendeeId = testAttendee.Id;
+                testLogsObject.VisitTestLink = DateTime.UtcNow;
+                testLogsObject.FillRegistrationForm = DateTime.UtcNow;
+                await _dbContext.TestLogs.AddAsync(testLogsObject);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString)
@@ -209,13 +219,19 @@ namespace Promact.Trappist.Repository.TestConduct
             report.TestStatus = testStatus;
             await _dbContext.Report.AddAsync(report);
             await _dbContext.SaveChangesAsync();
-
             if (testStatus != TestStatus.AllCandidates)
             {
                 //Begin transformation
                 await TransformAttendeeAnswer(attendeeId);
                 await GetTotalMarks(attendeeId);
             }
+            //var testLogs = new TestLogs();
+            //if (testLogs != null)
+            //{
+            //    testLogs.FinishTest = DateTime.UtcNow;
+            //    _dbContext.TestLogs.Update(testLogs);
+            //    await _dbContext.SaveChangesAsync();
+            //}
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
