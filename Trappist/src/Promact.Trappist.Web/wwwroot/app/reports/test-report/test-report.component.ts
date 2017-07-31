@@ -5,7 +5,10 @@ import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 
-declare let jsPDF: any;
+let jsPDF = require('jspdf');
+require('jsPdfautoTable');
+let Excel = require('exceljs');
+let saveAs = require('filesaver');
 
 @Component({
     moduleId: module.id,
@@ -281,7 +284,62 @@ export class TestReportComponent implements OnInit {
                 doc.text(testName, 40, 30);
             }
         });
-        doc.save('TestReport.pdf');
+        doc.save(testName + '_test_report.pdf');
+        this.checkedAllCandidate = false;
+        this.testAttendeeArray.forEach(x => {
+            x.checkedCandidate = false;
+        });
+    }
+
+    /**
+     * Download test report in excel format
+     */
+    downloadTestReportExcel() {
+        let testName = this.test.testName;
+        let space = ' ';
+        let workBook = new Excel.Workbook();
+        workBook.views = [ {
+            x: 0, y: 0, width: 10000, height: 20000,
+            firstSheet: 0, activeTab: 1, visibility: 'visible'
+        }];
+        let workSheet = workBook.addWorksheet('Test-Sheet', {
+            pageSetup: { paperSize: 9, orientation: 'landscape' }
+        });
+        workSheet.columns = [
+            { header: 'Name', key: 'name', width: 30 },
+            { header: 'Email', key: 'email', width: 30 },
+            { header: 'Test Date', key: 'testDate', width: 30 },
+            { header: 'Score', key: 'score', width: 15 },
+            { header: 'Percentage', key: 'percentage', width: 15 }
+        ];
+        if (!this.checkedAllCandidate) {
+            this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
+                return x.checkedCandidate;
+            });
+            if (!this.isAnyCandidateSelected) {
+                this.selectAllCandidates();
+            }
+        }
+        this.testAttendeeArray.forEach(x => {
+            if (x.checkedCandidate) {
+                let report = {
+                    'name': x.firstName + space + x.lastName,
+                    'email': x.email,
+                    'createdDateTime': x.createdDateTime,
+                    'score': x.report.totalMarksScored,
+                    'percentage': x.report.percentage
+                };
+                workSheet.addRow({ name: report.name, email: report.email, testDate: report.createdDateTime, score: report.score, percentage: report.percentage });
+            }
+        });
+        workBook.xlsx.writeBuffer(workSheet).then(function (buffer: any) {
+            let blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64" });
+            saveAs(blob, testName + "_test_report.xlsx");
+        });
+        this.checkedAllCandidate = false;
+        this.testAttendeeArray.forEach(x => {
+            x.checkedCandidate = false;
+        });
     }
 
     /**
