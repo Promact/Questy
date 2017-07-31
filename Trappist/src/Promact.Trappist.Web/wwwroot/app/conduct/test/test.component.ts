@@ -21,6 +21,7 @@ import 'brace/theme/eclipse';
 import 'brace/theme/solarized_light';
 import 'brace/mode/java';
 import 'brace/mode/c_cpp';
+import { TestLogs } from '../../reports/testlogs.model';
 
 
 //Temporary imports
@@ -52,6 +53,7 @@ export class TestComponent implements OnInit {
     themes: string[];
     codeAnswer: string;
     selectedTheme: string;
+    testLogs : TestLogs;
 
     private seconds: number;
     private focusLost: number;
@@ -510,6 +512,14 @@ export class TestComponent implements OnInit {
         if (this.focusLost > this.test.browserTolerance) {
             this.openSnackBar(message, duration);
             this.endTest(TestStatus.blockedTest);
+            this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
+                this.testLogs = response;
+            });
+        }
+        else if (this.focusLost <= this.test.browserTolerance) {
+            this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
+                this.testLogs = response;
+            });
         }
         else
             this.openSnackBar(message, duration);

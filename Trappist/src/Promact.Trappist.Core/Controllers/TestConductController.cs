@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -284,6 +285,12 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             return false;
+        }
+
+        [HttpPut("testlogs/{attendeeId}")]
+        public async Task SetTestLogsAsync([FromRoute]int attendeeId, [FromBody]TestLogs testLogs)
+        {
+           await _testConductRepository.AddTestLogsAsync(attendeeId,testLogs);
         }
         #endregion
     }

@@ -12,7 +12,7 @@ namespace Promact.Trappist.DomainModel.Models.TestLogs
 
         public DateTime StartTest { get; set; }
 
-        public DateTime? FinishTest { get; set; }
+        public DateTime FinishTest { get; set; }
 
         public DateTime? AwayFromTestWindow { get; set; }
 
