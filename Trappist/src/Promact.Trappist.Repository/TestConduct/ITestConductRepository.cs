@@ -1,8 +1,6 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -111,5 +109,13 @@ namespace Promact.Trappist.Repository.TestConduct
         /// False otherwise.
         /// </returns>
         Task<bool> IsTestInValidDateWindow(string testLink);
+
+        /// <summary>
+        /// Evaluate and Access code snippet
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        /// <param name="code">Code Object</param>
+        /// <returns>True if all test case is passed else false</returns>
+        Task<bool> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer);
     }
 }

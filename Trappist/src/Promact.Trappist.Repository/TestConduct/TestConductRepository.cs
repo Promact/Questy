@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeBaseSimulator.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
@@ -9,6 +10,7 @@ using Promact.Trappist.Repository.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -18,9 +20,11 @@ namespace Promact.Trappist.Repository.TestConduct
     public class TestConductRepository : ITestConductRepository
     {
         #region Private Variables
+        private const string CodeBaseServer = "http://localhost:56725/api/execute";
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
         private readonly ITestsRepository _testRepository;
+        private static readonly HttpClient client = new HttpClient(); 
         #endregion
         #endregion
 
@@ -117,6 +121,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 var serializedAnswer = JsonConvert.SerializeObject(deserializedAnswer);
                 attendeeAnswer.Answers = serializedAnswer;
                 _dbContext.AttendeeAnswers.Update(attendeeAnswer);
+                
             }
             else
             {
@@ -233,9 +238,84 @@ namespace Promact.Trappist.Repository.TestConduct
 
             return false;
         }
+
+        public async Task<bool> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)
+        {
+            var allTestCasePassed = true;
+            var code = testAnswer.Code;
+
+            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
+
+            foreach(var testCase in testCases)
+            {
+                code.Input = testCase.TestCaseInput;
+                var result = await ExecuteCodeAsync(code);
+
+                if (result.Output != testCase.TestCaseOutput)
+                {
+                    allTestCasePassed = false;
+                }
+                
+            }
+            return allTestCasePassed;
+        }
         #endregion
 
         #region Private Method
+
+        /// <summary>
+        /// Calls code base simulator to execute the code
+        /// </summary>
+        /// <param name="code">Code object</param>
+        /// <returns>Result object</returns>
+        private async Task<Result> ExecuteCodeAsync(Code code)
+        {
+            var serializedCode = JsonConvert.SerializeObject(code);
+            var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(CodeBaseServer, body);
+            var content = response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Result>(content.Result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Assess Code Snippet Question and update the marks in report table
+        /// </summary>
+        /// <param name="attendeeId">Test Attendee Id</param>
+        /// <param name="testAnswer">TestAnswer object</param>
+        private async Task AssessCodeSnippet(int attendeeId, TestAnswerAC testAnswer)
+        {
+            var marks = 0d;
+            var code = testAnswer.Code;
+
+            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
+
+            foreach (var testCase in testCases)
+            {
+                code.Input = testCase.TestCaseInput;
+                var result = await ExecuteCodeAsync(code);
+
+                if (result.Output == testCase.TestCaseOutput)
+                {
+                    marks += testCase.TestCaseMarks;
+                }
+            }
+
+            if (await _dbContext.Report.AnyAsync(x => x.TestAttendeeId == attendeeId))
+            {
+                var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+                report.TotalMarksScored += marks;
+            }
+            else
+            {
+                var report = new Report();
+                report.TestAttendeeId = attendeeId;
+                report.TotalMarksScored += marks;
+                await _dbContext.Report.AddAsync(report);
+            }
+            await _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Transform Attendee's JSON formatted Answer stored in AttendeeAnswers table
@@ -284,7 +364,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         else
                         {
                             //Save answer for code snippet question
-                            testAnswers.AnsweredCodeSnippet = answer.Code;
+                            testAnswers.AnsweredCodeSnippet = answer.Code.Source;
                             testAnswers.TestConduct = testConduct;
                             await _dbContext.TestAnswers.AddAsync(testAnswers);
                             await _dbContext.SaveChangesAsync();

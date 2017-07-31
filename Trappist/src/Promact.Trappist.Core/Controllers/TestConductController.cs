@@ -254,6 +254,23 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId));
         }
 
+        [HttpPost("code/{attendeeId}")]
+        public async Task<IActionResult> EvaluateCodeSnippet([FromRoute]int attendeeId, [FromBody]TestAnswerAC testAnswer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(testAnswer.Code == null || testAnswer.Code.Source == "")
+            {
+                return BadRequest();
+            }
+            var isAllTestCasePassing = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, testAnswer);
+
+            return Ok(isAllTestCasePassing);
+        }
+
         #region Test-Instruction API
         /// <summary>
         /// This method is used to get all the instructions before starting of a particular test using testLink
