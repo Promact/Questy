@@ -410,7 +410,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<string>("IPAddress");
+                    b.Property<string>("IpAddress");
 
                     b.Property<int>("TestId");
 
@@ -420,7 +420,7 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.HasIndex("TestId");
 
-                    b.ToTable("TestIPAddress");
+                    b.ToTable("TestIpAddresses");
                 });
 
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestQuestion", b =>
@@ -734,7 +734,7 @@ namespace Promact.Trappist.Web.Migrations
             modelBuilder.Entity("Promact.Trappist.DomainModel.Models.Test.TestIpAddress", b =>
                 {
                     b.HasOne("Promact.Trappist.DomainModel.Models.Test.Test", "Test")
-                        .WithMany("TestIPAddress")
+                        .WithMany("TestIpAddress")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

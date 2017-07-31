@@ -1,12 +1,11 @@
 ﻿
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace Promact.Trappist.DomainModel.Models.Test
 {
-    public class TestIpAddress : BaseModel
+    public class TestIpAddress:BaseModel
     {
-        public string IPAddress { get; set; }
+        public string IpAddress { get; set; }
 
         public int TestId { get; set; }
 

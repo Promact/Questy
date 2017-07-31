@@ -183,7 +183,7 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<Question,QuestionAC>();
                 cfg.CreateMap<Test, TestAC>();
                 cfg.CreateMap<TestAC, Test>();
-                cfg.CreateMap<TestIpAddress,TestIPAddressAC>();
+                cfg.CreateMap<TestIpAddress,TestIpAddressAC>();
             });
             #endregion
         }

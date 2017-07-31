@@ -127,7 +127,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         [HttpDelete("deleteIp/{id}")]
-        public async Task<IActionResult> DeleteIPAsync([FromRoute] int id)
+        public async Task<IActionResult> DeleteIpAsync([FromRoute] int id)
         {
             await _testRepository.DeleteIpAddressAsync(id);
             return Ok();

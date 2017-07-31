@@ -5,34 +5,26 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Promact.Trappist.Web.Migrations
 {
-    public partial class TestIpAddressAdded : Migration
+    public partial class TestIpAddressModelAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "FromIpAddress",
-                table: "Test");
-
-            migrationBuilder.DropColumn(
-                name: "ToIpAddress",
-                table: "Test");
-
             migrationBuilder.CreateTable(
-                name: "TestIPAddress",
+                name: "TestIpAddresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    IPAddress = table.Column<string>(nullable: true),
+                    IpAddress = table.Column<string>(nullable: true),
                     TestId = table.Column<int>(nullable: false),
                     UpdateDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TestIPAddress", x => x.Id);
+                    table.PrimaryKey("PK_TestIpAddresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TestIPAddress_Test_TestId",
+                        name: "FK_TestIpAddresses_Test_TestId",
                         column: x => x.TestId,
                         principalTable: "Test",
                         principalColumn: "Id",
@@ -40,25 +32,15 @@ namespace Promact.Trappist.Web.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestIPAddress_TestId",
-                table: "TestIPAddress",
+                name: "IX_TestIpAddresses_TestId",
+                table: "TestIpAddresses",
                 column: "TestId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TestIPAddress");
-
-            migrationBuilder.AddColumn<string>(
-                name: "FromIpAddress",
-                table: "Test",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ToIpAddress",
-                table: "Test",
-                nullable: true);
+                name: "TestIpAddresses");
         }
     }
 }
