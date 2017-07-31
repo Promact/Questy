@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CodeBaseSimulator.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -352,9 +353,14 @@ namespace Promact.Trappist.Test.TestConduct
 
             answer = new TestAnswerAC()
             {
-                OptionChoice = new List<int>() { },
+                OptionChoice = new List<int>(),
                 QuestionId = 2,
-                QuestionStatus = QuestionStatus.unanswered
+                Code = new Code(){
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.answered
             };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
 
