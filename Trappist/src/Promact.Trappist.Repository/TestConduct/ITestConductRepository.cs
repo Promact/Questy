@@ -1,5 +1,4 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.Test;
-using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
@@ -120,6 +119,14 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testLogs">It is an object of TestLogs type</param>
         /// <returns></returns>
         Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
+
+        /// <summary>
+        /// Evaluate and Access code snippet
+        /// </summary>
+        /// <param name="attendeeId">Id of Test Attendee</param>
+        /// <param name="code">Code Object</param>
+        /// <returns>True if all test case is passed else false</returns>
+        Task<bool> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer);
 
         /// <summary>
         /// Returns the total number of questions for a Test
