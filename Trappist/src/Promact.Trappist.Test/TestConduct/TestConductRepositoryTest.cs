@@ -19,6 +19,8 @@ using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -114,10 +116,13 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testObject = await CreateTestAsync();
             var testIP = new DomainModel.Models.Test.TestIpAddress();
-            testIP.IPAddress = "10.1.81.89";
+            var IPHostename = Dns.GetHostName();
+            var IPAddress =  await Dns.GetHostAddressesAsync(IPHostename);
+            testIP.IPAddress = IPAddress.First(a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
             testIP.TestId = testObject.Id;
             await _trappistDbContext.TestIPAddress.AddAsync(testIP);
             testObject.EndDate = new DateTime(2044, 12, 24);
+           
             var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
             Assert.True(linkExist);
             testObject.IsPaused = true;
