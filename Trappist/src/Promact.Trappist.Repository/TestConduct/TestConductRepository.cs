@@ -255,7 +255,6 @@ namespace Promact.Trappist.Repository.TestConduct
                 {
                     allTestCasePassed = false;
                 }
-                
             }
             return allTestCasePassed;
         }
