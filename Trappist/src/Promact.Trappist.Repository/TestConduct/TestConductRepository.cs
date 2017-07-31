@@ -229,6 +229,15 @@ namespace Promact.Trappist.Repository.TestConduct
             testLogs.FinishTest = DateTime.UtcNow;
             _dbContext.TestLogs.Update(testLogs);
             await _dbContext.SaveChangesAsync();
+
+            DateTime date = testLogs.StartTest;
+            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute + date.Second;
+            DateTime elapsedTime = testLogs.FinishTest;
+            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 *60) + elapsedTime.Minute + elapsedTime.Second;
+            report.TimeTakenByAttendee = FinishTestTimeInSeconds - StartTestTimeInSeconds;
+
+            _dbContext.Report.Update(report);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
@@ -252,6 +261,15 @@ namespace Promact.Trappist.Repository.TestConduct
             }
 
             return false;
+        }
+
+        public async Task AddTestLogsAsync(int attendeeId, TestLogs testLogs)
+        {
+            var testLogsToUpdate = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            testLogs.AwayFromTestWindow = DateTime.UtcNow;
+            testLogsToUpdate.AwayFromTestWindow = testLogs.AwayFromTestWindow;
+            _dbContext.TestLogs.Update(testLogsToUpdate);
+            await _dbContext.SaveChangesAsync();
         }
         #endregion
 

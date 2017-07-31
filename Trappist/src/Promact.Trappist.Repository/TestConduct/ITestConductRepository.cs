@@ -2,6 +2,7 @@
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.DomainModel.Models.TestLogs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -111,5 +112,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// False otherwise.
         /// </returns>
         Task<bool> IsTestInValidDateWindow(string testLink);
+
+        Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
     }
 }

@@ -1,5 +1,7 @@
 ﻿import { Report } from './report.model';
 import { Test } from '../tests/tests.model';
+import { TestLogs } from '../reports/testlogs.model';
+import { TestConduct } from '../reports/testConduct.model';
 
 export class TestAttendee {
     firstName: string;
@@ -12,4 +14,6 @@ export class TestAttendee {
     id: number;
     test: Test;
     report: Report;
+    testLogs: TestLogs;
+    testConduct: TestConduct[] = [];
 }

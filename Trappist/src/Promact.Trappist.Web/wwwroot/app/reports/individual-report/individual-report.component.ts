@@ -7,6 +7,8 @@ import { TestQuestion } from '../../tests/tests.model';
 import { TestAnswers } from '../testanswers.model';
 import { SingleMultipleAnswerQuestionOption } from '../../questions/single-multiple-answer-question-option.model';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { TestLogs } from '../testlogs.model';
+import { TestConduct } from '../testConduct.model';
 declare var jsPDF: any;
 
 @Component({
@@ -39,9 +41,20 @@ export class IndividualReportComponent implements OnInit {
     percentile: number;
     timeTakenInHours: number;
     timeTakenInMinutes: number;
+    timeTakenInSeconds: number;
     easy: number;
     medium: number;
     hard: number;
+    testLogs: TestLogs;
+    testLogsVisible: boolean;
+    closeWindowLogVisible: boolean;
+    resumeTestLog: boolean;
+    testConduct: TestConduct[];
+    numberOfQuestionsAttended: number;
+    numberOfQuestionsAttemptedVisible: boolean;
+    timeTakenInHoursVisible: boolean;
+    timeTakenInMinutesVisible: boolean;
+    timeTakenInSecondsVisible: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -54,6 +67,7 @@ export class IndividualReportComponent implements OnInit {
         this.pieChartType = 'pie';
         this.correctAnswers = this.incorrectAnswers = 0;
         this.easy = this.medium = this.hard = 0;
+        this.testConduct = new Array<TestConduct>();
     }
 
     ngOnInit() {
@@ -73,6 +87,18 @@ export class IndividualReportComponent implements OnInit {
             this.incorrectmarks = this.testAttendee.test.incorrectMarks;
             this.marks = this.testAttendee.report.totalMarksScored;
             this.percentage = this.testAttendee.report.percentage;
+            this.percentile = this.testAttendee.report.percentile;
+            this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 3600);
+            this.timeTakenInHoursVisible = this.timeTakenInHours > 1 ? true : false;
+            this.timeTakenInMinutes = this.testAttendee.report.timeTakenByAttendee / 60;
+            this.timeTakenInMinutesVisible = this.timeTakenInMinutes > 1 ? true : false;
+            this.timeTakenInSeconds = this.testAttendee.report.timeTakenByAttendee;
+            this.timeTakenInSecondsVisible = this.timeTakenInSeconds > 0 ? true : false;
+            this.testLogsVisible = this.testAttendee.testLogs.disconnectedFromServer === null ? false : true;
+            this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
+            this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
+            this.numberOfQuestionsAttended = this.testAttendee.testConduct.length;
+            this.numberOfQuestionsAttemptedVisible = this.numberOfQuestionsAttended == 0 ? false : true;
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
             });
