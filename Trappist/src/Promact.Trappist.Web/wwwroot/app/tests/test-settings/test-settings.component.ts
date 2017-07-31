@@ -76,7 +76,6 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
-            console.log(this.testDetails);
             this.testNameReference = this.testDetails.testName;
             this.loader = false;
             let magicString = this.testDetails.link;
@@ -166,6 +165,7 @@ export class TestSettingsComponent implements OnInit {
             if (isQuestionAdded) {
                 this.testDetails.isLaunched = isTestLaunched;
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
+                    this.ngOnInit();
                     this.openSnackBar('Your test has een launched successfully');
                 },
                     errorHandling => {
@@ -215,7 +215,7 @@ export class TestSettingsComponent implements OnInit {
      */
     addIpFields() {
         let ip = new TestIPAddress();
-        this.testDetails.testIPAddress.push(ip);
+        this.testDetails.testIpAddress.push(ip);
     }
     /**
      * Removes ip address fields 
@@ -223,7 +223,7 @@ export class TestSettingsComponent implements OnInit {
      * @param ipId
      */
     removeIpAddress(index: number, ipId: number) {
-        this.testDetails.testIPAddress.splice(index, 1);
+        this.testDetails.testIpAddress.splice(index, 1);
         if (ipId !== undefined)
         this.testService.deleteTestipAddress(ipId).subscribe(response => {
         });

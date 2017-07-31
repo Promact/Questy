@@ -90,10 +90,10 @@ namespace Promact.Trappist.Repository.TestConduct
             var hostName = Dns.GetHostName();
             var ipAddress = await Dns.GetHostAddressesAsync(hostName);
             var ipForthisPc = ipAddress.First(a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
-            await _dbContext.TestIPAddress.Where(x => x.TestId == testObject.Id).ToListAsync();
+            await _dbContext.TestIpAddresses.Where(x => x.TestId == testObject.Id).ToListAsync();
 
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
-            return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIPAddress.ToList().Exists(x => x.IPAddress == ipForthisPc) ? true : false;
+            return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.ToList().Exists(x => x.IpAddress == ipForthisPc) ? true : false;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)

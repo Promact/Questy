@@ -107,8 +107,8 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task DeleteIpAddressAsync(int id)
         {
-            var ipAddress = await _dbContext.TestIPAddress.FindAsync(id);
-            _dbContext.TestIPAddress.Remove(ipAddress);
+            var ipAddress = await _dbContext.TestIpAddresses.FindAsync(id);
+            _dbContext.TestIpAddresses.Remove(ipAddress);
             await _dbContext.SaveChangesAsync();
         }
         #endregion
@@ -258,8 +258,8 @@ namespace Promact.Trappist.Repository.Tests
             //Find the test by Id from Test Model
             var test = await _dbContext.Test.FindAsync(testId);
 
-            var testIPAddress = await _dbContext.TestIPAddress.Where(x => x.TestId == testId).ToListAsync();
-            var testIPAddressAc = Mapper.Map<List<TestIpAddress>,List<TestIPAddressAC>>(testIPAddress);
+            var testIpAddress = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
+            var testIpAddressAc = Mapper.Map<List<TestIpAddress>,List<TestIpAddressAC>>(testIpAddress);
 
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
@@ -276,7 +276,7 @@ namespace Promact.Trappist.Repository.Tests
             {
 
                 await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
-                testAcObject.TestIPAddress = testIPAddressAc;
+                testAcObject.TestIpAddress = testIpAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime

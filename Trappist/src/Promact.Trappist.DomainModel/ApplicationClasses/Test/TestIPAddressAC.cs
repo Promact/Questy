@@ -3,11 +3,11 @@ using System;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 {
-    public class TestIPAddressAC
+    public class TestIpAddressAC
     {
         public int Id { get; set; }
 
-        public string IPAddress { get; set; }
+        public string IpAddress { get; set; }
 
         public int TestId { get; set; }
 

@@ -37,7 +37,6 @@ export class CreateTestFooterComponent implements OnInit {
     public isValid: boolean;
     isSelectButton: boolean;
     isTestLaunched: boolean;
-    isPaused: boolean;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -50,7 +49,6 @@ export class CreateTestFooterComponent implements OnInit {
         this.saveExit = new EventEmitter();
         this.saveNext = new EventEmitter();
         this.SaveCategory = new EventEmitter();
-        this.isPaused = false;
         this.isTestLaunched = false;
     }
 
@@ -100,11 +98,11 @@ export class CreateTestFooterComponent implements OnInit {
     }
 
     pausTest() {
-        this.pauseTest.emit(this.isPaused);
+        this.pauseTest.emit();
     }
 
     resumTest() {
-        this.resumeTest.emit(this.isPaused);
+        this.resumeTest.emit();
     }
 
     saveSelectedCategoryAndExit() {

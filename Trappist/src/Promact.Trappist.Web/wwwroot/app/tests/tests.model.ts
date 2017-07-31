@@ -23,7 +23,7 @@ export class Test {
     optionOrder: TestOrder;
     allowTestResume: AllowTestResume;
     categoryAcList: Category[] = [];
-    testIPAddress: TestIPAddress[] = [];
+    testIpAddress: TestIPAddress[] = [];
     isEditTestEnabled: boolean;
     isQuestionMissing: boolean;
     public isPaused: boolean;

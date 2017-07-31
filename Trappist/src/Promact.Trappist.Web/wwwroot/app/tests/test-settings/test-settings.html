@@ -34,7 +34,7 @@
                     <div class="form-group ip-restrictions-field">
                         <label>IP Restrictions</label>
                         <br />
-                        <div *ngFor="let ip of testDetails.testIPAddress; let i= index">
+                        <div *ngFor="let ip of testDetails.testIpAddress; let i= index">
                             <input type="text" class="form-control small-width" id="From" name="ip_{{i}}" placeholder="IP Address {{i+1}}" #From=ngModel [(ngModel)]="ip.ipAddress" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
                             <button type="button" class="icon-btn mr10" (click)="removeIpAddress(i,ip.id)"><em class="material-icons danger-text">close</em></button>
                             <br />
@@ -112,7 +112,7 @@
                     </div>
 
                 </fieldset>
-                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest($event)" (resumeTest)="resumeTest($event)" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
         </div>
     </form>

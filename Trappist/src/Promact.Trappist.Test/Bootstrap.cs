@@ -136,7 +136,7 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<DomainModel.Models.Category.Category, CategoryAC>();
                 cfg.CreateMap<CategoryAC, DomainModel.Models.Category.Category>();
-                cfg.CreateMap<TestIpAddress, TestIPAddressAC>();
+                cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
             #endregion
 
