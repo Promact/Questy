@@ -69,7 +69,7 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<TestAttendees> GetTestAttendeeDetailsByIdAsync(int testAttendeeId)
         {
-            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).Include(x => x.TestLogs).Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).Include(x => x.TestConduct).Include(x => x.TestLogs).Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
             return testAttendee;
         }
 
