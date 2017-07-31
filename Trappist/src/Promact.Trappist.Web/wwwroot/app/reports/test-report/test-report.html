@@ -25,7 +25,7 @@
                     <option value="3">Blocked Test</option>
                 </select>
                 <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
-                <button type="button" class="btn">Download Excel</button>
+                <button type="button" class="btn" (click)="downloadTestReportExcel()">Download Excel</button>
                 <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>

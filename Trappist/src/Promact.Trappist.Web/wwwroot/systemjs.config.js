@@ -10,18 +10,18 @@
             // paths serve as alias
             'npm:': 'node_modules/'
         },
- meta: {
-    
-    'node_modules/tinymce/plugins/advlist/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/autoresize/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/code/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/link/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
-    'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
-    'node_modules/tinymce/themes/modern/theme.js': { format: 'global' }	
-  },
-     
+        meta: {
+
+            'node_modules/tinymce/plugins/advlist/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/autoresize/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/code/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/link/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
+            'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
+            'node_modules/tinymce/themes/modern/theme.js': { format: 'global' }
+        },
+
 
         // map tells the System loader where to look for things
         map: {
@@ -54,8 +54,9 @@
             'ng2-charts': 'npm:ng2-charts',
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
             'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
-            'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js'
-
+            'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
+            'exceljs': 'npm:exceljs/dist/exceljs.js',
+            'filesaver':'npm:file-saver'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -84,17 +85,25 @@
                 'main': 'ng2-charts.js',
                 'defaultExtension': 'js'
             },
-            'angular2-tinymce':{
-             main:'index.js',
-            defaultExtension: 'js'
-          },
-          'tinymce': { defaultExtension: 'js' },
-          'chart.js': {
-              main: 'dist/Chart.bundle.min.js',
-              defaultExtension: 'js'
-          },
+            'angular2-tinymce': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'tinymce': { defaultExtension: 'js' },
+            'chart.js': {
+                main: 'dist/Chart.bundle.min.js',
+                defaultExtension: 'js'
+            },
             'ngx-popover': {
                 main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'exceljs.js': {
+                main: 'dist/exceljs.js',
+                defaultExtension: 'js'
+            },
+            'filesaver': {
+                main: 'FileSaver.js',
                 defaultExtension: 'js'
             },
             '.': {
