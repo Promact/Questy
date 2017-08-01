@@ -103,6 +103,17 @@ namespace Promact.Trappist.Core.Controllers
         {
             return Ok(await _reportRepository.GetTestAttendeeAnswers(id));
         }
+
+        /// <summary>
+        /// Gets the percentile of the selected test attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the test attendee</param>
+        /// <returns>The percentile calculated for the selected candidate</returns>
+        [HttpGet("{attendeeId}/percentile")]
+        public async Task<IActionResult> GetStudentPercentile([FromRoute]int attendeeId)
+        {
+            return Ok(await _reportRepository.CalculatePercentileAsync(attendeeId));
+        }
         #endregion
     }
 }

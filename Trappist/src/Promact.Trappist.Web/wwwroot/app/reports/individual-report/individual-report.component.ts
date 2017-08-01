@@ -73,7 +73,9 @@ export class IndividualReportComponent implements OnInit {
             this.incorrectmarks = this.testAttendee.test.incorrectMarks;
             this.marks = this.testAttendee.report.totalMarksScored;
             this.percentage = this.testAttendee.report.percentage;
-            this.percentile = this.testAttendee.report.percentile;
+            this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
+                this.percentile = response.toFixed(2);
+            });
             this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 60);
             this.timeTakenInMinutes = this.testAttendee.report.timeTakenByAttendee % 60;
             //Gets all the answers given by the test attendee

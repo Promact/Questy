@@ -48,4 +48,8 @@ export class ReportService {
     getTestAttendeeAnswers(id: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + id + '/testAnswers');
     }
+
+    getStudentPercentile(testAttendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/percentile');
+    }
 } 

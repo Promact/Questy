@@ -64,5 +64,12 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="testAttendeeId">Id of the test attendee</param>
         /// <returns>A list of all the answers given by the test attendee</returns>
         Task<List<TestAnswers>> GetTestAttendeeAnswers(int testAttendeeId);
+
+        /// <summary>
+        /// Calculates the percentile of selected test attendee
+        /// </summary>
+        /// <param name="testAttendeeId">testAttendee contains the id of the test attendee from the route</param>
+        /// <returns>The calculated percentile value of the selected test attendee</returns>
+        Task<double> CalculatePercentileAsync(int testAttendeeId);
     }
 }
