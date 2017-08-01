@@ -312,17 +312,17 @@ namespace Promact.Trappist.Repository.TestConduct
             var qID = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
             var numberOfQuestionsAttended = qID.Count();
 
-            foreach(var attendedQuestion in qID)
+            foreach (var attendedQuestion in qID)
             {
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
                 fullMarks = numberOfQuestionsAttended * testAttendee.Test.CorrectMarks;
                 bool flag = true;
-                foreach(var answers in attendedQuestion.TestAnswers)
+                foreach (var answers in attendedQuestion.TestAnswers)
                 {
                     var answeredOption = answers.AnsweredOption;
 
-                    if(!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                    { 
+                    if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
+                    {
                         flag = false;
                         break;
                     }
@@ -335,17 +335,41 @@ namespace Promact.Trappist.Repository.TestConduct
                 else
                 {
                     marks += testAttendee.Test.IncorrectMarks;
-                }                
+                }
             }
-
-
 
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
             report.TotalMarksScored = (double)marks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
-            
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
+
+            DateTime currentDate = DateTime.UtcNow;
+            if (currentDate < testAttendee.Test.EndDate)
+            {
+                var attendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
+                var noOfScores = attendeeList.Count();
+                var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testAttendee.TestId).ToListAsync();
+                int count = 0;
+                
+
+                foreach (var attendee in attendeeList)
+                {
+                    var attendeemarks = await _dbContext.Report.Where(x => x.TestAttendeeId == attendee.Id).Select(x => x.TotalMarksScored).FirstOrDefaultAsync();
+                    foreach (var marks1 in marksList)
+                    {
+                        var marksScored = await _dbContext.Report.Where(x => x.TestAttendeeId == marks1.TestAttendeeId).Select(x => x.TotalMarksScored).FirstOrDefaultAsync();
+                        if(attendeemarks < marksScored)
+                        {
+                            count = count + 1;
+                        }
+                    }
+                    attendee.Report.Percentile = (count / noOfScores)*100;
+                    _dbContext.Report.Update(attendee.Report);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+            
         }
         #endregion
     }
