@@ -115,18 +115,17 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task IsTestLinkExistAsync()
         {
             var testObject = await CreateTestAsync();
-            var testIP = new DomainModel.Models.Test.TestIpAddress();
-            var IPHostename = Dns.GetHostName();
-            var IPAddress =  await Dns.GetHostAddressesAsync(IPHostename);
-            testIP.IpAddress = IPAddress.First(a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
-            testIP.TestId = testObject.Id;
-            await _trappistDbContext.TestIpAddresses.AddAsync(testIP);
+            var testIp = new DomainModel.Models.Test.TestIpAddress();
+            testIp.IpAddress = "127.0.0.1";
+            testIp.TestId = testObject.Id;
+            await _trappistDbContext.TestIpAddresses.AddAsync(testIp);
+            var userIp = "127.0.0.1";
             testObject.EndDate = new DateTime(2044, 12, 24);
            
-            var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
+            var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link, userIp);
             Assert.True(linkExist);
             testObject.IsPaused = true;
-            var linkNotExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link);
+            var linkNotExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link, userIp);
             Assert.False(linkNotExist);
         }
 
