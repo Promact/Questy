@@ -100,7 +100,7 @@ namespace Promact.Trappist.Repository.Reports
             var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
             double studentPercentile;
 
-            var marksList = await _dbContext.Report.OrderBy(x => x.TotalMarksScored).ToListAsync();
+            var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testAttendee.TestId).OrderBy(x => x.TotalMarksScored).ToListAsync();
             var rank = marksList.IndexOf(attendee) + 1;
 
             double percentile = rank / noOfScores;
