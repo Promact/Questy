@@ -90,6 +90,23 @@ namespace Promact.Trappist.Repository.Reports
             }
             return testAttendeeFullAnswerList;
         }
+
+        public async Task<double> CalculatePercentileAsync(int testAttendeeId)
+        {
+            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+
+            var attendeeList = await _dbContext.TestAttendees.Include(x => x.Report).Where(x => x.TestId == testAttendee.TestId).ToListAsync();
+            double noOfScores = attendeeList.Count();
+            var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
+            double studentPercentile;
+
+            var marksList = await _dbContext.Report.OrderBy(x => x.TotalMarksScored).ToListAsync();
+            var rank = marksList.IndexOf(attendee) + 1;
+
+            double percentile = rank / noOfScores;
+            studentPercentile = percentile * 100;
+            return studentPercentile;
+        }
         #endregion
     }
 }
