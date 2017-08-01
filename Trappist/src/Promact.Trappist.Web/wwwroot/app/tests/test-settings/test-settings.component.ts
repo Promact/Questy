@@ -238,7 +238,6 @@ export class TestSettingsComponent implements OnInit {
         this.testService.isTestAttendeeExist(this.testId).subscribe((isTestAttendeeExists) => {
             if (isTestAttendeeExists.response) {
                 this.isAttendeeExistForTest = true;
-                window.location.href = window.location.origin + '/pageNotFound';
             }
         });
     }

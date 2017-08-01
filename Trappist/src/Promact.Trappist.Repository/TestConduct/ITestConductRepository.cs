@@ -31,7 +31,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="magicString">It contain random string which uniquely identifies test</param>
         /// <returns>If test link exist then return true else return false</returns>
-        Task<bool> IsTestLinkExistForTestConductionAsync(string magicString);
+        Task<bool> IsTestLinkExistForTestConductionAsync(string magicString , string userIp);
 
         /// <summary>
         /// This method is used to get all the instruction details related to a test before starting it
