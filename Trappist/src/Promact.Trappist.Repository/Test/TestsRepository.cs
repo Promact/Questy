@@ -324,7 +324,7 @@ namespace Promact.Trappist.Repository.Tests
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
                     //Removing correct answer(s)
-                    question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
+                    question.SingleMultipleAnswerQuestion?.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
                     questionList.Add(new TestConductAC() { Question = question, QuestionStatus = QuestionStatus.unanswered });
                 });
 
