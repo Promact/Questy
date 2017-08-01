@@ -270,10 +270,10 @@ export class IndividualReportComponent implements OnInit {
         let elementToPrint = document.getElementById('printSectionId');
         let pdf = new jsPDF('p', 'mm', 'a4');
         let styles = {
-            background: '#FFFFFF'
+            background: '#FFFFFF',
+            pagesplit : true
         };
         pdf.addHTML(elementToPrint, 0, 15, styles, () => {
-           
             pdf.setProperties({
                 title: 'Individual-test-report'
             });
