@@ -1,6 +1,6 @@
 ﻿<div class="loader-container" *ngIf="!isTestReady">
-  <div class="spinner">
-  </div>
+    <div class="spinner">
+    </div>
 </div>
 <div class="test" id="testElement">
     <div class="test-header">
@@ -41,16 +41,18 @@
                     <div class="display-table-cell qs-area ptb20">
                         <p [innerHTML]="questionDetail"></p>
                     </div>
+                    <ace-editor [(text)]="text" 
+                    #editor style="height:150px;" ></ace-editor>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice">
                         <md-radio-group>
-                            <md-radio-button *ngFor="let option of options;let i = index" [disabled]="questionStatus == 0"  value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
+                            <md-radio-button *ngFor="let option of options;let i = index" [disabled]="questionStatus == 0" value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
                         </md-radio-group>
                     </div>
-                  <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice">
-                    <md-checkbox *ngFor="let option of options; let i = index" [disabled]="questionStatus == 0" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
-                      {{option.option}}
-                    </md-checkbox>
-                  </div>
+                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice">
+                        <md-checkbox *ngFor="let option of options; let i = index" [disabled]="questionStatus == 0" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
+                            {{option.option}}
+                        </md-checkbox>
+                    </div>
                 </div>
             </div>
         </div>

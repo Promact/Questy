@@ -8,8 +8,12 @@ import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
+import { AceEditorDirective } from 'ng2-ace-editor';
+
+
 
 @Component({
+   
     moduleId: module.id,
     selector: 'questions-single-multiple-answer',
     templateUrl: 'questions-single-multiple-answer.html'

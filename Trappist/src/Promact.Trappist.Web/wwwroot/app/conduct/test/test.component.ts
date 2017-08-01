@@ -14,6 +14,7 @@ import { TestAttendee } from '../test_attendee.model';
 import { TestAnswer } from '../test_answer.model';
 import { TestStatus } from '../teststatus.enum';
 
+
 //Temporary imports
 import { QuestionDisplay } from '../../questions/question-display';
 
@@ -36,6 +37,7 @@ export class TestComponent implements OnInit {
     checkedOption: string;
     testAttendee: TestAttendee;
     testAnswers: TestAnswer[];
+    isQuestionCodeSnippetType: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -70,6 +72,7 @@ export class TestComponent implements OnInit {
         this.questionIndex = 0;
         this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
+        this.isQuestionCodeSnippetType = false;
     }
 
     ngOnInit() {
@@ -196,6 +199,8 @@ export class TestComponent implements OnInit {
             return;
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
+        this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === 2 ? true : false;
+        if (!this.isQuestionCodeSnippetType)
         this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
         //Sets boolean if question is single choice
         this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;

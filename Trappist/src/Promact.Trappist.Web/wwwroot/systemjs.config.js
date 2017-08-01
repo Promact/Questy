@@ -54,6 +54,13 @@
             'ng2-charts': 'npm:ng2-charts',
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
             'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
+            'ng2-ace-editor': 'npm:ng2-ace-editor',
+            'brace': 'npm:brace',
+            'w3c-blob': 'npm:w3c-blob',
+            'buffer': 'npm:buffer',
+            'ieee754': 'npm:ieee754',
+            'base64-js': 'npm:base64-js'
+
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
             'exceljs': 'npm:exceljs/dist/exceljs.js',
             'filesaver':'npm:file-saver'
@@ -95,6 +102,30 @@
                 defaultExtension: 'js'
             },
             'ngx-popover': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'ng2-ace-editor': {
+                main: 'ng2-ace-editor.js',
+                defaultExtension: 'js'
+            },
+            brace: {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'w3c-blob': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            buffer: {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'ieee754': {
+                main: 'index.js',
+                deafultExtension: 'js'
+            },
+            'base64-js': {
                 main: 'index.js',
                 defaultExtension: 'js'
             },
