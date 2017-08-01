@@ -549,7 +549,7 @@ md-tooltip-component .mat-tooltip {
   font-family: $font_open_sans;
   width: 450px;
   max-width: inherit;
-  z-index: inherit;
+  z-index: 99;
 
   .popover-content {
     padding: 14px;
@@ -684,41 +684,6 @@ md-tooltip-component .mat-tooltip {
         color: $color_yellow;
       }
     }
-  }
-}
-
-.test-link-popover {
-  width: 400px;
-  padding: 20px;
-  margin: 12px;
-  background-color: $color_white;
-  border: 1px solid darken($color_border, 5);
-  position: absolute;
-  top: 34px;
-  right: 140px;
-  z-index: 99;
-  box-shadow: 0 3px 12px rgba($color_footer_secondary, 0.15);
-  border-radius: 4px;
-
-  &:before,
-  &:after {
-    position: absolute;
-    display: inline-block;
-    content: "";
-  }
-
-  &:before {
-    border: 8px solid transparent;
-    border-bottom-color: darken($color_border, 5);
-    top: -16px;
-    right: 30px;
-  }
-
-  &:after {
-    border: 7px solid transparent;
-    border-bottom-color: #fff;
-    top: -14px;
-    right: 31px;
   }
 }
 
@@ -1170,6 +1135,11 @@ footer {
       width: 75%;
       background-color: $color_white;
 
+      .no-section-msg {
+        padding: 14px 25px;
+        min-height: 400px;
+      }
+
       .block-title {
         padding: 14px 25px 12px;
       }
@@ -1555,14 +1525,40 @@ footer {
         padding-right: 20px;
       }
 
-      &.ip-restrictions-field {
-        & > div {
-          display: inline-block;
+      &.ip-restrictions {
+        .ip-add-field {
+          margin-bottom: 10px;
+
+          input {
+            display: inline-block;
+            vertical-align: middle;
+          }
+
+          .errors-container {
+            vertical-align: middle;
+
+            .error-msg {
+              padding-top: 0;
+              padding-left: 5px;
+            }
+          }
+
+          em {
+            vertical-align: middle;
+            color: $color_base_secondary;
+            font-size: 16px;
+            cursor: pointer;
+
+            &:hover {
+              color: $color_base;
+            }
+          }
         }
 
-        .form-control {
-          display: inline-block;
-          margin-right: 20px;
+        button {
+          display: block;
+          background-color: $color_theme;
+          margin-bottom: 16px;
         }
       }
     }
@@ -2247,10 +2243,19 @@ footer {
 
   .candidate-details-block,
   .analysis-block,
-  .test-details-block {
+  .test-details-block,
+  .test-logs-block {
     background-color: $color_white;
     border: 1px solid $color_border;
     margin: 20px 0 30px;
+  }
+
+  .test-logs-block {
+    padding: 20px 25px;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .candidate-details-title {

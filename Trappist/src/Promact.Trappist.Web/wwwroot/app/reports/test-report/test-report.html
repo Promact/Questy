@@ -13,24 +13,34 @@
             </div>
         </div>
     </div>
-    <h3 *ngIf="!isAnyCandidateExist">No attendee exist for this test</h3>
+    <div class="container" *ngIf="!isAnyCandidateExist">
+        <div class="report-title-block clearfix">
+            <div class="pull-left">
+                <h2>Test Report</h2>
+            </div>
+            <a class="pull-right back-link" [routerLink]="['/tests']">< back</a>
+        </div>
+        <h5 class="mt20 mb20">No Record(s) Found.</h5>
+    </div>
     <div class="container" *ngIf="isAnyCandidateExist">
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
-                <select class="form-control" [(ngModel)]="testCompletionStatus" (change)="setTestStatusType(testCompletionStatus)">
-                    <option value="0">All Candidates ({{count}})</option>
-                    <option value="1">Completed Test</option>
-                    <option value="2">Expired Test</option>
-                    <option value="3">Blocked Test</option>
-                </select>
-                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
-                <button type="button" class="btn">Download Excel</button>
-                <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
+                <span>
+                    <select class="form-control" [(ngModel)]="testCompletionStatus" (change)="setTestStatusType(testCompletionStatus)">
+                        <option value="0">All Candidates ({{count}})</option>
+                        <option value="1">Completed Test</option>
+                        <option value="2">Expired Test</option>
+                        <option value="3">Blocked Test</option>
+                    </select>
+                    <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
+                    <button type="button" class="btn">Download Excel</button>
+                    <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
+                </span>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
-        <div class="grid-container" >
+        <div class="grid-container" *ngIf="isAnyCandidateExist">
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
