@@ -333,8 +333,8 @@ export class TestReportComponent implements OnInit {
             }
         });
         workBook.xlsx.writeBuffer(workSheet).then(function (buffer: any) {
-            let blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64" });
-            saveAs(blob, testName + "_test_report.xlsx");
+            let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
+            saveAs(blob, testName + '_test_report.xlsx');
         });
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
