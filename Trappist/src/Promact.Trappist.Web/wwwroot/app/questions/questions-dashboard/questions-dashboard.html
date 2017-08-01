@@ -29,10 +29,11 @@
                 </ul>
             </div>
             <div class="questions-block">
-                <div class="block-title">
+                <h5 class="no-section-msg" *ngIf="!isCategoryPresent">Please create a section.</h5>
+                <div class="block-title" *ngIf="isCategoryPresent">
                     <h2>All Questions</h2>
                 </div>
-                <div class="block-subtitle clearfix">
+                <div class="block-subtitle clearfix" *ngIf="isCategoryPresent">
                     <button type="button" class="btn-link h5 hidden-md hidden-lg" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <ul class="difficulty-levels pull-left">
                         <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['All']}" (click)="difficultyWiseSearch('All')" class="h5">Total ({{easy+medium+hard}})</li>
@@ -40,21 +41,19 @@
                         <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Medium']}" (click)="difficultyWiseSearch('Medium')" class="h5">Medium ({{medium}})</li>
                         <li [ngClass]="{active: selectedDifficulty === DifficultyLevel['Hard']}" (click)="difficultyWiseSearch('Hard')" class="h5">Hard ({{hard}})</li>
                     </ul>
-                    <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" *ngIf="isCategoryPresent" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
+                    <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                         <a md-menu-item [routerLink]="['single-answer']"><em class="material-icons">radio_button_checked</em> Single Answer</a>
                         <a md-menu-item [routerLink]="['multiple-answers']"><em class="material-icons">check_box</em> Multiple Answer</a>
                         <a md-menu-item [routerLink]="['programming']"><em class="material-icons">code</em> Programming</a>
                     </md-menu>
                 </div>
-
                 <div class="questions-area" infinite-scroll
                      [infiniteScrollDistance]="2"
                      [infiniteScrollThrottle]="10"
                      [infiniteScrollDisabled]="isAllQuestionsHaveCome"
-                     (scrolled)="getQuestionsOnScrolling()">
-                    <h3 *ngIf="!isCategoryPresent">please add category first</h3>
-                    <ng-container *ngIf="isCategoryPresent">
+                     (scrolled)="getQuestionsOnScrolling()" *ngIf="isCategoryPresent">
+                    <ng-container>
                         <div *ngFor="let question of questionDisplay;let i = index" class="qs-block clearfix">
                             <div class="pull-left">
                                 <div class="qs-container">
