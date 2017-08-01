@@ -308,44 +308,6 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         /// <summary>
-        /// Assess Code Snippet Question and update the marks in report table
-        /// </summary>
-        /// <param name="attendeeId">Test Attendee Id</param>
-        /// <param name="testAnswer">TestAnswer object</param>
-        private async Task AssessCodeSnippet(int attendeeId, TestAnswerAC testAnswer)
-        {
-            var marks = 0d;
-            var code = testAnswer.Code;
-
-            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
-
-            foreach (var testCase in testCases)
-            {
-                code.Input = testCase.TestCaseInput;
-                var result = await ExecuteCodeAsync(code);
-
-                if (result.Output == testCase.TestCaseOutput)
-                {
-                    marks += testCase.TestCaseMarks;
-                }
-            }
-
-            if (await _dbContext.Report.AnyAsync(x => x.TestAttendeeId == attendeeId))
-            {
-                var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-                report.TotalMarksScored += marks;
-            }
-            else
-            {
-                var report = new Report();
-                report.TestAttendeeId = attendeeId;
-                report.TotalMarksScored += marks;
-                await _dbContext.Report.AddAsync(report);
-            }
-            await _dbContext.SaveChangesAsync();
-        }
-
-        /// <summary>
         /// Transform Attendee's JSON formatted Answer stored in AttendeeAnswers table
         /// to reliable TestAnswer and TestConduct tables.
         /// After completion of transformation Attendee's record from AttendeeAnswer is removed.
