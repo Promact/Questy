@@ -314,6 +314,13 @@ namespace Promact.Trappist.Repository.TestConduct
 
             foreach (var attendedQuestion in qID)
             {
+                
+
+                if (attendedQuestion.QuestionStatus != QuestionStatus.answered)
+                {
+                    continue;
+                }
+
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
                 var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
                 var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
