@@ -268,16 +268,21 @@ export class IndividualReportComponent implements OnInit {
     printIndividualReport(printSectionId: string) {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
-        let pdf = new jsPDF('p', 'mm', 'a4');
+        let pdf = new jsPDF('l', 'pt', 'letter');
+
         let styles = {
-            background: '#FFFFFF',
-            pagesplit : true
+           background: '#FFFFFF',
+           pagesplit: true,
+           format: 'PNG',
         };
-        pdf.addHTML(elementToPrint, 0, 15, styles, () => {
+        pdf.text(this.testAttendee.test.testName, 30, 15);
+        pdf.addHTML(elementToPrint, 5, 20, styles, () => {
+           
             pdf.setProperties({
                 title: 'Individual-test-report'
             });
-            pdf.text(this.testAttendee.test.testName, 20, 13);
+           
+           
             pdf.setFontSize(5);
             pdf.autoPrint();
             pdf.output('dataurlnewwindow');
