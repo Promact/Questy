@@ -92,6 +92,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<ITestConductRepository, TestConductRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddSingleton<IConfiguration>(Configuration);
             #endregion
 
             #region Options configuration
