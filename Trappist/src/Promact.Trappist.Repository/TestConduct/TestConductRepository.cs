@@ -17,27 +17,29 @@ using System.Net.Http;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
     public class TestConductRepository : ITestConductRepository
     {
         #region Private Variables
-        private const string CodeBaseServer = "http://localhost:56725/api/execute";
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
         private readonly ITestsRepository _testRepository;
         private static readonly HttpClient client = new HttpClient(); 
         private readonly IQuestionRepository _questionRepository;
+        private readonly IConfiguration _configuration;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IQuestionRepository questionRepository)
+        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IConfiguration configuration, IQuestionRepository questionRepository)
         {
             _dbContext = dbContext;
             _testRepository = testRepository;
             _questionRepository = questionRepository;
+            _configuration = configuration;
         }
         #endregion
 
@@ -313,6 +315,7 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var serializedCode = JsonConvert.SerializeObject(code);
             var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
+            var CodeBaseServer = _configuration["CodeBaseSimulatorServer"];
             var response = await client.PostAsync(CodeBaseServer, body);
             var content = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Result>(content.Result);
