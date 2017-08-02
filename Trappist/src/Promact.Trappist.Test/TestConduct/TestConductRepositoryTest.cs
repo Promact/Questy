@@ -11,6 +11,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
@@ -37,6 +38,7 @@ namespace Promact.Trappist.Test.TestConduct
         private readonly IStringConstants _stringConstants;
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IQuestionRepository _questionRepository; 
         #endregion
         #endregion
 
@@ -49,6 +51,7 @@ namespace Promact.Trappist.Test.TestConduct
             _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
         }
         #endregion
 
@@ -311,9 +314,6 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task TransformationTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
-            var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
-
             // Creating test
             var test = await CreateTestAsync();
             //Creating test category
@@ -324,17 +324,27 @@ namespace Promact.Trappist.Test.TestConduct
             var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             categoryListAc[0].IsSelect = true;
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
+
+            var question1 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, "");
+            var question2 = CreateQuestionAC(true, "Category1 type question 2", category1.Id, 2);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "");
+
             //Creating test questions
             var questionList = new List<QuestionAC>
             {
-                CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1),
-                CreateQuestionAC(true, "Category1 type question 2", category1.Id, 1),
+                question1,
+                question2,
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
+            testAttendee.Test = test;
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
             var answer = new TestAnswerAC()
             {
-                OptionChoice = new List<int>() { 1 },
+                OptionChoice = new List<int>() {question1.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id },
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
             };
@@ -344,7 +354,7 @@ namespace Promact.Trappist.Test.TestConduct
             {
                 OptionChoice = new List<int>() { },
                 QuestionId = 2,
-                QuestionStatus = QuestionStatus.answered
+                QuestionStatus = QuestionStatus.unanswered
             };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
 
