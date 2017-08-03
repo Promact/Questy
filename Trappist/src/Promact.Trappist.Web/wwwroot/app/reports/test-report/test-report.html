@@ -59,7 +59,7 @@
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
                         <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
-                        <td>{{testAttendee.createdDateTime |date:'fullDate'}}</td>
+                        <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
                         <td>{{testAttendee.report.totalMarksScored}}</td>
                         <td>{{testAttendee.report.percentage}}
                         <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">file_download</em></td>

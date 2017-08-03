@@ -79,7 +79,11 @@ export class TestReportComponent implements OnInit {
         this.reportService.getAllTestAttendees(this.testId).subscribe((attendeeList) => {
             this.attendeeArray = attendeeList;
             this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
-            this.testAttendeeArray = this.attendeeArray;
+            this.attendeeArray.forEach(x => {
+                if (x.report != null)
+                    this.testAttendeeArray.push(x);
+            });
+            this.attendeeArray = this.testAttendeeArray;
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
             this.loader = false;
@@ -255,10 +259,11 @@ export class TestReportComponent implements OnInit {
         }
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
+                let testDate = document.getElementById('date').innerHTML;
                 let report = {
                     'name': x.firstName + space + x.lastName,
                     'email': x.email,
-                    'createdDateTime': x.createdDateTime,
+                    'createdDateTime': testDate,
                     'score': x.report.totalMarksScored,
                     'percentage': x.report.percentage
                 };
@@ -301,16 +306,33 @@ export class TestReportComponent implements OnInit {
             x: 0, y: 0, width: 10000, height: 20000,
             firstSheet: 0, activeTab: 1, visibility: 'visible'
         }];
-        let workSheet = workBook.addWorksheet('Test-Sheet', {
+        let workSheet1 = workBook.addWorksheet('Test-Takers', {
             pageSetup: { paperSize: 9, orientation: 'landscape' }
         });
-        workSheet.columns = [
-            { header: 'Name', key: 'name', width: 30 },
-            { header: 'Email', key: 'email', width: 30 },
-            { header: 'Test Date', key: 'testDate', width: 30 },
-            { header: 'Score', key: 'score', width: 15 },
-            { header: 'Percentage', key: 'percentage', width: 15 }
+        let workSheet2 = workBook.addWorksheet('Test-Summary', {
+            pageSetup: { paperSize: 9, orientation: 'landscape' }
+        });
+        let workSheet3 = workBook.addWorksheet('Marks-Scored', {
+            pageSetup: { paperSize: 9, orientation: 'landscape' }
+        });
+        workSheet1.columns = [
+            { header: 'ROLL NO', key: 'rollNo', width: 10 },
+            { header: 'NAME', key: 'name', width: 30 },
+            { header: 'EMAIL ID', key: 'email', width: 30 },
+            { header: 'CONTACT NO', key: 'contact', width: 30 },
+            { header: 'TEST DATE', key: 'testDate', width: 30 },
+            { header: 'TEST TIME', key: 'testTime', width: 30 },
+            { header: 'FINISH STATUS', key: 'testStatus', width: 15 },
+            { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 }
         ];
+        workSheet2.columns = [
+            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 15 },
+            { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 30 },
+        ]
+        workSheet3.columns = [
+            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 15 },
+            { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 15 },
+        ]
         if (!this.checkedAllCandidate) {
             this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
                 return x.checkedCandidate;
@@ -321,17 +343,24 @@ export class TestReportComponent implements OnInit {
         }
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
-                let report = {
+                let testDate = document.getElementById('date').innerHTML;
+                let testTakers = {
+                    'rollNo': x.rollNumber,
                     'name': x.firstName + space + x.lastName,
                     'email': x.email,
-                    'createdDateTime': x.createdDateTime,
-                    'score': x.report.totalMarksScored,
-                    'percentage': x.report.percentage
+                    'contact': x.contactNumber,
+                    'testDate': testDate,
+                    'testTime':x.createdDateTime,
+                    'testStatus': x.report.testStatus,
+                    'totalMarks': x.report.totalMarksScored
                 };
-                workSheet.addRow({ name: report.name, email: report.email, testDate: report.createdDateTime, score: report.score, percentage: report.percentage });
+                workSheet1.addRow({
+                    rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
+                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, totalMarks: testTakers.totalMarks
+                });
             }
         });
-        workBook.xlsx.writeBuffer(workSheet).then(function (buffer: any) {
+        workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
             saveAs(blob, testName + '_test_report.xlsx');
         });
