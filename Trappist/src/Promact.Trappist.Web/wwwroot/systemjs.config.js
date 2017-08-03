@@ -59,7 +59,8 @@
             'w3c-blob': 'npm:w3c-blob',
             'buffer': 'npm:buffer',
             'ieee754': 'npm:ieee754',
-            'base64-js': 'npm:base64-js'
+            'base64-js': 'npm:base64-js',
+            'ace-builds': 'npm:ace-builds/src-min'
 
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
             'exceljs': 'npm:exceljs/dist/exceljs.js',
@@ -109,7 +110,7 @@
                 main: 'ng2-ace-editor.js',
                 defaultExtension: 'js'
             },
-            brace: {
+            'brace': {
                 main: 'index.js',
                 defaultExtension: 'js'
             },
@@ -117,7 +118,7 @@
                 main: 'index.js',
                 defaultExtension: 'js'
             },
-            buffer: {
+            'buffer': {
                 main: 'index.js',
                 defaultExtension: 'js'
             },
@@ -127,6 +128,10 @@
             },
             'base64-js': {
                 main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'ace-builds': {
+                main: 'ace.js',
                 defaultExtension: 'js'
             },
             'exceljs.js': {

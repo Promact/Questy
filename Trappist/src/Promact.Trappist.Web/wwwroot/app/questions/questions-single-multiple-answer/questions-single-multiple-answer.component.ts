@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
@@ -8,7 +8,7 @@ import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
-import { AceEditorDirective } from 'ng2-ace-editor';
+
 
 
 
@@ -20,6 +20,7 @@ import { AceEditorDirective } from 'ng2-ace-editor';
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
+   
     indexOfOptionSelected: number;
     categoryName: string;
     optionIndex: number;
@@ -67,6 +68,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isdulicateQuestion = true;
         }
     }
+
+   
 
     /**
     * Gets Question of specific Id
