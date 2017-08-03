@@ -24,7 +24,6 @@ import { AceEditorModule } from 'ng2-ace-editor';
         SharedModule,
         CoreModule,
         AceEditorModule
-
     ],
     providers: [
         ConductService

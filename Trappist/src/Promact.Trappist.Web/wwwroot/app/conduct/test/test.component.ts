@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
@@ -13,6 +13,14 @@ import { QuestionBase } from '../../questions/question';
 import { TestAttendee } from '../test_attendee.model';
 import { TestAnswer } from '../test_answer.model';
 import { TestStatus } from '../teststatus.enum';
+import { AceEditorComponent } from 'ng2-ace-editor';
+import 'brace';
+import 'brace/theme/cobalt';
+import 'brace/theme/monokai';
+import 'brace/theme/eclipse';
+import 'brace/theme/solarized_light';
+import 'brace/mode/java';
+import 'brace/mode/c_cpp';
 
 
 //Temporary imports
@@ -24,9 +32,12 @@ import { QuestionDisplay } from '../../questions/question-display';
     templateUrl: 'test.html',
 })
 export class TestComponent implements OnInit {
-
+    @ViewChild('editor') editor: AceEditorComponent;
     timeString: string;
     test: Test;
+    selectLanguage: string;
+    selectedMode: string;
+    languageMode: string[];
     testQuestions: TestQuestions[];
     questionDetail: string;
     options: SingleMultipleAnswerQuestionOption[];
@@ -38,6 +49,9 @@ export class TestComponent implements OnInit {
     testAttendee: TestAttendee;
     testAnswers: TestAnswer[];
     isQuestionCodeSnippetType: boolean;
+    themes: string[];
+    codeAnswer: string;
+    selectedTheme: string;
 
     private seconds: number;
     private focusLost: number;
@@ -57,13 +71,14 @@ export class TestComponent implements OnInit {
     constructor(private router: Router,
         private snackBar: MdSnackBar,
         private conductService: ConductService,
-        private route: ActivatedRoute) {
-
+        private route: ActivatedRoute, elementRef: ElementRef) {
+        this.languageMode = ['c_cpp', 'java', 'c'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
         this.focusLost = 0;
         this.tolerance = 2;
         this.isTestReady = false;
+        this.selectedTheme = 'eclipse';
         this.timeString = this.secToTimeString(this.seconds);
         this.test = new Test();
         this.testQuestions = new Array<TestQuestions>();
@@ -73,11 +88,108 @@ export class TestComponent implements OnInit {
         this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
         this.isQuestionCodeSnippetType = false;
-    }
+        this.selectLanguage = 'java';
+        this.selectedMode = 'java';
+        this.codeAnswer = 'public class MyFirstJavaProgram {\n' +
+                            '\n' +
+                            ' /* This is my first java program.\n' +
+                            '* This will print ' + 'Hello World' + ' as the output\n' +
+                            ' */\n' +
+                            '\n' +
+                            ' public static void main(String[]args) {\n' +
+                                ' System.out.println("Hello World"); // prints Hello World\n' +
+                            ' }\n' +
+                           '}\n';
+        this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
 
+    }
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         this.getTestByLink();
+    }
+
+    /**
+     * changes the theme of editor
+     * @param theme
+     */
+    changeTheme(theme: string) {
+        this.selectedTheme = theme;
+        this.editor.setTheme(theme);
+    }
+    /**
+     * changes language mode of editor
+     * @param language
+     */
+    changeLanguage(language: string) {
+        if (language === 'c')
+            language = 'c_cpp';
+        this.editor.setMode(language);
+        this.changeText();
+    }
+    /**
+     * changes the pre-defined text for the editor
+     */
+    changeText() {
+        if (this.selectLanguage === 'java') {
+            this.editor.getEditor().setValue([
+                'public class MyFirstJavaProgram {'
+                ,
+                , ' /* This is my first java program.'
+                , '* This will print ', 'Hello World', ' as the output'
+                , ' */'
+                ,
+                , ' public static void main(String[]args) {'
+                , ' System.out.println("Hello World"); // prints Hello World'
+                , ' }'
+                , '}'
+            ].join('\n'));
+            this.selectedMode = 'java';
+        }
+
+        if (this.selectLanguage === 'c_cpp') {
+            this.selectedMode = 'c_cpp';
+            this.editor.getEditor().setValue([
+                '/*  Example Program For Hello World In C++*/'
+                , ' // Header Files'
+                , ' #include < iostream >'
+                , ' #include < conio.h >'
+                ,
+                , '//Standard namespace declaration'
+                , 'using namespace std;'
+                , ' //Main Function'
+                , 'int main()'
+                , '{'
+                , '//Standard Ouput Statement'
+                , 'cout << "My First C++ Program";'
+                ,
+                , '// Wait For Output Screen'
+                , 'getch();'
+                ,
+                , '//Main Function return Statement'
+                , 'return 0;'
+                , '}'
+            ].join('\n'));
+        }
+        if (this.selectLanguage === 'c') {
+            this.editor.getEditor().setValue([
+                ' #include < stdio.h >'
+                , 'int main()'
+                , '{'
+                , '// printf() displays the string inside quotation'
+                , 'printf("Hello, World!");'
+                , 'return 0;'
+                , '}'
+            ].join('\n\n'));
+            this.selectedMode = 'c_cpp';
+        }
+        this.editor.getEditor().clearSelection();
+    }
+    /**
+     * keep tracks of what user is writing in editor
+     * @param code
+     */
+    onChange(code: string) {
+        this.codeAnswer = code;
     }
 
     /**
@@ -170,14 +282,15 @@ export class TestComponent implements OnInit {
                     answer.optionChoice.forEach(y => x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.find(z => z.id === y).isAnswer = true);
                 }
             });
-            
+
             this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
                 let spanTime = response;
                 let spanTimeInSeconds = spanTime * 60;
                 this.seconds -= spanTime * 60;
             });
-            
+
             this.navigateToQuestionIndex(0);
+
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
         }, err => {
@@ -185,6 +298,7 @@ export class TestComponent implements OnInit {
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
         });
+
     }
 
     /**
@@ -200,12 +314,14 @@ export class TestComponent implements OnInit {
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
         this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === 2 ? true : false;
-        if (!this.isQuestionCodeSnippetType)
-        this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
-        //Sets boolean if question is single choice
-        this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
 
-        
+
+        if (!this.isQuestionCodeSnippetType) {
+            this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
+            //Sets boolean if question is single choice
+            this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
+        }
+
         //Save answer to database 
         if (this.questionIndex !== index) {
             this.addAnswer(this.testQuestions[this.questionIndex]);
@@ -240,6 +356,7 @@ export class TestComponent implements OnInit {
         if (index !== -1)
             this.testAnswers.splice(index, 1);
 
+
         //Add new answer
         let testAnswer = new TestAnswer();
         testAnswer.questionId = testQuestion.question.question.id;
@@ -250,8 +367,8 @@ export class TestComponent implements OnInit {
                     testAnswer.optionChoice.push(x.id);
             });
         }
-
-        if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus !== QuestionStatus.review) {
+        else testAnswer.code = this.codeAnswer;
+        if (testQuestion.question.question.questionType !== QuestionType.codeSnippetQuestion && testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus !== QuestionStatus.review) {
 
             testAnswer.questionStatus = QuestionStatus.answered;
 
@@ -266,13 +383,14 @@ export class TestComponent implements OnInit {
         }
 
         this.testAnswers.push(testAnswer);
-        
+
         this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
             this.isTestReady = true;
             let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
             if (testAnswer.questionStatus === QuestionStatus.answered) {
                 this.markAsAnswered(questionIndex);
             }
+
         }, err => {
             this.isTestReady = true;
         });
@@ -304,6 +422,7 @@ export class TestComponent implements OnInit {
      */
     markAsAnswered(index: number) {
         this.testQuestions[index].questionStatus = QuestionStatus.answered;
+
     }
 
     /**

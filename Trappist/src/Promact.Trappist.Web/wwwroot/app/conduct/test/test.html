@@ -41,14 +41,31 @@
                     <div class="display-table-cell qs-area ptb20">
                         <p [innerHTML]="questionDetail"></p>
                     </div>
-                    <ace-editor [(text)]="text" 
-                    #editor style="height:150px;" ></ace-editor>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice">
+                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionCodeSnippetType">
+                        <select name="languages" class="form-control" [(ngModel)]="selectLanguage" (change)="changeLanguage($event.target.value)" [ngModelOptions]="{standalone:true}">
+                            <option *ngFor="let lang of languageMode" [value]="lang">{{lang}}</option>
+                        </select>
+                        <select name="theme" class="form-control" [(ngModel)]="selectedTheme" (change)="changeTheme($event.target.value)" [ngModelOptions]="{standalone:true}">
+                            <option *ngFor="let theme of themes" [value]="theme">{{theme}}</option>
+                        </select>
+                        <br />
+                        <ace-editor [(text)]="codeAnswer"
+                                    (textChanged)="onChange($event)"
+                                    [mode]="selectedMode"
+                                    [theme]="selectedTheme"
+                                    #editor
+                                    id="edit"
+                                    style="min-height: 400px; width:100%; overflow: auto;">
+                        </ace-editor>
+                        <br />
+                        <button type="button" class="btn" value="run">Run</button>
+                    </div>
+                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group>
                             <md-radio-button *ngFor="let option of options;let i = index" [disabled]="questionStatus == 0" value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
                         </md-radio-group>
                     </div>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice">
+                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-checkbox *ngFor="let option of options; let i = index" [disabled]="questionStatus == 0" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
                             {{option.option}}
                         </md-checkbox>
