@@ -7,7 +7,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.TestConduct
 {
     public class TestSummaryAC
     {
-        public DateTime? TimeLeft { get; set; }
+        public int TimeLeft { get; set; }
         public int TotalNumberOfQuestions { get; set; }
         public int AttemptedQuestions { get; set; }
         public int UnAttemptedQuestions { get; set; }

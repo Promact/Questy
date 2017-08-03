@@ -10,7 +10,13 @@ import { TestSummary } from '../testsummary.model';
 })
 export class TestSummaryComponent implements OnInit{
     magicString: string;
-    testSummaryObject : TestSummary;
+    testSummaryObject: TestSummary;
+    timeLeft: number;
+    totalQuestionsInTest: number;
+    numberOfAttemptedQuestions: number;
+    numberOfUnAttemptedQuestions: number;
+    numberOfReviewedQuestions: number;
+    resumeTypeOfTest: number;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testSummaryObject = new TestSummary();
@@ -25,6 +31,12 @@ export class TestSummaryComponent implements OnInit{
     getTestSummaryDetailsByLink(testLink: string) {
         this.conductService.getTestSummary(testLink).subscribe((response) => {
             this.testSummaryObject = response;
+            this.timeLeft = this.testSummaryObject.timeLeft;
+            this.totalQuestionsInTest = this.testSummaryObject.totalQuestions;
+            this.numberOfAttemptedQuestions = this.testSummaryObject.attemptedQuestions;
+            this.numberOfUnAttemptedQuestions = this.testSummaryObject.unattemptedQuestions;
+            this.numberOfReviewedQuestions = this.testSummaryObject.reviewedQuestions;
+            this.resumeTypeOfTest = this.testSummaryObject.testResumeType;
         });
     }
 }

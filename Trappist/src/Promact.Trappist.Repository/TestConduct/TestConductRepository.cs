@@ -261,18 +261,23 @@ namespace Promact.Trappist.Repository.TestConduct
                     .Include(x => x.TestQuestion).Include(x => x.TestAttendees).ToListAsync();
             var listOfQuestionsAttempted = await _dbContext.TestConduct.Where(x => x.TestAttendees.Test.Link == testLink).ToListAsync();
             var testConductObject = await _dbContext.TestConduct.FirstOrDefaultAsync(x => x.TestAttendees.Test.Link == testLink);
+            var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendee.Test.Link == testLink);
+
             var numberOfAttemptedQuestions = listOfQuestionsAttempted.Count();
             var count = 0;
-            foreach (var question in listOfQuestionsAttempted) {
+            foreach (var question in listOfQuestionsAttempted)
+            {
                 if (testConductObject.QuestionStatus == QuestionStatus.review)
                     count = count + 1;
             }
             var summary = new TestSummaryAC();
-            var numberOfReviewedQuestions = count;         
+            var numberOfReviewedQuestions = count;
             var testSettingsObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             summary.ResumeType = testSettingsObject.AllowTestResume == AllowTestResume.Supervised ? AllowTestResume.Supervised : AllowTestResume.Unsupervised;
 
-                if (testObject.Any())
+            var timeLeft = testSettingsObject.Duration - reportObject.TimeTakenByAttendee;
+
+            if (testObject.Any())
             {
                 var testSummaryDetails = testObject.First();
                 var totalNumberOfQuestions = testSummaryDetails.TestQuestion.Count();
@@ -282,7 +287,8 @@ namespace Promact.Trappist.Repository.TestConduct
                     TotalNumberOfQuestions = totalNumberOfQuestions,
                     UnAttemptedQuestions = totalNumberOfQuestions - numberOfAttemptedQuestions,
                     ReviewedQuestions = numberOfReviewedQuestions,
-                    ResumeType = summary.ResumeType
+                    ResumeType = summary.ResumeType,
+                    TimeLeft = timeLeft
                 };
                 return testSummary;
             }
