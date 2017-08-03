@@ -255,12 +255,38 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task AddTestLogsAsync(int attendeeId, TestLogs testLogs)
+        public async Task<TestSummaryAC> GetTestSummaryDetailsAsync(string testLink)
         {
-            testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            testLogs.AwayFromTestWindow = DateTime.UtcNow;
-            _dbContext.TestLogs.Update(testLogs);
-            await _dbContext.SaveChangesAsync();
+            var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
+                    .Include(x => x.TestQuestion).Include(x => x.TestAttendees).ToListAsync();
+            var listOfQuestionsAttempted = await _dbContext.TestConduct.Where(x => x.TestAttendees.Test.Link == testLink).ToListAsync();
+            var testConductObject = await _dbContext.TestConduct.FirstOrDefaultAsync(x => x.TestAttendees.Test.Link == testLink);
+            var numberOfAttemptedQuestions = listOfQuestionsAttempted.Count();
+            var count = 0;
+            foreach (var question in listOfQuestionsAttempted) {
+                if (testConductObject.QuestionStatus == QuestionStatus.review)
+                    count = count + 1;
+            }
+            var summary = new TestSummaryAC();
+            var numberOfReviewedQuestions = count;         
+            var testSettingsObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
+            summary.ResumeType = testSettingsObject.AllowTestResume == AllowTestResume.Supervised ? AllowTestResume.Supervised : AllowTestResume.Unsupervised;
+
+                if (testObject.Any())
+            {
+                var testSummaryDetails = testObject.First();
+                var totalNumberOfQuestions = testSummaryDetails.TestQuestion.Count();
+                var testSummary = new TestSummaryAC()
+                {
+                    AttemptedQuestions = numberOfAttemptedQuestions,
+                    TotalNumberOfQuestions = totalNumberOfQuestions,
+                    UnAttemptedQuestions = totalNumberOfQuestions - numberOfAttemptedQuestions,
+                    ReviewedQuestions = numberOfReviewedQuestions,
+                    ResumeType = summary.ResumeType
+                };
+                return testSummary;
+            }
+            return null;
         }
         #endregion
 

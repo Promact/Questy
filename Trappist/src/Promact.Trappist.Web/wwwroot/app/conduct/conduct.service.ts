@@ -110,4 +110,8 @@ export class ConductService {
     addTestLogs(attendeeId: number, body: any) {
         return this.httpService.put(this.testConductUrl + 'testlogs/' + attendeeId, body);
     }
+
+    getTestSummary(testLink: string) {
+        return this.httpService.get(this.testConductUrl + testLink + '/test-summary');
+    }
 }
