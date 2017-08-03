@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.DomainModel.Models.Test;
+using Microsoft.Extensions.Configuration;
 
 namespace Promact.Trappist.Test
 {
@@ -114,6 +115,12 @@ namespace Promact.Trappist.Test
             var globalUtilObject = globalUtilMock.Object;
             services.AddScoped(x => globalUtilMock);
             services.AddScoped(x => globalUtilObject);
+
+            //Mock IConfiguration
+            var configurationMock = new Mock<IConfiguration>();
+            var configurationMockObject = configurationMock.Object;
+            services.AddScoped(x => configurationMock);
+            services.AddScoped(x => configurationMockObject);
             #endregion
 
             #region Auto Mapper Configuration

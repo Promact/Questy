@@ -227,9 +227,16 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
             if (testStatus != TestStatus.AllCandidates)
             {
-                //Begin transformation
-                await TransformAttendeeAnswer(attendeeId);
-                await GetTotalMarks(attendeeId);
+
+                #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                Task.Run(async() =>
+                {
+                    //Begin transformation
+                    await TransformAttendeeAnswer(attendeeId);
+                    await GetTotalMarks(attendeeId);
+                });
+                #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
             }
             var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             testLogs.FinishTest = DateTime.UtcNow;
@@ -278,6 +285,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     allTestCasePassed = false;
                 }
             }
+
             return allTestCasePassed;
         }
 
@@ -311,9 +319,9 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="code">Code object</param>
         /// <returns>Result object</returns>
-        private async Task<Result> ExecuteCodeAsync(Code code)
+        private async Task<Result> ExecuteCodeAsync(Code codeObject)
         {
-            var serializedCode = JsonConvert.SerializeObject(code);
+            var serializedCode = JsonConvert.SerializeObject(codeObject);
             var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
             var CodeBaseServer = _configuration["CodeBaseSimulatorServer"];
             var response = await client.PostAsync(CodeBaseServer, body);
