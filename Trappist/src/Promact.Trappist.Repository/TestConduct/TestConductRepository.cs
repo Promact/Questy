@@ -94,8 +94,8 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.TestIpAddresses.Where(x => x.TestId == testObject.Id).ToListAsync();
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
             if (testObject.TestIpAddress != null)
-                return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress == userIp) ? true : false;
-            else return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused ? true : false;
+                return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress == userIp);
+            else return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
