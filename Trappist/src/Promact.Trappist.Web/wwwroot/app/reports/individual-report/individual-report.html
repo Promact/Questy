@@ -9,7 +9,7 @@
                 <span class="test-name">{{testName}}</span>
             </h1>
             <div class="pull-right">
-                <button type="button" class="btn" (click)="downloadIndividualReport('printSectionId')"><em class="material-icons">file_download</em> Download</button>
+                <button type="button" class="btn" (click)="downloadIndividualReport()"><em class="material-icons">file_download</em> Download</button>
                 <button type="button" class="btn" (click)="printIndividualReport('printSectionId')"><em class="material-icons">print</em> Print</button>
             </div>
         </div>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div id="printSectionId">
-        <div>
+        <div style="page-break-inside:avoid">
             <div class="container">
                 <div class="candidate-details-block clearfix">
                     <div class="candidate-details-title">
@@ -35,7 +35,7 @@
                             <p><strong>Test Date</strong>{{testAttendee?.createdDateTime |date:'fullDate'}}</p>
                             <p><strong>Test Finish Status</strong>{{testStatus}}</p>
                             <p><strong>Roll No.</strong>{{testAttendee?.rollNumber}}</p>
-                            <p><strong>Time Taken</strong> {{timeTakenInHours}} hrs {{timeTakenInMinutes}} mins</p>
+                            <p><strong>Time Taken</strong><span *ngIf="timeTakenInHoursVisible">{{timeTakenInHours}} hrs </span><span *ngIf="timeTakenInMinutesVisible">{{timeTakenInMinutes}} mins </span><span *ngIf="timeTakenInSecondsVisible">{{timeTakenInSeconds}} secs</span></p>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
                             <div class="score">
