@@ -2,9 +2,9 @@
 
 export class TestSummary{
     public timeLeft: number;
-    public totalQuestions: number;
+    public totalNumberOfQuestions: number;
     public attemptedQuestions: number;
-    public unattemptedQuestions: number;
+    public unAttemptedQuestions: number;
     public reviewedQuestions: number;
-    public testResumeType: AllowTestResume;
+    public resumeType: AllowTestResume;
 }

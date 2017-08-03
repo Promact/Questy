@@ -275,7 +275,8 @@ namespace Promact.Trappist.Repository.TestConduct
             var testSettingsObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             summary.ResumeType = testSettingsObject.AllowTestResume == AllowTestResume.Supervised ? AllowTestResume.Supervised : AllowTestResume.Unsupervised;
 
-            var timeLeft = testSettingsObject.Duration - reportObject.TimeTakenByAttendee;
+            var duration = testSettingsObject.Duration * 60;
+            var timeLeft = duration - reportObject.TimeTakenByAttendee;
 
             if (testObject.Any())
             {
