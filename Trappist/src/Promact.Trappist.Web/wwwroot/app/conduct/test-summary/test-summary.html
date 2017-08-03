@@ -3,7 +3,7 @@
     <div class="content-block">
         <h2 class="mb30">Test Summary</h2>
         <p class="test-info"><span class="h4">Time Left: </span><span class="h2">00:17:22</span></p>
-        <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">100</span></p>
+        <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{totalQuestionsInTest}}</span></p>
         <p class="test-info"><span class="h4">Attempt Summary: </span></p>
         <table>
             <tr>
@@ -12,9 +12,9 @@
                 <th class="h5">Questions Marked for Review</th>
             </tr>
             <tr>
-                <td class="h2 theme-text">70</td>
-                <td class="h2">12</td>
-                <td class="h2 yellow-text">18</td>
+                <td class="h2 theme-text">{{numberOfAttemptedQuestions}}</td>
+                <td class="h2">{{numberOfUnAttemptedQuestions}}</td>
+                <td class="h2 yellow-text">{{numberOfReviewedQuestions}}</td>
             </tr>
         </table>
         <div class="text-center">
