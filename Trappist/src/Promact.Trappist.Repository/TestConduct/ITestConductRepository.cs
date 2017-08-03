@@ -120,5 +120,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testLogs">It is an object of TestLogs type</param>
         /// <returns></returns>
         Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
+
+        Task<TestSummaryAC> GetTestSummaryDetailsAsync(string testLink);
     }
 }
