@@ -62,7 +62,7 @@
                         <td>{{testAttendee.createdDateTime |date:'fullDate'}}</td>
                         <td>{{testAttendee.report.totalMarksScored}}</td>
                         <td>{{testAttendee.report.percentage}}
-                        <td><em class="material-icons">file_download</em></td>
+                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">file_download</em></td>
                         <td class="text-right"><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">remove_red_eye</em></td>
                     </tr>
                 </tbody>

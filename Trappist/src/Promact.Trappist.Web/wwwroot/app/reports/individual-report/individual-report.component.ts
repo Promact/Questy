@@ -117,8 +117,11 @@ export class IndividualReportComponent implements OnInit {
                     this.questionPieChartValue();
                     this.correctPieChartValue();
                     this.loader = false;
+                    this.downloadIndividualReport();
                 });
+               
             });
+          
         });
     }
 
@@ -268,34 +271,31 @@ export class IndividualReportComponent implements OnInit {
     printIndividualReport(printSectionId: string) {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
-        let pdf = new jsPDF('l', 'pt', 'letter');
-
+        let pdf = new jsPDF('p', 'mm', 'legal');
+        
         let styles = {
            background: '#FFFFFF',
-           pagesplit: true,
-           format: 'PNG',
+           pagesplit: true
         };
-        pdf.text(this.testAttendee.test.testName, 30, 15);
+       pdf.internal.scaleFactor = 6.55;
+        pdf.text(this.testAttendee.test.testName, 50, 15);
         pdf.addHTML(elementToPrint, 5, 20, styles, () => {
-           
             pdf.setProperties({
                 title: 'Individual-test-report'
             });
-           
-           
+
             pdf.setFontSize(5);
             pdf.autoPrint();
             pdf.output('dataurlnewwindow');
             this.loader = false;
         });
-        
     }
 
     /**
      * Downloads the individual report of a test attendee in the form of a pdf
      * @param printSectionId is a string for getting the required element to be downloaded from the html
      */
-    downloadIndividualReport(printSectionId: string) {
+    downloadIndividualReport() {
         this.loader = true;
         let dataToDownload = document.getElementById('printSectionId');
         let doc = new jsPDF('p', 'mm', 'a4');
