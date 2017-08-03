@@ -93,8 +93,9 @@ namespace Promact.Trappist.Repository.TestConduct
             var currentDate = DateTime.UtcNow;
             await _dbContext.TestIpAddresses.Where(x => x.TestId == testObject.Id).ToListAsync();
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
-           
-                return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress != null && testObject.TestIpAddress.Any(x => x.IpAddress == userIp) ? true : false;
+            if (testObject.TestIpAddress != null)
+                return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress == userIp) ? true : false;
+            else return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused ? true : false;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
@@ -310,11 +311,11 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal marks = 0;
             decimal fullMarks = 0;
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-         
+
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
-                
+
 
                 if (attendedQuestion.QuestionStatus != QuestionStatus.answered)
                 {
