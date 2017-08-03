@@ -360,7 +360,7 @@ namespace Promact.Trappist.Test.TestConduct
                     Source = "source",
                     Language = ProgrammingLanguage.C
                 },
-                QuestionStatus = QuestionStatus.answered
+                QuestionStatus = QuestionStatus.unanswered
             };
             await _testConductRepository.AddAnswerAsync(attendeeId, answer);
 
