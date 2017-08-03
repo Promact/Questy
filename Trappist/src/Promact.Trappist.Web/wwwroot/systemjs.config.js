@@ -90,7 +90,7 @@
                 defaultExtension: 'js'
             },
             'ng2-charts': {
-                'main': 'ng2-charts.js',
+                'main': 'index.js',
                 'defaultExtension': 'js'
             },
             'angular2-tinymce': {
