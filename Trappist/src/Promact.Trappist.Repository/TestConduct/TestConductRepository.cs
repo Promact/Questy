@@ -231,9 +231,9 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
 
             DateTime date = testLogs.StartTest;
-            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute + date.Second;
+            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute*60 + date.Second;
             DateTime elapsedTime = testLogs.FinishTest;
-            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 *60) + elapsedTime.Minute + elapsedTime.Second;
+            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 *60) + elapsedTime.Minute*60 + elapsedTime.Second;
             report.TimeTakenByAttendee = FinishTestTimeInSeconds - StartTestTimeInSeconds;
 
             _dbContext.Report.Update(report);
