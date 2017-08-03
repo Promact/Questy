@@ -2,7 +2,7 @@
     <test-conduct-header></test-conduct-header>
     <div class="content-block">
         <h2 class="mb30">Test Summary</h2>
-        <p class="test-info"><span class="h4">Time Left: </span><span class="h2">00:17:22</span></p>
+        <p class="test-info"><span class="h4">Time Left: </span><span class="h2" *ngIf="timeLeftInHoursVisible">{{timeLeftInHours}}</span><span class="h2" *ngIf="timeLeftInMinutesVisible">: {{timeLeftInMinutes}}</span><span class="h2" *ngIf="timeLeftInSecondsVisible">: {{timeLeftInSeconds}}</span></p>
         <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{totalQuestionsInTest}}</span></p>
         <p class="test-info"><span class="h4">Attempt Summary: </span></p>
         <table>
@@ -17,11 +17,12 @@
                 <td class="h2 yellow-text">{{numberOfReviewedQuestions}}</td>
             </tr>
         </table>
-        <div class="text-center">
+        <div class="text-center" *ngIf="isButtonVisible">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
-            <button type="button" class="btn">Back to Test</button>
-            <button type="button" class="btn btn-primary" [routerLink]="['test-end']">End Test</button>
+            <button type="button" class="btn" (click)="startTest()">Back to Test</button>
+           
         </div>
+        <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
     </div>
     <test-conduct-footer></test-conduct-footer>
 </div>

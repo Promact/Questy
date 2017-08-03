@@ -23,6 +23,7 @@ import 'brace/theme/solarized_light';
 import 'brace/mode/java';
 import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
+import { AllowTestResume } from '../../tests/enum-allowtestresume';
 
 
 //Temporary imports
@@ -62,6 +63,7 @@ export class TestComponent implements OnInit {
     private focusLost: number;
     private tolerance: number;
     private timeOutCounter: number;
+    private resumable: AllowTestResume;
 
     private WARNING_TIME: number = 300;
     private WARNING_MSG: string = 'Hurry up!';
@@ -101,7 +103,7 @@ export class TestComponent implements OnInit {
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
         this.questionStatus = QuestionStatus.unanswered;
         this.questionIndex = 0;
-        this.testAttendee = new TestAttendee();
+      
         this.testAnswers = new Array<TestAnswer>();
         this.isQuestionCodeSnippetType = false;
         this.selectLanguage = 'java';
@@ -210,6 +212,7 @@ export class TestComponent implements OnInit {
             this.tolerance = this.test.browserTolerance;
             this.WARNING_MSG = this.test.warningMessage;
             this.WARNING_TIME = this.test.warningTime * 60;
+            this.resumable = this.test.allowTestResume;
             if (!this.testTypePreview)
                 this.getTestAttendee(this.test.id, this.testTypePreview);
         }, err => {
@@ -601,6 +604,18 @@ export class TestComponent implements OnInit {
         });
 
 
+
+        //A measure taken to add answer of question attempted just before the Test end
+        this.navigateToQuestionIndex(0);
+       
+
+        //if (this.resumable === AllowTestResume.Supervised) {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                this.router.navigate(['test-summary']);
+            });
+       // }
+        //else
+        //     this.router.navigate(['test-summary']);
     }
 
     /**
