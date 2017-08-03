@@ -133,10 +133,8 @@ export class TestSectionsComponent implements OnInit {
      */
     isTestAttendeeExist() {
         this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-            if (res.response) {
+            if (res.response) 
                 this.isEditTestEnabled = false;
-                window.location.href = window.location.origin + '/pageNotFound';
-            }
             else {
                 this.isEditTestEnabled = true;
             }

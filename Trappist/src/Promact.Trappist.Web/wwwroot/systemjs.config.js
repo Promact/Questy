@@ -60,7 +60,7 @@
             'buffer': 'npm:buffer',
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
-            'ace-builds': 'npm:ace-builds/src-min'
+            'ace-builds': 'npm:ace-builds/src-min',
 
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
             'exceljs': 'npm:exceljs/dist/exceljs.js',
