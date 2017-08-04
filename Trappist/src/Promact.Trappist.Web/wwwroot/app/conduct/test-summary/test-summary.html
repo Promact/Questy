@@ -20,9 +20,9 @@
         <div class="text-center" *ngIf="isButtonVisible">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
             <button type="button" class="btn" (click)="startTest()">Back to Test</button>
-           
+            <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
         </div>
-        <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
+      
     </div>
     <test-conduct-footer></test-conduct-footer>
 </div>
