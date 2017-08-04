@@ -4,10 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
-import * as Excel from 'exceljs/dist/exceljs.min.js';
+import { ConductService } from '../../conduct/conduct.service';
+import { TestInstructions } from '../../conduct/testInstructions.model';
 
-declare let jsPDF: any;
-declare let saveAs: any;
+let jsPDF = require('jspdf');
+require('jsPdfautoTable');
+let Excel = require('exceljs');
+let saveAs = require('filesaver');
 
 @Component({
     moduleId: module.id,
@@ -36,8 +39,17 @@ export class TestReportComponent implements OnInit {
     isAnyCandidateExist: boolean;
     checkedAllCandidate: boolean;
     isAnyCandidateSelected: boolean;
+    testFinishStatus: string;
+    domain: string;
+    reportLink: string;
+    maxScore: number;
+    averageTestScore: number;
+    averageTimeTaken: number;
+    totalNoOfTestQuestions: number;
+    maxDuration: number;
+    testInstruction: TestInstructions;
 
-    constructor(private reportService: ReportService, private route: ActivatedRoute) {
+    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
         this.testCompletionStatus = '0';
@@ -54,12 +66,17 @@ export class TestReportComponent implements OnInit {
         this.loader = true;
         this.checkedAllCandidate = false;
         this.isAnyCandidateSelected = false;
+        this.maxScore = 0;
+        this.maxDuration = 0;
+        this.totalNoOfTestQuestions = 0;
+        this.testInstruction = new TestInstructions();
     }
 
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
         this.getTestName();
         this.getAllTestCandidates();
+        this.domain = window.location.origin;
     }
 
     /**
@@ -323,15 +340,32 @@ export class TestReportComponent implements OnInit {
             { header: 'TEST DATE', key: 'testDate', width: 30 },
             { header: 'TEST TIME', key: 'testTime', width: 30 },
             { header: 'FINISH STATUS', key: 'testStatus', width: 15 },
-            { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 }
+            { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 },
+            { header: 'REPORT LINK', key: 'reportLink', width: 55 }
         ];
         workSheet2.columns = [
-            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 15 },
-            { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 30 },
+            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 20 },
+            { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 25 },
+            { header: 'MAXIMUM DURATION', key: 'maxDuration', width: 25 },
+            { header: 'AVERAGE SCORE', key: 'avgScore', width: 25 },
+            { header: 'AVERAGE TIME TAKEN(MIN)', key: 'avgTotalTime', width: 25 },
+            { header: 'AVERAGE NO OF CORRECT ATTEMPTS', key: 'avgCorrectAttempts', width: 35 }
         ]
         workSheet3.columns = [
-            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 15 },
-            { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 15 },
+            { header: 'ROLL NO', key: 'rollNo', width: 15 },
+            { header: 'NAME', key: 'name', width: 30 },
+            { header: 'EMAIL ID', key: 'email', width: 30 },
+            { header: 'EASY QUESTION ATTEMPTED', key: 'easuQ', width: 27 },
+            { header: 'MEDIUM QUESTION ATTEMPTED', key: 'mediumQ', width: 30 },
+            { header: 'DIFFICULT QUESTION ATTEMPTED', key: 'difficultQ', width: 30 },
+            { header: 'TOTAL QUESTION ATTEMPTED', key: 'totalQ', width: 27 },
+            { header: 'NO OF CORRECT ATTEMPTED', key: 'coorectQ', width: 27 },
+            { header: 'TIME TAKEN ', key: 'time', width: 20 },
+            { header: 'OVERALL MARKS', key: 'totalScore', width: 20 },
+            { header: 'PERCENTAGE', key: 'percentage', width: 20 },
+            { header: 'PERCENTILE', key: 'percentile', width: 20 },
+            { header: 'CANDIDATE RANK', key: 'rank', width: 20 },
+
         ]
         if (!this.checkedAllCandidate) {
             this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
@@ -344,21 +378,44 @@ export class TestReportComponent implements OnInit {
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
                 let testDate = document.getElementById('date').innerHTML;
+                let datetime = new Date(x.createdDateTime);
+                let hours = datetime.getHours();
+                let minitues = datetime.getMinutes();
+                this.testTakerDetails(x.report.testStatus, this.testId, x.id, );
                 let testTakers = {
                     'rollNo': x.rollNumber,
                     'name': x.firstName + space + x.lastName,
                     'email': x.email,
                     'contact': x.contactNumber,
                     'testDate': testDate,
-                    'testTime':x.createdDateTime,
-                    'testStatus': x.report.testStatus,
+                    'testTime': hours + ':' + minitues,
+                    'testStatus': this.testFinishStatus,
                     'totalMarks': x.report.totalMarksScored
                 };
                 workSheet1.addRow({
                     rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
-                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, totalMarks: testTakers.totalMarks
+                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, totalMarks: testTakers.totalMarks, reportLink: this.reportLink
                 });
-            }
+                let testTakersReport = {
+                    'rollNo': x.rollNumber,
+                    'name': x.firstName + space + x.lastName,
+                    'email': x.email,
+                    'timetaken': x.report.timeTakenByAttendee,
+                    'percentage': x.report.percentage,
+                    'percentile': x.report.percentile,
+                    'totalMarks': x.report.totalMarksScored
+                };
+                this.testScores();
+                workSheet3.addRow({
+                    rollNo: testTakersReport.rollNo, name: testTakersReport.name, email: testTakersReport.email, easuQ: 0, mediumQ: 0, difficultQ: 0, totalQ: 0,
+                    coorectQ: 0, time: testTakersReport.timetaken, totalScore: testTakersReport.totalMarks, percentage: testTakersReport.percentile,
+                    percentile: testTakersReport.percentile, rank: 0
+                });
+            }         
+        });
+        this.testSummaryDetails();
+        workSheet2.addRow({
+            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore, avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: 5
         });
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
@@ -394,5 +451,46 @@ export class TestReportComponent implements OnInit {
      */
     selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
         testAttendee.checkedCandidate = select;
+    }
+
+    testTakerDetails(testStatus: number, testID: number, testAttendeeId: number)
+    {
+        switch (testStatus)
+        {
+            case 1:
+                this.testFinishStatus = "Completed";
+                break;
+            case 2:
+                this.testFinishStatus = "Expired";
+                break;
+            case 3:
+                this.testFinishStatus = "Blocked";
+        }
+        this.reportLink = this.domain + '/reports/test/' + testID + '/individual-report/' + testAttendeeId;
+    }
+    testSummaryDetails()
+    {
+        let totalTime = 0;
+        let totalScore = 0;        
+        let totalAttendee = this.testAttendeeArray.length;
+        this.testAttendeeArray.forEach(x => {
+                if (this.maxScore < x.report.totalMarksScored)
+                    this.maxScore = x.report.totalMarksScored;
+                totalTime += x.report.timeTakenByAttendee;
+                totalScore += x.report.totalMarksScored;
+                if (this.maxDuration < x.report.timeTakenByAttendee)
+                    this.maxDuration = x.report.timeTakenByAttendee
+        });
+        this.averageTimeTaken = totalTime / totalAttendee;
+        this.averageTestScore = totalScore / totalAttendee;
+        this.conductService.getTestInstructionsByLink(this.test.link).subscribe((response) => {
+            this.testInstruction = response;
+        });
+        this.totalNoOfTestQuestions = this.testInstruction.totalNumberOfQuestions;
+    }
+
+    testScores()
+    {
+       
     }
 }
