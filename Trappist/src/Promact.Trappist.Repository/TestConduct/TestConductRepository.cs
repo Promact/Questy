@@ -214,10 +214,9 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 report = new Report();
                 report.TestAttendeeId = attendeeId;
-                report.TotalMarksScored = 0;
+                await _dbContext.Report.AddAsync(report);
             }
-            report.TestStatus = testStatus;
-            await _dbContext.Report.AddAsync(report);
+            report.TestStatus = testStatus;            
             await _dbContext.SaveChangesAsync();
             if (testStatus != TestStatus.AllCandidates)
             {
@@ -260,18 +259,16 @@ namespace Promact.Trappist.Repository.TestConduct
             var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
                     .Include(x => x.TestQuestion).Include(x => x.TestAttendees).ToListAsync();
             var listOfQuestionsAttempted = await _dbContext.TestConduct.Where(x => x.TestAttendees.Test.Link == testLink).ToListAsync();
+           
             var testConductObject = await _dbContext.TestConduct.FirstOrDefaultAsync(x => x.TestAttendees.Test.Link == testLink);
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendee.Test.Link == testLink);
 
-            var numberOfAttemptedQuestions = listOfQuestionsAttempted.Count();
-            var count = 0;
-            foreach (var question in listOfQuestionsAttempted)
-            {
-                if (testConductObject.QuestionStatus == QuestionStatus.review)
-                    count = count + 1;
-            }
+            var numberOfAttemptedQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.answered).Count();
+           
             var summary = new TestSummaryAC();
-            var numberOfReviewedQuestions = count;
+            var numberOfReviewedQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.review).Count();
+            var numberOfAnsweredQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.answered).Count();
+            
             var testSettingsObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
             summary.ResumeType = testSettingsObject.AllowTestResume == AllowTestResume.Supervised ? AllowTestResume.Supervised : AllowTestResume.Unsupervised;
 
@@ -282,11 +279,12 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 var testSummaryDetails = testObject.First();
                 var totalNumberOfQuestions = testSummaryDetails.TestQuestion.Count();
+                var numberOfUnAttemptedQuestions = totalNumberOfQuestions - numberOfAnsweredQuestions;
                 var testSummary = new TestSummaryAC()
                 {
                     AttemptedQuestions = numberOfAttemptedQuestions,
                     TotalNumberOfQuestions = totalNumberOfQuestions,
-                    UnAttemptedQuestions = totalNumberOfQuestions - numberOfAttemptedQuestions,
+                    UnAttemptedQuestions = numberOfUnAttemptedQuestions,
                     ReviewedQuestions = numberOfReviewedQuestions,
                     ResumeType = summary.ResumeType,
                     TimeLeft = timeLeft
