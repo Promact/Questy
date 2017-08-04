@@ -103,7 +103,7 @@ export class TestComponent implements OnInit {
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
         this.questionStatus = QuestionStatus.unanswered;
         this.questionIndex = 0;
-      
+        this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
         this.isQuestionCodeSnippetType = false;
         this.selectLanguage = 'java';
@@ -609,13 +609,14 @@ export class TestComponent implements OnInit {
         this.navigateToQuestionIndex(0);
        
 
-        //if (this.resumable === AllowTestResume.Supervised) {
+        if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.router.navigate(['test-summary']);
             });
-       // }
-        //else
-        //     this.router.navigate(['test-summary']);
+        }
+        else 
+            this.router.navigate(['test-summary']);
+ 
     }
 
     /**
