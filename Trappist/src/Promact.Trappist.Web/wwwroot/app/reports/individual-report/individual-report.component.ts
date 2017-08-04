@@ -116,12 +116,11 @@ export class IndividualReportComponent implements OnInit {
                     this.attendeeAnswers();
                     this.questionPieChartValue();
                     this.correctPieChartValue();
-                    this.loader = false;
-                    this.downloadIndividualReport();
+                    setTimeout(() => {
+                        this.downloadIndividualReport();  
+                    }, 3000);
                 });
-               
             });
-          
         });
     }
 
@@ -271,15 +270,16 @@ export class IndividualReportComponent implements OnInit {
     printIndividualReport(printSectionId: string) {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
-        let pdf = new jsPDF('p', 'mm', 'legal');
-        
+        let height = elementToPrint.offsetHeight;
+        console.log(height);
+        let pdf = new jsPDF('p', 'mm', [187,height]);
         let styles = {
            background: '#FFFFFF',
            pagesplit: true
         };
-       pdf.internal.scaleFactor = 6.55;
-        pdf.text(this.testAttendee.test.testName, 50, 15);
-        pdf.addHTML(elementToPrint, 5, 20, styles, () => {
+        pdf.internal.scaleFactor = 6.55;
+        pdf.text(this.testAttendee.test.testName, 15, 15);
+        pdf.addHTML(elementToPrint, 0, 20, styles, () => {
             pdf.setProperties({
                 title: 'Individual-test-report'
             });
@@ -298,15 +298,17 @@ export class IndividualReportComponent implements OnInit {
     downloadIndividualReport() {
         this.loader = true;
         let dataToDownload = document.getElementById('printSectionId');
-        let doc = new jsPDF('p', 'mm', 'a4');
+        let height = dataToDownload.offsetHeight;
+        let doc = new jsPDF('p', 'mm', [187,height]);
         let styles = {
             background: '#FFFFFF',
+            pagesplit: true
         };
-        doc.addHTML(dataToDownload, 0, 15, styles, () => {
+        doc.text(this.testAttendee.test.testName, 20, 15);
+        doc.addHTML(dataToDownload, 0, 20, styles, () => {
             doc.setProperties({
                 title: 'Individual-test-report'
             });
-            doc.text(this.testAttendee.test.testName, 20, 13);
             doc.setFontSize(5);
             doc.save('individual-report.pdf');
             this.loader = false;
