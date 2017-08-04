@@ -6,6 +6,7 @@ import { ReportsComponent } from './reports.component';
 import { TestReportComponent } from './test-report/test-report.component';
 import { IndividualReportComponent } from './individual-report/individual-report.component';
 import { ReportService } from './report.service';
+import { ConductService } from '../conduct/conduct.service';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { ReportService } from './report.service';
         IndividualReportComponent
     ],
     providers: [
-        ReportService
+        ReportService,
+        ConductService
     ]
 })
 export class ReportsModule { }
