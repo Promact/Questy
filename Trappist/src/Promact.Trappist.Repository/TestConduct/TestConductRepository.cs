@@ -227,16 +227,9 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
             if (testStatus != TestStatus.AllCandidates)
             {
-
-                #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                Task.Run(async() =>
-                {
-                    //Begin transformation
-                    await TransformAttendeeAnswer(attendeeId);
-                    await GetTotalMarks(attendeeId);
-                });
-                #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-
+                //Begin transformation
+                await TransformAttendeeAnswer(attendeeId);
+                await GetTotalMarks(attendeeId);
             }
             var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             testLogs.FinishTest = DateTime.UtcNow;
@@ -271,10 +264,13 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<bool> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)
         {
             var allTestCasePassed = true;
+            var score = 0d;
             var code = testAnswer.Code;
 
-            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
+            await AddAnswerAsync(attendeeId, testAnswer);
 
+            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
+            
             foreach(var testCase in testCases)
             {
                 code.Input = testCase.TestCaseInput;
@@ -284,7 +280,24 @@ namespace Promact.Trappist.Repository.TestConduct
                 {
                     allTestCasePassed = false;
                 }
+                else
+                {
+                    //Calculate score
+                    score += testCase.TestCaseMarks;
+                }
             }
+
+            //Add score to the TestCodeSolution table
+            var codeSolution = new TestCodeSolution()
+            {
+                TestAttendeeId = attendeeId,
+                QuestionId = testAnswer.QuestionId,
+                Solution = testAnswer.Code.Source,
+                Language = testAnswer.Code.Language,
+                Score = score
+            };
+            await _dbContext.TestCodeSolution.AddAsync(codeSolution);
+            await _dbContext.SaveChangesAsync();
 
             return allTestCasePassed;
         }
@@ -395,8 +408,7 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-
-
+            
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
                 if (attendedQuestion.QuestionStatus != QuestionStatus.answered)
@@ -422,9 +434,12 @@ namespace Promact.Trappist.Repository.TestConduct
                 var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
                 fullMarks = totalNumberOfQuestions * testAttendee.Test.CorrectMarks;
                 bool isAnsweredOptionCorrect = true;
-                foreach (var answers in attendedQuestion.TestAnswers)
+
+                if(question.Question.QuestionType != QuestionType.Programming)
                 {
-                    var answeredOption = answers.AnsweredOption;
+                    foreach (var answers in attendedQuestion.TestAnswers)
+                    {
+                        var answeredOption = answers.AnsweredOption;
 
                     if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer && question.Question.QuestionType == QuestionType.Single)
                     {
@@ -442,16 +457,21 @@ namespace Promact.Trappist.Repository.TestConduct
                     }
                 }
 
-                if (isAnsweredOptionCorrect)
-                {
-                    correctMarks += testAttendee.Test.CorrectMarks;
+                    if (isAnsweredOptionCorrect)
+                    {
+                        correctMarks += testAttendee.Test.CorrectMarks;
+                    }
+                    else
+                    {
+                        correctMarks -= testAttendee.Test.IncorrectMarks;
+                    }
                 }
                 else
                 {
-                    correctMarks -= testAttendee.Test.IncorrectMarks;
+                    //Add score from coding question attempted
+                    correctMarks += (decimal) await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score);
                 }
             }
-
             totalMarks = correctMarks;
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
             report.TotalMarksScored = (double)totalMarks;

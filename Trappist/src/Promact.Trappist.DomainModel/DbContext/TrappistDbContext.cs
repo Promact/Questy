@@ -79,6 +79,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestLogs> TestLogs { get; set; }
       
         public DbSet<TestIpAddress> TestIpAddresses { get; set; } 
+        public DbSet<TestCodeSolution> TestCodeSolution { get; set; }
         #region Overridden Methods  
         public override int SaveChanges()
         {
