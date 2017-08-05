@@ -113,6 +113,12 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </returns>
         Task<bool> IsTestInValidDateWindow(string testLink);
 
+        /// <summary>
+        /// Add values to specific fields of Test Logs Model
+        /// </summary>
+        /// <param name="attendeeId">Id of a particular Test Attendee</param>
+        /// <param name="testLogs">It is an object of TestLogs type</param>
+        /// <returns></returns>
         Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
     }
 }
