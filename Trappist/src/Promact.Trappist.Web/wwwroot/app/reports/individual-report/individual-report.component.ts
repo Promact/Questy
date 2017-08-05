@@ -97,7 +97,7 @@ export class IndividualReportComponent implements OnInit {
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.numberOfQuestionsAttended = this.testAttendee.testConduct.length;
-            this.numberOfQuestionsAttemptedVisible = this.numberOfQuestionsAttended == 0 ? false : true;
+            this.numberOfQuestionsAttemptedVisible = this.numberOfQuestionsAttended === 0 ? false : true;
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
             });
