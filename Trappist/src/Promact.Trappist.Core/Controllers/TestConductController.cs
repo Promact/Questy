@@ -287,6 +287,12 @@ namespace Promact.Trappist.Core.Controllers
             return false;
         }
 
+        /// <summary>
+        /// Sets the values of certain fields of TestLogs Method
+        /// </summary>
+        /// <param name="attendeeId">Id of a particular Test Attendee obtained from route</param>
+        /// <param name="testLogs">It is an object of Test Logs type</param>
+        /// <returns></returns>
         [HttpPut("testlogs/{attendeeId}")]
         public async Task SetTestLogsAsync([FromRoute]int attendeeId, [FromBody]TestLogs testLogs)
         {
