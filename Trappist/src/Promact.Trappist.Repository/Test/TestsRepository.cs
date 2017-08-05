@@ -9,6 +9,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.GlobalUtil;
@@ -334,12 +335,19 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
-           
+
             var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));
-            var testAttendeeDetails = await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.TestId == test.Id);
-            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == testAttendeeDetails.Id);
-            testLogs.StartTest = DateTime.UtcNow;
-            _dbContext.TestLogs.Update(testLogs);
+
+            var testAttendeeDetails = await _dbContext.TestAttendees.Where(x => x.TestId == test.Id).ToListAsync();
+            foreach (var attendee in testAttendeeDetails)
+            {
+                var testLogs = new TestLogs();
+                testLogs = await _dbContext.TestLogs.Where(x => x.TestAttendeeId == attendee.Id).FirstOrDefaultAsync();
+                if(testLogs.StartTest == default(DateTime))
+                testLogs.StartTest = DateTime.UtcNow;
+                _dbContext.TestLogs.Update(testLogs);
+            }
+
             await _dbContext.SaveChangesAsync();
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }

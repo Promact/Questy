@@ -229,15 +229,7 @@ namespace Promact.Trappist.Repository.TestConduct
             testLogs.FinishTest = DateTime.UtcNow;
             _dbContext.TestLogs.Update(testLogs);
             await _dbContext.SaveChangesAsync();
-
-            DateTime date = testLogs.StartTest;
-            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute*60 + date.Second;
-            DateTime elapsedTime = testLogs.FinishTest;
-            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 *60) + elapsedTime.Minute*60 + elapsedTime.Second;
-            report.TimeTakenByAttendee = FinishTestTimeInSeconds - StartTestTimeInSeconds;
-
-            _dbContext.Report.Update(report);
-            await _dbContext.SaveChangesAsync();
+            await GetTimeTakenByAttendeeAsync(attendeeId);
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
@@ -382,6 +374,22 @@ namespace Promact.Trappist.Repository.TestConduct
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
             report.TotalMarksScored = (double)marks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
+            _dbContext.Report.Update(report);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task GetTimeTakenByAttendeeAsync(int attendeeId)
+        {
+            var testAttendee = await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Id == attendeeId);
+            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            DateTime date = testLogs.StartTest;
+           
+            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute * 60 + date.Second;
+            DateTime elapsedTime = testLogs.FinishTest;
+            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 * 60) + elapsedTime.Minute * 60 + elapsedTime.Second;
+            report.TimeTakenByAttendee = FinishTestTimeInSeconds - StartTestTimeInSeconds;
+
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
         }
