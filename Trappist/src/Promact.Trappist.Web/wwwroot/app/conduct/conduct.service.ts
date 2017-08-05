@@ -103,7 +103,9 @@ export class ConductService {
     }
 
     /**
-     *Add values to the test logs table
+     * Sets the values of certain fields of Test Logs Model
+     * @param attendeeId is obtained from the route
+     * @param body is the object of test logs model
      */
     addTestLogs(attendeeId: number, body: any) {
         return this.httpService.put(this.testConductUrl + 'testlogs/' + attendeeId, body);
