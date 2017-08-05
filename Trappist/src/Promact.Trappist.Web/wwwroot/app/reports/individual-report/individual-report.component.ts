@@ -87,7 +87,6 @@ export class IndividualReportComponent implements OnInit {
             this.incorrectmarks = this.testAttendee.test.incorrectMarks;
             this.marks = this.testAttendee.report.totalMarksScored;
             this.percentage = this.testAttendee.report.percentage;
-            this.percentile = this.testAttendee.report.percentile;
             this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 3600);
             this.timeTakenInHoursVisible = this.timeTakenInHours > 1 ? true : false;
             this.timeTakenInMinutes = this.testAttendee.report.timeTakenByAttendee / 60;
@@ -102,8 +101,6 @@ export class IndividualReportComponent implements OnInit {
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
             });
-            this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 60);
-            this.timeTakenInMinutes = this.testAttendee.report.timeTakenByAttendee % 60;
             //Gets all the answers given by the test attendee
             this.reportsService.getTestAttendeeAnswers(this.testAttendee.id).subscribe((response) => {
                 this.testAnswers = response;
@@ -304,7 +301,7 @@ export class IndividualReportComponent implements OnInit {
             background: '#FFFFFF',
             pagesplit: true
         };
-        doc.text(this.testAttendee.test.testName, 20, 15);
+        doc.text(this.testAttendee.test.testName, 15, 15);
         doc.addHTML(dataToDownload, 0, 20, styles, () => {
             doc.setProperties({
                 title: 'Individual-test-report'
