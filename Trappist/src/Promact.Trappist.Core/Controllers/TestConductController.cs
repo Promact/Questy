@@ -153,15 +153,15 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="testId">Id of Test</param>
         /// <returns>TestAttendee object</returns>
-        [HttpGet("attendee/{testid}")]
-        public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId)
+        [HttpGet("attendee/{testid}/{isPreview}")]
+        public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId,[FromRoute] bool isPreview)
         {
             if (!await _testRepository.IsTestExists(testId))
             {
                 return NotFound();
             }
 
-            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null && !isPreview)
             {
                 return NotFound();
             }

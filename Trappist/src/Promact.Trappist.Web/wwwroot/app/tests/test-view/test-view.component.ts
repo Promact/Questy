@@ -34,7 +34,7 @@ export class TestViewComponent implements OnInit {
     tests: Test[];
     isEditTestEnabled: boolean;
     loader: boolean;
-    
+
     copiedContent: boolean;
     testLink: string;
     tooltipMessage: string;
@@ -45,7 +45,7 @@ export class TestViewComponent implements OnInit {
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.totalNumberOfQuestions = [];
-    
+
         this.tooltipMessage = 'Copy to Clipboard';
         this.isCategorySelected = false;
     }
@@ -66,6 +66,10 @@ export class TestViewComponent implements OnInit {
         this.snackBar.open(text, 'Dismiss', {
             duration: 3000
         });
+    }
+
+    openNewWindowForPreview() {
+        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + screen.height + ',width=' + screen.width + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
     }
 
     /**
@@ -121,7 +125,7 @@ export class TestViewComponent implements OnInit {
             category.isAccordionOpen = false;
         }
     }
-            
+
     /**
      * returns 'correct' class for correct option
      * @param isAnswer
@@ -193,9 +197,9 @@ export class TestViewComponent implements OnInit {
         });
     }
 
-   
 
-   
+
+
 
     /**
      * Open duplicate test dialog
@@ -232,6 +236,7 @@ export class TestViewComponent implements OnInit {
             testLink.select();
         }, 0);
         this.tooltipMessage = 'Copied';
+
     }
 
     /**

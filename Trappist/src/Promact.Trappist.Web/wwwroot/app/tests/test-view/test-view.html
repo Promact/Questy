@@ -19,7 +19,7 @@
                     <a md-menu-item (click)="navigateToTestSettings()">Settings</a>
                 </md-menu>
                 <button type="button" class="btn" [popover]="myPopover"><em class="material-icons">link</em>Get Test Link</button>
-                <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
+                <button type="button" class="btn btn-primary pull-right" (click)="openNewWindowForPreview()"><em class="material-icons">remove_red_eye</em> Preview</button>
             </div>
             <popover-content #myPopover [closeOnClickOutside]="true">
                 <label>Test Link</label>

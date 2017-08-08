@@ -1,5 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { testsRouting } from './tests.routing';
 import { TestsComponent } from './tests.component';
 import { TestsDashboardComponent } from './tests-dashboard/tests-dashboard.component';
@@ -14,19 +15,31 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
 import { TestViewComponent } from './test-view/test-view.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
+import { TestPreviewComponent } from './test-preview/test-preview.compponent'
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
 
 import { DuplicateTestDialogComponent } from './tests-dashboard/duplicate-test-dialog.component';
-
 import { DeselectCategoryComponent } from './test-sections/deselect-category.component';
 import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
+
+import { ConductService } from '../conduct/conduct.service';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { TestComponent } from '../conduct/test/test.component';
+import { conductRouting } from '../conduct/conduct.routing';
+//import { ConductModule } from '../conduct/conduct.module';
 
 @NgModule({
     imports: [
         SharedModule,
         testsRouting,
-        ClipboardModule       
+        ClipboardModule,
+        BrowserModule,
+        AceEditorModule
+        //conductRouting
+
+        //ConductModule
+
     ],
     declarations: [
         TestsComponent,
@@ -43,7 +56,10 @@ import { IncompleteTestCreationDialogComponent } from './test-settings/incomplet
         CreateTestFooterComponent,
         FilterPipe,
         DeselectCategoryComponent,
-        IncompleteTestCreationDialogComponent
+        IncompleteTestCreationDialogComponent,
+        TestPreviewComponent,
+        TestComponent
+ 
 
     ],
     entryComponents: [
@@ -56,7 +72,12 @@ import { IncompleteTestCreationDialogComponent } from './test-settings/incomplet
     ],
     providers: [
         TestService,
-        Test
+        Test,
+        ConductService,
+
+    ],
+    exports: [
+        TestPreviewComponent
     ]
 })
 export class TestsModule { }
