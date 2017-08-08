@@ -1,5 +1,7 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, Input, Output } from '@angular/core';
 import { Http } from '@angular/http';
+
+
 
 @Component({
     moduleId: module.id,
@@ -9,11 +11,15 @@ import { Http } from '@angular/http';
 export class AppComponent {
 
     name = 'Angular';
+    isPageTestPreview: boolean;
 
     constructor(private http: Http) {
-
+        this.isPageTestPreview = true;
+        let url = window.location.pathname;
+        this.isPageTestPreview = url.substring(url.indexOf('/tests/') + 18) === 'preview' ? true : false;
     }
 
+   
     /**
      * user is logged out and redirected to login page
      */

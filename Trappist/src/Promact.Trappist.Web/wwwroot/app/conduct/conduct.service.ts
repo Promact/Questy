@@ -47,8 +47,8 @@ export class ConductService {
      * Gets Test Attendee by Test Id
      * @param testId: Id of Test
      */
-    getTestAttendeeByTestId(testId: number) {
-        return this.httpService.get(this.testConductUrl + 'attendee/' + testId);
+    getTestAttendeeByTestId(testId: number, isTestTypePreview: boolean) {
+        return this.httpService.get(this.testConductUrl + 'attendee/' + testId + '/' + isTestTypePreview);
     }
 
     /**

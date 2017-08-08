@@ -1,0 +1,19 @@
+﻿import { Component, ViewChild} from '@angular/core';
+import { TestComponent } from '../../conduct/test/test.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from '../../app.component';
+@Component({
+    moduleId: module.id,
+    selector: 'test-preview',
+    templateUrl: 'test-preview.html'
+})
+
+export class TestPreviewComponent {
+    @ViewChild(TestComponent) testPreview: TestComponent;
+    testLink: string;
+
+    constructor(private route: ActivatedRoute, private _router: Router) {
+        this.testLink = this.route.snapshot.params['link'];        
+    }
+
+}
