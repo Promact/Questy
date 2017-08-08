@@ -136,7 +136,7 @@ export class TestComponent implements OnInit {
      */
     changeText() {
         if (this.selectLanguage === 'java') {
-            this.editor.getEditor().setValue(this.JAVA_CODE)
+            this.editor.getEditor().setValue(this.JAVA_CODE);
             this.selectedMode = 'java';
         }
 
@@ -279,7 +279,7 @@ export class TestComponent implements OnInit {
      * Resumes Test if Attendee had already answered some question
      */
     @Input() set resume(testStatus: string) {
-        if (testStatus == 'allCandidate')
+        if (testStatus === 'allCandidate')
             this.resumeTest();
 
     }
