@@ -89,9 +89,9 @@ export class IndividualReportComponent implements OnInit {
             this.percentage = this.testAttendee.report.percentage;
             this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 3600);
             this.timeTakenInHoursVisible = this.timeTakenInHours > 1 ? true : false;
-            this.timeTakenInMinutes = this.testAttendee.report.timeTakenByAttendee / 60;
+            this.timeTakenInMinutes = Math.floor(this.testAttendee.report.timeTakenByAttendee / 60);
             this.timeTakenInMinutesVisible = this.timeTakenInMinutes > 1 ? true : false;
-            this.timeTakenInSeconds = this.testAttendee.report.timeTakenByAttendee;
+            this.timeTakenInSeconds = this.testAttendee.report.timeTakenByAttendee % 60;
             this.timeTakenInSecondsVisible = this.timeTakenInSeconds > 0 ? true : false;
             this.testLogsVisible = this.testAttendee.testLogs.disconnectedFromServer === null ? false : true;
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
@@ -104,10 +104,8 @@ export class IndividualReportComponent implements OnInit {
             //Gets all the answers given by the test attendee
             this.reportsService.getTestAttendeeAnswers(this.testAttendee.id).subscribe((response) => {
                 this.testAnswers = response;
-                console.log(this.testAnswers);
                 //Gets all the questions present in the test
                 this.reportsService.getTestQuestions(this.testAttendee.test.id).subscribe((response) => {
-                    console.log(response);
                     this.testQuestions = response;
                     this.testFinishStatus();
                     this.attendeeAnswers();
@@ -197,7 +195,6 @@ export class IndividualReportComponent implements OnInit {
                 }
             }
         };
-        console.log(noOfAnswersCorrect);
         return noOfAnswersCorrect;
     }
 
@@ -268,7 +265,6 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
         let height = elementToPrint.offsetHeight;
-        console.log(height);
         let pdf = new jsPDF('p', 'mm', [187,height]);
         let styles = {
            background: '#FFFFFF',

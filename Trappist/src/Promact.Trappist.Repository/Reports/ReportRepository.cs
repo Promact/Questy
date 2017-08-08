@@ -94,15 +94,23 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<double> CalculatePercentileAsync(int testAttendeeId)
         {
             var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
-
+            int sameMarks = 0;
+            int count = 0;
             var attendeeList = await _dbContext.TestAttendees.Include(x => x.Report).Where(x => x.TestId == testAttendee.TestId).ToListAsync();
             double noOfScores = attendeeList.Count();
             var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
             double studentPercentile;
 
             var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testAttendee.TestId).OrderBy(x => x.TotalMarksScored).ToListAsync();
-            var rank = marksList.IndexOf(attendee) + 1;
+            foreach (var marks in marksList)
+            {
+                if (attendee.TotalMarksScored == marks.TotalMarksScored)
+                    sameMarks = sameMarks + 1;
+                else if (marks.TotalMarksScored < attendee.TotalMarksScored)
+                    count = count + 1;
+            }
 
+            var rank = count + (0.5 * sameMarks);
             double percentile = rank / noOfScores;
             studentPercentile = percentile * 100;
             return studentPercentile;
