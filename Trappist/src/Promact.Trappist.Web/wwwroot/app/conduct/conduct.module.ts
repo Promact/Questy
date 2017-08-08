@@ -38,6 +38,10 @@ import { AceEditorModule } from 'ng2-ace-editor';
         TestConductHeaderComponent,
         TestConductFooterComponent,
         TestComponent
+    ],
+
+    exports: [
+        TestComponent
     ]
 })
 export class ConductModule { }
