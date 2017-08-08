@@ -1,8 +1,12 @@
 ﻿<div class="test-conduct">
     <test-conduct-header></test-conduct-header>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
     <div class="content-block">
         <h2 class="mb30">Test Summary</h2>
-        <p class="test-info"><span class="h4">Time Left: </span><span class="h2" *ngIf="timeLeftInHoursVisible">{{timeLeftInHours}}</span><span class="h2" *ngIf="timeLeftInMinutesVisible">: {{timeLeftInMinutes}}</span><span class="h2" *ngIf="timeLeftInSecondsVisible">: {{timeLeftInSeconds}}</span></p>
+        <p class="test-info" *ngIf="!isTimeLeftZero"><span class="h4">Time Left: </span><span class="h2" *ngIf="timeLeftInHoursVisible">{{timeLeftInHours}} hr(s)</span><span class="h2" *ngIf="timeLeftInMinutesVisible">{{timeLeftInMinutes}} min(s)</span><span class="h2" *ngIf="timeLeftInSecondsVisible">{{timeLeftInSeconds}} sec(s)</span></p>
+        <p class="test-info" *ngIf="isTimeLeftZero"><span class="h4">Time Left: </span><span class="h2" *ngIf="timeLeftInHoursVisible">{{timeLeftInHours}} hr(s)</span><span class="h2" *ngIf="timeLeftInMinutesVisible">{{timeLeftInMinutes}} min(s)</span><span class="h2" *ngIf="timeLeftInSecondsVisible">{{timeLeftInSeconds}} sec(s)</span></p>
         <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{totalQuestionsInTest}}</span></p>
         <p class="test-info"><span class="h4">Attempt Summary: </span></p>
         <table>
