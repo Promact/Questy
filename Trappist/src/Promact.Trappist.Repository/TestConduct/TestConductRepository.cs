@@ -331,8 +331,9 @@ namespace Promact.Trappist.Repository.TestConduct
         private async Task GetTotalMarks(int testAttendeeId)
         {
             var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
-            decimal marks = 0;
+            decimal correctMarks = 0;
             decimal fullMarks = 0;
+            decimal totalMarks = 0;
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
 
 
@@ -363,16 +364,16 @@ namespace Promact.Trappist.Repository.TestConduct
 
                 if (isAnsweredOptionCorrect)
                 {
-                    marks += testAttendee.Test.CorrectMarks;
+                    correctMarks += testAttendee.Test.CorrectMarks;
                 }
                 else
                 {
-                    marks += testAttendee.Test.IncorrectMarks;
+                    correctMarks -= testAttendee.Test.IncorrectMarks;
                 }
             }
-
+            totalMarks = correctMarks;
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
-            report.TotalMarksScored = (double)marks;
+            report.TotalMarksScored = (double)totalMarks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
