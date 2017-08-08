@@ -41,7 +41,6 @@ export class TestComponent implements OnInit {
     selectLanguage: string;
     selectedMode: string;
     languageMode: string[];
-    //isPageTestPreview: boolean;
     testQuestions: TestQuestions[];
     questionDetail: string;
     options: SingleMultipleAnswerQuestionOption[];
@@ -69,7 +68,16 @@ export class TestComponent implements OnInit {
     private ALERT_CLEAR: string = 'You can\'t clear already answered question';
     private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus';
     private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost';
-
+    private JAVA_CODE: string = 'public class MyFirstJavaProgram {\n' +
+                                '\n' +
+                                    ' /* This is my first java program.\n' +
+                                    '* This will print ' + 'Hello World' + ' as the output\n' +
+                                ' */\n' +
+                                    '\n' +
+                                         ' public static void main(String[]args) {\n' +
+                                            ' System.out.println("Hello World"); // prints Hello World\n' +
+                                     ' }\n' +
+                                 '}\n';
     private defaultSnackBarDuration: number = 3000;
 
     constructor(private router: Router,
@@ -81,7 +89,6 @@ export class TestComponent implements OnInit {
         this.secToTimeString(this.seconds);
         this.focusLost = 0;
         this.tolerance = 2;
-        //this.isPageTestPreview = true;
         this.isTestReady = false;
         this.selectedTheme = 'eclipse';
         this.timeString = this.secToTimeString(this.seconds);
@@ -97,17 +104,8 @@ export class TestComponent implements OnInit {
         this.isQuestionCodeSnippetType = false;
         this.selectLanguage = 'java';
         this.selectedMode = 'java';
-        this.codeAnswer = 'public class MyFirstJavaProgram {\n' +
-            '\n' +
-            ' /* This is my first java program.\n' +
-            '* This will print ' + 'Hello World' + ' as the output\n' +
-            ' */\n' +
-            '\n' +
-            ' public static void main(String[]args) {\n' +
-            ' System.out.println("Hello World"); // prints Hello World\n' +
-            ' }\n' +
-            '}\n';
-        this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
+        this.codeAnswer = this.JAVA_CODE;
+            this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
 
     }
     ngOnInit() {
@@ -138,18 +136,7 @@ export class TestComponent implements OnInit {
      */
     changeText() {
         if (this.selectLanguage === 'java') {
-            this.editor.getEditor().setValue([
-                'public class MyFirstJavaProgram {'
-                ,
-                , ' /* This is my first java program.'
-                , '* This will print ', 'Hello World', ' as the output'
-                , ' */'
-                ,
-                , ' public static void main(String[]args) {'
-                , ' System.out.println("Hello World"); // prints Hello World'
-                , ' }'
-                , '}'
-            ].join('\n'));
+            this.editor.getEditor().setValue(this.JAVA_CODE)
             this.selectedMode = 'java';
         }
 
