@@ -254,44 +254,18 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task<TestSummaryAC> GetTestSummaryDetailsAsync(string testLink)
+        public async Task<int> GetTestSummaryDetailsAsync(string testLink)
         {
             var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
                     .Include(x => x.TestQuestion).Include(x => x.TestAttendees).ToListAsync();
-            var listOfQuestionsAttempted = await _dbContext.TestConduct.Where(x => x.TestAttendees.Test.Link == testLink).ToListAsync();
-           
-            var testConductObject = await _dbContext.TestConduct.FirstOrDefaultAsync(x => x.TestAttendees.Test.Link == testLink);
-            var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendee.Test.Link == testLink);
-
-            var numberOfAttemptedQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.answered).Count();
-           
-            var summary = new TestSummaryAC();
-            var numberOfReviewedQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.review).Count();
-            var numberOfAnsweredQuestions = listOfQuestionsAttempted.Where(x => x.QuestionStatus == QuestionStatus.answered).Count();
-            
-            var testSettingsObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == testLink);
-            summary.ResumeType = testSettingsObject.AllowTestResume == AllowTestResume.Supervised ? AllowTestResume.Supervised : AllowTestResume.Unsupervised;
-
-            var duration = testSettingsObject.Duration * 60;
-            var timeLeft = duration - reportObject.TimeTakenByAttendee;
-
             if (testObject.Any())
             {
                 var testSummaryDetails = testObject.First();
                 var totalNumberOfQuestions = testSummaryDetails.TestQuestion.Count();
-                var numberOfUnAttemptedQuestions = totalNumberOfQuestions - numberOfAnsweredQuestions;
-                var testSummary = new TestSummaryAC()
-                {
-                    AttemptedQuestions = numberOfAttemptedQuestions,
-                    TotalNumberOfQuestions = totalNumberOfQuestions,
-                    UnAttemptedQuestions = numberOfUnAttemptedQuestions,
-                    ReviewedQuestions = numberOfReviewedQuestions,
-                    ResumeType = summary.ResumeType,
-                    TimeLeft = timeLeft
-                };
-                return testSummary;
+                return totalNumberOfQuestions;
             }
-            return null;
+            else
+                return 0;
         }
         #endregion
 
@@ -351,10 +325,6 @@ namespace Promact.Trappist.Repository.TestConduct
                         }
                     }
                 }
-
-                //Remove the answer from the AttendeeAnswer once Transformation is commenced 
-                _dbContext.AttendeeAnswers.Remove(attendeeAnswer);
-                await _dbContext.SaveChangesAsync();
             }
         }
 

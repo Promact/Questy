@@ -5,9 +5,4 @@
     selector: 'test-end',
     templateUrl: 'test-end.html',
 })
-export class TestEndComponent {
-    closeWindow() {
-        console.log('close');
-        window.close();
-    }
-}
+export class TestEndComponent {}

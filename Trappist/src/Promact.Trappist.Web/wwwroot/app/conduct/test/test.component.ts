@@ -607,16 +607,15 @@ export class TestComponent implements OnInit {
 
         //A measure taken to add answer of question attempted just before the Test end
         this.navigateToQuestionIndex(0);
-       
+        
 
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                this.router.navigate(['test-summary']);
+                window.close();
             });
         }
-        else 
-            this.router.navigate(['test-summary']);
- 
+        else
+            window.close();
     }
 
     /**

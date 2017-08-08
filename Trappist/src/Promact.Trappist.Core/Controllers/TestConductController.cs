@@ -270,13 +270,18 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Test-Summary API
+        /// <summary>
+        /// Returns the total number of questions in a particular test
+        /// </summary>
+        /// <param name="testLink">Contains the link of the Test</param>
+        /// <returns></returns>
         [HttpGet("{testLink}/test-summary")]
-        public async Task<TestSummaryAC> GetTestSummaryAsync(string testLink)
+        public async Task<int> GetTestSummaryAsync(string testLink)
         {
             var summaryDetails = await _testConductRepository.GetTestSummaryDetailsAsync(testLink);
             return summaryDetails;
         }
-#endregion
+        #endregion
         #endregion
 
         #region Private Method
