@@ -15,7 +15,7 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
 import { TestViewComponent } from './test-view/test-view.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
-import { TestPreviewComponent } from './test-preview/test-preview.compponent'
+import { TestPreviewComponent } from './test-preview/test-preview.compponent';
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from './shared/create-test-footer/create-test-footer.component';
 
@@ -24,10 +24,7 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
 import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
 
 import { ConductService } from '../conduct/conduct.service';
-import { AceEditorModule } from 'ng2-ace-editor';
-import { TestComponent } from '../conduct/test/test.component';
-import { conductRouting } from '../conduct/conduct.routing';
-//import { ConductModule } from '../conduct/conduct.module';
+import { ConductModule } from '../conduct/conduct.module';
 
 @NgModule({
     imports: [
@@ -35,10 +32,7 @@ import { conductRouting } from '../conduct/conduct.routing';
         testsRouting,
         ClipboardModule,
         BrowserModule,
-        AceEditorModule
-        //conductRouting
-
-        //ConductModule
+        ConductModule
 
     ],
     declarations: [
@@ -57,8 +51,7 @@ import { conductRouting } from '../conduct/conduct.routing';
         FilterPipe,
         DeselectCategoryComponent,
         IncompleteTestCreationDialogComponent,
-        TestPreviewComponent,
-        TestComponent
+        TestPreviewComponent
  
 
     ],
@@ -73,11 +66,7 @@ import { conductRouting } from '../conduct/conduct.routing';
     providers: [
         TestService,
         Test,
-        ConductService,
-
-    ],
-    exports: [
-        TestPreviewComponent
+        ConductService
     ]
 })
 export class TestsModule { }
