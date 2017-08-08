@@ -259,7 +259,7 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(testId);
 
             var testIpAddress = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
-            var testIpAddressAc = Mapper.Map<List<TestIpAddress>,List<TestIpAddressAC>>(testIpAddress);
+            var testIpAddressAc = Mapper.Map<List<TestIpAddress>, List<TestIpAddressAC>>(testIpAddress);
 
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
@@ -324,7 +324,8 @@ namespace Promact.Trappist.Repository.Tests
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
                     //Removing correct answer(s)
-                    question.SingleMultipleAnswerQuestion?.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
+                    if (question.SingleMultipleAnswerQuestion != null)
+                        question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
                     questionList.Add(new TestConductAC() { Question = question, QuestionStatus = QuestionStatus.unanswered });
                 });
 
