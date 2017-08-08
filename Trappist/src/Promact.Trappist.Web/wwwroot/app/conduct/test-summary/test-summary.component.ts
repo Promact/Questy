@@ -1,10 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestSummary } from '../testsummary.model';
-import { TestStatus } from "../../reports/enum-test-state";
-import { TestAttendee } from "../../reports/testattendee.model";
-import { Test } from "../../tests/tests.model";
+import { TestStatus } from '../../reports/enum-test-state';
+import { TestAttendee } from '../../reports/testattendee.model';
+import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
 
@@ -13,9 +12,10 @@ import { QuestionStatus } from '../question_status.enum';
     selector: 'test-summary',
     templateUrl: 'test-summary.html',
 })
+
 export class TestSummaryComponent implements OnInit {
     magicString: string;
-    testSummaryObject: TestSummary;
+    testSummaryObject: number;
     timeLeft: number;
     totalQuestionsInTest: number;
     numberOfAttemptedQuestions: number;
@@ -32,58 +32,86 @@ export class TestSummaryComponent implements OnInit {
     testAttendee: TestAttendee;
     test: Test;
     testAnswers: TestAnswer[];
-    testAnswer: TestAnswer;
-    countA: number;
-    countR: number;
-    countU: number;
+    isTimeLeftZero: boolean;
+    testDuration: number;
+    loader: boolean;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
-        this.testSummaryObject = new TestSummary();
         this.testAttendee = new TestAttendee();
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
-        this.testAnswer = new TestAnswer();
-        this.countA = 0;
-        this.countR = 0;
-        this.countU = 0;
+        this.isTimeLeftZero = false;
     }
 
     ngOnInit() {
+        this.loader = true;
         let url = window.location.pathname;
         this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test-summary'));
+        this.getTotalQuestions();
         this.getTestDetails(this.magicString);
     }
 
-    getTestSummaryDetailsByLink(testLink: string) {
-        this.conductService.getTestSummary(testLink).subscribe((response) => {
+    /**
+     * Gets the total number of questions in a particular test
+     */
+    getTotalQuestions() {
+        this.conductService.getTestSummary(this.magicString).subscribe((response) => {
             this.testSummaryObject = response;
-            this.timeLeft = this.testSummaryObject.timeLeft;
-            this.totalQuestionsInTest = this.testSummaryObject.totalNumberOfQuestions;
-            this.numberOfAttemptedQuestions = this.testSummaryObject.attemptedQuestions;
-            this.numberOfUnAttemptedQuestions = this.testSummaryObject.unAttemptedQuestions;
-            this.numberOfReviewedQuestions = this.testSummaryObject.reviewedQuestions;
-            this.resumeTypeOfTest = this.testSummaryObject.resumeType;
-            this.isButtonVisible = this.resumeTypeOfTest === 0 ? false : true;
-            this.timeLeftInHours = Math.floor(this.timeLeft / 3600);
-            this.timeLeftInHoursVisible = this.timeLeftInHours < 1 ? false : true;
-            this.timeLeftInMinutes = Math.floor(this.timeLeft / 60);
-            this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
-            this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
-            this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
+            this.totalQuestionsInTest = this.testSummaryObject;
         });
     }
 
+    /**
+     * Gets the elapsed time of test to calculate the time left of the test
+     * @param attendeeId is the Id of the attendee giving the selected test
+     */
+    timeLeftOfTest(attendeeId: number) {
+        this.conductService.getElapsedTime(attendeeId).subscribe((response) => {
+            let spanTime = response;
+            let spanTimeInSeconds = spanTime * 60;
+            let durationInSeconds = this.test.duration * 60;
+            if (spanTimeInSeconds !== 0) {
+                this.timeLeft = durationInSeconds - spanTimeInSeconds;
+                this.timeLeftInHours = Math.floor(this.timeLeft / 3600);
+                this.timeLeftInHoursVisible = this.timeLeftInHours < 1 ? false : true;
+                this.timeLeftInMinutes = Math.floor(this.timeLeft / 60);
+                this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
+                this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
+                this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
+            }
+            else {
+                this.isTimeLeftZero = true;
+                this.timeLeft = durationInSeconds;
+                this.timeLeftInHours = Math.floor(this.timeLeft / 3600);
+                this.timeLeftInHoursVisible = this.timeLeftInHours < 1 ? false : true;
+                if (this.timeLeftInHours < 1) {
+                    this.timeLeftInMinutes = Math.floor(this.timeLeft / 60);
+                    this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
+                }
+                this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
+                this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
+            }
+            this.loader = false;
+        });
+    }
+
+    /**
+     * Gets the details of the test by the test link
+     * @param testLink contains the link of the test from the route
+     */
     getTestDetails(testLink: string) {
         this.conductService.getTestByLink(testLink).subscribe((response1) => {
             this.test = response1;
-
+            this.testDuration = this.test.duration;
             this.getTestAttendee(this.test.id);
-            this.totalQuestionsInTest = this.test.numberOfTestQuestions;
-
         });
     }
 
-    getUnSupervisedSummaryDetailsByLink(testAttendeeId: number) {
+    /**
+     * Gets the details required for displaying the test summary
+     * @param testAttendeeId contains the Id of the test attendee giving the test 
+     */
+    getSummaryDetailsByAttendeeId(testAttendeeId: number) {
         this.conductService.getAnswer(testAttendeeId).subscribe((response) => {
             this.testAnswers = response;
             this.testAnswers.forEach(x => {
@@ -91,17 +119,22 @@ export class TestSummaryComponent implements OnInit {
                 this.numberOfAttemptedQuestions = answeredQuestions.length;
                 let reviewedQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.review);
                 this.numberOfReviewedQuestions = reviewedQuestions.length;
-                let unAnsweredQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.unanswered);
-                this.numberOfUnAttemptedQuestions = unAnsweredQuestions.length;
+                this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
             });
         });
     }
 
+    /**
+     * Takes the student back to the test on clicking the back to test button
+     */
     startTest() {
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/test-summary')) + '/test';
-        window.location.href = testUrl;
-
+        let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
+        newWindow.location.href = testUrl;
+        newWindow.onunload = () => {
+            window.location.href = url;
+        };
     }
 
     /**
@@ -111,26 +144,25 @@ export class TestSummaryComponent implements OnInit {
         this.endTest(TestStatus.completedTest);
     }
 
-    ///**
-    //* Gets Test Attendee
-    //* @param testId: Id of Test
-    //*/
+    /**
+    * Gets Test Attendee
+    * @param testId: Id of Test
+    */
     getTestAttendee(testId: number) {
         this.conductService.getTestAttendeeByTestId(testId).subscribe((response) => {
             this.testAttendee = response;
-            if (this.test.allowTestResume === 0)
-                this.getTestSummaryDetailsByLink(this.test.link);
-            else
-                this.getUnSupervisedSummaryDetailsByLink(this.testAttendee.id);
+            this.getSummaryDetailsByAttendeeId(this.testAttendee.id);
+            this.timeLeftOfTest(this.testAttendee.id);
+            this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
-            this.router.navigate([''])
+            this.router.navigate(['']);
         });
     }
 
-    ///**
-    //* Ends test and route to test-end page
-    //* @param testStatus: TestStatus object
-    //*/
+    /**
+    * Ends test and route to test-end page
+    * @param testStatus: TestStatus object
+    */
     private endTest(testStatus: TestStatus) {
         if (this.isButtonVisible) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
