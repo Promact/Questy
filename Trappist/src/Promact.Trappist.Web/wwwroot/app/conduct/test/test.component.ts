@@ -1,8 +1,9 @@
-﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { Test } from '../../tests/tests.model';
+import { TestPreviewComponent } from '../../tests/test-preview/test-preview.compponent';
 import { TestQuestions } from '../test_conduct.model';
 import { TestOrder } from '../../tests/enum-testorder';
 import { SingleMultipleAnswerQuestionOption } from '../../questions/single-multiple-answer-question-option.model';
@@ -35,9 +36,12 @@ export class TestComponent implements OnInit {
     @ViewChild('editor') editor: AceEditorComponent;
     timeString: string;
     test: Test;
+    testTypePreview: boolean;
+    @Input() testLink: string;
     selectLanguage: string;
     selectedMode: string;
     languageMode: string[];
+    //isPageTestPreview: boolean;
     testQuestions: TestQuestions[];
     questionDetail: string;
     options: SingleMultipleAnswerQuestionOption[];
@@ -77,10 +81,13 @@ export class TestComponent implements OnInit {
         this.secToTimeString(this.seconds);
         this.focusLost = 0;
         this.tolerance = 2;
+        //this.isPageTestPreview = true;
         this.isTestReady = false;
         this.selectedTheme = 'eclipse';
         this.timeString = this.secToTimeString(this.seconds);
         this.test = new Test();
+        this.testTypePreview = false;
+
         this.testQuestions = new Array<TestQuestions>();
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
         this.questionStatus = QuestionStatus.unanswered;
@@ -91,21 +98,21 @@ export class TestComponent implements OnInit {
         this.selectLanguage = 'java';
         this.selectedMode = 'java';
         this.codeAnswer = 'public class MyFirstJavaProgram {\n' +
-                            '\n' +
-                            ' /* This is my first java program.\n' +
-                            '* This will print ' + 'Hello World' + ' as the output\n' +
-                            ' */\n' +
-                            '\n' +
-                            ' public static void main(String[]args) {\n' +
-                                ' System.out.println("Hello World"); // prints Hello World\n' +
-                            ' }\n' +
-                           '}\n';
+            '\n' +
+            ' /* This is my first java program.\n' +
+            '* This will print ' + 'Hello World' + ' as the output\n' +
+            ' */\n' +
+            '\n' +
+            ' public static void main(String[]args) {\n' +
+            ' System.out.println("Hello World"); // prints Hello World\n' +
+            ' }\n' +
+            '}\n';
         this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
 
     }
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
-        this.getTestByLink();
+        this.getTestByLink(this.testLink);
     }
 
     /**
@@ -195,17 +202,27 @@ export class TestComponent implements OnInit {
     /**
      * Gets Test by Test Link
      */
-    getTestByLink() {
-        let url = window.location.pathname;
-        let link = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
+    @Input() set getTestLink(link: string) {
 
-        this.conductService.getTestByLink(link).subscribe((response) => {
+        this.getTestByLink(link);
+
+    } getTestByLink(link: string) {
+        let url = window.location.pathname;
+        if (link === '' || link === undefined)
+            this.testLink = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
+        else {
+            this.testLink = link;
+            this.testTypePreview = true;
+        }
+
+        this.conductService.getTestByLink(this.testLink).subscribe((response) => {
             this.test = response;
             this.seconds = this.test.duration * 60;
             this.tolerance = this.test.browserTolerance;
             this.WARNING_MSG = this.test.warningMessage;
             this.WARNING_TIME = this.test.warningTime * 60;
-            this.getTestAttendee(this.test.id);
+            if (!this.testTypePreview)
+                this.getTestAttendee(this.test.id, this.testTypePreview);
         }, err => {
             window.location.href = window.location.origin + '/pageNotFound';
         });
@@ -215,8 +232,8 @@ export class TestComponent implements OnInit {
      * Gets Test Attendee
      * @param testId: Id of Test
      */
-    getTestAttendee(testId: number) {
-        this.conductService.getTestAttendeeByTestId(testId).subscribe((response) => {
+    getTestAttendee(testId: number, testTypePreview: boolean) {
+        this.conductService.getTestAttendeeByTestId(testId, testTypePreview).subscribe((response) => {
             this.testAttendee = response;
             this.getTestQuestion(this.test.id);
         }, err => {
@@ -227,7 +244,10 @@ export class TestComponent implements OnInit {
     /**
      * Gets all the test testQuestions
      */
-    getTestQuestion(id: number) {
+    @Input() set getQuestion(question: number) {
+        this.getTestQuestion(question);
+
+    } getTestQuestion(id: number) {
         this.conductService.getQuestions(id).subscribe((response) => {
 
             this.testQuestions = response;
@@ -243,8 +263,9 @@ export class TestComponent implements OnInit {
             Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
 
             this.isTestReady = true;
-
-            this.getTestStatus(this.testAttendee.id);
+            if (this.testTypePreview)
+                this.navigateToQuestionIndex(0);
+            else this.getTestStatus(this.testAttendee.id);
         });
     }
 
@@ -270,6 +291,11 @@ export class TestComponent implements OnInit {
     /**
      * Resumes Test if Attendee had already answered some question
      */
+    @Input() set resume(testStatus: string) {
+        if (testStatus == 'allCandidate')
+            this.resumeTest();
+
+    }
     resumeTest() {
         this.isTestReady = false;
         this.conductService.getAnswer(this.testAttendee.id).subscribe((response) => {
@@ -305,7 +331,10 @@ export class TestComponent implements OnInit {
      * Navigate to a question by its index
      * @param index: index of question
      */
-    navigateToQuestionIndex(index: number) {
+    @Input() set navigateQuestion(navigate: number) {
+        this.navigateToQuestionIndex(navigate);
+
+    } navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
 
         if (index < 0 || index >= this.testQuestions.length) {
@@ -330,6 +359,7 @@ export class TestComponent implements OnInit {
         }
         else {
             this.isTestReady = true;
+            return;
         }
 
         //Save status of new question
@@ -400,6 +430,9 @@ export class TestComponent implements OnInit {
      * Marks the question as selected
      * @param index: index of the question
      */
+    @Input() set markSelected(index: number) {
+        this.markAsSelected(index);
+    }
     markAsSelected(index: number) {
         this.testQuestions[index].questionStatus = QuestionStatus.selected;
     }
@@ -561,12 +594,16 @@ export class TestComponent implements OnInit {
      */
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
-        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+        if (this.testTypePreview)
+            window.close();
+        else this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             //A measure taken to add answer of question attempted just before the Test end
             this.navigateToQuestionIndex(0);
 
             this.router.navigate(['test-end']);
         });
+
+
     }
 
     /**

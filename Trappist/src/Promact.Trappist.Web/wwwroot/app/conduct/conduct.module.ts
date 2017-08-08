@@ -23,7 +23,8 @@ import { AceEditorModule } from 'ng2-ace-editor';
         conductRouting,
         SharedModule,
         CoreModule,
-        AceEditorModule
+        AceEditorModule,
+
     ],
     providers: [
         ConductService
@@ -36,7 +37,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
         TestEndComponent,
         TestConductHeaderComponent,
         TestConductFooterComponent,
-        TestComponent,
+        TestComponent
     ]
 })
 export class ConductModule { }
