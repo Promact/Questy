@@ -13,7 +13,7 @@ import { TestConductHeaderComponent } from './shared/test-conduct-header/test-co
 import { TestConductFooterComponent } from './shared/test-conduct-footer/test-conduct-footer.component';
 import { ConductService } from './conduct.service';
 import { TestComponent } from './test/test.component';
-import { AceEditorModule } from 'ng2-ace-editor';
+
 
 
 @NgModule({
@@ -22,9 +22,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
         BrowserModule,
         conductRouting,
         SharedModule,
-        CoreModule,
-        AceEditorModule,
-
+        CoreModule
     ],
     providers: [
         ConductService

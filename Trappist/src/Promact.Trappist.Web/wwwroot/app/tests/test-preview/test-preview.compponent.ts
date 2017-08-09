@@ -1,7 +1,7 @@
 ﻿import { Component, ViewChild} from '@angular/core';
 import { TestComponent } from '../../conduct/test/test.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppComponent } from '../../app.component';
+
 @Component({
     moduleId: module.id,
     selector: 'test-preview',

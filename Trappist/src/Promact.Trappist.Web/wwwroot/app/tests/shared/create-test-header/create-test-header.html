@@ -1,4 +1,5 @@
-﻿<div class="test-create-header clearfix">
+﻿
+<div class="test-create-header clearfix">
     <div class="container">
         <h1 class="pull-left">
             <span [hidden]="!isLabelVisible">
@@ -22,7 +23,7 @@
         </h1>
         <div class="pull-right">
             <button type="button" class="btn" [popover]="myPopover" (click)="getTestLink()"><em class="material-icons">link</em>Get Test Link</button>
-            <button type="button" class="btn btn-primary pull-right"><em class="material-icons">remove_red_eye</em> Preview</button>
+            <button type="button" class="btn btn-primary pull-right" (click)="changeComponent()"><em class="material-icons">remove_red_eye</em> Preview</button>
             <popover-content #myPopover [closeOnClickOutside]="true">
                 <label>Test Link</label>
                 <div class="url-container">

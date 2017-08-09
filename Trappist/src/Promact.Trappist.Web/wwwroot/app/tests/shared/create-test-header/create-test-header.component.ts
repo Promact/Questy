@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Test } from '../../tests.model';
 import { PopoverModule } from 'ngx-popover';
+import { TestPreviewComponent } from '../../test-preview/test-preview.compponent';
 
 @Component({
     moduleId: module.id,
@@ -15,12 +16,14 @@ import { PopoverModule } from 'ngx-popover';
 
 export class CreateTestHeaderComponent implements OnInit {
     testId: number;
+    testLink: string;
     editName: string;
     testNameUpdatedMessage: string;
     isTestNameExist: boolean;
     testNameRef: string;
     isLabelVisible: boolean;
     id: number;
+    testPreviewPage: boolean;
     testName: string;
     editedTestName: string;
     isWhiteSpaceError: boolean;
@@ -31,7 +34,6 @@ export class CreateTestHeaderComponent implements OnInit {
     public testNameReference: string;
     isButtonClicked: boolean;
     tooltipMessage: string;
-    testLink: string;
     copiedContent: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
@@ -40,6 +42,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.isLabelVisible = true;
         this.isButtonClicked = false;
         this.tooltipMessage = 'Copy to Clipboard';
+        this.testPreviewPage = false;
     }
 
     /**
@@ -84,6 +87,9 @@ export class CreateTestHeaderComponent implements OnInit {
         if (this.editedTestName) {
             this.testDetails.testName = this.editedTestName;
         }
+    }
+    changeComponent() {
+        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + screen.height + ',width=' + screen.width + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
     }
 
     /**
