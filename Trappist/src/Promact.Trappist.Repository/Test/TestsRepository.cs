@@ -341,14 +341,14 @@ namespace Promact.Trappist.Repository.Tests
             var testAttendeeDetails = await _dbContext.TestAttendees.Where(x => x.TestId == test.Id).ToListAsync();
             foreach (var attendee in testAttendeeDetails)
             {
-                var testLogs = new TestLogs();
-                testLogs = await _dbContext.TestLogs.Where(x => x.TestAttendeeId == attendee.Id).FirstOrDefaultAsync();
-                if(testLogs.StartTest == default(DateTime))
-                testLogs.StartTest = DateTime.UtcNow;
-                _dbContext.TestLogs.Update(testLogs);
+                var testLogs = await _dbContext.TestLogs.Where(x => x.TestAttendeeId == attendee.Id).FirstOrDefaultAsync();
+                if (testLogs.StartTest == default(DateTime))
+                {
+                    testLogs.StartTest = DateTime.UtcNow;
+                    _dbContext.TestLogs.Update(testLogs);
+                    await _dbContext.SaveChangesAsync();
+                }
             }
-
-            await _dbContext.SaveChangesAsync();
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
         #endregion
