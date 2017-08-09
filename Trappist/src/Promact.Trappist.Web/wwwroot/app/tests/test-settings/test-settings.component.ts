@@ -45,6 +45,7 @@ export class TestSettingsComponent implements OnInit {
     tooltipMessage: string;
     ipAddressArray: TestIPAddress[] = [];
     numberOfIpFields: number[] = [];
+    disablePreview: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -56,6 +57,7 @@ export class TestSettingsComponent implements OnInit {
         this.isAttendeeExistForTest = false;
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
+        this.disablePreview = false;
     }
 
     /**
@@ -64,9 +66,8 @@ export class TestSettingsComponent implements OnInit {
     ngOnInit() {
         this.loader = true;
         this.testId = this.route.snapshot.params['id'];
-        this.isAttendeeExists();
         this.getTestById(this.testId);
-
+        this.isAttendeeExists();
     }
 
     /**
@@ -77,6 +78,7 @@ export class TestSettingsComponent implements OnInit {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
             this.testNameReference = this.testDetails.testName;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
             this.loader = false;
             let magicString = this.testDetails.link;
             let domain = window.location.origin;
@@ -207,7 +209,7 @@ export class TestSettingsComponent implements OnInit {
                 this.ngOnInit();
                 this.openSnackBar('Saved changes and resumed test');
             }
-                
+
         });
     }
     /**
@@ -225,9 +227,9 @@ export class TestSettingsComponent implements OnInit {
     removeIpAddress(index: number, ipId: number) {
         this.testDetails.testIpAddress.splice(index, 1);
         if (ipId !== undefined)
-        this.testService.deleteTestipAddress(ipId).subscribe(response => {
-        });
-        
+            this.testService.deleteTestipAddress(ipId).subscribe(response => {
+            });
+
     }
 
 

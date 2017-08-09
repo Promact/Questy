@@ -18,6 +18,7 @@ export class CreateTestHeaderComponent implements OnInit {
     testId: number;
     testLink: string;
     editName: string;
+    testObject: Test;
     testNameUpdatedMessage: string;
     isTestNameExist: boolean;
     testNameRef: string;
@@ -35,6 +36,8 @@ export class CreateTestHeaderComponent implements OnInit {
     isButtonClicked: boolean;
     tooltipMessage: string;
     copiedContent: boolean;
+    @Input()
+    disablePreview: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test Name has been updated successfully';
@@ -43,6 +46,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.isButtonClicked = false;
         this.tooltipMessage = 'Copy to Clipboard';
         this.testPreviewPage = false;
+       
     }
 
     /**
@@ -50,6 +54,7 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
+       
     }
 
     /**
@@ -61,6 +66,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.testLink = domain + '/conduct/' + linkOfTest;
     }
 
+   
     /**
      * Open snackbar
      * @param message contains the message to be displayed when the snackbar gets opened

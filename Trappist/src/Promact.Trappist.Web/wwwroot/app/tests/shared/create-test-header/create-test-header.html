@@ -11,7 +11,7 @@
                        [(ngModel)]="testDetails.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focus)="selectAllContent($event)"
                        (click)="$event.preventDefault()" (keyup.enter)="onEnter(box.value)" />
                 <span class="update-btns">
-                    <button type="submit" class="icon-btn ml10"  (click)="updateTestName(testDetails.id,testDetails)" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>
+                    <button type="submit" class="icon-btn ml10" (click)="updateTestName(testDetails.id,testDetails)" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>
                     <button type="button" class="icon-btn ml10" (click)="showEditButton(box.value)"><em class="material-icons danger-text">close</em></button>
                 </span>
                 <span class="errors-container">
@@ -23,7 +23,7 @@
         </h1>
         <div class="pull-right">
             <button type="button" class="btn" [popover]="myPopover" (click)="getTestLink()"><em class="material-icons">link</em>Get Test Link</button>
-            <button type="button" class="btn btn-primary pull-right" (click)="changeComponent()"><em class="material-icons">remove_red_eye</em> Preview</button>
+            <button type="button" class="btn btn-primary pull-right" [disabled]="disablePreview" (click)="changeComponent()"><em class="material-icons">remove_red_eye</em> Preview</button>
             <popover-content #myPopover [closeOnClickOutside]="true">
                 <label>Test Link</label>
                 <div class="url-container">

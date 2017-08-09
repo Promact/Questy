@@ -29,12 +29,14 @@ export class TestQuestionsComponent implements OnInit {
     testNameReference: string;
     isAnyCategorySelectedForTest: boolean;
     isEditTestEnabled: boolean;
+    disablePreview: boolean;
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
         this.isSaveExit = false;
         this.questionsToAdd = [];
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        this.disablePreview = false;
     }
 
     ngOnInit() {
@@ -99,6 +101,7 @@ export class TestQuestionsComponent implements OnInit {
         this.loader = true;
         this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
             this.testNameReference = this.testDetails.testName;
             this.isAnyCategorySelectedForTest = this.testDetails.categoryAcList.some(function (category) {
                 return category.isSelect;
