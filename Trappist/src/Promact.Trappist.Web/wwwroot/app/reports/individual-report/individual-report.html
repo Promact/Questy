@@ -196,7 +196,7 @@
                     <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'medium'}} : Filled the registration form.</p>
                     <p>{{testAttendee?.testLogs.startTest | date:'medium'}} : Started the test.</p>
                     <p>{{testAttendee?.testLogs.finishTest |date:'medium'}} : Finished the test.</p>
-                    <p>{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : Away from the test window.</p>
+                    <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : Away from the test window.</p>
                     <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'medium'}} : Disconnected from the server.</p>
                     <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} User Closed the test window without finishing the test.</p>
                     <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'medium'}} : Resumed the test.</p>
