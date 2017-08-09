@@ -55,6 +55,7 @@ export class IndividualReportComponent implements OnInit {
     timeTakenInHoursVisible: boolean;
     timeTakenInMinutesVisible: boolean;
     timeTakenInSecondsVisible: boolean;
+    awayFromTestWindowVisible: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -96,6 +97,7 @@ export class IndividualReportComponent implements OnInit {
             this.testLogsVisible = this.testAttendee.testLogs.disconnectedFromServer === null ? false : true;
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
+            this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
             this.numberOfQuestionsAttended = this.testAttendee.testConduct.length;
             this.numberOfQuestionsAttemptedVisible = this.numberOfQuestionsAttended === 0 ? false : true;
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
@@ -279,7 +281,7 @@ export class IndividualReportComponent implements OnInit {
 
             pdf.setFontSize(5);
             pdf.autoPrint();
-            pdf.output('dataurlnewwindow');
+            window.open(pdf.output('bloburl'), '_blank');
             this.loader = false;
         });
     }
