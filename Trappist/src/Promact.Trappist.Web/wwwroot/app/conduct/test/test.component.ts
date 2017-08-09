@@ -594,22 +594,12 @@ export class TestComponent implements OnInit {
      */
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
-        if (this.testTypePreview)
-            window.close();
-        else this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-            //A measure taken to add answer of question attempted just before the Test end
-            this.navigateToQuestionIndex(0);
-
-            this.router.navigate(['test-end']);
-        });
-
-
-
         //A measure taken to add answer of question attempted just before the Test end
         this.navigateToQuestionIndex(0);
-        
 
-        if (this.resumable === AllowTestResume.Supervised) {
+        if (this.testTypePreview)
+            window.close();
+        else if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 window.close();
             });

@@ -121,7 +121,6 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <returns></returns>
         Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
 
-        Task<TestSummaryAC> GetTestSummaryDetailsAsync(string testLink);
         /// <summary>
         /// Returns the total number of questions for a Test
         /// </summary>

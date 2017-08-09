@@ -50,8 +50,7 @@ export class IndividualReportComponent implements OnInit {
     closeWindowLogVisible: boolean;
     resumeTestLog: boolean;
     testConduct: TestConduct[];
-    numberOfQuestionsAttended: number;
-    numberOfQuestionsAttemptedVisible: boolean;
+    numberOfQuestionsAttempted: number;
     timeTakenInHoursVisible: boolean;
     timeTakenInMinutesVisible: boolean;
     timeTakenInSecondsVisible: boolean;
@@ -98,8 +97,7 @@ export class IndividualReportComponent implements OnInit {
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
-            this.numberOfQuestionsAttended = this.testAttendee.testConduct.length;
-            this.numberOfQuestionsAttemptedVisible = this.numberOfQuestionsAttended === 0 ? false : true;
+            this.numberOfQuestionsAttempted = this.testAttendee.testConduct.length;
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
             });
@@ -114,8 +112,8 @@ export class IndividualReportComponent implements OnInit {
                     this.questionPieChartValue();
                     this.correctPieChartValue();
                     setTimeout(() => {
-                        this.downloadIndividualReport();  
-                    }, 3000);
+                        this.downloadIndividualReport();
+                    }, 5000);
                 });
             });
         });
@@ -153,7 +151,7 @@ export class IndividualReportComponent implements OnInit {
                     if (this.testQuestions[question].question.questionType === 1) {
                         let option = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
                         let answerCorrect = this.noOfAnswersCorrectGivenbyAttendee(option);
-                        if (answerStatus === false ||(answerCorrect>0 && answerCorrect < 2)) {
+                        if (answerStatus === false || (answerCorrect > 0 && answerCorrect < 2)) {
                             answerStatus = false;
                             break;
                         }
@@ -185,7 +183,7 @@ export class IndividualReportComponent implements OnInit {
         let isTestAttendeeAnswerCorrect: boolean;
         for (let option = 0; option < this.testAnswers.length; option++) {
             for (let i = 0; i < options.length; i++) {
-                if (this.testAnswers[option].answeredOption === options[i].id ) {
+                if (this.testAnswers[option].answeredOption === options[i].id) {
                     if (options[i].isAnswer) {
                         isTestAttendeeAnswerCorrect = true;
                         noOfAnswersCorrect++;
@@ -267,10 +265,10 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
         let height = elementToPrint.offsetHeight;
-        let pdf = new jsPDF('p', 'mm', [187,height]);
+        let pdf = new jsPDF('p', 'mm', [187, height]);
         let styles = {
-           background: '#FFFFFF',
-           pagesplit: true
+            background: '#FFFFFF',
+            pagesplit: true
         };
         pdf.internal.scaleFactor = 6.55;
         pdf.text(this.testAttendee.test.testName, 15, 15);
@@ -294,7 +292,7 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         let dataToDownload = document.getElementById('printSectionId');
         let height = dataToDownload.offsetHeight;
-        let doc = new jsPDF('p', 'mm', [187,height]);
+        let doc = new jsPDF('p', 'mm', [187, height]);
         let styles = {
             background: '#FFFFFF',
             pagesplit: true
