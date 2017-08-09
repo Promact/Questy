@@ -27,6 +27,7 @@ export class TestSectionsComponent implements OnInit {
     testNameReference: string;
     isEditTestEnabled: boolean;
     isCategoryExist: boolean;
+    disablePreview: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
@@ -34,6 +35,7 @@ export class TestSectionsComponent implements OnInit {
         this.testCategories = [];
         this.testDetails = new Test();
         this.isCategoryExist = false;
+        this.disablePreview = false;
     }
 
     /**
@@ -53,6 +55,7 @@ export class TestSectionsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
             this.isCategoryExist = this.testDetails.categoryAcList.length === 0 ? false : true;
             this.testNameReference = this.testDetails.testName;
             this.loader = false;

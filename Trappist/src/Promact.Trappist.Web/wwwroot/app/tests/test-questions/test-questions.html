@@ -2,7 +2,7 @@
     <div class="loader-container" *ngIf="loader">
         <div class="spinner"></div>
     </div>
-    <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+    <create-test-header  [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
     <div class="container" *ngIf="!loader">
         <div class="loader-container" *ngIf="loader_question">
             <div class="spinner"></div>

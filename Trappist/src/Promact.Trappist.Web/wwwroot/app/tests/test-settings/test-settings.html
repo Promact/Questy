@@ -3,7 +3,7 @@
         <div class="spinner"></div>
     </div>
     <form #settingsForm="ngForm">
-        <create-test-header [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+        <create-test-header [disablePreview]="disablePreview"[testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
         <div class="container">
             <h5>Settings & Schedule</h5>
             <span class="error-msg" *ngIf="isAttendeeExistForTest">Attendees for this test exist</span>
