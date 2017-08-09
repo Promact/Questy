@@ -8,6 +8,8 @@ import { Md2AccordionModule, Md2DataTableModule } from 'md2';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { ChartsModule } from 'ng2-charts';
 import { PopoverModule } from 'ngx-popover';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { ClipboardModule } from 'ngx-clipboard';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { PopoverModule } from 'ngx-popover';
         Md2DataTableModule.forRoot(),
         CKEditorModule,
         PopoverModule,
-        ChartsModule
+        ChartsModule,
+        AceEditorModule,
+        ClipboardModule
     ],
     declarations: [
     ],
@@ -33,7 +37,9 @@ import { PopoverModule } from 'ngx-popover';
         Md2DataTableModule,
         CKEditorModule,
         ChartsModule,
-        PopoverModule
+        PopoverModule,
+        AceEditorModule,
+        ClipboardModule
     ]
 })
 export class SharedModule { }

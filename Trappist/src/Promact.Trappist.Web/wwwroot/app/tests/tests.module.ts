@@ -13,7 +13,6 @@ import { TestService } from './tests.service';
 import { FilterPipe } from './tests-dashboard/test-dashboard.pipe';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { TestViewComponent } from './test-view/test-view.component';
-import { ClipboardModule } from 'ngx-clipboard';
 import { Test } from './tests.model';
 import { TestPreviewComponent } from './test-preview/test-preview.compponent';
 import { CreateTestHeaderComponent } from './shared/create-test-header/create-test-header.component';
@@ -30,7 +29,6 @@ import { ConductModule } from '../conduct/conduct.module';
     imports: [
         SharedModule,
         testsRouting,
-        ClipboardModule,
         BrowserModule,
         ConductModule
 
