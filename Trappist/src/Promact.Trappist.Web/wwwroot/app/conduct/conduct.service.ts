@@ -111,6 +111,10 @@ export class ConductService {
         return this.httpService.put(this.testConductUrl + 'testlogs/' + attendeeId, body);
     }
 
+    /**
+     * Gets the total number of questions of a Test 
+     * @param testLink is obtained from the route
+     */
     getTestSummary(testLink: string) {
         return this.httpService.get(this.testConductUrl + testLink + '/test-summary');
     }

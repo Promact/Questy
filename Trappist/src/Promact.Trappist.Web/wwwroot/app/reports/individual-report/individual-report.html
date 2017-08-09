@@ -200,7 +200,7 @@
                     <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'medium'}} : Disconnected from the server.</p>
                     <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} User Closed the test window without finishing the test.</p>
                     <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'medium'}} : Resumed the test.</p>
-                    <p *ngIf="numberOfQuestionsAttemptedVisible">{{numberOfQuestionsAttended}} : Total number of questions attempted by the Attendee.</p>
+                    <p>{{numberOfQuestionsAttempted}} : Total number of questions attempted by the Attendee.</p>
                 </div>
             </div>
         </div>

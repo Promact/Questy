@@ -35,12 +35,14 @@ export class TestSummaryComponent implements OnInit {
     isTimeLeftZero: boolean;
     testDuration: number;
     loader: boolean;
+    isTestPreview: boolean;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testAttendee = new TestAttendee();
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
         this.isTimeLeftZero = false;
+        this.isTestPreview = false;
     }
 
     ngOnInit() {
@@ -149,7 +151,7 @@ export class TestSummaryComponent implements OnInit {
     * @param testId: Id of Test
     */
     getTestAttendee(testId: number) {
-        this.conductService.getTestAttendeeByTestId(testId).subscribe((response) => {
+        this.conductService.getTestAttendeeByTestId(testId, this.isTestPreview).subscribe((response) => {
             this.testAttendee = response;
             this.getSummaryDetailsByAttendeeId(this.testAttendee.id);
             this.timeLeftOfTest(this.testAttendee.id);
