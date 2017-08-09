@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\app\reports\testlogs.model.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.Core\Promact.Trappist.Core.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Repository\Promact.Trappist.Repository.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />
