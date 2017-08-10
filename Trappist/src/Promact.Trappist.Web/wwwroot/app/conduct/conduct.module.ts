@@ -12,7 +12,6 @@ import { TestEndComponent } from './test-end/test-end.component';
 import { TestConductHeaderComponent } from './shared/test-conduct-header/test-conduct-header.component';
 import { TestConductFooterComponent } from './shared/test-conduct-footer/test-conduct-footer.component';
 import { ConductService } from './conduct.service';
-import { TestComponent } from './test/test.component';
 
 
 
@@ -34,12 +33,8 @@ import { TestComponent } from './test/test.component';
         TestSummaryComponent,
         TestEndComponent,
         TestConductHeaderComponent,
-        TestConductFooterComponent,
-        TestComponent
+        TestConductFooterComponent
     ],
 
-    exports: [
-        TestComponent
-    ]
 })
 export class ConductModule { }
