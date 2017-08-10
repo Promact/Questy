@@ -386,7 +386,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
                             count = count - 1;
 
-                        isAnsweredOptionCorrect = count == correctOption ? true : false;
+                        isAnsweredOptionCorrect = count == correctOption;
                     }
                 }
 

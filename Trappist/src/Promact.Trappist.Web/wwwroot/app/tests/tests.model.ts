@@ -2,7 +2,7 @@
 import { Category } from '../questions/category.model';
 import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
-import { QuestionStatus } from '../conduct/question_status.enum';
+import { QuestionStatus, AnswerStatus } from '../conduct/question_status.enum';
 import { QuestionDisplay } from '../questions/question-display';
 import { TestIPAddress } from './test-IPAdddress';
 
@@ -46,6 +46,7 @@ export class TestQuestion {
     public isSelect: boolean;
     public question: QuestionDisplay;
     public questionStatus: QuestionStatus;
+    public answerStatus: AnswerStatus;
 }
 
 
