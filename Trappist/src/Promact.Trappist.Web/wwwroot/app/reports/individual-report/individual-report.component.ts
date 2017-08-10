@@ -55,6 +55,7 @@ export class IndividualReportComponent implements OnInit {
     timeTakenInMinutesVisible: boolean;
     timeTakenInSecondsVisible: boolean;
     awayFromTestWindowVisible: boolean;
+    numberOfCorrectOptions: number;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -150,26 +151,32 @@ export class IndividualReportComponent implements OnInit {
                 else {
                     if (this.testQuestions[question].question.questionType === 1) {
                         let option = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
+                        option.forEach(x => {
+                            let correctOptions = option.filter(x => x.isAnswer === true);
+                            this.numberOfCorrectOptions = correctOptions.length;
+                        });
                         let answerCorrect = this.noOfAnswersCorrectGivenbyAttendee(option);
-                        if (answerStatus === false || (answerCorrect > 0 && answerCorrect < 2)) {
+                        if (answerStatus === false || (answerCorrect > 0 && answerCorrect < this.numberOfCorrectOptions)) {
                             answerStatus = false;
                             break;
                         }
+                        else if (answerCorrect === this.numberOfCorrectOptions)
+                            answerStatus = true;
                     }
                 }
             }
             if (answerStatus === true) {
                 this.correctAnswers++;
-                this.testQuestions[question].questionStatus = 0;
+                this.testQuestions[question].answerStatus = 0;
                 this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
             }
             else {
                 if (answerStatus === false) {
                     this.incorrectAnswers++;
-                    this.testQuestions[question].questionStatus = 1;
+                    this.testQuestions[question].answerStatus = 1;
                 }
                 else
-                    this.testQuestions[question].questionStatus = 2;
+                    this.testQuestions[question].answerStatus = 2;
             }
         }
     }

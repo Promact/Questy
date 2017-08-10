@@ -4,3 +4,9 @@
     selected,
     unanswered
 }
+export enum AnswerStatus {
+    correct,
+    incorrect,
+    unanswered
+
+}
