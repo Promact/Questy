@@ -10,6 +10,8 @@ import { ChartsModule } from 'ng2-charts';
 import { PopoverModule } from 'ngx-popover';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ClipboardModule } from 'ngx-clipboard';
+import { TestComponent } from '../conduct/test/test.component';
+
 
 
 @NgModule({
@@ -28,6 +30,7 @@ import { ClipboardModule } from 'ngx-clipboard';
         ClipboardModule
     ],
     declarations: [
+        TestComponent
     ],
     exports: [
         CommonModule,
@@ -39,7 +42,8 @@ import { ClipboardModule } from 'ngx-clipboard';
         ChartsModule,
         PopoverModule,
         AceEditorModule,
-        ClipboardModule
+        ClipboardModule,
+        TestComponent
     ]
 })
 export class SharedModule { }

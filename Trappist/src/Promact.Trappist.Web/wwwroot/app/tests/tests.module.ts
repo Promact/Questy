@@ -23,14 +23,14 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
 import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
 
 import { ConductService } from '../conduct/conduct.service';
-import { TestComponent } from '../conduct/test/test.component';
+
 
 @NgModule({
     imports: [
         SharedModule,
         testsRouting,
-        BrowserModule
-
+        BrowserModule,
+       
     ],
     declarations: [
         TestsComponent,
@@ -48,8 +48,8 @@ import { TestComponent } from '../conduct/test/test.component';
         FilterPipe,
         DeselectCategoryComponent,
         IncompleteTestCreationDialogComponent,
-        TestPreviewComponent,
-        TestComponent
+        TestPreviewComponent
+
     ],
     entryComponents: [
         TestCreateDialogComponent,
@@ -58,6 +58,7 @@ import { TestComponent } from '../conduct/test/test.component';
         DeselectCategoryComponent,
         IncompleteTestCreationDialogComponent,
         DuplicateTestDialogComponent
+        
     ],
     providers: [
         TestService,
