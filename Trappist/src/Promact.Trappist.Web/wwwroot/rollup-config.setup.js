@@ -21,7 +21,9 @@ export default {
             include: ['node_modules/**'],
             
             namedExports: {
-                'node_modules/clipboard/dist/clipboard.js': ['Clipboard']
+                'node_modules/clipboard/dist/clipboard.js': ['Clipboard'],
+				'node_modules/chart.js/dist/Chart.js': ['chart.js'],
+				'node_modules/ng2-charts/index.js': ['ChartsModule']
             }
         }),
         uglify()

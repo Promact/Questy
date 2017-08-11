@@ -24,8 +24,13 @@ export default {
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
         commonjs({
-            include: ['node_modules/**']
+            include: ['node_modules/**'],
+
+			namedExports: {
+                'node_modules/chart.js/dist/Chart.js': ['chart.js'],
+                'node_modules/ng2-charts/index.js': ['ChartsModule']
+			}
         }),
-        uglify()
+		uglify()
     ]
 }
