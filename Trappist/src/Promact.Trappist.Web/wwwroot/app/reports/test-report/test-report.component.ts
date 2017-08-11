@@ -4,11 +4,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
+import * as Excel from 'exceljs/dist/exceljs.min.js';
 
-let jsPDF = require('jspdf');
-require('jsPdfautoTable');
-let Excel = require('exceljs');
-let saveAs = require('filesaver');
+declare let jsPDF: any;
+declare let saveAs: any;
 
 @Component({
     moduleId: module.id,

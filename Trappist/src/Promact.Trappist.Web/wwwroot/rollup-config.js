@@ -22,7 +22,7 @@ export default {
         'clipboard': 'Clipboard'
     },
     plugins: [
-        nodeResolve({ jsnext: true, module: true }),
+        nodeResolve({ jsnext: true, module: true, preferBuiltins: false }),
         commonjs({
             include: ['node_modules/**'],
 

@@ -64,7 +64,11 @@ gulp.task("tstojs", function () {
 gulp.task('bundle-shims', function () {
     return gulp.src(['./node_modules/core-js/client/shim.js',
         './node_modules/zone.js/dist/zone.js',
-		'./node_modules/clipboard/dist/clipboard.js'])
+        './node_modules/clipboard/dist/clipboard.js',
+        './node_modules/jspdf/dist/jspdf.debug.js',
+        './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
+        './node_modules/filesaver/FileSaver.js'
+    ])
     .pipe(concat('shims.js'))
     .pipe(uglify())
     .pipe(gulp.dest('./wwwroot/dist'));

@@ -16,7 +16,7 @@ export default {
         console.warn(warning.message);
     },
     plugins: [
-        nodeResolve({ jsnext: true, module: true }),
+        nodeResolve({ jsnext: true, module: true, preferBuiltins: false }),
         commonjs({
             include: ['node_modules/**'],
             
