@@ -1,23 +1,22 @@
 ﻿using CodeBaseSimulator.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
-using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
-using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.Models.TestLogs;
+using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
+using Promact.Trappist.Utility.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -30,16 +29,18 @@ namespace Promact.Trappist.Repository.TestConduct
         private static readonly HttpClient client = new HttpClient(); 
         private readonly IQuestionRepository _questionRepository;
         private readonly IConfiguration _configuration;
+        private readonly IStringConstants _stringConstants; 
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IConfiguration configuration, IQuestionRepository questionRepository)
+        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IConfiguration configuration, IQuestionRepository questionRepository, IStringConstants stringConstants)
         {
             _dbContext = dbContext;
             _testRepository = testRepository;
             _questionRepository = questionRepository;
             _configuration = configuration;
+            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -261,11 +262,15 @@ namespace Promact.Trappist.Repository.TestConduct
             return false;
         }
 
-        public async Task<bool> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)
+        public async Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)
         {
             var allTestCasePassed = true;
+            var countPassedTest = 0;
+            var errorEncounter = false;
+            var errorMessage = "";
             var score = 0d;
             var code = testAnswer.Code;
+            var codeResponse = new CodeResponse();
 
             await AddAnswerAsync(attendeeId, testAnswer);
 
@@ -276,12 +281,20 @@ namespace Promact.Trappist.Repository.TestConduct
                 code.Input = testCase.TestCaseInput;
                 var result = await ExecuteCodeAsync(code);
 
+                if(result.ExitCode == -34494 || result.CompilerOutput != "")//EXITCODE if code run fails
+                {
+                    errorEncounter = true;
+                    errorMessage = result.CompilerOutput;
+                    break;
+                }
+
                 if (result.Output != testCase.TestCaseOutput)
                 {
                     allTestCasePassed = false;
                 }
                 else
                 {
+                    countPassedTest++;
                     //Calculate score
                     score += testCase.TestCaseMarks;
                 }
@@ -299,7 +312,29 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.TestCodeSolution.AddAsync(codeSolution);
             await _dbContext.SaveChangesAsync();
 
-            return allTestCasePassed;
+            codeResponse.ErrorOccurred = false;
+            if (allTestCasePassed && !errorEncounter)
+            {
+                codeResponse.Message = _stringConstants.AllTestCasePassed;
+            }
+            else if(!errorEncounter)
+            {
+                if (countPassedTest > 0)
+                {
+                    codeResponse.Message = _stringConstants.SomeTestCasePassed;
+                }
+                else
+                {
+                    codeResponse.Message = _stringConstants.NoTestCasePassed;
+                }
+            }
+            else
+            {
+                codeResponse.ErrorOccurred = true;
+                codeResponse.Error = errorMessage;
+            }
+
+            return codeResponse;
         }
 
         public async Task AddTestLogsAsync(int attendeeId, TestLogs testLogs)

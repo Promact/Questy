@@ -158,5 +158,13 @@
         /// </summary>
         string TestLinkSessionKey { get; }
         #endregion
+
+        #region Code Response
+        string AllTestCasePassed { get; }
+
+        string SomeTestCasePassed { get; }
+
+        string NoTestCasePassed { get; }
+        #endregion
     }
 }

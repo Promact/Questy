@@ -59,7 +59,10 @@
                         </ace-editor>
                         <br />
                         <button type="button" class="btn" value="run" (click)="runCode()">Run</button>
-                        <p>{{codeResult}}</p>
+                        <br/>
+                        <div style="padding:10px" class="bg-primary">
+                          <p [innerHTML]="codeResult" ></p>
+                        </div>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group>
