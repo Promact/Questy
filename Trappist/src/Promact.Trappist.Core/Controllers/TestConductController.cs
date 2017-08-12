@@ -267,9 +267,9 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            var isAllTestCasePassing = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, testAnswer);
+            var codeResponse = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, testAnswer);
 
-            return Ok(isAllTestCasePassing);
+            return Ok(codeResponse);
         }
 
         #region Test-Instruction API

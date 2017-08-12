@@ -236,5 +236,31 @@
             }
         }
         #endregion
+
+        #region Code Response
+        public string AllTestCasePassed
+        {
+            get
+            {
+                return "Congratulation! All test cases passed.";
+            }
+        }
+
+        public string SomeTestCasePassed
+        {
+            get
+            {
+                return "Wrong Answer. Some test cases failed.";
+            }
+        }
+
+        public string NoTestCasePassed
+        {
+            get
+            {
+                return "Wrong Answer. None of the test cases passed";
+            }
+        }
+        #endregion
     }
 }

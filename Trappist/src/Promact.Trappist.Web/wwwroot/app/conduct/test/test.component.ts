@@ -24,6 +24,7 @@ import 'brace/mode/java';
 import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
+import { CodeResponse } from '../code.response.model'
 
 
 //Temporary imports
@@ -59,6 +60,7 @@ export class TestComponent implements OnInit {
     selectedTheme: string;
     testLogs: TestLogs;
     codeResult: string;
+
 
     private seconds: number;
     private focusLost: number;
@@ -102,7 +104,7 @@ export class TestComponent implements OnInit {
         this.testQuestions = new Array<TestQuestions>();
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
         this.questionStatus = QuestionStatus.unanswered;
-        this.questionIndex = 0;
+        this.questionIndex = -1;
         this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
         this.isQuestionCodeSnippetType = false;
@@ -150,21 +152,9 @@ export class TestComponent implements OnInit {
                 '/*  Example Program For Hello World In C++*/'
                 , ' // Header Files'
                 , ' #include <iostream>'
-                , ' #include <conio.h>'
-                ,
-                , '//Standard namespace declaration'
                 , 'using namespace std;'
-                , ' //Main Function'
                 , 'int main()'
                 , '{'
-                , '//Standard Ouput Statement'
-                , 'cout << "My First C++ Program";'
-                ,
-                , '// Wait For Output Screen'
-                , 'getch();'
-                ,
-                , '//Main Function return Statement'
-                , 'return 0;'
                 , '}'
             ].join('\n'));
         }
@@ -326,7 +316,8 @@ export class TestComponent implements OnInit {
     @Input() set navigateQuestion(navigate: number) {
         this.navigateToQuestionIndex(navigate);
 
-    } navigateToQuestionIndex(index: number) {
+    }
+    navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
 
         if (index < 0 || index >= this.testQuestions.length) {
@@ -335,8 +326,7 @@ export class TestComponent implements OnInit {
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
         this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === 2 ? true : false;
-
-
+        
         if (!this.isQuestionCodeSnippetType) {
             this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
             //Sets boolean if question is single choice
@@ -344,17 +334,27 @@ export class TestComponent implements OnInit {
         }
 
         //Save answer to database 
-        if (this.questionIndex !== index) {
-            this.addAnswer(this.testQuestions[this.questionIndex]);
-            //Restore status of previous question
-            this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
+        if (this.questionIndex !== index)
+        {
+            //Prevent add answer for the first time on page load
+            if (this.questionIndex !== -1) {
+                //Only add answer that are of MCQ/SCQ type
+                if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) {
+                    this.addAnswer(this.testQuestions[this.questionIndex]);
+                } else {
+                    //Resume if code snippet question
+                    this.isTestReady = true;
+                }
+                //Restore status of previous question
+                this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
+            }
         }
         else {
             this.isTestReady = true;
             return;
         }
 
-        //Save status of new question
+        //Set status of new question
         this.questionStatus = this.testQuestions[index].questionStatus;
         //Remove review status if Attendee re-visits the question
         if (this.questionStatus === QuestionStatus.review)
@@ -371,6 +371,8 @@ export class TestComponent implements OnInit {
     runCode() {
         this.codeResult = 'Processing....';
 
+        this.questionStatus = QuestionStatus.answered;
+
         let solution = new TestAnswer();
         solution.code.source = this.codeAnswer;
         solution.code.language = this.languageMode.indexOf(this.selectLanguage);
@@ -378,11 +380,15 @@ export class TestComponent implements OnInit {
         solution.questionStatus = QuestionStatus.answered;
 
         this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
-            if (res) {
-                this.codeResult = 'Congratulation!! All test cases passed.';
+            let codeResponse = new CodeResponse();
+            codeResponse = res;
+            if (!codeResponse.errorOccurred) {
+                this.codeResult = codeResponse.message;
             } else {
-                this.codeResult = 'Sorry, some test cases failed';
+                this.codeResult = codeResponse.error;
             }
+        }, err => {
+            this.codeResult = 'Oops! server error occured.';
         })
     }
 
@@ -408,7 +414,9 @@ export class TestComponent implements OnInit {
             });
         }
         
-        if (testQuestion.question.question.questionType !== QuestionType.codeSnippetQuestion && testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus !== QuestionStatus.review) {
+        if (testQuestion.question.question.questionType === QuestionType.codeSnippetQuestion
+            || (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)
+            && this.questionStatus !== QuestionStatus.review)) {
 
             testAnswer.questionStatus = QuestionStatus.answered;
 
