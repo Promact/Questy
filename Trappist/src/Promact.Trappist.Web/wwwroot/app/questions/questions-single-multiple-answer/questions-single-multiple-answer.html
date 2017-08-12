@@ -29,10 +29,11 @@
                 </div>
                 <div class="form-group answer-choices" *ngIf="!isSingleAnswerQuestion">
                     <md-checkbox *ngFor="let option of singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;let i = index" [attr.data-index]="i" [(ngModel)]="option.isAnswer" name="first_{{i}}" [disabled]="option.option === undefined || option.option === ''">
-                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" required />
+                        <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" (keyup)="isTwoOptionsSame(option.option, i)" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
                             <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
+                            <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same</span>
                         </div>
                     </md-checkbox>
                     <button type="button" class="btn btn-primary" (click)="addOption()" *ngIf="!isNoOfOptionOverLimit">Add Option</button>

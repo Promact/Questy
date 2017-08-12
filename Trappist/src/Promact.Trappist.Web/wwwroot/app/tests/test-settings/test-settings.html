@@ -3,7 +3,7 @@
         <div class="spinner"></div>
     </div>
     <form #settingsForm="ngForm">
-        <create-test-header [disablePreview]="disablePreview"[testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+        <create-test-header [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
         <div class="container">
             <h5>Settings & Schedule</h5>
             <span class="error-msg" *ngIf="isAttendeeExistForTest">Attendees for this test exist</span>
@@ -40,12 +40,12 @@
                                 <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP Address in correct format</span>
                             </div>
                         </div>
-                        <button md-mini-fab type="button" (click)="addIpFields()"><md-icon>add</md-icon></button>
+                        <button md-mini-fab type="button" [disabled]="testDetails.isLaunched && !testDetails.isPaused" (click)="addIpFields()"><md-icon>add</md-icon></button>
                     </div>
                     <div class="form-group">
                         <label>Browser Tolerance</label>
                         <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" name="Browser Tolerance">
-                            <option value="0">Not Applicable</option>
+                            <option value="1000">Not Applicable</option>
                             <option value="3">Low</option>
                             <option value="7">Medium</option>
                             <option value="12">High</option>

@@ -45,6 +45,7 @@ export class QuestionsDashboardComponent implements OnInit {
     difficultyLevel: string;
     categroyId: number;
     isCategoryPresent: boolean;
+    showName: string;
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
         this.category = new Category();
@@ -60,6 +61,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.hard = 0;
         this.isAllQuestionsHaveCome = false;
         this.id = 0;
+        this.showName = 'All Questions';
         this.selectedDifficulty = DifficultyLevel['All'];
         this.difficultyLevel = 'All';
         this.categroyId = 0;
@@ -87,6 +89,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
+            this.sortCategory();
         });
     }
     // get All questions
@@ -96,6 +99,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.countTheQuestion();
         this.difficultyLevel = 'All';
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
+        this.showName = 'All Questions';
         this.questionDisplay = new Array<QuestionDisplay>();
         this.id = 0;
         this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
@@ -108,6 +112,18 @@ export class QuestionsDashboardComponent implements OnInit {
             this.selectedCategory = new Category();
             this.isAllQuestionsHaveCome = false;
             this.matchString = '';
+        });
+    }
+    /**
+     * sort category in alphabatical order
+     */
+    sortCategory() {
+        this.categoryArray.sort(function (a, b) {
+            if (a.categoryName.toLowerCase() < b.categoryName.toLowerCase())
+                return -1;
+            if (a.categoryName.toLowerCase() > b.categoryName.toLowerCase())
+                return 1;
+            return 0;
         });
     }
 
@@ -143,6 +159,7 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     categoryWiseFilter(category: Category) {
         this.loader = true;
+        this.showName = category.categoryName;
         window.scrollTo(0, 0);
         this.difficultyLevel = 'All';
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
@@ -215,8 +232,10 @@ export class QuestionsDashboardComponent implements OnInit {
     addCategoryDialog() {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
-            if (categoryToAdd !== '' && categoryToAdd !== undefined)
-                this.categoryArray.unshift(categoryToAdd);
+            if (categoryToAdd !== '' && categoryToAdd !== undefined) {
+                this.categoryArray.push(categoryToAdd);
+                this.sortCategory();
+            }
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
         });
     }

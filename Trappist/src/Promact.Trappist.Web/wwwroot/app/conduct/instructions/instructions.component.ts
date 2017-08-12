@@ -4,6 +4,7 @@ import { ConductService } from '../conduct.service';
 import { ActivatedRoute } from '@angular/router';
 import { TestInstructions } from '../testInstructions.model';
 import { Router } from '@angular/router';
+import { BrowserTolerance } from '../../tests/enum-browsertolerance';
 
 @Component({
     moduleId: module.id,
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 
 export class InstructionsComponent implements OnInit {
     testInstructions: TestInstructions;
+    BrowserTolerance: BrowserTolerance;
+    isBrowserToleranceNotApplicable: boolean;
     negativeSign: string;
     magicString: string;
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
@@ -36,10 +39,12 @@ export class InstructionsComponent implements OnInit {
         this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
                 this.testInstructions = response;
-                if (this.testInstructions.incorrectMarks!== 0) {
+
+                if (this.testInstructions.incorrectMarks !== 0) {
                     this.negativeSign = '-';
                 }
-            });     
+                this.isBrowserToleranceNotApplicable = this.testInstructions.browserTolerance === BrowserTolerance.NotApplicable;
+            });
     }
 
     startTest() {
