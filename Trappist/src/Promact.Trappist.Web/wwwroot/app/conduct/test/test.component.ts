@@ -57,7 +57,8 @@ export class TestComponent implements OnInit {
     themes: string[];
     codeAnswer: string;
     selectedTheme: string;
-    testLogs : TestLogs;
+    testLogs: TestLogs;
+    codeResult: string;
 
     private seconds: number;
     private focusLost: number;
@@ -72,7 +73,7 @@ export class TestComponent implements OnInit {
     private ALERT_CLEAR: string = 'You can\'t clear already answered question';
     private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus';
     private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost';
-    private JAVA_CODE: string = 'public class MyFirstJavaProgram {\n' +
+    private JAVA_CODE: string = 'class Program {//Do not change class name\n' +
                                 '\n' +
                                     ' /* This is my first java program.\n' +
                                     '* This will print ' + 'Hello World' + ' as the output\n' +
@@ -88,7 +89,7 @@ export class TestComponent implements OnInit {
         private snackBar: MdSnackBar,
         private conductService: ConductService,
         private route: ActivatedRoute, elementRef: ElementRef) {
-        this.languageMode = ['c_cpp', 'java', 'c'];
+        this.languageMode = ['java', 'cpp', 'c'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
         this.focusLost = 0;
@@ -98,7 +99,6 @@ export class TestComponent implements OnInit {
         this.timeString = this.secToTimeString(this.seconds);
         this.test = new Test();
         this.testTypePreview = false;
-
         this.testQuestions = new Array<TestQuestions>();
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
         this.questionStatus = QuestionStatus.unanswered;
@@ -109,8 +109,8 @@ export class TestComponent implements OnInit {
         this.selectLanguage = 'java';
         this.selectedMode = 'java';
         this.codeAnswer = this.JAVA_CODE;
-            this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
-
+        this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
+        this.codeResult = '';
     }
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
@@ -144,13 +144,13 @@ export class TestComponent implements OnInit {
             this.selectedMode = 'java';
         }
 
-        if (this.selectLanguage === 'c_cpp') {
+        if (this.selectLanguage === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.editor.getEditor().setValue([
                 '/*  Example Program For Hello World In C++*/'
                 , ' // Header Files'
-                , ' #include < iostream >'
-                , ' #include < conio.h >'
+                , ' #include <iostream>'
+                , ' #include <conio.h>'
                 ,
                 , '//Standard namespace declaration'
                 , 'using namespace std;'
@@ -170,7 +170,7 @@ export class TestComponent implements OnInit {
         }
         if (this.selectLanguage === 'c') {
             this.editor.getEditor().setValue([
-                ' #include < stdio.h >'
+                ' #include <stdio.h>'
                 , 'int main()'
                 , '{'
                 , '// printf() displays the string inside quotation'
@@ -368,6 +368,24 @@ export class TestComponent implements OnInit {
         this.timeOutCounter = 0;
     }
 
+    runCode() {
+        this.codeResult = 'Processing....';
+
+        let solution = new TestAnswer();
+        solution.code.source = this.codeAnswer;
+        solution.code.language = this.languageMode.indexOf(this.selectLanguage);
+        solution.questionId = this.testQuestions[this.questionIndex].question.question.id;
+        solution.questionStatus = QuestionStatus.answered;
+
+        this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
+            if (res) {
+                this.codeResult = 'Congratulation!! All test cases passed.';
+            } else {
+                this.codeResult = 'Sorry, some test cases failed';
+            }
+        })
+    }
+
     /**
      * Call API to add Answer to the Database
      * @param testQuestion: TestQuestion object
@@ -389,7 +407,7 @@ export class TestComponent implements OnInit {
                     testAnswer.optionChoice.push(x.id);
             });
         }
-        else testAnswer.code = this.codeAnswer;
+        
         if (testQuestion.question.question.questionType !== QuestionType.codeSnippetQuestion && testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer) && this.questionStatus !== QuestionStatus.review) {
 
             testAnswer.questionStatus = QuestionStatus.answered;
@@ -540,12 +558,11 @@ export class TestComponent implements OnInit {
             });
         }
         else if (this.focusLost <= this.test.browserTolerance) {
+            this.openSnackBar(message, duration);
             this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
                 this.testLogs = response;
             });
         }
-        else
-            this.openSnackBar(message, duration);
     }
 
     /**

@@ -391,7 +391,11 @@ namespace Promact.Trappist.Repository.TestConduct
                         else
                         {
                             //Save answer for code snippet question
-                            testAnswers.AnsweredCodeSnippet = answer.Code.Source;
+                            if(answer.Code != null)
+                            {
+                                testAnswers.AnsweredCodeSnippet = answer.Code.Source;
+                            }
+                                
                             testAnswers.TestConduct = testConduct;
                             await _dbContext.TestAnswers.AddAsync(testAnswers);
                             await _dbContext.SaveChangesAsync();
@@ -420,42 +424,42 @@ namespace Promact.Trappist.Repository.TestConduct
                 var correctOption = 0;
 
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
-                var noOfOptions = question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
-                if (question.Question.QuestionType == QuestionType.Multiple)
-                {
-                    foreach (var correct in noOfOptions)
-                    {
-                        if (correct.IsAnswer)
-                            correctOption = correctOption + 1;
-                    }
-                }
-
                 var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
                 var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
                 fullMarks = totalNumberOfQuestions * testAttendee.Test.CorrectMarks;
-                bool isAnsweredOptionCorrect = true;
-
+                
                 if(question.Question.QuestionType != QuestionType.Programming)
                 {
+                    bool isAnsweredOptionCorrect = true;
+                    var noOfOptions = question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
+                    if (question.Question.QuestionType == QuestionType.Multiple)
+                    {
+                        foreach (var correct in noOfOptions)
+                        {
+                            if (correct.IsAnswer)
+                                correctOption = correctOption + 1;
+                        }
+                    }
+
                     foreach (var answers in attendedQuestion.TestAnswers)
                     {
                         var answeredOption = answers.AnsweredOption;
 
-                    if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer && question.Question.QuestionType == QuestionType.Single)
-                    {
-                        isAnsweredOptionCorrect = false;
-                        break;
-                    }
-                    else if (question.Question.QuestionType == QuestionType.Multiple)
-                    {
-                        if (question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                            count = count + 1;
-                        if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                            count = count - 1;
+                        if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer && question.Question.QuestionType == QuestionType.Single)
+                        {
+                            isAnsweredOptionCorrect = false;
+                            break;
+                        }
+                        else if (question.Question.QuestionType == QuestionType.Multiple)
+                        {
+                            if (question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
+                                count = count + 1;
+                            if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
+                                count = count - 1;
 
-                        isAnsweredOptionCorrect = count == correctOption;
+                            isAnsweredOptionCorrect = count == correctOption;
+                        }
                     }
-                }
 
                     if (isAnsweredOptionCorrect)
                     {

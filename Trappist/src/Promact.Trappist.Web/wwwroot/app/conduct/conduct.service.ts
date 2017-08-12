@@ -118,4 +118,8 @@ export class ConductService {
     getTestSummary(testLink: string) {
         return this.httpService.get(this.testConductUrl + testLink + '/test-summary');
     }
+
+    execute(attendeeId: number, testAnswer: TestAnswer) {
+        return this.httpService.post(this.testConductUrl + 'code/' + attendeeId, testAnswer);
+    }
 }
