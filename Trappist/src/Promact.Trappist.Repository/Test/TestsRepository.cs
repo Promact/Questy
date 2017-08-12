@@ -38,6 +38,7 @@ namespace Promact.Trappist.Repository.Tests
         public async Task CreateTestAsync(Test test, string userId)
         {
             test.TestName = test.TestName.AllTrim();
+            test.BrowserTolerance = BrowserTolerance.NotApplicable;
             test.Link = _util.GenerateRandomString(10);
             test.CreatedByUserId = userId;
             _dbContext.Test.Add(test);

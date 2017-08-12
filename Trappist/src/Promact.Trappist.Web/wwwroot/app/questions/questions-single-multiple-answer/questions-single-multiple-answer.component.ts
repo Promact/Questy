@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, Input} from '@angular/core';
+﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
@@ -13,14 +13,14 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 
 
 @Component({
-   
+
     moduleId: module.id,
     selector: 'questions-single-multiple-answer',
     templateUrl: 'questions-single-multiple-answer.html'
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {
-   
+
     indexOfOptionSelected: number;
     categoryName: string;
     optionIndex: number;
@@ -37,9 +37,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     singleMultipleAnswerQuestion: QuestionBase;
     isTwoOptionSame: boolean;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
-        this.noOfOptionShown = 4;
+        this.noOfOptionShown = 2;
         this.indexOfOptionSelected = null;
-        this.isClose = false;
+        this.isClose = true;
         this.isdulicateQuestion = false;
         this.isTwoOptionSame = false;
         this.difficultyLevelSelected = 'default';
@@ -69,7 +69,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
     }
 
-   
+
 
     /**
     * Gets Question of specific Id

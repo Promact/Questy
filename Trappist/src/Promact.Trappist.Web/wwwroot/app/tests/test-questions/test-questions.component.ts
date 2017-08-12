@@ -60,6 +60,10 @@ export class TestQuestionsComponent implements OnInit {
      */
     getAllquestions(category: Category, i: number) {
         this.loader_question = true;
+        for (let p = 0; p < this.testDetails.categoryAcList.length;p++) {
+            if (i !== p)
+                this.testDetails.categoryAcList[p].isAccordionOpen = true;
+        }
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
             if (!category.isAlreadyClicked) {//If Accordion is already clicked then it wont call the server next time it is clicked,so that user can not lose its selected questions
