@@ -24,7 +24,7 @@ import 'brace/mode/java';
 import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
-import { CodeResponse } from '../code.response.model'
+import { CodeResponse } from '../code.response.model';
 
 
 //Temporary imports
@@ -334,8 +334,7 @@ export class TestComponent implements OnInit {
         }
 
         //Save answer to database 
-        if (this.questionIndex !== index)
-        {
+        if (this.questionIndex !== index) {
             //Prevent add answer for the first time on page load
             if (this.questionIndex !== -1) {
                 //Only add answer that are of MCQ/SCQ type
@@ -389,7 +388,7 @@ export class TestComponent implements OnInit {
             }
         }, err => {
             this.codeResult = 'Oops! server error occured.';
-        })
+        });
     }
 
     /**

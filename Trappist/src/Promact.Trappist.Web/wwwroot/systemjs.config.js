@@ -63,7 +63,7 @@
             'ace-builds': 'npm:ace-builds/src-min',
 
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
-            'exceljs': 'npm:exceljs/dist/exceljs.js',
+            'exceljs': 'npm:exceljs',
             'filesaver':'npm:file-saver'
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -134,8 +134,8 @@
                 main: 'ace.js',
                 defaultExtension: 'js'
             },
-            'exceljs.js': {
-                main: 'dist/exceljs.js',
+            'exceljs': {
+                main: 'dist/exceljs.min.js',
                 defaultExtension: 'js'
             },
             'filesaver': {
