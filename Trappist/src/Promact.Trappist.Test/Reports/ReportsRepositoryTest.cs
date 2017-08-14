@@ -335,7 +335,7 @@ namespace Promact.Trappist.Test.Reports
             TestAnswerAC testAnswerAC = new TestAnswerAC()
             {
                 QuestionId = id,
-                OptionChoice = new List<int>() { 1, 3 },
+                OptionChoice = new List<int>() { 34, 36 },
             };
             
             return testAnswerAC;
@@ -379,16 +379,19 @@ namespace Promact.Trappist.Test.Reports
                     {
                         new SingleMultipleAnswerQuestionOption()
                         {
+                            Id=34,
                             Option="A",
                             IsAnswer=true
                         },
                         new SingleMultipleAnswerQuestionOption()
                         {
+                            Id=35,
                             Option="B",
                             IsAnswer=true
                         },
                         new SingleMultipleAnswerQuestionOption()
                         {
+                            Id=36,
                             Option="C",
                             IsAnswer=false
                         },
