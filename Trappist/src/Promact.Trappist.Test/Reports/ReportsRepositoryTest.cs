@@ -18,6 +18,11 @@ using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Test;
+using Promact.Trappist.Repository.Questions;
+using AutoMapper;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
+using Promact.Trappist.Repository.Categories;
+using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 
 namespace Promact.Trappist.Test.Reports
 {
@@ -29,6 +34,8 @@ namespace Promact.Trappist.Test.Reports
         private readonly Mock<IGlobalUtil> _globalUtil;
         private readonly IStringConstants _stringConstants;
         private readonly ITestsRepository _testRepository;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ReportsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
@@ -38,6 +45,8 @@ namespace Promact.Trappist.Test.Reports
             _globalUtil = _scope.ServiceProvider.GetService<Mock<IGlobalUtil>>();
             _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
+            _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
+            _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
         }
 
@@ -274,6 +283,119 @@ namespace Promact.Trappist.Test.Reports
                 }
             };
             return testAttendee;
+        }
+
+        [Fact]
+        public async Task GetAllAttendeeMarksDetailsAsyncTest()
+        {
+            //create test
+            var createTest = await CreateTestAsync();
+            //create category
+            var category = CreateCategory("History");
+            await _categoryRepository.AddCategoryAsync(category);
+            //create question 
+            var question = CreateQuestionAc(true, "first Question", category.Id, 1, QuestionType.Multiple);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question, createTest.CreatedByUserId);
+            //add test category
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            categoryList.Add(category);
+            var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            categoryListAc[0].IsSelect = true;
+            await _testRepository.AddTestCategoriesAsync(createTest.Id, categoryListAc);
+            //add test Question
+            var questionList = new List<QuestionAC>();
+            questionList.Add(question);
+            await _testRepository.AddTestQuestionsAsync(questionList, createTest.Id);
+            //create test attednee
+            var testAttendee = CreateTestAttendee(createTest.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            //AddTestAnswer
+            var answer = CreateAnswerAc(question.Question.Id);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            //create test conduct
+            var testConduct = new DomainModel.Models.TestConduct.TestConduct()
+            {
+                Id = 1,
+                QuestionId = answer.QuestionId,
+                QuestionStatus = answer.QuestionStatus,
+                TestAttendeeId = testAttendee.Id
+            };
+            await _trappistDbContext.TestConduct.AddAsync(testConduct);
+            await _trappistDbContext.SaveChangesAsync();
+            AddTestAnswer(answer,testConduct.Id);
+            var allAttendeeMarksDetails = await _reportRepository.GetAllAttendeeMarksDetailsAsync(createTest.Id);
+            var correctAttempted = allAttendeeMarksDetails.First().CorrectQuestionsAttempted;
+            var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
+            Assert.Equal(1,easyQuestionAttempted);
+            Assert.Equal(0, correctAttempted);
+        }
+
+        private TestAnswerAC CreateAnswerAc(int id)
+        {
+            TestAnswerAC testAnswerAC = new TestAnswerAC()
+            {
+                QuestionId = id,
+                OptionChoice = new List<int>() { 1, 3 },
+            };
+            
+            return testAnswerAC;
+        }
+
+        private void  AddTestAnswer(TestAnswerAC answer,int testConductId)
+        {
+            if (answer.OptionChoice.Count() > 0)
+            {
+                foreach (var option in answer.OptionChoice)
+                {
+                    TestAnswers testAnswers = new TestAnswers()
+                    {
+                        AnsweredOption = option,
+                       TestConductId= testConductId
+                    };
+                    _trappistDbContext.TestAnswers.Add(testAnswers);
+                    _trappistDbContext.SaveChanges();
+                }
+            }
+        }
+
+        private QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id, QuestionType questionTyp)
+        {
+
+            QuestionAC questionAC = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = questionDetails,
+                    QuestionType = questionTyp,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = null,
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="A",
+                            IsAnswer=true
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="B",
+                            IsAnswer=true
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="C",
+                            IsAnswer=false
+                        },
+                    }
+                }
+            };
+            return questionAC;
         }
 
         private DomainModel.Models.Category.Category CreateCategory(string categoryName)

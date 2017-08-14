@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { TestReportComponent } from '../reports/test-report/test-report.component';
+import { TestAttendee } from './testAttendee';
 
 @Injectable()
 export class ReportService {
@@ -10,19 +11,19 @@ export class ReportService {
     }
 
     getTestName(testId: number) {
-        return this.httpService.get(this.reportsApiUrl+'/testName' + '/' + testId);
+        return this.httpService.get(this.reportsApiUrl + '/testName' + '/' + testId);
     }
 
     getAllTestAttendees(testId: number) {
-        return this.httpService.get(this.reportsApiUrl+'/'+testId);
+        return this.httpService.get(this.reportsApiUrl + '/' + testId);
     }
 
     setStarredCandidate(attendeeId: number) {
-        return this.httpService.post(this.reportsApiUrl+'/star'+'/'+attendeeId,attendeeId);
+        return this.httpService.post(this.reportsApiUrl + '/star' + '/' + attendeeId, attendeeId);
     }
 
     setAllCandidatesStarred(status: boolean, searchString: string, selectedTestStatus: number) {
-        return this.httpService.put(this.reportsApiUrl + '/star/all/' + selectedTestStatus + '?searchString=' + searchString,status);
+        return this.httpService.put(this.reportsApiUrl + '/star/all/' + selectedTestStatus + '?searchString=' + searchString, status);
     }
 
     /**
@@ -51,5 +52,13 @@ export class ReportService {
 
     getStudentPercentile(testAttendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/percentile');
+    }
+
+    getTestAttendeeQuestions(id: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + id + '/testAnswers');
+    }
+
+    getAllAttendeeMarksDetails(testId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
 } 

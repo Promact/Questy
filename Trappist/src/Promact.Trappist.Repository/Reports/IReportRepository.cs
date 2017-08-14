@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Models.Test;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -71,5 +72,12 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="testAttendeeId">testAttendee contains the id of the test attendee from the route</param>
         /// <returns>The calculated percentile value of the selected test attendee</returns>
         Task<double> CalculatePercentileAsync(int testAttendeeId);
+
+        /// <summary>
+        /// Calculate all marks details of all attendee of a particular test
+        /// </summary>
+        /// <param name="testId">Id of a test</param>
+        /// <returns></returns>
+        Task<List<ReportQuestionsCountAC>> GetAllAttendeeMarksDetailsAsync(int testId);
     }
 }
