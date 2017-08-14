@@ -54,10 +54,6 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/percentile');
     }
 
-    getTestAttendeeQuestions(id: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + id + '/testAnswers');
-    }
-
     getAllAttendeeMarksDetails(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
