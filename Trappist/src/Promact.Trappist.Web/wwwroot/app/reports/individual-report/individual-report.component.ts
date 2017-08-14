@@ -73,7 +73,6 @@ export class IndividualReportComponent implements OnInit {
 
     ngOnInit() {
         this.getTestAttendeeDetails();
-        this.attendeeAnswers();
     }
 
     /**

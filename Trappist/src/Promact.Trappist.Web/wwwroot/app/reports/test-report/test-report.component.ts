@@ -450,7 +450,6 @@ export class TestReportComponent implements OnInit {
                     }
                 });
             }
-
         });
 
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
