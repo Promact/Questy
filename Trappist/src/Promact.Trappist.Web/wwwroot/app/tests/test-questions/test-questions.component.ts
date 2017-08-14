@@ -101,7 +101,7 @@ export class TestQuestionsComponent implements OnInit {
         this.loader = true;
         this.testService.getTestById(this.testId).subscribe(response => {
             this.testDetails = response;
-            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.testNameReference = this.testDetails.testName;
             this.isAnyCategorySelectedForTest = this.testDetails.categoryAcList.some(function (category) {
                 return category.isSelect;

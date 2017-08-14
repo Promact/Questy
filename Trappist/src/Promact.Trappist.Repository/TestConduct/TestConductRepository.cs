@@ -248,18 +248,17 @@ namespace Promact.Trappist.Repository.TestConduct
             return report.TestStatus;
         }
 
-        public async Task<bool> IsTestInValidDateWindow(string testLink)
+        public async Task<bool> IsTestInValidDateWindow(string testLink,bool isPreview)
         {
-            var currentDate = DateTime.UtcNow;
-            var startTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.StartDate).SingleAsync();
-            var endTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.EndDate).SingleAsync();
-
-            if (currentDate.CompareTo(startTime) >= 0 && currentDate.CompareTo(endTime) <= 0)
-            {
+            if (isPreview)
                 return true;
+            else
+            {
+                var currentDate = DateTime.UtcNow;
+                var startTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.StartDate).SingleAsync();
+                var endTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.EndDate).SingleAsync();
+                return currentDate.CompareTo(startTime) >= 0 && currentDate.CompareTo(endTime) <= 0;
             }
-
-            return false;
         }
 
         public async Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)

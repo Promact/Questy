@@ -4,12 +4,9 @@
         <div class="spinner"></div>
     </div>
     <div class="container" *ngIf="!loader">
-        <span *ngIf="!isEditTestEnabled">
-            You can not edit on going Test. Click
-            <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
-        </span>
         <h5 *ngIf="!isCategoryExist">No Sections have been created yet. To do so, please click <a class="theme-text"  [routerLink]="['/questions']">here</a>.</h5>
-        <h5 *ngIf="isCategoryExist">Select sections to add in your test</h5>
+        <h5 *ngIf="isCategoryExist && isEditTestEnabled">Select sections to add in your test</h5>
+        <h5 *ngIf="!isEditTestEnabled">Selected sections have been added in your test. You cannot edit an ongoing test.</h5>
         <ul class="sections-list">
             <li *ngFor="let categories of testDetails.categoryAcList"
                 (click)="onSelect(categories)">

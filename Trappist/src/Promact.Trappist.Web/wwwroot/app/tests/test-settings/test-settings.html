@@ -6,7 +6,6 @@
         <create-test-header [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
         <div class="container">
             <h5>Settings & Schedule</h5>
-            <span class="error-msg" *ngIf="isAttendeeExistForTest">Attendees for this test exist</span>
             <div class="form-area">
                 <fieldset [disabled]="testDetails.isLaunched && !testDetails.isPaused">
                     <div class="form-group">
@@ -45,7 +44,7 @@
                     <div class="form-group">
                         <label>Browser Tolerance</label>
                         <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" name="Browser Tolerance">
-                            <option value="1000">Not Applicable</option>
+                            <option value="0">Not Applicable</option>
                             <option value="3">Low</option>
                             <option value="7">Medium</option>
                             <option value="12">High</option>
@@ -107,7 +106,7 @@
                     </div>
 
                 </fieldset>
-                <create-test-footer [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+                <create-test-footer [isLaunchAlready]="isLaunchedAlready" [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
         </div>
     </form>

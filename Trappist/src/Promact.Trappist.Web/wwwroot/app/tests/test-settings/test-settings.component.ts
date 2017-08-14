@@ -26,6 +26,7 @@ export class TestSettingsComponent implements OnInit {
     validTime: boolean;
     validStartDate: boolean;
     currentDate: Date;
+    isLaunchedAlready: boolean;
     testNameUpdatedMessage: string;
     testSettingsUpdatedMessage: string;
     testNameRef: string;
@@ -49,6 +50,7 @@ export class TestSettingsComponent implements OnInit {
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
+        this.isLaunchedAlready = false;
         this.validEndDate = false;
         this.validTime = false;
         this.validStartDate = false;
@@ -78,7 +80,7 @@ export class TestSettingsComponent implements OnInit {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
             this.testNameReference = this.testDetails.testName;
-            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.loader = false;
             let magicString = this.testDetails.link;
             let domain = window.location.origin;
@@ -165,7 +167,8 @@ export class TestSettingsComponent implements OnInit {
                 return (x.numberOfSelectedQuestion !== 0);
             });
             if (isQuestionAdded) {
-                this.testDetails.isLaunched = isTestLaunched;
+                this.isLaunchedAlready = true;
+                this.testDetails.isLaunched = new Date(this.testDetails.startDate).getTime() <= Date.now();
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.ngOnInit();
                     this.openSnackBar('Your test has een launched successfully');
@@ -204,6 +207,7 @@ export class TestSettingsComponent implements OnInit {
     */
     resumeTest() {
         this.testDetails.isPaused = false;
+        this.testDetails.isLaunched = new Date(this.testDetails.startDate).getTime() <= Date.now();
         this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
             if (response) {
                 this.ngOnInit();

@@ -40,8 +40,8 @@ export class ConductService {
      * Gets the details of a particular test withs all categories it contains
      * @param id is passed to identify that particular "Test"
      */
-    getTestByLink(link: string) {
-        return this.httpService.get(this.testConductUrl + 'testbylink/' + link);
+    getTestByLink(link: string, testTypePreview: boolean) {
+        return this.httpService.get(this.testConductUrl + 'testbylink/' + link + '/' + testTypePreview);
     }
 
     /**

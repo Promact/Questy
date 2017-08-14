@@ -31,7 +31,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="magicString">It contain random string which uniquely identifies test</param>
         /// <returns>If test link exist then return true else return false</returns>
-        Task<bool> IsTestLinkExistForTestConductionAsync(string magicString , string userIp);
+        Task<bool> IsTestLinkExistForTestConductionAsync(string magicString, string userIp);
 
         /// <summary>
         /// This method is used to get all the instruction details related to a test before starting it
@@ -39,7 +39,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testLink">link to conduct a particular test</param>
         /// <returns>instructions for a particular test</returns>
         Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink);
-        
+
         /// <summary>
         /// Store answers as Key-Value pair in the Database
         /// </summary>
@@ -110,7 +110,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// True if current date lies between Test's start date and end date.
         /// False otherwise.
         /// </returns>
-        Task<bool> IsTestInValidDateWindow(string testLink);
+        Task<bool> IsTestInValidDateWindow(string testLink, bool isPreview);
 
         /// <summary>
         /// Add values to specific fields of Test Logs Model
@@ -118,7 +118,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of a particular Test Attendee</param>
         /// <param name="testLogs">It is an object of TestLogs type</param>
         /// <returns></returns>
-        Task AddTestLogsAsync(int attendeeId,TestLogs testLogs);
+        Task AddTestLogsAsync(int attendeeId, TestLogs testLogs);
 
         /// <summary>
         /// Evaluate and Access code snippet
