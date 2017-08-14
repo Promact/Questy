@@ -55,7 +55,7 @@ export class TestSectionsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
-            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.isCategoryExist = this.testDetails.categoryAcList.length === 0 ? false : true;
             this.testNameReference = this.testDetails.testName;
             this.loader = false;

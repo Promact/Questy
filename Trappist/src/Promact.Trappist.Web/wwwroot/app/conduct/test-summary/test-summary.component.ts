@@ -102,7 +102,7 @@ export class TestSummaryComponent implements OnInit {
      * @param testLink contains the link of the test from the route
      */
     getTestDetails(testLink: string) {
-        this.conductService.getTestByLink(testLink).subscribe((response1) => {
+        this.conductService.getTestByLink(testLink, this.isTestPreview).subscribe((response1) => {
             this.test = response1;
             this.testDuration = this.test.duration;
             this.getTestAttendee(this.test.id);

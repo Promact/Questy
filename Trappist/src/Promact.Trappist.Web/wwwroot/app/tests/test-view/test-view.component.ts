@@ -84,7 +84,7 @@ export class TestViewComponent implements OnInit {
             this.isCategorySelected = this.testDetails.categoryAcList.some(function (x) {
                 return x.isSelect;
             });
-            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0) || !this.testDetails.isLaunched;
+            this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             let linkOfTest = response.link;
             let domain = window.location.origin;
             this.testLink = domain + '/conduct/' + linkOfTest;

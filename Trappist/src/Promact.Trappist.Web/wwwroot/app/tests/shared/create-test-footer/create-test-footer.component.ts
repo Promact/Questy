@@ -20,6 +20,8 @@ export class CreateTestFooterComponent implements OnInit {
     public settingsForm: NgForm;
     @Input('validStartDate')
     public validStartDate: boolean;
+    @Input()
+    isLaunchAlready: boolean;
     @Input('validEndDate')
     public validEndDate: boolean;
     @Input('validTime')

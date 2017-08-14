@@ -117,6 +117,7 @@ export class TestComponent implements OnInit {
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         this.getTestByLink(this.testLink);
+        console.log(this.test.browserTolerance);
     }
 
     /**
@@ -196,7 +197,7 @@ export class TestComponent implements OnInit {
             this.testTypePreview = true;
         }
 
-        this.conductService.getTestByLink(this.testLink).subscribe((response) => {
+        this.conductService.getTestByLink(this.testLink, this.testTypePreview).subscribe((response) => {
             this.test = response;
             this.seconds = this.test.duration * 60;
             this.tolerance = this.test.browserTolerance;
@@ -557,19 +558,20 @@ export class TestComponent implements OnInit {
         let duration: number = 0;
         message = (this.focusLost > this.test.browserTolerance && this.test.browserTolerance !== 0) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
 
-        if (this.focusLost > this.test.browserTolerance) {
+        if (this.test.browserTolerance !== 0 && this.focusLost > this.test.browserTolerance) {
             this.openSnackBar(message, duration);
             this.endTest(TestStatus.blockedTest);
             this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
                 this.testLogs = response;
             });
         }
-        else if (this.focusLost <= this.test.browserTolerance) {
-            this.openSnackBar(message, duration);
+        else if (this.test.browserTolerance === 0 && this.focusLost <= this.test.browserTolerance) {
             this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
                 this.testLogs = response;
             });
         }
+        else if (this.test.browserTolerance !== 0)
+            this.openSnackBar(message, duration);
     }
 
     /**

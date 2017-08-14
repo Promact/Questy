@@ -198,15 +198,15 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="link">Link of the Test</param>
         /// <returns>TestAC object</returns>
-        [HttpGet("testbylink/{link}")]
-        public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link)
+        [HttpGet("testbylink/{link}/{isPreview}")]
+        public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link,[FromRoute] bool isPreview)
         {
             if (link == null)
             {
                 return BadRequest();
             }
 
-            if(!await _testConductRepository.IsTestInValidDateWindow(link))
+            if(!await _testConductRepository.IsTestInValidDateWindow(link,isPreview))
             {
                 return NotFound();
             }

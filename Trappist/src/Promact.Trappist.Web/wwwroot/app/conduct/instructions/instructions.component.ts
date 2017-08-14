@@ -43,7 +43,7 @@ export class InstructionsComponent implements OnInit {
                 if (this.testInstructions.incorrectMarks !== 0) {
                     this.negativeSign = '-';
                 }
-                this.isBrowserToleranceNotApplicable = this.testInstructions.browserTolerance === BrowserTolerance.NotApplicable;
+                this.isBrowserToleranceNotApplicable = this.testInstructions.browserTolerance === 0;
             });
     }
 
