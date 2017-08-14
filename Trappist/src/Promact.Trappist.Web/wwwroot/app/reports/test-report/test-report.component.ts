@@ -6,6 +6,8 @@ import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 import { ConductService } from '../../conduct/conduct.service';
 import { TestInstructions } from '../../conduct/testInstructions.model';
+import { ReportQuestionsCount } from './reportquestionscount';
+import { TestAttendeeRank } from './testattendeerank';
 
 let jsPDF = require('jspdf');
 require('jsPdfautoTable');
@@ -23,6 +25,7 @@ export class TestReportComponent implements OnInit {
     searchString: string;
     testAttendeeArray: TestAttendee[];
     attendeeArray: TestAttendee[];
+    sortedAttendeeArray: TestAttendee[];
     testId: number;
     starredCandidateArray: string[];
     testCompletionStatus: string;
@@ -45,13 +48,18 @@ export class TestReportComponent implements OnInit {
     maxScore: number;
     averageTestScore: number;
     averageTimeTaken: number;
+    averageCorrectAttempt: number;
     totalNoOfTestQuestions: number;
     maxDuration: number;
     testInstruction: TestInstructions;
+    attendeeRank: number;
+    reportQuestionDetails: ReportQuestionsCount[];
+    testAttendeeRank: TestAttendeeRank[];
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
+        this.sortedAttendeeArray = new Array<TestAttendee>();
         this.testCompletionStatus = '0';
         this.selectedTestStatus = TestStatus.allCandidates;
         this.searchString = '';
@@ -69,7 +77,10 @@ export class TestReportComponent implements OnInit {
         this.maxScore = 0;
         this.maxDuration = 0;
         this.totalNoOfTestQuestions = 0;
+        this.attendeeRank = 0;
         this.testInstruction = new TestInstructions();
+        this.reportQuestionDetails = new Array<ReportQuestionsCount>();
+        this.testAttendeeRank = new Array<TestAttendeeRank>();
     }
 
     ngOnInit() {
@@ -85,6 +96,13 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
+            this.conductService.getTestInstructionsByLink(this.test.link).subscribe((response) => {
+                this.testInstruction = response;
+                this.totalNoOfTestQuestions = this.testInstruction.totalNumberOfQuestions;
+            });
+            this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
+                this.reportQuestionDetails = res;
+            });
         });
     }
 
@@ -97,7 +115,7 @@ export class TestReportComponent implements OnInit {
             this.attendeeArray = attendeeList;
             this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
             this.attendeeArray.forEach(x => {
-                if (x.report != null)
+                if (x.report !== null)
                     this.testAttendeeArray.push(x);
             });
             this.attendeeArray = this.testAttendeeArray;
@@ -321,7 +339,7 @@ export class TestReportComponent implements OnInit {
         let workBook = new Excel.Workbook();
         workBook.views = [ {
             x: 0, y: 0, width: 10000, height: 20000,
-            firstSheet: 0, activeTab: 1, visibility: 'visible'
+            firstSheet: 0, visibility: 'visible'
         }];
         let workSheet1 = workBook.addWorksheet('Test-Takers', {
             pageSetup: { paperSize: 9, orientation: 'landscape' }
@@ -341,7 +359,7 @@ export class TestReportComponent implements OnInit {
             { header: 'TEST TIME', key: 'testTime', width: 30 },
             { header: 'FINISH STATUS', key: 'testStatus', width: 15 },
             { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 },
-            { header: 'REPORT LINK', key: 'reportLink', width: 55 }
+            { header: 'REPORT LINK', key: 'reportLink', width: 60 }
         ];
         workSheet2.columns = [
             { header: 'MAXIMUM SCORE', key: 'maxScore', width: 20 },
@@ -350,12 +368,12 @@ export class TestReportComponent implements OnInit {
             { header: 'AVERAGE SCORE', key: 'avgScore', width: 25 },
             { header: 'AVERAGE TIME TAKEN(MIN)', key: 'avgTotalTime', width: 25 },
             { header: 'AVERAGE NO OF CORRECT ATTEMPTS', key: 'avgCorrectAttempts', width: 35 }
-        ]
+        ];
         workSheet3.columns = [
             { header: 'ROLL NO', key: 'rollNo', width: 15 },
             { header: 'NAME', key: 'name', width: 30 },
             { header: 'EMAIL ID', key: 'email', width: 30 },
-            { header: 'EASY QUESTION ATTEMPTED', key: 'easuQ', width: 27 },
+            { header: 'EASY QUESTION ATTEMPTED', key: 'easyQ', width: 27 },
             { header: 'MEDIUM QUESTION ATTEMPTED', key: 'mediumQ', width: 30 },
             { header: 'DIFFICULT QUESTION ATTEMPTED', key: 'difficultQ', width: 30 },
             { header: 'TOTAL QUESTION ATTEMPTED', key: 'totalQ', width: 27 },
@@ -366,7 +384,7 @@ export class TestReportComponent implements OnInit {
             { header: 'PERCENTILE', key: 'percentile', width: 20 },
             { header: 'CANDIDATE RANK', key: 'rank', width: 20 },
 
-        ]
+        ];
         if (!this.checkedAllCandidate) {
             this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
                 return x.checkedCandidate;
@@ -375,13 +393,26 @@ export class TestReportComponent implements OnInit {
                 this.selectAllCandidates();
             }
         }
+        for (let i = 0; i < this.testAttendeeArray.length; i++) {
+
+            this.sortedAttendeeArray[i] = this.testAttendeeArray[i];
+        }
+        this.sortedAttendeeArray = this.sortedAttendeeArray.sort((a, b) => b.report.totalMarksScored - a.report.totalMarksScored);
+        this.maxScore = this.sortedAttendeeArray[0].report.totalMarksScored;
+        this.caculateAttendeeRank();
+        this.calculateTestSummaryDetails();
+        workSheet2.addRow({
+            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore,
+            avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: this.averageCorrectAttempt
+        });
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
                 let testDate = document.getElementById('date').innerHTML;
                 let datetime = new Date(x.createdDateTime);
                 let hours = datetime.getHours();
                 let minitues = datetime.getMinutes();
-                this.testTakerDetails(x.report.testStatus, this.testId, x.id, );
+                let attendeeId = x.id;
+                this.testTakerDetails(x.report.testStatus, this.testId, x.id);
                 let testTakers = {
                     'rollNo': x.rollNumber,
                     'name': x.firstName + space + x.lastName,
@@ -396,7 +427,7 @@ export class TestReportComponent implements OnInit {
                     rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
                     testTime: testTakers.testTime, testStatus: testTakers.testStatus, totalMarks: testTakers.totalMarks, reportLink: this.reportLink
                 });
-                let testTakersReport = {
+                let testReport = {
                     'rollNo': x.rollNumber,
                     'name': x.firstName + space + x.lastName,
                     'email': x.email,
@@ -405,18 +436,23 @@ export class TestReportComponent implements OnInit {
                     'percentile': x.report.percentile,
                     'totalMarks': x.report.totalMarksScored
                 };
-                this.testScores();
-                workSheet3.addRow({
-                    rollNo: testTakersReport.rollNo, name: testTakersReport.name, email: testTakersReport.email, easuQ: 0, mediumQ: 0, difficultQ: 0, totalQ: 0,
-                    coorectQ: 0, time: testTakersReport.timetaken, totalScore: testTakersReport.totalMarks, percentage: testTakersReport.percentile,
-                    percentile: testTakersReport.percentile, rank: 0
+                this.testAttendeeRank.forEach(y => {
+                    if (y.attendeeId === x.id)
+                        this.attendeeRank = y.attendeeRank;
                 });
-            }         
+                this.reportQuestionDetails.filter(y => {
+                    if (y.testAttendeeId === x.id) {
+                        workSheet3.addRow({
+                            rollNo: testReport.rollNo, name: testReport.name, email: testReport.email, easyQ: y.easyQuestionAttempted, mediumQ: y.mediumQuestionAttempted, difficultQ: y.hardQuestionAttempted, totalQ: y.noOfQuestionAttempted,
+                            coorectQ: y.correctQuestionsAttempted, time: testReport.timetaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
+                            percentile: testReport.percentile, rank: this.attendeeRank
+                        });
+                    }
+                });
+            }
+
         });
-        this.testSummaryDetails();
-        workSheet2.addRow({
-            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore, avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: 5
-        });
+
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
             saveAs(blob, testName + '_test_report.xlsx');
@@ -451,46 +487,72 @@ export class TestReportComponent implements OnInit {
      */
     selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
         testAttendee.checkedCandidate = select;
+
     }
 
-    testTakerDetails(testStatus: number, testID: number, testAttendeeId: number)
-    {
-        switch (testStatus)
-        {
+    /**
+     * Calculate testfinish status and generate individual report link for a every attendee 
+     * @param testStatus status of the test
+     * @param testID id of the test
+     * @param testAttendeeId id of an attendee
+     */
+
+    testTakerDetails(testStatus: number, testID: number, testAttendeeId: number) {
+        switch (testStatus) {
             case 1:
-                this.testFinishStatus = "Completed";
+                this.testFinishStatus = 'Completed';
                 break;
             case 2:
-                this.testFinishStatus = "Expired";
+                this.testFinishStatus = 'Expired';
                 break;
             case 3:
-                this.testFinishStatus = "Blocked";
+                this.testFinishStatus = 'Blocked';
         }
         this.reportLink = this.domain + '/reports/test/' + testID + '/individual-report/' + testAttendeeId;
+
     }
-    testSummaryDetails()
-    {
+
+    /**
+     * calculate testSummary details of a particular test
+     */
+    calculateTestSummaryDetails() {
         let totalTime = 0;
-        let totalScore = 0;        
+        let totalScore = 0;
+        let totalNoCorrectAttempt = 0;
         let totalAttendee = this.testAttendeeArray.length;
         this.testAttendeeArray.forEach(x => {
-                if (this.maxScore < x.report.totalMarksScored)
-                    this.maxScore = x.report.totalMarksScored;
-                totalTime += x.report.timeTakenByAttendee;
-                totalScore += x.report.totalMarksScored;
-                if (this.maxDuration < x.report.timeTakenByAttendee)
-                    this.maxDuration = x.report.timeTakenByAttendee
+            totalTime += x.report.timeTakenByAttendee;
+            totalScore += x.report.totalMarksScored;
+            if (this.maxDuration < x.report.timeTakenByAttendee)
+                this.maxDuration = x.report.timeTakenByAttendee;
         });
         this.averageTimeTaken = totalTime / totalAttendee;
         this.averageTestScore = totalScore / totalAttendee;
-        this.conductService.getTestInstructionsByLink(this.test.link).subscribe((response) => {
-            this.testInstruction = response;
+        this.reportQuestionDetails.forEach(x => {
+            totalNoCorrectAttempt += x.correctQuestionsAttempted;
         });
-        this.totalNoOfTestQuestions = this.testInstruction.totalNumberOfQuestions;
+        this.averageCorrectAttempt = totalNoCorrectAttempt / this.totalNoOfTestQuestions;
     }
 
-    testScores()
-    {
-       
+    /**
+     * calculate all attendee ranks based on their totalmarks
+     */
+    caculateAttendeeRank() {
+        let rank = 1;
+        let previousScore = 0;
+        for (let i = 0; i < this.sortedAttendeeArray.length; i++) {
+            let attendeeId = this.sortedAttendeeArray[i].id;
+            let newScore = this.sortedAttendeeArray[i].report.totalMarksScored;
+            if (previousScore > newScore) {
+                rank += 1;
+                previousScore = newScore;
+            }
+            else
+                previousScore = newScore;
+            let testRankDetails = new TestAttendeeRank();
+            testRankDetails.attendeeId = attendeeId;
+            testRankDetails.attendeeRank = rank;
+            this.testAttendeeRank.push(testRankDetails);
+        }
     }
 }

@@ -114,6 +114,17 @@ namespace Promact.Trappist.Core.Controllers
         {
             return Ok(await _reportRepository.CalculatePercentileAsync(attendeeId));
         }
+
+        /// <summary>
+        /// Gets the marks details of all attendee 
+        /// </summary>
+        /// <param name="testId">Id of a test</param>
+        /// <returns></returns>
+        [HttpGet("{testId}/allAttendeeMarksDeatils")]
+        public async Task<IActionResult> GetAllAttendeeMarksDetails([FromRoute] int testId)
+        {
+            return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
+        }
         #endregion
     }
 }
