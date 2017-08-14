@@ -8,11 +8,11 @@ import { ConductService } from '../../conduct/conduct.service';
 import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
+import * as Excel from 'exceljs';
 
-let jsPDF = require('jspdf');
-require('jsPdfautoTable');
-let Excel = require('exceljs');
-let saveAs = require('filesaver');
+declare let jsPDF: any;
+declare let saveAs: any;
+
 
 @Component({
     moduleId: module.id,
@@ -102,6 +102,7 @@ export class TestReportComponent implements OnInit {
             });
             this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
                 this.reportQuestionDetails = res;
+                console.log(this.reportQuestionDetails);
             });
         });
     }
@@ -450,7 +451,6 @@ export class TestReportComponent implements OnInit {
                     }
                 });
             }
-
         });
 
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
