@@ -288,6 +288,9 @@ namespace Promact.Trappist.Repository.TestConduct
                     break;
                 }
 
+                //Trim newline character 
+                result.Output = result.Output.TrimEnd(new char[] { '\r', '\n' });
+
                 if (result.Output != testCase.TestCaseOutput)
                 {
                     allTestCasePassed = false;
