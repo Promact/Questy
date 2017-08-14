@@ -9,10 +9,9 @@ import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
 
-let jsPDF = require('jspdf');
-require('jsPdfautoTable');
+declare let jsPDF: any;
+declare let saveAs: any;
 let Excel = require('exceljs');
-let saveAs = require('filesaver');
 
 @Component({
     moduleId: module.id,
