@@ -270,12 +270,27 @@ namespace Promact.Trappist.Repository.TestConduct
             var score = 0d;
             var code = testAnswer.Code;
             var codeResponse = new CodeResponse();
+            var testCases = new List<DomainModel.Models.Question.CodeSnippetQuestionTestCases>();
+            var results = new List<Result>();
+            var testCaseResults = new List<TestCaseResult>();
 
             await AddAnswerAsync(attendeeId, testAnswer);
 
-            var testCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
-            
-            foreach(var testCase in testCases)
+            var testCaseChecks = await _dbContext.CodeSnippetQuestion.SingleOrDefaultAsync(x => x.Id == testAnswer.QuestionId);
+
+            var completeTestCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
+
+            //Filter Test Cases
+            testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Default).ToList());
+            if (testCaseChecks.RunBasicTestCase)
+                testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Basic).ToList());
+            if(testCaseChecks.RunCornerTestCase)
+                testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Corner).ToList());
+            if (testCaseChecks.RunNecessaryTestCase)
+                testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Necessary).ToList());
+            //End of filter
+
+            foreach (var testCase in testCases)
             {
                 code.Input = testCase.TestCaseInput;
                 var result = await ExecuteCodeAsync(code);
@@ -300,6 +315,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     //Calculate score
                     score += testCase.TestCaseMarks;
                 }
+                results.Add(result);
             }
 
             //Add score to the TestCodeSolution table
@@ -312,6 +328,19 @@ namespace Promact.Trappist.Repository.TestConduct
                 Score = score
             };
             await _dbContext.TestCodeSolution.AddAsync(codeSolution);
+            await _dbContext.SaveChangesAsync();
+            
+            //Add result to TestCaseResult Table
+            foreach (var result in results)
+            {
+                var testCaseResult = new TestCaseResult();
+                testCaseResult.Memory = result.MemoryConsumed;
+                testCaseResult.Output = result.Output;
+                testCaseResult.Processing = result.RunTime;
+                testCaseResult.TestCodeSolution = codeSolution;
+                testCaseResults.Add(testCaseResult);
+            }
+            await _dbContext.TestCaseResult.AddRangeAsync(testCaseResults);
             await _dbContext.SaveChangesAsync();
 
             codeResponse.ErrorOccurred = false;
