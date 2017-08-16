@@ -61,10 +61,8 @@
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
             'ace-builds': 'npm:ace-builds/src-min',
-
             'jsPdfautoTable': 'npm:jspdf-autotable/dist/jspdf.plugin.autotable.js',
-            'exceljs': 'npm:exceljs',
-            'filesaver':'npm:file-saver'
+            'exceljs': 'npm:exceljs',            
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -136,10 +134,6 @@
             },
             'exceljs': {
                 main: 'dist/exceljs.min.js',
-                defaultExtension: 'js'
-            },
-            'filesaver': {
-                main: 'FileSaver.js',
                 defaultExtension: 'js'
             },
             '.': {
