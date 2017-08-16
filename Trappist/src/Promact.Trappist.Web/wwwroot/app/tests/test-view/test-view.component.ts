@@ -71,7 +71,7 @@ export class TestViewComponent implements OnInit {
     }
 
     openNewWindowForPreview() {
-        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + screen.height + ',width=' + screen.width + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
+        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + window.innerHeight + ',width=' + window.innerWidth + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
     }
 
     /**
