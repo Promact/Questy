@@ -154,7 +154,7 @@ export class TestReportComponent implements OnInit {
             }
         );
     }
-
+   
     /**
      * Checks whther a candidate is satrred
      * @param attendee
