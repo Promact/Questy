@@ -319,13 +319,16 @@ namespace Promact.Trappist.Repository.TestConduct
             }
 
             //Add score to the TestCodeSolution table
+            //Final score is calculated using the following formula:
+            //Total score of this question = Sum(1st test case marks + 2nd test case marks .....) / Sum of total marks of all test cases
+            var totalTestCaseScore = testCases.Sum(x => x.TestCaseMarks);
             var codeSolution = new TestCodeSolution()
             {
                 TestAttendeeId = attendeeId,
                 QuestionId = testAnswer.QuestionId,
                 Solution = testAnswer.Code.Source,
                 Language = testAnswer.Code.Language,
-                Score = score
+                Score = score / totalTestCaseScore
             };
             await _dbContext.TestCodeSolution.AddAsync(codeSolution);
             await _dbContext.SaveChangesAsync();
