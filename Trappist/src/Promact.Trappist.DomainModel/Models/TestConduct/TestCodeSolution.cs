@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Enum;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.TestConduct
@@ -20,5 +21,7 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         [ForeignKey("QuestionId")]
         public virtual Question.Question Question { get; set; }
+
+        public virtual ICollection<TestCaseResult> TestCaseResultCollection { get; set; }
     }
 }

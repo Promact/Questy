@@ -141,6 +141,9 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     removeTestCases(testCaseIndex: number) {
         this.testCases.splice(testCaseIndex, 1);
+        if (this.testCases.length === 0) {
+            this.formControlModel.showTestCase = false;
+        }
     }
 
     /**
