@@ -8,7 +8,7 @@ import { ConductService } from '../../conduct/conduct.service';
 import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
-import * as Excel from 'exceljs';
+import * as Excel from 'exceljs/dist/exceljs.min.js';
 
 declare let jsPDF: any;
 declare let saveAs: any;
