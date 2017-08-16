@@ -76,15 +76,15 @@ export class TestComponent implements OnInit {
     private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus';
     private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost';
     private JAVA_CODE: string = 'class Program {//Do not change class name\n' +
-                                '\n' +
-                                    ' /* This is my first java program.\n' +
-                                    '* This will print ' + 'Hello World' + ' as the output\n' +
-                                ' */\n' +
-                                    '\n' +
-                                         ' public static void main(String[]args) {\n' +
-                                            ' System.out.println("Hello World"); // prints Hello World\n' +
-                                     ' }\n' +
-                                 '}\n';
+    '\n' +
+    ' /* This is my first java program.\n' +
+    '* This will print ' + 'Hello World' + ' as the output\n' +
+    ' */\n' +
+    '\n' +
+    ' public static void main(String[]args) {\n' +
+    ' System.out.println("Hello World"); // prints Hello World\n' +
+    ' }\n' +
+    '}\n';
     private defaultSnackBarDuration: number = 3000;
 
     constructor(private router: Router,
@@ -117,7 +117,6 @@ export class TestComponent implements OnInit {
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         this.getTestByLink(this.testLink);
-        console.log(this.test.browserTolerance);
     }
 
     /**
@@ -146,16 +145,17 @@ export class TestComponent implements OnInit {
             this.editor.getEditor().setValue(this.JAVA_CODE);
             this.selectedMode = 'java';
         }
-
         if (this.selectLanguage === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.editor.getEditor().setValue([
                 '/*  Example Program For Hello World In C++*/'
                 , ' // Header Files'
                 , ' #include <iostream>'
+                ,
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
+                ,
                 , '}'
             ].join('\n'));
         }
@@ -204,8 +204,10 @@ export class TestComponent implements OnInit {
             this.WARNING_MSG = this.test.warningMessage;
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume;
-            if (!this.testTypePreview)
-                this.getTestAttendee(this.test.id, this.testTypePreview);
+            if (this.testTypePreview)
+                this.getTestQuestion(this.test.id);
+            else this.getTestAttendee(this.test.id, this.testTypePreview);
+
         }, err => {
             window.location.href = window.location.origin + '/pageNotFound';
         });
@@ -243,8 +245,7 @@ export class TestComponent implements OnInit {
                 this.shuffleOption();
             }
 
-            Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
-
+            Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
             this.isTestReady = true;
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
@@ -274,11 +275,6 @@ export class TestComponent implements OnInit {
     /**
      * Resumes Test if Attendee had already answered some question
      */
-    @Input() set resume(testStatus: string) {
-        if (testStatus === 'allCandidate')
-            this.resumeTest();
-
-    }
     resumeTest() {
         this.isTestReady = false;
         this.conductService.getAnswer(this.testAttendee.id).subscribe((response) => {
@@ -327,7 +323,7 @@ export class TestComponent implements OnInit {
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
         this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === 2 ? true : false;
-        
+
         if (!this.isQuestionCodeSnippetType) {
             this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
             //Sets boolean if question is single choice
@@ -369,27 +365,31 @@ export class TestComponent implements OnInit {
     }
 
     runCode() {
-        this.codeResult = 'Processing....';
+        if (this.testTypePreview)
+            this.codeResult = this.codeAnswer;
+        else {
+            this.codeResult = 'Processing....';
 
-        this.questionStatus = QuestionStatus.answered;
+            this.questionStatus = QuestionStatus.answered;
 
-        let solution = new TestAnswer();
-        solution.code.source = this.codeAnswer;
-        solution.code.language = this.languageMode.indexOf(this.selectLanguage);
-        solution.questionId = this.testQuestions[this.questionIndex].question.question.id;
-        solution.questionStatus = QuestionStatus.answered;
+            let solution = new TestAnswer();
+            solution.code.source = this.codeAnswer;
+            solution.code.language = this.languageMode.indexOf(this.selectLanguage);
+            solution.questionId = this.testQuestions[this.questionIndex].question.question.id;
+            solution.questionStatus = QuestionStatus.answered;
 
-        this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
-            let codeResponse = new CodeResponse();
-            codeResponse = res;
-            if (!codeResponse.errorOccurred) {
-                this.codeResult = codeResponse.message;
-            } else {
-                this.codeResult = codeResponse.error;
-            }
-        }, err => {
-            this.codeResult = 'Oops! server error occured.';
-        });
+            this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
+                let codeResponse = new CodeResponse();
+                codeResponse = res;
+                if (!codeResponse.errorOccurred) {
+                    this.codeResult = codeResponse.message;
+                } else {
+                    this.codeResult = codeResponse.error;
+                }
+            }, err => {
+                this.codeResult = 'Oops! server error occured.';
+            });
+        }
     }
 
     /**
@@ -413,10 +413,10 @@ export class TestComponent implements OnInit {
                     testAnswer.optionChoice.push(x.id);
             });
         }
-        
+
         if (testQuestion.question.question.questionType === QuestionType.codeSnippetQuestion
             || (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)
-            && this.questionStatus !== QuestionStatus.review)) {
+                && this.questionStatus !== QuestionStatus.review)) {
 
             testAnswer.questionStatus = QuestionStatus.answered;
 
@@ -431,28 +431,32 @@ export class TestComponent implements OnInit {
         }
 
         this.testAnswers.push(testAnswer);
-
-        this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
+        if (this.testTypePreview) {
             this.isTestReady = true;
             let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
-            if (testAnswer.questionStatus === QuestionStatus.answered) {
-                this.markAsAnswered(questionIndex);
-            }
+            this.markAsAnswered(questionIndex);
+        }
+        else
+            this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
+                this.isTestReady = true;
+                let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
+                if (testAnswer.questionStatus === QuestionStatus.answered) {
+                    this.markAsAnswered(questionIndex);
+                }
 
-        }, err => {
-            this.isTestReady = true;
-        });
+            }, err => {
+                this.isTestReady = true;
+            });
     }
 
     /**
      * Marks the question as selected
      * @param index: index of the question
      */
-    @Input() set markSelected(index: number) {
-        this.markAsSelected(index);
-    }
     markAsSelected(index: number) {
         this.testQuestions[index].questionStatus = QuestionStatus.selected;
+        if (this.testTypePreview)
+            this.isTestReady = true;
     }
 
     /**
