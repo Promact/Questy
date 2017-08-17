@@ -125,6 +125,12 @@ namespace Promact.Trappist.Core.Controllers
         {
             return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
         }
+
+        [HttpGet("{attendeeId}/codeSnippetTestCasesDetails")]
+        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId)
+        {
+            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId));
+        }
         #endregion
     }
 }

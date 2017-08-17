@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
@@ -79,5 +80,7 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="testId">Id of a test</param>
         /// <returns></returns>
         Task<List<ReportQuestionsCountAC>> GetAllAttendeeMarksDetailsAsync(int testId);
+
+        Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId);
     }
 }

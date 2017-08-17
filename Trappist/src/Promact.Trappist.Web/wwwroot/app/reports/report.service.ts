@@ -57,4 +57,8 @@ export class ReportService {
     getAllAttendeeMarksDetails(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
+
+    getCodeSnippetQuestionTestCasesDetails(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/codeSnippetTestCasesDetails');
+    }
 } 
