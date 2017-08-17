@@ -542,7 +542,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 else
                 {
                     //Add score from coding question attempted
-                    correctMarks += (decimal) await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score);
+                    correctMarks += (decimal)await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
                 }
             }
             totalMarks = correctMarks;

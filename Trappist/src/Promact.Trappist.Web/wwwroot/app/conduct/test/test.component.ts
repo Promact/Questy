@@ -141,13 +141,14 @@ export class TestComponent implements OnInit {
      * changes the pre-defined text for the editor
      */
     changeText() {
-        if (this.selectLanguage === 'java') {
-            this.editor.getEditor().setValue(this.JAVA_CODE);
+        if (this.selectLanguage.toLowerCase() === 'java') {
+            this.codeAnswer = this.JAVA_CODE;
             this.selectedMode = 'java';
         }
-        if (this.selectLanguage === 'cpp') {
+
+        if (this.selectLanguage.toLowerCase() === 'cpp') {
             this.selectedMode = 'c_cpp';
-            this.editor.getEditor().setValue([
+            this.codeAnswer = [
                 '/*  Example Program For Hello World In C++*/'
                 , ' // Header Files'
                 , ' #include <iostream>'
@@ -157,10 +158,10 @@ export class TestComponent implements OnInit {
                 , '{'
                 ,
                 , '}'
-            ].join('\n'));
+            ].join('\n');
         }
-        if (this.selectLanguage === 'c') {
-            this.editor.getEditor().setValue([
+        if (this.selectLanguage.toLowerCase() === 'c') {
+            this.codeAnswer = [
                 ' #include <stdio.h>'
                 , 'int main()'
                 , '{'
@@ -168,10 +169,9 @@ export class TestComponent implements OnInit {
                 , 'printf("Hello, World!");'
                 , 'return 0;'
                 , '}'
-            ].join('\n\n'));
+            ].join('\n\n');
             this.selectedMode = 'c_cpp';
         }
-        this.editor.getEditor().clearSelection();
     }
     /**
      * keep tracks of what user is writing in editor
@@ -322,12 +322,23 @@ export class TestComponent implements OnInit {
             return;
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
-        this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === 2 ? true : false;
-
+        this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion;
+        
         if (!this.isQuestionCodeSnippetType) {
             this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
             //Sets boolean if question is single choice
             this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
+        } else {
+            let codingAnswer = this.testAnswers.find(x => x.questionId === this.testQuestions[index].question.question.id);
+            this.languageMode = this.testQuestions[index].question.codeSnippetQuestion.languageList;
+            this.codeResult = '';
+            if (codingAnswer !== undefined) {
+                this.codeAnswer = codingAnswer.code.source;
+                this.selectLanguage = codingAnswer.code.language;
+            } else {
+                this.selectLanguage = this.languageMode[0];
+                this.changeText();
+            }
         }
 
         //Save answer to database 
@@ -374,9 +385,15 @@ export class TestComponent implements OnInit {
 
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
-            solution.code.language = this.languageMode.indexOf(this.selectLanguage);
+            solution.code.language = this.selectLanguage;
             solution.questionId = this.testQuestions[this.questionIndex].question.question.id;
             solution.questionStatus = QuestionStatus.answered;
+
+            //Remove previous question's answer from the array 
+            let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
+            if (index !== -1)
+                this.testAnswers.splice(index, 1);
+            this.testAnswers.push(solution);
 
             this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
