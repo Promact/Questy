@@ -312,18 +312,31 @@ namespace Promact.Trappist.Repository.Tests
         {
             var questionList = new List<TestConductAC>();
 
+            var languages = await _dbContext.CodingLanguage.ToListAsync();
             await _dbContext.TestQuestion
                 .Where(x => x.TestId == testId)
                 .Include(x => x.Question)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestion)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
                 .Include(x => x.Question.CodeSnippetQuestion)
+                .ThenInclude(x => x.QuestionLanguangeMapping)
                 .ForEachAsync(x =>
                 {
                     var question = new QuestionAC();
                     question.Question = Mapper.Map<QuestionDetailAC>(x.Question);
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
+
+                    if(question.Question.QuestionType == QuestionType.Programming)
+                    {
+                        var languageIds = x.Question.CodeSnippetQuestion.QuestionLanguangeMapping.Select(map => map.LanguageId);
+                        question.CodeSnippetQuestion.LanguageList = new List<string>();
+                        foreach ( var id in languageIds)
+                        {
+                            question.CodeSnippetQuestion.LanguageList.Add(languages.Where(lang => lang.Id == id).Select(lang => lang.Language).Single());
+                        }
+                    }
+
                     //Removing correct answer(s)
                     if (question.SingleMultipleAnswerQuestion != null)
                         question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
