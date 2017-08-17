@@ -183,12 +183,12 @@ export class TestSettingsComponent implements OnInit {
             }
             else {
                 this.testDetails.isQuestionMissing = true;
-                let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
+                let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails, disableClose: true, hasBackdrop: true });
             }
         }
         else {
             this.testDetails.isQuestionMissing = false;
-            let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
+            let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails, disableClose: true, hasBackdrop: true });
         }
     }
     /**

@@ -230,7 +230,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     // Open Add Category Dialog
     addCategoryDialog() {
-        let adddialogRef = this.dialog.open(AddCategoryDialogComponent);
+        let adddialogRef = this.dialog.open(AddCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
             if (categoryToAdd !== '' && categoryToAdd !== undefined) {
                 this.categoryArray.push(categoryToAdd);
@@ -243,7 +243,7 @@ export class QuestionsDashboardComponent implements OnInit {
     // Open update Category Dialog
     updateCategoryDialog(category: Category) {
         let categoryToUpdate = this.categoryArray.find(x => x.id === category.id);
-        let updateDialogRef = this.dialog.open(UpdateCategoryDialogComponent);
+        let updateDialogRef = this.dialog.open(UpdateCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
         updateDialogRef.componentInstance.category = JSON.parse(JSON.stringify(category));
         updateDialogRef.afterClosed().subscribe(updatedCategory => {
             if (updatedCategory !== '' && updatedCategory !== undefined) {
@@ -259,7 +259,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     // Open delete Category dialog
     deleteCategoryDialog(category: Category) {
-        let deleteDialogRef = this.dialog.open(DeleteCategoryDialogComponent);
+        let deleteDialogRef = this.dialog.open(DeleteCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
         deleteDialogRef.componentInstance.category = category;
         deleteDialogRef.afterClosed().subscribe(
             deletedCategory => {
@@ -273,7 +273,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     // Open delete question dialog
     deleteQuestionDialog(questionToDelete: Question) {
-        let deleteDialogRef = this.dialog.open(DeleteQuestionDialogComponent);
+        let deleteDialogRef = this.dialog.open(DeleteQuestionDialogComponent, { disableClose: true, hasBackdrop: true });
         deleteDialogRef.componentInstance.question = questionToDelete;
         deleteDialogRef.afterClosed().subscribe(
             deletedQuestion => {

@@ -41,7 +41,7 @@ export class TestsDashboardComponent implements OnInit {
 
     // open Create Test Dialog
     createTestDialog() {
-        let dialogRef = this.dialog.open(TestCreateDialogComponent);
+        let dialogRef = this.dialog.open(TestCreateDialogComponent, { disableClose: true, hasBackdrop: true });
         dialogRef.afterClosed().subscribe(test => {
             if (test)
                 this.tests.unshift(test);
@@ -56,7 +56,7 @@ export class TestsDashboardComponent implements OnInit {
         // Checks if any candidate has taken the test
         this.testService.isTestAttendeeExist(test.id).subscribe((res) => {
             this.isDeleteAllowed = res.response ? false : true;
-            let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent).componentInstance;
+            let deleteTestDialog = this.dialog.open(DeleteTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
             deleteTestDialog.testToDelete = test;
             deleteTestDialog.testArray = this.tests;
             deleteTestDialog.isDeleteAllowed = this.isDeleteAllowed;
@@ -69,7 +69,7 @@ export class TestsDashboardComponent implements OnInit {
      */
     duplicateTestDialog(test: Test) {
         let newTestObject = (JSON.parse(JSON.stringify(test)));
-        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;

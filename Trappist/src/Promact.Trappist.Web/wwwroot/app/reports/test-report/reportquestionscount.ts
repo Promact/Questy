@@ -6,5 +6,6 @@ export class ReportQuestionsCount {
     public mediumQuestionAttempted: number;
     public hardQuestionAttempted: number;
     public correctQuestionsAttempted: number;
-    public noOfQuestionAttempted: number;    
+    public noOfQuestionAttempted: number;
+    public percentile: number;
 }
