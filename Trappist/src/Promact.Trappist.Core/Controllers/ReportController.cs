@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.Reports;
+using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -9,12 +11,14 @@ namespace Promact.Trappist.Core.Controllers
     {
         #region Private Member
         private readonly IReportRepository _reportRepository;
+        private readonly IStringConstants _stringConstants;
         #endregion
 
         #region Constructor
-        public ReportController(IReportRepository reportRepository)
+        public ReportController(IReportRepository reportRepository, IStringConstants stringConstants)
         {
             _reportRepository = reportRepository;
+            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -124,6 +128,13 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> GetAllAttendeeMarksDetails([FromRoute] int testId)
         {
             return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
+        }
+
+        [HttpGet("createSession/{attendeeId}")]
+        public  IActionResult CreateSessionForAttendee([FromRoute] int attendeeId)
+        {
+            HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendeeId);
+            return Ok();
         }
         #endregion
     }
