@@ -9,6 +9,9 @@ import { SingleMultipleAnswerQuestionOption } from '../../questions/single-multi
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TestLogs } from '../testlogs.model';
 import { TestConduct } from '../testConduct.model';
+import { QuestionType } from '../../questions/enum-questiontype';
+import { CodeSnippetTestCasesDetails } from '../codeSnippetTestCasesDetails.model';
+import { ProgrammingLanguage } from '../programminglanguage.enum';
 declare var jsPDF: any;
 
 @Component({
@@ -56,6 +59,8 @@ export class IndividualReportComponent implements OnInit {
     timeTakenInSecondsVisible: boolean;
     awayFromTestWindowVisible: boolean;
     numberOfCorrectOptions: number;
+    codeSnippetQuestionTestCasesDetails: CodeSnippetTestCasesDetails[];
+    ProgrammingLanguage = ProgrammingLanguage;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -69,6 +74,7 @@ export class IndividualReportComponent implements OnInit {
         this.correctAnswers = this.incorrectAnswers = 0;
         this.easy = this.medium = this.hard = 0;
         this.testConduct = new Array<TestConduct>();
+        this.codeSnippetQuestionTestCasesDetails = new Array<CodeSnippetTestCasesDetails>();
     }
 
     ngOnInit() {
@@ -137,46 +143,55 @@ export class IndividualReportComponent implements OnInit {
 
     //Calculates the no of correct and incorrect answers given by the candidate
     attendeeAnswers() {
+
         for (let question = 0; question < this.testQuestions.length; question++) {
-            let options = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
-            let oldAnswerStatus: boolean;
-            let answerStatus: boolean;
-            for (let option = 0; option < options.length; option++) {
-                answerStatus = this.isAttendeeAnswerCorrect(options[option].id, options[option].isAnswer);
-                if (this.testQuestions[question].question.questionType === 0) {
-                    if (answerStatus === undefined)
-                        answerStatus = oldAnswerStatus;
-                    oldAnswerStatus = answerStatus;
-                }
-                else {
-                    if (this.testQuestions[question].question.questionType === 1) {
-                        let option = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
-                        option.forEach(x => {
-                            let correctOptions = option.filter(x => x.isAnswer === true);
-                            this.numberOfCorrectOptions = correctOptions.length;
-                        });
-                        let answerCorrect = this.noOfAnswersCorrectGivenbyAttendee(option);
-                        if (answerStatus === false || (answerCorrect > 0 && answerCorrect < this.numberOfCorrectOptions)) {
-                            answerStatus = false;
-                            break;
+            if (this.testQuestions[question].question.questionType !== 2) {
+                let options = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
+                let oldAnswerStatus: boolean;
+                let answerStatus: boolean;
+                for (let option = 0; option < options.length; option++) {
+                    answerStatus = this.isAttendeeAnswerCorrect(options[option].id, options[option].isAnswer);
+                    if (this.testQuestions[question].question.questionType === 0) {
+                        if (answerStatus === undefined)
+                            answerStatus = oldAnswerStatus;
+                        oldAnswerStatus = answerStatus;
+                    }
+                    else {
+                        if (this.testQuestions[question].question.questionType === 1) {
+                            let option = this.testQuestions[question].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
+                            option.forEach(x => {
+                                let correctOptions = option.filter(x => x.isAnswer === true);
+                                this.numberOfCorrectOptions = correctOptions.length;
+                            });
+                            let answerCorrect = this.noOfAnswersCorrectGivenbyAttendee(option);
+                            if (answerStatus === false || (answerCorrect > 0 && answerCorrect < this.numberOfCorrectOptions)) {
+                                answerStatus = false;
+                                break;
+                            }
+                            else if (answerCorrect === this.numberOfCorrectOptions)
+                                answerStatus = true;
                         }
-                        else if (answerCorrect === this.numberOfCorrectOptions)
-                            answerStatus = true;
                     }
                 }
-            }
-            if (answerStatus === true) {
-                this.correctAnswers++;
-                this.testQuestions[question].answerStatus = 0;
-                this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
+                if (answerStatus === true) {
+                    this.correctAnswers++;
+                    this.testQuestions[question].answerStatus = 0;
+                    this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
+                }
+                else {
+                    if (answerStatus === false) {
+                        this.incorrectAnswers++;
+                        this.testQuestions[question].answerStatus = 1;
+                    }
+                    else
+                        this.testQuestions[question].answerStatus = 2;
+                }
             }
             else {
-                if (answerStatus === false) {
-                    this.incorrectAnswers++;
-                    this.testQuestions[question].answerStatus = 1;
-                }
-                else
-                    this.testQuestions[question].answerStatus = 2;
+                this.reportsService.getCodeSnippetQuestionTestCasesDetails(this.testAttendeeId).subscribe((response) => {
+                    this.codeSnippetQuestionTestCasesDetails = response;
+                    console.log(this.codeSnippetQuestionTestCasesDetails);
+                });
             }
         }
     }

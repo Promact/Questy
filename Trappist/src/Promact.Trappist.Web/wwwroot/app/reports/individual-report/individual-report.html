@@ -1,208 +1,175 @@
 ﻿<div class="loader-container" *ngIf="loader">
-    <div class="spinner">
-    </div>
+  <div class="spinner">
+  </div>
 </div>
 <div class="individual-report">
-    <div class="test-create-header clearfix">
-        <div class="container">
-            <h1 class="pull-left">
-                <span class="test-name">{{testName}}</span>
-            </h1>
-            <div class="pull-right">
-                <button type="button" class="btn" (click)="downloadIndividualReport()"><em class="material-icons">file_download</em> Download</button>
-                <button type="button" class="btn" (click)="printIndividualReport('printSectionId')"><em class="material-icons">print</em> Print</button>
-            </div>
-        </div>
-    </div>
+  <div class="test-create-header clearfix">
     <div class="container">
-        <div class="report-title-block clearfix">
-            <div class="pull-left">
-                <h2>Candidate Details</h2>
-            </div>
-            <a class="pull-right back-link" [routerLink]="['/reports/test',testId]">< back to test report</a>
-        </div>
+      <h1 class="pull-left">
+        <span class="test-name">{{testName}}</span>
+      </h1>
+      <div class="pull-right">
+        <button type="button" class="btn" (click)="downloadIndividualReport()"><em class="material-icons">file_download</em> Download</button>
+        <button type="button" class="btn" (click)="printIndividualReport('printSectionId')"><em class="material-icons">print</em> Print</button>
+      </div>
     </div>
-    <div id="printSectionId">
-        <div style="page-break-inside:avoid">
-            <div class="container">
-                <div class="candidate-details-block clearfix">
-                    <div class="candidate-details-title">
-                        <h1 class="mb5">{{testAttendee?.firstName}} {{testAttendee?.lastName}}</h1>
-                        <p class="mb0">{{testAttendee?.email}}</p>
-                    </div>
-                    <div class="candidate-details-body clearfix">
-                        <div class="col-lg-6 col-md-6 col-sm-5 candidate-test-details">
-                            <p><strong>Test Date</strong>{{testAttendee?.createdDateTime |date:'fullDate'}}</p>
-                            <p><strong>Test Finish Status</strong>{{testStatus}}</p>
-                            <p><strong>Roll No.</strong>{{testAttendee?.rollNumber}}</p>
-                            <p><strong>Time Taken</strong><span *ngIf="timeTakenInHoursVisible">{{timeTakenInHours}} hrs </span><span *ngIf="timeTakenInMinutesVisible">{{timeTakenInMinutes}} mins </span><span *ngIf="timeTakenInSecondsVisible">{{timeTakenInSeconds}} secs</span></p>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
-                            <div class="score">
-                                <h3 class="mb20">Score</h3>
-                                <h1>{{marks}}</h1>
-                            </div>
-                            <div class="percentage">
-                                <h3 class="mb20">Percentage</h3>
-                                <h1>{{percentage}} %</h1>
-                            </div>
-                            <div class="percentile">
-                                <h3 class="mb20">Percentile</h3>
-                                <h1>{{percentile}}</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h2>Analysis</h2>
-                <div class="analysis-block">
-                    <div class="analysis-title clearfix">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <h6>Questions</h6>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <h6>Difficulty Level</h6>
-                        </div>
-                    </div>
-                    <div class="analysis-body clearfix">
-                        <div class="col-lg-6 col-md-6 col-sm-6" style="display: block">
-                            <h5>
-                                <canvas baseChart
-                                        [data]="questionPieChartValue()"
-                                        [labels]="questionPieChartLabels"
-                                        [chartType]="pieChartType"
-                                        (chartHovered)="questionPieChartValue()"></canvas>
-                            </h5>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <h5>
-                                <canvas baseChart
-                                        [data]="correctPieChartValue()"
-                                        [labels]="correctPieChartLabels"
-                                        [chartType]="pieChartType"
-                                        (chartHovered)="correctPieChartValue()"></canvas>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <h2>Test Details</h2>
-                <div class="test-details-block">
-                    <div class="question-score-box clearfix" *ngFor="let question of testQuestions;let i=index">
-                        <div class="col-lg-10 col-md-10 col-sm-10">
-                            <div class="qs-container">
-                                <p class="qs-num">Q.{{i+1}}</p>
-                                <div class="qs-text">
-                                    <p class="question" [innerHtml]="question.question?.questionDetail"></p>
+  </div>
+  <div class="container">
+    <div class="report-title-block clearfix">
+      <div class="pull-left">
+        <h2>Candidate Details</h2>
+      </div>
+      <a class="pull-right back-link" [routerLink]="['/reports/test',testId]">< back to test report</a>
+    </div>
+  </div>
+  <div id="printSectionId">
+    <div style="page-break-inside:avoid">
+      <div class="container">
+        <div class="candidate-details-block clearfix">
+          <div class="candidate-details-title">
+            <h1 class="mb5">{{testAttendee?.firstName}} {{testAttendee?.lastName}}</h1>
+            <p class="mb0">{{testAttendee?.email}}</p>
+          </div>
+          <div class="candidate-details-body clearfix">
+            <div class="col-lg-6 col-md-6 col-sm-5 candidate-test-details">
+              <p><strong>Test Date</strong>{{testAttendee?.createdDateTime |date:'fullDate'}}</p>
+              <p><strong>Test Finish Status</strong>{{testStatus}}</p>
+              <p><strong>Roll No.</strong>{{testAttendee?.rollNumber}}</p>
+              <p><strong>Time Taken</strong><span *ngIf="timeTakenInHoursVisible">{{timeTakenInHours}} hrs </span><span *ngIf="timeTakenInMinutesVisible">{{timeTakenInMinutes}} mins </span><span *ngIf="timeTakenInSecondsVisible">{{timeTakenInSeconds}} secs</span></p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
+              <div class="score">
+                <h3 class="mb20">Score</h3>
+                <h1>{{marks}}</h1>
+              </div>
+              <div class="percentage">
+                <h3 class="mb20">Percentage</h3>
+                <h1>{{percentage}} %</h1>
+              </div>
+              <div class="percentile">
+                <h3 class="mb20">Percentile</h3>
+                <h1>{{percentile}}</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2>Analysis</h2>
+        <div class="analysis-block">
+          <div class="analysis-title clearfix">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <h6>Questions</h6>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <h6>Difficulty Level</h6>
+            </div>
+          </div>
+          <div class="analysis-body clearfix">
+            <div class="col-lg-6 col-md-6 col-sm-6" style="display: block">
+              <h5>
+                <canvas baseChart
+                        [data]="questionPieChartValue()"
+                        [labels]="questionPieChartLabels"
+                        [chartType]="pieChartType"
+                        (chartHovered)="questionPieChartValue()"></canvas>
+              </h5>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <h5>
+                <canvas baseChart
+                        [data]="correctPieChartValue()"
+                        [labels]="correctPieChartLabels"
+                        [chartType]="pieChartType"
+                        (chartHovered)="correctPieChartValue()"></canvas>
+              </h5>
+            </div>
+          </div>
+        </div>
+        <h2>Test Details</h2>
+        <div class="test-details-block">
+          <div class="question-score-box clearfix" *ngFor="let question of testQuestions;let i=index">
+            <div class="col-lg-10 col-md-10 col-sm-10">
+              <div class="qs-container">
+                <p class="qs-num">Q.{{i+1}}</p>
+                <div class="qs-text">
+                  <p class="question" [innerHtml]="question.question?.questionDetail"></p>
 
-                                    <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j=index">
-                                        <p *ngIf="question.question?.questionType != 2" [ngClass]="{correct:isCorrectAnswer(option.isAnswer),wrong:isAttendeeAnswerCorrect(option.id,option.isAnswer)==false}" class="ans-option"><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==1">
-                                <div class="score negative">Score: -{{incorrectmarks}}</div>
-                            </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==0">
-                                <div class="score positive">Score: +{{correctMarks}}</div>
-                            </div>
-                            <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==2">
-                                <div class="score">Score: 0</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="question-score-box clearfix">
-                        <div class="col-lg-10 col-md-10 col-sm-10">
-                            <div class="qs-container">
-                                <p class="qs-num">Q.4</p>
-                                <div class="qs-text">
-                                    <p class="question mb5">Write a program to find the nth prime number in the number series.</p>
-                                    <p class="question mb20">Prime number series: 2,3,5,7,11,13</p>
-                                    <h4>Compilation: <strong class="theme-text ml10">Successful</strong></h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 text-right">
-                            <div class="score positive">Score: +4</div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="grid-container">
-                                <table class="data-grid">
-                                    <thead>
-                                        <tr>
-                                            <th class="h5">Name</th>
-                                            <th class="h5">Marks</th>
-                                            <th class="h5">CPU (ms)</th>
-                                            <th class="h5">Processing (ms)</th>
-                                            <th class="h5">Memory (kb)</th>
-                                            <th class="h5">Inputs</th>
-                                            <th class="h5">Expected Output</th>
-                                            <th class="h5">Actual Output</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Basic - 3</td>
-                                            <td>1</td>
-                                            <td>0</td>
-                                            <td>3</td>
-                                            <td>162</td>
-                                            <td>20</td>
-                                            <td>125</td>
-                                            <td>125</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Basic - 2</td>
-                                            <td>1</td>
-                                            <td>10</td>
-                                            <td>4</td>
-                                            <td>180</td>
-                                            <td>50</td>
-                                            <td>230</td>
-                                            <td>34</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Basic - 4</td>
-                                            <td>2</td>
-                                            <td>5</td>
-                                            <td>2</td>
-                                            <td>234</td>
-                                            <td>2</td>
-                                            <td>201</td>
-                                            <td>2</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Basic</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>6</td>
-                                            <td>211</td>
-                                            <td>1</td>
-                                            <td>104</td>
-                                            <td>104</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p class="ml40 mt20">Candidate Code (in C Language)</p>
-                            <p class="ml40">Code Compilation: 2 Successful out of 12 attempts</p>
-                            <p class="ml40">Code Complexity: 53</p>
-                        </div>
-                    </div>
+                  <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j=index">
+                    <p *ngIf="question.question?.questionType != 2" [ngClass]="{correct:isCorrectAnswer(option.isAnswer),wrong:isAttendeeAnswerCorrect(option.id,option.isAnswer)==false}" class="ans-option"><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
+                  </div>
                 </div>
-                <h2>Test Logs</h2>
-                <div class="test-logs-block">
-                    <p>{{testAttendee?.testLogs.visitTestLink |date:'medium'}} : Visited the test link.</p>
-                    <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'medium'}} : Filled the registration form.</p>
-                    <p>{{testAttendee?.testLogs.startTest | date:'medium'}} : Started the test.</p>
-                    <p>{{testAttendee?.testLogs.finishTest |date:'medium'}} : Finished the test.</p>
-                    <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : Away from the test window.</p>
-                    <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'medium'}} : Disconnected from the server.</p>
-                    <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} User Closed the test window without finishing the test.</p>
-                    <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'medium'}} : Resumed the test.</p>
-                    <p>{{numberOfQuestionsAttempted}} : Total number of questions attempted by the Attendee.</p>
-                </div>
+              </div>
             </div>
+            <div>
+              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==1">
+                <div class="score negative">Score: -{{incorrectmarks}}</div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==0">
+                <div class="score positive">Score: +{{correctMarks}}</div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==2">
+                <div class="score">Score: 0</div>
+              </div>
+            </div>
+
+
+            <div *ngIf="question.question?.questionType == 2">
+              <h4>Compilation: <strong class="theme-text ml10">Successful</strong></h4>
+
+              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngFor="let case of codeSnippetQuestionTestCasesDetails">
+                <div class="score positive">Score: {{case.score}}</div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="grid-container">
+                  <table class="data-grid">
+                    <thead>
+                      <tr>
+                        <th class="h5">Name</th>
+                        <th class="h5">Marks</th>
+                        <th class="h5">Processing (ms)</th>
+                        <th class="h5">Memory (kb)</th>
+                        <th class="h5">Inputs</th>
+                        <th class="h5">Expected Output</th>
+                        <th class="h5">Actual Output</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     
+                      <tr *ngFor="let case of codeSnippetQuestionTestCasesDetails">
+                        <td>{{case.testCaseName}}</td>
+                        <td>{{case.testCaseMarks}}</td>
+                        <td>{{case.processing}}</td>
+                        <td>{{case.memory}}</td>
+                        <td>{{case.testCaseInput}}</td>
+                        <td>{{case.expectedOutput}}</td>
+                        <td>{{case.actualOutput}}</td>
+
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngFor="let case of codeSnippetQuestionTestCasesDetails">
+                  <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[case.language]}} Language)</p>
+                  <p class="ml40">Code Compilation: 2 Successful out of {{case.numberOfAttempts}} attempts</p>
+                  <p class="ml40">Code Complexity: 53</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <h2>Test Logs</h2>
+        <div class="test-logs-block">
+          <p>{{testAttendee?.testLogs.visitTestLink |date:'medium'}} : Visited the test link.</p>
+          <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'medium'}} : Filled the registration form.</p>
+          <p>{{testAttendee?.testLogs.startTest | date:'medium'}} : Started the test.</p>
+          <p>{{testAttendee?.testLogs.finishTest |date:'medium'}} : Finished the test.</p>
+          <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : Away from the test window.</p>
+          <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'medium'}} : Disconnected from the server.</p>
+          <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} User Closed the test window without finishing the test.</p>
+          <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'medium'}} : Resumed the test.</p>
+          <p>{{numberOfQuestionsAttempted}} : Total number of questions attempted by the Attendee.</p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

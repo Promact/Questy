@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.Models.Question;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -200,6 +201,45 @@ namespace Promact.Trappist.Repository.Reports
                 }
             };
             return allAttendeeMarksDetailsList;
+        }
+
+        public async Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId)
+        {
+            var testCodeSolutionObject = await _dbContext.TestCodeSolution.Where(x => x.Score != 0).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var testCaseObjectList = await _dbContext.TestCaseResult.Include(x => x.TestCodeSolution).Where(x => x.TestCodeSolutionId == testCodeSolutionObject.Id).ToListAsync();
+            var testConductObject = await _dbContext.TestConduct.Include(x => x.Question).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var codeSnippetTestCaseList = new List<CodeSnippetTestCasesCalculationAC>();
+
+            if (testConductObject.Question.QuestionType == QuestionType.Programming && testConductObject.QuestionStatus == QuestionStatus.answered)
+            {
+                var questionObject = await _dbContext.Question.FirstOrDefaultAsync(x => x.CodeSnippetQuestion.Id == testConductObject.QuestionId);
+                var testCodeSolutionList = await _dbContext.TestCodeSolution.Where(x => x.QuestionId == questionObject.Id && x.TestAttendeeId == attendeeId).ToListAsync();
+                var numberOfAttemptsMadeByTheAttendee = testCodeSolutionList.Count();
+
+                var codeSnippetQuestionTestCasesList = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testConductObject.QuestionId).ToListAsync();
+                foreach (var question in codeSnippetQuestionTestCasesList)
+                {
+                    foreach(var testCase in testCaseObjectList)
+                    {
+                        var testCaseDetailsList = new CodeSnippetTestCasesCalculationAC()
+                        {
+                            TestCaseName = question.TestCaseTitle,
+                            TestCaseInput = question.TestCaseInput,
+                            TestCaseMarks = question.TestCaseMarks,
+                            TestCaseType = question.TestCaseType,
+                            ExpectedOutput = question.TestCaseOutput,
+                            Processing = testCase.Processing,
+                            Memory = testCase.Memory,
+                            ActualOutput = testCase.Output,
+                            Language = testCase.TestCodeSolution.Language,
+                            Score = testCase.TestCodeSolution.Score,
+                            numberOfAttempts = numberOfAttemptsMadeByTheAttendee
+                        };
+                        codeSnippetTestCaseList.Add(testCaseDetailsList);
+                    }
+                }
+            }
+            return codeSnippetTestCaseList;
         }
         #endregion
     }
