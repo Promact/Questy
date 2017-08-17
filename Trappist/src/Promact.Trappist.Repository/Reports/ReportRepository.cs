@@ -173,13 +173,6 @@ namespace Promact.Trappist.Repository.Reports
                         }
                         if (x.Question.QuestionType == QuestionType.Programming && x.QuestionStatus == QuestionStatus.answered)
                         {
-                            var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
-                            //var totalTestCases = _dbContext.CodeSnippetQuestionTestCases.Where(z => z.CodeSnippetQuestionId == question.QuestionId).ToList();
-                            //double totalTestCasesScore = 0; double totalPassedTestCasesByAttendeeScore = 0;
-                            //totalTestCases.ForEach(y =>
-                            //{
-                            //    totalTestCasesScore += y.TestCaseMarks;
-                            //});
                             var givenSolutionByAttendee = _dbContext.TestCodeSolution.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee.Id).ToList();
                             givenSolutionByAttendee.ForEach(y =>
                             {
@@ -210,5 +203,4 @@ namespace Promact.Trappist.Repository.Reports
         }
         #endregion
     }
-
 }

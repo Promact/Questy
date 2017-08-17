@@ -297,7 +297,7 @@ namespace Promact.Trappist.Test.Reports
             await _categoryRepository.AddCategoryAsync(category);
             //create question 
             var question1 = CreateQuestionAc(true, "first Question", category.Id, 1, QuestionType.Multiple);
-            var question2 = CreateCodingQuestionAc(true, category.Id,2, QuestionType.Programming);
+            var question2 = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, createTest.CreatedByUserId);
             await _questionRepository.AddCodeSnippetQuestionAsync(question2, createTest.CreatedByUserId);
 
@@ -346,14 +346,14 @@ namespace Promact.Trappist.Test.Reports
             {
                 Id = 2,
                 QuestionId = answer2.QuestionId,
-                QuestionStatus=answer2.QuestionStatus,
-                TestAttendeeId=testAttendee.Id
+                QuestionStatus = answer2.QuestionStatus,
+                TestAttendeeId = testAttendee.Id
             };
             await _trappistDbContext.TestConduct.AddAsync(testConduct1);
             await _trappistDbContext.TestConduct.AddAsync(testConduct2);
             await _trappistDbContext.SaveChangesAsync();
-            AddTestAnswer(answer1,testConduct1.Id);
-            AddTestAnswer(answer2,testConduct2.Id);
+            AddTestAnswer(answer1, testConduct1.Id);
+            AddTestAnswer(answer2, testConduct2.Id);
             //add test code solution
             var codeSolution1 = new TestCodeSolution()
             {
@@ -377,7 +377,7 @@ namespace Promact.Trappist.Test.Reports
             var allAttendeeMarksDetails = await _reportRepository.GetAllAttendeeMarksDetailsAsync(createTest.Id);
             var correctAttempted = allAttendeeMarksDetails.First().CorrectQuestionsAttempted;
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
-            Assert.Equal(2,easyQuestionAttempted);
+            Assert.Equal(2, easyQuestionAttempted);
             Assert.Equal(1, correctAttempted);
         }
 
@@ -388,11 +388,10 @@ namespace Promact.Trappist.Test.Reports
                 QuestionId = id,
                 OptionChoice = new List<int>() { 34, 36 },
             };
-            
             return testAnswerAC;
         }
 
-        private void  AddTestAnswer(TestAnswerAC answer,int testConductId)
+        private void AddTestAnswer(TestAnswerAC answer, int testConductId)
         {
             if (answer.OptionChoice.Count() > 0)
             {
@@ -401,7 +400,7 @@ namespace Promact.Trappist.Test.Reports
                     TestAnswers testAnswers = new TestAnswers()
                     {
                         AnsweredOption = option,
-                       TestConductId= testConductId
+                        TestConductId = testConductId
                     };
                     _trappistDbContext.TestAnswers.Add(testAnswers);
                     _trappistDbContext.SaveChanges();
@@ -448,7 +447,7 @@ namespace Promact.Trappist.Test.Reports
                         },
                     }
                 }
-                
+
             };
             return questionAC;
         }
@@ -507,7 +506,6 @@ namespace Promact.Trappist.Test.Reports
 
         private QuestionAC CreateCodingQuestionAc(bool isSelect, int categoryId, int id, QuestionType questionType)
         {
-
             QuestionAC questionAC = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
@@ -541,15 +539,8 @@ namespace Promact.Trappist.Test.Reports
                     }
                 },
                 SingleMultipleAnswerQuestion = null
-
             };
             return questionAC;
         }
-
-
-
-
-
-        
     }
 }
