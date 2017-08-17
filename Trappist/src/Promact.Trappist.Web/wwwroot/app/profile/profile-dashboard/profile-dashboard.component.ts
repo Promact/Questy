@@ -31,6 +31,6 @@ export class ProfileDashboardComponent implements OnInit {
 
     // Open Change Password Dialog
     changePasswordDialog() {
-        this.dialog.open(ChangePasswordDialogComponent);
+        this.dialog.open(ChangePasswordDialogComponent, { disableClose: true, hasBackdrop: true });
     }
 }

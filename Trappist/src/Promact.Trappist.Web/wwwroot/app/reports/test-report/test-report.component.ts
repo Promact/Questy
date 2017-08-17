@@ -13,7 +13,6 @@ import * as Excel from 'exceljs/dist/exceljs.min.js';
 declare let jsPDF: any;
 declare let saveAs: any;
 
-
 @Component({
     moduleId: module.id,
     selector: 'test-report',
@@ -102,7 +101,6 @@ export class TestReportComponent implements OnInit {
             });
             this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
                 this.reportQuestionDetails = res;
-                console.log(this.reportQuestionDetails);
             });
         });
     }
@@ -446,7 +444,7 @@ export class TestReportComponent implements OnInit {
                         workSheet3.addRow({
                             rollNo: testReport.rollNo, name: testReport.name, email: testReport.email, easyQ: y.easyQuestionAttempted, mediumQ: y.mediumQuestionAttempted, difficultQ: y.hardQuestionAttempted, totalQ: y.noOfQuestionAttempted,
                             coorectQ: y.correctQuestionsAttempted, time: testReport.timetaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
-                            percentile: testReport.percentile, rank: this.attendeeRank
+                            percentile: y.percentile, rank: this.attendeeRank
                         });
                     }
                 });

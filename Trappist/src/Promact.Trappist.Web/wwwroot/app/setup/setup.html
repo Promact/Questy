@@ -22,7 +22,7 @@
                         <p class="help-text">format 1: server=servername;database=databasename;integrated security=true</p>
                         <p class="help-text">format 2: server=servername;database=databasename;user id=user id;password=password</p>
                         <div class="action-buttons">
-                            <button type="button" class="btn btn-primary" [disabled]="!ConnectionStringForm.form.valid" (click)="validateConnectionString(setup)">Next</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="!ConnectionStringForm.form.valid" (click)="validateConnectionString(setup)">Next</button>
                         </div>
                     </form>
                 </wizard-step>
@@ -70,7 +70,7 @@
                         <div class="action-buttons">
                             <span class="general-error-msg pull-left" *ngIf="stepTwoErrorMessage">Invalid Email Settings</span>
                             <button type="button" class="btn" (click)="previousStep1(setup)">Previous</button>
-                            <button type="button" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="!EmailSettingsForm.form.valid" (click)="validateEmailSettings(setup)">Next</button>
                         </div>
                     </form>
                 </wizard-step>
@@ -114,7 +114,7 @@
                         <div class="action-buttons">
                             <span class="general-error-msg pull-left" *ngIf="stepThreeErrorMessage">{{exceptionMessage}}</span>
                             <button type="button" class="btn" (click)="previousStep2(setup)">Previous</button>
-                            <button type="button" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="!CreateUserForm.form.valid" (click)="createUser(setup)">Finish</button>
                         </div>
                     </form>
                 </wizard-step>

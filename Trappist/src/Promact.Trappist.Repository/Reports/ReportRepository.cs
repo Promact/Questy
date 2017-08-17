@@ -125,11 +125,11 @@ namespace Promact.Trappist.Repository.Reports
             var allAttendeeMarksDetailsList = new List<ReportQuestionsCountAC>();
             testQuestionList = await GetTestQuestions(testId);
             var easyQuestionAttempted = 0; var hardQuestionAttempted = 0; var mediumQuestionAttempted = 0;
-            var correctAttemptedQuestion = 0; var totalCorrectOptions = 0; var countOptions=0;
+            var correctAttemptedQuestion = 0; var totalCorrectOptions = 0; var countOptions = 0;
             foreach (var testAttendee in allTestAttendeeList)
             {
                 if (testAttendee.Report != null)
-                {               
+                {
                     var questionAttemptedList = await _dbContext.TestConduct.Where(x => x.TestAttendeeId == testAttendee.Id).ToListAsync();
                     var totalQuestionAttempted = questionAttemptedList.Count();
                     var testAnswersList = await GetTestAttendeeAnswers(testAttendee.Id);
@@ -143,23 +143,23 @@ namespace Promact.Trappist.Repository.Reports
                             if (difficultyLevel == DifficultyLevel.Medium)
                                 mediumQuestionAttempted += 1;
                             else
-                            hardQuestionAttempted += 1;
+                                hardQuestionAttempted += 1;
                         }
 
                         if (x.Question.QuestionType == QuestionType.Single && x.QuestionStatus == QuestionStatus.answered)
                         {
                             var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
-                            var correctOption = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.FirstOrDefault(z=>z.IsAnswer);
+                            var correctOption = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.FirstOrDefault(z => z.IsAnswer);
                             var givenOptionsByAttendee = testAnswersList.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
                             if (givenOptionsByAttendee.First().Value == correctOption.Id)
                                 correctAttemptedQuestion += 1;
                         }
-                        if (x.Question.QuestionType == QuestionType.Multiple && x.QuestionStatus==QuestionStatus.answered)
+                        if (x.Question.QuestionType == QuestionType.Multiple && x.QuestionStatus == QuestionStatus.answered)
                         {
                             var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
                             var Options = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
-                            totalCorrectOptions = Options.Where(y=>y.IsAnswer).Count();
-                            var givenOptionsByAttendee = testAnswersList.Where(y => y.TestConductId == x.Id).Select(y=>y.AnsweredOption).ToList();
+                            totalCorrectOptions = Options.Where(y => y.IsAnswer).Count();
+                            var givenOptionsByAttendee = testAnswersList.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
                             givenOptionsByAttendee.ForEach(z =>
                             {
                                 var option = z.Value;
@@ -171,7 +171,27 @@ namespace Promact.Trappist.Repository.Reports
                             if (totalCorrectOptions == countOptions)
                                 correctAttemptedQuestion += 1;
                         }
+                        if (x.Question.QuestionType == QuestionType.Programming && x.QuestionStatus == QuestionStatus.answered)
+                        {
+                            var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
+                            //var totalTestCases = _dbContext.CodeSnippetQuestionTestCases.Where(z => z.CodeSnippetQuestionId == question.QuestionId).ToList();
+                            //double totalTestCasesScore = 0; double totalPassedTestCasesByAttendeeScore = 0;
+                            //totalTestCases.ForEach(y =>
+                            //{
+                            //    totalTestCasesScore += y.TestCaseMarks;
+                            //});
+                            var givenSolutionByAttendee = _dbContext.TestCodeSolution.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee.Id).ToList();
+                            givenSolutionByAttendee.ForEach(y =>
+                            {
+                                while (y.Score == 1)
+                                {
+                                    correctAttemptedQuestion += 1;
+                                    break;
+                                }                             
+                            });                               
+                        }
                     });
+                    var percentile = await CalculatePercentileAsync(testAttendee.Id);
                     var reportQuestions = new ReportQuestionsCountAC()
                     {
                         TestAttendeeId = testAttendee.Id,
@@ -179,11 +199,13 @@ namespace Promact.Trappist.Repository.Reports
                         MediumQuestionAttempted = mediumQuestionAttempted,
                         HardQuestionAttempted = hardQuestionAttempted,
                         CorrectQuestionsAttempted = correctAttemptedQuestion,
-                        NoOfQuestionAttempted = totalQuestionAttempted
+                        NoOfQuestionAttempted = totalQuestionAttempted,
+                        Percentile = System.Math.Round(percentile, 2)
                     };
                     allAttendeeMarksDetailsList.Add(reportQuestions);
                     easyQuestionAttempted = mediumQuestionAttempted = hardQuestionAttempted = correctAttemptedQuestion = countOptions = 0;
-                }};
+                }
+            };
             return allAttendeeMarksDetailsList;
         }
         #endregion

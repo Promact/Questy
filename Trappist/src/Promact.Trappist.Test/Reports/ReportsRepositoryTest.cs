@@ -23,6 +23,8 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using System;
+using CodeBaseSimulator.Models;
 
 namespace Promact.Trappist.Test.Reports
 {
@@ -294,40 +296,79 @@ namespace Promact.Trappist.Test.Reports
             var category = CreateCategory("History");
             await _categoryRepository.AddCategoryAsync(category);
             //create question 
-            var question = CreateQuestionAc(true, "first Question", category.Id, 1, QuestionType.Multiple);
-            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question, createTest.CreatedByUserId);
+            var question1 = CreateQuestionAc(true, "first Question", category.Id, 1, QuestionType.Multiple);
+            var question2 = CreateCodingQuestionAc(true, category.Id,2, QuestionType.Programming);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, createTest.CreatedByUserId);
+            await _questionRepository.AddCodeSnippetQuestionAsync(question2, createTest.CreatedByUserId);
+
             //add test category
             var categoryList = new List<DomainModel.Models.Category.Category>();
             categoryList.Add(category);
             var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             categoryListAc[0].IsSelect = true;
             await _testRepository.AddTestCategoriesAsync(createTest.Id, categoryListAc);
+
             //add test Question
             var questionList = new List<QuestionAC>();
-            questionList.Add(question);
+            questionList.Add(question1);
+            questionList.Add(question2);
             await _testRepository.AddTestQuestionsAsync(questionList, createTest.Id);
+
             //create test attednee
             var testAttendee = CreateTestAttendee(createTest.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             //AddTestAnswer
-            var answer = CreateAnswerAc(question.Question.Id);
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            var answer1 = CreateAnswerAc(question1.Question.Id);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer1);
+            var answer2 = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = 2,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer2);
+
             //create test conduct
-            var testConduct = new DomainModel.Models.TestConduct.TestConduct()
+            var testConduct1 = new DomainModel.Models.TestConduct.TestConduct()
             {
                 Id = 1,
-                QuestionId = answer.QuestionId,
-                QuestionStatus = answer.QuestionStatus,
+                QuestionId = answer1.QuestionId,
+                QuestionStatus = answer1.QuestionStatus,
                 TestAttendeeId = testAttendee.Id
             };
-            await _trappistDbContext.TestConduct.AddAsync(testConduct);
+            var testConduct2 = new DomainModel.Models.TestConduct.TestConduct()
+            {
+                Id = 2,
+                QuestionId = answer2.QuestionId,
+                QuestionStatus=answer2.QuestionStatus,
+                TestAttendeeId=testAttendee.Id
+            };
+            await _trappistDbContext.TestConduct.AddAsync(testConduct1);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct2);
             await _trappistDbContext.SaveChangesAsync();
-            AddTestAnswer(answer,testConduct.Id);
+            AddTestAnswer(answer1,testConduct1.Id);
+            AddTestAnswer(answer2,testConduct2.Id);
+            var codeSolution = new TestCodeSolution()
+            {
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = question2.Question.Id,
+                Solution = answer2.Code.Source,
+                Language = answer2.Code.Language,
+                Score = 10
+            };
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution);
+            await _trappistDbContext.SaveChangesAsync();
             var allAttendeeMarksDetails = await _reportRepository.GetAllAttendeeMarksDetailsAsync(createTest.Id);
             var correctAttempted = allAttendeeMarksDetails.First().CorrectQuestionsAttempted;
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
-            Assert.Equal(1,easyQuestionAttempted);
-            Assert.Equal(0, correctAttempted);
+            Assert.Equal(2,easyQuestionAttempted);
+            Assert.Equal(1, correctAttempted);
         }
 
         private TestAnswerAC CreateAnswerAc(int id)
@@ -397,6 +438,7 @@ namespace Promact.Trappist.Test.Reports
                         },
                     }
                 }
+                
             };
             return questionAC;
         }
@@ -452,5 +494,52 @@ namespace Promact.Trappist.Test.Reports
             };
             return singleAnswerQuestion;
         }
+
+        private QuestionAC CreateCodingQuestionAc(bool isSelect, int categoryId, int id, QuestionType questionType)
+        {
+
+            QuestionAC questionAC = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = "<h1>Write a program to add two number</h1>",
+                    QuestionType = questionType,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = new CodeSnippetQuestionAC
+                {
+                    CheckCodeComplexity = true,
+                    CheckTimeComplexity = true,
+                    RunBasicTestCase = true,
+                    RunCornerTestCase = false,
+                    RunNecessaryTestCase = false,
+                    LanguageList = new String[] { "Java", "C" },
+                    CodeSnippetQuestionTestCases = new List<CodeSnippetQuestionTestCases>()
+                    {
+                        new CodeSnippetQuestionTestCases()
+                        {
+                            TestCaseTitle = "Necessary check",
+                            TestCaseDescription = "This case must be successfuly passed",
+                            TestCaseMarks = 10.00,
+                            TestCaseType = TestCaseType.Necessary,
+                            TestCaseInput = "2+2",
+                            TestCaseOutput = "4",
+                        }
+                    }
+                },
+                SingleMultipleAnswerQuestion = null
+
+            };
+            return questionAC;
+        }
+
+
+
+
+
+        
     }
 }
