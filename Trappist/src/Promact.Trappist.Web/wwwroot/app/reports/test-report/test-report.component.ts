@@ -377,7 +377,7 @@ export class TestReportComponent implements OnInit {
             { header: 'DIFFICULT QUESTION ATTEMPTED', key: 'difficultQ', width: 30 },
             { header: 'TOTAL QUESTION ATTEMPTED', key: 'totalQ', width: 27 },
             { header: 'NO OF CORRECT ATTEMPTED', key: 'coorectQ', width: 27 },
-            { header: 'TIME TAKEN ', key: 'time', width: 20 },
+            { header: 'TIME TAKEN(SEC) ', key: 'time', width: 20 },
             { header: 'OVERALL MARKS', key: 'totalScore', width: 20 },
             { header: 'PERCENTAGE', key: 'percentage', width: 20 },
             { header: 'PERCENTILE', key: 'percentile', width: 20 },

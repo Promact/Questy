@@ -354,15 +354,25 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.SaveChangesAsync();
             AddTestAnswer(answer1,testConduct1.Id);
             AddTestAnswer(answer2,testConduct2.Id);
-            var codeSolution = new TestCodeSolution()
+            //add test code solution
+            var codeSolution1 = new TestCodeSolution()
             {
                 TestAttendeeId = testAttendee.Id,
                 QuestionId = question2.Question.Id,
                 Solution = answer2.Code.Source,
                 Language = answer2.Code.Language,
-                Score = 10
+                Score = 1
             };
-            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution);
+            var codeSolution2 = new TestCodeSolution()
+            {
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = question2.Question.Id,
+                Solution = answer2.Code.Source,
+                Language = answer2.Code.Language,
+                Score = 0
+            };
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
             await _trappistDbContext.SaveChangesAsync();
             var allAttendeeMarksDetails = await _reportRepository.GetAllAttendeeMarksDetailsAsync(createTest.Id);
             var correctAttempted = allAttendeeMarksDetails.First().CorrectQuestionsAttempted;
