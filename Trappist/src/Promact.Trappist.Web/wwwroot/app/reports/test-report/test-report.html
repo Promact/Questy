@@ -61,7 +61,8 @@
                         <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
                         <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
                         <td>{{testAttendee.report.totalMarksScored}}</td>
-                        <td>{{testAttendee.report.percentage}}
+                        <td>{{testAttendee.report.percentage}}</td>
+                        <td (click)="navigateTo(testAttendee.id)">Back to Test</td>
                         <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']">file_download</em></td>
                         <td class="text-right"><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">remove_red_eye</em></td>
                     </tr>
