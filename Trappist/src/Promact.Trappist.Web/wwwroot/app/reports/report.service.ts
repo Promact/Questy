@@ -88,4 +88,8 @@ export class ReportService {
     getTestCodeSolutionDetails(attendeeId: number, questionId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + questionId + '/testCodeSolutionDetails');
     }
+
+    createSessionForAttendee(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/createSession/' + attendeeId);
+    }
 } 
