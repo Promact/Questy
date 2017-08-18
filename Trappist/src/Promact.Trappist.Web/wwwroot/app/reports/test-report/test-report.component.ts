@@ -9,8 +9,8 @@ import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
 import * as Excel from 'exceljs/dist/exceljs.min.js';
-import { AllowTestResume } from "../../tests/enum-allowtestresume";
-import { TestLogs } from "../testlogs.model";
+import { AllowTestResume } from '../../tests/enum-allowtestresume';
+import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 
 declare let jsPDF: any;
