@@ -6,6 +6,7 @@ import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
+import { Observable, Subscription } from "rxjs/Rx";
 
 @Component({
     moduleId: module.id,
@@ -14,6 +15,9 @@ import { QuestionStatus } from '../question_status.enum';
 })
 
 export class TestSummaryComponent implements OnInit {
+
+    private TIMEOUT_TIME: number = 10;
+
     magicString: string;
     testSummaryObject: number;
     timeLeft: number;
@@ -36,6 +40,9 @@ export class TestSummaryComponent implements OnInit {
     testDuration: number;
     loader: boolean;
     isTestPreview: boolean;
+    timeString: string;
+    timeOutCounter: number;
+    clockInterval: Subscription;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testAttendee = new TestAttendee();
@@ -43,6 +50,8 @@ export class TestSummaryComponent implements OnInit {
         this.testAnswers = new Array<TestAnswer>();
         this.isTimeLeftZero = false;
         this.isTestPreview = false;
+        this.timeOutCounter = 0;
+        this.timeString = "";
     }
 
     ngOnInit() {
@@ -80,6 +89,7 @@ export class TestSummaryComponent implements OnInit {
                 this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
                 this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
                 this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
+                this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
             }
             else {
                 this.isTimeLeftZero = true;
@@ -130,6 +140,7 @@ export class TestSummaryComponent implements OnInit {
      * Takes the student back to the test on clicking the back to test button
      */
     startTest() {
+        this.clockInterval.unsubscribe();
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/test-summary')) + '/test';
         let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
@@ -159,6 +170,57 @@ export class TestSummaryComponent implements OnInit {
         }, err => {
             this.router.navigate(['']);
         });
+    }
+
+    /**
+     * Converts seconds to time string format HH:MM:SS
+     * @param seconds: Seconds to convert
+     */
+    private secToTimeString(seconds: number) {
+        let hh = Math.floor(seconds / 3600);
+        let mm = Math.floor((seconds - hh * 3600) / 60);
+        let ss = Math.floor(seconds - (hh * 3600 + mm * 60));
+        let hStr: string;
+        let mStr: string;
+        let sStr: string;
+
+        if (hh !== 0)
+            hStr = (hh < 10 ? '0' + hh : hh) + 'hr(s) ';
+        else
+            hStr = '';
+
+        if (mm !== 0 || hh != 0)
+            mStr = (mm < 10 ? '0' + mm : mm) + 'min(s) ';
+        else
+            mStr = ''; 
+
+        sStr = (ss < 10 ? '0' + ss : ss) + 'sec(s)';
+
+        return hStr + mStr + sStr;
+    }
+
+    /**
+     * Counts down time
+     */
+    private countDown() {
+        this.timeLeft = this.timeLeft - 1;
+        this.timeString = this.secToTimeString(this.timeLeft);
+        
+        if (this.timeLeft < 0) {
+            this.endTest(TestStatus.expiredTest);
+        }
+    }
+
+    /**
+     * Updates time on the server
+     */
+    private timeOut() {
+        this.timeOutCounter += 1;
+
+        if (this.timeOutCounter >= this.TIMEOUT_TIME) {
+            this.conductService.setElapsedTime(this.testAttendee.id).subscribe();
+            this.timeOutCounter = 0;
+        }
     }
 
     /**
