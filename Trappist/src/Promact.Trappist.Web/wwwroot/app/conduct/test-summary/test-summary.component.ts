@@ -6,8 +6,8 @@ import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
-import { AllowTestResume } from "../../tests/enum-allowtestresume";
-import { ReportService } from "../../reports/report.service";
+import { AllowTestResume } from '../../tests/enum-allowtestresume';
+import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 
