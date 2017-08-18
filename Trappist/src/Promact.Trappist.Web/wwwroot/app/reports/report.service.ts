@@ -5,7 +5,7 @@ import { TestAttendee } from './testAttendee';
 
 @Injectable()
 export class ReportService {
-    private reportsApiUrl = 'api/report';
+    private reportsApiUrl = '/api/report';
 
     constructor(private httpService: HttpService) {
     }
@@ -58,7 +58,14 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
 
-    createSessionForAttendee(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/createSession/' + attendeeId);
+    createSessionForAttendee(attendee: any, testLink: string) {
+        return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink, attendee);
+    }
+
+    updateCandidateInfo(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/sendRequest');
+    }
+    getInfoResumeTest(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
     }
 } 

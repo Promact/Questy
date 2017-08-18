@@ -12,7 +12,7 @@ import { TestEndComponent } from './test-end/test-end.component';
 import { TestConductHeaderComponent } from './shared/test-conduct-header/test-conduct-header.component';
 import { TestConductFooterComponent } from './shared/test-conduct-footer/test-conduct-footer.component';
 import { ConductService } from './conduct.service';
-
+import { ReportService } from '../reports/report.service';
 
 
 @NgModule({
@@ -24,7 +24,8 @@ import { ConductService } from './conduct.service';
         CoreModule
     ],
     providers: [
-        ConductService
+        ConductService,
+        ReportService
     ],
     declarations: [
         ConductComponent,

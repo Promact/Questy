@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
@@ -129,13 +130,43 @@ namespace Promact.Trappist.Core.Controllers
         {
             return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
         }
-
-        [HttpGet("createSession/{attendeeId}")]
-        public  IActionResult CreateSessionForAttendee([FromRoute] int attendeeId)
+        /// <summary>
+        /// creates session for the candidate to resume the test
+        /// </summary>
+        /// <param name="attendee"></param>
+        /// <param name="testLink"></param>
+        /// <returns></returns>
+        [HttpPost("createSession/{testLink}")]
+        public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink)
         {
-            HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendeeId);
-            return Ok();
+            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+                HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
+            await _reportRepository.SetTestStatusAsync(attendee);
+            return Ok(attendee);
         }
+
+        /// <summary>
+        /// sends request to the conductor for test resume 
+        /// </summary>
+        /// <param name="attendeeId"></param>
+        /// <returns></returns>
+        [HttpGet("{attendeeId}/sendRequest")]
+        public async Task<bool> SendRequestToResumeTestAsync([FromRoute] int attendeeId)
+        {
+            await _reportRepository.SetWindowCloseAsync(attendeeId);
+            return true;
+        }
+        /// <summary>
+        /// gets the status of test if it is resumed
+        /// </summary>
+        /// <param name="attendeeId"></param>
+        /// <returns></returns>
+        [HttpGet("getWindowClose/{attendeeId}")]
+        public async Task<bool> GetResumeTestValueAsync([FromRoute] int attendeeId)
+        {
+            return await _reportRepository.GetWindowCloseAsync(attendeeId);
+        }
+
         #endregion
     }
 }

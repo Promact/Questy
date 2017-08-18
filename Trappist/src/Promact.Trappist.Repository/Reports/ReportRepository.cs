@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.Models.Report;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -200,6 +201,29 @@ namespace Promact.Trappist.Repository.Reports
                 }
             };
             return allAttendeeMarksDetailsList;
+        }
+
+        public async Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee)
+        {
+            attendee.Report.IsTestPausedUnWillingly = false;
+            attendee.Report.IsAllowResume = true;
+            attendee.Report.TestStatus = TestStatus.AllCandidates;
+            _dbContext.Report.Update(attendee.Report);
+            await _dbContext.SaveChangesAsync();
+            return attendee;
+        }
+
+        public async Task SetWindowCloseAsync(int attendeeId)
+        {
+            var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            reportObject.IsTestPausedUnWillingly = true;
+            _dbContext.Report.Update(reportObject);
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task<bool> GetWindowCloseAsync(int attendeeId)
+        {
+            var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            return reportObject.IsAllowResume;
         }
         #endregion
     }

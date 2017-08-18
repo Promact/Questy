@@ -20,7 +20,7 @@ import { Test, TestCategory, TestQuestion } from '../tests.model';
 export class TestSectionsComponent implements OnInit {
     testDetails: Test;
     testId: number;
-    testCategories: TestCategory[];
+    testCategories: Category[];
     testCategoryObj: TestCategory;
     testDetailsObj: TestDetails;
     loader: boolean;
@@ -31,7 +31,7 @@ export class TestSectionsComponent implements OnInit {
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
-        this.testCategories = new Array<TestCategory>();
+        this.testCategories = new Array<Category>();
         this.testCategories = [];
         this.testDetails = new Test();
         this.isCategoryExist = false;
@@ -55,6 +55,8 @@ export class TestSectionsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            this.testCategories = this.testDetails.categoryAcList.filter(x => x.questionCount !== 0)
+            console.log(this.testCategories);
             this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.isCategoryExist = this.testDetails.categoryAcList.length === 0 ? false : true;
             this.testNameReference = this.testDetails.testName;
@@ -136,7 +138,7 @@ export class TestSectionsComponent implements OnInit {
      */
     isTestAttendeeExist() {
         this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-            if (res.response) 
+            if (res.response)
                 this.isEditTestEnabled = false;
             else {
                 this.isEditTestEnabled = true;

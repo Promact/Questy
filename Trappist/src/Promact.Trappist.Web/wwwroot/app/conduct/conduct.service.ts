@@ -7,7 +7,7 @@ import { TestStatus } from './teststatus.enum';
 export class ConductService {
     private testConductUrl: string = '/api/conduct/';
     private testApiUrl = '/api/tests';
-    
+
 
     constructor(private httpService: HttpService) {
     }
@@ -121,5 +121,8 @@ export class ConductService {
 
     execute(attendeeId: number, testAnswer: TestAnswer) {
         return this.httpService.post(this.testConductUrl + 'code/' + attendeeId, testAnswer);
+    }
+    getTestLogs() {
+        return this.httpService.get(this.testConductUrl + 'testLogs');
     }
 }

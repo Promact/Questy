@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using System.Collections.Generic;
@@ -36,8 +37,8 @@ namespace Promact.Trappist.Repository.Reports
         /// </summary>
         /// <param name="attendeeId">Id of the candidate</param>
         /// <returns>returns boolean type result depending on whether the candidate exist or not</returns>
-        Task <bool> IsCandidateExistAsync(int attendeeId);
-        
+        Task<bool> IsCandidateExistAsync(int attendeeId);
+
         /// <summary>
         ///Method to get test name 
         /// </summary>
@@ -79,5 +80,25 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="testId">Id of a test</param>
         /// <returns></returns>
         Task<List<ReportQuestionsCountAC>> GetAllAttendeeMarksDetailsAsync(int testId);
+        /// <summary>
+        /// set test status type to allCandidate
+        /// </summary>
+        /// <param name="attendee"></param>
+        /// <returns></returns>
+        Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee);
+
+        /// <summary>
+        /// set isTestPausedUnWillingly to true
+        /// </summary>
+        /// <param name="attendeeId"></param>
+        /// <returns></returns>
+        Task SetWindowCloseAsync(int attendeeId);
+
+        /// <summary>
+        /// gets the value of isTestPausedUnWillingly
+        /// </summary>
+        /// <param name="attendeeId"></param>
+        /// <returns></returns>
+        Task<bool> GetWindowCloseAsync(int attendeeId);
     }
 }

@@ -9,6 +9,9 @@ import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
 import * as Excel from 'exceljs/dist/exceljs.min.js';
+import { AllowTestResume } from "../../tests/enum-allowtestresume";
+import { TestLogs } from "../testlogs.model";
+import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 
 declare let jsPDF: any;
 declare let saveAs: any;
@@ -54,8 +57,9 @@ export class TestReportComponent implements OnInit {
     attendeeRank: number;
     reportQuestionDetails: ReportQuestionsCount[];
     testAttendeeRank: TestAttendeeRank[];
+    testLogs: TestLogs[] = [];
 
-    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService) {
+    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
         this.sortedAttendeeArray = new Array<TestAttendee>();
@@ -152,7 +156,21 @@ export class TestReportComponent implements OnInit {
             }
         );
     }
-   
+    /**
+     * resumes test if Allow test resume is supervised
+     * @param attendee
+     */
+    resumeTest(attendee: TestAttendee) {
+        this.reportService.createSessionForAttendee(attendee, this.test.link).subscribe(response => {
+            if (response) {
+                attendee.report.isTestPausedUnWillingly = false;
+                this.snackbarRef.open('Test resumed successfully', 'Dismiss', {
+                    duration: 4000,
+                });
+            }
+        });
+    }
+
     /**
      * Checks whther a candidate is satrred
      * @param attendee

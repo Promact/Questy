@@ -6,5 +6,6 @@ export class Report {
     percentile: number;
     timeTakenByAttendee: number;
     testStatus: TestStatus;
+    isTestPausedUnWillingly: boolean;
 }
 
