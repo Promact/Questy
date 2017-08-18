@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170818084908_Report-table-Modified")]
+    partial class ReporttableModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -313,8 +314,6 @@ namespace Promact.Trappist.Web.Migrations
 
                     b.Property<DateTime>("CreatedDateTime");
 
-                    b.Property<bool>("IsAllowResume");
-
                     b.Property<bool>("IsTestPausedUnWillingly");
 
                     b.Property<double>("Percentage");
@@ -528,8 +527,6 @@ namespace Promact.Trappist.Web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CodeSnippetQuestionTestCasesId");
 
                     b.Property<DateTime>("CreatedDateTime");
 

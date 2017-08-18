@@ -6,7 +6,11 @@ import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
+import { AllowTestResume } from "../../tests/enum-allowtestresume";
+import { ReportService } from "../../reports/report.service";
+import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
+
 
 @Component({
     moduleId: module.id,
@@ -43,8 +47,10 @@ export class TestSummaryComponent implements OnInit {
     timeString: string;
     timeOutCounter: number;
     clockInterval: Subscription;
+    isTestResume: boolean;
+    isTestClosedUnConditionally: boolean;
 
-    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
+    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
         this.testAttendee = new TestAttendee();
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
@@ -97,6 +103,7 @@ export class TestSummaryComponent implements OnInit {
     getTestDetails(testLink: string) {
         this.conductService.getTestByLink(testLink, this.isTestPreview).subscribe((response1) => {
             this.test = response1;
+            this.isTestClosedUnConditionally = this.test.allowTestResume === AllowTestResume.Supervised;
             this.testDuration = this.test.duration;
             this.getTestAttendee(this.test.id);
         });
@@ -150,10 +157,30 @@ export class TestSummaryComponent implements OnInit {
         this.conductService.getTestAttendeeByTestId(testId, this.isTestPreview).subscribe((response) => {
             this.testAttendee = response;
             this.getSummaryDetailsByAttendeeId(this.testAttendee.id);
+            this.getCandidateInfoToResumeTest();
             this.timeLeftOfTest(this.testAttendee.id);
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
             this.router.navigate(['']);
+        });
+    }
+    /**
+     * sends request to the test conductor for test resume
+     */
+    sendRequestForResume() {
+        this.reportService.updateCandidateInfo(this.testAttendee.id).subscribe(response => {
+            if (response)
+                this.snackbarRef.open('Request sent successfully', 'Dismiss', {
+                    duration: 4000,
+                });
+        });
+    }
+    /**
+     * checks if test has been allowed to resume
+     */
+    getCandidateInfoToResumeTest() {
+        this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe(response => {
+            this.isTestResume = response;
         });
     }
 

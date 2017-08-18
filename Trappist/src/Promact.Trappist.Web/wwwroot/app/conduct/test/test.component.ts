@@ -29,6 +29,7 @@ import { CodeResponse } from '../code.response.model';
 
 //Temporary imports
 import { QuestionDisplay } from '../../questions/question-display';
+import { ReportService } from "../../reports/report.service";
 
 @Component({
     moduleId: module.id,
@@ -91,7 +92,7 @@ export class TestComponent implements OnInit {
     constructor(private router: Router,
         private snackBar: MdSnackBar,
         private conductService: ConductService,
-        private route: ActivatedRoute, elementRef: ElementRef) {
+        private route: ActivatedRoute, elementRef: ElementRef, private reportService: ReportService) {
         this.languageMode = ['java', 'cpp', 'c'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
@@ -118,7 +119,12 @@ export class TestComponent implements OnInit {
     }
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
+        window.addEventListener('beforeunload', (event) => { this.saveTestLogs(); });
         this.getTestByLink(this.testLink);
+    }
+
+    saveTestLogs() {
+        
     }
 
     /**
@@ -323,10 +329,6 @@ export class TestComponent implements OnInit {
      * Navigate to a question by its index
      * @param index: index of question
      */
-    @Input() set navigateQuestion(navigate: number) {
-        this.navigateToQuestionIndex(navigate);
-
-    }
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
 
@@ -647,6 +649,7 @@ export class TestComponent implements OnInit {
             this.timeOutCounter = 0;
         }
     }
+
 
     /**
      * Ends test and route to test-end page

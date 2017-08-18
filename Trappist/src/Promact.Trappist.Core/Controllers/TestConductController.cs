@@ -76,7 +76,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            if(!await _testConductRepository.IsAnswerValidAsync(attendeeId, answer))
+            if (!await _testConductRepository.IsAnswerValidAsync(attendeeId, answer))
             {
                 return BadRequest();
             }
@@ -148,7 +148,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testId">Id of Test</param>
         /// <returns>TestAttendee object</returns>
         [HttpGet("attendee/{testid}/{isPreview}")]
-        public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId,[FromRoute] bool isPreview)
+        public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId, [FromRoute] bool isPreview)
         {
             if (!await _testRepository.IsTestExists(testId))
             {
@@ -192,14 +192,14 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="link">Link of the Test</param>
         /// <returns>TestAC object</returns>
         [HttpGet("testbylink/{link}/{isPreview}")]
-        public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link,[FromRoute] bool isPreview)
+        public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link, [FromRoute] bool isPreview)
         {
             if (link == null)
             {
                 return BadRequest();
             }
 
-            if(!await _testConductRepository.IsTestInValidDateWindow(link,isPreview))
+            if (!await _testConductRepository.IsTestInValidDateWindow(link, isPreview))
             {
                 return NotFound();
             }
@@ -256,7 +256,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            if(testAnswer.Code == null || testAnswer.Code.Source == "")
+            if (testAnswer.Code == null || testAnswer.Code.Source == "")
             {
                 return BadRequest();
             }
@@ -320,7 +320,14 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPut("testlogs/{attendeeId}")]
         public async Task SetTestLogsAsync([FromRoute]int attendeeId, [FromBody]TestLogs testLogs)
         {
-           await _testConductRepository.AddTestLogsAsync(attendeeId,testLogs);
+            await _testConductRepository.AddTestLogsAsync(attendeeId, testLogs);
+        }
+
+        [HttpGet("testlogs")]
+        public async Task<IActionResult> GetTestLogs()
+        {
+            return Ok(await _testConductRepository.GetTestLogsAsync());
+
         }
         #endregion
     }

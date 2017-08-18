@@ -19,6 +19,10 @@ namespace Promact.Trappist.DomainModel.Models.Report
 
         public int TestAttendeeId { get; set; }
 
+        public bool IsTestPausedUnWillingly { get; set; }
+
+        public bool IsAllowResume { get; set; }
+
         [ForeignKey("TestAttendeeId")]
         public virtual TestAttendees TestAttendee { get; set; }
     }
