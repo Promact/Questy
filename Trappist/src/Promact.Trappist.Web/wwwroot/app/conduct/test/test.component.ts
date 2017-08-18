@@ -204,6 +204,11 @@ export class TestComponent implements OnInit {
             this.WARNING_MSG = this.test.warningMessage;
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume;
+
+            if (this.resumable === AllowTestResume.Supervised) {
+                window.onbeforeunload = (ev) => { this.endTest(TestStatus.completedTest); }
+            }
+
             if (this.testTypePreview)
                 this.getTestQuestion(this.test.id);
             else this.getTestAttendee(this.test.id, this.testTypePreview);
