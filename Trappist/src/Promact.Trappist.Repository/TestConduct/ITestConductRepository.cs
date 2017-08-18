@@ -134,5 +134,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testLink">Contains the link of the Test</param>
         /// <returns></returns>
         Task<int> GetTestSummaryDetailsAsync(string testLink);
+
+        Task<List<TestLogs>> GetTestLogsAsync();
     }
 }

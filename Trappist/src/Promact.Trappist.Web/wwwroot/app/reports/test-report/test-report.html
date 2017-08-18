@@ -49,7 +49,7 @@
                         <th class="h5" md2SortBy="createdDateTime">Test Date</th>
                         <th class="h5" md2SortBy="report.totalMarksScored">Score</th>
                         <th class="h5" md2SortBy="report.percentage">Percentage</th>
-                        <th></th>
+                        <th class="h5">Allow Resume</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -64,6 +64,8 @@
                         <td>{{testAttendee.report.percentage}}</td>
                         <td (click)="navigateTo(testAttendee.id)">Back to Test</td>
                         <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']">file_download</em></td>
+                        <td *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)"><a>Allow Resume Test</a></td>
+                        
                         <td class="text-right"><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">remove_red_eye</em></td>
                     </tr>
                 </tbody>
