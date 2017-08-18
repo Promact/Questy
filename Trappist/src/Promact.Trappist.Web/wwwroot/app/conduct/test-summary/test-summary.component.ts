@@ -6,7 +6,7 @@ import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
-import { Observable, Subscription } from "rxjs/Rx";
+import { Observable, Subscription } from 'rxjs/Rx';
 
 @Component({
     moduleId: module.id,
@@ -51,7 +51,10 @@ export class TestSummaryComponent implements OnInit {
         this.isTimeLeftZero = false;
         this.isTestPreview = false;
         this.timeOutCounter = 0;
-        this.timeString = "";
+        this.timeString = '00:00:00';
+        this.numberOfAttemptedQuestions = 0;
+        this.numberOfUnAttemptedQuestions = 0;
+        this.numberOfReviewedQuestions = 0;
     }
 
     ngOnInit() {
@@ -81,28 +84,8 @@ export class TestSummaryComponent implements OnInit {
             let spanTime = response;
             let spanTimeInSeconds = spanTime * 60;
             let durationInSeconds = this.test.duration * 60;
-            if (spanTimeInSeconds !== 0) {
-                this.timeLeft = durationInSeconds - spanTimeInSeconds;
-                this.timeLeftInHours = Math.floor(this.timeLeft / 3600);
-                this.timeLeftInHoursVisible = this.timeLeftInHours < 1 ? false : true;
-                this.timeLeftInMinutes = Math.floor(this.timeLeft / 60);
-                this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
-                this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
-                this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
-                this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
-            }
-            else {
-                this.isTimeLeftZero = true;
-                this.timeLeft = durationInSeconds;
-                this.timeLeftInHours = Math.floor(this.timeLeft / 3600);
-                this.timeLeftInHoursVisible = this.timeLeftInHours < 1 ? false : true;
-                if (this.timeLeftInHours < 1) {
-                    this.timeLeftInMinutes = Math.floor(this.timeLeft / 60);
-                    this.timeLeftInMinutesVisible = this.timeLeftInMinutes < 1 ? false : true;
-                }
-                this.timeLeftInSeconds = Math.floor(this.timeLeft % 60);
-                this.timeLeftInSecondsVisible = this.timeLeftInSeconds < 1 ? false : true;
-            }
+            this.timeLeft = durationInSeconds - spanTimeInSeconds;
+            this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });            
             this.loader = false;
         });
     }
@@ -133,6 +116,8 @@ export class TestSummaryComponent implements OnInit {
                 this.numberOfReviewedQuestions = reviewedQuestions.length;
                 this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
             });
+        }, err => {
+            this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest;
         });
     }
 
@@ -180,23 +165,8 @@ export class TestSummaryComponent implements OnInit {
         let hh = Math.floor(seconds / 3600);
         let mm = Math.floor((seconds - hh * 3600) / 60);
         let ss = Math.floor(seconds - (hh * 3600 + mm * 60));
-        let hStr: string;
-        let mStr: string;
-        let sStr: string;
 
-        if (hh !== 0)
-            hStr = (hh < 10 ? '0' + hh : hh) + 'hr(s) ';
-        else
-            hStr = '';
-
-        if (mm !== 0 || hh != 0)
-            mStr = (mm < 10 ? '0' + mm : mm) + 'min(s) ';
-        else
-            mStr = ''; 
-
-        sStr = (ss < 10 ? '0' + ss : ss) + 'sec(s)';
-
-        return hStr + mStr + sStr;
+        return (hh < 10 ? '0' + hh : hh) + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss);
     }
 
     /**
@@ -204,9 +174,15 @@ export class TestSummaryComponent implements OnInit {
      */
     private countDown() {
         this.timeLeft = this.timeLeft - 1;
+
+        //Prevent displaying negative time
+        if (this.timeLeft < 0) {
+            this.timeLeft = 0;
+        }
+
         this.timeString = this.secToTimeString(this.timeLeft);
         
-        if (this.timeLeft < 0) {
+        if (this.timeLeft <= 0) {
             this.endTest(TestStatus.expiredTest);
         }
     }
