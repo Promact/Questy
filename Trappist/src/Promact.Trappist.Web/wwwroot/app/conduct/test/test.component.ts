@@ -29,7 +29,7 @@ import { CodeResponse } from '../code.response.model';
 
 //Temporary imports
 import { QuestionDisplay } from '../../questions/question-display';
-import { ReportService } from "../../reports/report.service";
+import { ReportService } from '../../reports/report.service';
 
 @Component({
     moduleId: module.id,
