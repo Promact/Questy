@@ -92,9 +92,11 @@
                 <p class="qs-num">Q.{{i+1}}</p>
                 <div class="qs-text">
                   <p class="question" [innerHtml]="question.question?.questionDetail"></p>
-
                   <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j=index">
                     <p *ngIf="question.question?.questionType != 2" [ngClass]="{correct:isCorrectAnswer(option.isAnswer),wrong:isAttendeeAnswerCorrect(option.id,option.isAnswer)==false}" class="ans-option"><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
+                  </div>
+                  <div *ngIf="question.question?.questionType == 2">
+                    <h4>Compilation: <strong class="theme-text ml10">{{compilationStatus}}</strong></h4>
                   </div>
                 </div>
               </div>
@@ -110,13 +112,9 @@
                 <div class="score">Score: 0</div>
               </div>
             </div>
-
-
             <div *ngIf="question.question?.questionType == 2">
-              <h4>Compilation: <strong class="theme-text ml10">Successful</strong></h4>
-
-              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngFor="let case of codeSnippetQuestionTestCasesDetails">
-                <div class="score positive">Score: {{case.score}}</div>
+              <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                <div class="score positive">Score: +{{scoreOfCodeSnippetQuestion}}</div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="grid-container">
@@ -133,8 +131,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                     
-                      <tr *ngFor="let case of codeSnippetQuestionTestCasesDetails">
+                      <tr *ngFor="let case of codeSnippetQuestionTestCasesDetails" [ngClass]="{pass:case.isTestCasePassing,fail:!case.isTestCasePassing}">
                         <td>{{case.testCaseName}}</td>
                         <td>{{case.testCaseMarks}}</td>
                         <td>{{case.processing}}</td>
@@ -142,16 +139,13 @@
                         <td>{{case.testCaseInput}}</td>
                         <td>{{case.expectedOutput}}</td>
                         <td>{{case.actualOutput}}</td>
-
                       </tr>
-                     
                     </tbody>
                   </table>
                 </div>
-                <div *ngFor="let case of codeSnippetQuestionTestCasesDetails">
-                  <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[case.language]}} Language)</p>
-                  <p class="ml40">Code Compilation: 2 Successful out of {{case.numberOfAttempts}} attempts</p>
-                  <p class="ml40">Code Complexity: 53</p>
+                <div>
+                  <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[language]}} Language)</p>
+                  <p class="ml40">Code Compilation: {{numberOfSuccessfulAttemptsByAttendee}} Successful out of {{totalNumberOfAttemptsMadeByAttendee}} attempts</p>
                 </div>
               </div>
             </div>

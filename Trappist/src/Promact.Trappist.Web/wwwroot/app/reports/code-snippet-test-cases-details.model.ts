@@ -10,7 +10,5 @@ export class CodeSnippetTestCasesDetails {
     processing: number;
     memory: number;
     actualOutput: string;
-    language: ProgrammingLanguage;
-    numberOfAttempts: number;
-    score: number;
+    isTestCasePassing: boolean;
 }
