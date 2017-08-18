@@ -481,7 +481,10 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-            
+            var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
+            var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
+            fullMarks = totalNumberOfQuestions * testAttendee.Test.CorrectMarks;
+
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
                 if (attendedQuestion.QuestionStatus != QuestionStatus.answered)
@@ -493,10 +496,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 var correctOption = 0;
 
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
-                var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
-                var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
-                fullMarks = totalNumberOfQuestions * testAttendee.Test.CorrectMarks;
-                
+                                
                 if(question.Question.QuestionType != QuestionType.Programming)
                 {
                     bool isAnsweredOptionCorrect = true;

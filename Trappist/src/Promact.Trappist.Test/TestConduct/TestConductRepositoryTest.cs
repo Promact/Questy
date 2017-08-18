@@ -300,10 +300,55 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task GetSetAttendeeTestStatusAsyncTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
-            await CreateTestAsync();
+            // Creating test
+            var test = await CreateTestAsync();
+            //Creating test category
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var category1 = CreateCategory("Mathematics");
+            await _categoryRepository.AddCategoryAsync(category1);
+            categoryList.Add(category1);
+            var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            categoryListAc[0].IsSelect = true;
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
+
+            var question1 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, "");
+            var question2 = CreateQuestionAC(true, "Category1 type question 2", category1.Id, 2);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "");
+
+            //Creating test questions
+            var questionList = new List<QuestionAC>
+            {
+                question1,
+                question2,
+            };
+            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
+
+            testAttendee.Test = test;
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
+            var answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>() { question1.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id },
+                QuestionId = 1,
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+
+            answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = 2,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.unanswered
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
             //Setting Attendee TestStatus
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
