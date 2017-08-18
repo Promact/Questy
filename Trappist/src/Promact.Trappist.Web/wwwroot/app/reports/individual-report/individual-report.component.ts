@@ -10,8 +10,9 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { TestLogs } from '../testlogs.model';
 import { TestConduct } from '../testConduct.model';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { CodeSnippetTestCasesDetails } from '../codeSnippetTestCasesDetails.model';
+import { CodeSnippetTestCasesDetails } from '../code-snippet-test-cases-details.model';
 import { ProgrammingLanguage } from '../programminglanguage.enum';
+import { TestCodeSolutionDetails } from '../test-code-solution-details.model';
 declare var jsPDF: any;
 
 @Component({
@@ -61,7 +62,13 @@ export class IndividualReportComponent implements OnInit {
     numberOfCorrectOptions: number;
     codeSnippetQuestionTestCasesDetails: CodeSnippetTestCasesDetails[];
     ProgrammingLanguage = ProgrammingLanguage;
-
+    scoreOfCodeSnippetQuestion: string;
+    compilationStatus: string;
+    testCodeSolutionDetails: TestCodeSolutionDetails;
+    language: ProgrammingLanguage;
+    numberOfSuccessfulAttemptsByAttendee: number;
+    totalNumberOfAttemptsMadeByAttendee: number;
+   
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
         this.testQuestions = new Array<TestQuestion>();
@@ -75,6 +82,7 @@ export class IndividualReportComponent implements OnInit {
         this.easy = this.medium = this.hard = 0;
         this.testConduct = new Array<TestConduct>();
         this.codeSnippetQuestionTestCasesDetails = new Array<CodeSnippetTestCasesDetails>();
+        this.testCodeSolutionDetails = new TestCodeSolutionDetails();
     }
 
     ngOnInit() {
@@ -122,6 +130,15 @@ export class IndividualReportComponent implements OnInit {
                         this.downloadIndividualReport();
                     }, 5000);
                 });
+            });
+            this.reportsService.getCodeSnippetQuestionMarks(this.testAttendee.id).subscribe((response) => {
+                this.scoreOfCodeSnippetQuestion = response;
+            });
+            this.reportsService.getTestCodeSolutionDetails(this.testAttendee.id).subscribe((response) => {
+                this.testCodeSolutionDetails = response;
+                this.language = this.testCodeSolutionDetails.language;
+                this.totalNumberOfAttemptsMadeByAttendee = this.testCodeSolutionDetails.totalNumberOfAttempts;
+                this.numberOfSuccessfulAttemptsByAttendee = this.testCodeSolutionDetails.numberOfSuccessfulAttempts;
             });
         });
     }
@@ -190,6 +207,15 @@ export class IndividualReportComponent implements OnInit {
             else {
                 this.reportsService.getCodeSnippetQuestionTestCasesDetails(this.testAttendeeId).subscribe((response) => {
                     this.codeSnippetQuestionTestCasesDetails = response;
+                    if (this.scoreOfCodeSnippetQuestion === this.testAttendee.test.correctMarks) {
+                        this.correctAnswers++;
+                        this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
+                        this.compilationStatus = 'Successful';
+                    }
+                    else {
+                        this.incorrectAnswers++;
+                        this.compilationStatus = 'Unsuccessful';
+                    }
                     console.log(this.codeSnippetQuestionTestCasesDetails);
                 });
             }

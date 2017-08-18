@@ -50,6 +50,10 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + id + '/testAnswers');
     }
 
+    /**
+     * Gets the percentile of the selected test attendee
+     * @param testAttendeeId: Id of the test attendee
+     */
     getStudentPercentile(testAttendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/percentile');
     }
@@ -58,7 +62,27 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
 
+    /**
+     * Gets the details of the code snippet question test cases
+     * @param attendeeId: Id of the test attendee
+     */
     getCodeSnippetQuestionTestCasesDetails(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/codeSnippetTestCasesDetails');
+    }
+
+    /**
+     * Gets the total marks scored in the code snippet questions attempted by test attendee
+     * @param attendeeId: Id of the test attendee
+     */
+    getCodeSnippetQuestionMarks(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/scoreOfCodeSnippetQuestion');
+    }
+
+    /**
+     * Gets the details of test code solution for test cases of the code snippet question attempted by test attendee
+     * @param attendeeId: Id of the test attendee
+     */
+    getTestCodeSolutionDetails(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/testCodeSolutionDetails');
     }
 } 

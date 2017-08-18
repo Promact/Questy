@@ -546,6 +546,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 }
             }
             totalMarks = correctMarks;
+            totalMarks = Math.Round(totalMarks, 2);
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
             report.TotalMarksScored = (double)totalMarks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;

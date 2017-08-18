@@ -15,8 +15,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Reports
         public long Processing { get; set; }
         public long Memory { get; set; }
         public string ActualOutput { get; set; }
-        public ProgrammingLanguage Language { get; set; }
-        public int numberOfAttempts { get; set; }
-        public double Score { get; set; }
+        public bool IsTestCasePassing { get; set; }
     }
 }
