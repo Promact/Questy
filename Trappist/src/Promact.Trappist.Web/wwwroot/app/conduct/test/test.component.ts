@@ -642,17 +642,19 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
         //A measure taken to add answer of question attempted just before the Test end
-        this.navigateToQuestionIndex(0);
+        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) {
+            this.addAnswer(this.testQuestions[this.questionIndex]);
 
-        if (this.testTypePreview)
-            window.close();
-        else if (this.resumable === AllowTestResume.Supervised) {
-            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+            if (this.testTypePreview)
                 window.close();
-            });
+            else if (this.resumable === AllowTestResume.Supervised) {
+                this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                    window.close();
+                });
+            }
+            else
+                window.close();
         }
-        else
-            window.close();
     }
 
     /**
