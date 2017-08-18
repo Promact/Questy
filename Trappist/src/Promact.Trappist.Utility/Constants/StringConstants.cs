@@ -125,7 +125,7 @@
         {
             get
             {
-                return "Password must be alphanumeric including at least 1 uppercase letter and a special character";
+                return "Password must be alphanumeric including at least 1 uppercase letter,1 lowercase letter and a special character with 8 to 14 characters";
             }
         }
         #endregion
