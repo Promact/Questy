@@ -578,21 +578,19 @@ export class TestComponent implements OnInit {
         let message: string;
         let duration: number = 0;
         message = (this.focusLost > this.test.browserTolerance && this.test.browserTolerance !== 0) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
+        this.openSnackBar(message, duration);
 
         if (this.test.browserTolerance !== 0 && this.focusLost > this.test.browserTolerance) {
-            this.openSnackBar(message, duration);
-            this.endTest(TestStatus.blockedTest);
             this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
                 this.testLogs = response;
             });
+            this.endTest(TestStatus.blockedTest);            
         }
         else if (this.test.browserTolerance === 0 && this.focusLost <= this.test.browserTolerance) {
             this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
                 this.testLogs = response;
             });
         }
-        else if (this.test.browserTolerance !== 0)
-            this.openSnackBar(message, duration);
     }
 
     /**
@@ -618,7 +616,7 @@ export class TestComponent implements OnInit {
         }
 
         if (this.seconds <= 0) {
-            this.navigateToQuestionIndex(0);
+            this.conductService.setElapsedTime(this.testAttendee.id).subscribe();
             this.endTest(TestStatus.expiredTest);
         }
     }
@@ -642,19 +640,18 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
         //A measure taken to add answer of question attempted just before the Test end
-        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) {
+        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) 
             this.addAnswer(this.testQuestions[this.questionIndex]);
 
-            if (this.testTypePreview)
+        if (this.testTypePreview)
+            window.close();
+        else if (this.resumable === AllowTestResume.Supervised) {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 window.close();
-            else if (this.resumable === AllowTestResume.Supervised) {
-                this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                    window.close();
-                });
-            }
-            else
-                window.close();
+            });
         }
+        else
+            window.close();
     }
 
     /**
