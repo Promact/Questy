@@ -99,11 +99,11 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             //If the Attendee has completed the Test
-            var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
-            if (attendeeTestStatus != TestStatus.AllCandidates)
-            {
-                return BadRequest();
-            }
+            //var attendeeTestStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+            //if (attendeeTestStatus != TestStatus.AllCandidates)
+            //{
+            //    return BadRequest();
+            //}
 
             await _testConductRepository.SetElapsedTimeAsync(attendeeId);
 

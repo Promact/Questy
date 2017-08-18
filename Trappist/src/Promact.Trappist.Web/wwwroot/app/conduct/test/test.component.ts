@@ -617,7 +617,7 @@ export class TestComponent implements OnInit {
             this.openSnackBar(this.WARNING_MSG);
         }
 
-        if (this.seconds < 0) {
+        if (this.seconds <= 0) {
             this.navigateToQuestionIndex(0);
             this.endTest(TestStatus.expiredTest);
         }
