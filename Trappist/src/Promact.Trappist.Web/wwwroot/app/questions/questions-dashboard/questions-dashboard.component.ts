@@ -266,7 +266,6 @@ export class QuestionsDashboardComponent implements OnInit {
                 if (deletedCategory) {
                     this.categoryArray.splice(this.categoryArray.indexOf(deletedCategory), 1);
                     this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
-                    console.log(this.isCategoryPresent);
                 }
             });
     }
