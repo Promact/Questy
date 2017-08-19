@@ -10,7 +10,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Account
 
         [Required]
 
-        [RegularExpression(@"^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,14})+$", ErrorMessage = "Password must be alphanumeric including at least 1 uppercase letter,1 lowercase letter and a special character with 8 to 14 characters")]
+        [RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,14})+$", ErrorMessage = "Password must be alphanumeric including at least 1 uppercase letter,1 lowercase letter and a special character with 8 to 14 characters")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
