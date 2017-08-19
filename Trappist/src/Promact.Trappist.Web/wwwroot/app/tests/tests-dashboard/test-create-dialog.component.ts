@@ -53,8 +53,10 @@ export class TestCreateDialogComponent {
                     this.openSnackbar('Something went wrong!');
                 });
         }
-        else
+        else {
             this.isWhiteSpaceError = true;
+            this.testNameReference = this.testNameReference.trim();
+        }
     }
     /**
     this method is used to disable the errorMessage
