@@ -175,7 +175,7 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
 
-            if (attendee == null)
+            if (attendee == null || attendee.Answers == null)
                 return null;
 
             var deserializedAttendeeAnswers = JsonConvert.DeserializeObject<ICollection<TestAnswerAC>>(attendee.Answers);
