@@ -39,7 +39,7 @@ namespace Promact.Trappist.Test.TestConduct
         private readonly IStringConstants _stringConstants;
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IQuestionRepository _questionRepository; 
+        private readonly IQuestionRepository _questionRepository;
         #endregion
         #endregion
 
@@ -125,7 +125,8 @@ namespace Promact.Trappist.Test.TestConduct
             await _trappistDbContext.TestIpAddresses.AddAsync(testIp);
             var userIp = "127.0.0.1";
             testObject.EndDate = new DateTime(2044, 12, 24);
-           
+            testObject.IsLaunched = true;
+
             var linkExist = await _testConductRepository.IsTestLinkExistForTestConductionAsync(testObject.Link, userIp);
             Assert.True(linkExist);
             testObject.IsPaused = true;
@@ -390,7 +391,7 @@ namespace Promact.Trappist.Test.TestConduct
 
             var answer = new TestAnswerAC()
             {
-                OptionChoice = new List<int>() {question1.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id },
+                OptionChoice = new List<int>() { question1.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id },
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
             };
@@ -400,7 +401,8 @@ namespace Promact.Trappist.Test.TestConduct
             {
                 OptionChoice = new List<int>(),
                 QuestionId = 2,
-                Code = new Code(){
+                Code = new Code()
+                {
                     Input = "input",
                     Source = "source",
                     Language = ProgrammingLanguage.C
