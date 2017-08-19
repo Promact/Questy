@@ -9,9 +9,7 @@ import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
 
-
-
-
+declare var tinymce: any;
 @Component({
 
     moduleId: module.id,
@@ -25,9 +23,11 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     categoryName: string;
     optionIndex: number;
     questionId: number;
+    optionName: string;
     difficultyLevelSelected: string;
     noOfOptionShown: number;
     isClose: boolean;
+    isQuestionEmpty: boolean;
     isSingleAnswerQuestion: boolean;
     isEditQuestion: boolean;
     isdulicateQuestion: boolean;
@@ -36,10 +36,12 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     difficultyLevel: string[];
     singleMultipleAnswerQuestion: QuestionBase;
     isTwoOptionSame: boolean;
+    editor;
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 2;
         this.indexOfOptionSelected = null;
         this.isClose = true;
+        this.optionName = '';
         this.isdulicateQuestion = false;
         this.isTwoOptionSame = false;
         this.difficultyLevelSelected = 'default';
@@ -68,8 +70,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isdulicateQuestion = true;
         }
     }
-
-
 
     /**
     * Gets Question of specific Id
@@ -154,13 +154,16 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
 
 
     isTwoOptionsSame(optionName: string, optionIndex: number) {
+        this.optionName = optionName;
         this.isTwoOptionSame = false;
-        for (let i = 0; i < this.noOfOptionShown; i++) {
-            if (i !== optionIndex)
-                this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option === optionName.trim();
-            this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isTwoOptionsSame = this.isTwoOptionSame;
-            if (this.isTwoOptionSame) {
-                break;
+        if (this.optionName.trim() !== '') {
+            for (let i = 0; i < this.noOfOptionShown; i++) {
+                if (i !== optionIndex)
+                    this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option.trim() === this.optionName.trim();
+                this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isTwoOptionsSame = this.isTwoOptionSame;
+                if (this.isTwoOptionSame) {
+                    break;
+                }
             }
         }
     }
@@ -196,7 +199,10 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isdulicateQuestion = true;
         }
     }
-
+    check(event: any) {
+        this.isQuestionEmpty = event.length === 0;
+        this.singleMultipleAnswerQuestion.question.questionDetail = event;
+    }
     /**
      * Get category id based on category name
      * @param category: Category selected by the user
@@ -237,6 +243,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      * Add or update single/multiple answer question and redirect to question dashboard page
      * @param singleAnswerQuestion
      */
+
     saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.id = 0);
@@ -264,5 +271,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 this.snackBar.open('There is some error. Please try again.', 'Dismiss', { duration: 3000 });
             }
             );
+
     }
 }
