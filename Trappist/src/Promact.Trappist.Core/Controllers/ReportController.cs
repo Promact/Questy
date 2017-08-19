@@ -150,10 +150,10 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="attendeeId"></param>
         /// <returns></returns>
-        [HttpGet("{attendeeId}/sendRequest")]
-        public async Task<bool> SendRequestToResumeTestAsync([FromRoute] int attendeeId)
+        [HttpGet("{attendeeId}/{isTestResume}/sendRequest")]
+        public async Task<bool> SendRequestToResumeTestAsync([FromRoute] int attendeeId, [FromRoute] bool isTestResume)
         {
-            await _reportRepository.SetWindowCloseAsync(attendeeId);
+            await _reportRepository.SetWindowCloseAsync(attendeeId, isTestResume);
             return true;
         }
         /// <summary>

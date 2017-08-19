@@ -181,8 +181,8 @@ namespace Promact.Trappist.Repository.Reports
                                 {
                                     correctAttemptedQuestion += 1;
                                     break;
-                                }                             
-                            });                               
+                                }
+                            });
                         }
                     });
                     var percentile = await CalculatePercentileAsync(testAttendee.Id);
@@ -213,10 +213,13 @@ namespace Promact.Trappist.Repository.Reports
             return attendee;
         }
 
-        public async Task SetWindowCloseAsync(int attendeeId)
+        public async Task SetWindowCloseAsync(int attendeeId, bool isTestResume)
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            reportObject.IsTestPausedUnWillingly = true;
+            if (isTestResume)
+                reportObject.IsAllowResume = false;
+            else
+                reportObject.IsTestPausedUnWillingly = true;
             _dbContext.Report.Update(reportObject);
             await _dbContext.SaveChangesAsync();
         }
