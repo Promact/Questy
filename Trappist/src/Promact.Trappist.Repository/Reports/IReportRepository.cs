@@ -117,7 +117,7 @@ namespace Promact.Trappist.Repository.Reports
         /// </summary>
         /// <param name="attendeeId"></param>
         /// <returns></returns>
-        Task SetWindowCloseAsync(int attendeeId);
+        Task SetWindowCloseAsync(int attendeeId, bool isTestResume);
 
         /// <summary>
         /// gets the value of isTestPausedUnWillingly
