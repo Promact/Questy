@@ -52,7 +52,7 @@ export class InstructionsComponent implements OnInit {
         let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
         let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
         newWindow.onunload = () => {
-            window.location.href = url.substring(0, url.indexOf('/instructions')) + '/test-summary';
+            window.location.replace(url.substring(0, url.indexOf('/instructions')) + '/test-summary');
         };
     }
 }

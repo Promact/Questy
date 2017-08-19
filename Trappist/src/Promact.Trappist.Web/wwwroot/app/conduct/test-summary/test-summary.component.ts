@@ -206,7 +206,7 @@ export class TestSummaryComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         if (this.isButtonVisible) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                this.router.navigate(['test-end']);
+                this.router.navigate(['test-end'], { replaceUrl: true });
             });
         }
     }

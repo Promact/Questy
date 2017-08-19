@@ -206,7 +206,7 @@ export class TestComponent implements OnInit {
             this.resumable = this.test.allowTestResume;
 
             if (this.resumable === AllowTestResume.Supervised) {
-                window.onbeforeunload = (ev) => { this.endTest(TestStatus.completedTest); }
+                window.onbeforeunload = (ev) => { this.endTest(TestStatus.completedTest); };
             }
 
             if (this.testTypePreview)
