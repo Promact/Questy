@@ -14,13 +14,17 @@ import { CategoryService } from './categories.service';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { TinymceModule } from 'angular2-tinymce';
 
-
 @NgModule({
     imports: [
         SharedModule,
         questionsRouting,
         InfiniteScrollModule,
-        TinymceModule.withConfig({})
+        TinymceModule.withConfig({
+            entity_encoding: 'raw',
+            element_format: 'html',
+            forced_root_block: '',
+            browser_spellcheck: true
+        })
     ],
     declarations: [
         QuestionsComponent,
@@ -30,7 +34,8 @@ import { TinymceModule } from 'angular2-tinymce';
         UpdateCategoryDialogComponent,
         QuestionsProgrammingComponent,
         DeleteCategoryDialogComponent,
-        DeleteQuestionDialogComponent],
+        DeleteQuestionDialogComponent
+    ],
     entryComponents: [
         AddCategoryDialogComponent,
         DeleteCategoryDialogComponent,

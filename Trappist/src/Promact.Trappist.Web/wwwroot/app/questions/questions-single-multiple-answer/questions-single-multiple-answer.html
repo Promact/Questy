@@ -8,9 +8,9 @@
         <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm">
             <div class="form-fields">
                 <div class="form-group">
-                    <app-tinymce placeholder="Question Text" [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required></app-tinymce>
+                    <app-tinymce [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" (keyup)="check($event)" required></app-tinymce>
                     <div class="errors-container">
-                        <span *ngIf="question.invalid && question.touched" class="error-msg">Question field is required</span>
+                        <span *ngIf="isQuestionEmpty && question.touched" class="error-msg">Question field is required</span>
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
@@ -60,5 +60,6 @@
                 <button type="submit" *ngIf="isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || !isOptionSelected()">Update</button>
             </div>
         </form>
+
     </div>
 </div>

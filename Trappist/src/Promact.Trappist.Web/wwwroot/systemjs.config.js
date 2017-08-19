@@ -12,14 +12,14 @@
         },
         meta: {
 
-            'node_modules/tinymce/plugins/advlist/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/autoresize/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/code/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/link/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
-            'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
-            'node_modules/tinymce/themes/modern/theme.js': { format: 'global' }
+            'npm:tinymce/plugins/advlist/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/autoresize/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/code/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/link/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/lists/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/paste/plugin.js': { format: 'global' },
+            'npm:tinymce/plugins/table/plugin.js': { format: 'global' },
+            'npm:tinymce/themes/modern/theme.js': { format: 'global' }
         },
 
 
