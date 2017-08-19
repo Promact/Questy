@@ -280,6 +280,7 @@ export class TestReportComponent implements OnInit {
      * Download test report in  pdf format
      */
     downloadTestReportPdf() {
+        this.loader = true;
         let testName = this.test.testName;
         let reports = new Array();
         let space = ' ';
@@ -327,12 +328,14 @@ export class TestReportComponent implements OnInit {
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
         });
+        this.loader = false;
     }
 
     /**
      * Download test report in excel format
      */
     downloadTestReportExcel() {
+        this.loader = true;
         let testName = this.test.testName;
         let space = ' ';
         let workBook = new Excel.Workbook();
@@ -450,7 +453,7 @@ export class TestReportComponent implements OnInit {
                 });
             }
         });
-
+        this.loader = false;
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
             saveAs(blob, testName + '_test_report.xlsx');
@@ -458,7 +461,7 @@ export class TestReportComponent implements OnInit {
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
-        });
+        });       
     }
 
     /**

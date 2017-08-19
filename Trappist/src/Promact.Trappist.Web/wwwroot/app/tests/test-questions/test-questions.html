@@ -8,10 +8,10 @@
             <div class="spinner"></div>
         </div>
         <span *ngIf="!isEditTestEnabled">
-            You can not edit on going Test. Click
-            <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the Test.
+            You can not edit on going test. Click
+            <a [routerLink]="['/tests',testId,'view']">View Test Details</a> to view the details of the test.
         </span>
-        <h5 *ngIf="!isAnyCategorySelectedForTest">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here</a></h5>
+        <h5 *ngIf="!isAnyCategorySelectedForTest">In order to add questions, please select sections from <a href="#" [routerLink]="['/tests', testId,'sections']" class="theme-text">here.</a></h5>
         <h5 *ngIf="isAnyCategorySelectedForTest">Select questions for each section</h5>
         <ng-container *ngFor="let category of testDetails.categoryAcList; let k=index">
             <md2-accordion class="questions-selection" *ngIf="category.isSelect">

@@ -20,8 +20,8 @@ export class DeleteTestDialogComponent {
     successMessage: string;
 
     constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar, private router:Router) {
-        this.errorMessage = 'Something went wrong.Please try again later';
-        this.successMessage = 'The selected test is deleted';
+        this.errorMessage = 'Something went wrong.Please try again later.';
+        this.successMessage = 'The selected test is deleted.';
     }
 
     /**

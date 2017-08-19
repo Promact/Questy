@@ -36,7 +36,7 @@ export class ProfileEditComponent implements OnInit {
         this.profileService.updateUserDetails(this.editUser).subscribe((response) => {
             this.loader = false;
             // Open Snackbar
-            this.snackBar.open('Saved Changes Successfully', 'Dismiss', {
+            this.snackBar.open('Saved changes successfully.', 'Dismiss', {
                 duration: 3000,
             });
             this.router.navigate(['/profile']);

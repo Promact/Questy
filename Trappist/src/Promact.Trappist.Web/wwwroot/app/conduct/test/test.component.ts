@@ -71,10 +71,10 @@ export class TestComponent implements OnInit {
     private WARNING_TIME: number = 300;
     private WARNING_MSG: string = 'Hurry up!';
     private TIMEOUT_TIME: number = 10;
-    private ALERT_MARK: string = 'You can\'t mark already answered question';
-    private ALERT_CLEAR: string = 'You can\'t clear already answered question';
-    private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus';
-    private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost';
+    private ALERT_MARK: string = 'You can\'t mark already answered question.';
+    private ALERT_CLEAR: string = 'You can\'t clear already answered question.';
+    private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus.';
+    private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost.';
     private JAVA_CODE: string = 'class Program {//Do not change class name\n' +
     '\n' +
     ' /* This is my first java program.\n' +
@@ -415,7 +415,7 @@ export class TestComponent implements OnInit {
                     this.codeResult = codeResponse.error;
                 }
             }, err => {
-                this.codeResult = 'Oops! server error occured.';
+                this.codeResult = 'Oops! server error has occured.';
             });
         }
     }

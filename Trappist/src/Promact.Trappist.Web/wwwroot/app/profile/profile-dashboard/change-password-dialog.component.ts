@@ -29,7 +29,7 @@ export class ChangePasswordDialogComponent {
             this.profileService.updateUserPassword(userPassword).subscribe((response) => {
                 this.loader = false;
                 this.dialog.close();
-                let snackBarRef = this.snackBar.open('Your Password has been changed', 'Dismiss', {
+                let snackBarRef = this.snackBar.open('Your password has been changed.', 'Dismiss', {
                     duration: 3000,
                 });
             },

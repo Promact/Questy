@@ -9,7 +9,7 @@
             <input type="text" class="form-control" id="categoryName" (keyup.enter)="onEnter(category)" [(ngModel)]="category.categoryName" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" placeholder="Ex. General Knowledge" required />
             <div class="errors-container">
                 <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
-                <span *ngIf="categoryName.errors && categoryName.dirty" [hidden]="!categoryName.errors.required" class="error-msg">Category Name Required</span>
+                <span *ngIf="categoryName.errors && categoryName.dirty" [hidden]="!categoryName.errors.required" class="error-msg">Required</span>
             </div>
         </div>
     </md-dialog-content>

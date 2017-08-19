@@ -55,7 +55,7 @@ export class TestSettingsComponent implements OnInit {
         this.validTime = false;
         this.validStartDate = false;
         this.currentDate = new Date();
-        this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully';
+        this.testSettingsUpdatedMessage = 'The settings of the Test has been updated successfully.';
         this.isAttendeeExistForTest = false;
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
@@ -134,7 +134,7 @@ export class TestSettingsComponent implements OnInit {
     saveTestSettings(id: number, testObject: Test) {
         this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.loader = true;
-            let snackBarRef = this.snackbarRef.open('Saved changes successfully', 'Dismiss', {
+            let snackBarRef = this.snackbarRef.open('Saved changes successfully.', 'Dismiss', {
                 duration: 3000,
             });
             snackBarRef.afterDismissed().subscribe(() => {
@@ -171,7 +171,7 @@ export class TestSettingsComponent implements OnInit {
                 this.testDetails.isLaunched = new Date(this.testDetails.startDate).getTime() <= Date.now();
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.ngOnInit();
-                    this.openSnackBar('Your test has een launched successfully');
+                    this.openSnackBar('Your test has been launched successfully.');
                 },
                     errorHandling => {
                         this.response = errorHandling.json();
@@ -198,7 +198,7 @@ export class TestSettingsComponent implements OnInit {
         this.testDetails.isPaused = true;
         this.testService.updateTestPauseResume(this.testDetails.id, this.testDetails.isPaused).subscribe((response) => {
             if (response)
-                this.openSnackBar('Your Test is paused');
+                this.openSnackBar('Your test is paused.');
         });
     }
 
@@ -211,7 +211,7 @@ export class TestSettingsComponent implements OnInit {
         this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
             if (response) {
                 this.ngOnInit();
-                this.openSnackBar('Saved changes and resumed test');
+                this.openSnackBar('Saved changes and resumed test.');
             }
 
         });

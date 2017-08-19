@@ -40,13 +40,13 @@ export class CreateTestHeaderComponent implements OnInit {
     disablePreview: boolean;
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
-        this.testNameUpdatedMessage = 'Test Name has been updated successfully';
+        this.testNameUpdatedMessage = 'Test name has been updated successfully.';
         this.isTestNameExist = false;
         this.isLabelVisible = true;
         this.isButtonClicked = false;
         this.tooltipMessage = 'Copy to Clipboard';
         this.testPreviewPage = false;
-       
+
     }
 
     /**
@@ -54,7 +54,7 @@ export class CreateTestHeaderComponent implements OnInit {
      */
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-       
+
     }
 
     /**
@@ -66,7 +66,7 @@ export class CreateTestHeaderComponent implements OnInit {
         this.testLink = domain + '/conduct/' + linkOfTest;
     }
 
-   
+
     /**
      * Open snackbar
      * @param message contains the message to be displayed when the snackbar gets opened
@@ -142,7 +142,7 @@ export class CreateTestHeaderComponent implements OnInit {
                     },
                         errorHandling => {
                             this.isButtonClicked = false;
-                            this.openSnackBar('Something went wrong');
+                            this.openSnackBar('Something went wrong.Please try again later.');
                         });
                 }
                 else {

@@ -20,7 +20,7 @@ export class DuplicateTestDialogComponent {
     loader: boolean;
 
     constructor(public testService: TestService, public snackBar: MdSnackBar, public dialog: MdDialogRef<any>, private route: Router) {
-        this.successMessage = 'The selected test has been duplicated successfully';
+        this.successMessage = 'The selected test has been duplicated successfully.';
         this.testArray = new Array<Test>();
     }
 

@@ -12,8 +12,8 @@
             <label class="h4">Test Name</label>
             <input type="text" name="name" class="form-control" [(ngModel)]="testName" #name="ngModel" required maxlength="150" pattern="^[a-zA-Z0-9_@ ]*$" (ngModelChange)="onErrorChange()" (keyup.enter)="duplicateTest()"/>
             <div class="errors-container">
-                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.required">Name is required</span>
-                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special characters are @, _ and white space</span>
+                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.required">Required</span>
+                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special characters are @, _ and white space.</span>
                 <span class="error-msg" *ngIf="error">Test with this name already exists</span>
             </div>
         </div>
