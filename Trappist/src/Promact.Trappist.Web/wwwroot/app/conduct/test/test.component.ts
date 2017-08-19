@@ -532,7 +532,8 @@ export class TestComponent implements OnInit {
                 this.clearResponse(questionIndex);
                 this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
             } else {
-                this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
+                let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
+                this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
             }
         }
     }
