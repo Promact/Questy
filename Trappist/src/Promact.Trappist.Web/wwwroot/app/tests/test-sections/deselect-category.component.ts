@@ -24,7 +24,7 @@ export class DeselectCategoryComponent {
             this.dialogRef.close(response);
         },
             err => {
-                this.openSnackbar('Something went wrong');
+                this.openSnackbar('Something went wrong.Please try again later.');
                 this.dialogRef.close();
             });
     }

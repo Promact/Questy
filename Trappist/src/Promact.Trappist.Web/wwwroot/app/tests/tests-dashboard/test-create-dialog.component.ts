@@ -42,7 +42,7 @@ export class TestCreateDialogComponent {
                     },
                         errorhandling => {
                             this.isButtonClicked = false;
-                            this.openSnackbar('Something went wrong!');
+                            this.openSnackbar('Something went wrong.Please try again later.');
                         });
                 }
                 else
@@ -50,7 +50,7 @@ export class TestCreateDialogComponent {
             },
                 errorHandling => {
                     this.isButtonClicked = false;
-                    this.openSnackbar('Something went wrong!');
+                    this.openSnackbar('Something went wrong.Please try again later.');
                 });
         }
         else {

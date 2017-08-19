@@ -11,7 +11,7 @@
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.firstName" name="firstName" #firstName="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.pattern" class="error-msg">First name must be in alphabets</span>
-                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.required" class="error-msg">required</span>
+                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="form-group">
@@ -19,7 +19,7 @@
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.lastName" name="lastName" #lastName="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.pattern" class="error-msg">Last name must be in alphabets</span>
-                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.required" class="error-msg">required</span>
+                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
                 <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="email" class="form-control" [(ngModel)]="testAttendees.email" name="email" #email="ngModel" maxlength="255" />
                 <div class="errors-container">
                     <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">Invalid email address</span>
-                    <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">required</span>
+                    <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="form-group">
@@ -35,7 +35,7 @@
                 <input required pattern="^[a-zA-Z0-9]*$" type="text" class="form-control" [(ngModel)]="testAttendees.rollNumber" name="rollNumber" #rollNumber="ngModel" />
                 <div class="errors-container">
                     <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">Invalid roll number</span>
-                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">required</span>
+                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="form-group">
@@ -43,7 +43,7 @@
                 <input required pattern="^[+]?([0-9]{10,20})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" maxlength="20" />
                 <div class="errors-container">
                     <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Phone Numnber must have atleast 10 digits with an optional country code</span>
-                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">required</span>
+                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="text-center">

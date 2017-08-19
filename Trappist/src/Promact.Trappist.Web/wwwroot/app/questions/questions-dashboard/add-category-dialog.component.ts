@@ -23,7 +23,7 @@ export class AddCategoryDialogComponent {
     constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<AddCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
         this.category = new Category();
-        this.successMessage = 'Category Name Added Successfully';
+        this.successMessage = 'Category name added successfully.';
         this.isButtonClicked = false;
     }
 

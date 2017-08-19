@@ -12,7 +12,7 @@
                         <label>Time Duration (mins)</label>
                         <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00" #Duration="ngModel" required pattern="^(0*[1-9])\d{0,3}?$" (keyup)="isWarningTimeValid()" />
                         <div class="errors-container">
-                            <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.required">Test Duration is required</span>
+                            <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.required">Required</span>
                             <span class="error-msg" *ngIf="Duration.errors && Duration.dirty && !Duration.valid && Duration.errors.pattern">Invalid Time</span>
                         </div>
                     </div>
@@ -20,14 +20,14 @@
                         <label>Start Date & Time</label>
                         <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.startDate" name="Start Date" (mouseup)="isStartDateValid()" />
                         <div class="errors-container">
-                            <span class="error-msg small-width" *ngIf="validStartDate">Start DateTime must be greater than Current DateTime</span>
+                            <span class="error-msg small-width" *ngIf="validStartDate">Start DateTime must be greater than current DateTime.</span>
                         </div>
                     </div>
                     <div class="form-group inline-field">
                         <label>End Date & Time</label>
                         <input type="datetime-local" class="form-control small-width" [(ngModel)]="testDetails.endDate" name="End Date" (mouseup)="isEndDateValid(testDetails.endDate)" />
                         <div class="errors-container">
-                            <span class="error-msg" *ngIf="validEndDate">End DateTime must be greater than Start DateTime</span>
+                            <span class="error-msg" *ngIf="validEndDate">End DateTime must be greater than start DateTime.</span>
                         </div>
                     </div>
                     <div class="form-group ip-restrictions">
@@ -36,7 +36,7 @@
                             <input type="text" class="form-control small-width" id="From" name="ip_{{i}}" placeholder="IP Address {{i+1}}" #From=ngModel [(ngModel)]="ip.ipAddress" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
                             <em class="material-icons" (click)="removeIpAddress(i,ip.id)">close</em>
                             <div class="errors-container">
-                                <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP Address in correct format</span>
+                                <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP address in correct format.</span>
                             </div>
                         </div>
                         <button md-mini-fab type="button" [disabled]="testDetails.isLaunched && !testDetails.isPaused" (click)="addIpFields()"><md-icon>add</md-icon></button>
@@ -71,16 +71,16 @@
                         <label>Correct Marks</label>
                         <input type="text" class="form-control small-width" [(ngModel)]="testDetails.correctMarks" name="CorrectMarks" #CorrectMarks="ngModel" required pattern="^(0*[1-9])\d{0,3}(\.{1}\d{1,2})?$" min="0" />
                         <div class="errors-container">
-                            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.required">Correct Marks is required</span>
-                            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks</span>
+                            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.required">Required</span>
+                            <span class="error-msg" *ngIf="CorrectMarks.errors && CorrectMarks.dirty && !CorrectMarks.valid && CorrectMarks.errors.pattern">Enter valid correct marks.</span>
                         </div>
                     </div>
                     <div class="form-group inline-field">
                         <label>Incorrect Marks</label>
                         <input type="text" class="form-control small-width" [(ngModel)]="testDetails.incorrectMarks" name="IncorrectMarks" #IncorrectMarks="ngModel" required pattern="^\d{0,3}(\.\d{1,2})?$" min="0" />
                         <div class="errors-container">
-                            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.required">Incorrect Marks is required</span>
-                            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks</span>
+                            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.required">Required</span>
+                            <span class="error-msg" *ngIf="IncorrectMarks.errors && IncorrectMarks.dirty && !IncorrectMarks.valid && IncorrectMarks.errors.pattern">Enter valid incorrect marks.</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -101,7 +101,7 @@
                         <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.warningTime" name="WarningTime" min="0" #WarningTime="ngModel" (keyup)="isWarningTimeValid()" />
                         <div class="errors-container">
                             <span class="error-msg" *ngIf="WarningTime.errors && WarningTime.dirty && !WarningTime.valid && WarningTime.errors.pattern">Invalid Time</span>
-                            <span class="error-msg" *ngIf="validTime">Warning Time should be less than Time Duration</span>
+                            <span class="error-msg" *ngIf="validTime">Warning time should be less than time duration.</span>
                         </div>
                     </div>
 

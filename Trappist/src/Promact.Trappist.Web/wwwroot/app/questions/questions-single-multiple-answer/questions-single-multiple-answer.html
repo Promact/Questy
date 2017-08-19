@@ -19,8 +19,8 @@
                             <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" (keyup)="isTwoOptionsSame(option.option , i)" required />
                             <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                             <div class="errors-container">
-                                <span *ngIf="choice.touched && choice.invalid " class="error-msg mt9 ml10">This field is required</span>
-                                <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same</span>
+                                <span *ngIf="choice.touched && choice.invalid " class="error-msg mt9 ml10">Required</span>
+                                <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same.</span>
                             </div>
                         </md-radio-button>
                     </md-radio-group>
@@ -32,8 +32,8 @@
                         <input type="text" class="form-control" placeholder="Answer Choice {{i+1}}" id="choice" #choice="ngModel" [(ngModel)]="option.option" name="optionDetail_{{option.id}}" (keyup)="isTwoOptionsSame(option.option, i)" required />
                         <em class="material-icons" (click)="removeOption(i)" *ngIf="!isClose">close</em>
                         <div class="errors-container">
-                            <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">This field is required</span>
-                            <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same</span>
+                            <span *ngIf="choice.invalid && choice.touched" class="error-msg mt9 ml10">Required</span>
+                            <span *ngIf="choice.touched && option.isTwoOptionsSame" class="error-msg mt9 ml10">Two options can not be same.</span>
                         </div>
                     </md-checkbox>
                     <button type="button" class="btn btn-primary" (click)="addOption()" *ngIf="!isNoOfOptionOverLimit">Add Option</button>

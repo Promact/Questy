@@ -106,7 +106,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.categoryArray = CategoriesList;
         },
             err => {
-                this.snackBar.open('Failed to Load Category', 'Dismiss', { duration: 3000 });
+                this.snackBar.open('Failed to load category.', 'Dismiss', { duration: 3000 });
             }
         );
     }
@@ -256,15 +256,15 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             (this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion))).subscribe(
             (response) => {
                 if (this.isEditQuestion) {
-                    this.snackBar.open('Question updated successfully', 'Dismiss', { duration: 3000 });
+                    this.snackBar.open('Question updated successfully.', 'Dismiss', { duration: 3000 });
                 }
                 else {
-                    this.snackBar.open('Question added successfully', 'Dismiss', { duration: 3000 });
+                    this.snackBar.open('Question added successfully.', 'Dismiss', { duration: 3000 });
                 }
                 this.router.navigate(['/questions']);
             },
             err => {
-                this.snackBar.open('There is some error. Please try again.', 'Dismiss', { duration: 3000 });
+                this.snackBar.open('Something went wrong.Please try again later.', 'Dismiss', { duration: 3000 });
             }
             );
 

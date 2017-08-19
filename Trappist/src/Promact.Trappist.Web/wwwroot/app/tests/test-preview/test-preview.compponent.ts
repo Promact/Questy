@@ -15,5 +15,4 @@ export class TestPreviewComponent {
     constructor(private route: ActivatedRoute, private _router: Router) {
         this.testLink = this.route.snapshot.params['link'];        
     }
-
 }

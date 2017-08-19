@@ -200,10 +200,6 @@ export class TestViewComponent implements OnInit {
         });
     }
 
-
-
-
-
     /**
      * Open duplicate test dialog
      * @param test: an object of Test class

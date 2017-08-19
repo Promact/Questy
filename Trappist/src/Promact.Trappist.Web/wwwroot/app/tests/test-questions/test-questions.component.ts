@@ -108,7 +108,7 @@ export class TestQuestionsComponent implements OnInit {
             });
             this.loader = false;
         }, err => {
-            this.openSnackBar('No test found for this Id');
+            this.openSnackBar('No test found for this id.');
             this.route.navigate(['/tests']);
             this.loader = false;
         });
@@ -163,7 +163,7 @@ export class TestQuestionsComponent implements OnInit {
             },
                 error => {
                     this.loader = false;
-                    this.openSnackBar('Oops! something went wrong..please try after sometime');
+                    this.openSnackBar('Something went wrong. Please try again later.');
                 });
         }
         else

@@ -38,8 +38,8 @@ export class QuestionsProgrammingComponent implements OnInit {
     testCaseType: TestCaseType;
     questionId: number;
 
-    private successMessage: string = 'Question saved successfully';
-    private failedMessage: string = 'Question failed to save';
+    private successMessage: string = 'Question saved successfully.';
+    private failedMessage: string = 'Question failed to save.';
     private routeToDashboard = ['questions'];
 
     constructor(private questionsService: QuestionsService,
@@ -85,7 +85,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     prepareToEdit(id: number) {
         if (isNaN(id)) {
-            this.openSnackBar('Question not found', true, this.routeToDashboard);
+            this.openSnackBar('Question not found.', true, this.routeToDashboard);
         }
         this.getQuestionById(id);
     }
@@ -101,7 +101,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
                 //If question fetched is not a CodeSnippetQuestion the show error message
                 if (this.questionModel.question.questionType !== QuestionType.codeSnippetQuestion)
-                    this.openSnackBar('Question not found', true, this.routeToDashboard);
+                    this.openSnackBar('Question not found.', true, this.routeToDashboard);
 
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
                 this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
@@ -114,7 +114,7 @@ export class QuestionsProgrammingComponent implements OnInit {
                 this.getCategory();
             },
             err => {
-                this.openSnackBar('Question not found', true, this.routeToDashboard);
+                this.openSnackBar('Question not found.', true, this.routeToDashboard);
             });
     }
 

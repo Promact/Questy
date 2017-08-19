@@ -81,7 +81,7 @@ export class TestSectionsComponent implements OnInit {
                                 category.isSelect = false;
                         },
                             err => {
-                                this.openSnackbar('Something went wrong, try again');
+                                this.openSnackbar('Something went wrong.Please try again later.');
                             });
                     }
                     else {

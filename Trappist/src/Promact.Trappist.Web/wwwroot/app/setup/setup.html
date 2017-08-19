@@ -98,7 +98,7 @@
                             <input required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,14}$" type="password" class="form-control"
                                    [(ngModel)]="registrationFields.password" name="userPassword" #userPassword="ngModel" />
                             <div class="errors-container">
-                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Password must be alphanumeric including at least 1 uppercase letter,1 lowercase letter and a special character with 8 to 14 characters</span>
+                                <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.pattern" class="error-msg">Password must be alphanumeric including at least 1 uppercase letter,1 lowercase letter and a special character with 8 to 14 characters.</span>
                                 <span *ngIf="userPassword.touched && !userPassword.valid && userPassword.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
                             <div class="errors-container">
                                 <span *ngIf="userConfirmtionPassword.touched && !userConfirmtionPassword.valid && userConfirmtionPassword.errors.required" class="error-msg">Required</span>
-                                <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">New password and Confirm password do not match</span>
+                                <span class="error-msg" *ngIf="!confirmPasswordValid&&userConfirmtionPassword.touched">New password and Confirm password do not match.</span>
                             </div>
                         </div>
                         <div class="action-buttons">
