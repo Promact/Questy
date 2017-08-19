@@ -91,7 +91,7 @@ export class TestSummaryComponent implements OnInit {
             let spanTimeInSeconds = spanTime * 60;
             let durationInSeconds = this.test.duration * 60;
             this.timeLeft = durationInSeconds - spanTimeInSeconds;
-            this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });            
+            this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
             this.loader = false;
         });
     }
@@ -133,6 +133,8 @@ export class TestSummaryComponent implements OnInit {
      */
     startTest() {
         this.clockInterval.unsubscribe();
+        this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe(response => {
+        });
         let url = window.location.pathname;
         let testUrl = url.substring(0, url.indexOf('/test-summary')) + '/test';
         let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
@@ -168,7 +170,7 @@ export class TestSummaryComponent implements OnInit {
      * sends request to the test conductor for test resume
      */
     sendRequestForResume() {
-        this.reportService.updateCandidateInfo(this.testAttendee.id).subscribe(response => {
+        this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(response => {
             if (response)
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
                     duration: 4000,
@@ -208,7 +210,7 @@ export class TestSummaryComponent implements OnInit {
         }
 
         this.timeString = this.secToTimeString(this.timeLeft);
-        
+
         if (this.timeLeft <= 0) {
             this.endTest(TestStatus.expiredTest);
         }
@@ -236,5 +238,8 @@ export class TestSummaryComponent implements OnInit {
                 this.router.navigate(['test-end'], { replaceUrl: true });
             });
         }
+    }
+    endYourTest() {
+        this.router.navigate(['test-end'], { replaceUrl: true });
     }
 }

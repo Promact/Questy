@@ -95,8 +95,8 @@ export class ReportService {
         return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink, attendee);
     }
 
-    updateCandidateInfo(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/sendRequest');
+    updateCandidateInfo(attendeeId: number, isTestResume: boolean) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + isTestResume + '/sendRequest');
     }
     getInfoResumeTest(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
