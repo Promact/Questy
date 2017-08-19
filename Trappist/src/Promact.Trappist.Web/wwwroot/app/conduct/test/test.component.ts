@@ -297,13 +297,19 @@ export class TestComponent implements OnInit {
                 let spanTime = response;
                 let spanTimeInSeconds = spanTime * 60;
                 this.seconds -= spanTime * 60;
+                this.isTestReady = true;
             });
 
             this.navigateToQuestionIndex(0);
 
             this.timeOutCounter = this.TIMEOUT_TIME;
-            this.isTestReady = true;
         }, err => {
+            this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
+                let spanTime = response;
+                let spanTimeInSeconds = spanTime * 60;
+                this.seconds -= spanTime * 60;
+                this.isTestReady = true;
+            });
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
