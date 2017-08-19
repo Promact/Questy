@@ -8,14 +8,14 @@
             <label>Test Name</label>
             <input type="text" id="name" name="name" class="form-control" (ngModelChange)="changeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (keyup.enter)="onEnter(testNameReference)" />
             <div class="errors-container">
-                <span class="error-msg" *ngIf="isWhiteSpaceError || (name.touched && !name.valid && name.errors.required)">Test name is required.</span>
-                <span class="error-msg" *ngIf="name.touched && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special symbols are @, _ and white space.</span>
+                <span class="error-msg" *ngIf="isWhiteSpaceError || (name.errors && name.dirty && !name.valid && name.errors.required)">Test name is required.</span>
+                <span class="error-msg" *ngIf="name.errors && !name.valid && name.errors.pattern">Test name should be alphanumeric. Allowed special symbols are @, _ and white space.</span>
                 <span class="error-msg" *ngIf="errorMessage">Test with this name already exists.</span>
             </div>
         </div>
     </md-dialog-content>
     <md-dialog-actions>
         <button type="button" class="btn" md-dialog-close tabindex="1">Cancel</button>
-        <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError || isButtonClicked" (click)="addTest(testNameReference)">Create Test</button>
+        <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError" (click)="addTest(testNameReference)">Create Test</button>
     </md-dialog-actions>
 </div>
