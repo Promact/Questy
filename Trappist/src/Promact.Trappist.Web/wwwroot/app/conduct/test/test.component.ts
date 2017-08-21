@@ -375,7 +375,10 @@ export class TestComponent implements OnInit {
                 if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) {
                     this.addAnswer(this.testQuestions[this.questionIndex]);
                 } else {
-                    //Resume if code snippet question
+                    //Add code snippet answer if its marked as unanswered or review
+                    if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
+                        this.addAnswer(this.testQuestions[this.questionIndex]);
+                    }
                     this.isTestReady = true;
                 }
                 //Restore status of previous question
@@ -445,8 +448,7 @@ export class TestComponent implements OnInit {
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
         if (index !== -1)
             this.testAnswers.splice(index, 1);
-
-
+        
         //Add new answer
         let testAnswer = new TestAnswer();
         testAnswer.questionId = testQuestion.question.question.id;
@@ -456,17 +458,23 @@ export class TestComponent implements OnInit {
                 if (x.isAnswer)
                     testAnswer.optionChoice.push(x.id);
             });
-        }
 
-        if (testQuestion.question.question.questionType === QuestionType.codeSnippetQuestion
-            || (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)
-                && this.questionStatus !== QuestionStatus.review)) {
+            if (testQuestion.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)
+                && this.questionStatus !== QuestionStatus.review) {
 
-            testAnswer.questionStatus = QuestionStatus.answered;
+                testAnswer.questionStatus = QuestionStatus.answered;
 
-            this.questionStatus = QuestionStatus.answered;
-        }
-        else {
+                this.questionStatus = QuestionStatus.answered;
+            } else {
+                if (testQuestion.questionStatus === QuestionStatus.selected) {
+                    testAnswer.questionStatus = QuestionStatus.unanswered;
+                } else {
+                    testAnswer.questionStatus = testQuestion.questionStatus;
+                }
+            }
+        } else {
+            testAnswer.code.source = this.codeAnswer;
+            testAnswer.code.language = this.selectLanguage;
             if (testQuestion.questionStatus === QuestionStatus.selected) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
@@ -581,7 +589,8 @@ export class TestComponent implements OnInit {
      */
     private shuffleOption() {
         this.testQuestions.forEach(x => {
-            x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption = this.shuffleArray(x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption);
+            if (x.question.question.questionType !== QuestionType.codeSnippetQuestion)
+                x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption = this.shuffleArray(x.question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption);
         });
     }
 
@@ -672,6 +681,11 @@ export class TestComponent implements OnInit {
         //A measure taken to add answer of question attempted just before the Test end
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion)
             this.addAnswer(this.testQuestions[this.questionIndex]);
+        else {
+            if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
+                this.addAnswer(this.testQuestions[this.questionIndex]);
+            }
+        }
 
         if (this.testTypePreview)
             window.close();
