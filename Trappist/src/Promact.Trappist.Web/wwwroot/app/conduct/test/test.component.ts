@@ -60,6 +60,7 @@ export class TestComponent implements OnInit {
     selectedTheme: string;
     testLogs: TestLogs;
     codeResult: string;
+    showResult: boolean;
 
 
     private seconds: number;
@@ -113,6 +114,7 @@ export class TestComponent implements OnInit {
         this.codeAnswer = this.JAVA_CODE;
         this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
         this.codeResult = '';
+        this.showResult = false;
     }
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
@@ -387,6 +389,7 @@ export class TestComponent implements OnInit {
     }
 
     runCode() {
+        this.showResult = true;
         if (this.testTypePreview)
             this.codeResult = this.codeAnswer;
         else {
