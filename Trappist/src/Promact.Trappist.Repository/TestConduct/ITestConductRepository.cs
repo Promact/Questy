@@ -118,7 +118,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of a particular Test Attendee</param>
         /// <param name="testLogs">It is an object of TestLogs type</param>
         /// <returns></returns>
-        Task AddTestLogsAsync(int attendeeId, TestLogs testLogs);
+        Task AddTestLogsAsync(int attendeeId, bool isCloseWindow, bool isConnectionLoss, bool isTestResume);
 
         /// <summary>
         /// Evaluate and Access code snippet

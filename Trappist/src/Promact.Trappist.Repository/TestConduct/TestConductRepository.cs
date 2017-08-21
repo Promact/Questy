@@ -374,11 +374,17 @@ namespace Promact.Trappist.Repository.TestConduct
             return codeResponse;
         }
 
-        public async Task AddTestLogsAsync(int attendeeId, TestLogs testLogs)
+        public async Task AddTestLogsAsync(int attendeeId, bool isCloseWindow, bool isConnectionLoss, bool isTestResume)
         {
-            testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            testLogs.AwayFromTestWindow = DateTime.UtcNow;
-            testLogs.CloseWindowWithoutFinishingTest = DateTime.UtcNow;
+            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            if (isCloseWindow)
+                testLogs.CloseWindowWithoutFinishingTest = DateTime.UtcNow;
+            else if (isConnectionLoss)
+                testLogs.DisconnectedFromServer = DateTime.UtcNow;
+            else if (isTestResume)
+                testLogs.ResumeTest = DateTime.UtcNow;
+            else
+                testLogs.AwayFromTestWindow = DateTime.UtcNow;
             _dbContext.TestLogs.Update(testLogs);
             await _dbContext.SaveChangesAsync();
         }
@@ -504,8 +510,8 @@ namespace Promact.Trappist.Repository.TestConduct
                 var correctOption = 0;
 
                 var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
-                                
-                if(question.Question.QuestionType != QuestionType.Programming)
+
+                if (question.Question.QuestionType != QuestionType.Programming)
                 {
                     bool isAnsweredOptionCorrect = true;
                     var noOfOptions = question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
