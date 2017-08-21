@@ -9,7 +9,7 @@ import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
 
-declare var tinymce: any;
+
 @Component({
 
     moduleId: module.id,
@@ -198,10 +198,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isEditQuestion = false;
             this.isdulicateQuestion = true;
         }
-    }
-    check(event: any) {
-        this.isQuestionEmpty = event.length === 0;
-        this.singleMultipleAnswerQuestion.question.questionDetail = event;
     }
     /**
      * Get category id based on category name
