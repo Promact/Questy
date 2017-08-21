@@ -60,15 +60,8 @@ export class IndividualReportComponent implements OnInit {
     timeTakenInSecondsVisible: boolean;
     awayFromTestWindowVisible: boolean;
     numberOfCorrectOptions: number;
-    codeSnippetQuestionTestCasesDetails: CodeSnippetTestCasesDetails[];
     ProgrammingLanguage = ProgrammingLanguage;
-    scoreOfCodeSnippetQuestion: string;
-    compilationStatus: string;
-    testCodeSolutionDetails: TestCodeSolutionDetails;
-    language: ProgrammingLanguage;
-    numberOfSuccessfulAttemptsByAttendee: number;
-    totalNumberOfAttemptsMadeByAttendee: number;
-   
+
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
         this.testQuestions = new Array<TestQuestion>();
@@ -81,8 +74,6 @@ export class IndividualReportComponent implements OnInit {
         this.correctAnswers = this.incorrectAnswers = 0;
         this.easy = this.medium = this.hard = 0;
         this.testConduct = new Array<TestConduct>();
-        this.codeSnippetQuestionTestCasesDetails = new Array<CodeSnippetTestCasesDetails>();
-        this.testCodeSolutionDetails = new TestCodeSolutionDetails();
     }
 
     ngOnInit() {
@@ -126,19 +117,8 @@ export class IndividualReportComponent implements OnInit {
                     this.attendeeAnswers();
                     this.questionPieChartValue();
                     this.correctPieChartValue();
-                    setTimeout(() => {
-                        this.downloadIndividualReport();
-                    }, 5000);
+                    this.loader = false;
                 });
-            });
-            this.reportsService.getCodeSnippetQuestionMarks(this.testAttendee.id).subscribe((response) => {
-                this.scoreOfCodeSnippetQuestion = response;
-            });
-            this.reportsService.getTestCodeSolutionDetails(this.testAttendee.id).subscribe((response) => {
-                this.testCodeSolutionDetails = response;
-                this.language = this.testCodeSolutionDetails.language;
-                this.totalNumberOfAttemptsMadeByAttendee = this.testCodeSolutionDetails.totalNumberOfAttempts;
-                this.numberOfSuccessfulAttemptsByAttendee = this.testCodeSolutionDetails.numberOfSuccessfulAttempts;
             });
         });
     }
@@ -205,18 +185,46 @@ export class IndividualReportComponent implements OnInit {
                 }
             }
             else {
-                this.reportsService.getCodeSnippetQuestionTestCasesDetails(this.testAttendeeId).subscribe((response) => {
-                    this.codeSnippetQuestionTestCasesDetails = response;
-                    if (this.scoreOfCodeSnippetQuestion === this.testAttendee.test.correctMarks) {
+                let value = 0;
+                this.reportsService.getCodeSnippetQuestionTestCasesDetails(this.testAttendeeId, this.testQuestions[question].questionId).subscribe((response) => {
+                    this.testQuestions[question].codeSnippetQuestionTestCasesDetails = response;
+                    this.testQuestions[question].isCodeSnippetTestCaseDetailsVisible = this.testQuestions[question].codeSnippetQuestionTestCasesDetails === null ? false : true;
+                });
+                this.reportsService.getCodeSnippetQuestionMarks(this.testAttendee.id, this.testQuestions[question].questionId).subscribe((response) => {
+                    this.testQuestions[question].scoreOfCodeSnippetQuestion = response;
+                    console.log(this.testQuestions[question].scoreOfCodeSnippetQuestion);
+                    if (this.testQuestions[question].scoreOfCodeSnippetQuestion < value.toString()) {
+                        this.testQuestions[question].questionStatus = 3;
+                        this.testQuestions[question].isCompilationStatusVisible = false;
+                    }
+                    else if (this.testQuestions[question].scoreOfCodeSnippetQuestion === this.testAttendee.test.correctMarks) {
                         this.correctAnswers++;
+                        this.testQuestions[question].questionStatus = 0;
                         this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
-                        this.compilationStatus = 'Successful';
+                        this.testQuestions[question].compilationStatus = 'Successful';
                     }
                     else {
                         this.incorrectAnswers++;
-                        this.compilationStatus = 'Unsuccessful';
+                        this.testQuestions[question].questionStatus = 0;
+                        this.testQuestions[question].compilationStatus = 'Unsuccessful';
                     }
-                    console.log(this.codeSnippetQuestionTestCasesDetails);
+                });
+                this.reportsService.getTestCodeSolutionDetails(this.testAttendee.id, this.testQuestions[question].questionId).subscribe((response) => {
+                    this.testQuestions[question].testCodeSolutionDetails = response;
+                    this.testQuestions[question].isCodeSolutionDetailsVisible = this.testQuestions[question].testCodeSolutionDetails === null ? false : true;
+                    if (this.testQuestions[question].testCodeSolutionDetails === null) {
+                        this.testQuestions[question].language = ProgrammingLanguage.c;
+                        this.testQuestions[question].totalNumberOfAttemptsMadeByAttendee = 0;
+                        this.testQuestions[question].numberOfSuccessfulAttemptsByAttendee = 0;
+                        this.testQuestions[question].codeSolution = ' ';
+                    }
+                    else {
+                        this.testQuestions[question].language = this.testQuestions[question].testCodeSolutionDetails.language;
+                        this.testQuestions[question].totalNumberOfAttemptsMadeByAttendee = this.testQuestions[question].testCodeSolutionDetails.totalNumberOfAttempts;
+                        this.testQuestions[question].numberOfSuccessfulAttemptsByAttendee = this.testQuestions[question].testCodeSolutionDetails.numberOfSuccessfulAttempts;
+                        this.testQuestions[question].codeSolution = this.testQuestions[question].testCodeSolutionDetails.codeSolution;
+                        this.testQuestions[question].codeToDisplay = this.testQuestions[question].codeSolution.replace('/\\n;', '&nbsp');
+                    }
                 });
             }
         }

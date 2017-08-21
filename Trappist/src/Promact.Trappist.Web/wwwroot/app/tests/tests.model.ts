@@ -5,6 +5,9 @@ import { AllowTestResume } from './enum-allowtestresume';
 import { QuestionStatus, AnswerStatus } from '../conduct/question_status.enum';
 import { QuestionDisplay } from '../questions/question-display';
 import { TestIPAddress } from './test-IPAdddress';
+import { CodeSnippetTestCasesDetails } from "../reports/code-snippet-test-cases-details.model";
+import { TestCodeSolutionDetails } from "../reports/test-code-solution-details.model";
+import { ProgrammingLanguage } from "../reports/programminglanguage.enum";
 
 export class Test {
     id: number;
@@ -47,6 +50,23 @@ export class TestQuestion {
     public question: QuestionDisplay;
     public questionStatus: QuestionStatus;
     public answerStatus: AnswerStatus;
+    public codeSnippetQuestionTestCasesDetails: CodeSnippetTestCasesDetails[];
+    public testCodeSolutionDetails: TestCodeSolutionDetails;
+    public language: ProgrammingLanguage;
+    public numberOfSuccessfulAttemptsByAttendee: number;
+    public totalNumberOfAttemptsMadeByAttendee: number;
+    public scoreOfCodeSnippetQuestion: string;
+    public compilationStatus: string;
+    public codeSolution: string;
+    public codeToDisplay: string;
+    public isCodeSolutionDetailsVisible: boolean;
+    public isCodeSnippetTestCaseDetailsVisible: boolean;
+    public isCompilationStatusVisible: boolean;
+
+    constructor() {
+        this.codeSnippetQuestionTestCasesDetails = new Array<CodeSnippetTestCasesDetails>();
+        this.testCodeSolutionDetails = new TestCodeSolutionDetails();
+    }
 }
 
 

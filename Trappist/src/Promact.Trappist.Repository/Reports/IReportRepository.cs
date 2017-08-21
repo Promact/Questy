@@ -85,21 +85,24 @@ namespace Promact.Trappist.Repository.Reports
         /// Gets the details of Code Snippet Question Test Cases
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>List of details of each test case for code snippet question attended by test attendee</returns>
-        Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId);
+        Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId,int questionId);
 
         /// <summary>
         /// Gets the total marks scored by the test attendee in code snippet question
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The total marks obtained by test attendee in code snippet question</returns>
-        Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId);
+        Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId,int questionId);
 
         /// <summary>
         /// Gets the test code solution details of the test cases of code snippet questions attended by a test attendees
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The test code solution details of the code snippet question attended by test attendees</returns>
-        Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId);
+        Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId,int questionId);
     }
 }
