@@ -47,7 +47,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         private snackBar: MdSnackBar,
         private router: Router,
         private route: ActivatedRoute) {
-
         this.nolanguageSelected = true;
         this.isCategoryReady = false;
         this.isLanguageReady = false;
