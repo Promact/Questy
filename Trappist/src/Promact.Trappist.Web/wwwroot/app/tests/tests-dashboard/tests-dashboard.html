@@ -6,8 +6,8 @@
         <div class="title-area mb20 clearfix">
             <h1 class="pull-left">Tests</h1>
             <div class="search-area pull-right">
-                <input type="text" placeholder="Search tests" [hidden]="!showSearchInput" [(ngModel)]="searchTest" (blur)="showSearchInput = false" />
-                <button type="button" (click)="showSearchInput = true"><em class="material-icons">search</em></button>
+                <input type="text" placeholder="Search tests" [hidden]="!showSearchInput" [(ngModel)]="searchTest" (blur)="showSearchInput = false" name="search" id="search" #search/>
+                <button type="button" (click)="showSearchInput = true;selectTextArea($event,search)"><em class="material-icons">search</em></button>
             </div>
         </div>
         <div class="blocks-area">

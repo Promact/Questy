@@ -8,7 +8,7 @@
             </span>
             <span [hidden]="isLabelVisible">
                 <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" (keyup)="changeErrorMessage()"
-                       [(ngModel)]="testDetails.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$" maxlength="150" (focus)="selectAllContent($event)"
+                       [(ngModel)]="testDetails.testName" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (focus)="selectAllContent($event)"
                        (click)="$event.preventDefault()" (keyup.enter)="onEnter(box.value)" />
                 <span class="update-btns">
                     <button type="submit" class="icon-btn ml10" (click)="updateTestName(testDetails.id,testDetails)" [disabled]="name.invalid || isTestNameExist"><em class="material-icons theme-text">check</em></button>

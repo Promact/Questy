@@ -13,6 +13,7 @@ import { QuestionType } from '../../questions/enum-questiontype';
 import { CodeSnippetTestCasesDetails } from '../code-snippet-test-cases-details.model';
 import { ProgrammingLanguage } from '../programminglanguage.enum';
 import { TestCodeSolutionDetails } from '../test-code-solution-details.model';
+import { QuestionStatus } from '../../conduct/question_status.enum';
 declare var jsPDF: any;
 
 @Component({
@@ -53,13 +54,15 @@ export class IndividualReportComponent implements OnInit {
     testLogsVisible: boolean;
     closeWindowLogVisible: boolean;
     resumeTestLog: boolean;
-    testConduct: TestConduct[];
     numberOfQuestionsAttempted: number;
     timeTakenInHoursVisible: boolean;
     timeTakenInMinutesVisible: boolean;
     timeTakenInSecondsVisible: boolean;
     awayFromTestWindowVisible: boolean;
     numberOfCorrectOptions: number;
+    isPercentileVisible: boolean;
+    currentDate: Date;
+    individualReportPathContent: string;
     ProgrammingLanguage = ProgrammingLanguage;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
@@ -73,11 +76,13 @@ export class IndividualReportComponent implements OnInit {
         this.pieChartType = 'pie';
         this.correctAnswers = this.incorrectAnswers = 0;
         this.easy = this.medium = this.hard = 0;
-        this.testConduct = new Array<TestConduct>();
+        this.currentDate = new Date();
+        this.isPercentileVisible = false;
     }
 
     ngOnInit() {
         this.getTestAttendeeDetails();
+        this.individualReportPathContent = this.route.snapshot.params['download'];
     }
 
     /**
@@ -103,10 +108,16 @@ export class IndividualReportComponent implements OnInit {
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
-            this.numberOfQuestionsAttempted = this.testAttendee.testConduct.length;
-            this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
-                this.percentile = response.toFixed(2);
+            this.testAttendee.testConduct.forEach(x => {
+                let listOfQuestionsAttempted = this.testAttendee.testConduct.filter(x => x.questionStatus === QuestionStatus.answered);
+                this.numberOfQuestionsAttempted = listOfQuestionsAttempted.length;
             });
+            if (new Date(this.testAttendee.test.endDate) < this.currentDate) {
+                this.isPercentileVisible = true;
+                this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
+                    this.percentile = response.toFixed(2);
+                });
+            }
             //Gets all the answers given by the test attendee
             this.reportsService.getTestAttendeeAnswers(this.testAttendee.id).subscribe((response) => {
                 this.testAnswers = response;
@@ -117,7 +128,13 @@ export class IndividualReportComponent implements OnInit {
                     this.attendeeAnswers();
                     this.questionPieChartValue();
                     this.correctPieChartValue();
-                    this.loader = false;
+                    if (this.individualReportPathContent === 'download') {
+                        setTimeout(() => {
+                            this.downloadIndividualReport();
+                        }, 5000);
+                    }
+                    else
+                        this.loader = false;
                 });
             });
         });
