@@ -95,8 +95,8 @@
                   <div *ngFor="let option of question.question?.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j=index">
                     <p *ngIf="question.question?.questionType != 2" [ngClass]="{correct:isCorrectAnswer(option.isAnswer),wrong:isAttendeeAnswerCorrect(option.id,option.isAnswer)==false}" class="ans-option"><span>{{optionName[j]}}. </span> <span>{{option.option}}</span></p>
                   </div>
-                  <div *ngIf="question.question?.questionType == 2">
-                    <h4>Compilation: <strong class="theme-text ml10">{{compilationStatus}}</strong></h4>
+                  <div *ngIf="question.question?.questionType == 2 && question.isCompilationStatusVisible">
+                    <h4>Compilation: <strong class="theme-text ml10">{{question.compilationStatus}}</strong></h4>
                   </div>
                 </div>
               </div>
@@ -113,11 +113,16 @@
               </div>
             </div>
             <div *ngIf="question.question?.questionType == 2">
-              <div class="col-lg-2 col-md-2 col-sm-2 text-right">
-                <div class="score positive">Score: +{{scoreOfCodeSnippetQuestion}}</div>
+             <div>
+                <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==0">
+                  <div class="score positive">Score: +{{question.scoreOfCodeSnippetQuestion}}</div>
+                </div>
+               <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==3">
+                 <div class="score">Score: 0</div>
+               </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="grid-container">
+                <div class="grid-container" *ngIf="question.isCodeSnippetTestCaseDetailsVisible">
                   <table class="data-grid">
                     <thead>
                       <tr>
@@ -131,7 +136,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let case of codeSnippetQuestionTestCasesDetails" [ngClass]="{pass:case.isTestCasePassing,fail:!case.isTestCasePassing}">
+                      <tr *ngFor="let case of question.codeSnippetQuestionTestCasesDetails" [ngClass]="{pass:case.isTestCasePassing,fail:!case.isTestCasePassing}">
                         <td>{{case.testCaseName}}</td>
                         <td>{{case.testCaseMarks}}</td>
                         <td>{{case.processing}}</td>
@@ -143,9 +148,11 @@
                     </tbody>
                   </table>
                 </div>
-                <div>
-                  <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[language]}} Language)</p>
-                  <p class="ml40">Code Compilation: {{numberOfSuccessfulAttemptsByAttendee}} Successful out of {{totalNumberOfAttemptsMadeByAttendee}} attempts</p>
+                <div *ngIf="question.isCodeSolutionDetailsVisible">
+                  <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[question.language]}} Language)</p>
+                  <p class="ml40">Code Compilation: {{question.numberOfSuccessfulAttemptsByAttendee}} Successful out of {{question.totalNumberOfAttemptsMadeByAttendee}} attempts</p>
+                  <p class="ml40">Code Solution :</p> 
+                    <pre>{{question.codeToDisplay}}</pre>
                 </div>
               </div>
             </div>

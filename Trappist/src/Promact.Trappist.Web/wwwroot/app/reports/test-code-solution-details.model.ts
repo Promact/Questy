@@ -4,4 +4,5 @@ export class TestCodeSolutionDetails {
     language: ProgrammingLanguage;
     totalNumberOfAttempts: number;
     numberOfSuccessfulAttempts: number;
+    codeSolution: string;
 }

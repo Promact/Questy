@@ -182,8 +182,8 @@ namespace Promact.Trappist.Repository.Reports
                                 {
                                     correctAttemptedQuestion += 1;
                                     break;
-                                }                             
-                            });                               
+                                }
+                            });
                         }
                     });
                     var percentile = await CalculatePercentileAsync(testAttendee.Id);
@@ -204,65 +204,75 @@ namespace Promact.Trappist.Repository.Reports
             return allAttendeeMarksDetailsList;
         }
 
-        public async Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId)
+        public async Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId, int questionId)
         {
-            var maximumScore = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).MaxAsync(x => x.Score);
-            var testCodeSolutionObject = await _dbContext.TestCodeSolution.FirstOrDefaultAsync(x => x.Score == maximumScore && x.TestAttendeeId == attendeeId);
-            var testCaseObjectList = await _dbContext.TestCaseResult.Include(x => x.TestCodeSolution).Where(x => x.TestCodeSolutionId == testCodeSolutionObject.Id).ToListAsync();
-            var testConductObject = await _dbContext.TestConduct.Include(x => x.Question).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
+            {
+                return null;
+            }
             var codeSnippetTestCaseList = new List<CodeSnippetTestCasesCalculationAC>();
+            var maximumScore = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).MaxAsync(x => x.Score);
+            var testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maximumScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+            var testCaseObjectList = testCodeSolutionObject.TestCaseResultCollection;
+           
             bool testCasePassed;
 
-            if (testConductObject.Question.QuestionType == QuestionType.Programming && testConductObject.QuestionStatus == QuestionStatus.answered)
+            var codeSnippetQuestionTestCasesList = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == questionId).ToListAsync();
+            var i = 0;
+            foreach (var testCase in testCaseObjectList)
             {
-                var codeSnippetQuestionTestCasesList = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testConductObject.QuestionId).ToListAsync();
-                var i = 0;
-                foreach (var testCase in testCaseObjectList)
+                var codeSnippetTestCase = codeSnippetQuestionTestCasesList.Where(x => x.Id == testCase.CodeSnippetQuestionTestCasesId).Single();
+                testCasePassed = testCase.Output == codeSnippetTestCase.TestCaseOutput;
+                var testCaseDetailsList = new CodeSnippetTestCasesCalculationAC()
                 {
-                    testCasePassed = testCase.Output == codeSnippetQuestionTestCasesList[i].TestCaseOutput ? true : false;
-                    var testCaseDetailsList = new CodeSnippetTestCasesCalculationAC()
-                    {
-                        TestCaseName = codeSnippetQuestionTestCasesList[i].TestCaseTitle,
-                        TestCaseInput = codeSnippetQuestionTestCasesList[i].TestCaseInput,
-                        TestCaseMarks = codeSnippetQuestionTestCasesList[i].TestCaseMarks,
-                        TestCaseType = codeSnippetQuestionTestCasesList[i].TestCaseType,
-                        ExpectedOutput = codeSnippetQuestionTestCasesList[i].TestCaseOutput,
-                        Processing = testCase.Processing,
-                        Memory = testCase.Memory,
-                        ActualOutput = testCase.Output,
-                        IsTestCasePassing = testCasePassed
-                    };
-                    i++;
-                    codeSnippetTestCaseList.Add(testCaseDetailsList);
-                }
+                    TestCaseName = codeSnippetTestCase.TestCaseTitle,
+                    TestCaseInput = codeSnippetTestCase.TestCaseInput,
+                    TestCaseMarks = codeSnippetTestCase.TestCaseMarks,
+                    TestCaseType = codeSnippetTestCase.TestCaseType,
+                    ExpectedOutput = codeSnippetTestCase.TestCaseOutput,
+                    Processing = testCase.Processing,
+                    Memory = testCase.Memory,
+                    ActualOutput = testCase.Output,
+                    IsTestCasePassing = testCasePassed
+                };
+                i++;
+                codeSnippetTestCaseList.Add(testCaseDetailsList);
             }
             return codeSnippetTestCaseList;
         }
 
-        public async Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId)
+        public async Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId,int questionId)
         {
-            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).MaxAsync(x => x.Score);
+            if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
+            {
+                return -1;
+            }
+            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).MaxAsync(x => x.Score);
             var testObject = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == attendeeId);
             var totalMarksObtainedInCodeSnippetQuestion = (decimal)maximumScoreObtainedByAttendeeInCodeSnippetQuestion * testObject.Test.CorrectMarks;
             totalMarksObtainedInCodeSnippetQuestion = Math.Round(totalMarksObtainedInCodeSnippetQuestion, 2);
             return totalMarksObtainedInCodeSnippetQuestion;
         }
 
-        public async Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId)
+        public async Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId,int questionId)
         {
-            var maximumScore = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).MaxAsync(x => x.Score);
-            var testCodeSolutionObject = await _dbContext.TestCodeSolution.FirstOrDefaultAsync(x => x.Score == maximumScore && x.TestAttendeeId == attendeeId);
-            var testCodeSolutionListOfMaximumScore = await _dbContext.TestCodeSolution.Where(x => x.Score == 1 && x.TestAttendeeId == attendeeId).ToListAsync();
+            if(!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
+            {
+                return null;
+            }
+            var maximumScore = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).MaxAsync(x => x.Score);
+            var testCodeSolutionObject = await _dbContext.TestCodeSolution.FirstOrDefaultAsync(x => x.Score == maximumScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+            var testCodeSolutionListOfMaximumScore = await _dbContext.TestCodeSolution.Where(x => x.Score == 1 && x.TestAttendeeId == attendeeId && x.QuestionId == questionId).ToListAsync();
             var totalNumberOfSuccessfulAttempts = testCodeSolutionListOfMaximumScore.Count();
-            var testCodeSolutionList = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).ToListAsync();
+            var testCodeSolutionList = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).ToListAsync();
             var totalNumberOfAttemptsMadeByAttendee = testCodeSolutionList.Count();
-            var testCodeSolutionDetailsList = new List<TestCodeSolutionDetailsAC>();
-
+            
             var testCodeSolutionDetailsObject = new TestCodeSolutionDetailsAC()
             {
                 Language = testCodeSolutionObject.Language,
                 NumberOfSuccessfulAttempts = totalNumberOfSuccessfulAttempts,
-                TotalNumberOfAttempts = totalNumberOfAttemptsMadeByAttendee
+                TotalNumberOfAttempts = totalNumberOfAttemptsMadeByAttendee,
+                CodeSolution = testCodeSolutionObject.Solution
             };
 
             return testCodeSolutionDetailsObject;

@@ -63,26 +63,29 @@ export class ReportService {
     }
 
     /**
-     * Gets the details of the code snippet question test cases
+     * Gets the details of code snippet question test cases
      * @param attendeeId: Id of the test attendee
+     * @param questionId: Id of the code snippet question of a particular test
      */
-    getCodeSnippetQuestionTestCasesDetails(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/codeSnippetTestCasesDetails');
+    getCodeSnippetQuestionTestCasesDetails(attendeeId: number, questionId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + questionId + '/codeSnippetTestCasesDetails');
     }
 
     /**
-     * Gets the total marks scored in the code snippet questions attempted by test attendee
+     * Gets the total marks scored by the test attendee in code snippet question attempted
      * @param attendeeId: Id of the test attendee
+     * @param questionId: Id of the code snippet question of a particular test
      */
-    getCodeSnippetQuestionMarks(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/scoreOfCodeSnippetQuestion');
+    getCodeSnippetQuestionMarks(attendeeId: number, questionId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + questionId + '/scoreOfCodeSnippetQuestion');
     }
 
     /**
-     * Gets the details of test code solution for test cases of the code snippet question attempted by test attendee
+     * Gets the details of test code solution for test cases of the code snippet question attempted by the test attendee
      * @param attendeeId: Id of the test attendee
+     * @param questionId: Id of the code snippet question of a particular test
      */
-    getTestCodeSolutionDetails(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/testCodeSolutionDetails');
+    getTestCodeSolutionDetails(attendeeId: number, questionId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + questionId + '/testCodeSolutionDetails');
     }
 } 

@@ -130,33 +130,36 @@ namespace Promact.Trappist.Core.Controllers
         /// Gets the details of Code Snippet Question Test Cases
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>List of details of each test case for code snippet question attended by test attendee</returns>
-        [HttpGet("{attendeeId}/codeSnippetTestCasesDetails")]
-        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId)
+        [HttpGet("{attendeeId}/{questionId}/codeSnippetTestCasesDetails")]
+        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId,int questionId)
         {
-            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId));
+            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId,questionId));
         }
 
         /// <summary>
         /// Gets the total marks scored by the test attendee in code snippet question
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The total marks obtained by test attendee in code snippet question</returns>
-        [HttpGet("{attendeeId}/scoreOfCodeSnippetQuestion")]
-        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId)
+        [HttpGet("{attendeeId}/{questionId}/scoreOfCodeSnippetQuestion")]
+        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId,int questionId)
         {
-            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId));
+            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId,questionId));
         }
 
         /// <summary>
         /// Gets the test code solution details of the test cases of code snippet questions attended by a test attendee
         /// </summary>
         /// <param name="attendeeId">It contains the id of the test attendee from the route</param>
+        /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The test code solution details of the code snippet question attended by test attendees</returns>
-        [HttpGet("{attendeeId}/testCodeSolutionDetails")]
-        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId)
+        [HttpGet("{attendeeId}/{questionId}/testCodeSolutionDetails")]
+        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId,int questionId)
         {
-            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId));
+            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId,questionId));
         }
         #endregion
     }
