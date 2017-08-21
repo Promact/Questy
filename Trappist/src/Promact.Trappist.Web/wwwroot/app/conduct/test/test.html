@@ -11,7 +11,8 @@
                 </div>
                 <div class="display-table-cell text-center">
                     <h2 class="mb5">{{test.testName}}</h2>
-                    <p class="mb0">{{testAttendee.firstName}}&nbsp;{{testAttendee.lastName}}</p>
+                    <p *ngIf="!testTypePreview" class="mb0">{{testAttendee.firstName}}&nbsp;{{testAttendee.lastName}}</p>
+                    <p *ngIf="testTypePreview" class="mb0">Attendee Name</p>
                 </div>
                 <div class="display-table-cell text-right">
                     <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>

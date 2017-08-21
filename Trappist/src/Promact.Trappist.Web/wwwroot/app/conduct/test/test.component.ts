@@ -62,6 +62,8 @@ export class TestComponent implements OnInit {
     testLogs: TestLogs;
     codeResult: string;
     showResult: boolean;
+    isCloseWindow: boolean;
+    isConnectionLoss: boolean;
 
 
     private seconds: number;
@@ -117,14 +119,24 @@ export class TestComponent implements OnInit {
         this.codeResult = '';
         this.showResult = false;
     }
+
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
-        window.addEventListener('beforeunload', (event) => { this.saveTestLogs(); });
+        window.addEventListener('beforeunload', (event) => { this.isCloseWindow = true; this.saveTestLogs(); });
+        window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
+        window.addEventListener('online', () => { this.router.navigate(['test-summary']) });
         this.getTestByLink(this.testLink);
     }
 
+
+    /**
+     * saves the TestLogs if server is gone off
+     */
     saveTestLogs() {
-        
+        this.conductService.addTestLogs(this.testAttendee.id, this.isCloseWindow, this.isConnectionLoss, false).subscribe(response => {
+            this.testLogs = response;
+        });
+
     }
 
     /**
@@ -338,7 +350,7 @@ export class TestComponent implements OnInit {
         }
         this.questionDetail = this.testQuestions[index].question.question.questionDetail;
         this.isQuestionCodeSnippetType = this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion;
-        
+
         if (!this.isQuestionCodeSnippetType) {
             this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
             //Sets boolean if question is single choice
@@ -594,17 +606,18 @@ export class TestComponent implements OnInit {
         this.focusLost += 1;
         let message: string;
         let duration: number = 0;
-        message = (this.focusLost > this.test.browserTolerance && this.test.browserTolerance !== 0) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
-        this.openSnackBar(message, duration);
+        message = (this.focusLost > this.test.browserTolerance) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
+
+        if (this.test.browserTolerance !== 0) this.openSnackBar(message, duration);
 
         if (this.test.browserTolerance !== 0 && this.focusLost > this.test.browserTolerance) {
-            this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
+            this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
-            this.endTest(TestStatus.blockedTest);            
+            this.endTest(TestStatus.blockedTest);
         }
         else if (this.test.browserTolerance === 0 && this.focusLost <= this.test.browserTolerance) {
-            this.conductService.addTestLogs(this.testAttendee.id, this.testLogs).subscribe((response: any) => {
+            this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
         }
@@ -658,7 +671,7 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
         //A measure taken to add answer of question attempted just before the Test end
-        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) 
+        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion)
             this.addAnswer(this.testQuestions[this.questionIndex]);
 
         if (this.testTypePreview)

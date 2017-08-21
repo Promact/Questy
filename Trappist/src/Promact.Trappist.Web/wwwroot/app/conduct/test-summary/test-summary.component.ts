@@ -10,6 +10,7 @@ import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
+import { TestLogs } from '../../reports/testlogs.model';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class TestSummaryComponent implements OnInit {
     numberOfReviewedQuestions: number;
     resumeTypeOfTest: number;
     timeLeftInHours: number;
+    testLogs: TestLogs;
     timeLeftInMinutes: number;
     timeLeftInSeconds: number;
     timeLeftInHoursVisible: boolean;
@@ -133,6 +135,9 @@ export class TestSummaryComponent implements OnInit {
      */
     startTest() {
         this.clockInterval.unsubscribe();
+        this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
+            this.testLogs = response;
+        });
         this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe(response => {
         });
         let url = window.location.pathname;

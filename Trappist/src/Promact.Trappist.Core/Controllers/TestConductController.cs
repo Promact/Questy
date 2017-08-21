@@ -317,10 +317,10 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="attendeeId">Id of a particular Test Attendee obtained from route</param>
         /// <param name="testLogs">It is an object of Test Logs type</param>
         /// <returns></returns>
-        [HttpPut("testlogs/{attendeeId}")]
-        public async Task SetTestLogsAsync([FromRoute]int attendeeId, [FromBody]TestLogs testLogs)
+        [HttpGet("testLogs/{attendeeId}/{isCloseWindow}/{isConnectionLoss}/{isTestResume}")]
+        public async Task SetTestLogsAsync([FromRoute]int attendeeId, [FromRoute] bool isCloseWindow, [FromRoute] bool isConnectionLoss, [FromRoute] bool isTestResume)
         {
-            await _testConductRepository.AddTestLogsAsync(attendeeId, testLogs);
+            await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow, isConnectionLoss, isTestResume);
         }
 
         [HttpGet("testlogs")]
