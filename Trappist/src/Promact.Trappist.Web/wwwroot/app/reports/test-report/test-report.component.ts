@@ -152,7 +152,7 @@ export class TestReportComponent implements OnInit {
             }
         );
     }
-   
+
     /**
      * Checks whther a candidate is satrred
      * @param attendee
@@ -461,7 +461,7 @@ export class TestReportComponent implements OnInit {
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
-        });       
+        });
     }
 
     /**
@@ -517,22 +517,23 @@ export class TestReportComponent implements OnInit {
      * calculate testSummary details of a particular test
      */
     calculateTestSummaryDetails() {
-        let totalTime = 0;
-        let totalScore = 0;
-        let totalNoCorrectAttempt = 0;
+        let totalTimeByAllAttendees = 0;
+        let totalScoreOfAllAttendees = 0;
+        let totalCorrectAttemptByAllAttendees = 0;
+        let totalTestScore = 0;
         let totalAttendee = this.testAttendeeArray.length;
         this.testAttendeeArray.forEach(x => {
-            totalTime += x.report.timeTakenByAttendee;
-            totalScore += x.report.totalMarksScored;
+            totalTimeByAllAttendees += x.report.timeTakenByAttendee;
+            totalScoreOfAllAttendees += x.report.totalMarksScored;
             if (this.maxDuration < x.report.timeTakenByAttendee)
                 this.maxDuration = x.report.timeTakenByAttendee;
         });
-        this.averageTimeTaken = totalTime / totalAttendee;
-        this.averageTestScore = totalScore / totalAttendee;
         this.reportQuestionDetails.forEach(x => {
-            totalNoCorrectAttempt += x.correctQuestionsAttempted;
+            totalCorrectAttemptByAllAttendees += x.correctQuestionsAttempted;
         });
-        this.averageCorrectAttempt = totalNoCorrectAttempt / this.totalNoOfTestQuestions;
+        this.averageCorrectAttempt = totalCorrectAttemptByAllAttendees / this.totalNoOfTestQuestions;
+        this.averageTestScore = totalScoreOfAllAttendees / totalAttendee;
+        this.averageTimeTaken = totalTimeByAllAttendees / (this.test.duration * 60);
     }
 
     /**
