@@ -242,11 +242,9 @@ export class TestSummaryComponent implements OnInit {
     * @param testStatus: TestStatus object
     */
     private endTest(testStatus: TestStatus) {
-        if (this.isButtonVisible) {
-            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.router.navigate(['test-end'], { replaceUrl: true });
-            });
-        }
+        });
     }
     endYourTest() {
         this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
