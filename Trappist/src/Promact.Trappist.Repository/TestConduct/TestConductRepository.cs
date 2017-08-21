@@ -26,7 +26,7 @@ namespace Promact.Trappist.Repository.TestConduct
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
         private readonly ITestsRepository _testRepository;
-        private static readonly HttpClient client = new HttpClient();
+        private readonly HttpClient client;
         private readonly IQuestionRepository _questionRepository;
         private readonly IConfiguration _configuration;
         private readonly IStringConstants _stringConstants;
@@ -41,6 +41,7 @@ namespace Promact.Trappist.Repository.TestConduct
             _questionRepository = questionRepository;
             _configuration = configuration;
             _stringConstants = stringConstants;
+            client = new HttpClient();
         }
         #endregion
 
@@ -413,6 +414,9 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <returns>Result object</returns>
         private async Task<Result> ExecuteCodeAsync(Code codeObject)
         {
+            //Add API KEY
+            codeObject.Key = _configuration["CodeBaseSimulatorServerAPIKey"];
+
             var serializedCode = JsonConvert.SerializeObject(codeObject);
             var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
             var CodeBaseServer = _configuration["CodeBaseSimulatorServer"];
