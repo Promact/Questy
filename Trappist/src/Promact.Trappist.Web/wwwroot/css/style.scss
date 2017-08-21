@@ -123,6 +123,10 @@ h6, .h6 {
   margin-right: 10px;
 }
 
+.mr20 {
+  margin-right: 20px;
+}
+
 .ml40 {
   margin-left: 40px;
 }
@@ -186,6 +190,10 @@ h6, .h6 {
 
 .display-table-cell {
   display: table-cell;
+}
+
+.display-inline-block {
+  display: inline-block;
 }
 
 .btn {
@@ -360,6 +368,7 @@ h6, .h6 {
 
         .mat-dialog-title {
           font-size: 18px;
+          line-height: 18px;
           font-weight: 600;
           margin: 0;
         }
@@ -577,6 +586,11 @@ md-tooltip-component .mat-tooltip {
     padding: 10px 10px 10px 20px;
 
     .title-info {
+      width: 60%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
       span {
         vertical-align: middle;
         display: inline-block;
@@ -685,6 +699,25 @@ md-tooltip-component .mat-tooltip {
       }
     }
   }
+}
+
+.test-preview {
+  .navbar { 
+    display: none;
+  }
+  .main-content {
+    padding: 0;
+  }
+}
+
+.code-snippet pre {
+  white-space: pre-line;
+  margin: 30px 0 0;
+}
+
+.code-editor {
+  min-height: 300px;
+  margin: 30px 0;
 }
 
 /* Layout */
@@ -1062,6 +1095,10 @@ footer {
         text-transform: uppercase;
         font-weight: 700;
         line-height: 24px;
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       .material-icons {
@@ -1594,6 +1631,10 @@ footer {
 
           span {
             line-height: 24px;
+            width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
 
           .material-icons {
@@ -2016,14 +2057,14 @@ footer {
   }
 
   .test-body {
-    padding: 70px 0 141px;
+    padding: 68px 0 115px;
 
     .container-fluid {
       .display-table-cell {
         width: $half_size;
         vertical-align: top;
 
-        & > * {
+        &:not(.code-snippet) > * {
           width: 80%;
         }
 
@@ -2041,7 +2082,7 @@ footer {
       background-color: $color_white;
 
       .qs-area {
-        height: calc(100vh - 247px);
+        height: calc(100vh - 223px);
       }
     }
   }
@@ -2346,7 +2387,6 @@ footer {
       display: inline-block;
       background-color: $color_bg_secondary;
       padding: 5px 15px;
-      width: 86px;
       text-align: center;
 
       &.negative {
@@ -2364,10 +2404,10 @@ footer {
 @media (min-width: 1201px) and (max-width: 1310px) {
   .test {
     .test-body {
-      padding: 70px 0 184px;
+      padding: 68px 0 158px;
 
       .test-body-content .qs-area {
-        height: calc(100vh - 290px);
+        height: calc(100vh - 266px);
       }
     }
 
@@ -2395,10 +2435,10 @@ footer {
     }
 
     .test-body {
-      padding: 95px 0 184px;
+      padding: 94px 0 158px;
 
       .test-body-content .qs-area {
-        height: calc(100vh - 315px);
+        height: calc(100vh - 292px);
       }
     }
   }

@@ -41,28 +41,29 @@
                     <div class="display-table-cell qs-area ptb20">
                         <p [innerHTML]="questionDetail"></p>
                     </div>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionCodeSnippetType">
-                        <select name="languages" class="form-control" [(ngModel)]="selectLanguage" (change)="changeLanguage($event.target.value)" [ngModelOptions]="{standalone:true}">
-                            <option *ngFor="let lang of languageMode" [value]="lang">{{lang}}</option>
-                        </select>
-                        <select name="theme" class="form-control" [(ngModel)]="selectedTheme" (change)="changeTheme($event.target.value)" [ngModelOptions]="{standalone:true}">
-                            <option *ngFor="let theme of themes" [value]="theme">{{theme}}</option>
-                        </select>
-                        <br />
+                    <div class="display-table-cell ans-area code-snippet ptb20 pl15" *ngIf="isQuestionCodeSnippetType">
+                        <div class="form-group display-inline-block mb30 mr20">
+                            <label>Code Language</label>
+                            <select name="languages" class="form-control small-width" [(ngModel)]="selectLanguage" (change)="changeLanguage($event.target.value)" [ngModelOptions]="{standalone:true}">
+                                <option *ngFor="let lang of languageMode" [value]="lang">{{lang}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group display-inline-block mb30">
+                            <label>Editor Theme</label>
+                            <select name="theme" class="form-control small-width" [(ngModel)]="selectedTheme" (change)="changeTheme($event.target.value)" [ngModelOptions]="{standalone:true}">
+                                <option *ngFor="let theme of themes" [value]="theme">{{theme}}</option>
+                            </select>
+                        </div>
                         <ace-editor [(text)]="codeAnswer"
                                     (textChanged)="onChange($event)"
                                     [mode]="selectedMode"
                                     [theme]="selectedTheme"
                                     #editor
                                     id="edit"
-                                    style="min-height: 400px; width:100%; overflow: auto;">
+                                    class="code-editor">
                         </ace-editor>
-                        <br />
-                        <button type="button" class="btn" value="run" (click)="runCode()">Run</button>
-                        <br/>
-                        <div style="padding:10px" class="bg-primary">
-                          <pre>{{codeResult}}</pre>
-                        </div>
+                        <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run</button>
+                        <pre class="mt20" *ngIf="showResult">{{codeResult}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group>
