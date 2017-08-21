@@ -61,7 +61,8 @@
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
             'ace-builds': 'npm:ace-builds/src-min',
-            'exceljs': 'npm:exceljs'            
+            'exceljs': 'npm:exceljs',
+            'traceur': 'npm:traceur'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -133,6 +134,10 @@
             },
             'exceljs': {
                 main: 'dist/exceljs.min.js',
+                defaultExtension: 'js'
+            },
+            'traceur': {
+                main: 'bin/traceur.js',
                 defaultExtension: 'js'
             },
             '.': {

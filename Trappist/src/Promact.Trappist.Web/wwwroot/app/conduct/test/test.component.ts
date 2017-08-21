@@ -101,7 +101,7 @@ export class TestComponent implements OnInit {
         this.focusLost = 0;
         this.tolerance = 2;
         this.isTestReady = false;
-        this.selectedTheme = 'eclipse';
+        this.selectedTheme = 'monokai';
         this.timeString = this.secToTimeString(this.seconds);
         this.test = new Test();
         this.testTypePreview = false;

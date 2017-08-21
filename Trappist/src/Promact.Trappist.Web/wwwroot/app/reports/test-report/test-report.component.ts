@@ -59,6 +59,7 @@ export class TestReportComponent implements OnInit {
     reportQuestionDetails: ReportQuestionsCount[];
     testAttendeeRank: TestAttendeeRank[];
     testLogs: TestLogs[] = [];
+    isAnyTestResume: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -122,6 +123,7 @@ export class TestReportComponent implements OnInit {
                 if (x.report !== null)
                     this.testAttendeeArray.push(x);
             });
+            this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
             this.attendeeArray = this.testAttendeeArray;
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
@@ -165,6 +167,7 @@ export class TestReportComponent implements OnInit {
         this.reportService.createSessionForAttendee(attendee, this.test.link).subscribe(response => {
             if (response) {
                 attendee.report.isTestPausedUnWillingly = false;
+                this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
                 this.snackbarRef.open('Test resumed successfully', 'Dismiss', {
                     duration: 4000,
                 });

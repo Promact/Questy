@@ -51,6 +51,7 @@ export class TestSummaryComponent implements OnInit {
     clockInterval: Subscription;
     isTestResume: boolean;
     isTestClosedUnConditionally: boolean;
+    disableButton: boolean;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
         this.testAttendee = new TestAttendee();
@@ -176,10 +177,13 @@ export class TestSummaryComponent implements OnInit {
      */
     sendRequestForResume() {
         this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(response => {
-            if (response)
+            if (response) {
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
                     duration: 4000,
                 });
+                this.disableButton = true;
+            }
+               
         });
     }
     /**
