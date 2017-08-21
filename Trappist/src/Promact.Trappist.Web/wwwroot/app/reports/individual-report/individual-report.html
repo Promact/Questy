@@ -87,7 +87,7 @@
         <h2>Test Details</h2>
         <div class="test-details-block">
           <div class="question-score-box clearfix" *ngFor="let question of testQuestions;let i=index">
-            <div class="col-lg-10 col-md-10 col-sm-10">
+            <div class="col-lg-10 col-md-10 col-sm-9">
               <div class="qs-container">
                 <p class="qs-num">Q.{{i+1}}</p>
                 <div class="qs-text">
@@ -102,22 +102,22 @@
               </div>
             </div>
             <div>
-              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==1">
+              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1">
                 <div class="score negative">Score: -{{incorrectmarks}}</div>
               </div>
-              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==0">
+              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==0">
                 <div class="score positive">Score: +{{correctMarks}}</div>
               </div>
-              <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.answerStatus==2">
+              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==2">
                 <div class="score">Score: 0</div>
               </div>
             </div>
             <div *ngIf="question.question?.questionType == 2">
              <div>
-                <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==0">
+                <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==0">
                   <div class="score positive">Score: +{{question.scoreOfCodeSnippetQuestion}}</div>
                 </div>
-               <div class="col-lg-2 col-md-2 col-sm-2 text-right" *ngIf="question.questionStatus==3">
+               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==3">
                  <div class="score">Score: 0</div>
                </div>
               </div>
@@ -151,8 +151,7 @@
                 <div *ngIf="question.isCodeSolutionDetailsVisible">
                   <p class="ml40 mt20">Candidate Code (in {{ProgrammingLanguage[question.language]}} Language)</p>
                   <p class="ml40">Code Compilation: {{question.numberOfSuccessfulAttemptsByAttendee}} Successful out of {{question.totalNumberOfAttemptsMadeByAttendee}} attempts</p>
-                  <p class="ml40">Code Solution :</p> 
-                    <pre>{{question.codeToDisplay}}</pre>
+                  <pre class="mt20">{{question.codeToDisplay}}</pre>
                 </div>
               </div>
             </div>
