@@ -20,6 +20,7 @@ declare let saveAs: any;
 })
 
 export class TestReportComponent implements OnInit {
+    routeForIndividualTestReport: any;
     showSearchInput: boolean;
     searchString: string;
     testAttendeeArray: TestAttendee[];
@@ -55,7 +56,7 @@ export class TestReportComponent implements OnInit {
     reportQuestionDetails: ReportQuestionsCount[];
     testAttendeeRank: TestAttendeeRank[];
 
-    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService) {
+    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
         this.sortedAttendeeArray = new Array<TestAttendee>();
@@ -556,5 +557,14 @@ export class TestReportComponent implements OnInit {
             testRankDetails.attendeeRank = rank;
             this.testAttendeeRank.push(testRankDetails);
         }
+    }
+
+    /**
+     * navigates to the individual test report component 
+     * @param testAttendeeId contains the value of the test attendee Id from the route
+     */
+    navigateToIndividualReportPage(testAttendeeId: number) {
+        this.routeForIndividualTestReport = 'reports/test/' + this.testId;
+        this.router.navigate(['/individual-report/', testAttendeeId, '/download'], { relativeTo: this.routeForIndividualTestReport });
     }
 }

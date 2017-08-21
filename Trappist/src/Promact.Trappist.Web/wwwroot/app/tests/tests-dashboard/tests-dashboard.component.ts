@@ -96,4 +96,16 @@ export class TestsDashboardComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * Selects the search text area on clicking of the search button
+     * @param $event is of type Event and is used to call stopPropagation()
+     * @param search is of type any
+     */
+    selectTextArea($event: any, search: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            search.select();
+        }, 0);
+    }
 }
