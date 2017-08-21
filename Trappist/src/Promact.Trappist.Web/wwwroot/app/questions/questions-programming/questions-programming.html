@@ -35,9 +35,12 @@
                 </div>
                 <div class="form-group">
                     <label>Question Details</label>
-                    <ckeditor [config]="{extraPlugins:'divarea'}" [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" required></ckeditor>
+                    <ckeditor [config]="{extraPlugins:'divarea',entity_encoding:'raw'}" [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" (change)="onChange($event)" required></ckeditor>
                     <div class="errors-container">
-                        <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
+                        <div *ngIf="isQuestionEmpty">
+                            <span class="error-msg">Question detail is required</span>
+                        </div>
+                        <div *ngIf="detail.errors && (detail.dirty || detail.touched) && !isQuestionEmpty">
                             <div [hidden]="!detail.errors.required">
                                 <span class="error-msg">Required</span>
                             </div>
@@ -156,7 +159,7 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" [routerLink]="['/questions']">Cancel</button>
-                <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0 || isQuestionEmpty">Save</button>
             </div>
         </form>
     </div>
