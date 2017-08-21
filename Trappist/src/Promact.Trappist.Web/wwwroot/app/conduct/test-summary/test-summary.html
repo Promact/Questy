@@ -1,8 +1,8 @@
-﻿<div class="test-conduct">
+﻿<div class="loader-container" *ngIf="loader">
+    <div class="spinner"></div>
+</div>
+<div class="test-conduct" *ngIf="!loader">
     <test-conduct-header></test-conduct-header>
-    <div class="loader-container" *ngIf="loader">
-        <div class="spinner"></div>
-    </div>
     <div class="content-block">
         <h2 class="mb30">Test Summary</h2>
         <p class="test-info"><span class="h4">Time Left: </span><span class="h2">{{timeString}}</span></p>
@@ -26,9 +26,10 @@
             <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
         </div>
         <div class="text-center">
-            <button class="btn" *ngIf="isTestClosedUnConditionally && !isTestResume" (click)="sendRequestForResume()">Send request to resume test</button>
-            <button type="button" class="btn btn-primary" *ngIf="!isTestResume && isTestClosedUnConditionally " (click)="endYourTest()">End Test</button>
-            <button type="button" class="btn" *ngIf="isTestResume" (click)="startTest()">Start Test</button>
+            <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
+            <button class="btn" *ngIf="isTestClosedUnConditionally && !isTestResume" [disabled]="disableButton" (click)="sendRequestForResume()">Request to Resume</button>
+            <button type="button" class="btn" *ngIf="isTestResume" (click)="startTest()">Back to Test</button>
+            <button type="button" class="btn btn-primary" *ngIf="isTestClosedUnConditionally " (click)="endYourTest()">End Test</button>
         </div>
     </div>
     <test-conduct-footer></test-conduct-footer>
