@@ -5,9 +5,9 @@ import { AllowTestResume } from './enum-allowtestresume';
 import { QuestionStatus, AnswerStatus } from '../conduct/question_status.enum';
 import { QuestionDisplay } from '../questions/question-display';
 import { TestIPAddress } from './test-IPAdddress';
-import { CodeSnippetTestCasesDetails } from "../reports/code-snippet-test-cases-details.model";
-import { TestCodeSolutionDetails } from "../reports/test-code-solution-details.model";
-import { ProgrammingLanguage } from "../reports/programminglanguage.enum";
+import { CodeSnippetTestCasesDetails } from '../reports/code-snippet-test-cases-details.model';
+import { TestCodeSolutionDetails } from '../reports/test-code-solution-details.model';
+import { ProgrammingLanguage } from '../reports/programminglanguage.enum';
 
 export class Test {
     id: number;
