@@ -25,6 +25,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     categoryList: Category[];
     questionModel: QuestionBase;
     formControlModel: FormControlModel;
+    isQuestionEmpty: boolean;
 
     nolanguageSelected: boolean;
     isCategoryReady: boolean;
@@ -217,6 +218,10 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === category).id;
     }
 
+    onChange(questionName: string) {
+        this.isQuestionEmpty = questionName.replace(/<p>|&nbsp;|<\/p>/gi, '').trim() === '';
+    }
+
     /**
      * Adds difficulty to the Question
      * @param difficulty : Difficulty level to select
@@ -253,7 +258,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         if (isCodeSnippetFormValid && !this.nolanguageSelected) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
-            this.questionModel.question.questionType = QuestionType.codeSnippetQuestion; 
+            this.questionModel.question.questionType = QuestionType.codeSnippetQuestion;
             //Explicitly converting the id of the testcases to zero
             if (!this.isQuestionEdited || this.isQuestionDuplicated) {
                 this.testCases.forEach(x => x.id = 0);
