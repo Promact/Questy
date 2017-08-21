@@ -646,7 +646,7 @@ export class TestComponent implements OnInit {
      * Counts down time
      */
     private countDown() {
-        this.seconds = this.seconds - 1;
+        this.seconds = this.seconds > 0 ? this.seconds - 1: 0;
         this.timeString = this.secToTimeString(this.seconds);
 
         if (this.seconds === this.WARNING_TIME) {
@@ -687,15 +687,19 @@ export class TestComponent implements OnInit {
             }
         }
 
-        if (this.testTypePreview)
-            window.close();
-        else if (this.resumable === AllowTestResume.Supervised) {
-            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+        //Wait for 2 seconds for the last answer to get saved
+        setTimeout(function () {
+            this.isTestReady = false;
+            if (this.testTypePreview)
                 window.close();
-            });
-        }
-        else
-            window.close();
+            else if (this.resumable === AllowTestResume.Supervised) {
+                this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                    window.close();
+                });
+            }
+            else
+                window.close();
+        }, 1000);
     }
 
     /**
