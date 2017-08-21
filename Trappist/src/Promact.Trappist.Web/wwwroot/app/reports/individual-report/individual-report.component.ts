@@ -192,7 +192,6 @@ export class IndividualReportComponent implements OnInit {
                 });
                 this.reportsService.getCodeSnippetQuestionMarks(this.testAttendee.id, this.testQuestions[question].questionId).subscribe((response) => {
                     this.testQuestions[question].scoreOfCodeSnippetQuestion = response;
-                    console.log(this.testQuestions[question].scoreOfCodeSnippetQuestion);
                     if (this.testQuestions[question].scoreOfCodeSnippetQuestion < value.toString()) {
                         this.testQuestions[question].questionStatus = 3;
                         this.testQuestions[question].isCompilationStatusVisible = false;
