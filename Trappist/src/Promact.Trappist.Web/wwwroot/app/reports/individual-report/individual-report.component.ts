@@ -200,11 +200,13 @@ export class IndividualReportComponent implements OnInit {
                         this.correctAnswers++;
                         this.testQuestions[question].questionStatus = 0;
                         this.difficultywiseCorrectQuestions(this.testQuestions[question].question.difficultyLevel);
+                        this.testQuestions[question].isCompilationStatusVisible = true;
                         this.testQuestions[question].compilationStatus = 'Successful';
                     }
                     else {
                         this.incorrectAnswers++;
                         this.testQuestions[question].questionStatus = 0;
+                        this.testQuestions[question].isCompilationStatusVisible = true;
                         this.testQuestions[question].compilationStatus = 'Unsuccessful';
                     }
                 });
