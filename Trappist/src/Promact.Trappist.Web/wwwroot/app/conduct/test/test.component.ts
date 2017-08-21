@@ -124,7 +124,6 @@ export class TestComponent implements OnInit {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
         window.addEventListener('beforeunload', (event) => { this.isCloseWindow = true; this.saveTestLogs(); });
         window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
-        window.addEventListener('online', () => { this.router.navigate(['test-summary']) });
         this.getTestByLink(this.testLink);
     }
 
