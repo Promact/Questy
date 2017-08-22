@@ -32,6 +32,7 @@ using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
+using Promact.Trappist.Utility.HttpUtil;
 using Promact.Trappist.Web.Models;
 using System;
 using System.IO;
@@ -92,6 +93,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<ITestConductRepository, TestConductRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IHttpService, HttpService>();
             services.AddSingleton<IConfiguration>(Configuration);
             #endregion
 

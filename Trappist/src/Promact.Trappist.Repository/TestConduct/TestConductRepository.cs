@@ -12,6 +12,7 @@ using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using Promact.Trappist.Utility.HttpUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,22 +27,27 @@ namespace Promact.Trappist.Repository.TestConduct
         #region Dependencies
         private readonly TrappistDbContext _dbContext;
         private readonly ITestsRepository _testRepository;
-        private readonly HttpClient client;
         private readonly IQuestionRepository _questionRepository;
         private readonly IConfiguration _configuration;
-        private readonly IStringConstants _stringConstants; 
+        private readonly IStringConstants _stringConstants;
+        private readonly IHttpService _httpService;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductRepository(TrappistDbContext dbContext, ITestsRepository testRepository, IConfiguration configuration, IQuestionRepository questionRepository, IStringConstants stringConstants)
+        public TestConductRepository(TrappistDbContext dbContext
+            , ITestsRepository testRepository
+            , IConfiguration configuration
+            , IQuestionRepository questionRepository
+            , IStringConstants stringConstants
+            , IHttpService httpService)
         {
             _dbContext = dbContext;
             _testRepository = testRepository;
             _questionRepository = questionRepository;
             _configuration = configuration;
             _stringConstants = stringConstants;
-            client = new HttpClient();
+            _httpService = httpService;
         }
         #endregion
 
@@ -413,7 +419,7 @@ namespace Promact.Trappist.Repository.TestConduct
             var serializedCode = JsonConvert.SerializeObject(codeObject);
             var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
             var CodeBaseServer = _configuration["CodeBaseSimulatorServer"];
-            var response = await client.PostAsync(CodeBaseServer, body);
+            var response = await _httpService.PostAsync(CodeBaseServer, body);
             var content = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Result>(content.Result);
 
