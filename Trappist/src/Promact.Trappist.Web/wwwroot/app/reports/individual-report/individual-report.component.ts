@@ -339,6 +339,8 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         let elementToPrint = document.getElementById('printSectionId');
         let height = elementToPrint.offsetHeight;
+        let attendeeName = this.testAttendee.firstName + this.testAttendee.lastName;
+        let testName = this.testAttendee.test.testName;
         let pdf = new jsPDF('p', 'mm', [187, height]);
         let styles = {
             background: '#FFFFFF',
@@ -348,7 +350,7 @@ export class IndividualReportComponent implements OnInit {
         pdf.text(this.testAttendee.test.testName, 15, 15);
         pdf.addHTML(elementToPrint, 0, 20, styles, () => {
             pdf.setProperties({
-                title: 'Individual-test-report'
+                title: testName + '_' + attendeeName + '.pdf'
             });
 
             pdf.setFontSize(5);
@@ -365,6 +367,9 @@ export class IndividualReportComponent implements OnInit {
     downloadIndividualReport() {
         this.loader = true;
         let dataToDownload = document.getElementById('printSectionId');
+        let attendeeName = this.testAttendee.firstName + this.testAttendee.lastName;
+        let testName = this.testAttendee.test.testName;
+      
         let height = dataToDownload.offsetHeight;
         let doc = new jsPDF('p', 'mm', [187, height]);
         let styles = {
@@ -377,7 +382,7 @@ export class IndividualReportComponent implements OnInit {
                 title: 'Individual-test-report'
             });
             doc.setFontSize(5);
-            doc.save('individual-report.pdf');
+            doc.save(testName + '_' + attendeeName + '.pdf');
             this.loader = false;
         });
     }
