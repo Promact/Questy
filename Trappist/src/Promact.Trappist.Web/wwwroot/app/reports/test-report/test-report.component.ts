@@ -361,7 +361,7 @@ export class TestReportComponent implements OnInit {
         this.loader = true;
         let testName = this.test.testName;
         let space = ' ';
-        let workBook = new Excel.Workbook();
+        let workBook = new Excel.Workbook;
         workBook.views = [ {
             x: 0, y: 0, width: 10000, height: 20000,
             firstSheet: 0, visibility: 'visible'
