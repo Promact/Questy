@@ -64,6 +64,7 @@ export class TestComponent implements OnInit {
     showResult: boolean;
     isCloseWindow: boolean;
     isConnectionLoss: boolean;
+    timeWarning: boolean;
 
 
     private seconds: number;
@@ -118,6 +119,7 @@ export class TestComponent implements OnInit {
         this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
         this.codeResult = '';
         this.showResult = false;
+        this.timeWarning = false;
     }
 
     ngOnInit() {
@@ -286,7 +288,7 @@ export class TestComponent implements OnInit {
             let testStatus = response;
             if (testStatus !== TestStatus.allCandidates) {
                 //Close the window if Test is already completed
-                this.closeWindow();
+                window.close();
             }
 
             this.resumeTest();
@@ -578,6 +580,10 @@ export class TestComponent implements OnInit {
         this.endTest(TestStatus.completedTest);
     }
 
+    isLastQuestion() {
+        return this.questionIndex === this.testQuestions.length - 1;
+    }
+
     /**
      * Shuffle testQuestions 
      */
@@ -651,6 +657,7 @@ export class TestComponent implements OnInit {
         this.timeString = this.secToTimeString(this.seconds);
 
         if (this.seconds === this.WARNING_TIME) {
+            this.timeWarning = true;
             this.openSnackBar(this.WARNING_MSG);
         }
 
@@ -680,28 +687,32 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
 
+        if (this.testTypePreview)
+            window.close();
+
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
             || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
+            //Add answer and close window
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
                 this.isTestReady = false;
-                if (this.testTypePreview)
-                    window.close();
-                else if (this.resumable === AllowTestResume.Supervised) {
-                    this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                        window.close();
-                    });
-                }
-                else
-                    window.close();
+                this.closeWindow(testStatus);
             });
+        } else {
+            this.closeWindow(testStatus);
         }
     }
 
     /**
      * Closes window 
      */
-    private closeWindow() {
-        this.router.navigate(['test-end']);
+    private closeWindow(testStatus: TestStatus) {
+        if (this.resumable === AllowTestResume.Supervised) {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                window.close();
+            });
+        }
+        else
+            window.close();
     }
 
     /**

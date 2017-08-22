@@ -17,7 +17,7 @@
                 <div class="display-table-cell text-right">
                     <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
                     <br class="hidden-lg" />
-                    <h5 class="mlr10">Time Remaining:</h5>
+                    <h5 class="mlr10" [ngClass]="{'warning':timeWarning}">Time Remaining:</h5>
                     <h2 class="mt3">{{timeString}}</h2>
                 </div>
             </div>
@@ -122,8 +122,8 @@
                                 <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)">Next <em class="material-icons">keyboard_arrow_right</em></button>
+                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1">Next <em class="material-icons">keyboard_arrow_right</em></button>
                             </div>
                         </div>
                     </div>

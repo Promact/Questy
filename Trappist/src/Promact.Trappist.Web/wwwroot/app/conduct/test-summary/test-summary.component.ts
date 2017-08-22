@@ -90,12 +90,16 @@ export class TestSummaryComponent implements OnInit {
      */
     timeLeftOfTest(attendeeId: number) {
         this.loader = true;
+
         this.conductService.getElapsedTime(attendeeId).subscribe((response) => {
             let spanTime = response;
             let spanTimeInSeconds = spanTime * 60;
             let durationInSeconds = this.test.duration * 60;
             this.timeLeft = durationInSeconds - spanTimeInSeconds;
-            this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
+            this.timeString = this.secToTimeString(this.timeLeft);
+            if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
+                this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
+
             this.loader = false;
         });
     }
