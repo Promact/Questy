@@ -136,10 +136,6 @@
                 main: 'dist/exceljs.min.js',
                 defaultExtension: 'js'
             },
-            'traceur': {
-                main: 'bin/traceur.js',
-                defaultExtension: 'js'
-            },
             '.': {
                 defaultExtension: 'js'
             }
