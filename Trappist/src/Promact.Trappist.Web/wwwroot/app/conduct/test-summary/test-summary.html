@@ -25,11 +25,11 @@
             <button type="button" class="btn" (click)="startTest()">Back to Test</button>
             <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
         </div>
-        <div class="text-center">
+        <div class="text-center" *ngIf="isTestClosedUnConditionally">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
-            <button class="btn" *ngIf="isTestClosedUnConditionally && !isTestResume" [disabled]="disableButton" (click)="sendRequestForResume()">Request to Resume</button>
+            <button class="btn" *ngIf="!isTestResume" [disabled]="disableButton" (click)="sendRequestForResume()">Request to Resume</button>
             <button type="button" class="btn" *ngIf="isTestResume" (click)="startTest()">Back to Test</button>
-            <button type="button" class="btn btn-primary" *ngIf="isTestClosedUnConditionally " (click)="endYourTest()">End Test</button>
+            <button type="button" class="btn btn-primary" (click)="endYourTest()">End Test</button>
         </div>
     </div>
     <test-conduct-footer></test-conduct-footer>
