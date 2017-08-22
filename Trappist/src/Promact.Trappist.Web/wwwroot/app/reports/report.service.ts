@@ -89,10 +89,6 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + questionId + '/testCodeSolutionDetails');
     }
 
-    createSessionForAttendee(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/createSession/' + attendeeId);
-    createSessionForAttendee(attendee: any, testLink: string) {
-        return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink, attendee);
     createSessionForAttendee(attendee: any, testLink: string, isTestEnd: boolean) {
         return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink + '/' + isTestEnd, attendee);
     }
