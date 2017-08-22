@@ -443,7 +443,7 @@ export class TestComponent implements OnInit {
      * Call API to add Answer to the Database
      * @param testQuestion: TestQuestion object
      */
-    addAnswer(testQuestion: TestQuestions) {
+    addAnswer(testQuestion: TestQuestions, _callback?:any) {
         //Remove previous question's answer from the array 
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
         if (index !== -1)
@@ -495,7 +495,8 @@ export class TestComponent implements OnInit {
                 if (testAnswer.questionStatus === QuestionStatus.answered) {
                     this.markAsAnswered(questionIndex);
                 }
-
+                //call callback method if provided
+                _callback();
             }, err => {
                 this.isTestReady = true;
             });
@@ -678,28 +679,22 @@ export class TestComponent implements OnInit {
      */
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
-        //A measure taken to add answer of question attempted just before the Test end
-        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion)
-            this.addAnswer(this.testQuestions[this.questionIndex]);
-        else {
-            if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
-                this.addAnswer(this.testQuestions[this.questionIndex]);
-            }
-        }
 
-        //Wait for 2 seconds for the last answer to get saved
-        setTimeout(function () {
-            this.isTestReady = false;
-            if (this.testTypePreview)
-                window.close();
-            else if (this.resumable === AllowTestResume.Supervised) {
-                this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+        if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
+            || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
+            this.addAnswer(this.testQuestions[this.questionIndex], () => {
+                this.isTestReady = false;
+                if (this.testTypePreview)
                     window.close();
-                });
-            }
-            else
-                window.close();
-        }, 1000);
+                else if (this.resumable === AllowTestResume.Supervised) {
+                    this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                        window.close();
+                    });
+                }
+                else
+                    window.close();
+            });
+        }
     }
 
     /**
