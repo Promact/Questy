@@ -146,6 +146,12 @@ export class QuestionsProgrammingComponent implements OnInit {
         }
     }
 
+    trimString(str: string) {
+        if (str) {
+            return str.trim();
+        }
+    }
+
     /**
      * Gets all the coding languages
      */
