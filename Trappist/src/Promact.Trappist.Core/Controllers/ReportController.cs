@@ -186,8 +186,6 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId,questionId));
         }
 
-        [HttpGet("createSession/{attendeeId}")]
-        public  IActionResult CreateSessionForAttendee([FromRoute] int attendeeId)
         /// <summary>
         /// sends request to the conductor for test resume 
         /// </summary>

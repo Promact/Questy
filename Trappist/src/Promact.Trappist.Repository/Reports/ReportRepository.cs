@@ -278,12 +278,7 @@ namespace Promact.Trappist.Repository.Reports
 
             return testCodeSolutionDetailsObject;
         }
-
-        public async Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee)
-        {
-            attendee.Report.IsTestPausedUnWillingly = false;
-            attendee.Report.IsAllowResume = true;
-            attendee.Report.TestStatus = TestStatus.AllCandidates;
+        
         public async Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee, bool isTestEnd)
         {
             attendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x=>x.TestAttendeeId==attendee.Id);
