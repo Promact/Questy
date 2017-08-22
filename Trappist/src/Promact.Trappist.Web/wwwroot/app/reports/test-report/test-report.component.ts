@@ -125,6 +125,7 @@ export class TestReportComponent implements OnInit {
             });
             this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
             this.attendeeArray = this.testAttendeeArray;
+            this.isAnyCandidateExist = this.attendeeArray.some(x => x.report !== null);
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
             this.loader = false;
@@ -164,7 +165,7 @@ export class TestReportComponent implements OnInit {
      * @param attendee
      */
     resumeTest(attendee: TestAttendee) {
-        this.reportService.createSessionForAttendee(attendee, this.test.link).subscribe(response => {
+        this.reportService.createSessionForAttendee(attendee, this.test.link, false).subscribe(response => {
             if (response) {
                 attendee.report.isTestPausedUnWillingly = false;
                 this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
@@ -587,5 +588,17 @@ export class TestReportComponent implements OnInit {
     navigateToIndividualReportPage(testAttendeeId: number) {
         this.routeForIndividualTestReport = 'reports/test/' + this.testId;
         this.router.navigate(['/individual-report/', testAttendeeId, '/download'], { relativeTo: this.routeForIndividualTestReport });
+    }
+
+    /**
+    * Selects the search text area on clicking of the search button
+    * @param $event is of type Event and is used to call stopPropagation()
+    * @param search is of type any
+    */
+    selectTextArea($event: any, search: any) {
+        $event.stopPropagation();
+        setTimeout(() => {
+            search.select();
+        }, 0);
     }
 }

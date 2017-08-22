@@ -93,6 +93,8 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/createSession/' + attendeeId);
     createSessionForAttendee(attendee: any, testLink: string) {
         return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink, attendee);
+    createSessionForAttendee(attendee: any, testLink: string, isTestEnd: boolean) {
+        return this.httpService.post(this.reportsApiUrl + '/createSession/' + testLink + '/' + isTestEnd, attendee);
     }
 
     updateCandidateInfo(attendeeId: number, isTestResume: boolean) {

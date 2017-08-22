@@ -183,7 +183,7 @@ export class TestSummaryComponent implements OnInit {
                 });
                 this.disableButton = true;
             }
-               
+
         });
     }
     /**
@@ -249,6 +249,8 @@ export class TestSummaryComponent implements OnInit {
         }
     }
     endYourTest() {
-        this.router.navigate(['test-end'], { replaceUrl: true });
+        this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
+            this.router.navigate(['test-end'], { replaceUrl: true });
+        });
     }
 }

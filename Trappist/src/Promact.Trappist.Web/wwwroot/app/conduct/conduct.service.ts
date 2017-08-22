@@ -33,7 +33,7 @@ export class ConductService {
      *Get list of Questions
      */
     getQuestions(id: number) {
-        return this.httpService.get(this.testConductUrl + '/testquestion/' + id);
+        return this.httpService.get(this.testConductUrl + 'testquestion/' + id);
     }
 
     /**

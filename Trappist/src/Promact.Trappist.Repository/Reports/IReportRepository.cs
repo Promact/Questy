@@ -110,7 +110,7 @@ namespace Promact.Trappist.Repository.Reports
         /// </summary>
         /// <param name="attendee"></param>
         /// <returns></returns>
-        Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee);
+        Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee, bool isTestEnd);
 
         /// <summary>
         /// set isTestPausedUnWillingly to true

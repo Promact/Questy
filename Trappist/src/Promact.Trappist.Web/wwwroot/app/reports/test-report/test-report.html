@@ -8,8 +8,8 @@
                 <span class="test-name">{{test.testName}}</span>
             </h1>
             <div class="search-area pull-right mt5">
-                <input type="text" placeholder="Search reports" [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showStatus()" />
-                <button type="button" (click)="showSearchInput = true"><i class="material-icons">search</i></button>
+                <input type="text" placeholder="Search reports" [(ngModel)]="searchString" (keyup)="getTestAttendeeMatchingSearchCriteria(searchString)" [hidden]="!showSearchInput" (blur)="showStatus()" name="search" id="search" #search/>
+                <button type="button" (click)="showSearchInput = true;;selectTextArea($event,search)"><i class="material-icons">search</i></button>
             </div>
         </div>
     </div>
