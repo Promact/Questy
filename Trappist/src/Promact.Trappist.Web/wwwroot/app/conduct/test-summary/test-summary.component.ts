@@ -89,6 +89,7 @@ export class TestSummaryComponent implements OnInit {
      * @param attendeeId is the Id of the attendee giving the selected test
      */
     timeLeftOfTest(attendeeId: number) {
+        this.loader = true;
         this.conductService.getElapsedTime(attendeeId).subscribe((response) => {
             let spanTime = response;
             let spanTimeInSeconds = spanTime * 60;
