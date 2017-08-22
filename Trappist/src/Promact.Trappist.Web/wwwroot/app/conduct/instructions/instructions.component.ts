@@ -18,6 +18,7 @@ export class InstructionsComponent implements OnInit {
     isBrowserToleranceNotApplicable: boolean;
     negativeSign: string;
     magicString: string;
+    loader: boolean;
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
         this.testInstructions = new TestInstructions();
     }
@@ -36,6 +37,7 @@ export class InstructionsComponent implements OnInit {
      * @param testLink Contains the link to fetch instructions related to a particular test
      */
     getTestInstructionsByLink(testLink: string) {
+        this.loader = true;
         this.conductService.getTestInstructionsByLink(testLink).subscribe(
             response => {
                 this.testInstructions = response;
@@ -44,6 +46,7 @@ export class InstructionsComponent implements OnInit {
                     this.negativeSign = '-';
                 }
                 this.isBrowserToleranceNotApplicable = this.testInstructions.browserTolerance === 0;
+                this.loader = false;
             });
     }
 
