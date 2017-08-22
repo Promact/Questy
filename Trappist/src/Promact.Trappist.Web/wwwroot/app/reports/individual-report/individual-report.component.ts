@@ -112,6 +112,8 @@ export class IndividualReportComponent implements OnInit {
                 let listOfQuestionsAttempted = this.testAttendee.testConduct.filter(x => x.questionStatus === QuestionStatus.answered);
                 this.numberOfQuestionsAttempted = listOfQuestionsAttempted.length;
             });
+            if (this.testAttendee.testConduct.length === 0)
+                this.numberOfQuestionsAttempted = 0;
             if (new Date(this.testAttendee.test.endDate) < this.currentDate) {
                 this.isPercentileVisible = true;
                 this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
