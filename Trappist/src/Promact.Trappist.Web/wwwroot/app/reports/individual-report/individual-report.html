@@ -46,7 +46,7 @@
                 <h3 class="mb20">Percentage</h3>
                 <h1>{{percentage}} %</h1>
               </div>
-              <div class="percentile" *ngIf="isPercentileVisible">
+              <div class="percentile">
                 <h3 class="mb20">Percentile</h3>
                 <h1>{{percentile}}</h1>
               </div>
@@ -102,8 +102,11 @@
               </div>
             </div>
             <div>
-              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1">
+              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1 && !hideSign">
                 <div class="score negative">Score: -{{incorrectmarks}}</div>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1 && hideSign">
+                <div class="score negative">Score: {{incorrectmarks}}</div>
               </div>
               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==0">
                 <div class="score positive">Score: +{{correctMarks}}</div>
@@ -117,6 +120,9 @@
                 <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==0">
                   <div class="score positive">Score: +{{question.scoreOfCodeSnippetQuestion}}</div>
                 </div>
+               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==3">
+                 <div class="score negative">Score: 0</div>
+               </div>
                <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==3">
                  <div class="score">Score: 0</div>
                </div>

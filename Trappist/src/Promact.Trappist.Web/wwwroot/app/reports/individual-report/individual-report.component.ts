@@ -64,6 +64,7 @@ export class IndividualReportComponent implements OnInit {
     currentDate: Date;
     individualReportPathContent: string;
     ProgrammingLanguage = ProgrammingLanguage;
+    hideSign: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -96,6 +97,7 @@ export class IndividualReportComponent implements OnInit {
             this.testId = this.testAttendee.test.id;
             this.correctMarks = this.testAttendee.test.correctMarks;
             this.incorrectmarks = this.testAttendee.test.incorrectMarks;
+            this.hideSign = +this.testAttendee.test.incorrectMarks === 0 ? true : false;
             this.marks = this.testAttendee.report.totalMarksScored;
             this.percentage = this.testAttendee.report.percentage;
             this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 3600);
@@ -114,12 +116,11 @@ export class IndividualReportComponent implements OnInit {
             });
             if (this.testAttendee.testConduct.length === 0)
                 this.numberOfQuestionsAttempted = 0;
-            if (new Date(this.testAttendee.test.endDate) < this.currentDate) {
-                this.isPercentileVisible = true;
-                this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
-                    this.percentile = response.toFixed(2);
-                });
-            }
+
+            this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
+                this.percentile = response.toFixed(2);
+            });
+
             //Gets all the answers given by the test attendee
             this.reportsService.getTestAttendeeAnswers(this.testAttendee.id).subscribe((response) => {
                 this.testAnswers = response;
@@ -146,14 +147,16 @@ export class IndividualReportComponent implements OnInit {
     testFinishStatus() {
         switch (this.testAttendee.report.testStatus) {
             case 0:
-                this.testStatus = 'Completed';
+                this.testStatus = 'Incomplete';
                 break;
             case 1:
-                this.testStatus = 'Auto Submit';
+                this.testStatus = 'Completed';
                 break;
             case 2:
-                this.testStatus = 'Blocked';
+                this.testStatus = 'Expired';
                 break;
+            case 3:
+                this.testStatus = 'Blocked';
         }
     }
 
@@ -211,7 +214,7 @@ export class IndividualReportComponent implements OnInit {
                 });
                 this.reportsService.getCodeSnippetQuestionMarks(this.testAttendee.id, this.testQuestions[question].questionId).subscribe((response) => {
                     this.testQuestions[question].scoreOfCodeSnippetQuestion = response;
-                    if (this.testQuestions[question].scoreOfCodeSnippetQuestion < value.toString()) {
+                    if (+this.testQuestions[question].scoreOfCodeSnippetQuestion < value) {
                         this.testQuestions[question].questionStatus = 3;
                         this.testQuestions[question].isCompilationStatusVisible = false;
                     }
@@ -224,7 +227,10 @@ export class IndividualReportComponent implements OnInit {
                     }
                     else {
                         this.incorrectAnswers++;
-                        this.testQuestions[question].questionStatus = 0;
+                        if (+this.testQuestions[question].scoreOfCodeSnippetQuestion === 0)
+                            this.testQuestions[question].answerStatus = 3;
+                        else
+                            this.testQuestions[question].questionStatus = 0;
                         this.testQuestions[question].isCompilationStatusVisible = true;
                         this.testQuestions[question].compilationStatus = 'Unsuccessful';
                     }
@@ -371,7 +377,7 @@ export class IndividualReportComponent implements OnInit {
         let dataToDownload = document.getElementById('printSectionId');
         let attendeeName = this.testAttendee.firstName + this.testAttendee.lastName;
         let testName = this.testAttendee.test.testName;
-      
+
         let height = dataToDownload.offsetHeight;
         let doc = new jsPDF('p', 'mm', [187, height]);
         let styles = {
@@ -381,7 +387,7 @@ export class IndividualReportComponent implements OnInit {
         doc.text(this.testAttendee.test.testName, 15, 15);
         doc.addHTML(dataToDownload, 0, 20, styles, () => {
             doc.setProperties({
-                title: 'Individual-test-report'
+                title: testName + '_' + attendeeName + '.pdf'
             });
             doc.setFontSize(5);
             doc.save(testName + '_' + attendeeName + '.pdf');
