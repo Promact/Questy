@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <app-tinymce [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required></app-tinymce>
                     <div class="errors-container">
-                        <span *ngIf="isQuestionEmpty && question.touched" class="error-msg">Question field is required</span>
+                        <span *ngIf="question.dirty && question.invalid" class="error-msg">Required</span>
                     </div>
                 </div>
                 <div class="form-group answer-choices" *ngIf="isSingleAnswerQuestion">
