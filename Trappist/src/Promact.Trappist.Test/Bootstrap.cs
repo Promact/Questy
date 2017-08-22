@@ -29,6 +29,7 @@ using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.DomainModel.Models.Test;
 using Microsoft.Extensions.Configuration;
+using Promact.Trappist.Utility.HttpUtil;
 
 namespace Promact.Trappist.Test
 {
@@ -83,6 +84,7 @@ namespace Promact.Trappist.Test
             services.AddScoped<IGlobalUtil, GlobalUtil>();
             services.AddScoped<ITestConductRepository, TestConductRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IHttpService, HttpService>();
             #endregion
 
             #region Mocking
@@ -121,6 +123,12 @@ namespace Promact.Trappist.Test
             var configurationMockObject = configurationMock.Object;
             services.AddScoped(x => configurationMock);
             services.AddScoped(x => configurationMockObject);
+
+            //Mock IHttpService
+            var httpServiceMock = new Mock<IHttpService>();
+            var httpServiceMockObject = httpServiceMock.Object;
+            services.AddScoped(x => httpServiceMock);
+            services.AddScoped(x => httpServiceMockObject);
             #endregion
 
             #region Auto Mapper Configuration

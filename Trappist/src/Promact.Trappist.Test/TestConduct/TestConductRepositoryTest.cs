@@ -17,11 +17,13 @@ using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.GlobalUtil;
+using Promact.Trappist.Utility.HttpUtil;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Xunit;
@@ -40,6 +42,7 @@ namespace Promact.Trappist.Test.TestConduct
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IQuestionRepository _questionRepository;
+        private readonly Mock<IHttpService> _httpService;
         #endregion
         #endregion
 
@@ -53,6 +56,7 @@ namespace Promact.Trappist.Test.TestConduct
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
+            _httpService = _scope.ServiceProvider.GetService<Mock<IHttpService>>();
         }
         #endregion
 
@@ -418,6 +422,69 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.NotNull(testStatus);
 
         }
+
+        [Fact]
+        public async Task ExecuteCodeSnippetAsyncTest()
+        {
+            var testAttendee = InitializeTestAttendeeParameters();
+            // Creating test
+            var test = await CreateTestAsync();
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var categoryToCreate = CreateCategory("Coding");
+            categoryList.Add(categoryToCreate);
+            await _categoryRepository.AddCategoryAsync(categoryToCreate);
+            var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            categoryListAc[0].IsSelect = true;
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
+            var codingQuestion = CreateCodingQuestion(categoryToCreate);
+            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, testAttendee.Email);
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
+            //Creating test questions
+            var questionList = new List<QuestionAC>
+            {
+                codingQuestion
+            };
+            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
+
+            testAttendee.Test = test;
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
+
+            var answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = questionId,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.unanswered
+            };
+
+            //Mocking HttpRequest
+            var result = new Result()
+            {
+                CompilationTime = 1,
+                CompilerOutput = null,
+                CyclicMetrics = 0,
+                ExitCode = 0,
+                MemoryConsumed = 1,
+                Output = "4",
+                RunTime = 1
+            };
+            var serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            
+            _httpService.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>())).Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
+                Content = new StringContent(serializedResult, System.Text.Encoding.UTF8, "application/json")
+            }));
+            //End of Mocking
+
+            var codeRespone = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, answer);
+
+            Assert.NotNull(codeRespone);
+        }
         #endregion
 
         #region Private Methods
@@ -512,6 +579,47 @@ namespace Promact.Trappist.Test.TestConduct
                 }
             };
             return questionAC;
+        }
+
+        /// <summary>
+        /// Creates Coding Question
+        /// </summary>
+        /// <returns>Created CodingQuestion object</returns>
+        private QuestionAC CreateCodingQuestion(DomainModel.Models.Category.Category categoryToCreate)
+        {
+            QuestionAC codingQuestion = new QuestionAC
+            {
+                Question = new QuestionDetailAC
+                {
+                    QuestionDetail = "<h1>Write a program to add two number</h1>",
+                    CategoryID = categoryToCreate.Id,
+                    DifficultyLevel = DifficultyLevel.Easy,
+                    QuestionType = QuestionType.Programming
+                },
+                CodeSnippetQuestion = new CodeSnippetQuestionAC
+                {
+                    CheckCodeComplexity = true,
+                    CheckTimeComplexity = true,
+                    RunBasicTestCase = true,
+                    RunCornerTestCase = false,
+                    RunNecessaryTestCase = false,
+                    LanguageList = new String[] { "Java", "C" },
+                    CodeSnippetQuestionTestCases = new List<CodeSnippetQuestionTestCases>()
+                    {
+                        new CodeSnippetQuestionTestCases()
+                        {
+                            TestCaseTitle = "Necessary check",
+                            TestCaseDescription = "This case must be successfuly passed",
+                            TestCaseMarks = 10.00,
+                            TestCaseType = TestCaseType.Necessary,
+                            TestCaseInput = "2+2",
+                            TestCaseOutput = "4",
+                        }
+                    }
+                },
+                SingleMultipleAnswerQuestion = null
+            };
+            return codingQuestion;
         }
         #endregion
     }
