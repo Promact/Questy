@@ -28,7 +28,8 @@ export default {
 
 			namedExports: {
                 'node_modules/chart.js/dist/Chart.js': ['chart.js'],
-                'node_modules/ng2-charts/index.js': ['ChartsModule']
+                'node_modules/ng2-charts/index.js': ['ChartsModule'],
+                'node_modules/exceljs/dist/exceljs.js': ['Workbook']
 			}
         }),
 		uglify()
