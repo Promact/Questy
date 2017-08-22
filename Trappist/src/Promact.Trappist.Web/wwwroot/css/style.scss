@@ -65,6 +65,14 @@ h6, .h6 {
   font-style: italic;
 }
 
+a {
+  cursor: pointer;
+}
+
+p {
+  word-break: break-all;
+}
+
 .tags {
   display: inline-block;
   font-size: 11px;
