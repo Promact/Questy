@@ -295,7 +295,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 code.Input = testCase.TestCaseInput;
                 var result = await ExecuteCodeAsync(code);
 
-                if (result.ExitCode == -34494 || result.CompilerOutput != "")//EXITCODE if code run fails
+                if (result.CompilerOutput != "")//EXITCODE if code run fails
                 {
                     errorEncounter = true;
                     errorMessage = result.CompilerOutput;
