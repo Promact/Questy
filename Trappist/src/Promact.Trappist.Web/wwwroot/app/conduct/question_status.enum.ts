@@ -7,6 +7,5 @@
 export enum AnswerStatus {
     correct,
     incorrect,
-    unanswered,
-    answered
+    unanswered
 }
