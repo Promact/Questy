@@ -55,8 +55,8 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Conduct(string link)
         {
-            var userIp = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            if (!string.IsNullOrWhiteSpace(link) && await _testConduct.IsTestLinkExistForTestConductionAsync(link, userIp))
+             var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            if (!string.IsNullOrWhiteSpace(link) && await _testConduct.IsTestLinkExistForTestConductionAsync(link, ipAddress))
             {
                 ViewBag.Link = link;
                 return View();
@@ -67,6 +67,8 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public IActionResult PageNotFound()
         {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            ViewBag.IpAddress = ipAddress;
             return View();
         }
         #endregion
