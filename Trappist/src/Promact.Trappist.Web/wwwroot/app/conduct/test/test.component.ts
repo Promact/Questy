@@ -316,28 +316,30 @@ export class TestComponent implements OnInit {
                 }
             });
 
-            this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
-                let spanTime = response;
-                let spanTimeInSeconds = spanTime * 60;
-                this.seconds -= spanTime * 60;
-                this.isTestReady = true;
-            });
+            this.getElapsedTime();
 
             this.navigateToQuestionIndex(0);
 
             this.timeOutCounter = this.TIMEOUT_TIME;
         }, err => {
-            this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
-                let spanTime = response;
-                let spanTimeInSeconds = spanTime * 60;
-                this.seconds -= spanTime * 60;
-                this.isTestReady = true;
-            });
+            this.getElapsedTime();
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
         });
 
+    }
+
+    /**
+     * Fetches the elapsed time from the server
+     */
+    getElapsedTime() {
+        this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
+            let spanTime = response;
+            let spanTimeInSeconds = Math.round(spanTime * 60);
+            this.seconds -= spanTimeInSeconds;
+            this.isTestReady = true;
+        });
     }
 
     /**
@@ -658,7 +660,7 @@ export class TestComponent implements OnInit {
         this.seconds = this.seconds > 0 ? this.seconds - 1 : 0;
         this.timeString = this.secToTimeString(this.seconds);
 
-        if (this.seconds === this.WARNING_TIME) {
+        if (this.seconds <= this.WARNING_TIME && !this.timeWarning) {
             this.timeWarning = true;
             this.openSnackBar(this.WARNING_MSG);
         }

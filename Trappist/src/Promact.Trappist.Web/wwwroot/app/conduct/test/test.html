@@ -17,8 +17,8 @@
                 <div class="display-table-cell text-right">
                     <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
                     <br class="hidden-lg" />
-                    <h5 class="mlr10" [ngClass]="{'warning':timeWarning}">Time Remaining:</h5>
-                    <h2 class="mt3">{{timeString}}</h2>
+                    <h5 class="mlr10">Time Remaining:</h5>
+                    <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
                 </div>
             </div>
         </div>
