@@ -1,7 +1,8 @@
 ﻿@{
     Layout = null;
-}
 
+}
+<h3>@ViewBag.IpAddress</h3>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,47 +26,57 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Open Sans', sans-serif;
             font-size: 13px;
             color: #4D4651;
             height: 100vh;
         }
+
         .page-not-found {
             position: relative;
             top: 50%;
             margin-top: -150px;
             text-align: center;
         }
-        .page-not-found em {
-            font-size: 120px;
-        }
-        .page-not-found h1 {
-            font-size: 50px;
-            font-weight: 600;
-            margin: 10px 0;
-        }
-        .page-not-found h2 {
-            color: #8c8c8c;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .page-not-found p {
-            margin-bottom: 5px;
-        }
-        .page-not-found p a {
-            text-decoration: none;
-            color: #01B9BB;
-            font-weight: 600;
-        }
-        .page-not-found p a:hover {
-            text-decoration: underline;
-        }
+
+            .page-not-found em {
+                font-size: 120px;
+            }
+
+            .page-not-found h1 {
+                font-size: 50px;
+                font-weight: 600;
+                margin: 10px 0;
+            }
+
+            .page-not-found h2 {
+                color: #8c8c8c;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .page-not-found p {
+                margin-bottom: 5px;
+            }
+
+                .page-not-found p a {
+                    text-decoration: none;
+                    color: #01B9BB;
+                    font-weight: 600;
+                }
+
+                    .page-not-found p a:hover {
+                        text-decoration: underline;
+                    }
     </style>
 </head>
 
 <body>
+
     <div class="page-not-found">
+        <h3>@ViewBag.IpAddress</h3>
         <em class="material-icons">sentiment_very_dissatisfied</em>
         <h1>404</h1>
         <h2>Page not found</h2>
