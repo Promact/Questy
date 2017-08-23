@@ -159,6 +159,7 @@ export class TestSummaryComponent implements OnInit {
      * Called when end test button is clicked
      */
     endTestButtonClicked() {
+        this.loader = true;
         this.endTest(TestStatus.completedTest);
     }
 
@@ -170,7 +171,8 @@ export class TestSummaryComponent implements OnInit {
         this.conductService.getTestAttendeeByTestId(testId, this.isTestPreview).subscribe((response) => {
             this.testAttendee = response;
             this.getSummaryDetailsByAttendeeId(this.testAttendee.id);
-            this.getCandidateInfoToResumeTest();
+            if (this.test.allowTestResume === AllowTestResume.Supervised)
+                this.getCandidateInfoToResumeTest();
             this.timeLeftOfTest(this.testAttendee.id);
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
@@ -248,12 +250,15 @@ export class TestSummaryComponent implements OnInit {
     */
     private endTest(testStatus: TestStatus) {
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                this.router.navigate(['test-end'], { replaceUrl: true });
+            this.router.navigate(['test-end'], { replaceUrl: true });
+            this.loader = false;
         });
     }
     endYourTest() {
+        this.loader = true;
         this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
             this.router.navigate(['test-end'], { replaceUrl: true });
+            this.loader = false;
         });
     }
 }
