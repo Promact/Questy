@@ -90,6 +90,8 @@ export class TestComponent implements OnInit {
     ' System.out.println("Hello World"); // prints Hello World\n' +
     ' }\n' +
     '}\n';
+    //Temporary solution for setting coding language on resume
+    private CODING_LANGUAGES: string[] = ['Java', 'Cpp', 'C'];
     private defaultSnackBarDuration: number = 3000;
 
     constructor(private router: Router,
@@ -362,7 +364,7 @@ export class TestComponent implements OnInit {
             this.codeResult = '';
             if (codingAnswer !== undefined) {
                 this.codeAnswer = codingAnswer.code.source;
-                this.selectLanguage = codingAnswer.code.language;
+                this.selectLanguage = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];
             } else {
                 this.selectLanguage = this.languageMode[0];
                 this.changeText();
@@ -450,7 +452,7 @@ export class TestComponent implements OnInit {
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
         if (index !== -1)
             this.testAnswers.splice(index, 1);
-        
+
         //Add new answer
         let testAnswer = new TestAnswer();
         testAnswer.questionId = testQuestion.question.question.id;
@@ -467,12 +469,10 @@ export class TestComponent implements OnInit {
                 testAnswer.questionStatus = QuestionStatus.answered;
 
                 this.questionStatus = QuestionStatus.answered;
+            } else if (testQuestion.questionStatus === QuestionStatus.selected) {
+                testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
-                if (testQuestion.questionStatus === QuestionStatus.selected) {
-                    testAnswer.questionStatus = QuestionStatus.unanswered;
-                } else {
-                    testAnswer.questionStatus = testQuestion.questionStatus;
-                }
+                testAnswer.questionStatus = testQuestion.questionStatus;
             }
         } else {
             testAnswer.code.source = this.codeAnswer;
@@ -490,7 +490,7 @@ export class TestComponent implements OnInit {
             let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
             this.markAsAnswered(questionIndex);
         }
-        else
+        else {
             this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
                 this.isTestReady = true;
                 let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
@@ -503,6 +503,7 @@ export class TestComponent implements OnInit {
             }, err => {
                 this.isTestReady = true;
             });
+        }
     }
 
     /**
@@ -654,7 +655,7 @@ export class TestComponent implements OnInit {
      * Counts down time
      */
     private countDown() {
-        this.seconds = this.seconds > 0 ? this.seconds - 1: 0;
+        this.seconds = this.seconds > 0 ? this.seconds - 1 : 0;
         this.timeString = this.secToTimeString(this.seconds);
 
         if (this.seconds === this.WARNING_TIME) {
