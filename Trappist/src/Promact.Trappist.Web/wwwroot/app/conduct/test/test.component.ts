@@ -671,7 +671,7 @@ export class TestComponent implements OnInit {
         let mm = Math.floor((seconds - hh * 3600) / 60);
         let ss = Math.floor(seconds - (hh * 3600 + mm * 60));
         return (hh < 10 ? '0' + hh : hh) + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss);
-    }
+    } 
 
     /**
      * Counts down time
@@ -733,11 +733,11 @@ export class TestComponent implements OnInit {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
-                window.close();
+                this.router.navigate(['test-end']);
             });
         }
         else
-            window.close();
+            this.router.navigate(['test-end']);
     }
 
     /**
