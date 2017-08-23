@@ -101,7 +101,7 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div *ngIf="question.question?.questionType !=2">
               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1 && !hideSign">
                 <div class="score negative">Score: -{{incorrectmarks}}</div>
               </div>
@@ -120,7 +120,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==0">
                   <div class="score positive">Score: +{{question.scoreOfCodeSnippetQuestion}}</div>
                 </div>
-               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==3">
+               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1">
                  <div class="score negative">Score: 0</div>
                </div>
                <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==3">
