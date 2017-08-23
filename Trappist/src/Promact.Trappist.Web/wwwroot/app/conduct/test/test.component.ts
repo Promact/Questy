@@ -65,6 +65,7 @@ export class TestComponent implements OnInit {
     isCloseWindow: boolean;
     isConnectionLoss: boolean;
     timeWarning: boolean;
+    testEnded: boolean;
 
 
     private seconds: number;
@@ -122,6 +123,7 @@ export class TestComponent implements OnInit {
         this.codeResult = '';
         this.showResult = false;
         this.timeWarning = false;
+        this.testEnded = false;
     }
 
     ngOnInit() {
@@ -229,7 +231,18 @@ export class TestComponent implements OnInit {
             this.resumable = this.test.allowTestResume;
 
             if (this.resumable === AllowTestResume.Supervised) {
-                window.onbeforeunload = (ev) => { this.endTest(TestStatus.completedTest); };
+                window.onbeforeunload = (ev) => {
+                    if (!this.testEnded) {
+                        let questionIndex = this.testAnswers.findIndex(x => x.questionId === this.questionIndex);
+                        if (questionIndex < 0) {
+                            let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                            ev.returnValue = dialogText;
+                            return dialogText;
+                        } else {
+                            this.closeWindow(TestStatus.completedTest);
+                        }
+                    }
+                };
             }
 
             if (this.testTypePreview)
@@ -712,6 +725,7 @@ export class TestComponent implements OnInit {
     private closeWindow(testStatus: TestStatus) {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                this.testEnded = true;
                 window.close();
             });
         }
