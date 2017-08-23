@@ -140,7 +140,11 @@ export class TestSummaryComponent implements OnInit {
      * Takes the student back to the test on clicking the back to test button
      */
     startTest() {
-        this.clockInterval.unsubscribe();
+
+        //Unsubscribe the clock once the test resumes
+        if (!this.isTestClosedUnConditionally)
+            this.clockInterval.unsubscribe();
+
         this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
             this.testLogs = response;
         });
