@@ -85,7 +85,17 @@ export class TestSettingsComponent implements OnInit {
             let magicString = this.testDetails.link;
             let domain = window.location.origin;
             this.testLink = domain + '/conduct/' + magicString;
+
+            this.testDetails.startDate = this.toDateString(new Date(<string>this.testDetails.startDate));
+            this.testDetails.endDate = this.toDateString(new Date(<string>this.testDetails.endDate));
         });
+    }
+
+    private toDateString(date: Date): string {
+        return (date.getFullYear().toString() + '-'
+            + ("0" + (date.getMonth() + 1)).slice(-2) + '-'
+            + ("0" + (date.getDate())).slice(-2))
+            + 'T' + date.toTimeString().slice(0, 5);
     }
 
     /**
@@ -103,7 +113,7 @@ export class TestSettingsComponent implements OnInit {
      * @param endDate contains ths the value of the field End Date and Time
      */
     isEndDateValid(endDate: Date) {
-        if (new Date(this.testDetails.startDate) >= new Date(endDate)) {
+        if (new Date(<string>this.testDetails.startDate) >= new Date(endDate)) {
             this.validEndDate = true;
             this.validStartDate = false;
         }
@@ -115,8 +125,8 @@ export class TestSettingsComponent implements OnInit {
      * Checks whether the Start Date selected is valid or not
      */
     isStartDateValid() {
-        this.validStartDate = new Date(this.testDetails.startDate) < this.currentDate ? true : false;
-        this.validEndDate = new Date(this.testDetails.startDate) >= new Date(this.testDetails.endDate) ? true : false;
+        this.validStartDate = new Date(<string>this.testDetails.startDate) < this.currentDate ? true : false;
+        this.validEndDate = new Date(<string>this.testDetails.startDate) >= new Date(<string>this.testDetails.endDate) ? true : false;
     }
 
     /**
@@ -132,6 +142,10 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
+
+        testObject.startDate = new Date(<string>testObject.startDate).toISOString();
+        testObject.endDate = new Date(<string>testObject.endDate).toISOString();
+
         this.testService.updateTestById(id, testObject).subscribe((response) => {
             this.loader = true;
             let snackBarRef = this.snackbarRef.open('Saved changes successfully.', 'Dismiss', {
@@ -168,7 +182,7 @@ export class TestSettingsComponent implements OnInit {
             });
             if (isQuestionAdded) {
                 this.isLaunchedAlready = true;
-                this.testDetails.isLaunched = new Date(this.testDetails.startDate).getTime() <= Date.now();
+                this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.ngOnInit();
                     this.openSnackBar('Your test has been launched successfully.');
@@ -207,7 +221,7 @@ export class TestSettingsComponent implements OnInit {
     */
     resumeTest() {
         this.testDetails.isPaused = false;
-        this.testDetails.isLaunched = new Date(this.testDetails.startDate).getTime() <= Date.now();
+        this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
         this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
             if (response) {
                 this.ngOnInit();

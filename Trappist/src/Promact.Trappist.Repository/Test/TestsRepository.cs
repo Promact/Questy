@@ -265,22 +265,21 @@ namespace Promact.Trappist.Repository.Tests
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
-
-            string currentDate = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-            DateTime date = DateTime.ParseExact(currentDate, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+            
+            DateTime currentDate = DateTime.UtcNow;
             string defaultMessage = _stringConstants.WarningMessage;
             int defaultTime = 5;
             int defaultDuration = 60;
             int defaultCorrectMarks = 1;
-            DateTime defaultEndDate = date.AddDays(1);
+            DateTime defaultEndDate = currentDate.AddDays(1);
             if (testAcObject != null)
             {
 
                 await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
                 testAcObject.TestIpAddress = testIpAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
-                testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? date : testAcObject.StartDate; //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
-                testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : testAcObject.EndDate; //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate,DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : DateTime.SpecifyKind(testAcObject.EndDate, DateTimeKind.Utc); //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
                 testAcObject.WarningTime = testAcObject.WarningTime == null ? defaultTime : testAcObject.WarningTime;
                 testAcObject.WarningMessage = testAcObject.WarningMessage == null ? defaultMessage : testAcObject.WarningMessage;

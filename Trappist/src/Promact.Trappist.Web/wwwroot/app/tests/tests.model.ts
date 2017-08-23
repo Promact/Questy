@@ -13,8 +13,8 @@ export class Test {
     id: number;
     testName: string;
     link: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: Date | string;
+    endDate: Date | string;
     duration: number;
     warningTime: number;
     warningMessage: string;
