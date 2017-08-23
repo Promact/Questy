@@ -445,7 +445,7 @@ export class TestComponent implements OnInit {
      * Call API to add Answer to the Database
      * @param testQuestion: TestQuestion object
      */
-    addAnswer(testQuestion: TestQuestions, _callback?:any) {
+    addAnswer(testQuestion: TestQuestions, _callback?: any) {
         //Remove previous question's answer from the array 
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
         if (index !== -1)
@@ -498,7 +498,8 @@ export class TestComponent implements OnInit {
                     this.markAsAnswered(questionIndex);
                 }
                 //call callback method if provided
-                _callback();
+                if (_callback)
+                    _callback();
             }, err => {
                 this.isTestReady = true;
             });
