@@ -228,7 +228,7 @@ export class IndividualReportComponent implements OnInit {
                     else {
                         this.incorrectAnswers++;
                         if (+this.testQuestions[question].scoreOfCodeSnippetQuestion === 0)
-                            this.testQuestions[question].answerStatus = 3;
+                            this.testQuestions[question].answerStatus = 1;
                         else
                             this.testQuestions[question].questionStatus = 0;
                         this.testQuestions[question].isCompilationStatusVisible = true;
