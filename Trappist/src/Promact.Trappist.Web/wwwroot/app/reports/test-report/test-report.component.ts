@@ -8,13 +8,13 @@ import { ConductService } from '../../conduct/conduct.service';
 import { TestInstructions } from '../../conduct/testInstructions.model';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { TestAttendeeRank } from './testattendeerank';
-import * as Excel from 'exceljs/dist/exceljs.js';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 
 declare let jsPDF: any;
 declare let saveAs: any;
+declare let ExcelJS: any;
 
 @Component({
     moduleId: module.id,
@@ -361,7 +361,7 @@ export class TestReportComponent implements OnInit {
         this.loader = true;
         let testName = this.test.testName;
         let space = ' ';
-        let workBook = new Excel.Workbook();
+        let workBook = new ExcelJS.Workbook();
         workBook.views = [ {
             x: 0, y: 0, width: 10000, height: 20000,
             firstSheet: 0, visibility: 'visible'
