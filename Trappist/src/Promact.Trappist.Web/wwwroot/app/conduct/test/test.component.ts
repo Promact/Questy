@@ -128,7 +128,6 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
-        //window.addEventListener('beforeunload', (event) => { this.isCloseWindow = true; this.saveTestLogs(); });
         window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
         this.getTestByLink(this.testLink);
     }
