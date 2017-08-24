@@ -81,15 +81,10 @@ export class TestComponent implements OnInit {
     private ALERT_CLEAR: string = 'You can\'t clear already answered question.';
     private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus.';
     private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost.';
-    private JAVA_CODE: string = 'class Program {//Do not change class name\n' +
-    '\n' +
-    ' /* This is my first java program.\n' +
-    '* This will print ' + 'Hello World' + ' as the output\n' +
-    ' */\n' +
-    '\n' +
-    ' public static void main(String[]args) {\n' +
-    ' System.out.println("Hello World"); // prints Hello World\n' +
-    ' }\n' +
+    private JAVA_CODE: string = 'import java.io.*;\nimport java.util.*;\nclass Program {//Do not change class name\n' +
+    '   public static void main(String[] args) {\n' +
+    '       System.out.println("Hello World");\n' +
+    '   }\n' +
     '}\n';
     //Temporary solution for setting coding language on resume
     private CODING_LANGUAGES: string[] = ['Java', 'Cpp', 'C'];
@@ -173,14 +168,11 @@ export class TestComponent implements OnInit {
         if (this.selectLanguage.toLowerCase() === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.codeAnswer = [
-                '/*  Example Program For Hello World In C++*/'
-                , ' // Header Files'
-                , ' #include <iostream>'
-                ,
+                 ' #include <iostream>'
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
-                ,
+                , '     cout << "Hello World!";'
                 , '}'
             ].join('\n');
         }
@@ -189,11 +181,10 @@ export class TestComponent implements OnInit {
                 ' #include <stdio.h>'
                 , 'int main()'
                 , '{'
-                , '// printf() displays the string inside quotation'
-                , 'printf("Hello, World!");'
-                , 'return 0;'
+                , '     printf("Hello, World!");'
+                , '     return 0;'
                 , '}'
-            ].join('\n\n');
+            ].join('\n');
             this.selectedMode = 'c_cpp';
         }
     }
