@@ -33,11 +33,13 @@ export class QuestionsProgrammingComponent implements OnInit {
     isFormSubmitted: boolean;
     isQuestionEdited: boolean;
     isQuestionDuplicated: boolean;
+    isDefaultTestCaseAdded: boolean;
+    isCkeditorDirtly: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
     //To enable enum testCaseType in template 
     testCaseType: TestCaseType;
-    questionId: number;
+    questionId: number;    
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
@@ -61,6 +63,9 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
+        this.isDefaultTestCaseAdded = true;
+        this.isQuestionEmpty = true;
+        this.isCkeditorDirtly = false;
     }
 
     ngOnInit() {
@@ -126,6 +131,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         testCase.testCaseType = TestCaseType.Default;
         testCase.id = this.findMaxId() + 1;
         this.testCases.push(testCase);
+        this.isDefaultTestCaseAdded = true;
     }
 
     /**
@@ -152,6 +158,11 @@ export class QuestionsProgrammingComponent implements OnInit {
         }
     }
 
+    onFocusCkeditor(event) {
+        if (this.questionModel.question.questionDetail)
+            this.questionModel.question.questionDetail = this.questionModel.question.questionDetail.replace(/<p>|&nbsp;|<\/p>/gi, '').trim(); 
+        this.isCkeditorDirtly = true;
+    }
     /**
      * Gets all the coding languages
      */
@@ -224,10 +235,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === category).id;
     }
 
-    onChange(questionName: string) {
-        this.isQuestionEmpty = questionName.replace(/<p>|&nbsp;|<\/p>/gi, '').trim() === '';
-    }
-
     /**
      * Adds difficulty to the Question
      * @param difficulty : Difficulty level to select
@@ -256,12 +263,18 @@ export class QuestionsProgrammingComponent implements OnInit {
         }
     }
 
+    private isTestCaseValid() {
+        return this.testCases.some(testcase => testcase.testCaseType === TestCaseType.Default);
+    }
+
     /**
      * Sends post request to add code snippet question
      * @param isCodeSnippetFormValid : Validation status of code snippet form
      */
     addCodingQuestion(isCodeSnippetFormValid: boolean) {
-        if (isCodeSnippetFormValid && !this.nolanguageSelected) {
+        this.isDefaultTestCaseAdded = this.isTestCaseValid();
+
+        if (isCodeSnippetFormValid && !this.nolanguageSelected && this.isDefaultTestCaseAdded) {
             //Lock the form. Load spinner.
             this.isFormSubmitted = true;
             this.questionModel.question.questionType = QuestionType.codeSnippetQuestion;
