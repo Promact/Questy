@@ -90,8 +90,8 @@ export class TestReportComponent implements OnInit {
 
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
+        this.loader = true;
         this.getTestName();
-        this.getAllTestCandidates();
         this.domain = window.location.origin;
     }
 
@@ -105,11 +105,14 @@ export class TestReportComponent implements OnInit {
                 this.testInstruction = response;
                 this.totalNoOfTestQuestions = this.testInstruction.totalNumberOfQuestions;
             });
-            this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
-                this.reportQuestionDetails = res;
-            });
+        });
+        this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
+            this.reportQuestionDetails = res;
+            this.getAllTestCandidates();
+            this.loader = false;
         });
     }
+
 
     /**
      * Fetches all the candidates of any particular test
@@ -476,11 +479,13 @@ export class TestReportComponent implements OnInit {
                 });
             }
         });
-        this.loader = false;
-        workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
-            let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
-            saveAs(blob, testName + '_test_report.xlsx');
-        });
+        setTimeout(() => {
+            workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
+                let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
+                saveAs(blob, testName + '_test_report.xlsx');
+            });
+            this.loader = false;
+        }, 5000); 
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
