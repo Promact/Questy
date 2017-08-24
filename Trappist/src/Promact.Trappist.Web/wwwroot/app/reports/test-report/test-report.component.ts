@@ -12,7 +12,7 @@ import { TestAttendeeRank } from './testattendeerank';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
-import { Report } from "../report";
+import { Report } from '../report';
 
 
 declare let jsPDF: any;
