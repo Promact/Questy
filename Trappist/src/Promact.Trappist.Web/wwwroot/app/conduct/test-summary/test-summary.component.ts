@@ -11,7 +11,7 @@ import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
-
+import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
@@ -149,15 +149,10 @@ export class TestSummaryComponent implements OnInit {
         this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
             this.testLogs = response;
         });
-        this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe(response => {
-        });
-        let url = window.location.pathname;
-        let testUrl = url.substring(0, url.indexOf('/test-summary')) + '/test';
-        let newWindow = window.open(testUrl, 'name', 'height=' + screen.height + ', width = ' + screen.width + 'scrollbars=1,status=0,titlebar=0,toolbar=0,resizable=1,location=0');
-        newWindow.location.href = testUrl;
-        newWindow.onunload = () => {
-            window.location.href = url;
-        };
+        this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe();
+
+        //Back to test
+        this.router.navigate(['test']);
     }
 
     /**
