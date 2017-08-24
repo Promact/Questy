@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestStatus } from '../../reports/enum-test-state';
@@ -12,6 +12,7 @@ import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
 import * as screenfull from 'screenfull';
+import { Report } from "../../reports/report";
 
 @Component({
     moduleId: module.id,
@@ -72,6 +73,9 @@ export class TestSummaryComponent implements OnInit {
         this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test-summary'));
         this.getTotalQuestions();
         this.getTestDetails(this.magicString);
+        Observable.interval(3000).subscribe(x => {
+            this.getCandidateInfoToResumeTest();
+        });
     }
 
     /**
@@ -190,15 +194,14 @@ export class TestSummaryComponent implements OnInit {
                 });
                 this.disableButton = true;
             }
-
         });
     }
     /**
      * checks if test has been allowed to resume
      */
     getCandidateInfoToResumeTest() {
-        this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe(response => {
-            this.isTestResume = response;
+        this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe((response: Report) => {
+            this.isTestResume = response.isAllowResume;
         });
     }
 

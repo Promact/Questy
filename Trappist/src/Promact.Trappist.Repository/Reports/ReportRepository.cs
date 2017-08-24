@@ -33,9 +33,13 @@ namespace Promact.Trappist.Repository.Reports
 
         }
 
-        public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
+        public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id, int attendeeId)
         {
-            return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
+            var testAttendeeList = _dbContext.TestAttendees.Where(x => x.TestId == id);
+            if (attendeeId == 0)
+                return await testAttendeeList.Include(x => x.Report).ToListAsync();
+            else
+                return await testAttendeeList.Where(t => t.Id > attendeeId).Include(x => x.Report).ToListAsync();
         }
 
         public async Task SetStarredCandidateAsync(int id)
@@ -336,10 +340,15 @@ namespace Promact.Trappist.Repository.Reports
             _dbContext.Report.Update(reportObject);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<bool> GetWindowCloseAsync(int attendeeId)
+        public async Task<Report> GetWindowCloseAsync(int attendeeId)
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            return reportObject.IsAllowResume;
+            return reportObject;
+        }
+
+        public async Task<List<Report>> GetAttendeeRequestResume()
+        {
+            return await _dbContext.Report.Where(x => x.IsTestPausedUnWillingly).ToListAsync();
         }
 
         public async Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId)

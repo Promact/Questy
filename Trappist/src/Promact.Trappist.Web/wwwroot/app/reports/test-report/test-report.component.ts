@@ -2,6 +2,7 @@
 import { ReportService } from '../report.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
+import { Observable } from 'rxjs/Rx';
 import { TestStatus } from '../enum-test-state';
 import { Test } from '../../tests/tests.model';
 import { ConductService } from '../../conduct/conduct.service';
@@ -11,6 +12,8 @@ import { TestAttendeeRank } from './testattendeerank';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
+import { Report } from "../report";
+
 
 declare let jsPDF: any;
 declare let saveAs: any;
@@ -26,8 +29,9 @@ export class TestReportComponent implements OnInit {
     routeForIndividualTestReport: any;
     showSearchInput: boolean;
     searchString: string;
+    reportArray: Report[] = [];
     testAttendeeArray: TestAttendee[];
-    attendeeArray: TestAttendee[];
+    attendeeArray: TestAttendee[] = [];
     sortedAttendeeArray: TestAttendee[];
     testId: number;
     starredCandidateArray: string[];
@@ -60,10 +64,10 @@ export class TestReportComponent implements OnInit {
     testAttendeeRank: TestAttendeeRank[];
     testLogs: TestLogs[] = [];
     isAnyTestResume: boolean;
+    attendeeId: number;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
-        this.attendeeArray = new Array<TestAttendee>();
         this.sortedAttendeeArray = new Array<TestAttendee>();
         this.testCompletionStatus = '0';
         this.selectedTestStatus = TestStatus.allCandidates;
@@ -81,6 +85,7 @@ export class TestReportComponent implements OnInit {
         this.isAnyCandidateSelected = false;
         this.maxScore = 0;
         this.maxDuration = 0;
+        this.attendeeId = 0;
         this.totalNoOfTestQuestions = 0;
         this.attendeeRank = 0;
         this.testInstruction = new TestInstructions();
@@ -93,6 +98,10 @@ export class TestReportComponent implements OnInit {
         this.loader = true;
         this.getTestName();
         this.domain = window.location.origin;
+        Observable.interval(3000).subscribe(x => {
+            this.getAllTestCandidates();
+            this.getTestReportsUpdate();
+        });
     }
 
     /**
@@ -112,26 +121,38 @@ export class TestReportComponent implements OnInit {
         });
     }
 
-
+    getTestReportsUpdate() {
+        this.reportService.getAttendeeResumeTestRequest().subscribe(response => {
+            this.reportArray = response;
+            this.testAttendeeArray.filter(x => {
+                this.reportArray.forEach(z => {
+                    if (x.id === z.testAttendeeId)
+                        x.report = z;
+                });
+            });
+        });
+    }
     /**
      * Fetches all the candidates of any particular test
      */
     getAllTestCandidates() {
-        this.reportService.getAllTestAttendees(this.testId).subscribe((attendeeList) => {
-            this.attendeeArray = attendeeList;
-            this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
-            this.attendeeArray.forEach(x => {
-                if (x.report !== null)
-                    this.testAttendeeArray.push(x);
-            });
-            this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
-            this.attendeeArray = this.testAttendeeArray;
-            this.isAnyCandidateExist = this.attendeeArray.some(x => x.report !== null);
-            [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
-            this.countAttendees();
+        //this.loader = true;
+        if (this.attendeeArray.length !== 0)
+            this.attendeeId = this.attendeeArray[this.attendeeArray.length - 1].id;
+        this.reportService.getAllTestAttendees(this.testId, this.attendeeId).subscribe((attendeeList) => {
+            if (attendeeList !== null) {
+                this.attendeeArray = this.attendeeArray.concat(attendeeList);
+                this.testAttendeeArray = this.attendeeArray.filter(x => x.report !== null);
+                this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
+                this.attendeeArray = this.testAttendeeArray;
+                this.isAnyCandidateExist = this.attendeeArray.length !== 0;
+                [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
+                this.countAttendees();
+            }
             this.loader = false;
         });
     }
+
 
     /**
      * Sets all the candidates as starred candidates

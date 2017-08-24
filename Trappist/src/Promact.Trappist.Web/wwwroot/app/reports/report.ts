@@ -7,5 +7,7 @@ export class Report {
     timeTakenByAttendee: number;
     testStatus: TestStatus;
     isTestPausedUnWillingly: boolean;
+    isAllowResume: boolean;
+    testAttendeeId: number;
 }
 

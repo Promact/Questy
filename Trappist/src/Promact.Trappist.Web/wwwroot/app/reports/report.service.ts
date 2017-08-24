@@ -14,8 +14,8 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/testName' + '/' + testId);
     }
 
-    getAllTestAttendees(testId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + testId);
+    getAllTestAttendees(testId: number, attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + testId + '/' + attendeeId);
     }
 
     setStarredCandidate(attendeeId: number) {
@@ -98,6 +98,11 @@ export class ReportService {
     }
     getInfoResumeTest(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
+    }
+
+    getAttendeeResumeTestRequest() {
+
+        return this.httpService.get(this.reportsApiUrl + '/getResumeTestRequest');
     }
 
     /**
