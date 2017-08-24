@@ -479,13 +479,11 @@ export class TestReportComponent implements OnInit {
                 });
             }
         });
-        setTimeout(() => {
-            workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
-                let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
-                saveAs(blob, testName + '_test_report.xlsx');
-            });
-            this.loader = false;
-        }, 5000); 
+        workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
+            let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
+            saveAs(blob, testName + '_test_report.xlsx');
+        });
+        this.loader = false;
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
