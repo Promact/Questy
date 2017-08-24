@@ -128,7 +128,7 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
-        window.addEventListener('beforeunload', (event) => { this.isCloseWindow = true; this.saveTestLogs(); });
+        //window.addEventListener('beforeunload', (event) => { this.isCloseWindow = true; this.saveTestLogs(); });
         window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
         this.getTestByLink(this.testLink);
     }
@@ -232,15 +232,11 @@ export class TestComponent implements OnInit {
 
             if (this.resumable === AllowTestResume.Supervised) {
                 window.onbeforeunload = (ev) => {
+                    this.saveTestLogs();
                     if (!this.testEnded) {
-                        let questionIndex = this.testAnswers.findIndex(x => x.questionId === this.questionIndex);
-                        if (questionIndex < 0) {
                             let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
                             ev.returnValue = dialogText;
-                            return dialogText;
-                        } else {
-                            this.closeWindow(TestStatus.completedTest);
-                        }
+                            return dialogText;                        
                     }
                 };
             }
@@ -733,11 +729,11 @@ export class TestComponent implements OnInit {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
-                this.router.navigate(['test-end']);
+                this.router.navigate(['test-summary'], { replaceUrl: true });
             });
         }
         else
-            this.router.navigate(['test-end']);
+            this.router.navigate(['test-summary'], { replaceUrl: true });
     }
 
     /**

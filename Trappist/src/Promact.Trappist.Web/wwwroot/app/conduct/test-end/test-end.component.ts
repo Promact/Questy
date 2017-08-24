@@ -1,6 +1,4 @@
 ﻿import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
@@ -9,14 +7,7 @@ import * as screenfull from 'screenfull';
 })
 export class TestEndComponent {
 
-    constructor(public router:Router) {
+    constructor() {
 
-    }
-
-    public closeTest() {
-        if (screenfull.enabled) {
-            screenfull.toggle();
-        }
-        this.router.navigate(['test-summary']);
     }
 }

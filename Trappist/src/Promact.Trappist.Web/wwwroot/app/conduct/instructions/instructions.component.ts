@@ -52,8 +52,6 @@ export class InstructionsComponent implements OnInit {
     }
 
     startTest() {
-        let url = window.location.pathname;
-        let testUrl = url.substring(0, url.indexOf('/instructions')) + '/test';
         if (screenfull.enabled) {
             screenfull.toggle();
         }
