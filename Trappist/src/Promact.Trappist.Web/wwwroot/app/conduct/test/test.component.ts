@@ -151,10 +151,20 @@ export class TestComponent implements OnInit {
      * @param language
      */
     changeLanguage(language: string) {
-        if (language === 'c')
-            language = 'c_cpp';
-        this.editor.setMode(language);
+        let codeLanguage = language.toLowerCase();
+
         this.changeText();
+
+        if (this.testAnswers[this.questionIndex]) {
+            let codingAnswer = this.testAnswers.find(x => x.questionId === this.testQuestions[this.questionIndex].question.question.id);
+            let answeredLanguage: string = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];
+            if (answeredLanguage.toLowerCase() === codeLanguage)
+                this.codeAnswer = codingAnswer.code.source;
+        }
+
+        if (codeLanguage.toLowerCase() === 'c')
+            codeLanguage = 'c_cpp';
+        this.editor.setMode(language);
     }
     /**
      * changes the pre-defined text for the editor
