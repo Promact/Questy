@@ -93,8 +93,8 @@ export class TestSettingsComponent implements OnInit {
 
     private toDateString(date: Date): string {
         return (date.getFullYear().toString() + '-'
-            + ("0" + (date.getMonth() + 1)).slice(-2) + '-'
-            + ("0" + (date.getDate())).slice(-2))
+            + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+            + ('0' + (date.getDate())).slice(-2))
             + 'T' + date.toTimeString().slice(0, 5);
     }
 
@@ -142,7 +142,7 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
-
+       
         testObject.startDate = new Date(<string>testObject.startDate).toISOString();
         testObject.endDate = new Date(<string>testObject.endDate).toISOString();
 
@@ -173,6 +173,10 @@ export class TestSettingsComponent implements OnInit {
      * @param testObject is an object of class Test
      */
     launchTestDialog(id: number, testObject: Test, isTestLaunched: boolean) {
+
+        testObject.startDate = new Date(<string>testObject.startDate).toISOString();
+        testObject.endDate = new Date(<string>testObject.endDate).toISOString();
+
         let isCategoryAdded = this.testDetails.categoryAcList.some(x => {
             return x.isSelect;
         });
