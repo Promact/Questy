@@ -112,8 +112,8 @@ export class TestSettingsComponent implements OnInit {
      * Checks the End Date and Time is valid or not
      * @param endDate contains ths the value of the field End Date and Time
      */
-    isEndDateValid(endDate: Date) {
-        if (new Date(<string>this.testDetails.startDate) >= new Date(endDate)) {
+    isEndDateValid(endDate: string | Date) {
+        if (new Date(<string>this.testDetails.startDate) >= new Date(<string>endDate)) {
             this.validEndDate = true;
             this.validStartDate = false;
         }
