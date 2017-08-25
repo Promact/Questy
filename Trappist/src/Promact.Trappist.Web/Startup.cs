@@ -37,6 +37,7 @@ using Promact.Trappist.Utility.HttpUtil;
 using Promact.Trappist.Web.Models;
 using System;
 using System.IO;
+using Exceptionless;
 
 namespace Promact.Trappist.Web
 {
@@ -109,6 +110,8 @@ namespace Promact.Trappist.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString)
         {
+            app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
