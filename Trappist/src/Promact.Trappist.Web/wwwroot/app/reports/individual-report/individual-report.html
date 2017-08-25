@@ -73,7 +73,7 @@
                         (chartHovered)="questionPieChartValue()"></canvas>
               </h5>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngIf="showPieChart">
               <h5>
                 <canvas baseChart
                         [data]="correctPieChartValue()"
@@ -81,6 +81,9 @@
                         [chartType]="pieChartType"
                         (chartHovered)="correctPieChartValue()"></canvas>
               </h5>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6" *ngIf="!showPieChart">
+              <h5>Since there is no correct attempt, this graph is not generated.</h5>
             </div>
           </div>
         </div>
@@ -116,16 +119,16 @@
               </div>
             </div>
             <div *ngIf="question.question?.questionType == 2">
-             <div>
+              <div>
                 <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==0">
                   <div class="score positive">Score: +{{question.scoreOfCodeSnippetQuestion}}</div>
                 </div>
-               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1">
-                 <div class="score negative">Score: 0</div>
-               </div>
-               <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==3">
-                 <div class="score">Score: 0</div>
-               </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.answerStatus==1">
+                  <div class="score negative">Score: 0</div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 text-right" *ngIf="question.questionStatus==3">
+                  <div class="score">Score: 0</div>
+                </div>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="grid-container" *ngIf="question.isCodeSnippetTestCaseDetailsVisible">
