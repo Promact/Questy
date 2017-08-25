@@ -130,6 +130,7 @@ namespace Promact.Trappist.Web
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            app.UseExceptionless("aOZPApjpCXxpX2mptylqbi0yRUFxNmM5WCwDqFaQ");
             if (env.IsDevelopment())
             {
                 app.UseStaticFiles(new StaticFileOptions
