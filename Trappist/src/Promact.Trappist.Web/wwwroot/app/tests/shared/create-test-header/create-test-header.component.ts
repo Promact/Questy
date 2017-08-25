@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { Test } from '../../tests.model';
 import { PopoverModule } from 'ngx-popover';
 import { TestPreviewComponent } from '../../test-preview/test-preview.compponent';
+import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
@@ -94,8 +95,12 @@ export class CreateTestHeaderComponent implements OnInit {
             this.testDetails.testName = this.editedTestName;
         }
     }
+
     changeComponent() {
-        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + screen.height + ',width=' + screen.width + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
+        if (screenfull.enabled) {
+            screenfull.toggle();
+        }
+        this.router.navigate(['..','tests',this.testDetails.link,'preview']);
     }
 
     /**

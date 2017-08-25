@@ -2,4 +2,5 @@
     source: string;
     input: string;
     language: string;
+    result: string;
 }

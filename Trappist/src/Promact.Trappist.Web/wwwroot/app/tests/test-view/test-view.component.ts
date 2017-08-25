@@ -15,7 +15,7 @@ import { TestAttendees } from '../../conduct/register/register.model';
 import { DuplicateTestDialogComponent } from '../tests-dashboard/duplicate-test-dialog.component';
 import { IncompleteTestCreationDialogComponent } from '../test-settings/incomplete-test-creation-dialog.component';
 import { PopoverModule } from 'ngx-popover';
-
+import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
@@ -71,7 +71,10 @@ export class TestViewComponent implements OnInit {
     }
 
     openNewWindowForPreview() {
-        window.open('/tests/' + this.testDetails.link + '/preview', 'preview', 'height=' + window.innerHeight + ',width=' + window.innerWidth + ',scrollbars=0, status = 0, titlebar = 0, toolbar = 0, resizable = 1, location = 0');
+        if (screenfull.enabled) {
+            screenfull.toggle();
+        }
+        this.router.navigate(['..','tests',this.testDetails.link,'preview']);
     }
 
     /**

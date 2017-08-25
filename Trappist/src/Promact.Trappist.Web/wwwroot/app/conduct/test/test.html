@@ -64,7 +64,7 @@
                                     class="code-editor">
                         </ace-editor>
                         <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run</button>
-                        <pre class="mt20" *ngIf="showResult">{{codeResult}}</pre>
+                        <pre class="mt20" *ngIf="codeResult != ''">{{codeResult}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group>
@@ -123,8 +123,8 @@
                                 <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1">Next <em class="material-icons">keyboard_arrow_right</em></button>
+                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1 || isCodeProcessing">Next <em class="material-icons">keyboard_arrow_right</em></button>
                             </div>
                         </div>
                     </div>

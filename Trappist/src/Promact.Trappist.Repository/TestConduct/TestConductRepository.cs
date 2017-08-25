@@ -219,7 +219,11 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<double> GetElapsedTimeAsync(int attendeeId)
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-            return attendeeAnswer.TimeElapsed;
+
+            if (attendeeAnswer != null)
+                return attendeeAnswer.TimeElapsed;
+            else
+                return 0.0;
         }
 
         public async Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
@@ -280,8 +284,6 @@ namespace Promact.Trappist.Repository.TestConduct
             var testCases = new List<DomainModel.Models.Question.CodeSnippetQuestionTestCases>();
             var results = new List<Result>();
             var testCaseResults = new List<TestCaseResult>();
-
-            await AddAnswerAsync(attendeeId, testAnswer);
 
             var testCaseChecks = await _dbContext.CodeSnippetQuestion.SingleOrDefaultAsync(x => x.Id == testAnswer.QuestionId);
 
@@ -378,6 +380,10 @@ namespace Promact.Trappist.Repository.TestConduct
                 codeResponse.Error = errorMessage;
             }
 
+            //Add answer to the database
+            testAnswer.Code.Result = codeResponse.ErrorOccurred ? codeResponse.Error : codeResponse.Message;
+            await AddAnswerAsync(attendeeId, testAnswer);
+
             return codeResponse;
         }
 
@@ -453,10 +459,12 @@ namespace Promact.Trappist.Repository.TestConduct
                     foreach (var answer in deserializedAnswer)
                     {
                         var testAnswers = new TestAnswers();
+                        var testConductExist = await _dbContext.TestConduct.AnyAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId);
+                        var testConduct = new DomainModel.Models.TestConduct.TestConduct();
                         //Adding attempted Question to TestConduct table
-                        if (!await _dbContext.TestConduct.AnyAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId))
+                        if (!testConductExist)
                         {
-                            var testConduct = new DomainModel.Models.TestConduct.TestConduct()
+                            testConduct = new DomainModel.Models.TestConduct.TestConduct()
                             {
                                 QuestionId = answer.QuestionId,
                                 QuestionStatus = answer.QuestionStatus,
@@ -464,35 +472,49 @@ namespace Promact.Trappist.Repository.TestConduct
                             };
                             await _dbContext.TestConduct.AddAsync(testConduct);
                             await _dbContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            testConduct = await _dbContext.TestConduct.SingleAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId);
+                            testConduct.QuestionStatus = answer.QuestionStatus;
+                            await _dbContext.SaveChangesAsync();
+                        }
 
-                            //Adding answer to TestAnswer Table
-                            if (answer.OptionChoice.Count() > 0)
-                            {
-                                //A question can have multiple answer
-                                foreach (var option in answer.OptionChoice)
-                                {
-                                    testAnswers = new TestAnswers()
-                                    {
-                                        AnsweredOption = option,
-                                        TestConduct = testConduct
-                                    };
-                                    await _dbContext.TestAnswers.AddAsync(testAnswers);
-                                    await _dbContext.SaveChangesAsync();
-                                }
-                            }
-                            else
-                            {
-                                //Save answer for code snippet question
-                                if (answer.Code != null)
-                                {
-                                    testAnswers.AnsweredCodeSnippet = answer.Code.Source;
-                                }
+                        if (testConductExist)
+                        {
+                            var testAnswersToRemove = await _dbContext.TestAnswers.Where(x => x.TestConductId == testConduct.Id).ToListAsync();
+                            _dbContext.TestAnswers.RemoveRange(testAnswersToRemove);
+                            await _dbContext.SaveChangesAsync();
+                        }
 
-                                testAnswers.TestConduct = testConduct;
+                        //Adding answer to TestAnswer Table
+                        if (answer.OptionChoice.Count() > 0)
+                        {
+                            //A question can have multiple answer
+                            foreach (var option in answer.OptionChoice)
+                            {
+                                testAnswers = new TestAnswers()
+                                {
+                                    AnsweredOption = option,
+                                    TestConduct = testConduct
+                                };
                                 await _dbContext.TestAnswers.AddAsync(testAnswers);
                                 await _dbContext.SaveChangesAsync();
                             }
                         }
+                        else
+                        {
+                            //Save answer for code snippet question
+                            if (answer.Code != null)
+                            {
+                                testAnswers.AnsweredCodeSnippet = answer.Code.Source;
+                            }
+
+                            testAnswers.TestConduct = testConduct;
+                            await _dbContext.TestAnswers.AddAsync(testAnswers);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                        
                     }
                 }
             }
