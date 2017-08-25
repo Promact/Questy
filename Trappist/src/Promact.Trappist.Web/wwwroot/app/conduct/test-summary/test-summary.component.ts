@@ -249,6 +249,10 @@ export class TestSummaryComponent implements OnInit {
     * @param testStatus: TestStatus object
     */
     private endTest(testStatus: TestStatus) {
+        //Unsubscribe the clock timer
+        if (!this.isTestClosedUnConditionally)
+            this.clockInterval.unsubscribe();
+
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             this.router.navigate(['test-end'], { replaceUrl: true });
             this.loader = false;

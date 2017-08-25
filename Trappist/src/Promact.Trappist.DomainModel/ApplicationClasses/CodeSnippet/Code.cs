@@ -10,6 +10,8 @@ namespace CodeBaseSimulator.Models
 
         public string Input;
 
+        public string Result;
+
         public ProgrammingLanguage Language;
     }
 }

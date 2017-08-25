@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
@@ -25,11 +26,13 @@ import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
+import * as screenfull from 'screenfull';
 
 
 //Temporary imports
 import { QuestionDisplay } from '../../questions/question-display';
 import { ReportService } from '../../reports/report.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     moduleId: module.id,
@@ -66,7 +69,7 @@ export class TestComponent implements OnInit {
     isConnectionLoss: boolean;
     timeWarning: boolean;
     testEnded: boolean;
-
+    isCodeProcessing: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -89,12 +92,17 @@ export class TestComponent implements OnInit {
     //Temporary solution for setting coding language on resume
     private CODING_LANGUAGES: string[] = ['Java', 'Cpp', 'C'];
     private defaultSnackBarDuration: number = 3000;
+    private clockIntervalListener: Subscription;
 
     constructor(private router: Router,
         private snackBar: MdSnackBar,
         private conductService: ConductService,
-        private route: ActivatedRoute, elementRef: ElementRef, private reportService: ReportService) {
-        this.languageMode = ['java', 'cpp', 'c'];
+        private route: ActivatedRoute,
+        private elementRef: ElementRef,
+        private reportService: ReportService,
+        private location: Location) {
+
+        this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
         this.focusLost = 0;
@@ -111,7 +119,7 @@ export class TestComponent implements OnInit {
         this.testAttendee = new TestAttendee();
         this.testAnswers = new Array<TestAnswer>();
         this.isQuestionCodeSnippetType = false;
-        this.selectLanguage = 'java';
+        this.selectLanguage = 'Java';
         this.selectedMode = 'java';
         this.codeAnswer = this.JAVA_CODE;
         this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
@@ -119,11 +127,10 @@ export class TestComponent implements OnInit {
         this.showResult = false;
         this.timeWarning = false;
         this.testEnded = false;
+        this.isCodeProcessing = false;
     }
 
-    ngOnInit() {
-        window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
-        window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
+    ngOnInit() {        
         this.getTestByLink(this.testLink);
     }
 
@@ -178,7 +185,7 @@ export class TestComponent implements OnInit {
         if (this.selectLanguage.toLowerCase() === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.codeAnswer = [
-                 ' #include <iostream>'
+                 '#include <iostream>'
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
@@ -282,7 +289,7 @@ export class TestComponent implements OnInit {
                 this.shuffleOption();
             }
 
-            Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
+            this.clockIntervalListener = Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
             this.isTestReady = true;
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
@@ -301,6 +308,8 @@ export class TestComponent implements OnInit {
                 //Close the window if Test is already completed
                 window.close();
             }
+            window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
+            window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
 
             this.resumeTest();
         }, err => {
@@ -369,17 +378,6 @@ export class TestComponent implements OnInit {
             this.options = this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption;
             //Sets boolean if question is single choice
             this.isQuestionSingleChoice = this.testQuestions[index].question.question.questionType === QuestionType.singleAnswer;
-        } else {
-            let codingAnswer = this.testAnswers.find(x => x.questionId === this.testQuestions[index].question.question.id);
-            this.languageMode = this.testQuestions[index].question.codeSnippetQuestion.languageList;
-            this.codeResult = '';
-            if (codingAnswer !== undefined) {
-                this.codeAnswer = codingAnswer.code.source;
-                this.selectLanguage = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];
-            } else {
-                this.selectLanguage = this.languageMode[0];
-                this.changeText();
-            }
         }
 
         //Save answer to database 
@@ -394,7 +392,6 @@ export class TestComponent implements OnInit {
                     if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
                         this.addAnswer(this.testQuestions[this.questionIndex]);
                     }
-                    this.isTestReady = true;
                 }
                 //Restore status of previous question
                 this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
@@ -403,6 +400,22 @@ export class TestComponent implements OnInit {
         else {
             this.isTestReady = true;
             return;
+        }
+
+        //Set coding solution if the question is of coding type
+        if (this.testQuestions[index].question.question.questionType !== QuestionType.codeSnippetQuestion) {
+            let codingAnswer = this.testAnswers.find(x => x.questionId === this.testQuestions[index].question.question.id);
+            this.languageMode = this.testQuestions[index].question.codeSnippetQuestion.languageList;
+            if (codingAnswer !== undefined) {
+                this.codeAnswer = codingAnswer.code.source;
+                this.selectLanguage = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];
+                this.codeResult = codingAnswer.code.result;
+                if (this.codeResult)
+                    this.showResult = true;
+            } else {
+                this.selectLanguage = this.languageMode[0];
+                this.changeText();
+            }
         }
 
         //Set status of new question
@@ -417,10 +430,13 @@ export class TestComponent implements OnInit {
         this.questionIndex = index;
         //Reset time counter for question
         this.timeOutCounter = 0;
+
+        this.isTestReady = true;
     }
 
     runCode() {
         this.showResult = true;
+        this.isCodeProcessing = true;
         if (this.testTypePreview)
             this.codeResult = this.codeAnswer;
         else {
@@ -437,19 +453,18 @@ export class TestComponent implements OnInit {
             //Remove previous question's answer from the array 
             let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
             if (index !== -1)
-                this.testAnswers.splice(index, 1);
-            this.testAnswers.push(solution);
+                this.testAnswers.splice(index, 1);            
 
             this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 codeResponse = res;
-                if (!codeResponse.errorOccurred) {
-                    this.codeResult = codeResponse.message;
-                } else {
-                    this.codeResult = codeResponse.error;
-                }
+                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;                
+                solution.code.result = this.codeResult;
+                this.testAnswers.push(solution);
+                this.isCodeProcessing = false;
             }, err => {
                 this.codeResult = 'Oops! server error has occured.';
+                this.isCodeProcessing = false;
             });
         }
     }
@@ -495,6 +510,7 @@ export class TestComponent implements OnInit {
         } else {
             testAnswer.code.source = this.codeAnswer;
             testAnswer.code.language = this.selectLanguage;
+            testAnswer.code.result = this.codeResult;
             if (testQuestion.questionStatus === QuestionStatus.selected) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
@@ -707,8 +723,16 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.isTestReady = false;
 
-        if (this.testTypePreview)
-            window.close();
+        if (this.clockIntervalListener) {
+            this.clockIntervalListener.unsubscribe();
+        }
+
+        if (this.testTypePreview) {
+            if (screenfull.enabled) {
+                screenfull.toggle();
+            }
+            this.location.back();
+        }
 
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
             || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
