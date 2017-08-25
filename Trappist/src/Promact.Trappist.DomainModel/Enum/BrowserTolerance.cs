@@ -3,8 +3,9 @@ namespace Promact.Trappist.DomainModel.Enum
 {
     public enum BrowserTolerance
     {
-        Low = 3,
+        NotApplicable = 0,
+        Low = 12,
         Medium = 7,
-        High = 12
+        High = 3
     }
 }

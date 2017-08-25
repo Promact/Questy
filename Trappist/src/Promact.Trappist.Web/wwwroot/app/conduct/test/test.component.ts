@@ -70,6 +70,7 @@ export class TestComponent implements OnInit {
     timeWarning: boolean;
     testEnded: boolean;
     isCodeProcessing: boolean;
+    routeForTestEnd: any;
 
     private seconds: number;
     private focusLost: number;
@@ -241,9 +242,9 @@ export class TestComponent implements OnInit {
                 window.onbeforeunload = (ev) => {
                     this.saveTestLogs();
                     if (!this.testEnded) {
-                            let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
-                            ev.returnValue = dialogText;
-                            return dialogText;                        
+                        let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                        ev.returnValue = dialogText;
+                        return dialogText;
                     }
                 };
             }
@@ -657,7 +658,10 @@ export class TestComponent implements OnInit {
         this.focusLost += 1;
         let message: string;
         let duration: number = 0;
-        message = (this.focusLost > this.test.browserTolerance) ? this.ALERT_DISQUALIFICATION : this.ALERT_BROWSER_FOCUS_LOST;
+
+        if (this.focusLost <= this.test.browserTolerance) {
+            message = this.ALERT_BROWSER_FOCUS_LOST;
+        }
 
         if (this.test.browserTolerance !== 0) this.openSnackBar(message, duration);
 
@@ -683,7 +687,7 @@ export class TestComponent implements OnInit {
         let mm = Math.floor((seconds - hh * 3600) / 60);
         let ss = Math.floor(seconds - (hh * 3600 + mm * 60));
         return (hh < 10 ? '0' + hh : hh) + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss);
-    } 
+    }
 
     /**
      * Counts down time
@@ -753,11 +757,25 @@ export class TestComponent implements OnInit {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
-                this.router.navigate(['test-summary'], { replaceUrl: true });
+                if (testStatus != TestStatus.blockedTest)
+                    this.router.navigate(['test-summary'], { replaceUrl: true });
+                else {
+                    this.routeForTestEnd = 'conduct/' + this.testLink;
+                    this.router.navigate(['/test-end/blocked'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
+                }
             });
         }
-        else
+
+        else if (this.resumable === AllowTestResume.Unsupervised && testStatus != TestStatus.blockedTest)
             this.router.navigate(['test-summary'], { replaceUrl: true });
+
+        else if (this.resumable === AllowTestResume.Unsupervised && testStatus === TestStatus.blockedTest) {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                this.testEnded = true;
+                this.routeForTestEnd = 'conduct/' + this.testLink;
+                this.router.navigate(['/test-end/blocked'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
+            });
+        }
     }
 
     /**
