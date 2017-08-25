@@ -403,7 +403,7 @@ export class TestComponent implements OnInit {
         }
 
         //Set coding solution if the question is of coding type
-        if (this.testQuestions[index].question.question.questionType !== QuestionType.codeSnippetQuestion) {
+        if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion) {
             let codingAnswer = this.testAnswers.find(x => x.questionId === this.testQuestions[index].question.question.id);
             this.languageMode = this.testQuestions[index].question.codeSnippetQuestion.languageList;
             if (codingAnswer !== undefined) {
