@@ -118,7 +118,6 @@ export class TestReportComponent implements OnInit {
      * Fetches all the candidates of any particular test
      */
     getAllTestCandidates() {
-        this.loader = true;
         this.reportService.getAllTestAttendees(this.testId).subscribe((attendeeList) => {
             this.attendeeArray = attendeeList;
             this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
@@ -131,7 +130,6 @@ export class TestReportComponent implements OnInit {
             this.isAnyCandidateExist = this.attendeeArray.some(x => x.report !== null);
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
-            this.loader = false;
         });
     }
 
@@ -349,7 +347,7 @@ export class TestReportComponent implements OnInit {
                 doc.text(testName, 40, 30);
             }
         });
-        doc.save(testName + '_test_report.pdf');
+        doc.save(testName + '_Report.pdf');
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
@@ -481,7 +479,7 @@ export class TestReportComponent implements OnInit {
         });
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
-            saveAs(blob, testName + '_test_report.xlsx');
+            saveAs(blob, testName + '_Report.xlsx');
         });
         this.loader = false;
         this.checkedAllCandidate = false;

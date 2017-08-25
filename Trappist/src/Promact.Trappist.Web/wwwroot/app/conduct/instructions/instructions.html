@@ -1,5 +1,8 @@
 ﻿<div class="test-conduct">
     <test-conduct-header></test-conduct-header>
+    <div class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
     <div class="content-block">
         <h2>Test Instructions</h2>
         <p class="test-conduct-subtitle">Please read the test instructions carefully before starting the test.</p>

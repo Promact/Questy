@@ -389,10 +389,10 @@ export class IndividualReportComponent implements OnInit {
         doc.text(this.testAttendee.test.testName, 15, 15);
         doc.addHTML(dataToDownload, 0, 20, styles, () => {
             doc.setProperties({
-                title: testName + '_' + attendeeName + '.pdf'
+                title: testName + '_' + this.testAttendee.firstName + '_' + this.testAttendee.lastName + '_Report.pdf'
             });
             doc.setFontSize(5);
-            doc.save(testName + '_' + attendeeName + '.pdf');
+            doc.save(testName + '_' + this.testAttendee.firstName + '_' + this.testAttendee.lastName + '_Report.pdf');
             this.loader = false;
         });
     }
