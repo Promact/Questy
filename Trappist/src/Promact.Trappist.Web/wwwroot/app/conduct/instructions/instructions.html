@@ -25,6 +25,12 @@
         <ul>
             <li>This test comprises of <strong *ngFor=" let category of testInstructions.categoryNameList;let i=index">{{category}}{{i==testInstructions.categoryNameList.length-1 ? ' ': i == testInstructions.categoryNameList.length -2 ? ' and ' : ' , '}}</strong> questions.</li>
             <li *ngIf="!isBrowserToleranceNotApplicable">Do not switch to any other tab/browser/app during your test. If you do so, your test will end after <strong>{{testInstructions.browserTolerance}}</strong> warnings.</li>
+            <li>You can navigate between questions from the pagination at the bottom or using the next and previous buttons.</li>
+            <li><strong>Clear Response </strong>will clear your attempted answer of that particular selected question.</li>
+            <li><strong>Mark for Review </strong>will mark that particular selected question for review so that if you want you can come back to that question and change your answer.</li>
+            <li>You cannot change your answer once you move to other question unless you have marked that question for review.</li>
+            <li>You can edit your response to code programming questions anytime during the test.</li>
+            <li><strong>Finish Test </strong> will end your test.</li>
         </ul>
         <div class="text-center">
             <h2 class="mb20">All the Best!</h2>

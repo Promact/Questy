@@ -69,10 +69,6 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public IActionResult PageNotFound()
         {
-            var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].ToString();
-            if (string.IsNullOrEmpty(ipAddress))
-                ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-            ViewBag.IpAddress = ipAddress;
             return View();
         }
         #endregion
