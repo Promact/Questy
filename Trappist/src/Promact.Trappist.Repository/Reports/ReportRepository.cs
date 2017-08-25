@@ -215,7 +215,7 @@ namespace Promact.Trappist.Repository.Reports
             var maximumScore = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).MaxAsync(x => x.Score);
             var testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maximumScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
             var testCaseObjectList = testCodeSolutionObject.TestCaseResultCollection;
-           
+
             bool testCasePassed;
 
             var codeSnippetQuestionTestCasesList = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == questionId).ToListAsync();
@@ -242,7 +242,7 @@ namespace Promact.Trappist.Repository.Reports
             return codeSnippetTestCaseList;
         }
 
-        public async Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId,int questionId)
+        public async Task<decimal> GetTotalMarksOfCodeSnippetQuestionAsync(int attendeeId, int questionId)
         {
             if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
             {
@@ -255,9 +255,9 @@ namespace Promact.Trappist.Repository.Reports
             return totalMarksObtainedInCodeSnippetQuestion;
         }
 
-        public async Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId,int questionId)
+        public async Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId, int questionId)
         {
-            if(!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
+            if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
             {
                 return null;
             }
@@ -267,7 +267,7 @@ namespace Promact.Trappist.Repository.Reports
             var totalNumberOfSuccessfulAttempts = testCodeSolutionListOfMaximumScore.Count();
             var testCodeSolutionList = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).ToListAsync();
             var totalNumberOfAttemptsMadeByAttendee = testCodeSolutionList.Count();
-            
+
             var testCodeSolutionDetailsObject = new TestCodeSolutionDetailsAC()
             {
                 Language = testCodeSolutionObject.Language,
@@ -278,16 +278,16 @@ namespace Promact.Trappist.Repository.Reports
 
             return testCodeSolutionDetailsObject;
         }
-        
+
         public async Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee, bool isTestEnd)
         {
-            attendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x=>x.TestAttendeeId==attendee.Id);
+            attendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendee.Id);
             if (isTestEnd)
             {
                 attendee.Report.TestStatus = TestStatus.CompletedTest;
                 attendee.Report.IsTestPausedUnWillingly = false;
 
-            } 
+            }
             else
             {
                 attendee.Report.IsTestPausedUnWillingly = false;
@@ -313,6 +313,39 @@ namespace Promact.Trappist.Repository.Reports
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             return reportObject.IsAllowResume;
+        }
+
+        public async Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId)
+        {
+            var numberOfAnsweredButReviewedQuestions = 0;
+            var count = 0;
+            var listOfQuestionsAttemptedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == attendeeId && x.QuestionStatus == QuestionStatus.answered).ToListAsync();
+            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == attendeeId && x.QuestionStatus == QuestionStatus.review).ToListAsync();
+
+            foreach (var conduct in listOfQuestionsAttendedByTestAttendee)
+            {
+                count = 0;
+                if (conduct.QuestionStatus == QuestionStatus.unanswered || conduct.QuestionStatus == QuestionStatus.selected)
+                {
+                    continue;
+                }
+
+                if (conduct.QuestionStatus == QuestionStatus.review)
+                {
+                    foreach (var answer in conduct.TestAnswers)
+                    {
+                        if (conduct.Id == answer.TestConductId)
+                            count = count + 1;
+                        if (answer.AnsweredOption != null && count == 1)
+                        {
+                            numberOfAnsweredButReviewedQuestions = numberOfAnsweredButReviewedQuestions + 1;
+                        }
+                    }
+                }
+            }
+
+            var numberOfQuestionsAttempted = listOfQuestionsAttemptedByTestAttendee.Count() + numberOfAnsweredButReviewedQuestions;
+            return numberOfQuestionsAttempted;
         }
         #endregion
     }

@@ -99,4 +99,12 @@ export class ReportService {
     getInfoResumeTest(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
     }
+
+    /**
+     * Gets the total number of questions attempted by a test attendee
+     * @param attendeeId contains the id of the test attendee from the route
+     */
+    getTotalNumberOfAttemptedQuestions(attendeeId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/attemptedQuestions');
+    }
 } 

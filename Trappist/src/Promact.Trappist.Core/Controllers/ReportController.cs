@@ -208,6 +208,16 @@ namespace Promact.Trappist.Core.Controllers
             return await _reportRepository.GetWindowCloseAsync(attendeeId);
         }
 
+        /// <summary>
+        /// Gets the number of questions attempted by a test attendee
+        /// </summary>
+        /// <param name="attendeeId">Contains the value of the attendee Id from the route</param>
+        /// <returns>Number of attempted questions by an attendee</returns>
+        [HttpGet("{attendeeId}/attemptedQuestions")]
+        public async Task<int> GetTotalNumberOfAttemptedQuestionsByAttendee([FromRoute]int attendeeId)
+        {
+            return await _reportRepository.GetAttemptedQuestionsByAttendeeAsync(attendeeId);
+        }
         #endregion
     }
 }
