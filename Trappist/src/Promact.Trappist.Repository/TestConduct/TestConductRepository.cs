@@ -504,6 +504,7 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal correctMarks = 0;
             decimal fullMarks = 0;
             decimal totalMarks = 0;
+            bool isAnsweredOptionNull = false;
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
             var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
             var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
@@ -511,7 +512,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
-                if (attendedQuestion.QuestionStatus != QuestionStatus.answered)
+                if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
                 {
                     continue;
                 }
@@ -537,6 +538,11 @@ namespace Promact.Trappist.Repository.TestConduct
                     foreach (var answers in attendedQuestion.TestAnswers)
                     {
                         var answeredOption = answers.AnsweredOption;
+                        if (answeredOption == null)
+                        {
+                            isAnsweredOptionNull = true;
+                            continue;
+                        }
 
                         if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer && question.Question.QuestionType == QuestionType.Single)
                         {
@@ -552,13 +558,14 @@ namespace Promact.Trappist.Repository.TestConduct
 
                             isAnsweredOptionCorrect = count == correctOption;
                         }
+
                     }
 
-                    if (isAnsweredOptionCorrect)
+                    if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
                     {
                         correctMarks += testAttendee.Test.CorrectMarks;
                     }
-                    else
+                    else if(!isAnsweredOptionNull)
                     {
                         correctMarks -= testAttendee.Test.IncorrectMarks;
                     }
