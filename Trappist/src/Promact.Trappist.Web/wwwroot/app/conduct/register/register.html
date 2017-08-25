@@ -28,6 +28,7 @@
                 <div class="errors-container">
                     <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">Invalid email address</span>
                     <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">Required</span>
+                    <span class="error-msg" *ngIf="isErrorMessage">This email id already exists.</span>
                 </div>
             </div>
             <div class="form-group">
@@ -36,19 +37,19 @@
                 <div class="errors-container">
                     <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">Invalid roll number</span>
                     <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">Required</span>
+                    <span class="error-msg" *ngIf="isErrorMessage">This roll number already exists.</span>
                 </div>
             </div>
             <div class="form-group">
                 <label>Contact Number</label>
-                <input required pattern="^[+]?([0-9]{10,20})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" maxlength="20" />
+                <input required pattern="^[+]?([0-9]{10,15})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" maxlength="15" />
                 <div class="errors-container">
-                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Phone Numnber must have atleast 10 digits with an optional country code</span>
+                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Phone number must have atleast 10 digits with an optional country code</span>
                     <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">Required</span>
                 </div>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
-                <span class="general-error-msg long-msg pull-left" *ngIf="isErrorMessage">Due to some reason you can not continue with this test</span>
             </div>
         </form>
     </div>
