@@ -663,15 +663,17 @@ export class TestComponent implements OnInit {
             message = this.ALERT_BROWSER_FOCUS_LOST;
         }
 
-        if (this.test.browserTolerance !== 0) this.openSnackBar(message, duration);
+        
 
-        if (this.test.browserTolerance !== 0 && this.focusLost > this.test.browserTolerance) {
+        if (this.focusLost > this.test.browserTolerance) {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
             this.endTest(TestStatus.blockedTest);
         }
-        else if (this.test.browserTolerance === 0 && this.focusLost <= this.test.browserTolerance) {
+        else if (this.focusLost <= this.test.browserTolerance) {
+
+            this.openSnackBar(message, duration);
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
