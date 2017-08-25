@@ -11,6 +11,7 @@ $color_border: #EDEDED;
 $color_white: #FFFFFF;
 $color_white_opacity: rgba(white, 0.8);
 $color_red: #DD2C00;
+$color_red_light: #F2DEDE;
 $color_yellow: #F9BB4B;
 $color_yellow_border: #CCA778;
 $color_yellow_light: #FFE2BD;
@@ -173,6 +174,14 @@ p {
 
 .warning {
     color: $color_red;
+}
+
+.pass {
+  background-color: $color_theme_hover;
+}
+
+.fail {
+  background-color: $color_red_light;
 }
 
 .light-text {
