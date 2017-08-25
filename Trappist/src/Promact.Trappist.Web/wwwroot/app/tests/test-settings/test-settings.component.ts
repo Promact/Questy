@@ -228,7 +228,7 @@ export class TestSettingsComponent implements OnInit {
         this.testDetails.isPaused = false;
         this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
 
-        var testObject = JSON.parse(JSON.stringify(this.testDetails));
+        let testObject = JSON.parse(JSON.stringify(this.testDetails));
 
         testObject.startDate = new Date(<string>this.testDetails.startDate).toISOString();
         testObject.endDate = new Date(<string>this.testDetails.endDate).toISOString();
