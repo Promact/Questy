@@ -15,7 +15,7 @@
                     <p *ngIf="testTypePreview" class="mb0">Attendee Name</p>
                 </div>
                 <div class="display-table-cell text-right">
-                    <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
+                    <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
                     <br class="hidden-lg" />
                     <h5 class="mlr10">Time Remaining:</h5>
                     <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
@@ -75,6 +75,7 @@
                         <md-checkbox *ngFor="let option of options; let i = index" [disabled]="questionStatus == 0" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
                             {{option.option}}
                         </md-checkbox>
+                        <p class="theme-text h7">Note: This question can have more than one answer.</p>
                     </div>
                 </div>
             </div>
