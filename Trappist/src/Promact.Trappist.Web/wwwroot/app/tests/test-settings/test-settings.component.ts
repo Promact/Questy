@@ -224,9 +224,16 @@ export class TestSettingsComponent implements OnInit {
     * Resumes the test
     */
     resumeTest() {
+
         this.testDetails.isPaused = false;
         this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
-        this.testService.updateTestById(this.testId, this.testDetails).subscribe((response) => {
+
+        var testObject = JSON.parse(JSON.stringify(this.testDetails));
+
+        testObject.startDate = new Date(<string>this.testDetails.startDate).toISOString();
+        testObject.endDate = new Date(<string>this.testDetails.endDate).toISOString();
+        
+        this.testService.updateTestById(this.testId, testObject).subscribe((response) => {
             if (response) {
                 this.ngOnInit();
                 this.openSnackBar('Saved changes and resumed test.');
