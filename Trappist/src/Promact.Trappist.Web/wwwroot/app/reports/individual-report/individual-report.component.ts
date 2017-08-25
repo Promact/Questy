@@ -111,12 +111,10 @@ export class IndividualReportComponent implements OnInit {
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
-            this.testAttendee.testConduct.forEach(x => {
-                let listOfQuestionsAttempted = this.testAttendee.testConduct.filter(x => x.questionStatus === QuestionStatus.answered);
-                this.numberOfQuestionsAttempted = listOfQuestionsAttempted.length;
+
+            this.reportsService.getTotalNumberOfAttemptedQuestions(this.testAttendeeId).subscribe((response) => {
+                this.numberOfQuestionsAttempted = response;
             });
-            if (this.testAttendee.testConduct.length === 0)
-                this.numberOfQuestionsAttempted = 0;
 
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
@@ -389,10 +387,10 @@ export class IndividualReportComponent implements OnInit {
         doc.text(this.testAttendee.test.testName, 15, 15);
         doc.addHTML(dataToDownload, 0, 20, styles, () => {
             doc.setProperties({
-                title: testName + '_' + this.testAttendee.firstName + '_' + this.testAttendee.lastName + '_Report.pdf'
+                title: testName + '_' + attendeeName + '.pdf'
             });
             doc.setFontSize(5);
-            doc.save(testName + '_' + this.testAttendee.firstName + '_' + this.testAttendee.lastName + '_Report.pdf');
+            doc.save(testName + '_' + attendeeName + '.pdf');
             this.loader = false;
         });
     }
