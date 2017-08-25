@@ -3,6 +3,9 @@
     <div class="content-block end-test">
         <h1>Your test is over.</h1>
         <h5>Thank you for attending the test.</h5>
+        <div class="errors-container" *ngIf="displayDisqualifiedMessage">
+          <span class="error-msg">Since you exceeded the limit of browser tolerance, your test has been ended.</span>
+        </div>
     </div>
     <test-conduct-footer></test-conduct-footer>
 </div>
