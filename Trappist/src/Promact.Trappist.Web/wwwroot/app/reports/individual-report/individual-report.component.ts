@@ -65,6 +65,7 @@ export class IndividualReportComponent implements OnInit {
     individualReportPathContent: string;
     ProgrammingLanguage = ProgrammingLanguage;
     hideSign: boolean;
+    showPieChart: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -332,6 +333,7 @@ export class IndividualReportComponent implements OnInit {
                 this.hard++;
                 break;
         }
+        this.showPieChart = (this.easy === 0 && this.medium === 0 && this.hard === 0) ? false : true;
     }
 
     //Sets the values of the pie chart that displays the no of correct answers in each difficulty level
