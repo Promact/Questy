@@ -15,7 +15,7 @@ import { TestAttendees } from '../../conduct/register/register.model';
 import { DuplicateTestDialogComponent } from '../tests-dashboard/duplicate-test-dialog.component';
 import { IncompleteTestCreationDialogComponent } from '../test-settings/incomplete-test-creation-dialog.component';
 import { PopoverModule } from 'ngx-popover';
-import * as screenfull from 'screenfull';
+declare let screenfull: any;
 
 @Component({
     moduleId: module.id,
