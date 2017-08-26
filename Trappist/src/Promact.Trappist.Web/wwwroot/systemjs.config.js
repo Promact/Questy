@@ -61,8 +61,7 @@
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
             'ace-builds': 'npm:ace-builds/src-min',
-            'traceur': 'npm:traceur',
-            'screenfull': 'npm:screenfull/dist/screenfull.js'
+            'traceur': 'npm:traceur'
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
@@ -130,9 +129,6 @@
             },
             'ace-builds': {
                 main: 'ace.js',
-                defaultExtension: 'js'
-            },
-            'screenfull': {
                 defaultExtension: 'js'
             },
             '.': {

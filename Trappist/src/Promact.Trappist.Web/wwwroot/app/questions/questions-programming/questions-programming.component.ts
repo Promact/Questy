@@ -159,8 +159,10 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     onFocusCkeditor(event) {
-        if (this.questionModel.question.questionDetail)
-            this.questionModel.question.questionDetail = this.questionModel.question.questionDetail.replace(/<p>|&nbsp;|<\/p>/gi, '').trim(); 
+        let trimedQuestion = this.questionModel.question.questionDetail.replace(/<p>|&nbsp;|<\/p>/gi, '').trim();
+        if (trimedQuestion === '')
+            this.questionModel.question.questionDetail = trimedQuestion;
+             
         this.isCkeditorDirtly = true;
     }
     /**

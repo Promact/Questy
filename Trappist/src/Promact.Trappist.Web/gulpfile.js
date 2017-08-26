@@ -68,7 +68,8 @@ gulp.task('bundle-shims', function () {
         './node_modules/jspdf/dist/jspdf.debug.js',
         './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
         './node_modules/filesaver.js/FileSaver.js',
-        './node_modules/exceljs/dist/exceljs.js'
+        './node_modules/exceljs/dist/exceljs.js',
+        './node_modules/screenfull/dist/screenfull.js'
     ])
     .pipe(concat('shims.js'))
     .pipe(uglify())

@@ -26,8 +26,8 @@ import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
-import * as screenfull from 'screenfull';
 import { PlatformLocation } from '@angular/common';
+declare let screenfull: any;
 
 
 //Temporary imports
@@ -428,6 +428,7 @@ export class TestComponent implements OnInit {
             } else {
                 this.selectLanguage = this.languageMode[0];
                 this.changeText();
+                this.codeResult = '';
             }
         }
 
@@ -488,11 +489,11 @@ export class TestComponent implements OnInit {
      */
     addAnswer(testQuestion: TestQuestions, _callback?: any) {
         //Callback and return if question is already answered
-        if (this.questionStatus === QuestionStatus.answered) {
-            if (_callback) _callback();
-            this.isTestReady = true;
-            return;
-        }
+        //if (this.questionStatus === QuestionStatus.answered) {
+        //    if (_callback) _callback();
+        //    this.isTestReady = true;
+        //    return;
+        //}
 
         //Remove previous question's answer from the array 
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
@@ -589,11 +590,11 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     clearResponse(index: number) {
-        if (this.questionStatus !== QuestionStatus.answered) {
+        //if (this.questionStatus !== QuestionStatus.answered) {
             this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
-        } else {
-            this.openSnackBar(this.ALERT_CLEAR);
-        }
+        //} else {
+          //  this.openSnackBar(this.ALERT_CLEAR);
+        //}
     }
 
     /**
@@ -602,16 +603,14 @@ export class TestComponent implements OnInit {
      * @param optionIndex
      * @param isSingleChoice
      */
-    selectOption(questionIndex: number, optionIndex: number, isSingleChoice: boolean = false) {
-        if (this.questionStatus !== QuestionStatus.answered) {
-            if (isSingleChoice) {
-                this.clearResponse(questionIndex);
-                this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
-            } else {
-                let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
-                this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
-            }
-        }
+    selectOption(questionIndex: number, optionIndex: number, isSingleChoice: boolean = false) {        
+        if (isSingleChoice) {
+            this.clearResponse(questionIndex);
+            this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
+        } else {
+            let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
+            this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
+        }        
     }
 
     /**
