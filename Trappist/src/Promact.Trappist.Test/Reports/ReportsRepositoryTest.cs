@@ -25,6 +25,7 @@ using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using System;
 using CodeBaseSimulator.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Promact.Trappist.Test.Reports
 {
@@ -300,7 +301,8 @@ namespace Promact.Trappist.Test.Reports
             var question2 = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, createTest.CreatedByUserId);
             await _questionRepository.AddCodeSnippetQuestionAsync(question2, createTest.CreatedByUserId);
-
+            var questionId1 = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question1.Question.QuestionDetail)).Id;
+            var questionId2 = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question2.Question.QuestionDetail)).Id;
             //add test category
             var categoryList = new List<DomainModel.Models.Category.Category>();
             categoryList.Add(category);
@@ -318,12 +320,12 @@ namespace Promact.Trappist.Test.Reports
             var testAttendee = CreateTestAttendee(createTest.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             //AddTestAnswer
-            var answer1 = CreateAnswerAc(question1.Question.Id);
+            var answer1 = CreateAnswerAc(questionId1);
             await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer1);
             var answer2 = new TestAnswerAC()
             {
                 OptionChoice = new List<int>(),
-                QuestionId = 2,
+                QuestionId = questionId2,
                 Code = new Code()
                 {
                     Input = "input",
@@ -358,7 +360,7 @@ namespace Promact.Trappist.Test.Reports
             var codeSolution1 = new TestCodeSolution()
             {
                 TestAttendeeId = testAttendee.Id,
-                QuestionId = question2.Question.Id,
+                QuestionId = questionId2,
                 Solution = answer2.Code.Source,
                 Language = answer2.Code.Language,
                 Score = 1
@@ -366,7 +368,7 @@ namespace Promact.Trappist.Test.Reports
             var codeSolution2 = new TestCodeSolution()
             {
                 TestAttendeeId = testAttendee.Id,
-                QuestionId = question2.Question.Id,
+                QuestionId = questionId2,
                 Solution = answer2.Code.Source,
                 Language = answer2.Code.Language,
                 Score = 0
@@ -387,6 +389,7 @@ namespace Promact.Trappist.Test.Reports
             {
                 QuestionId = id,
                 OptionChoice = new List<int>() { 34, 36 },
+                QuestionStatus = QuestionStatus.answered
             };
             return testAnswerAC;
         }
