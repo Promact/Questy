@@ -131,7 +131,7 @@ export class TestComponent implements OnInit {
         this.isCodeProcessing = false;
     }
 
-    ngOnInit() {        
+    ngOnInit() {
         this.getTestByLink(this.testLink);
     }
 
@@ -186,7 +186,7 @@ export class TestComponent implements OnInit {
         if (this.selectLanguage.toLowerCase() === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.codeAnswer = [
-                 '#include <iostream>'
+                '#include <iostream>'
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
@@ -309,7 +309,7 @@ export class TestComponent implements OnInit {
                 //Close the window if Test is already completed
                 window.close();
             }
-            window.addEventListener('blur', (event) => { this.windowFocusLost(event); });
+            window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0) this.windowFocusLost(event); });
             window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
 
             this.resumeTest();
@@ -454,12 +454,12 @@ export class TestComponent implements OnInit {
             //Remove previous question's answer from the array 
             let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
             if (index !== -1)
-                this.testAnswers.splice(index, 1);            
+                this.testAnswers.splice(index, 1);
 
             this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 codeResponse = res;
-                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;                
+                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;
                 solution.code.result = this.codeResult;
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
@@ -663,7 +663,7 @@ export class TestComponent implements OnInit {
             message = this.ALERT_BROWSER_FOCUS_LOST;
         }
 
-        
+
 
         if (this.focusLost > this.test.browserTolerance) {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
