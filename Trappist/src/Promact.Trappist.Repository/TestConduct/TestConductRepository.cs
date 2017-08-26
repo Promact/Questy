@@ -391,19 +391,25 @@ namespace Promact.Trappist.Repository.TestConduct
             return codeResponse;
         }
 
-        public async Task AddTestLogsAsync(int attendeeId, bool isCloseWindow, bool isConnectionLoss, bool isTestResume)
+        public async Task<bool> AddTestLogsAsync(int attendeeId, bool isCloseWindow, bool isConnectionLoss, bool isTestResume)
         {
             var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            if (isCloseWindow)
-                testLogs.CloseWindowWithoutFinishingTest = DateTime.UtcNow;
-            else if (isConnectionLoss)
-                testLogs.DisconnectedFromServer = DateTime.UtcNow;
-            else if (isTestResume)
-                testLogs.ResumeTest = DateTime.UtcNow;
+            if (testLogs != null)
+            {
+                if (isCloseWindow)
+                    testLogs.CloseWindowWithoutFinishingTest = DateTime.UtcNow;
+                else if (isConnectionLoss)
+                    testLogs.DisconnectedFromServer = DateTime.UtcNow;
+                else if (isTestResume)
+                    testLogs.ResumeTest = DateTime.UtcNow;
+                else
+                    testLogs.AwayFromTestWindow = DateTime.UtcNow;
+                _dbContext.TestLogs.Update(testLogs);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
             else
-                testLogs.AwayFromTestWindow = DateTime.UtcNow;
-            _dbContext.TestLogs.Update(testLogs);
-            await _dbContext.SaveChangesAsync();
+                return false;
         }
 
         public async Task<int> GetTestSummaryDetailsAsync(string testLink)

@@ -314,32 +314,40 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<TestAttendees> SetTestStatusAsync(TestAttendees attendee, bool isTestEnd)
         {
             attendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendee.Id);
-            if (isTestEnd)
+            if (attendee.Report != null)
             {
-                attendee.Report.TestStatus = TestStatus.CompletedTest;
-                attendee.Report.IsTestPausedUnWillingly = false;
+                if (isTestEnd)
+                {
+                    attendee.Report.TestStatus = TestStatus.CompletedTest;
+                    attendee.Report.IsTestPausedUnWillingly = false;
 
+                }
+                else
+                {
+                    attendee.Report.IsTestPausedUnWillingly = false;
+                    attendee.Report.IsAllowResume = true;
+                    attendee.Report.TestStatus = TestStatus.AllCandidates;
+                }
+                _dbContext.Report.Update(attendee.Report);
+                await _dbContext.SaveChangesAsync();
+                return attendee;
             }
             else
-            {
-                attendee.Report.IsTestPausedUnWillingly = false;
-                attendee.Report.IsAllowResume = true;
-                attendee.Report.TestStatus = TestStatus.AllCandidates;
-            }
-            _dbContext.Report.Update(attendee.Report);
-            await _dbContext.SaveChangesAsync();
-            return attendee;
+                return null;
         }
 
         public async Task SetWindowCloseAsync(int attendeeId, bool isTestResume)
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            if (isTestResume)
-                reportObject.IsAllowResume = false;
-            else
-                reportObject.IsTestPausedUnWillingly = true;
-            _dbContext.Report.Update(reportObject);
-            await _dbContext.SaveChangesAsync();
+            if (reportObject != null)
+            {
+                if (isTestResume)
+                    reportObject.IsAllowResume = false;
+                else
+                    reportObject.IsTestPausedUnWillingly = true;
+                _dbContext.Report.Update(reportObject);
+                await _dbContext.SaveChangesAsync();
+            }
         }
         public async Task<bool> GetWindowCloseAsync(int attendeeId)
         {
