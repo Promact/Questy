@@ -1,11 +1,15 @@
-﻿using CodeBaseSimulator.Models;
+﻿using AutoMapper;
+using CodeBaseSimulator.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
+using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
@@ -448,14 +452,13 @@ namespace Promact.Trappist.Repository.TestConduct
         private async Task TransformAttendeeAnswer(int attendeeId)
         {
             var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
-            //var isTestConductExist = await _dbContext.TestConduct.AnyAsync(x => x.TestAttendeeId == attendeeId);
-
+            var testAnswersList = new List<TestAnswers>();
+            var testConductList = new List<DomainModel.Models.TestConduct.TestConduct>();
             if (attendeeAnswer != null)
             {
                 if (attendeeAnswer.Answers != null)
                 {
                     var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
-
                     foreach (var answer in deserializedAnswer)
                     {
                         var testAnswers = new TestAnswers();
@@ -470,18 +473,12 @@ namespace Promact.Trappist.Repository.TestConduct
                                 QuestionStatus = answer.QuestionStatus,
                                 TestAttendeeId = attendeeId
                             };
-                            await _dbContext.TestConduct.AddAsync(testConduct);
-                            await _dbContext.SaveChangesAsync();
+                            testConductList.Add(testConduct);
                         }
                         else
                         {
                             testConduct = await _dbContext.TestConduct.SingleAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId);
                             testConduct.QuestionStatus = answer.QuestionStatus;
-                            await _dbContext.SaveChangesAsync();
-                        }
-
-                        if (testConductExist)
-                        {
                             var testAnswersToRemove = await _dbContext.TestAnswers.Where(x => x.TestConductId == testConduct.Id).ToListAsync();
                             _dbContext.TestAnswers.RemoveRange(testAnswersToRemove);
                             await _dbContext.SaveChangesAsync();
@@ -498,8 +495,7 @@ namespace Promact.Trappist.Repository.TestConduct
                                     AnsweredOption = option,
                                     TestConduct = testConduct
                                 };
-                                await _dbContext.TestAnswers.AddAsync(testAnswers);
-                                await _dbContext.SaveChangesAsync();
+                                testAnswersList.Add(testAnswers);
                             }
                         }
                         else
@@ -511,11 +507,12 @@ namespace Promact.Trappist.Repository.TestConduct
                             }
 
                             testAnswers.TestConduct = testConduct;
-                            await _dbContext.TestAnswers.AddAsync(testAnswers);
-                            await _dbContext.SaveChangesAsync();
+                            testAnswersList.Add(testAnswers);
                         }
-                        
                     }
+                    await _dbContext.TestAnswers.AddRangeAsync(testAnswersList);
+                    await _dbContext.TestConduct.AddRangeAsync(testConductList);
+                    await _dbContext.SaveChangesAsync();
                 }
             }
         }
@@ -527,35 +524,26 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             bool isAnsweredOptionNull = false;
-            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-            var numberOfQuestionsInATest = await _dbContext.TestQuestion.Where(x => x.TestId == testAttendee.TestId).ToListAsync();
-            var totalNumberOfQuestions = numberOfQuestionsInATest.Count();
-            fullMarks = totalNumberOfQuestions * testAttendee.Test.CorrectMarks;
+            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+            var numberOfQuestionsInATest = await _dbContext.TestQuestion.CountAsync(x => x.TestId == testAttendee.TestId);
+
+            fullMarks = numberOfQuestionsInATest * testAttendee.Test.CorrectMarks;
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
                 if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
-                {
                     continue;
-                }
-
                 var count = 0;
                 var correctOption = 0;
-
-                var question = await _questionRepository.GetQuestionByIdAsync(attendedQuestion.QuestionId);
-
-                if (question.Question.QuestionType != QuestionType.Programming)
+                if (attendedQuestion.Question.QuestionType != QuestionType.Programming)
                 {
-                    bool isAnsweredOptionCorrect = true;
-                    var noOfOptions = question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
-                    if (question.Question.QuestionType == QuestionType.Multiple)
-                    {
-                        foreach (var correct in noOfOptions)
+                    var isAnsweredOptionCorrect = true;
+                    var noOfOptions = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
+                    if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
+                        noOfOptions.ForEach(correct =>
                         {
-                            if (correct.IsAnswer)
-                                correctOption = correctOption + 1;
-                        }
-                    }
+                            correctOption = correct.IsAnswer ? correctOption + 1 : correctOption;
+                        });
 
                     foreach (var answers in attendedQuestion.TestAnswers)
                     {
@@ -565,38 +553,26 @@ namespace Promact.Trappist.Repository.TestConduct
                             isAnsweredOptionNull = true;
                             continue;
                         }
-
-                        if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer && question.Question.QuestionType == QuestionType.Single)
+                        if (!attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer && attendedQuestion.Question.QuestionType == QuestionType.Single)
                         {
                             isAnsweredOptionCorrect = false;
                             break;
                         }
-                        else if (question.Question.QuestionType == QuestionType.Multiple)
+                        else if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
                         {
-                            if (question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                                count = count + 1;
-                            if (!question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Find(x => x.Id == answeredOption).IsAnswer)
-                                count = count - 1;
-
+                            count = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? count = count + 1 : count - 1;
                             isAnsweredOptionCorrect = count == correctOption;
                         }
-
                     }
-
                     if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
-                    {
                         correctMarks += testAttendee.Test.CorrectMarks;
-                    }
-                    else if(!isAnsweredOptionNull)
-                    {
+
+                    else if (!isAnsweredOptionNull)
                         correctMarks -= testAttendee.Test.IncorrectMarks;
-                    }
                 }
                 else
-                {
                     //Add score from coding question attempted
                     correctMarks += (decimal)await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
-                }
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);

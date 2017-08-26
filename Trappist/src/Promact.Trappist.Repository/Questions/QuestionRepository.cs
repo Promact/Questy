@@ -204,11 +204,8 @@ namespace Promact.Trappist.Repository.Questions
             if (question == null)
                 return null;
             if (question.QuestionType == QuestionType.Programming)
-            {
                 await _dbContext.Entry(question).Reference(x => x.CodeSnippetQuestion).LoadAsync();
-            }
-            else
-            {
+            else { 
                 await _dbContext.Entry(question).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
                 await _dbContext.Entry(question.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
             }
