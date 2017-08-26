@@ -13,14 +13,14 @@
             </div>
         </div>
     </div>
-    <div class="container" *ngIf="!isAnyCandidateExist">
+    <div class="container" *ngIf="!isAnyCandidateExist && !loader">
         <div class="report-title-block clearfix">
             <div class="pull-left">
                 <h2>Test Report</h2>
             </div>
             <a class="pull-right back-link" [routerLink]="['/tests']">< back</a>
         </div>
-        <h5 *ngIf="!loader" class="mt20 mb20">No Record(s) Found.</h5>
+        <h5 class="mt20 mb20">No Record(s) Found.</h5>
     </div>
     <div class="container" *ngIf="isAnyCandidateExist">
         <div class="report-title-block clearfix">

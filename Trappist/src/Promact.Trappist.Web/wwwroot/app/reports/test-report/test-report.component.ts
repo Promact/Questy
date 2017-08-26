@@ -29,7 +29,6 @@ export class TestReportComponent implements OnInit {
     routeForIndividualTestReport: any;
     showSearchInput: boolean;
     searchString: string;
-    reportArray: Report[] = [];
     testAttendeeArray: TestAttendee[];
     attendeeArray: TestAttendee[] = [];
     sortedAttendeeArray: TestAttendee[];
@@ -122,10 +121,9 @@ export class TestReportComponent implements OnInit {
     }
 
     getTestReportsUpdate() {
-        this.reportService.getAttendeeResumeTestRequest().subscribe(response => {
-            this.reportArray = response;
+        this.reportService.getAttendeeResumeTestRequest().subscribe((response: Report[]) => {
             this.testAttendeeArray.filter(x => {
-                this.reportArray.forEach(z => {
+                response.forEach(z => {
                     if (x.id === z.testAttendeeId)
                         x.report = z;
                 });
