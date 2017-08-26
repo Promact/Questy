@@ -109,7 +109,6 @@ export class TestReportComponent implements OnInit {
         this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
             this.reportQuestionDetails = res;
             this.getAllTestCandidates();
-            this.loader = false;
         });
     }
 
@@ -130,6 +129,7 @@ export class TestReportComponent implements OnInit {
             this.isAnyCandidateExist = this.attendeeArray.some(x => x.report !== null);
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
+            this.loader = false;
         });
     }
 
