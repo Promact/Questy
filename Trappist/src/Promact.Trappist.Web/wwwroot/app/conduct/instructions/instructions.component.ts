@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TestInstructions } from '../testInstructions.model';
 import { Router } from '@angular/router';
 import { BrowserTolerance } from '../../tests/enum-browsertolerance';
-import * as screenfull from 'screenfull';
+declare let screenfull: any;
 
 @Component({
     moduleId: module.id,

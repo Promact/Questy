@@ -74,7 +74,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="email">Email of Test Attendee</param>
         /// <param name="rollno">Roll No of Test Attendee</param>
         /// <returns>TestAttendee object</returns>
-        Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno);
+        Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno, int testId);
 
         /// <summary>
         /// Checks if Test Attendee exist

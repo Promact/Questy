@@ -11,7 +11,7 @@ import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
-import * as screenfull from 'screenfull';
+declare let screenfull: any;
 
 @Component({
     moduleId: module.id,

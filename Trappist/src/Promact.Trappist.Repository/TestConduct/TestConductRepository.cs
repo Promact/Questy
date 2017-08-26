@@ -431,9 +431,9 @@ namespace Promact.Trappist.Repository.TestConduct
             return await _dbContext.TestLogs.ToListAsync();
         }
 
-        public async Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno)
+        public async Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno, int testId)
         {
-            return await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Email == email && x.RollNumber == rollno);
+            return await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Email == email && x.RollNumber == rollno && x.TestId == testId);
         }
         #endregion
 

@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { Test } from '../../tests.model';
 import { PopoverModule } from 'ngx-popover';
 import { TestPreviewComponent } from '../../test-preview/test-preview.compponent';
-import * as screenfull from 'screenfull';
+declare let screenfull: any;
 
 @Component({
     moduleId: module.id,

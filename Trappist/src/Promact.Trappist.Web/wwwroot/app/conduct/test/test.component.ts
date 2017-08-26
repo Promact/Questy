@@ -488,12 +488,6 @@ export class TestComponent implements OnInit {
      * @param testQuestion: TestQuestion object
      */
     addAnswer(testQuestion: TestQuestions, _callback?: any) {
-        //Callback and return if question is already answered
-        //if (this.questionStatus === QuestionStatus.answered) {
-        //    if (_callback) _callback();
-        //    this.isTestReady = true;
-        //    return;
-        //}
 
         //Remove previous question's answer from the array 
         let index = this.testAnswers.findIndex(x => x.questionId === testQuestion.question.question.id);
@@ -590,11 +584,7 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     clearResponse(index: number) {
-        //if (this.questionStatus !== QuestionStatus.answered) {
-            this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
-        //} else {
-          //  this.openSnackBar(this.ALERT_CLEAR);
-        //}
+        this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);        
     }
 
     /**
