@@ -669,6 +669,7 @@ export class TestComponent implements OnInit {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
+            this.snackBar.dismiss();
             this.endTest(TestStatus.blockedTest);
         }
         else if (this.focusLost <= this.test.browserTolerance) {
