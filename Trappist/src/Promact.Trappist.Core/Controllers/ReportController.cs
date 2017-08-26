@@ -139,15 +139,24 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
         public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink,[FromRoute] bool isTestEnd)
         {
-            if(isTestEnd)
-                await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+
+            if (isTestEnd)
+            {
+               var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                if (response == null)
+                    return NotFound();
+            }
             else
             {
                 if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
                     HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
-                await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                if (response == null)
+                    return NotFound();
             }
             return Ok(attendee);
+
+            
         }
 
         /// <summary>

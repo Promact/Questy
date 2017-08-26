@@ -71,6 +71,7 @@ export class TestComponent implements OnInit {
     testEnded: boolean;
     isCodeProcessing: boolean;
     routeForTestEnd: any;
+    istestEnd: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -309,7 +310,7 @@ export class TestComponent implements OnInit {
                 //Close the window if Test is already completed
                 window.close();
             }
-            window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0) this.windowFocusLost(event); });
+            window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
             window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
 
             this.resumeTest();
@@ -676,6 +677,7 @@ export class TestComponent implements OnInit {
 
             this.openSnackBar(message, duration);
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
+
                 this.testLogs = response;
             });
         }
@@ -728,6 +730,7 @@ export class TestComponent implements OnInit {
      * @param testStatus: TestStatus object
      */
     private endTest(testStatus: TestStatus) {
+        this.istestEnd = true;
         this.isTestReady = false;
 
         if (this.clockIntervalListener) {
