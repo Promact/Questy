@@ -69,6 +69,14 @@ namespace Promact.Trappist.Repository.TestConduct
         Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId);
 
         /// <summary>
+        /// Gets Test Attendee using email and rollno
+        /// </summary>
+        /// <param name="email">Email of Test Attendee</param>
+        /// <param name="rollno">Roll No of Test Attendee</param>
+        /// <returns>TestAttendee object</returns>
+        Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno);
+
+        /// <summary>
         /// Checks if Test Attendee exist
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
