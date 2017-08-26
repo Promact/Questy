@@ -47,6 +47,12 @@ namespace Promact.Trappist.Core.Controllers
                 HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
                 HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
                 return Ok(true);
+            }else if(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
+            {
+                var attendee = await _testConductRepository.GetTestAttendeeByEmailIdAndRollNo(testAttendee.Email, testAttendee.RollNumber);
+                HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
+                HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
+                return Ok(true);
             }
             return BadRequest();
         }

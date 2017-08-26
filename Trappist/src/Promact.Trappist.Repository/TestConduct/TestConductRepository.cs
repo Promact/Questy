@@ -425,6 +425,16 @@ namespace Promact.Trappist.Repository.TestConduct
             else
                 return 0;
         }
+
+        public async Task<List<TestLogs>> GetTestLogsAsync()
+        {
+            return await _dbContext.TestLogs.ToListAsync();
+        }
+
+        public async Task<TestAttendees> GetTestAttendeeByEmailIdAndRollNo(string email, string rollno)
+        {
+            return await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Email == email && x.RollNumber == rollno);
+        }
         #endregion
 
         #region Private Method
@@ -603,13 +613,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
-        }
-
-
-        public async Task<List<TestLogs>> GetTestLogsAsync()
-        {
-            return await _dbContext.TestLogs.ToListAsync();
-        }
+        }        
         #endregion
     }
 }
