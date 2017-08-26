@@ -759,7 +759,7 @@ export class TestComponent implements OnInit {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
-                if (testStatus != TestStatus.blockedTest)
+                if (testStatus !== TestStatus.blockedTest)
                     this.router.navigate(['test-summary'], { replaceUrl: true });
                 else {
                     this.routeForTestEnd = 'conduct/' + this.testLink;
@@ -768,7 +768,7 @@ export class TestComponent implements OnInit {
             });
         }
 
-        else if (this.resumable === AllowTestResume.Unsupervised && testStatus != TestStatus.blockedTest)
+        else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest)
             this.router.navigate(['test-summary'], { replaceUrl: true });
 
         else if (this.resumable === AllowTestResume.Unsupervised && testStatus === TestStatus.blockedTest) {
