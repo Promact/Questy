@@ -131,7 +131,7 @@ export class TestComponent implements OnInit {
         this.isCodeProcessing = false;
     }
 
-    ngOnInit() {        
+    ngOnInit() {
         this.getTestByLink(this.testLink);
     }
 
@@ -186,7 +186,7 @@ export class TestComponent implements OnInit {
         if (this.selectLanguage.toLowerCase() === 'cpp') {
             this.selectedMode = 'c_cpp';
             this.codeAnswer = [
-                 '#include <iostream>'
+                '#include <iostream>'
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
@@ -238,16 +238,16 @@ export class TestComponent implements OnInit {
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume;
 
-            if (this.resumable === AllowTestResume.Supervised) {
-                window.onbeforeunload = (ev) => {
-                    this.saveTestLogs();
-                    if (!this.testEnded) {
-                        let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
-                        ev.returnValue = dialogText;
-                        return dialogText;
-                    }
-                };
-            }
+
+            window.onbeforeunload = (ev) => {
+                this.saveTestLogs();
+                if (!this.testEnded) {
+                    let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                    ev.returnValue = dialogText;
+                    return dialogText;
+                }
+            };
+
 
             if (this.testTypePreview)
                 this.getTestQuestion(this.test.id);
@@ -454,12 +454,12 @@ export class TestComponent implements OnInit {
             //Remove previous question's answer from the array 
             let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
             if (index !== -1)
-                this.testAnswers.splice(index, 1);            
+                this.testAnswers.splice(index, 1);
 
             this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 codeResponse = res;
-                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;                
+                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;
                 solution.code.result = this.codeResult;
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
