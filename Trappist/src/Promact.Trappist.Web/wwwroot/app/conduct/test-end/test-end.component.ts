@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PlatformLocation } from '@angular/common';
 
 
 @Component({
@@ -12,8 +13,14 @@ export class TestEndComponent implements OnInit {
     testEndPathContent: string;
     displayDisqualifiedMessage: boolean;
 
-    constructor(private route: ActivatedRoute) {
-
+    constructor(private route: ActivatedRoute, private platformLocation: PlatformLocation) {
+        platformLocation.onPopState(() => {
+            window.location.replace(window.location.origin + '/pageNotFound');
+            if (window.history.length != null) {
+                for (let i = 0; i < window.history.length; i++)
+                    window.history[i].state(null);
+            }
+        });
     }
 
     ngOnInit() {

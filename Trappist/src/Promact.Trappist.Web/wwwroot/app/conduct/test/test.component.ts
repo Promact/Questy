@@ -27,6 +27,7 @@ import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
 import * as screenfull from 'screenfull';
+import { PlatformLocation } from '@angular/common';
 
 
 //Temporary imports
@@ -72,6 +73,7 @@ export class TestComponent implements OnInit {
     isCodeProcessing: boolean;
     routeForTestEnd: any;
     istestEnd: boolean;
+    url: string;
 
     private seconds: number;
     private focusLost: number;
@@ -102,7 +104,8 @@ export class TestComponent implements OnInit {
         private route: ActivatedRoute,
         private elementRef: ElementRef,
         private reportService: ReportService,
-        private location: Location) {
+        private location: Location,
+        private platformLocation: PlatformLocation) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
@@ -130,6 +133,14 @@ export class TestComponent implements OnInit {
         this.timeWarning = false;
         this.testEnded = false;
         this.isCodeProcessing = false;
+        this.url = window.location.pathname;
+        platformLocation.onPopState(() => {
+            window.location.replace(window.location.origin + '/pageNotFound');
+            if (window.history.length != null) {
+                for (let i = 0; i < window.history.length; i++)
+                    window.history[i].state(null);
+            }
+        });
     }
 
     ngOnInit() {
