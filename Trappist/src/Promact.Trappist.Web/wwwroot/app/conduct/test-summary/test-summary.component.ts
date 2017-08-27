@@ -22,7 +22,6 @@ import * as screenfull from 'screenfull';
 export class TestSummaryComponent implements OnInit {
 
     private TIMEOUT_TIME: number = 10;
-
     magicString: string;
     testSummaryObject: number;
     timeLeft: number;
@@ -110,7 +109,7 @@ export class TestSummaryComponent implements OnInit {
      * @param testLink contains the link of the test from the route
      */
     getTestDetails(testLink: string) {
-        this.conductService.getTestByLink(testLink, this.isTestPreview).subscribe((response1) => {
+        this.conductService.getTestForSummary(testLink).subscribe((response1) => {
             this.test = response1;
             this.isTestClosedUnConditionally = this.test.allowTestResume === AllowTestResume.Supervised;
             this.testDuration = this.test.duration;

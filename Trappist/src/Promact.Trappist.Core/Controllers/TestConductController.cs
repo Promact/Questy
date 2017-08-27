@@ -333,6 +333,13 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _testConductRepository.GetTestLogsAsync());
 
         }
+
+
+        [HttpGet("getTestSummar/{link}")]
+        public async Task<IActionResult> GetSummary([FromRoute] string link)
+        {
+            return Ok(await _testRepository.GetTestSummary(link));
+        }
         #endregion
     }
 }

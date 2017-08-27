@@ -107,7 +107,7 @@ export class ConductService {
      * @param attendeeId is obtained from the route
      * @param body is the object of test logs model
      */
-    addTestLogs(attendeeId: number,isCloseWindow: boolean, isConnectionLoss: boolean, isTestResume: boolean) {
+    addTestLogs(attendeeId: number, isCloseWindow: boolean, isConnectionLoss: boolean, isTestResume: boolean) {
         return this.httpService.get(this.testConductUrl + 'testlogs/' + attendeeId + '/' + isCloseWindow + '/' + isConnectionLoss + '/' + isTestResume);
     }
 
@@ -124,5 +124,8 @@ export class ConductService {
     }
     getTestLogs() {
         return this.httpService.get(this.testConductUrl + 'testLogs');
+    }
+    getTestForSummary(link: string) {
+        return this.httpService.get(this.testConductUrl + '/getTestSummar/' + link);
     }
 }
