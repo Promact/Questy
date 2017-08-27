@@ -30,10 +30,10 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="testId">Id of the respective test</param>
         /// <returns>All test attendees of that respective test</returns>
-        [HttpGet("{testId}")]
-        public async Task<IActionResult> GetAllTestAttendeesAsync([FromRoute] int testId)
+        [HttpGet("{testId}/{attendeeId}")]
+        public async Task<IActionResult> GetAllTestAttendeesAsync([FromRoute] int testId, [FromRoute] int attendeeId)
         {
-            return Ok(await _reportRepository.GetAllTestAttendeesAsync(testId));
+            return Ok(await _reportRepository.GetAllTestAttendeesAsync(testId, attendeeId));
         }
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testLink"></param>
         /// <returns></returns>
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
-        public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink,[FromRoute] bool isTestEnd)
+        public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink, [FromRoute] bool isTestEnd)
         {
-            if(isTestEnd)
+            if (isTestEnd)
                 await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
             else
             {
@@ -157,9 +157,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>List of details of each test case for code snippet question attended by test attendee</returns>
         [HttpGet("{attendeeId}/{questionId}/codeSnippetTestCasesDetails")]
-        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId,int questionId)
+        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId, questionId));
         }
 
         /// <summary>
@@ -169,9 +169,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The total marks obtained by test attendee in code snippet question</returns>
         [HttpGet("{attendeeId}/{questionId}/scoreOfCodeSnippetQuestion")]
-        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId,int questionId)
+        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId, questionId));
         }
 
         /// <summary>
@@ -181,9 +181,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The test code solution details of the code snippet question attended by test attendees</returns>
         [HttpGet("{attendeeId}/{questionId}/testCodeSolutionDetails")]
-        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId,int questionId)
+        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId, questionId));
         }
 
         /// <summary>
@@ -203,9 +203,15 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="attendeeId"></param>
         /// <returns></returns>
         [HttpGet("getWindowClose/{attendeeId}")]
-        public async Task<bool> GetResumeTestValueAsync([FromRoute] int attendeeId)
+        public async Task<IActionResult> GetResumeTestValueAsync([FromRoute] int attendeeId)
         {
-            return await _reportRepository.GetWindowCloseAsync(attendeeId);
+            return Ok(await _reportRepository.GetWindowCloseAsync(attendeeId));
+        }
+
+        [HttpGet("getResumeTestRequest")]
+        public async Task<IActionResult> GetAttendeeRequestResume()
+        {
+            return Ok(await _reportRepository.GetAttendeeRequestResume());
         }
 
         /// <summary>

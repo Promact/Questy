@@ -62,7 +62,7 @@ namespace Promact.Trappist.Test.Reports
             var createTest = await CreateTestAsync();
             var testAttendeeReport = TestAttendeeReport(createTest.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendeeReport, _stringConstants.MagicString);
-            var report = await _reportRepository.GetAllTestAttendeesAsync(createTest.Id);
+            var report = await _reportRepository.GetAllTestAttendeesAsync(createTest.Id, 0);
             Assert.True(report.Count() == 1);
         }
 

@@ -238,16 +238,16 @@ export class TestComponent implements OnInit {
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume;
 
-            if (this.resumable === AllowTestResume.Supervised) {
-                window.onbeforeunload = (ev) => {
-                    this.saveTestLogs();
-                    if (!this.testEnded) {
-                        let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
-                        ev.returnValue = dialogText;
-                        return dialogText;
-                    }
-                };
-            }
+
+            window.onbeforeunload = (ev) => {
+                this.saveTestLogs();
+                if (!this.testEnded) {
+                    let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                    ev.returnValue = dialogText;
+                    return dialogText;
+                }
+            };
+
 
             if (this.testTypePreview)
                 this.getTestQuestion(this.test.id);

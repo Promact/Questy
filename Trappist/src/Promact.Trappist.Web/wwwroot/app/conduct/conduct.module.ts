@@ -35,6 +35,7 @@ import { ReportService } from '../reports/report.service';
         TestEndComponent,
         TestConductHeaderComponent,
         TestConductFooterComponent
+      
     ],
 
 })
