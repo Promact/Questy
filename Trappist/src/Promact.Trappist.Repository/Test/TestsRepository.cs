@@ -265,7 +265,7 @@ namespace Promact.Trappist.Repository.Tests
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
             await _dbContext.TestAttendees.FindAsync(testId);
-            
+
             DateTime currentDate = DateTime.UtcNow;
             string defaultMessage = _stringConstants.WarningMessage;
             int defaultTime = 5;
@@ -278,7 +278,7 @@ namespace Promact.Trappist.Repository.Tests
                 await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
                 testAcObject.TestIpAddress = testIpAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
-                testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate,DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
+                testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate, DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : DateTime.SpecifyKind(testAcObject.EndDate, DateTimeKind.Utc); //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
                 testAcObject.WarningTime = testAcObject.WarningTime == null ? defaultTime : testAcObject.WarningTime;
@@ -326,11 +326,11 @@ namespace Promact.Trappist.Repository.Tests
                     question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
                     question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
 
-                    if(question.Question.QuestionType == QuestionType.Programming)
+                    if (question.Question.QuestionType == QuestionType.Programming)
                     {
                         var languageIds = x.Question.CodeSnippetQuestion.QuestionLanguangeMapping.Select(map => map.LanguageId);
                         question.CodeSnippetQuestion.LanguageList = new List<string>();
-                        foreach ( var id in languageIds)
+                        foreach (var id in languageIds)
                         {
                             question.CodeSnippetQuestion.LanguageList.Add(languages.Where(lang => lang.Id == id).Select(lang => lang.Language).Single());
                         }
@@ -362,6 +362,11 @@ namespace Promact.Trappist.Repository.Tests
                 }
             }
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
+        }
+
+        public async Task<Test> GetTestSummary(string link)
+        {
+            return await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == link);
         }
         #endregion
 

@@ -91,6 +91,8 @@ namespace Promact.Trappist.Repository.Tests
         Task<bool> IsTestAttendeeExistAsync(int id);
         #endregion
 
+        Task<Test> GetTestSummary(string link);
+
         #region Category Selection       
 
         /// <summary>
