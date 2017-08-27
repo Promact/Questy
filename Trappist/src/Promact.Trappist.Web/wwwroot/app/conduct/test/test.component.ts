@@ -136,7 +136,7 @@ export class TestComponent implements OnInit {
         this.url = window.location.pathname;
         platformLocation.onPopState(() => {
             window.location.replace(window.location.origin + '/pageNotFound');
-            if (window.history.length != null) {
+            if (window.history.length !== null) {
                 for (let i = 0; i < window.history.length; i++)
                     window.history[i].state(null);
             }
