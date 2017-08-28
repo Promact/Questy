@@ -319,7 +319,8 @@ export class TestComponent implements OnInit {
             let testStatus = response;
             if (testStatus !== TestStatus.allCandidates) {
                 //Close the window if Test is already completed
-                window.close();
+                this.routeForTestEnd = 'conduct/' + this.testLink;
+                this.router.navigate(['/test-end'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
             }
             window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
             window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
@@ -444,8 +445,6 @@ export class TestComponent implements OnInit {
         this.questionIndex = index;
         //Reset time counter for question
         this.timeOutCounter = 0;
-
-        this.isTestReady = true;
     }
 
     runCode() {
@@ -510,7 +509,7 @@ export class TestComponent implements OnInit {
                 testAnswer.questionStatus = QuestionStatus.answered;
 
                 this.questionStatus = QuestionStatus.answered;
-            } else if (testQuestion.questionStatus === QuestionStatus.selected) {
+            } else if (testQuestion.questionStatus === QuestionStatus.selected || testQuestion.questionStatus === QuestionStatus.answered) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
                 testAnswer.questionStatus = testQuestion.questionStatus;

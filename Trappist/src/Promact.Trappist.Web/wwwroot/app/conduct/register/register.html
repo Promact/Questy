@@ -10,42 +10,42 @@
                 <label>First Name</label>
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.firstName" name="firstName" #firstName="ngModel" maxlength="255" />
                 <div class="errors-container">
-                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.pattern" class="error-msg">First name must be in alphabets</span>
-                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.required" class="error-msg">Required</span>
+                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.pattern" class="error-msg">First Name can only contain letters, underscores or spaces.</span>
+                    <span *ngIf="firstName.touched && !firstName.valid && firstName.errors.required" class="error-msg">This field is required.</span>
                 </div>
             </div>
             <div class="form-group">
                 <label>Last Name</label>
                 <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="testAttendees.lastName" name="lastName" #lastName="ngModel" maxlength="255" />
                 <div class="errors-container">
-                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.pattern" class="error-msg">Last name must be in alphabets</span>
-                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.required" class="error-msg">Required</span>
+                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.pattern" class="error-msg">Last Name can only contain letters, underscores or spaces.</span>
+                    <span *ngIf="lastName.touched && !lastName.valid && lastName.errors.required" class="error-msg">This field is required.</span>
                 </div>
             </div>
             <div class="form-group">
                 <label>Email</label>
                 <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="email" class="form-control" [(ngModel)]="testAttendees.email" name="email" #email="ngModel" maxlength="255" />
                 <div class="errors-container">
-                    <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">Invalid email address</span>
-                    <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">Required</span>
-                    <span class="error-msg" *ngIf="isErrorMessage">This email id already exists.</span>
+                    <span *ngIf="email.touched && !email.valid && email.errors.pattern" class="error-msg">This Email is invalid.</span>
+                    <span *ngIf="email.touched && !email.valid && email.errors.required" class="error-msg">This field is required.</span>
+                    <span class="error-msg" *ngIf="isErrorMessage">This Email already exists.</span>
                 </div>
             </div>
             <div class="form-group">
                 <label>Roll Number</label>
                 <input required pattern="^[a-zA-Z0-9]*$" type="text" class="form-control" [(ngModel)]="testAttendees.rollNumber" name="rollNumber" #rollNumber="ngModel" />
                 <div class="errors-container">
-                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">Invalid roll number</span>
-                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">Required</span>
-                    <span class="error-msg" *ngIf="isErrorMessage">This roll number already exists.</span>
+                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.pattern" class="error-msg">This Roll Number is invalid.</span>
+                    <span *ngIf="rollNumber.touched && !rollNumber.valid && rollNumber.errors.required" class="error-msg">This field is required.</span>
+                    <span class="error-msg" *ngIf="isErrorMessage">This Roll Number already exists.</span>
                 </div>
             </div>
             <div class="form-group">
                 <label>Contact Number</label>
                 <input required pattern="^[+]?([0-9]{0,15})$" type="text" class="form-control" [(ngModel)]="testAttendees.contactNumber" name="contactNumber" #contactNumber="ngModel" maxlength="15" />
                 <div class="errors-container">
-                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">This field should contain numeric values only.</span>
-                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">Required</span>
+                    <span *ngIf="contactNumber.dirty && !contactNumber.valid && contactNumber.errors.pattern" class="error-msg">Contact Number can only contain numbers.</span>
+                    <span *ngIf="contactNumber.touched && !contactNumber.valid && contactNumber.errors.required" class="error-msg">This field is required.</span>
                 </div>
             </div>
             <div class="text-center">
