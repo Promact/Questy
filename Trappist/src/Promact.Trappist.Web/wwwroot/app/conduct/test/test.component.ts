@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Test } from '../../tests/tests.model';
 import { TestPreviewComponent } from '../../tests/test-preview/test-preview.compponent';
 import { TestQuestions } from '../test_conduct.model';
@@ -15,6 +16,7 @@ import { QuestionBase } from '../../questions/question';
 import { TestAttendee } from '../test_attendee.model';
 import { TestAnswer } from '../test_answer.model';
 import { TestStatus } from '../teststatus.enum';
+import { TestsProgrammingGuideDialogComponent } from './tests-programming-guide-dialog.component';
 import { AceEditorComponent } from 'ng2-ace-editor';
 import 'brace';
 import 'brace/theme/cobalt';
@@ -98,6 +100,7 @@ export class TestComponent implements OnInit {
     private clockIntervalListener: Subscription;
 
     constructor(private router: Router,
+        public dialog: MdDialog,
         private snackBar: MdSnackBar,
         private conductService: ConductService,
         private route: ActivatedRoute,
@@ -245,16 +248,12 @@ export class TestComponent implements OnInit {
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume;
 
-            if (this.resumable === AllowTestResume.Supervised) {
-                window.onbeforeunload = (ev) => {
-                    this.saveTestLogs();
-                    if (!this.testEnded) {
-                        let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
-                        ev.returnValue = dialogText;
-                        return dialogText;
-                    }
-                };
-            }
+            window.onbeforeunload = (ev) => {
+                this.saveTestLogs();
+                let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                ev.returnValue = dialogText;
+                return dialogText;
+            };
 
             if (this.testTypePreview)
                 this.getTestQuestion(this.test.id);
@@ -401,6 +400,7 @@ export class TestComponent implements OnInit {
                     if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
                         this.addAnswer(this.testQuestions[this.questionIndex]);
                     }
+                    this.isTestReady = true;
                 }
                 //Restore status of previous question
                 this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
@@ -426,6 +426,7 @@ export class TestComponent implements OnInit {
                 this.changeText();
                 this.codeResult = '';
             }
+            this.isTestReady = true;
         }
 
         //Set status of new question
@@ -557,11 +558,7 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     markAsReview(index: number) {
-        if (this.questionStatus !== QuestionStatus.answered) {
-            this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
-        } else {
-            this.openSnackBar(this.ALERT_MARK);
-        }
+        this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
     }
 
     /**
@@ -615,6 +612,10 @@ export class TestComponent implements OnInit {
 
     isLastQuestion() {
         return this.questionIndex === this.testQuestions.length - 1;
+    }
+
+    openProgramGuide() {
+        this.dialog.open(TestsProgrammingGuideDialogComponent, { disableClose: true, hasBackdrop: true });
     }
 
     /**

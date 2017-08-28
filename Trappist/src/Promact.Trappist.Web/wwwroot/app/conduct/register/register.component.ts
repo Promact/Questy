@@ -27,7 +27,7 @@ export class RegisterComponent {
         this.conductService.registerTestAttendee(magicString, this.testAttendees).subscribe(response => {
             this.isErrorMessage = false;
             this.loader = false;
-            this.router.navigate(['instructions']);
+            this.router.navigate(['instructions'], { replaceUrl: true });
         }, err => {
             this.isErrorMessage = true;
             this.loader = false;
