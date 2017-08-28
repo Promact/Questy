@@ -2,6 +2,8 @@
 import { HttpService } from '../core/http.service';
 import { TestAnswer } from './test_answer.model';
 import { TestStatus } from './teststatus.enum';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ConductService {
@@ -20,6 +22,8 @@ export class ConductService {
     registerTestAttendee(magicString: any, testAttendee: any) {
         return this.httpService.post(this.testConductUrl + magicString + '/register', testAttendee);
     }
+
+    public timeOut = new BehaviorSubject<any>(0);
 
     /**
      * Gets all the instruction details before starting of a particular test
