@@ -336,7 +336,7 @@ namespace Promact.Trappist.Core.Controllers
         }
 
 
-        [HttpGet("getTestSummar/{link}")]
+        [HttpGet("getTestSummary/{link}")]
         public async Task<IActionResult> GetSummary([FromRoute] string link)
         {
             return Ok(await _testRepository.GetTestSummary(link));
