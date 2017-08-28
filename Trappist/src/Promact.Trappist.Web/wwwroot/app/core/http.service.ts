@@ -38,7 +38,13 @@ export class HttpService {
         let headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(url, jsonBody, options).map(res => res.json());
+        return this.http.post(url, jsonBody, options).map(res => {
+            switch (res.status) {
+                case 200: return res.json();
+                case 404: return Observable.throw('unauthorized');
+                default: throw new Error('This request has failed ' + res.status);
+            }                
+        });
     }
 
     put(url: string, body: any) {
