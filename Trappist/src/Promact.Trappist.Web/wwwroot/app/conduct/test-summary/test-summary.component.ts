@@ -193,6 +193,7 @@ export class TestSummaryComponent implements OnInit {
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
                     duration: 4000,
                 });
+                this.testAttendee.report.isTestPausedUnWillingly = true;
                 this.disableButton = true;
             }
 
