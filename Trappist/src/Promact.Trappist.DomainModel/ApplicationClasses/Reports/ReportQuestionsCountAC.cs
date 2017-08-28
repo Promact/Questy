@@ -9,5 +9,6 @@
         public int CorrectQuestionsAttempted { get; set; }
         public int NoOfQuestionAttempted { get; set; }
         public double Percentile { get; set; }
+        public int totalTestQuestions { get; set; }
     }
 }

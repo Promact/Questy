@@ -101,10 +101,6 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
-            this.conductService.getTestInstructionsByLink(this.test.link).subscribe((response) => {
-                this.testInstruction = response;
-                this.totalNoOfTestQuestions = this.testInstruction.totalNumberOfQuestions;
-            });
         });
         this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
             this.reportQuestionDetails = res;
@@ -426,11 +422,6 @@ export class TestReportComponent implements OnInit {
         this.sortedAttendeeArray = this.sortedAttendeeArray.sort((a, b) => b.report.totalMarksScored - a.report.totalMarksScored);
         this.maxScore = this.sortedAttendeeArray[0].report.totalMarksScored;
         this.caculateAttendeeRank();
-        this.calculateTestSummaryDetails();
-        workSheet2.addRow({
-            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore,
-            avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: this.averageCorrectAttempt
-        });
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
                 let testDate = document.getElementById('date').innerHTML;
@@ -474,8 +465,14 @@ export class TestReportComponent implements OnInit {
                             percentile: y.percentile, rank: this.attendeeRank
                         });
                     }
+                    this.totalNoOfTestQuestions = y.totalTestQuestions;
                 });
             }
+        });
+        this.calculateTestSummaryDetails();
+        workSheet2.addRow({
+            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore,
+            avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: this.averageCorrectAttempt
         });
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
