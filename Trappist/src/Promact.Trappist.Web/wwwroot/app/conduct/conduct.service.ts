@@ -126,6 +126,6 @@ export class ConductService {
         return this.httpService.get(this.testConductUrl + 'testLogs');
     }
     getTestForSummary(link: string) {
-        return this.httpService.get(this.testConductUrl + '/getTestSummar/' + link);
+        return this.httpService.get(this.testConductUrl + 'getTestSummar/' + link);
     }
 }
