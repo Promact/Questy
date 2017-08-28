@@ -27,7 +27,7 @@
         </div>
         <div class="text-center" *ngIf="isTestClosedUnConditionally">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
-            <button class="btn" *ngIf="!isAllowed" [disabled]="disableButton && !isAllowed" (click)="sendRequestForResume()">Request to Resume</button>
+            <button class="btn" *ngIf="!isAllowed" [disabled]="disableButton && testAttendee.report.isTestPausedUnWillingly" (click)="sendRequestForResume()">Request to Resume</button>
             <button type="button" class="btn" *ngIf="isAllowed" (click)="startTest()">Back to Test</button>
             <button type="button" class="btn btn-primary" (click)="endYourTest()">End Test</button>
         </div>

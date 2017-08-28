@@ -203,7 +203,10 @@ export class TestSummaryComponent implements OnInit {
      */
     getCandidateInfoToResumeTest() {
         this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe(response => {
-            this.isAllowed = response;
+            if (response) {
+                this.testAttendee.report = response;
+                this.isAllowed = this.testAttendee.report.isAllowResume;
+            }
         });
     }
 

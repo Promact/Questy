@@ -345,10 +345,10 @@ namespace Promact.Trappist.Repository.Reports
                 await _dbContext.SaveChangesAsync();
             }
         }
-        public async Task<bool> GetWindowCloseAsync(int attendeeId)
+        public async Task<Report> GetWindowCloseAsync(int attendeeId)
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            return reportObject.IsAllowResume;
+            return reportObject;
         }
 
         public async Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId)

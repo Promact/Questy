@@ -195,7 +195,9 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId)
         {
-            return await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
+            var testAttendee= await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
+            testAttendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            return testAttendee;
         }
 
         public async Task<bool> IsTestAttendeeExistByIdAsync(int attendeeId)

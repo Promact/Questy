@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Utility.Constants;
@@ -212,9 +213,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="attendeeId"></param>
         /// <returns></returns>
         [HttpGet("getWindowClose/{attendeeId}")]
-        public async Task<bool> GetResumeTestValueAsync([FromRoute] int attendeeId)
+        public async Task<IActionResult> GetResumeTestValueAsync([FromRoute] int attendeeId)
         {
-            return await _reportRepository.GetWindowCloseAsync(attendeeId);
+            return Ok(await _reportRepository.GetWindowCloseAsync(attendeeId));
         }
 
         /// <summary>
