@@ -208,8 +208,8 @@ namespace Promact.Trappist.Repository.Reports
                                 else
                                     hardQuestionAttempted += 1;
                             }
-                        }                           
-                        if (givenSolutionByAttendee.Any(y => y.Score == 1))
+                        }
+                        if (givenSolutionByAttendee.Any(y => y.Score == 1 && y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee))
                             correctAttemptedQuestion += 1;
                        
                     }
