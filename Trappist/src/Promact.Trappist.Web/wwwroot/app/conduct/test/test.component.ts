@@ -323,6 +323,7 @@ export class TestComponent implements OnInit {
         }, err => {
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
+            
         });
     }
 
@@ -347,6 +348,7 @@ export class TestComponent implements OnInit {
             this.navigateToQuestionIndex(0);
 
             this.timeOutCounter = this.TIMEOUT_TIME;
+            this.conductService.timeOut.next(this.timeOutCounter);
         }, err => {
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
@@ -585,14 +587,14 @@ export class TestComponent implements OnInit {
      * @param optionIndex
      * @param isSingleChoice
      */
-    selectOption(questionIndex: number, optionIndex: number, isSingleChoice: boolean = false) {        
+    selectOption(questionIndex: number, optionIndex: number, isSingleChoice: boolean = false) {
         if (isSingleChoice) {
             this.clearResponse(questionIndex);
             this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = true;
         } else {
             let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
             this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
-        }        
+        }
     }
 
     /**
@@ -695,6 +697,7 @@ export class TestComponent implements OnInit {
      */
     private countDown() {
         this.seconds = this.seconds > 0 ? this.seconds - 1 : 0;
+        this.conductService.timeOut.next(this.seconds);
         this.timeString = this.secToTimeString(this.seconds);
 
         if (this.seconds <= this.WARNING_TIME && !this.timeWarning) {
