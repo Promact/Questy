@@ -13,7 +13,7 @@ import { TestConductHeaderComponent } from './shared/test-conduct-header/test-co
 import { TestConductFooterComponent } from './shared/test-conduct-footer/test-conduct-footer.component';
 import { ConductService } from './conduct.service';
 import { ReportService } from '../reports/report.service';
-
+import { TestsProgrammingGuideDialogComponent } from './test/tests-programming-guide-dialog.component';
 
 @NgModule({
     bootstrap: [ConductComponent],
@@ -34,8 +34,11 @@ import { ReportService } from '../reports/report.service';
         TestSummaryComponent,
         TestEndComponent,
         TestConductHeaderComponent,
-        TestConductFooterComponent
-    ],
+        TestConductFooterComponent,
+        TestsProgrammingGuideDialogComponent
+    ], entryComponents: [
+        TestsProgrammingGuideDialogComponent
+    ]
 
 })
 export class ConductModule { }
