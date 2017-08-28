@@ -79,6 +79,7 @@ export class TestComponent implements OnInit {
     private tolerance: number;
     private timeOutCounter: number;
     private resumable: AllowTestResume;
+    private questionSChanged
 
     private WARNING_TIME: number = 300;
     private WARNING_MSG: string = 'Hurry up!';
@@ -401,6 +402,7 @@ export class TestComponent implements OnInit {
                     if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
                         this.addAnswer(this.testQuestions[this.questionIndex]);
                     }
+                    this.isTestReady = true;
                 }
                 //Restore status of previous question
                 this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
@@ -426,6 +428,7 @@ export class TestComponent implements OnInit {
                 this.changeText();
                 this.codeResult = '';
             }
+            this.isTestReady = true;
         }
 
         //Set status of new question

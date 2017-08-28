@@ -1,135 +1,139 @@
 ﻿<div class="loader-container" *ngIf="!isTestReady">
-    <div class="spinner">
-    </div>
+  <div class="spinner">
+  </div>
 </div>
 <div class="test" id="testElement">
-    <div class="test-header">
-        <div class="container-fluid">
-            <div class="display-table">
-                <div class="display-table-cell">
-                    <img class="promact-logo" src="/images/promact-logo.png" alt="Promact Logo" width="180" />
-                </div>
-                <div class="display-table-cell text-center">
-                    <h2 class="mb5">{{test.testName}}</h2>
-                    <p *ngIf="!testTypePreview" class="mb0">{{testAttendee.firstName}}&nbsp;{{testAttendee.lastName}}</p>
-                    <p *ngIf="testTypePreview" class="mb0">Attendee Name</p>
-                </div>
-                <div class="display-table-cell text-right">
-                    <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
-                    <br class="hidden-lg" />
-                    <h5 class="mlr10">Time Remaining:</h5>
-                    <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
-                </div>
-            </div>
+  <div class="test-header">
+    <div class="container-fluid">
+      <div class="display-table">
+        <div class="display-table-cell">
+          <img class="promact-logo" src="/images/promact-logo.png" alt="Promact Logo" width="180" />
         </div>
+        <div class="display-table-cell text-center">
+          <h2 class="mb5">{{test.testName}}</h2>
+          <p *ngIf="!testTypePreview" class="mb0">{{testAttendee.firstName}}&nbsp;{{testAttendee.lastName}}</p>
+          <p *ngIf="testTypePreview" class="mb0">Attendee Name</p>
+        </div>
+        <div class="display-table-cell text-right">
+          <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
+          <br class="hidden-lg" />
+          <h5 class="mlr10">Time Remaining:</h5>
+          <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
+        </div>
+      </div>
     </div>
-    <div class="test-body">
-        <div class="test-body-title">
-            <div class="container-fluid">
-                <div class="display-table">
-                    <div class="display-table-cell ptb10">
-                        <h6>Question #{{questionIndex+1}}</h6>
-                    </div>
-                    <div class="display-table-cell ptb10 pl15">
-                        <h6>Select the answer(s)</h6>
-                    </div>
-                </div>
-            </div>
+  </div>
+  <div class="test-body">
+    <div class="test-body-title">
+      <div class="container-fluid">
+        <div class="display-table">
+          <div class="display-table-cell ptb10">
+            <h6>Question #{{questionIndex+1}}</h6>
+          </div>
+          <div class="display-table-cell ptb10 pl15">
+            <h6>Select the answer(s)</h6>
+          </div>
         </div>
-        <div class="test-body-content">
-            <div class="container-fluid">
-                <div class="display-table">
-                    <div class="display-table-cell qs-area ptb20">
-                        <p [innerHTML]="questionDetail"></p>
-                    </div>
-                    <div class="display-table-cell ans-area code-snippet ptb20 pl15" *ngIf="isQuestionCodeSnippetType">
-                        <div class="form-group display-inline-block mb30 mr20">
-                            <label>Code Language</label>
-                            <select name="languages" class="form-control small-width" [(ngModel)]="selectLanguage" (change)="changeLanguage($event.target.value)" [ngModelOptions]="{standalone:true}">
-                                <option *ngFor="let lang of languageMode" [value]="lang">{{lang}}</option>
-                            </select>
-                        </div>
-                        <div class="form-group display-inline-block mb30">
-                            <label>Editor Theme</label>
-                            <select name="theme" class="form-control small-width" [(ngModel)]="selectedTheme" (change)="changeTheme($event.target.value)" [ngModelOptions]="{standalone:true}">
-                                <option *ngFor="let theme of themes" [value]="theme">{{theme}}</option>
-                            </select>
-                        </div>
-                        <ace-editor [(text)]="codeAnswer"
-                                    (textChanged)="onChange($event)"
-                                    [mode]="selectedMode"
-                                    [theme]="selectedTheme"
-                                    #editor
-                                    id="edit"
-                                    class="code-editor">
-                        </ace-editor>
-                        <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run</button>
-                        <pre class="mt20" *ngIf="codeResult != ''">{{codeResult}}</pre>
-                    </div>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
-                        <md-radio-group>
-                            <md-radio-button *ngFor="let option of options;let i = index" value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
-                        </md-radio-group>
-                    </div>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice && !isQuestionCodeSnippetType">
-                        <md-checkbox *ngFor="let option of options; let i = index" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
-                            {{option.option}}
-                        </md-checkbox>
-                        <p class="theme-text h7">Note: This question can have more than one answer.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="test-footer">
-        <div class="test-footer-top ptb10">
-            <div class="container-fluid">
-                <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index" (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
+    <div class="test-body-content">
+      <div class="container-fluid">
+        <div class="display-table">
+          <div class="display-table-cell qs-area ptb20">
+            <p [innerHTML]="questionDetail"></p>
+          </div>
+          <div class="display-table-cell ans-area code-snippet ptb20 pl15" *ngIf="isQuestionCodeSnippetType">
+            <div class="pull-right">
+              <em class="material-icons programming-guide">help</em>
             </div>
-        </div>
-        <div class="test-footer-bottom ptb10">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6 col-md-12 col-sm-12 hidden-lg mb10">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)">Next <em class="material-icons">keyboard_arrow_right</em></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 col-sm-4 trappist-logo">
-                                <p>Powered By</p>
-                                <img src="/images/logo.png" alt="Logo" width="70" />
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 text-right mt8">
-                                <span class="indicator"><span class="answered"></span> Answered</span>
-                                <span class="indicator"><span class="review"></span> For Review</span>
-                                <span class="indicator"><span class="selected"></span> Selected</span>
-                                <span class="indicator"><span class="unanswered"></span> Unanswered</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 visible-lg-block">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1 || isCodeProcessing">Next <em class="material-icons">keyboard_arrow_right</em></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="clearfix"></div>
+            <div class="form-group display-inline-block mb30 mr20">
+              <label>Code Language</label>
+              <select name="languages" class="form-control small-width" [(ngModel)]="selectLanguage" (change)="changeLanguage($event.target.value)" [ngModelOptions]="{standalone:true}">
+                <option *ngFor="let lang of languageMode" [value]="lang">{{lang}}</option>
+              </select>
             </div>
+            <div class="form-group display-inline-block mb30">
+              <label>Editor Theme</label>
+              <select name="theme" class="form-control small-width" [(ngModel)]="selectedTheme" (change)="changeTheme($event.target.value)" [ngModelOptions]="{standalone:true}">
+                <option *ngFor="let theme of themes" [value]="theme">{{theme}}</option>
+              </select>
+            </div>
+            <ace-editor [(text)]="codeAnswer"
+                        (textChanged)="onChange($event)"
+                        [mode]="selectedMode"
+                        [theme]="selectedTheme"
+                        #editor
+                        id="edit"
+                        class="code-editor">
+            </ace-editor>
+            <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run</button>
+            <pre class="mt20" *ngIf="codeResult != ''">{{codeResult}}</pre>
+          </div>
+          <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
+            <md-radio-group>
+              <md-radio-button *ngFor="let option of options;let i = index" value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice && !isQuestionCodeSnippetType">
+            <md-checkbox *ngFor="let option of options; let i = index" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
+              {{option.option}}
+            </md-checkbox>
+            <p class="theme-text h7">Note: This question can have more than one answer.</p>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <div class="test-footer">
+    <div class="test-footer-top ptb10">
+      <div class="container-fluid">
+        <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index" (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
+      </div>
+    </div>
+    <div class="test-footer-bottom ptb10">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 col-sm-12 hidden-lg mb10">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
+                <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)">Next <em class="material-icons">keyboard_arrow_right</em></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4 trappist-logo">
+                <p>Powered By</p>
+                <img src="/images/logo.png" alt="Logo" width="70" />
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 text-right mt8">
+                <span class="indicator"><span class="answered"></span> Answered</span>
+                <span class="indicator"><span class="review"></span> For Review</span>
+                <span class="indicator"><span class="selected"></span> Selected</span>
+                <span class="indicator"><span class="unanswered"></span> Unanswered</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-sm-12 visible-lg-block">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
+                <button type="button" class="btn" (click)="markAsReview(questionIndex)">Mark for Review</button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 text-right">
+                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1 || isCodeProcessing">Next <em class="material-icons">keyboard_arrow_right</em></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
