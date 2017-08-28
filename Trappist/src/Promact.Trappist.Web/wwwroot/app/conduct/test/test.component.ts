@@ -26,7 +26,6 @@ import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
-import { PlatformLocation } from '@angular/common';
 declare let screenfull: any;
 
 
@@ -104,8 +103,7 @@ export class TestComponent implements OnInit {
         private route: ActivatedRoute,
         private elementRef: ElementRef,
         private reportService: ReportService,
-        private location: Location,
-        private platformLocation: PlatformLocation) {
+        private location: Location) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
@@ -134,18 +132,14 @@ export class TestComponent implements OnInit {
         this.testEnded = false;
         this.isCodeProcessing = false;
         this.url = window.location.pathname;
-        platformLocation.onPopState(() => {
-            // window.location.replace(window.location.origin + '/pageNotFound');
-            window.history.replaceState('page', null, window.location.origin + '/pageNotFound');
-            if (window.history.length !== null) {
-                for (let i = 0; i < window.history.length; i++)
-                    window.history[i].state(null);
-            }
-        });
     }
 
     ngOnInit() {
         this.getTestByLink(this.testLink);
+        history.pushState(null, null, null);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, null, null);
+        });;
     }
 
 

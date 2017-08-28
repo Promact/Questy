@@ -1,7 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlatformLocation } from '@angular/common';
-
 
 @Component({
     moduleId: module.id,
@@ -13,20 +11,16 @@ export class TestEndComponent implements OnInit {
     testEndPathContent: string;
     displayDisqualifiedMessage: boolean;
 
-    constructor(private route: ActivatedRoute, private platformLocation: PlatformLocation) {
-        platformLocation.onPopState(() => {
-            window.history.replaceState('page', null, window.location.origin + '/pageNotFound');
-            //window.location.replace(window.location.origin + '/pageNotFound');
-            if (window.history.length !== null) {
-                for (let i = 0; i < window.history.length; i++)
-                    window.history[i].state(null);
-            }
-        });
+    constructor(private route: ActivatedRoute) {
     }
 
     ngOnInit() {
         this.testEndPathContent = this.route.snapshot.params['blocked'];
         this.displayMessage();
+        history.pushState(null, null, null);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, null, null);
+        });
     }
 
     displayMessage() {
