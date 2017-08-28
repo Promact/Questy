@@ -17,7 +17,7 @@ export class TestEndComponent implements OnInit {
 
     ngOnInit() {
         let url = window.location.pathname;
-        this.blockUrl = url.substring(url.lastIndexOf('/cnduct/') + 21);
+        this.blockUrl = url.substring(url.lastIndexOf('/conduct/') + 21);
         this.displayMessage();
         history.pushState(null, null, null);
         window.addEventListener('popstate', function (event) {
