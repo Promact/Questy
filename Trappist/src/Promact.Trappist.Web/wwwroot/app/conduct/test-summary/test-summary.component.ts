@@ -51,6 +51,7 @@ export class TestSummaryComponent implements OnInit {
     isTestResume: boolean;
     isTestClosedUnConditionally: boolean;
     disableButton: boolean;
+    isAllowed: boolean;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
         this.testAttendee = new TestAttendee();
@@ -182,6 +183,7 @@ export class TestSummaryComponent implements OnInit {
      * sends request to the test conductor for test resume
      */
     sendRequestForResume() {
+        this.isTestResume = true;
         this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(response => {
             if (response) {
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
@@ -197,7 +199,7 @@ export class TestSummaryComponent implements OnInit {
      */
     getCandidateInfoToResumeTest() {
         this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe(response => {
-            this.isTestResume = response;
+            this.isAllowed = response;
         });
     }
 
