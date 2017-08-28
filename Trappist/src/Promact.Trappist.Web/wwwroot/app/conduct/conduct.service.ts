@@ -2,7 +2,6 @@
 import { HttpService } from '../core/http.service';
 import { TestAnswer } from './test_answer.model';
 import { TestStatus } from './teststatus.enum';
-import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
