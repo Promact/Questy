@@ -95,8 +95,6 @@ export class TestSummaryComponent implements OnInit {
      */
     timeLeftOfTest(attendeeId: number) {
         this.loader = true;
-
-        //this.conductService.getElapsedTime(attendeeId).subscribe((response) => {
         this.conductService.timeOut.subscribe(value => {
             let spanTimeInSeconds = value;
             let durationInSeconds = this.test.duration * 60;
@@ -107,8 +105,6 @@ export class TestSummaryComponent implements OnInit {
                 this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
             this.loader = false;
         });
-            
-        //});
     }
 
     /**
