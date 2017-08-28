@@ -124,7 +124,7 @@ namespace Promact.Trappist.Repository.Reports
         /// </summary>
         /// <param name="attendeeId"></param>
         /// <returns></returns>
-        Task<bool> GetWindowCloseAsync(int attendeeId);
+        Task<Report> GetWindowCloseAsync(int attendeeId);
 
         /// <summary>
         /// Gets the number of questions attempted by a test attendee
