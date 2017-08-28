@@ -10,12 +10,14 @@ export class TestEndComponent implements OnInit {
 
     testEndPathContent: string;
     displayDisqualifiedMessage: boolean;
+    blockUrl: string;
 
     constructor(private route: ActivatedRoute) {
     }
 
     ngOnInit() {
-        this.testEndPathContent = this.route.snapshot.params['blocked'];
+        let url = window.location.pathname;
+        this.blockUrl = url.substring(url.lastIndexOf('/cnduct/') + 21);
         this.displayMessage();
         history.pushState(null, null, null);
         window.addEventListener('popstate', function (event) {
@@ -24,7 +26,7 @@ export class TestEndComponent implements OnInit {
     }
 
     displayMessage() {
-        if (this.testEndPathContent === 'blocked')
+        if (this.blockUrl === 'test-end-block')
             this.displayDisqualifiedMessage = true;
     }
 }

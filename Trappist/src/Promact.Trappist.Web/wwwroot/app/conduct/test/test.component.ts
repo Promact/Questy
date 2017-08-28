@@ -763,7 +763,7 @@ export class TestComponent implements OnInit {
                     this.router.navigate(['test-summary'], { replaceUrl: true });
                 else {
                     this.routeForTestEnd = 'conduct/' + this.testLink;
-                    this.router.navigate(['/test-end/blocked'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
+                    this.router.navigate(['/test-end-block'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
                 }
             });
         }
@@ -775,7 +775,7 @@ export class TestComponent implements OnInit {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
                 this.routeForTestEnd = 'conduct/' + this.testLink;
-                this.router.navigate(['/test-end/blocked'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
+                this.router.navigate(['/test-end-block'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
             });
         }
     }
