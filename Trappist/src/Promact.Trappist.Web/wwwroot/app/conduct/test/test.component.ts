@@ -558,11 +558,7 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     markAsReview(index: number) {
-        if (this.questionStatus !== QuestionStatus.answered) {
-            this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
-        } else {
-            this.openSnackBar(this.ALERT_MARK);
-        }
+        this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
     }
 
     /**
