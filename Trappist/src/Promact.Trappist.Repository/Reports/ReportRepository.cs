@@ -133,22 +133,15 @@ namespace Promact.Trappist.Repository.Reports
             //all test questions of a test
             testQuestionList = await GetTestQuestions(testId);
             //all questions and answers attempted by all attendees
-            var questionsAttemptedByAllTestAttendeeList = await _dbContext.TestConduct
-                .Include(x => x.TestAttendees)
-                .Where(x => (x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review) && x.TestAttendees.TestId == testId)
-                .Include(x => x.TestAnswers)
-                .Select(selectOnly => new { selectOnly.Id,selectOnly.Question, selectOnly.QuestionId,selectOnly.TestAttendeeId, selectOnly.TestAnswers })
-                .ToListAsync();
-
+            var questionsAttemptedByAllAttendeeList = await _dbContext.TestConduct.Where(x => x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
+                                                                                  .Include(x => x.TestAnswers).ToListAsync();
             //all testcode solutions of a test
-            var testCodeSolutionsList = await _dbContext.TestCodeSolution.Include(x=>x.TestAttendee)
-                                                                         .Where(x=>x.TestAttendee.TestId==testId)
-                                                                         .Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId ,selectOnly.Score}).ToListAsync();
+            var testCodeSolutionsList = await _dbContext.TestCodeSolution.Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId ,selectOnly.Score}).ToListAsync();
 
             foreach (var testAttendee in allTestAttendeeList)
             {
 
-                var attemptedQuestions = questionsAttemptedByAllTestAttendeeList.Where(x => x.TestAttendeeId == testAttendee).ToList();
+                var attemptedQuestions = questionsAttemptedByAllAttendeeList.Where(x => x.TestAttendeeId == testAttendee).ToList();
                 attemptedQuestions.ForEach(x =>
                 {
                     if (!(x.Question.QuestionType == QuestionType.Programming))
@@ -204,19 +197,21 @@ namespace Promact.Trappist.Repository.Reports
                         var difficultyLevel = x.Question.DifficultyLevel;
                         var givenSolutionByAttendee = testCodeSolutionsList.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee).ToList();
                         if(givenSolutionByAttendee.Count() >0)
-                            totalQuestionAttempted += 1;
-                        if (givenSolutionByAttendee.Any(y => y.Score == 1))
-
-                            correctAttemptedQuestion += 1;
-                        if (difficultyLevel == DifficultyLevel.Easy)
-                            easyQuestionAttempted += 1;
-                        else
                         {
-                            if (difficultyLevel == DifficultyLevel.Medium)
-                                mediumQuestionAttempted += 1;
+                            totalQuestionAttempted += 1;
+                            if (difficultyLevel == DifficultyLevel.Easy)
+                                easyQuestionAttempted += 1;
                             else
-                                hardQuestionAttempted += 1;
-                        }
+                            {
+                                if (difficultyLevel == DifficultyLevel.Medium)
+                                    mediumQuestionAttempted += 1;
+                                else
+                                    hardQuestionAttempted += 1;
+                            }
+                        }                           
+                        if (givenSolutionByAttendee.Any(y => y.Score == 1))
+                            correctAttemptedQuestion += 1;
+                       
                     }
                 });
                 var percentile = await CalculatePercentileAsync(testAttendee);
