@@ -38,13 +38,15 @@ using Promact.Trappist.Web.Models;
 using System;
 using System.IO;
 using Exceptionless;
+using StackExchange.Profiling.Storage;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Promact.Trappist.Web
 {
     public class Startup
     {
         public Startup(IHostingEnvironment env)
-        {   
+        {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -71,10 +73,9 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddDirectoryBrowser();
+
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddDirectoryBrowser();
 
             services.AddSession(options =>
             {
@@ -106,9 +107,13 @@ namespace Promact.Trappist.Web
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             #endregion
 
+
+            services.AddMiniProfiler().AddEntityFramework();
+
+            services.AddMemoryCache();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
         {
             app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
 
@@ -130,6 +135,7 @@ namespace Promact.Trappist.Web
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseStaticFiles(new StaticFileOptions
@@ -138,8 +144,18 @@ namespace Promact.Trappist.Web
                     RequestPath = new PathString("/node_modules")
                 });
             }
+
+            app.UseMiniProfiler(x => 
+            {
+                // Control which SQL formatter to use
+                x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+
+                // Control storage
+                x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
+            });
+
             app.UseIdentity();
-            
+
             app.UseSession();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
@@ -165,8 +181,8 @@ namespace Promact.Trappist.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute(
-                     name: "spa-fallback",
-                     defaults: new { controller = "Home", action = "Index" });
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
 
             //Delete production db upon every deployment
@@ -186,15 +202,15 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionAC, Question>().ReverseMap();
-                cfg.CreateMap<Question, QuestionDetailAC> ();
+                cfg.CreateMap<Question, QuestionDetailAC>();
                 cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
                 cfg.CreateMap<Category, CategoryAC>();
                 cfg.CreateMap<CategoryAC, Category>();
                 cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
-                cfg.CreateMap<Question,QuestionAC>();
+                cfg.CreateMap<Question, QuestionAC>();
                 cfg.CreateMap<Test, TestAC>();
                 cfg.CreateMap<TestAC, Test>();
-                cfg.CreateMap<TestIpAddress,TestIpAddressAC>();
+                cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
             #endregion
         }
