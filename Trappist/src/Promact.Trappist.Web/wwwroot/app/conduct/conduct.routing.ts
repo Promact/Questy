@@ -33,7 +33,7 @@ const conductRoutes: Routes = [
         component: TestComponent
     },
     {
-        path: 'test-end/:blocked',
+        path: 'test-end-block',
         component: TestEndComponent
     }
 ];
