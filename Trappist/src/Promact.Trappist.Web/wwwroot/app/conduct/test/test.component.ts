@@ -584,7 +584,8 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     clearResponse(index: number) {
-        this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);        
+        this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
+        this.questionStatus = QuestionStatus.unanswered;
     }
 
     /**
