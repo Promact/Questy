@@ -29,8 +29,10 @@ export class RegisterComponent {
             this.loader = false;
             this.router.navigate(['instructions'], { replaceUrl: true });
         }, err => {
-            this.isErrorMessage = true;
-            this.loader = false;
+            if (err.status === 404) {
+                this.isErrorMessage = true;
+                this.loader = false;
+            }            
         });
     }
 }
