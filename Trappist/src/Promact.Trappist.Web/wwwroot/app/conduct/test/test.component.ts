@@ -111,7 +111,6 @@ export class TestComponent implements OnInit {
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
-        this.focusLost = 0;
         this.tolerance = 2;
         this.isTestReady = false;
         this.selectedTheme = 'monokai';
@@ -271,6 +270,7 @@ export class TestComponent implements OnInit {
     getTestAttendee(testId: number, testTypePreview: boolean) {
         this.conductService.getTestAttendeeByTestId(testId, testTypePreview).subscribe((response) => {
             this.testAttendee = response;
+            this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
             this.getTestQuestion(this.test.id);
         }, err => {
             this.router.navigate(['']);
@@ -728,7 +728,9 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.istestEnd = true;
         this.isTestReady = false;
-
+        this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
+            this.focusLost = response;
+        });
         if (this.clockIntervalListener) {
             this.clockIntervalListener.unsubscribe();
         }

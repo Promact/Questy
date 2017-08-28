@@ -128,4 +128,13 @@ export class ConductService {
     getTestForSummary(link: string) {
         return this.httpService.get(this.testConductUrl + 'getTestSummary/' + link);
     }
+
+    /**
+     * Sets the attendee browser tolerance count 
+     * @param attendeeId : Id of the test attendee
+     * @param focusLostCount : number of browser tolerance still left for that particular attendee
+     */
+    setAttendeeBrowserToleranceValue(attendeeId: number, focusLostCount: number) {
+        return this.httpService.get(this.testConductUrl + attendeeId + '/' + focusLostCount + '/setTolerance');
+    }
 }

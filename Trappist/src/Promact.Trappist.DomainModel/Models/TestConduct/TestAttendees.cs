@@ -26,6 +26,8 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
         public string RollNumber { get; set; }
 
         public bool StarredCandidate { get; set; }
+
+        public int AttendeeBrowserToleranceCount { get; set; }
         
         public int TestId { get; set; }
 
