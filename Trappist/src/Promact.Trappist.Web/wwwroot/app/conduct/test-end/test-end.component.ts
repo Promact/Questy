@@ -15,7 +15,8 @@ export class TestEndComponent implements OnInit {
 
     constructor(private route: ActivatedRoute, private platformLocation: PlatformLocation) {
         platformLocation.onPopState(() => {
-            window.location.replace(window.location.origin + '/pageNotFound');
+            window.history.replaceState('page', null, window.location.origin + '/pageNotFound');
+            //window.location.replace(window.location.origin + '/pageNotFound');
             if (window.history.length !== null) {
                 for (let i = 0; i < window.history.length; i++)
                     window.history[i].state(null);
