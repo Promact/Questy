@@ -8,4 +8,5 @@ export class ReportQuestionsCount {
     public correctQuestionsAttempted: number;
     public noOfQuestionAttempted: number;
     public percentile: number;
+    public totalTestQuestions: number;
 }

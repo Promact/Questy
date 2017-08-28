@@ -132,6 +132,7 @@ namespace Promact.Trappist.Repository.Reports
             var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId && x.Report != null).Select(x=>x.Id).ToListAsync();
             //all test questions of a test
             testQuestionList = await GetTestQuestions(testId);
+            var totalNoOfTestQuestions = testQuestionList.Count();
             //all questions and answers attempted by all attendees
             var questionsAttemptedByAllAttendeeList = await _dbContext.TestConduct.Where(x => x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
                                                                                   .Include(x => x.TestAnswers).ToListAsync();
@@ -223,7 +224,8 @@ namespace Promact.Trappist.Repository.Reports
                     HardQuestionAttempted = hardQuestionAttempted,
                     CorrectQuestionsAttempted = correctAttemptedQuestion,
                     NoOfQuestionAttempted = totalQuestionAttempted,
-                    Percentile = System.Math.Round(percentile, 2)
+                    Percentile = System.Math.Round(percentile, 2),
+                    totalTestQuestions = totalNoOfTestQuestions
                 };
                 allAttendeeMarksDetailsList.Add(reportQuestions);
                 
