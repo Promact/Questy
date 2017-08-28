@@ -32,6 +32,10 @@ export class InstructionsComponent implements OnInit {
         let url = window.location.pathname;
         this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));   
         this.getTestInstructionsByLink(this.magicString);
+        history.pushState(null, null, null);
+        window.addEventListener('popstate', function (event) {
+            history.pushState(null, null, null);
+        });;
     }
 
     /**
