@@ -144,5 +144,13 @@ namespace Promact.Trappist.Repository.TestConduct
         Task<int> GetTestSummaryDetailsAsync(string testLink);
 
         Task<List<TestLogs>> GetTestLogsAsync();
+
+        /// <summary>
+        /// Sets the attendee browser tolerance count 
+        /// </summary>
+        /// <param name="attendeeId">Contains the attendee Id from the route</param>
+        /// <param name="attendeeBrowserToleranceCount">Contains the attendee browser tolerance count from the route</param>
+        /// <returns>The browser tolerance count left for an attendee</returns>
+        Task SetAttendeeBrowserToleranceValueAsync(int attendeeId, int attendeeBrowserToleranceCount);
     }
 }

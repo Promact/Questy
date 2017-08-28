@@ -266,6 +266,19 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(codeResponse);
         }
 
+        /// <summary>
+        /// Sets the attendee browser tolerance count 
+        /// </summary>
+        /// <param name="attendeeId">Contains the attendee Id from the route</param>
+        /// <param name="attendeeBrowserToleranceCount">Contains the attendee browser tolerance count from the route</param>
+        /// <returns>The browser tolerance count left for an attendee</returns>
+        [HttpGet("{attendeeId}/{focusLostCount}/setTolerance")]
+        public async Task<IActionResult> SetAttendeeBrowserToleranceValueAsync([FromRoute]int attendeeId, [FromRoute]int focusLostCount)
+        {
+            await _testConductRepository.SetAttendeeBrowserToleranceValueAsync(attendeeId, focusLostCount);
+            return Ok(focusLostCount);
+        }
+
         #region Test-Instruction API
         /// <summary>
         /// This method is used to get all the instructions before starting of a particular test using testLink

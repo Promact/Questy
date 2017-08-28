@@ -437,6 +437,14 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             return await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Email == email && x.RollNumber == rollno && x.TestId == testId);
         }
+
+        public async Task SetAttendeeBrowserToleranceValueAsync(int attendeeId, int attendeeBrowserToleranceCount)
+        {
+            var attendeeBrowserToleranceValue = await _dbContext.TestAttendees.FirstOrDefaultAsync(x => x.Id == attendeeId);
+            attendeeBrowserToleranceValue.AttendeeBrowserToleranceCount = attendeeBrowserToleranceCount;
+            _dbContext.TestAttendees.Update(attendeeBrowserToleranceValue);
+            await _dbContext.SaveChangesAsync();
+        }
         #endregion
 
         #region Private Method
