@@ -11,6 +11,7 @@ import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
+import { PlatformLocation } from '@angular/common';
 declare let screenfull: any;
 
 @Component({
@@ -53,7 +54,7 @@ export class TestSummaryComponent implements OnInit {
     disableButton: boolean;
     isAllowed: boolean;
 
-    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
+    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar, platformLocation: PlatformLocation) {
         this.testAttendee = new TestAttendee();
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
@@ -64,6 +65,13 @@ export class TestSummaryComponent implements OnInit {
         this.numberOfAttemptedQuestions = 0;
         this.numberOfUnAttemptedQuestions = 0;
         this.numberOfReviewedQuestions = 0;
+        platformLocation.onPopState(() => {
+            window.location.replace(window.location.origin + '/pageNotFound');
+            if (window.history.length !== null) {
+                for (let i = 0; i < window.history.length; i++)
+                    window.history[i].state(null);
+            }
+        });
     }
 
     ngOnInit() {
