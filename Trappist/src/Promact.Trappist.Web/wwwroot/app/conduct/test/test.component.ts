@@ -567,6 +567,7 @@ export class TestComponent implements OnInit {
             this.questionStatus = QuestionStatus.answered;
         } else {
             this.questionStatus = QuestionStatus.unanswered;
+            this.testQuestions[index].questionStatus = QuestionStatus.selected;
         }
     }
 
