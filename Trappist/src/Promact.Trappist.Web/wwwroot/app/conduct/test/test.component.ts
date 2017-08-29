@@ -434,8 +434,8 @@ export class TestComponent implements OnInit {
         //Set status of new question
         this.questionStatus = this.testQuestions[index].questionStatus;
         //Remove review status if Attendee re-visits the question
-        if (this.questionStatus === QuestionStatus.review)
-            this.questionStatus = QuestionStatus.unanswered;
+        //if (this.questionStatus === QuestionStatus.review)
+            //this.questionStatus = QuestionStatus.unanswered;
 
         //Mark new question as selected
         this.markAsSelected(index);
@@ -453,7 +453,8 @@ export class TestComponent implements OnInit {
         else {
             this.codeResult = 'Processing....';
 
-            this.questionStatus = QuestionStatus.answered;
+            if (this.questionStatus !== QuestionStatus.review)
+                this.questionStatus = QuestionStatus.answered;
 
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
@@ -560,7 +561,14 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     markAsReview(index: number) {
-        this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
+        if (this.questionStatus !== QuestionStatus.review)
+            this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
+        else if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion
+            && (this.testAnswers.some(x => x.questionId === this.testQuestions[index].question.question.id && x.code.result !== ''))) {
+            this.questionStatus = QuestionStatus.answered;
+        } else {
+            this.questionStatus = QuestionStatus.unanswered;
+        }
     }
 
     /**
@@ -569,7 +577,6 @@ export class TestComponent implements OnInit {
      */
     markAsAnswered(index: number) {
         this.testQuestions[index].questionStatus = QuestionStatus.answered;
-
     }
 
     /**
@@ -577,8 +584,13 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     clearResponse(index: number) {
-        this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
-        this.questionStatus = QuestionStatus.unanswered;
+        if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion)
+            this.codeAnswer = '';
+        else
+            this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
+        //Leave the reviewed question
+        if (this.questionStatus !== QuestionStatus.review)
+            this.questionStatus = QuestionStatus.unanswered;
     }
 
     /**
