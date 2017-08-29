@@ -348,7 +348,6 @@ export class TestComponent implements OnInit {
             this.navigateToQuestionIndex(0);
 
             this.timeOutCounter = this.TIMEOUT_TIME;
-            this.conductService.timeOut.next(this.timeOutCounter);
         }, err => {
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
@@ -709,7 +708,6 @@ export class TestComponent implements OnInit {
      */
     private countDown() {
         this.seconds = this.seconds > 0 ? this.seconds - 1 : 0;
-        this.conductService.timeOut.next(this.seconds);
         this.timeString = this.secToTimeString(this.seconds);
 
         if (this.seconds <= this.WARNING_TIME && !this.timeWarning) {
@@ -718,9 +716,13 @@ export class TestComponent implements OnInit {
         }
 
         if (this.seconds <= 0) {
-            let timeElapsed = this.test.duration * 60 - this.seconds;
-            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
-            this.endTest(TestStatus.expiredTest);
+            this.isTestReady = false;
+            let timeElapsed = this.test.duration * 60;
+            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(res => {
+                this.endTest(TestStatus.expiredTest);
+            }, err => {
+                this.endTest(TestStatus.expiredTest);
+            });
         }
     }
 
