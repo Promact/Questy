@@ -129,13 +129,17 @@ export class TestSummaryComponent implements OnInit {
     getSummaryDetailsByAttendeeId(testAttendeeId: number) {
         this.conductService.getAnswer(testAttendeeId).subscribe((response) => {
             this.testAnswers = response;
-            this.testAnswers.forEach(x => {
-                let answeredQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.answered);
-                this.numberOfAttemptedQuestions = answeredQuestions.length;
-                let reviewedQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.review);
-                this.numberOfReviewedQuestions = reviewedQuestions.length;
-                this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
-            });
+            let answeredQuestions = this.testAnswers.filter(e => e.questionStatus === QuestionStatus.answered);
+            this.numberOfAttemptedQuestions = answeredQuestions.length;
+
+            if (isNaN(this.numberOfAttemptedQuestions)) {
+                this.numberOfAttemptedQuestions = 0;
+            }
+
+            let reviewedQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.review);
+            this.numberOfReviewedQuestions = reviewedQuestions.length;
+            this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
+            
         }, err => {
             this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest;
         });
