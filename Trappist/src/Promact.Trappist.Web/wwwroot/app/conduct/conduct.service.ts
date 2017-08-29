@@ -22,8 +22,6 @@ export class ConductService {
         return this.httpService.post(this.testConductUrl + magicString + '/register', testAttendee);
     }
 
-    public timeOut = new BehaviorSubject<any>(0);
-
     /**
      * Gets all the instruction details before starting of a particular test
      * @param testLink is used to fetch all instructions related to a particular test

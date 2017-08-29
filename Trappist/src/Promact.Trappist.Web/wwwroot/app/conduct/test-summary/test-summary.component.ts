@@ -97,10 +97,10 @@ export class TestSummaryComponent implements OnInit {
      */
     timeLeftOfTest(attendeeId: number) {
         this.loader = true;
-        this.timeoutListener = this.conductService.timeOut.subscribe(value => {
-            let spanTimeInSeconds = value;
+        this.conductService.getElapsedTime(this.testAttendee.id).subscribe(value => {
+            let spanTimeInSeconds = value * 60;
             let durationInSeconds = this.test.duration * 60;
-            this.timeLeft = spanTimeInSeconds;
+            this.timeLeft =  durationInSeconds - spanTimeInSeconds;
             this.timeLeft = this.timeLeft < 0 ? 0 : Math.round(this.timeLeft);
             this.timeString = this.secToTimeString(this.timeLeft);
             if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
@@ -149,8 +149,6 @@ export class TestSummaryComponent implements OnInit {
         //Unsubscribe the clock once the test resumes
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
-
-        this.timeoutListener.unsubscribe();
 
         this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
             this.testLogs = response;
