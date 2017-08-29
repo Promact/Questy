@@ -113,7 +113,7 @@ export class CreateTestHeaderComponent implements OnInit {
             this.nameOfTest = this.editedTestName;
         else
             this.nameOfTest = this.testNameReference;
-        if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_@ $#%&_*^{}[\]\|.?-]*$')) || this.isTestNameExist === true) {
+        if (testName === '' || !testName.match(RegExp('^[a-zA-Z0-9_ @]*$')) || this.isTestNameExist === true) {
             if (this.nameOfTest)
                 this.testDetails.testName = this.nameOfTest;
             testName = this.testDetails.testName;
