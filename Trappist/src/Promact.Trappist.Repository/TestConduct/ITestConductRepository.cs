@@ -87,7 +87,8 @@ namespace Promact.Trappist.Repository.TestConduct
         /// Set the time elapsed from start of Test
         /// </summary>
         /// <param name="attendeeId">Id of Attendee</param>
-        Task SetElapsedTimeAsync(int attendeeId);
+        /// <param name="seconds">Elapsed seconds</param>
+        Task SetElapsedTimeAsync(int attendeeId, long seconds);
 
         /// <summary>
         /// Get the time elapsed from start of Test

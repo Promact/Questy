@@ -205,15 +205,12 @@ namespace Promact.Trappist.Repository.TestConduct
             return await _dbContext.TestAttendees.AnyAsync(x => x.Id == attendeeId);
         }
 
-        public async Task SetElapsedTimeAsync(int attendeeId)
+        public async Task SetElapsedTimeAsync(int attendeeId, long seconds)
         {
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
             if (attendee != null)
             {
-                var createdTime = attendee.CreatedDateTime;
-                var currentTime = DateTime.UtcNow;
-                var timeSpan = currentTime.Subtract(createdTime);
-                attendee.TimeElapsed = timeSpan.TotalMinutes;
+                attendee.TimeElapsed = ((double)seconds / 60d);
                 await _dbContext.SaveChangesAsync();
             }
             else

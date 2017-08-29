@@ -98,14 +98,14 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="attendeeId">Id of Attendee</param>
         [HttpPut("elapsetime/{attendeeId}")]
-        public async Task<IActionResult> SetElapsedTimeAsync([FromRoute]int attendeeId)
+        public async Task<IActionResult> SetElapsedTimeAsync([FromRoute]int attendeeId, [FromBody]long seconds)
         {
             if (!await IsAttendeeValid(attendeeId))
             {
                 return NotFound();
             }
 
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, seconds);
 
             return Ok(attendeeId);
         }

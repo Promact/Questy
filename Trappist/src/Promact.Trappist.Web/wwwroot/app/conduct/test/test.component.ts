@@ -718,7 +718,8 @@ export class TestComponent implements OnInit {
         }
 
         if (this.seconds <= 0) {
-            this.conductService.setElapsedTime(this.testAttendee.id).subscribe();
+            let timeElapsed = this.test.duration * 60 - this.seconds;
+            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
             this.endTest(TestStatus.expiredTest);
         }
     }
@@ -730,7 +731,8 @@ export class TestComponent implements OnInit {
         this.timeOutCounter += 1;
 
         if (this.timeOutCounter >= this.TIMEOUT_TIME) {
-            this.conductService.setElapsedTime(this.testAttendee.id).subscribe();
+            let timeElapsed = this.test.duration * 60 - this.seconds;
+            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
             this.timeOutCounter = 0;
         }
     }
