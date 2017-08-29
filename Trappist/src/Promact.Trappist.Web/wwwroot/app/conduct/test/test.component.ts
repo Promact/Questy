@@ -680,7 +680,7 @@ export class TestComponent implements OnInit {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
-            this.snackBar.dismiss();
+            
             this.endTest(TestStatus.blockedTest);
         }
         else if (this.focusLost <= this.test.browserTolerance) {
@@ -748,6 +748,9 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.istestEnd = true;
         this.isTestReady = false;
+                
+        this.snackBar.dismiss();
+
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
             this.focusLost = response;
         });
