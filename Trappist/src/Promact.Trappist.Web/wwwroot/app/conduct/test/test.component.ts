@@ -508,10 +508,10 @@ export class TestComponent implements OnInit {
                 testAnswer.questionStatus = QuestionStatus.answered;
 
                 this.questionStatus = QuestionStatus.answered;
-            } else if (testQuestion.questionStatus === QuestionStatus.selected || testQuestion.questionStatus === QuestionStatus.answered) {
+            } else if (this.questionStatus !== QuestionStatus.review) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
-                testAnswer.questionStatus = testQuestion.questionStatus;
+                testAnswer.questionStatus = QuestionStatus.review;
             }
         } else {
             testAnswer.code.source = this.codeAnswer;
