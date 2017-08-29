@@ -52,6 +52,8 @@ export class TestSummaryComponent implements OnInit {
     isTestClosedUnConditionally: boolean;
     disableButton: boolean;
     isAllowed: boolean;
+    isTestBlocked: boolean;
+    isTestExpired: boolean;
 
     constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
         this.testAttendee = new TestAttendee();
@@ -64,7 +66,7 @@ export class TestSummaryComponent implements OnInit {
         this.numberOfAttemptedQuestions = 0;
         this.numberOfUnAttemptedQuestions = 0;
         this.numberOfReviewedQuestions = 0;
-        
+
     }
 
     ngOnInit() {
@@ -98,7 +100,7 @@ export class TestSummaryComponent implements OnInit {
         this.conductService.timeOut.subscribe(value => {
             let spanTimeInSeconds = value;
             let durationInSeconds = this.test.duration * 60;
-            this.timeLeft =  spanTimeInSeconds;
+            this.timeLeft = spanTimeInSeconds;
             this.timeLeft = this.timeLeft < 0 ? 0 : Math.round(this.timeLeft);
             this.timeString = this.secToTimeString(this.timeLeft);
             if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
@@ -176,9 +178,12 @@ export class TestSummaryComponent implements OnInit {
             if (this.test.allowTestResume === AllowTestResume.Supervised)
                 this.getCandidateInfoToResumeTest();
             this.timeLeftOfTest(this.testAttendee.id);
+            this.isTestBlocked = this.testAttendee.report.testStatus === TestStatus.blockedTest;
+            this.isTestExpired = this.testAttendee.report.testStatus === TestStatus.expiredTest;
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
             this.router.navigate(['']);
+            this.testAttendee.report.testStatus === 3
         });
     }
     /**
