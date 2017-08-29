@@ -177,9 +177,11 @@ export class TestSummaryComponent implements OnInit {
             this.getSummaryDetailsByAttendeeId(this.testAttendee.id);
             if (this.test.allowTestResume === AllowTestResume.Supervised)
                 this.getCandidateInfoToResumeTest();
+            if (this.testAttendee.report !== null) {
+                this.isTestBlocked = this.testAttendee.report.testStatus === TestStatus.blockedTest;
+                this.isTestExpired = this.testAttendee.report.testStatus === TestStatus.expiredTest;
+            }
             this.timeLeftOfTest(this.testAttendee.id);
-            this.isTestBlocked = this.testAttendee.report.testStatus === TestStatus.blockedTest;
-            this.isTestExpired = this.testAttendee.report.testStatus === TestStatus.expiredTest;
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
             this.router.navigate(['']);

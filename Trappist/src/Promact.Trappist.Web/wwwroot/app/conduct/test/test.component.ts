@@ -779,11 +779,9 @@ export class TestComponent implements OnInit {
                     this.router.navigate(['test-summary'], { replaceUrl: true });
             });
         }
-
-        else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest)
+        else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest && testStatus !== TestStatus.expiredTest)
             this.router.navigate(['test-summary'], { replaceUrl: true });
-
-        else if (this.resumable === AllowTestResume.Unsupervised && testStatus === TestStatus.blockedTest) {
+        else if (this.resumable === AllowTestResume.Unsupervised && testStatus === TestStatus.blockedTest || testStatus === TestStatus.expiredTest) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
                 this.router.navigate(['test-summary'], { replaceUrl: true });
