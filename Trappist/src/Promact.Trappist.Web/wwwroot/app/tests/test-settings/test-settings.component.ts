@@ -49,6 +49,7 @@ export class TestSettingsComponent implements OnInit {
     ipAddressArray: TestIPAddress[] = [];
     numberOfIpFields: number[] = [];
     disablePreview: boolean;
+    isIpAddressAdded: boolean;
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -62,8 +63,7 @@ export class TestSettingsComponent implements OnInit {
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
         this.disablePreview = false;
-        //console.log(this.testDetails.startDate);
-
+        this.isIpAddressAdded = true;
     }
 
     /**
@@ -256,20 +256,35 @@ export class TestSettingsComponent implements OnInit {
     addIpFields() {
         let ip = new TestIPAddress();
         this.testDetails.testIpAddress.push(ip);
+        this.IpAddressAdded(ip.ipAddress);
     }
     /**
      * Removes ip address fields 
      * @param index
      * @param ipId
+     * @param ipAddress
      */
-    removeIpAddress(index: number, ipId: number) {
+    removeIpAddress(index: number, ipId: number, ipAddress: string) {
         this.testDetails.testIpAddress.splice(index, 1);
         if (ipId !== undefined)
             this.testService.deleteTestipAddress(ipId).subscribe(response => {
             });
-
+        if (this.testDetails.testIpAddress.length === 0)
+            this.isIpAddressAdded = true;
+        else if (this.testDetails.testIpAddress.length > 0 && ipAddress !== undefined || ipAddress !== '' || ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')))
+            this.isIpAddressAdded = true;
     }
 
+    /**
+     * Checks whether Ip Address has been added or not and also in correct format
+     * @param ipAddress contains the Ip Address entered in the input field
+     */
+    IpAddressAdded(ipAddress: string) {
+        if (ipAddress === undefined || ipAddress === '' || !ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')))
+            this.isIpAddressAdded = false;
+        else
+            this.isIpAddressAdded = true;
+    }
 
     ///**
     // * To check if any attendee for the test exixt or not

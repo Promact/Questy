@@ -28,6 +28,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validEndDate: boolean;
     @Input('validTime')
     public validTime: boolean;
+    @Input('isIpAddressAdded')
+    public isIpAddressAdded: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
     @Output() resumeTest: any;
