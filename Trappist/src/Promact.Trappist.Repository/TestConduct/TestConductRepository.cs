@@ -11,6 +11,7 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
+using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Questions;
@@ -117,11 +118,10 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString, string userIp)
         {
-            var testObject = await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == magicString);
+            var testObject = await _dbContext.Test.Where(x => x.Link == magicString).Include(x => x.TestIpAddress).FirstOrDefaultAsync<Test>();
             var currentDate = DateTime.UtcNow;
-            await _dbContext.TestIpAddresses.Where(x => x.TestId == testObject.Id).ToListAsync();
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
-            if (testObject.TestIpAddress != null)
+            if (testObject != null && testObject.TestIpAddress.Count != 0)
                 return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress.Equals(userIp)) && testObject.IsLaunched;
             else return testObject != null && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.IsLaunched;
         }
@@ -195,7 +195,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId)
         {
-            var testAttendee= await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
+            var testAttendee = await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
             testAttendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             return testAttendee;
         }
@@ -620,7 +620,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
-        }        
+        }
         #endregion
     }
 }
