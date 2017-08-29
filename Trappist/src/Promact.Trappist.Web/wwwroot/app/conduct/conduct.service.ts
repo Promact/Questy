@@ -75,8 +75,8 @@ export class ConductService {
      * Sets the time elapsed from the start of Test
      * @param attendeeId : Id of Attendee
      */
-    setElapsedTime(attendeeId: number) {
-        return this.httpService.put(this.testConductUrl + 'elapsetime/' + attendeeId, null);
+    setElapsedTime(attendeeId: number, seconds: number) {
+        return this.httpService.put(this.testConductUrl + 'elapsetime/' + attendeeId, seconds);
     }
 
     /**

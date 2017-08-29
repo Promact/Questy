@@ -47,7 +47,7 @@ export class TestSummaryComponent implements OnInit {
     isTestPreview: boolean;
     timeString: string;
     timeOutCounter: number;
-    clockInterval: Subscription;
+    clockInterval: NodeJS.Timer;
     isTestResume: boolean;
     isTestClosedUnConditionally: boolean;
     disableButton: boolean;
@@ -97,14 +97,14 @@ export class TestSummaryComponent implements OnInit {
      */
     timeLeftOfTest(attendeeId: number) {
         this.loader = true;
-        this.conductService.timeOut.subscribe(value => {
+        this.timeoutListener = this.conductService.timeOut.subscribe(value => {
             let spanTimeInSeconds = value;
             let durationInSeconds = this.test.duration * 60;
             this.timeLeft = spanTimeInSeconds;
             this.timeLeft = this.timeLeft < 0 ? 0 : Math.round(this.timeLeft);
             this.timeString = this.secToTimeString(this.timeLeft);
             if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
-                this.clockInterval = Observable.interval(1000).subscribe(() => { this.countDown(); this.timeOut(); });
+                this.clockInterval = setInterval(() => { this.countDown(); this.timeOut(); }, 1000);
             this.loader = false;
         });
     }
@@ -148,7 +148,9 @@ export class TestSummaryComponent implements OnInit {
 
         //Unsubscribe the clock once the test resumes
         if (!this.isTestClosedUnConditionally)
-            this.clockInterval.unsubscribe();
+            clearInterval(this.clockInterval);
+
+        this.timeoutListener.unsubscribe();
 
         this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
             this.testLogs = response;
@@ -156,7 +158,7 @@ export class TestSummaryComponent implements OnInit {
         this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe();
 
         //Back to test
-        this.router.navigate(['test']);
+        this.router.navigate(['test'], { replaceUrl: true });
     }
 
     /**
@@ -252,7 +254,8 @@ export class TestSummaryComponent implements OnInit {
         this.timeOutCounter += 1;
 
         if (this.timeOutCounter >= this.TIMEOUT_TIME) {
-            this.conductService.setElapsedTime(this.testAttendee.id).subscribe();
+            let timeElapsed = this.test.duration * 60 - this.timeLeft;
+            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
             this.timeOutCounter = 0;
         }
     }
@@ -264,7 +267,7 @@ export class TestSummaryComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         //Unsubscribe the clock timer
         if (!this.isTestClosedUnConditionally)
-            this.clockInterval.unsubscribe();
+            clearInterval(this.clockInterval);
 
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             this.router.navigate(['test-end'], { replaceUrl: true });
