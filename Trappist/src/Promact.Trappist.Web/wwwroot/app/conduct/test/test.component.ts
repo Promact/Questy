@@ -680,8 +680,6 @@ export class TestComponent implements OnInit {
             message = this.ALERT_BROWSER_FOCUS_LOST;
         }
 
-
-
         if (this.focusLost > this.test.browserTolerance) {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
@@ -745,7 +743,6 @@ export class TestComponent implements OnInit {
             this.timeOutCounter = 0;
         }
     }
-
 
     /**
      * Ends test and route to test-end page
