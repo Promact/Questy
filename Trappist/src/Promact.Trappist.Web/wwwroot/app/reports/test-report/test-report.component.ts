@@ -101,11 +101,8 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
-        });
-        this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
-            this.reportQuestionDetails = res;
-            this.getAllTestCandidates();
-        });
+        });      
+        this.getAllTestCandidates();
     }
 
 
@@ -300,7 +297,7 @@ export class TestReportComponent implements OnInit {
      * Download test report in  pdf format
      */
     downloadTestReportPdf() {
-        this.loader = true;
+        this.loader = true;       
         let testName = this.test.testName;
         let reports = new Array();
         let space = ' ';
@@ -352,10 +349,21 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
+     * Get excel data for all student at the time of download
+     */
+    getExcelDetails() {
+        this.loader = true
+        this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
+            this.reportQuestionDetails = res;
+            this.loader = false;
+            this.downloadTestReportExcel();
+        });
+    }
+
+    /**
      * Download test report in excel format
      */
     downloadTestReportExcel() {
-        this.loader = true;
         let testName = this.test.testName;
         let space = ' ';
         let workBook = new ExcelJS.Workbook();
@@ -478,7 +486,6 @@ export class TestReportComponent implements OnInit {
             let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
             saveAs(blob, testName + '_Report.xlsx');
         });
-        this.loader = false;
         this.checkedAllCandidate = false;
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
