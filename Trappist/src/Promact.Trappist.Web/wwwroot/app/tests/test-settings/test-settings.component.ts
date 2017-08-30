@@ -50,7 +50,8 @@ export class TestSettingsComponent implements OnInit {
     numberOfIpFields: number[] = [];
     disablePreview: boolean;
     isIpAddressAdded: boolean;
-
+    isErrorMessageVisible: boolean;
+    
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
         this.isLaunchedAlready = false;
@@ -269,10 +270,14 @@ export class TestSettingsComponent implements OnInit {
         if (ipId !== undefined)
             this.testService.deleteTestipAddress(ipId).subscribe(response => {
             });
-        if (this.testDetails.testIpAddress.length === 0)
+        if (this.testDetails.testIpAddress.length === 0) {
             this.isIpAddressAdded = true;
-        else if (this.testDetails.testIpAddress.length > 0 && ipAddress !== undefined || ipAddress !== '' || ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')))
+            this.isErrorMessageVisible = false;
+        }
+        else if (this.testDetails.testIpAddress.length > 0 && ipAddress !== undefined || ipAddress !== '' || ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'))) {
             this.isIpAddressAdded = true;
+            this.isErrorMessageVisible = false;
+        }
     }
 
     /**
@@ -280,10 +285,15 @@ export class TestSettingsComponent implements OnInit {
      * @param ipAddress contains the Ip Address entered in the input field
      */
     IpAddressAdded(ipAddress: string) {
-        if (ipAddress === undefined || ipAddress === '' || !ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')))
-            this.isIpAddressAdded = false;
-        else
-            this.isIpAddressAdded = true;
+        this.isIpAddressAdded = ipAddress === undefined || ipAddress === '' || !ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')) ? false : true;
+    }
+
+    /**
+     * Displays an error message when the Ip restriction field is empty
+     * @param ipAddress : Contains the Ip address value entered by the user
+     */
+    showErrorMessage(ipAddress: string) {
+        this.isErrorMessageVisible = ipAddress === '' ? true : false;
     }
 
     ///**
