@@ -168,14 +168,14 @@
         </div>
         <h2>Test Logs</h2>
         <div class="test-logs-block">
-          <p>{{testAttendee?.testLogs.visitTestLink |date:'medium'}} : Visited the test link.</p>
-          <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'medium'}} : Filled the registration form.</p>
-          <p>{{testAttendee?.testLogs.startTest | date:'medium'}} : Started the test.</p>
-          <p>{{testAttendee?.testLogs.finishTest |date:'medium'}} : Finished the test.</p>
-          <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'medium'}} : Away from the test window.</p>
-          <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'medium'}} : Disconnected from the server.</p>
-          <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'medium'}} User Closed the test window without finishing the test.</p>
-          <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'medium'}} : Resumed the test.</p>
+          <p>{{testAttendee?.testLogs.visitTestLink |date:'MMMM d, y, HH:MM:ss'}} : Visited the test link.</p>
+          <p>{{testAttendee?.testLogs.fillRegistrationForm |date:'MMMM d, y, HH:MM:ss'}} : Filled the registration form.</p>
+          <p>{{testAttendee?.testLogs.startTest | date:'MMMM d, y, HH:MM:ss'}} : Started the test.</p>
+          <p>{{testAttendee?.testLogs.finishTest |date:'MMMM d, y, HH:MM:ss'}} : Finished the test.</p>
+          <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'MMMM d, y, HH:MM:ss'}} : Away from the test window.</p>
+          <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'MMMM d, y, HH:MM:ss'}} : Disconnected from the server.</p>
+          <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'MMMM d, y, HH:MM:ss'}} User Closed the test window without finishing the test.</p>
+          <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'MMMM d, y, HH:MM:ss'}} : Resumed the test.</p>
           <p>{{numberOfQuestionsAttempted}} : Total number of questions attempted by the Attendee.</p>
         </div>
       </div>

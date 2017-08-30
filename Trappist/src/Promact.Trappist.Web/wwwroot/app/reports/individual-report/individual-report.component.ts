@@ -111,10 +111,29 @@ export class IndividualReportComponent implements OnInit {
             this.timeTakenInMinutesVisible = this.timeTakenInMinutes > 1 ? true : false;
             this.timeTakenInSeconds = this.testAttendee.report.timeTakenByAttendee % 60;
             this.timeTakenInSecondsVisible = this.timeTakenInSeconds > 0 ? true : false;
+
+            this.testAttendee.testLogs.fillRegistrationForm = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.fillRegistrationForm);
+            this.testAttendee.testLogs.visitTestLink = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.visitTestLink);
+            this.testAttendee.testLogs.startTest = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.startTest);
+            this.testAttendee.testLogs.finishTest = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.finishTest);
+
             this.testLogsVisible = this.testAttendee.testLogs.disconnectedFromServer === null ? false : true;
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
+
+            if (this.awayFromTestWindowVisible)
+                this.testAttendee.testLogs.awayFromTestWindow = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.awayFromTestWindow);
+
+            if (this.closeWindowLogVisible)
+                this.testAttendee.testLogs.closeWindowWithoutFinishingTest = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.closeWindowWithoutFinishingTest);
+
+            if (this.testLogsVisible)
+                this.testAttendee.testLogs.disconnectedFromServer = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.disconnectedFromServer);
+
+            if (this.resumeTestLog)
+                this.testAttendee.testLogs.resumeTest = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.resumeTest);
+
            
             this.reportsService.getTotalNumberOfAttemptedQuestions(this.testAttendeeId).subscribe((response) => {
                 this.numberOfQuestionsAttempted = response;
@@ -147,6 +166,27 @@ export class IndividualReportComponent implements OnInit {
                 });
             });
         });
+    }
+
+    private convertTestLogsDateTimetoLocalDateTime(date: Date) {
+        let testLogsDateTime = new Date(date);
+        let offset = testLogsDateTime.getTimezoneOffset();
+        let hoursDiff = Math.trunc(offset / 60);
+        let minutesDiff = Math.trunc(offset % 60);
+        let localHours = testLogsDateTime.getHours() - hoursDiff;
+        let localMinutes = testLogsDateTime.getMinutes() - minutesDiff;
+
+        if (localMinutes >= 60) {
+            let hours = Math.trunc(localMinutes / 60);
+            let minutes = Math.trunc(localMinutes % 60);
+            localHours += hours;
+            localMinutes = minutes;
+        }
+
+        date = new Date(date);
+        date.setHours(localHours);
+        date.setMinutes(localMinutes);
+        return date;
     }
 
     //Sets the test finish status of the candidate
