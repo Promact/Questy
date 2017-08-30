@@ -60,6 +60,8 @@ export class TestReportComponent implements OnInit {
     testAttendeeRank: TestAttendeeRank[];
     testLogs: TestLogs[] = [];
     isAnyTestResume: boolean;
+    testTime: string;
+    maxDurationOfTest: string;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -101,7 +103,7 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
-        });      
+        });
         this.getAllTestCandidates();
     }
 
@@ -297,7 +299,7 @@ export class TestReportComponent implements OnInit {
      * Download test report in  pdf format
      */
     downloadTestReportPdf() {
-        this.loader = true;       
+        this.loader = true;
         let testName = this.test.testName;
         let reports = new Array();
         let space = ' ';
@@ -389,7 +391,7 @@ export class TestReportComponent implements OnInit {
             { header: 'TEST TIME', key: 'testTime', width: 30 },
             { header: 'FINISH STATUS', key: 'testStatus', width: 15 },
             { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 },
-            { header: 'REPORT LINK', key: 'reportLink', width: 60 }
+            { header: 'REPORT LINK', key: 'reportLink', width: 100 }
         ];
         workSheet2.columns = [
             { header: 'MAXIMUM SCORE', key: 'maxScore', width: 20 },
@@ -408,7 +410,7 @@ export class TestReportComponent implements OnInit {
             { header: 'DIFFICULT QUESTION ATTEMPTED', key: 'difficultQ', width: 30 },
             { header: 'TOTAL QUESTION ATTEMPTED', key: 'totalQ', width: 27 },
             { header: 'NO OF CORRECT ATTEMPTED', key: 'coorectQ', width: 27 },
-            { header: 'TIME TAKEN(SEC) ', key: 'time', width: 20 },
+            { header: 'TIME TAKEN', key: 'time', width: 20 },
             { header: 'OVERALL MARKS', key: 'totalScore', width: 20 },
             { header: 'PERCENTAGE', key: 'percentage', width: 20 },
             { header: 'PERCENTILE', key: 'percentile', width: 20 },
@@ -434,8 +436,7 @@ export class TestReportComponent implements OnInit {
             if (x.checkedCandidate) {
                 let testDate = document.getElementById('date').innerHTML;
                 let datetime = new Date(x.createdDateTime);
-                let hours = datetime.getHours();
-                let minitues = datetime.getMinutes();
+                this.calculateLocalTime(datetime);
                 let attendeeId = x.id;
                 this.testTakerDetails(x.report.testStatus, this.testId, x.id);
                 let testTakers = {
@@ -444,7 +445,7 @@ export class TestReportComponent implements OnInit {
                     'email': x.email,
                     'contact': x.contactNumber,
                     'testDate': testDate,
-                    'testTime': hours + ':' + minitues,
+                    'testTime': this.testTime,
                     'testStatus': this.testFinishStatus,
                     'totalMarks': x.report.totalMarksScored
                 };
@@ -467,9 +468,10 @@ export class TestReportComponent implements OnInit {
                 });
                 this.reportQuestionDetails.filter(y => {
                     if (y.testAttendeeId === x.id) {
+                        let timeTaken = Math.trunc(testReport.timetaken / 60) + ' mins ' + Math.trunc(Math.floor(testReport.timetaken % 60)) + ' secs ';
                         workSheet3.addRow({
                             rollNo: testReport.rollNo, name: testReport.name, email: testReport.email, easyQ: y.easyQuestionAttempted, mediumQ: y.mediumQuestionAttempted, difficultQ: y.hardQuestionAttempted, totalQ: y.noOfQuestionAttempted,
-                            coorectQ: y.correctQuestionsAttempted, time: testReport.timetaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
+                            coorectQ: y.correctQuestionsAttempted, time: timeTaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
                             percentile: y.percentile, rank: this.attendeeRank
                         });
                     }
@@ -479,7 +481,7 @@ export class TestReportComponent implements OnInit {
         });
         this.calculateTestSummaryDetails();
         workSheet2.addRow({
-            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDuration, avgScore: this.averageTestScore,
+            maxScore: this.maxScore, totalQ: this.totalNoOfTestQuestions, maxDuration: this.maxDurationOfTest, avgScore: this.averageTestScore,
             avgTotalTime: this.averageTimeTaken, avgCorrectAttempts: this.averageCorrectAttempt
         });
         workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
@@ -490,6 +492,25 @@ export class TestReportComponent implements OnInit {
         this.testAttendeeArray.forEach(x => {
             x.checkedCandidate = false;
         });
+    }
+
+    /**
+     * Convert utc time into localtime
+     * @param dateTime time of test
+     */
+    calculateLocalTime(dateTime: Date) {
+        let offset = dateTime.getTimezoneOffset();
+        let hoursDiff = Math.trunc(offset / 60);
+        let minutesDiff = Math.trunc(offset % 60);
+        let localHours = dateTime.getHours() - hoursDiff;
+        let localMinutes = dateTime.getMinutes() - minutesDiff;
+        if (localMinutes >= 60) {
+            let hours = Math.trunc(localMinutes / 60);
+            let minutes = Math.trunc(localMinutes % 60);
+            localHours += hours;
+            localMinutes = minutes;
+        }
+        this.testTime = localHours + ' : ' + localMinutes;
     }
 
     /**
@@ -548,20 +569,21 @@ export class TestReportComponent implements OnInit {
         let totalTimeByAllAttendees = 0;
         let totalScoreOfAllAttendees = 0;
         let totalCorrectAttemptByAllAttendees = 0;
-        let totalTestScore = 0;
         let totalAttendee = this.testAttendeeArray.length;
         this.testAttendeeArray.forEach(x => {
             totalTimeByAllAttendees += x.report.timeTakenByAttendee;
             totalScoreOfAllAttendees += x.report.totalMarksScored;
-            if (this.maxDuration < x.report.timeTakenByAttendee)
+            if (this.maxDuration < x.report.timeTakenByAttendee) {
                 this.maxDuration = x.report.timeTakenByAttendee;
+                this.maxDurationOfTest = Math.trunc(this.maxDuration / 60) + ' mins ' + Math.trunc(Math.floor(this.maxDuration % 60)) + ' secs ';
+            }
         });
         this.reportQuestionDetails.forEach(x => {
             totalCorrectAttemptByAllAttendees += x.correctQuestionsAttempted;
         });
-        this.averageCorrectAttempt = totalCorrectAttemptByAllAttendees / this.totalNoOfTestQuestions;
+        this.averageCorrectAttempt = totalCorrectAttemptByAllAttendees / totalAttendee;
         this.averageTestScore = totalScoreOfAllAttendees / totalAttendee;
-        this.averageTimeTaken = totalTimeByAllAttendees / (this.test.duration * 60);
+        this.averageTimeTaken = totalTimeByAllAttendees / totalAttendee;
     }
 
     /**
