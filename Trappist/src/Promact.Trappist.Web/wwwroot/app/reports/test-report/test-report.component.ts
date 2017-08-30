@@ -349,10 +349,10 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * Get excel data for all student at the time of download
+     * Get excel data for all students at the time of download
      */
     getExcelDetails() {
-        this.loader = true
+        this.loader = true;
         this.reportService.getAllAttendeeMarksDetails(this.testId).subscribe(res => {
             this.reportQuestionDetails = res;
             this.loader = false;
