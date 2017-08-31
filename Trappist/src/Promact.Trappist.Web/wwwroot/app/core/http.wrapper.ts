@@ -22,12 +22,12 @@ export class HttpWrapper extends Http {
     }
 
     private makeMiniProfilerRequests(headers: Headers) {
-        var miniProfilerHeaders = headers.getAll('x-miniprofiler-ids');
+        let miniProfilerHeaders = headers.getAll('x-miniprofiler-ids');
         if (!miniProfilerHeaders) {
             return;
         }
         miniProfilerHeaders.forEach(miniProfilerIdHeaderValue => {
-            var ids = JSON.parse(miniProfilerIdHeaderValue) as string[];
+            let ids = JSON.parse(miniProfilerIdHeaderValue) as string[];
             MiniProfiler.fetchResults(ids);
         });
     }
