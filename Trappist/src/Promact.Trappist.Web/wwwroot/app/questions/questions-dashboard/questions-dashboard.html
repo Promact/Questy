@@ -43,9 +43,9 @@
                     </ul>
                     <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
                     <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
-                        <a md-menu-item [routerLink]="['single-answer']"><em class="material-icons">radio_button_checked</em> Single Answer</a>
-                        <a md-menu-item [routerLink]="['multiple-answers']"><em class="material-icons">check_box</em> Multiple Answer</a>
-                        <a md-menu-item [routerLink]="['programming']"><em class="material-icons">code</em> Programming</a>
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('single-answer')"><em class="material-icons">radio_button_checked</em> Single Answer</a>
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('multiple-answer')"><em class="material-icons">check_box</em> Multiple Answer</a>
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('programming')"><em class="material-icons">code</em> Programming</a>
                     </md-menu>
                 </div>
                 <div class="questions-area" infinite-scroll

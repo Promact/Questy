@@ -37,6 +37,9 @@ export class QuestionsProgrammingComponent implements OnInit {
     isCkeditorDirtly: boolean;
     code: any;
     testCases: CodeSnippetQuestionsTestCases[];
+    isCategorySelected: boolean;
+    selectedCategoryName: string;
+    selectedDifficultyLevel: string;
     //To enable enum testCaseType in template 
     testCaseType: TestCaseType;
     questionId: number;    
@@ -59,7 +62,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.codingLanguageList = new Array<string>();
         this.categoryList = new Array<Category>();
         this.questionModel = new QuestionBase();
-        this.selectedCategory = '';
+        this.selectedCategory = 'AllCategory';
         this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
@@ -70,6 +73,8 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     ngOnInit() {
         this.questionId = this.route.snapshot.params['id'];
+        this.selectedCategory = this.route.snapshot.params['categoryName'];
+        this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
 
         if (!this.questionId) {
             this.getCodingLanguage();
@@ -189,7 +194,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCategory() {
         this.categoryService.getAllCategories().subscribe((response) => {
             this.categoryList = response;
-
+            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategory, this.selectedDifficultyLevel);
             //If question is being editted then set the category
             if (this.isQuestionEdited || this.isQuestionDuplicated)
                 this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID).categoryName;
@@ -307,6 +312,25 @@ export class QuestionsProgrammingComponent implements OnInit {
             );
         }
     }
+
+    showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
+        if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
+            this.isCategorySelected = true;
+            this.selectedDifficulty = difficultyLevel;
+            this.questionModel.question.difficultyLevel = DifficultyLevel[this.selectedDifficulty];
+            this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === this.selectedCategory).id;
+        }
+        else if (categoryName === 'AllCategory' && difficultyLevel !== 'All') {
+            this.isCategorySelected = false;
+            this.selectedDifficulty = difficultyLevel;
+            this.questionModel.question.difficultyLevel = DifficultyLevel[this.selectedDifficulty];
+        }
+        else if (categoryName !== 'AllCategory' && difficultyLevel == 'All') {
+            this.isCategorySelected = true;
+            this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === this.selectedCategory).id;
+        }
+    }
+
 }
 
 class FormControlModel {

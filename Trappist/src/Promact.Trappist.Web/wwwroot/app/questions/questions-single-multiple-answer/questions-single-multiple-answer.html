@@ -42,13 +42,13 @@
                 <div class="form-inline clearfix">
                     <div class="form-group col-md-4 col-sm-4 pl0">
                         <select class="form-control" [ngModel]="categoryName" (change)="getCategoryId($event.target.value)" id="category" #category="ngModel" [ngModelOptions]="{standalone: true}">
-                            <option [disabled]="category.dirty || isEditQuestion" value="default">Select Category</option>
+                            <option [disabled]="category.dirty || isEditQuestion || isCategorySelected" value="default">Select Category</option>
                             <option *ngFor="let category of categoryArray" [value]="category.categoryName">{{category.categoryName}}</option>
                         </select>
                     </div>
                     <div class="form-group col-md-2 col-sm-2 pl0">
                         <select name="difficulty" class="form-control" [ngModel]="difficultyLevelSelected" (change)="setDifficultyLevel($event.target.value)" [ngModelOptions]="{standalone:true}" #difficulty="ngModel">
-                            <option [disabled]="difficulty.dirty || isEditQuestion" value="default">Select Difficulty</option>
+                            <option [disabled]="difficulty.dirty || isEditQuestion || isDifficultyLevelSelected" value="default">Select Difficulty</option>
                             <option *ngFor="let level of difficultyLevel" [value]="level">{{level}}</option>
                         </select>
                     </div>

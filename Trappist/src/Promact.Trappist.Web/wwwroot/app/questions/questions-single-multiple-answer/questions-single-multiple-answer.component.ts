@@ -36,6 +36,12 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     singleMultipleAnswerQuestion: QuestionBase;
     isTwoOptionSame: boolean;
     editor;
+    selectedCategoryName: string;
+    selectedDifficultyLevel: string;
+    isCategorySelected: boolean;
+    isDifficultyLevelSelected: boolean;
+    loader: boolean;
+
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 2;
         this.indexOfOptionSelected = null;
@@ -52,10 +58,14 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             option.id = this.findMaxId() + 1;
             this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(option);
         }
+        this.isCategorySelected = false;
+        this.isDifficultyLevelSelected = false; 
     }
 
     ngOnInit() {
         let currentUrl = this.router.url;
+        this.selectedCategoryName = this.route.snapshot.params['categoryName'];
+        this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
         this.questionId = +this.route.snapshot.params['id'];
         this.getQuestionType();
         this.getAllCategories();
@@ -100,6 +110,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
+            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);
         },
             err => {
                 this.snackBar.open('Failed to load category.', 'Dismiss', { duration: 3000 });
@@ -190,6 +201,16 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isEditQuestion = false;
             this.isdulicateQuestion = true;
         }
+        else if (this.router.url.includes('/questions/single-answer')) {
+            this.singleMultipleAnswerQuestion.question.questionType = 0;
+            this.isSingleAnswerQuestion = true;
+            this.isEditQuestion = false;
+        }
+        else if (this.router.url.includes('/questions//multiple-answers')) {
+            this.singleMultipleAnswerQuestion.question.questionType = 0;
+            this.isSingleAnswerQuestion = true;
+            this.isEditQuestion = false;
+        }
     }
     /**
      * Get category id based on category name
@@ -261,4 +282,33 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             );
 
     }
+
+    /**
+     * 
+     * @param categoryName
+     * @param difficultyLevel
+     */
+    showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
+        if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
+            this.isCategorySelected = true;
+            this.isDifficultyLevelSelected = true;
+            this.categoryName = categoryName;
+            this.difficultyLevelSelected = difficultyLevel;
+            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName == this.categoryName).id;
+
+        }
+        else if (categoryName === 'AllCategory' && difficultyLevel !== 'All') {
+            this.isCategorySelected = false;
+            this.isDifficultyLevelSelected = true;
+            this.difficultyLevelSelected = difficultyLevel;
+        }
+        else if (categoryName !== 'AllCategory' && difficultyLevel == 'All') {
+            this.isCategorySelected = true;
+            this.isDifficultyLevelSelected = false;
+            this.categoryName = categoryName;
+            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName == this.categoryName).id;
+        }
+       
+    }
+
 }

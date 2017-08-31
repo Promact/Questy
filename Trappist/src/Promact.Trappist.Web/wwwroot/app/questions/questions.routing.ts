@@ -12,12 +12,15 @@ const questionsRoutes: Routes = [
         children: [
             { path: '', component: QuestionsDashboardComponent },
             { path: 'single-answer', component: SingleMultipleAnswerQuestionComponent },
+            { path: 'single-answer/:categoryName/:difficultyLevelName', component: SingleMultipleAnswerQuestionComponent },
             { path: 'edit-single-answer/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'single-answer/duplicate/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'multiple-answers', component: SingleMultipleAnswerQuestionComponent },
+            { path: 'multiple-answers/:categoryName/:difficultyLevelName', component: SingleMultipleAnswerQuestionComponent },
             { path: 'edit-multiple-answers/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'multiple-answers/duplicate/:id', component: SingleMultipleAnswerQuestionComponent },
             { path: 'programming', component: QuestionsProgrammingComponent },
+            { path: 'programming/:categoryName/:difficultyLevelName', component: QuestionsProgrammingComponent },
             { path: 'programming/:id', component: QuestionsProgrammingComponent },
             { path: 'programming/duplicate/:id', component: QuestionsProgrammingComponent }
         ]
