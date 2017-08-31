@@ -323,7 +323,7 @@ export class TestComponent implements OnInit {
                     if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85)
                         event.preventDefault();
                 }
-            })
+            });
 
             this.resumeTest();
         }, err => {
