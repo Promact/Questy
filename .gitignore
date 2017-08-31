@@ -266,3 +266,5 @@ _references.js
 **/setup.json
 
 **/aot/
+
+package-lock.json
