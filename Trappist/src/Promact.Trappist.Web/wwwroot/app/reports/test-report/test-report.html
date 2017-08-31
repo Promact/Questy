@@ -32,9 +32,10 @@
                     <option value="2">Expired Test</option>
                     <option value="3">Blocked Test</option>
                 </select>
-                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
-                <button type="button" class="btn" (click)="getExcelDetails()">Download Excel</button>
+                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>           
+                <button type="button" class="btn" (click)="downloadTestBasicDetails()">Download Excel</button>
                 <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
+                <button type="button" class="btn" (click)="getExcelDetails()">Download Detailed Report</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
