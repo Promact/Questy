@@ -11,7 +11,7 @@ import { TestAttendeeRank } from './testattendeerank';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
-import { Report } from "../report.model";
+import { Report } from '../report.model';
 
 declare let jsPDF: any;
 declare let saveAs: any;
@@ -122,7 +122,7 @@ export class TestReportComponent implements OnInit {
                 if (x.report !== null)
                     this.testAttendeeArray.push(x);
                 else {
-                    x.report = new Report()
+                    x.report = new Report();
                     this.testAttendeeArray.push(x);
                 }
             });
