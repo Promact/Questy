@@ -318,12 +318,18 @@ export class TestComponent implements OnInit {
             }
             window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
             window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
+            window.addEventListener('keydown', (event) => {
+                if (event.ctrlKey) {
+                    if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85)
+                        event.preventDefault();
+                }
+            })
 
             this.resumeTest();
         }, err => {
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
-            
+
         });
     }
 
@@ -434,7 +440,7 @@ export class TestComponent implements OnInit {
         this.questionStatus = this.testQuestions[index].questionStatus;
         //Remove review status if Attendee re-visits the question
         //if (this.questionStatus === QuestionStatus.review)
-            //this.questionStatus = QuestionStatus.unanswered;
+        //this.questionStatus = QuestionStatus.unanswered;
 
         //Mark new question as selected
         this.markAsSelected(index);
@@ -680,7 +686,7 @@ export class TestComponent implements OnInit {
             this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
-            
+
             this.endTest(TestStatus.blockedTest);
         }
         else if (this.focusLost <= this.test.browserTolerance) {
@@ -748,7 +754,7 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         this.istestEnd = true;
         this.isTestReady = false;
-                
+
         this.snackBar.dismiss();
 
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
@@ -784,7 +790,7 @@ export class TestComponent implements OnInit {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.testEnded = true;
-                    this.router.navigate(['test-summary'], { replaceUrl: true });
+                this.router.navigate(['test-summary'], { replaceUrl: true });
             });
         }
         else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest && testStatus !== TestStatus.expiredTest)
