@@ -5,7 +5,6 @@ import { Http, ConnectionBackend, XHRBackend } from '@angular/http';
 
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from '../app/page-not-found/page-not-found.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { QuestionsModule } from './questions/questions.module';
@@ -40,8 +39,7 @@ import { HttpWrapper } from './core/http.wrapper';
     ],
 
     declarations: [
-        AppComponent,
-        PageNotFoundComponent
+        AppComponent
     ]
 })
 export class AppModule { }

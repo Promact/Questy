@@ -14,7 +14,6 @@ import { TestConductFooterComponent } from './shared/test-conduct-footer/test-co
 import { ConductService } from './conduct.service';
 import { ReportService } from '../reports/report.service';
 import { TestsProgrammingGuideDialogComponent } from './test/tests-programming-guide-dialog.component';
-import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 @NgModule({
     bootstrap: [ConductComponent],
@@ -36,8 +35,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
         TestEndComponent,
         TestConductHeaderComponent,
         TestConductFooterComponent,
-        TestsProgrammingGuideDialogComponent,
-        PageNotFoundComponent
+        TestsProgrammingGuideDialogComponent
     ], entryComponents: [
         TestsProgrammingGuideDialogComponent
     ]
