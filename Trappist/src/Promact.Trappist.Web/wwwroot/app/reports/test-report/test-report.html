@@ -34,9 +34,9 @@
                     <option value="4">Unfinished Test</option>
                 </select>
                 <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>           
-                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="showDownloadButton()">Download Excel</button>
-                <button type="button" class="btn" (click)="downloadTestReportPdf()" *ngIf="showDownloadButton()">Download PDF</button>
-                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="showDownloadButton()">Download Detailed Report</button>
+                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!showGenerateReportButton">Download Excel</button>
+                <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
+                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!showGenerateReportButton">Download Detailed Report</button>
                 <button type="button" class="btn" (click)="generateReportForUnfinishedTest()" *ngIf="showGenerateReportButton">Generate Report</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
