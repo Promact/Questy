@@ -13,7 +13,6 @@ export class ConductService {
     constructor(private httpService: HttpService) {
     }
 
-    public disableHeader = new BehaviorSubject<any>(false);
     /**
      * This method used for register test attendee.
      * @param magicString-It will contain test link

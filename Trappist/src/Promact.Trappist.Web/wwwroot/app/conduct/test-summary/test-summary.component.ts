@@ -189,7 +189,6 @@ export class TestSummaryComponent implements OnInit {
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
         }, err => {
             this.router.navigate(['']);
-            this.testAttendee.report.testStatus === 2;
         });
     }
     /**
