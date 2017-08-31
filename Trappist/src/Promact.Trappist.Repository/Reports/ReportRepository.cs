@@ -10,6 +10,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
 using Promact.Trappist.DomainModel.Models.Question;
 using System;
 using Promact.Trappist.DomainModel.Models.Report;
+using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -17,12 +18,14 @@ namespace Promact.Trappist.Repository.Reports
     {
         #region Private Members
         private readonly TrappistDbContext _dbContext;
+        private readonly ITestConductRepository _testConductRepository; 
         #endregion
 
         #region Constructor
-        public ReportRepository(TrappistDbContext dbContext)
+        public ReportRepository(TrappistDbContext dbContext, ITestConductRepository testConductRepository)
         {
             _dbContext = dbContext;
+            _testConductRepository = testConductRepository;
         }
         #endregion
 
@@ -380,6 +383,16 @@ namespace Promact.Trappist.Repository.Reports
 
             var numberOfQuestionsAttempted = listOfQuestionsAttemptedByTestAttendee.Count() + numberOfAnsweredButReviewedQuestions;
             return numberOfQuestionsAttempted;
+        }
+
+        public async Task<List<TestAttendees>> GenerateReportForUnfinishedTestAsync(List<int> attendeeIdList)
+        {
+            foreach(var id in attendeeIdList)
+            {
+                await _testConductRepository.SetAttendeeTestStatusAsync(id, TestStatus.CompletedTest);
+            }
+
+            return await _dbContext.TestAttendees.Where(x => attendeeIdList.Any(id => id == x.Id)).Include(x => x.Report).ToListAsync();
         }
         #endregion
     }

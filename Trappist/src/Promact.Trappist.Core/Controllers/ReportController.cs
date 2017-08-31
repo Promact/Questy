@@ -4,6 +4,7 @@ using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Utility.Constants;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -227,6 +228,12 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<int> GetTotalNumberOfAttemptedQuestionsByAttendee([FromRoute]int attendeeId)
         {
             return await _reportRepository.GetAttemptedQuestionsByAttendeeAsync(attendeeId);
+        }
+
+        [HttpPost("generateReport")]
+        public async Task<IActionResult> GenerateReportForUnfinishedTestAsync([FromBody]List<int> attendeeIdList)
+        {
+            return Ok(await _reportRepository.GenerateReportForUnfinishedTestAsync(attendeeIdList));
         }
         #endregion
     }

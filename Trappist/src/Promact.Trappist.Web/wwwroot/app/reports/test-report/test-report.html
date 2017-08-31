@@ -31,11 +31,13 @@
                     <option value="1">Completed Test</option>
                     <option value="2">Expired Test</option>
                     <option value="3">Blocked Test</option>
+                    <option value="4">Unfinished Test</option>
                 </select>
                 <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>           
-                <button type="button" class="btn" (click)="downloadTestBasicDetails()">Download Excel</button>
-                <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
-                <button type="button" class="btn" (click)="getExcelDetails()">Download Detailed Report</button>
+                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="showDownloadButton()">Download Excel</button>
+                <button type="button" class="btn" (click)="downloadTestReportPdf()" *ngIf="showDownloadButton()">Download PDF</button>
+                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="showDownloadButton()">Download Detailed Report</button>
+                <button type="button" class="btn" (click)="generateReportForUnfinishedTest()" *ngIf="showGenerateReportButton">Generate Report</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
@@ -43,35 +45,37 @@
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
-                        <th><md-checkbox class="only-checkbox" [(ngModel)]="checkedAllCandidate" (change)="selectAllCandidates()"></md-checkbox></th>
+                        <th><md-checkbox class="only-checkbox" [(ngModel)]="checkedAllCandidate" (change)="selectAllCandidates()" [disabled]="isGeneratingReport"></md-checkbox></th>
                         <th><em class="material-icons" [ngClass]="{starred : isAllCandidateStarred}" (click)="setAllCandidatesStarred()">{{headerStarStatus}}</em></th>
                         <th class="h5" md2SortBy="firstName">Name</th>
                         <th class="h5" md2SortBy="email">Email</th>
                         <th class="h5" md2SortBy="createdDateTime">Test Date</th>
                         <th class="h5" md2SortBy="report.totalMarksScored">Score</th>
                         <th class="h5" md2SortBy="report.percentage">Percentage</th>
-                        <th class="h5" *ngIf="isAnyTestResume">Allow Resume?</th>
+                        <th class="h5"><span *ngIf="isAnyTestResume">Allow Resume?</span></th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
-                        <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="selectIndividualCandidate(testAttendee,testAttendee.checkedCandidate)"></md-checkbox></td>
+                        <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="selectIndividualCandidate(testAttendee,testAttendee.checkedCandidate)" [disabled]="testAttendee.generatingReport"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
-                        <td class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
-                        <td [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.email}}</td>
+                        <td class="theme-text font-semibold"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
+                        <td>{{testAttendee.email}}</td>
                         <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
-                        <td>{{testAttendee.report.totalMarksScored}}</td>
-                        <td>{{testAttendee.report.percentage}}</td>
-                        <td *ngIf="isAnyTestResume"><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>
-                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']">file_download</em></td>
-                        <td class="text-right"><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id]">remove_red_eye</em></td>
+                        <td><progress *ngIf="testAttendee.generatingReport"></progress> {{testAttendee.report.totalMarksScored}}</td>
+                        <td><progress *ngIf="testAttendee.generatingReport"></progress>{{testAttendee.report.percentage}}</td>
+                        <td><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>
+                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="!showGenerateReportButton || testAttendee.report.totalMarksScored != null">file_download</em></td>
+                        <td class="text-right"><a href="../individual-report/" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="!showGenerateReportButton || testAttendee.report.totalMarksScored != null">remove_red_eye</em></a></td>
+                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="showGenerateReportButton" >refresh</em></td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="6">
                             <span class="records-info">Showing {{startingIndexOfActivePage(activePage,count)}} to {{endingIndexOfActivePage(activePage,count)}} of {{count}} records </span>
                         </td>
                         <td colspan="5">

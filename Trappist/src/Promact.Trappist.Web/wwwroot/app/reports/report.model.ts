@@ -8,4 +8,14 @@ export class Report {
     timeTakenByAttendee: number;
     isTestPausedUnWillingly: boolean;
     isAllowResume: boolean;
+
+    constructor() {
+        this.totalMarksScored = null;
+        this.percentage = null;
+        this.percentile = null;
+        this.testStatus = TestStatus.allCandidates;
+        this.timeTakenByAttendee = 0;
+        this.isTestPausedUnWillingly = null;
+        this.isAllowResume = null;
+    }
 }

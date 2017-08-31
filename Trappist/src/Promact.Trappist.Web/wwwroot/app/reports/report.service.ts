@@ -107,4 +107,8 @@ export class ReportService {
     getTotalNumberOfAttemptedQuestions(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/attemptedQuestions');
     }
+
+    generateReport(attendeeIdList: number[]) {
+        return this.httpService.post(this.reportsApiUrl + '/generateReport', attendeeIdList);
+    }
 } 
