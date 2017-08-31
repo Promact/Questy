@@ -11,6 +11,7 @@ import { PopoverModule } from 'ngx-popover';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TestComponent } from '../conduct/test/test.component';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 
 
@@ -30,7 +31,8 @@ import { TestComponent } from '../conduct/test/test.component';
         ClipboardModule
     ],
     declarations: [
-        TestComponent
+        TestComponent,
+        PageNotFoundComponent
     ],
     exports: [
         CommonModule,
@@ -43,7 +45,8 @@ import { TestComponent } from '../conduct/test/test.component';
         PopoverModule,
         AceEditorModule,
         ClipboardModule,
-        TestComponent
+        TestComponent,
+        PageNotFoundComponent
     ]
 })
 export class SharedModule { }
