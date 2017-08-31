@@ -12,8 +12,10 @@ export class TestAttendee {
     checkedCandidate: boolean;
     report: Report;
     backToTest: boolean;
+    generatingReport: boolean;
 
     constructor() {
         this.report = new Report();
+        this.generatingReport = false;
     }
 }

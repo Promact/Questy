@@ -132,5 +132,12 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="attendeeId">Contains the value of the attendee Id from the route</param>
         /// <returns>Number of attempted questions by an attendee</returns>
         Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attendeeIdList"></param>
+        /// <returns></returns>
+        Task<List<TestAttendees>> GenerateReportForUnfinishedTestAsync(List<int> attendeeIdList);
     }
 }

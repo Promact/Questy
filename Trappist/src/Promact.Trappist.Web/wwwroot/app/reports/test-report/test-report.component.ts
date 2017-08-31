@@ -11,6 +11,7 @@ import { TestAttendeeRank } from './testattendeerank';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
+import { Report } from "../report.model";
 
 declare let jsPDF: any;
 declare let saveAs: any;
@@ -60,6 +61,8 @@ export class TestReportComponent implements OnInit {
     testAttendeeRank: TestAttendeeRank[];
     testLogs: TestLogs[] = [];
     isAnyTestResume: boolean;
+    showGenerateReportButton: boolean;
+    isGeneratingReport: boolean;
     testTime: string;
     maxDurationOfTest: string;
 
@@ -118,6 +121,10 @@ export class TestReportComponent implements OnInit {
             this.attendeeArray.forEach(x => {
                 if (x.report !== null)
                     this.testAttendeeArray.push(x);
+                else {
+                    x.report = new Report()
+                    this.testAttendeeArray.push(x);
+                }
             });
             this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
             this.attendeeArray = this.testAttendeeArray;
@@ -209,6 +216,7 @@ export class TestReportComponent implements OnInit {
      * @param typeOfTest
      */
     setTestStatusType(testCompletionStatus: string) {
+        this.showGenerateReportButton = false;
         this.selectedTestStatus = +testCompletionStatus;
         this.filterList();
     }
@@ -238,25 +246,33 @@ export class TestReportComponent implements OnInit {
                 if (k.starredCandidate)
                     starAttendeeArray.push(k);
             });
-        }
-
-        if (!this.showStarCandidates) {
+        }else {
             this.attendeeArray.forEach(k => {
                 starAttendeeArray.push(k);
             });
         }
 
-        if (selectedTestStatus === 0) {
-            starAttendeeArray.forEach(x => {
-                tempAttendeeArray.push(x);
-            });
+        switch (selectedTestStatus) {
+            case 0:
+                starAttendeeArray.forEach(x => {
+                    tempAttendeeArray.push(x);
+                });
+                break;
+            case 4:
+                this.showGenerateReportButton = true;
+                starAttendeeArray.forEach(x => {
+                    if (x.report.testStatus === TestStatus.allCandidates) {
+                        tempAttendeeArray.push(x);
+                    }
+                });
+                break;
+            default:
+                starAttendeeArray.forEach(x => {
+                    if (x.report.testStatus === selectedTestStatus) {
+                        tempAttendeeArray.push(x);
+                    }
+                });
         }
-
-        starAttendeeArray.forEach(x => {
-            if (x.report.testStatus === selectedTestStatus) {
-                tempAttendeeArray.push(x);
-            }
-        });
 
         tempAttendeeArray.forEach(x => {
             {
@@ -701,5 +717,60 @@ export class TestReportComponent implements OnInit {
         setTimeout(() => {
             search.select();
         }, 0);
+    }
+
+    /**
+     * Generate report for unfinished test
+     */
+    generateReportForUnfinishedTest(testAttendee?: TestAttendee) {
+        this.isGeneratingReport = true;
+
+        let isSomeChecked: boolean;
+
+        let attendeeIdList = new Array<number>();
+        if (testAttendee) {
+            testAttendee.generatingReport = true;
+            attendeeIdList.push(testAttendee.id);
+        } else {
+            isSomeChecked = this.testAttendeeArray.some(x => x.checkedCandidate);
+            this.testAttendeeArray.forEach(x => {
+                if (!isSomeChecked) {
+                    x.generatingReport = true;
+                    attendeeIdList.push(x.id);
+                }else if (x.checkedCandidate) {
+                    x.generatingReport = true;
+                    attendeeIdList.push(x.id);
+                }
+            });
+        }
+
+        this.reportService.generateReport(attendeeIdList).subscribe(res => {
+
+            this.testAttendeeArray.forEach((o, i, a) => {
+                if (res.some(x => x.id === a[i].id)) {
+                    a[i] = res.find(x => x.id === a[i].id);
+                }
+            });
+
+            if (testAttendee)
+                testAttendee.generatingReport = false;
+            else
+                this.testAttendeeArray.forEach(x => {
+                    if (!isSomeChecked) {
+                        x.generatingReport = false;
+                    } else if (x.checkedCandidate) {
+                        x.generatingReport = false;
+                        x.checkedCandidate = true;
+                    }
+                });
+
+            this.isGeneratingReport = false;
+        });
+    }
+
+    showDownloadButton() {
+        let isAllReportGenerated = !this.testAttendeeArray.some(x => x.report.totalMarksScored === null);
+        return (!this.showGenerateReportButton || isAllReportGenerated);
+
     }
 }
