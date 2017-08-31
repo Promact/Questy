@@ -338,4 +338,21 @@ export class QuestionsDashboardComponent implements OnInit {
             search.select();
         }, 0);
     }
+
+    /**
+     * 
+     * @param questiontype
+     */
+    selectSelectionAndDifficultyType(questiontype: string) {
+        let categoryName = this.selectedCategory.categoryName;
+        let difficultyLevel = DifficultyLevel[this.selectedDifficulty];
+        if (categoryName == null)
+            categoryName = 'AllCategory'
+        if (questiontype === 'single-answer')
+            this.router.navigate(['questions', 'single-answer', categoryName, difficultyLevel]);
+        else if (questiontype === 'multiple-answer')
+            this.router.navigate(['questions', 'multiple-answers', categoryName, difficultyLevel]);
+        else if (questiontype === 'programming')
+            this.router.navigate(['questions', 'programming', categoryName, difficultyLevel]);
+    }
 }

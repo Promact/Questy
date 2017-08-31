@@ -31,7 +31,7 @@ export class AddCategoryDialogComponent {
      * Open snackBar
      */
     openSnackBar(message: string) {
-        let snackBarRef = this.snackBar.open(message, '', {
+        let snackBarRef = this.snackBar.open(message, 'Dismiss', {
             duration: 3000,
         });
     }
