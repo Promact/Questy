@@ -1,5 +1,4 @@
 ﻿import { Component } from '@angular/core';
-import { ConductService } from "../conduct/conduct.service";
 
 @Component({
     moduleId: module.id,
@@ -8,7 +7,8 @@ import { ConductService } from "../conduct/conduct.service";
 })
 
 export class PageNotFoundComponent {
-    constructor(private conductService: ConductService) {
-        this.conductService.disableHeader.next(true);
+    constructor() {
+        if (window.location.href.indexOf(window.location.origin + '/conduct/') > -1)
+            window.location.href = '/pagenotfound';
     }
 }
