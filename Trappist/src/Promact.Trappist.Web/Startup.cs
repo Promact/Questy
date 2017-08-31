@@ -75,8 +75,7 @@ namespace Promact.Trappist.Web
 
 
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-
+            
             services.AddSession(options =>
             {
                 options.CookieName = ".Trappist.session";
@@ -106,8 +105,7 @@ namespace Promact.Trappist.Web
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             #endregion
-
-
+            
             services.AddMiniProfiler().AddEntityFramework();
 
             services.AddMemoryCache();
@@ -121,10 +119,12 @@ namespace Promact.Trappist.Web
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             app.AddNLogWeb();
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -134,6 +134,7 @@ namespace Promact.Trappist.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
 
             if (env.IsDevelopment())
@@ -145,14 +146,17 @@ namespace Promact.Trappist.Web
                 });
             }
 
-            app.UseMiniProfiler(x => 
+            if (env.IsDevelopment())
             {
-                // Control which SQL formatter to use
-                x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+                app.UseMiniProfiler(x =>
+                {
+                    // Control which SQL formatter to use
+                    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
 
-                // Control storage
-                x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
-            });
+                    // Control storage
+                    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
+                });
+            }
 
             app.UseIdentity();
 

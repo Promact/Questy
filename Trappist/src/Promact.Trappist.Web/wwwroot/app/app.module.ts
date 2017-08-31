@@ -1,6 +1,8 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { Http, ConnectionBackend, XHRBackend } from '@angular/http';
+
 import { appRouting } from './app.routing';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from '../app/page-not-found/page-not-found.component';
@@ -10,6 +12,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { TestsModule } from './tests/tests.module';
 import { ProfileModule } from './profile/profile.module';
 import { ReportsModule } from './reports/reports.module';
+import { HttpWrapper } from './core/http.wrapper';
 
 
 @NgModule({
@@ -26,7 +29,14 @@ import { ReportsModule } from './reports/reports.module';
        
     ],
     providers: [
-
+        {
+            provide: Http,
+            useClass: HttpWrapper
+        },
+        {
+            provide: ConnectionBackend,
+            useClass: XHRBackend
+        }
     ],
 
     declarations: [
