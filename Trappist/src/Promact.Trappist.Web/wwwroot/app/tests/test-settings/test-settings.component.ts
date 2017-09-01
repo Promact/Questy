@@ -50,6 +50,7 @@ export class TestSettingsComponent implements OnInit {
     numberOfIpFields: number[] = [];
     disablePreview: boolean;
     isIpAddressAdded: boolean;
+    isIpAddressFieldNull: boolean;
     
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
@@ -291,6 +292,7 @@ export class TestSettingsComponent implements OnInit {
      */
     showErrorMessage(ip: TestIPAddress) {
         ip.isErrorMessageVisible = ip.ipAddress === '' ? true : false;
+        this.isIpAddressFieldNull = ip.isErrorMessageVisible ? true : false;
     }
 
     ///**

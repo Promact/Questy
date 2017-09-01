@@ -30,6 +30,8 @@ export class CreateTestFooterComponent implements OnInit {
     public validTime: boolean;
     @Input('isIpAddressAdded')
     public isIpAddressAdded: boolean;
+    @Input('isIpAddressFieldNull')
+    public isIpAddressFieldNull: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
     @Output() resumeTest: any;
