@@ -380,7 +380,7 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(newTest.Id);
             //Fetch Ip Addresses in that particular test and store them in a variable of type list
             var testIpAddressList = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
-
+            
             if (testCategoryList.Any())
             {
                 var categoryList = new List<TestCategory>();
@@ -414,9 +414,9 @@ namespace Promact.Trappist.Repository.Tests
                     foreach(TestIpAddress testIpAddressObject in testIpAddressList)
                     {
                         var ipAddressObject = new TestIpAddress();
-                        ipAddressObject.TestId = test.Id;
                         ipAddressObject.Test = test;
-                        
+                        ipAddressObject.TestId = test.Id;
+                        ipAddressObject.IpAddress = testIpAddressObject.IpAddress;
                         ipAddressList.Add(ipAddressObject);
                     }
                     await _dbContext.TestIpAddresses.AddRangeAsync(ipAddressList);
