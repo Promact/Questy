@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestStatus } from '../../reports/enum-test-state';
+import { TestStatus } from '../teststatus.enum';
 import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
 import { TestAnswer } from '../test_answer.model';
