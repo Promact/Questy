@@ -9,7 +9,7 @@ import { QuestionDisplay } from '../../questions/question-display';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { QuestionType } from '../../questions/enum-questiontype';
 import { Category } from '../../questions/category.model';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UpdateCategoryDialogComponent } from './update-category-dialog.component';
 import { Question } from '../question.model';
 import { QuestionCount } from '../numberOfQuestion';
@@ -46,8 +46,11 @@ export class QuestionsDashboardComponent implements OnInit {
     categroyId: number;
     isCategoryPresent: boolean;
     showName: string;
+    selectedCategoryName: string;
+    SelectedDifficultyLevel: string;
+    selectedCategoryId: number;
 
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router) {
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.numberOfQuestions = new QuestionCount();
@@ -70,6 +73,8 @@ export class QuestionsDashboardComponent implements OnInit {
 
     ngOnInit() {
         this.loader = true;
+        this.selectedCategoryName = this.route.snapshot.params['categoryName'];
+        this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
         this.countTheQuestion();
         this.getQuestionsOnScrolling();
         this.getAllCategories();
@@ -84,11 +89,25 @@ export class QuestionsDashboardComponent implements OnInit {
         }
     }
 
+    SelectCategoryDifficulty(difficulty: string, categoryName: string) {
+        this.selectedDifficulty = DifficultyLevel[difficulty];
+        this.selectedCategory.categoryName = categoryName;
+        this.difficultyLevel = difficulty;
+        this.categoryArray.forEach(x => {
+            if (x.categoryName === this.selectedCategoryName)
+                this.selectedCategoryId = x.id;
+        });
+        this.categoryWiseFilter(this.selectedCategoryId, this.selectedCategoryName, this.SelectedDifficultyLevel);
+    }
+
+
     //To get all the Categories
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
+            if (this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined)
+                this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
             this.sortCategory();
         });
     }
@@ -157,13 +176,13 @@ export class QuestionsDashboardComponent implements OnInit {
      * To select the Category
      * @param category
      */
-    categoryWiseFilter(category: Category) {
+    categoryWiseFilter(categoryId: number, categoryName: string, difficultyLevel: string) {
         this.loader = true;
-        this.showName = category.categoryName;
+        this.showName = categoryName;
         window.scrollTo(0, 0);
-        this.difficultyLevel = 'All';
+        this.difficultyLevel = difficultyLevel;
         this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
-        this.categroyId = category.id;
+        this.categroyId = categoryId;
         this.countTheQuestion();
         this.id = 0;
         this.isAllQuestionsHaveCome = false;
@@ -174,7 +193,8 @@ export class QuestionsDashboardComponent implements OnInit {
             this.loader = false;
             this.matchString = '';
         });
-        this.selectedCategory = category;
+        this.selectedCategory.categoryName = categoryName;
+        this.selectedCategory.id = categoryId;
     }
 
     /**
@@ -346,8 +366,8 @@ export class QuestionsDashboardComponent implements OnInit {
     selectSelectionAndDifficultyType(questiontype: string) {
         let categoryName = this.selectedCategory.categoryName;
         let difficultyLevel = DifficultyLevel[this.selectedDifficulty];
-        if (categoryName == null)
-            categoryName = 'AllCategory'
+        if (categoryName === undefined)
+            categoryName = 'AllCategory';
         if (questiontype === 'single-answer')
             this.router.navigate(['questions', 'single-answer', categoryName, difficultyLevel]);
         else if (questiontype === 'multiple-answer')
