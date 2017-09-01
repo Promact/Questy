@@ -59,7 +59,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(option);
         }
         this.isCategorySelected = false;
-        this.isDifficultyLevelSelected = false; 
+        this.isDifficultyLevelSelected = false;
     }
 
     ngOnInit() {
@@ -110,7 +110,11 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
-            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);
+            if (this.selectedCategoryName === undefined && this.selectedDifficultyLevel === undefined) {                   
+                this.selectedCategoryName = 'AllCategory';
+                this.selectedDifficultyLevel = 'All';
+            }
+            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);      
         },
             err => {
                 this.snackBar.open('Failed to load category.', 'Dismiss', { duration: 3000 });
@@ -206,9 +210,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isSingleAnswerQuestion = true;
             this.isEditQuestion = false;
         }
-        else if (this.router.url.includes('/questions//multiple-answers')) {
-            this.singleMultipleAnswerQuestion.question.questionType = 0;
-            this.isSingleAnswerQuestion = true;
+        else if (this.router.url.includes('/questions/multiple-answers')) {
+            this.singleMultipleAnswerQuestion.question.questionType = 1;
+            this.isSingleAnswerQuestion = false;
             this.isEditQuestion = false;
         }
     }
@@ -274,7 +278,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 else {
                     this.snackBar.open('Question added successfully.', 'Dismiss', { duration: 3000 });
                 }
-                this.router.navigate(['/questions']);
+                this.router.navigate(['/questions', this.categoryName, this.difficultyLevelSelected]);
             },
             err => {
                 this.snackBar.open('Something went wrong.Please try again later.', 'Dismiss', { duration: 3000 });
@@ -294,7 +298,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isDifficultyLevelSelected = true;
             this.categoryName = categoryName;
             this.difficultyLevelSelected = difficultyLevel;
-            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName == this.categoryName).id;
+            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName).id;
 
         }
         else if (categoryName === 'AllCategory' && difficultyLevel !== 'All') {
@@ -302,13 +306,13 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isDifficultyLevelSelected = true;
             this.difficultyLevelSelected = difficultyLevel;
         }
-        else if (categoryName !== 'AllCategory' && difficultyLevel == 'All') {
+        else if (categoryName !== 'AllCategory' && difficultyLevel === 'All') {
             this.isCategorySelected = true;
             this.isDifficultyLevelSelected = false;
             this.categoryName = categoryName;
-            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName == this.categoryName).id;
+            this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName).id;
         }
-       
+
     }
 
 }

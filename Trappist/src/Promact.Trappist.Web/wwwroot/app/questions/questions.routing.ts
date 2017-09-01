@@ -11,6 +11,7 @@ const questionsRoutes: Routes = [
         component: QuestionsComponent,
         children: [
             { path: '', component: QuestionsDashboardComponent },
+            { path: ':categoryName/:difficultyLevelName', component: QuestionsDashboardComponent },
             { path: 'single-answer', component: SingleMultipleAnswerQuestionComponent },
             { path: 'single-answer/:categoryName/:difficultyLevelName', component: SingleMultipleAnswerQuestionComponent },
             { path: 'edit-single-answer/:id', component: SingleMultipleAnswerQuestionComponent },

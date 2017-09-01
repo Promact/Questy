@@ -46,7 +46,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
-    private routeToDashboard = ['questions'];
+    private routeToDashboard = ['questions', this.selectedCategory,this.selectedDifficultyLevel];
 
     constructor(private questionsService: QuestionsService,
         private categoryService: CategoryService,
@@ -194,6 +194,10 @@ export class QuestionsProgrammingComponent implements OnInit {
     private getCategory() {
         this.categoryService.getAllCategories().subscribe((response) => {
             this.categoryList = response;
+            if (this.selectedCategoryName === undefined && this.selectedDifficultyLevel === undefined) {
+                this.selectedCategory = 'AllCategory';
+                this.selectedDifficultyLevel = 'All';
+            }
             this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategory, this.selectedDifficultyLevel);
             //If question is being editted then set the category
             if (this.isQuestionEdited || this.isQuestionDuplicated)
@@ -302,6 +306,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
             subscription.subscribe(
                 (response) => {
+                    this.routeToDashboard = ['questions', this.selectedCategory, this.selectedDifficulty];
                     this.openSnackBar(this.successMessage, true, this.routeToDashboard);
                 },
                 err => {
@@ -325,7 +330,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.selectedDifficulty = difficultyLevel;
             this.questionModel.question.difficultyLevel = DifficultyLevel[this.selectedDifficulty];
         }
-        else if (categoryName !== 'AllCategory' && difficultyLevel == 'All') {
+        else if (categoryName !== 'AllCategory' && difficultyLevel === 'All') {
             this.isCategorySelected = true;
             this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === this.selectedCategory).id;
         }
