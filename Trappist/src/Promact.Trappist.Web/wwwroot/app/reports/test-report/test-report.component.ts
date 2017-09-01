@@ -261,7 +261,7 @@ export class TestReportComponent implements OnInit {
             case 4:
                 this.showGenerateReportButton = true;
                 starAttendeeArray.forEach(x => {
-                    if (x.report.testStatus === TestStatus.allCandidates) {
+                    if (x.report.testStatus === TestStatus.allCandidates || x.report.testStatus === TestStatus.unfinishedTest) {
                         tempAttendeeArray.push(x);
                     }
                 });
@@ -734,10 +734,10 @@ export class TestReportComponent implements OnInit {
         } else {
             isSomeChecked = this.testAttendeeArray.some(x => x.checkedCandidate);
             this.testAttendeeArray.forEach(x => {
-                if (!isSomeChecked) {
+                if (!isSomeChecked && x.report.totalMarksScored === null) {
                     x.generatingReport = true;
                     attendeeIdList.push(x.id);
-                }else if (x.checkedCandidate) {
+                } else if (x.checkedCandidate && x.report.totalMarksScored === null) {
                     x.generatingReport = true;
                     attendeeIdList.push(x.id);
                 }
@@ -771,6 +771,9 @@ export class TestReportComponent implements OnInit {
     showDownloadButton() {
         let isAllReportGenerated = !this.testAttendeeArray.some(x => x.report.totalMarksScored === null);
         return (!this.showGenerateReportButton || isAllReportGenerated);
+    }
 
+    isReportGenerated(testAttendee: TestAttendee) {
+        return testAttendee.report.testStatus !== TestStatus.allCandidates;
     }
 }

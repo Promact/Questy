@@ -389,7 +389,7 @@ namespace Promact.Trappist.Repository.Reports
         {
             foreach(var id in attendeeIdList)
             {
-                await _testConductRepository.SetAttendeeTestStatusAsync(id, TestStatus.CompletedTest);
+                await _testConductRepository.SetAttendeeTestStatusAsync(id, TestStatus.UnfinishedTest);
             }
 
             return await _dbContext.TestAttendees.Where(x => attendeeIdList.Any(id => id == x.Id)).Include(x => x.Report).ToListAsync();
