@@ -68,9 +68,9 @@
                         <td><progress *ngIf="testAttendee.generatingReport"></progress> {{testAttendee.report.totalMarksScored}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress>{{testAttendee.report.percentage}}</td>
                         <td><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>
-                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="!showGenerateReportButton || testAttendee.report.totalMarksScored != null">file_download</em></td>
-                        <td class="text-right"><a href="../individual-report/" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="!showGenerateReportButton || testAttendee.report.totalMarksScored != null">remove_red_eye</em></a></td>
-                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="showGenerateReportButton" >refresh</em></td>
+                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="isReportGenerated(testAttendee)">file_download</em></td>
+                        <td class="text-right"><a href="../individual-report/" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="isReportGenerated(testAttendee)">remove_red_eye</em></a></td>
+                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="!isReportGenerated(testAttendee)" >refresh</em></td>
                     </tr>
                 </tbody>
                 <tfoot>
