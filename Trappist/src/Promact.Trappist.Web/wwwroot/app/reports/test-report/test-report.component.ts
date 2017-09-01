@@ -750,19 +750,16 @@ export class TestReportComponent implements OnInit {
                 if (res.some(x => x.id === a[i].id)) {
                     a[i] = res.find(x => x.id === a[i].id);
                 }
+                if (!isSomeChecked) {
+                    a[i].generatingReport = false;
+                } else if (a[i].checkedCandidate) {
+                    a[i].generatingReport = false;
+                    a[i].checkedCandidate = true;
+                }
+                //set report for global attendee array
+                let attendeeIndex = this.attendeeArray.findIndex(y => y.id === a[i].id);
+                this.attendeeArray[attendeeIndex] = a[i];
             });
-
-            if (testAttendee)
-                testAttendee.generatingReport = false;
-            else
-                this.testAttendeeArray.forEach(x => {
-                    if (!isSomeChecked) {
-                        x.generatingReport = false;
-                    } else if (x.checkedCandidate) {
-                        x.generatingReport = false;
-                        x.checkedCandidate = true;
-                    }
-                });
 
             this.isGeneratingReport = false;
         });
