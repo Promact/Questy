@@ -29,6 +29,7 @@ import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
 declare let screenfull: any;
+declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -654,8 +655,9 @@ export class TestComponent implements OnInit {
 
     private shuffleArray(arrayToShuffle: any[]) {
         let max = arrayToShuffle.length - 1;
+        let prng = new alea(this.testAttendee.email.toLowerCase() + this.testAttendee.rollNumber.toLowerCase());
         for (let i = 0; i < max; i++) {
-            let pickIndex = Math.floor(Math.random() * max);
+            let pickIndex = Math.floor(prng() * max);
 
             //swap options
             [arrayToShuffle[i], arrayToShuffle[pickIndex]] = [arrayToShuffle[pickIndex], arrayToShuffle[i]];
