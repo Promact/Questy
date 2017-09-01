@@ -12,7 +12,7 @@
                     <h2>Setup the Database by providing a connection string</h2>
                     <form #ConnectionStringForm="ngForm">
                         <div class="form-group">
-                            <label>Connection String</label>
+                            <label>Connection String</label><em class="danger-text h4">*</em>
                             <input required type="text" class="form-control" name="connectionStringName" [(ngModel)]="connectionString.value" #connectionStringName="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="connectionStringName.touched && !connectionStringName.valid && connectionStringName.errors.required" class="error-msg">Required</span>
@@ -30,14 +30,14 @@
                     <h2>Configure Email Settings</h2>
                     <form #EmailSettingsForm="ngForm">
                         <div class="form-group">
-                            <label>Server Name</label>
+                            <label>Server Name</label><em class="danger-text h4">*</em>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.server" name="nameOfServer" #nameOfServer="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="nameOfServer.touched && !nameOfServer.valid && nameOfServer.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Port</label>
+                            <label>Port</label><em class="danger-text h4">*</em>
                             <input required pattern="[0-9]*" type="text" class="form-control small-width" [(ngModel)]="emailSettings.port" name="portNumber" #portNumber="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="portNumber.touched && !portNumber.valid && portNumber.errors.required" class="error-msg">Required</span>
@@ -45,14 +45,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>User Name</label>
+                            <label>User Name</label><em class="danger-text h4">*</em>
                             <input required type="text" class="form-control" [(ngModel)]="emailSettings.userName" name="usersEmailAddress" #usersEmailAddress="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="usersEmailAddress.touched && !usersEmailAddress.valid && usersEmailAddress.errors.required" class="error-msg">Required</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
+                            <label>Password</label><em class="danger-text h4">*</em>
                             <input required type="password" class="form-control" [(ngModel)]="emailSettings.password" name="userMailPassword" #userMailPassword="ngModel" />
                             <div class="errors-container">
                                 <span *ngIf="userMailPassword.touched && !userMailPassword.valid && userMailPassword.errors.required" class="error-msg">Required</span>
@@ -78,7 +78,7 @@
                     <h2>Set up Administrator user</h2>
                     <form #CreateUserForm="ngForm">
                         <div class="form-group">
-                            <label>Name</label>
+                            <label>Name</label><em class="danger-text h4">*</em>
                             <input required pattern="^[a-zA-Z_ ]*$" type="text" class="form-control" [(ngModel)]="registrationFields.name" name="usersName" #usersName="ngModel" maxlength="150" />
                             <div class="errors-container">
                                 <span *ngIf="usersName.touched && !usersName.valid && usersName.errors.pattern" class="error-msg">Invalid Name</span>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Email/User Name</label>
+                            <label>Email/User Name</label><em class="danger-text h4">*</em>
                             <input required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3}" type="text" class="form-control" [(ngModel)]="registrationFields.email" name="userEmail" #userEmail="ngModel" maxlength="255" />
                             <div class="errors-container">
                                 <span *ngIf="userEmail.touched && !userEmail.valid && userEmail.errors.pattern" class="error-msg">Invalid Email Address</span>
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
+                            <label>Password</label><em class="danger-text h4">*</em>
                             <input required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,14}$" type="password" class="form-control"
                                    [(ngModel)]="registrationFields.password" name="userPassword" #userPassword="ngModel" />
                             <div class="errors-container">
@@ -103,7 +103,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Confirm Password</label>
+                            <label>Confirm Password</label><em class="danger-text h4">*</em>
                             <input required type="password" class="form-control" [(ngModel)]="registrationFields.confirmPassword"
                                    name="userConfirmtionPassword" #userConfirmtionPassword="ngModel" (change)="isValidPassword()" />
                             <div class="errors-container">

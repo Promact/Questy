@@ -10,7 +10,7 @@
         <div class="fields-box">
             <form (ngSubmit)='updateUserDetails()' #profileForm='ngForm'>
                 <div class="form-group">
-                    <label>Name</label>
+                    <label>Name</label><em class="danger-text h4">*</em>
                     <input type="text" class="form-control half-width" name="name" [(ngModel)]="editUser.name" #name="ngModel" required pattern="[A-Za-z\s]+$" maxlength="150" />
                     <div class="errors-container">
                         <span *ngIf='name.errors && (name.dirty || name.touched)' class='error-msg'>Name is required and it must contain only alphabets</span>

@@ -5,7 +5,7 @@
     </div>
     <md-dialog-content>
         <div class="form-group">
-            <label>Section Name</label>
+            <label>Section Name</label><em class="danger-text h4">*</em>
             <input type="text" class="form-control" id="categoryName" (keyup.enter)="onEnter(category)" [(ngModel)]="category.categoryName" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" placeholder="Ex. General Knowledge" required />
             <div class="errors-container">
                 <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
