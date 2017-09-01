@@ -316,7 +316,7 @@ export class TestComponent implements OnInit {
             window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
             window.addEventListener('keydown', (event) => {
                 if (event.ctrlKey) {
-                    if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85)
+                    if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85 || event.keyCode === 72 || event.keyCode === 82 || event.keyCode === 70 || event.keyCode === 68 || event.keyCode === 71 || event.keyCode === 74)
                         event.preventDefault();
                 }
             });
