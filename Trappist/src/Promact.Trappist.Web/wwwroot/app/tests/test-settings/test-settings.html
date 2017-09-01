@@ -7,7 +7,7 @@
         <div class="container">
             <h5>Settings & Schedule</h5>
             <div class="form-area">
-                <fieldset [disabled]="testDetails.isLaunched && !testDetails.isPaused">
+                <fieldset [disabled]="showIsPausedButton && !testDetails.isPaused">
                     <div class="form-group">
                         <label>Time Duration (mins)</label>
                         <input type="text" class="form-control small-width" [(ngModel)]="testDetails.duration" name="Duration" placeholder="00" #Duration="ngModel" required pattern="^(0*[1-9])\d{0,3}?$" (keyup)="isWarningTimeValid()" />
@@ -39,7 +39,7 @@
                                 <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP address in correct format.</span>
                             </div>
                         </div>
-                        <button md-mini-fab type="button" [disabled]="testDetails.isLaunched && !testDetails.isPaused" (click)="addIpFields()"><md-icon>add</md-icon></button>
+                        <button md-mini-fab type="button" [disabled]="showIsPausedButton && !testDetails.isPaused" (click)="addIpFields()"><md-icon>add</md-icon></button>
                     </div>
                     <div class="form-group">
                         <label>Browser Tolerance</label>
@@ -106,7 +106,7 @@
                     </div>
 
                 </fieldset>
-                <create-test-footer [isLaunchAlready]="isLaunchedAlready" [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+                <create-test-footer [showIsPausedButton]="showIsPausedButton" [isRelaunched]="isRelaunched" [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
         </div>
     </form>

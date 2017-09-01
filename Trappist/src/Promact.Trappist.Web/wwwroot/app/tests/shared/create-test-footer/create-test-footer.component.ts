@@ -21,17 +21,19 @@ export class CreateTestFooterComponent implements OnInit {
     @Input('validStartDate')
     public validStartDate: boolean;
     @Input()
-    isLaunchAlready: boolean;
+    isRelaunched: boolean;
+    @Input()
+    showIsPausedButton: boolean;
     @Input('validEndDate')
     public validEndDate: boolean;
     @Input('validTime')
     public validTime: boolean;
     @Output() saveTestSettings: any;
     @Output() launchTestDialog: any;
-    @Output() resumeTest : any;
+    @Output() resumeTest: any;
     @Output() saveExit: any;
     @Output() saveNext: any;
-    @Output() pauseTest : any;
+    @Output() pauseTest: any;
     @Output() SaveCategory: any;
     @Input('testDetails')
     public testDetails: Test;
@@ -39,6 +41,7 @@ export class CreateTestFooterComponent implements OnInit {
     public isValid: boolean;
     isSelectButton: boolean;
     isTestLaunched: boolean;
+  
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
@@ -52,6 +55,7 @@ export class CreateTestFooterComponent implements OnInit {
         this.saveNext = new EventEmitter();
         this.SaveCategory = new EventEmitter();
         this.isTestLaunched = false;
+        
     }
 
     /**

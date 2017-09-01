@@ -19,6 +19,8 @@ import { TestIPAddress } from '../test-IPAdddress';
 })
 
 export class TestSettingsComponent implements OnInit {
+    showIsPausedButton: boolean;
+    isRelaunched: boolean;
     testDetails: Test;
     testId: number;
     validEndDate: boolean;
@@ -60,6 +62,8 @@ export class TestSettingsComponent implements OnInit {
         this.copiedContent = true;
         this.tooltipMessage = 'Copy to Clipboard';
         this.disablePreview = false;
+        //console.log(this.testDetails.startDate);
+
     }
 
     /**
@@ -79,6 +83,8 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
+            this.isRelaunched = new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched;
+            this.showIsPausedButton = new Date(<string>this.testDetails.startDate).getTime() <= Date.now() && this.testDetails.isLaunched;
             this.testNameReference = this.testDetails.testName;
             this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.loader = false;
@@ -142,7 +148,7 @@ export class TestSettingsComponent implements OnInit {
     * @param testObject is an object of the class Test
     */
     saveTestSettings(id: number, testObject: Test) {
-       
+
         testObject.startDate = new Date(<string>testObject.startDate).toISOString();
         testObject.endDate = new Date(<string>testObject.endDate).toISOString();
 
@@ -185,8 +191,9 @@ export class TestSettingsComponent implements OnInit {
                 return (x.numberOfSelectedQuestion !== 0);
             });
             if (isQuestionAdded) {
-                this.isLaunchedAlready = true;
-                this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
+                this.testDetails.isLaunched = true;
+                this.isRelaunched = new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched;
+                this.showIsPausedButton = new Date(<string>this.testDetails.startDate).getTime() <= Date.now() && this.testDetails.isLaunched;
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.ngOnInit();
                     this.openSnackBar('Your test has been launched successfully.');
@@ -226,19 +233,16 @@ export class TestSettingsComponent implements OnInit {
     resumeTest() {
 
         this.testDetails.isPaused = false;
-        this.testDetails.isLaunched = new Date(<string>this.testDetails.startDate).getTime() <= Date.now();
-
         let testObject = JSON.parse(JSON.stringify(this.testDetails));
 
         testObject.startDate = new Date(<string>this.testDetails.startDate).toISOString();
         testObject.endDate = new Date(<string>this.testDetails.endDate).toISOString();
-        
+
         this.testService.updateTestById(this.testId, testObject).subscribe((response) => {
             if (response) {
                 this.ngOnInit();
                 this.openSnackBar('Saved changes and resumed test.');
             }
-
         });
     }
     /**
