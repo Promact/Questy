@@ -38,15 +38,15 @@
               <p><strong>Time Taken</strong><span *ngIf="timeTakenInHoursVisible">{{timeTakenInHours}} hrs </span><span *ngIf="timeTakenInMinutesVisible">{{timeTakenInMinutes}} mins </span><span *ngIf="timeTakenInSecondsVisible">{{timeTakenInSeconds}} secs</span></p>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-7 candidate-score-details text-right">
-              <div class="score">
+              <div class="score" *ngIf="isScoreVisible">
                 <h3 class="mb20">Score</h3>
                 <h1>{{marks}}</h1>
               </div>
-              <div class="percentage">
+              <div class="percentage" *ngIf="isPercentageVisible">
                 <h3 class="mb20">Percentage</h3>
                 <h1>{{percentage}} %</h1>
               </div>
-              <div class="percentile">
+              <div class="percentile" *ngIf="isPercentileVisible">
                 <h3 class="mb20">Percentile</h3>
                 <h1>{{percentile}}</h1>
               </div>

@@ -66,6 +66,8 @@ export class IndividualReportComponent implements OnInit {
     ProgrammingLanguage = ProgrammingLanguage;
     hideSign: boolean;
     showPieChart: boolean;
+    isPercentageVisible: boolean;
+    isScoreVisible: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute) {
         this.loader = true;
@@ -80,6 +82,8 @@ export class IndividualReportComponent implements OnInit {
         this.easy = this.medium = this.hard = 0;
         this.currentDate = new Date();
         this.isPercentileVisible = false;
+        this.isPercentageVisible = false;
+        this.isScoreVisible = false;
     }
 
     ngOnInit() {
@@ -111,13 +115,16 @@ export class IndividualReportComponent implements OnInit {
             this.closeWindowLogVisible = this.testAttendee.testLogs.closeWindowWithoutFinishingTest === null ? false : true;
             this.resumeTestLog = this.testAttendee.testLogs.resumeTest === null ? false : true;
             this.awayFromTestWindowVisible = this.testAttendee.testLogs.awayFromTestWindow === null ? false : true;
-
+           
             this.reportsService.getTotalNumberOfAttemptedQuestions(this.testAttendeeId).subscribe((response) => {
                 this.numberOfQuestionsAttempted = response;
             });
 
             this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
                 this.percentile = response.toFixed(2);
+                this.isScoreVisible = true;
+                this.isPercentageVisible = true;
+                this.isPercentileVisible = true;
             });
 
             //Gets all the answers given by the test attendee
