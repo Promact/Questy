@@ -4,4 +4,5 @@
     createdDateTime: Date;
     updateDateTime: Date;
     testId: number;
+    isErrorMessageVisible: boolean;
 }
