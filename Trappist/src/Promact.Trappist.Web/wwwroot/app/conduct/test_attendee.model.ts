@@ -4,6 +4,6 @@
     firstName: string;
     lastName: string;
     contactNumber: string;
-    rollNumber: number;
+    rollNumber: string;
     attendeeBrowserToleranceCount: number;
 }
