@@ -5,7 +5,7 @@
     </div>
     <md-dialog-content>
         <div class="form-group">
-            <label>Test Name</label>
+            <label>Test Name</label><em class="danger-text h4">*</em>
             <input type="text" id="name" name="name" class="form-control" (ngModelChange)="changeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (keyup.enter)="onEnter(testNameReference)" />
             <div class="errors-container">
                 <span class="error-msg" *ngIf="isWhiteSpaceError || (name.errors && name.dirty && !name.valid && name.errors.required)">Required</span>

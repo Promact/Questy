@@ -11,7 +11,7 @@
     <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)">
       <div class="form-fields">
         <div class="form-group">
-          <label>Section</label>
+          <label>Section</label><em class="danger-text h4">*</em>
           <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" [(ngModel)]="selectedCategory" required name="categorySelect" #categorySelect="ngModel">
             <option [disabled]="categorySelect.dirty || isQuestionEdited || isQuestionDuplicated" default value="">Please select a Category</option>
             <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
@@ -34,7 +34,7 @@
           <div class="errors-container"></div>
         </div>
         <div class="form-group">
-          <label>Question Details</label>
+          <label>Question Details</label><em class="danger-text h4">*</em>
           <!--<ckeditor [config]="{extraPlugins:'divarea',entity_encoding:'raw'}" [(ngModel)]="questionModel.question.questionDetail" id="detail" name="detail" #detail="ngModel" (change)="onChange($event)" required></ckeditor>
           <div class="errors-container">
             <div *ngIf="detail.errors && (detail.dirty || detail.touched)">
@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Code Languages</label>
+          <label>Code Languages</label><em class="danger-text h4">*</em>
           <md-chip-list class="form-control width-percent-60" (click)="autocomplete.focus()">
             <md-chip *ngFor="let selectedLanguage of selectedLanguageList">{{selectedLanguage}}<i class="material-icons" (click)="removeLanguage(selectedLanguage)">close</i></md-chip>
             <md-input-container>
@@ -98,7 +98,7 @@
               </md2-accordion-header>
               <div class="collapsible-body">
                 <div class="form-group">
-                  <label>Test Case Title</label>
+                  <label>Test Case Title</label><em class="danger-text h4">*</em>
                   <input type="text" [(ngModel)]="testCase.testCaseTitle" class="form-control width-percent-60" (focusout)="testCase.testCaseTitle = trimString(testCase.testCaseTitle)" required name="title_{{testCase.id}}" #title="ngModel" />
                   <div class="errors-container">
                     <div *ngIf="title.errors && (title.dirty || title.touched)">
@@ -107,7 +107,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Test Case Description</label>
+                  <label>Test Case Description</label><em class="danger-text h4">*</em>
                   <textarea [(ngModel)]="testCase.testCaseDescription" class="form-control width-percent-60" rows="3" (focusout)="testCase.testCaseDescription = trimString(testCase.testCaseDescription)" required name="description_{{testCase.id}}" #description="ngModel"></textarea>
                   <div class="errors-container">
                     <div *ngIf="description.errors && (description.dirty || description.touched)">
@@ -130,7 +130,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Test Case Marks</label>
+                  <label>Test Case Marks</label><em class="danger-text h4">*</em>
                   <input type="text" [(ngModel)]="testCase.testCaseMarks" class="form-control width-percent-60" placeholder="0" required name="marks_{{testCase.id}}" #marks="ngModel" pattern="\d{0,2}(\.\d*)?" />
                   <div class="errors-container">
                     <div *ngIf="marks.errors && (marks.dirty || marks.touched)">
@@ -140,7 +140,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Test Case Input Values</label>
+                  <label>Test Case Input Values</label><em class="danger-text h4">*</em>
                   <textarea [(ngModel)]="testCase.testCaseInput" class="form-control width-percent-60" rows="3" (focusout)="testCase.testCaseInput = trimString(testCase.testCaseInput)" required name="input_{{testCase.id}}" #input="ngModel"></textarea>
                   <div class="errors-container">
                     <div *ngIf="input.errors && (input.dirty || input.touched)">
@@ -149,7 +149,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Test Case Expected Values</label>
+                  <label>Test Case Expected Values</label><em class="danger-text h4">*</em>
                   <textarea [(ngModel)]="testCase.testCaseOutput" class="form-control width-percent-60" rows="3" (focusout)="testCase.testCaseOutput = trimString(testCase.testCaseOutput)" required name="output_{{testCase.id}}" #output="ngModel"></textarea>
                   <div class="errors-container">
                     <div *ngIf="output.errors && (output.dirty || output.touched)">
