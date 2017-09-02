@@ -1,4 +1,4 @@
-﻿import { enableProdMode } from "@angular/core";
+﻿import { enableProdMode } from '@angular/core';
 
 import { platformBrowser } from '@angular/platform-browser';
 
