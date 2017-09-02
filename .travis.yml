@@ -4,33 +4,36 @@ os: linux
 mono: none
 dotnet: 1.0.1
 services:
-  - docker
+- docker
 before_install:
-  - nvm install 6.9.1
-  - nvm use 6.9.1
-  - npm install -g npm
+- nvm install 6.9.1
+- nvm use 6.9.1
+- npm install -g npm
 install:
-  - dotnet restore ./Trappist/Trappist.sln
-  - cd ./Trappist/src/Promact.Trappist.Web && npm install && cd ../../../
+- dotnet restore ./Trappist/Trappist.sln
+- cd ./Trappist/src/Promact.Trappist.Web && npm install && cd ../../../
 script:
-  - dotnet build ./Trappist/Trappist.sln
-  - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
-  - npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
-  - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
+- dotnet build ./Trappist/Trappist.sln
+- dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
+- npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
+- npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
 deploy:
-  - provider: script
-    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-    skip_cleanup: true
-    on:
-      branch: master
-  - provider: script
-    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-    skip_cleanup: true
-    on:
-      branch: staging
-  - provider: script
-    script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-    skip_cleanup: true
-    on:
-      branch: development
- 
+- provider: script
+  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: script
+  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: staging
+- provider: script
+  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: development
+notifications:
+  slack:
+    rooms:
+      secure: psf8ZxIARRmza6FsMlogObZzrRFwNvH3TxNNrsHQwW6vydsJTtAW4gIQ9ox4EzgaGbaeXICBVPBNDgXdK10BRodPgbOpQStnCQtTPRMcDI+h8ZmDC8HpZgWC+u/nQ7q3NAbQ4bZra/vyQXUOyBw7Fw2J+jBRT0DCmXYoHYdq26618a7EvgI9SIfDidOpXDyOnkCZE4GgiovCV0WEwdW58ZFoEKLf8zqR4+M3u6cekRWlFWF8RcSTCmd0RaY2TFm7SmnJfIeNwYBBfnI4lWbPSoEVychd9v1wPJJk3U4Rw0AYC8hhUS5kvkSh4KzJPn5W6TVSrqz7iphmlh/MbwIzDcjdNAnBhleltuN8K79dMfNf/ey+mKj2ow05OC2RzXPq3+js8CPJeIKbnUDHWeoEWf2PktgtLzZh/WSekFXOgkOZKQ6YYLNVsjb1pRFVhjZ6KQVgrWrs3z1Lko3fjuiHbX6xx6WE5+0SxljaxQUz45+UMyfFZdWaWPpV8AtGNxhtcMIFrX8pr17Jnf74tV8TFiHzuh4KXc8jydZsgmHFXBafwmVPmPR1yDlz2o7hmbWfgyQzrVCPP7zNAzKP9lCJlrd+7vse7uiLsG79olSJ9JpI22izk3DIMvKgvCn12qPfS1Bb1op6z1xRUqQWJPhndO4m72n4orNXjsJoahn3SPg=
