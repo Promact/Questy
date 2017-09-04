@@ -23,7 +23,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     categoryName: string;
     optionIndex: number;
     questionId: number;
-    optionName: string;
     difficultyLevelSelected: string;
     noOfOptionShown: number;
     isClose: boolean;
@@ -41,7 +40,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.noOfOptionShown = 2;
         this.indexOfOptionSelected = null;
         this.isClose = true;
-        this.optionName = '';
         this.isdulicateQuestion = false;
         this.isTwoOptionSame = false;
         this.difficultyLevelSelected = 'default';
@@ -153,19 +151,18 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
 
-    isTwoOptionsSame(optionName: string, optionIndex: number) {
-        this.optionName = optionName;
+    isTwoOptionsSame(optionName: string , optionIndex: number) {
         this.isTwoOptionSame = false;
-        if (this.optionName.trim() !== '') {
+        if (optionName.trim() !== '') {
             for (let i = 0; i < this.noOfOptionShown; i++) {
                 if (i !== optionIndex)
-                    this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option.trim() === this.optionName.trim();
-                this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isTwoOptionsSame = this.isTwoOptionSame;
+                    this.isTwoOptionSame = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[i].option.trim() === optionName.trim();
                 if (this.isTwoOptionSame) {
                     break;
                 }
             }
         }
+        this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isTwoOptionsSame = this.isTwoOptionSame;
     }
 
     /**

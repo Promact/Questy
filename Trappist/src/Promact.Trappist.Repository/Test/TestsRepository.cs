@@ -56,16 +56,18 @@ namespace Promact.Trappist.Repository.Tests
         {
             var testAcList = new List<TestAC>();
             TestAC testAcObject;
-            var tests = await _dbContext.Test.Include(x => x.TestQuestion).Include(x => x.TestCategory).Include(x => x.TestAttendees).OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+            var tests = await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
             tests.ForEach(test =>
             {
                 testAcObject = new TestAC();
-                testAcObject = Mapper.Map<Test, TestAC>(test);
-                testAcObject.NumberOfTestAttendees = test.TestAttendees.Count;
-                testAcObject.NumberOfTestSections = test.TestCategory.Count;
-                testAcObject.NumberOfTestQuestions = test.TestQuestion.Count;
+                testAcObject.Id = test.Id;
+                testAcObject.TestName = test.TestName;
+                testAcObject.NumberOfTestAttendees = _dbContext.TestAttendees.Count(x => x.TestId == test.Id);
+                testAcObject.NumberOfTestSections = _dbContext.TestCategory.Count(x => x.TestId == test.Id);
+                testAcObject.NumberOfTestQuestions = _dbContext.TestQuestion.Count(x => x.TestId == test.Id);
                 testAcList.Add(testAcObject);
             });
+
             return testAcList;
         }
         #endregion
