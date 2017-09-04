@@ -49,6 +49,7 @@ export class QuestionsDashboardComponent implements OnInit {
     selectedCategoryName: string;
     SelectedDifficultyLevel: string;
     selectedCategoryId: number;
+    isSelected: boolean;
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
         this.category = new Category();
@@ -69,13 +70,14 @@ export class QuestionsDashboardComponent implements OnInit {
         this.difficultyLevel = 'All';
         this.categroyId = 0;
         this.isCategoryPresent;
+        this.isSelected = false;
     }
 
     ngOnInit() {
         this.loader = true;
+        this.getQuestionsOnScrolling();
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
-        this.getQuestionsOnScrolling();
         this.getAllCategories();
         this.countTheQuestion();
         //Scroll to top when navigating back from other components.
@@ -89,6 +91,11 @@ export class QuestionsDashboardComponent implements OnInit {
         }
     }
 
+    /**
+     * select difficulty and category and filter as per selection
+     * @param difficulty difficulty selected while adding
+     * @param categoryName catergory selected while adding
+     */
     SelectCategoryDifficulty(difficulty: string, categoryName: string) {
         this.selectedDifficulty = DifficultyLevel[difficulty];
         this.selectedCategory.categoryName = categoryName;
@@ -106,8 +113,13 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
-            if (this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined)
+            this.questionsService.isSelected.subscribe(value => { this.isSelected = value; });
+            if ((this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined))
                 this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
+            else if (this.selectedCategoryName !== undefined)
+            {
+                this.SelectCategoryDifficulty('All',this.selectedCategoryName);
+            }
             this.sortCategory();
         });
     }
@@ -192,6 +204,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
             this.selectedCategory.categoryName = categoryName;
             this.selectedCategory.id = categoryId;
+            this.router.navigate(['questions/dashboard', categoryName]);
             this.loader = false;
             this.matchString = '';
         });
@@ -360,19 +373,20 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * 
-     * @param questiontype
+     * Select selected catgeory and difficulty level and pass it to route while adding question
+     * @param questiontype type of the question
      */
     selectSelectionAndDifficultyType(questiontype: string) {
         let categoryName = this.selectedCategory.categoryName;
+        this.questionsService.isSelected.next(true);
         let difficultyLevel = DifficultyLevel[this.selectedDifficulty];
         if (categoryName === undefined)
             categoryName = 'AllCategory';
         if (questiontype === 'single-answer')
-            this.router.navigate(['questions', 'single-answer', 'add',categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'single-answer', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'multiple-answer')
-            this.router.navigate(['questions', 'multiple-answers','add', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'multiple-answers', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'programming')
-            this.router.navigate(['questions', 'programming', 'add',categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'programming', 'add', categoryName, difficultyLevel]);
     }
 }

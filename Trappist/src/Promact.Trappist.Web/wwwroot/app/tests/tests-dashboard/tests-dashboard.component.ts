@@ -8,6 +8,7 @@ import { Http } from '@angular/http';
 import { TestSettingsComponent } from '../../tests/test-settings/test-settings.component';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
+import { QuestionsService } from '../../questions/questions.service';
 
 @Component({
     moduleId: module.id,
@@ -22,8 +23,9 @@ export class TestsDashboardComponent implements OnInit {
     isDeleteAllowed: boolean;
     loader: boolean;
 
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router) {
+    constructor(private questionsService: QuestionsService,public dialog: MdDialog, private testService: TestService, private router: Router) {
         this.tests = new Array<Test>();
+        this.questionsService.isSelected.next(false);
     }
     ngOnInit() {
         this.loader = true;
