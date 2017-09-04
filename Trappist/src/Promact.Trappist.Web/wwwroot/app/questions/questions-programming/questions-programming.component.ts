@@ -306,7 +306,8 @@ export class QuestionsProgrammingComponent implements OnInit {
 
             subscription.subscribe(
                 (response) => {
-                    this.routeToDashboard = ['questions', this.selectedCategory, this.selectedDifficulty];
+                    let questionType = QuestionType[2];
+                    this.routeToDashboard = ['questions/dashboard/all', questionType, this.selectedCategory, this.selectedDifficulty];
                     this.openSnackBar(this.successMessage, true, this.routeToDashboard);
                 },
                 err => {

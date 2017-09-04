@@ -75,9 +75,9 @@ export class QuestionsDashboardComponent implements OnInit {
         this.loader = true;
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
-        this.countTheQuestion();
         this.getQuestionsOnScrolling();
         this.getAllCategories();
+        this.countTheQuestion();
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
@@ -117,7 +117,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categroyId = 0;
         this.countTheQuestion();
         this.difficultyLevel = 'All';
-        this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
         this.showName = 'All Questions';
         this.questionDisplay = new Array<QuestionDisplay>();
         this.id = 0;
@@ -126,6 +125,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = this.questionDisplay.concat(this.question);
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
+            this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
             this.loader = false;
             this.id++;
             this.selectedCategory = new Category();
@@ -181,7 +181,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.showName = categoryName;
         window.scrollTo(0, 0);
         this.difficultyLevel = difficultyLevel;
-        this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
         this.categroyId = categoryId;
         this.countTheQuestion();
         this.id = 0;
@@ -190,11 +189,12 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = questionsList;
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
+            this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
+            this.selectedCategory.categoryName = categoryName;
+            this.selectedCategory.id = categoryId;
             this.loader = false;
             this.matchString = '';
         });
-        this.selectedCategory.categoryName = categoryName;
-        this.selectedCategory.id = categoryId;
     }
 
     /**
@@ -203,7 +203,6 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     difficultyWiseSearch(difficulty: string) {
         this.loader = true;
-        this.selectedDifficulty = DifficultyLevel[difficulty];
         window.scrollTo(0, 0);
         this.id = 0;
         this.difficultyLevel = difficulty;
@@ -212,6 +211,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.questionDisplay = questionsList;
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
+            this.selectedDifficulty = DifficultyLevel[difficulty];
             this.loader = false;
         });
     }
@@ -369,10 +369,10 @@ export class QuestionsDashboardComponent implements OnInit {
         if (categoryName === undefined)
             categoryName = 'AllCategory';
         if (questiontype === 'single-answer')
-            this.router.navigate(['questions', 'single-answer', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'single-answer', 'add',categoryName, difficultyLevel]);
         else if (questiontype === 'multiple-answer')
-            this.router.navigate(['questions', 'multiple-answers', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'multiple-answers','add', categoryName, difficultyLevel]);
         else if (questiontype === 'programming')
-            this.router.navigate(['questions', 'programming', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'programming', 'add',categoryName, difficultyLevel]);
     }
 }
