@@ -268,3 +268,5 @@ _references.js
 **/aot/
 
 package-lock.json
+
+**/wwwroot/uploaded_image/

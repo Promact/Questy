@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
@@ -7,6 +8,7 @@ using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -179,6 +181,108 @@ namespace Promact.Trappist.Core.Controllers
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
             var question = await _questionsRepository.GetNumberOfQuestionsAsync(applicationUser.Id, categoryId, searchQuestion);
             return Ok(question);
+        }
+
+        /// <summary>
+        /// Saves the image which is dragged into CKeditor
+        /// </summary>
+        /// <param name="upload">File which is dragged</param>
+        /// <returns>Response for CKeditor</returns>
+        [HttpPost("uploadDragImage")]
+        public async Task<ActionResult> SaveDraggedImageAsync(IFormFile upload)
+        {
+            long size = upload.Length;
+            var type = upload.ContentType;
+            var image_url = "";
+            if (size > 0 && type.ToLower() == "image/png")
+            {
+                image_url = await SaveFileAsync(upload);
+            }
+
+            var response = new
+            {
+                Uploaded = 1,
+                FileName = upload.FileName,
+                Url = image_url
+            };
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Saves the image uploaded through CKeditor
+        /// </summary>
+        /// <param name="upload">File uploaded</param>
+        /// <param name="CKEditorFuncNum">CKeditor function number</param>
+        /// <param name="CKEditor">CKeditor name</param>
+        /// <param name="langCode">Language code</param>
+        /// <returns></returns>
+        [HttpPost("uploadImage")]
+        public async Task<ActionResult> SaveImageAsync(IFormFile upload, string CKEditorFuncNum, string CKEditor, string langCode)
+        {
+            long size = upload.Length;
+            var type = upload.ContentType;
+            var image_url = "";
+            var vMessage = "";
+
+            if (size <= 0 && type.ToLower() != "image/png")
+            {
+                vMessage = "Uploaded file is not an image. Please check the file.";
+            }
+            else
+            {
+                try
+                {
+                    image_url = await SaveFileAsync(upload);
+                    vMessage = "The file uploaded successfully.";
+                }
+                catch (Exception)
+                {
+                    vMessage = "There was an issue uploading.";
+                }
+            }
+
+            var vOutput = @"<html><body><script>window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ", \"" + image_url + "\", \"" + vMessage + "\");</script></body></html>";
+            return Content(vOutput, "text/html");
+        }
+
+        /// <summary>
+        /// Returns a simple image gallery
+        /// </summary>
+        /// <param name="CKEditorFuncNum">CKeditor function number</param>
+        /// <param name="CKEditor">CKeditor name</param>
+        /// <param name="langCode">Language code</param>
+        /// <returns>Simple html based image gallery</returns>
+        [HttpGet("browseImage")]
+        public IActionResult BrowseImage(string CKEditorFuncNum, string CKEditor, string langCode)
+        {
+            var vOutput = @"<html><script>function foo(url){window.parent.opener.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",url); window.close();}</script><body>";
+
+            var filePaths = Directory.GetFiles(@"wwwroot/uploaded_image/" + User.Identity.Name + "/");
+
+            foreach (var img in filePaths)
+            {
+                var url = "'/uploaded_image/" + User.Identity.Name + "/" + Path.GetFileName(img) + "'";
+                vOutput += "<a href=\"javascript: foo(" + url + "); \"><img src=" + url + " height=\"200\" width=\"200\"></img></a>";
+            }
+
+            vOutput += "</body></html>";
+
+            return Content(vOutput, "text/html");
+        }
+        #endregion
+
+        #region Private Methods
+        private async Task<string> SaveFileAsync(IFormFile upload)
+        {
+            Directory.CreateDirectory("wwwroot/uploaded_image/" + User.Identity.Name);
+
+            using (var stream = new FileStream("wwwroot/uploaded_image/" + User.Identity.Name + "/" + upload.FileName, FileMode.Create))
+            {
+                await upload.CopyToAsync(stream);
+            }
+
+            return "/uploaded_image/" + User.Identity.Name + "/" + upload.FileName;
         }
         #endregion
     }
