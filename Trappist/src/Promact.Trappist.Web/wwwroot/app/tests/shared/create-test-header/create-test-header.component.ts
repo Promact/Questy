@@ -39,6 +39,7 @@ export class CreateTestHeaderComponent implements OnInit {
     copiedContent: boolean;
     @Input()
     disablePreview: boolean;
+   
 
     constructor(private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testNameUpdatedMessage = 'Test name has been updated successfully.';
@@ -47,7 +48,6 @@ export class CreateTestHeaderComponent implements OnInit {
         this.isButtonClicked = false;
         this.tooltipMessage = 'Copy to Clipboard';
         this.testPreviewPage = false;
-
     }
 
     /**

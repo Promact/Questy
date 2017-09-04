@@ -41,7 +41,8 @@ export class CreateTestFooterComponent implements OnInit {
     public isValid: boolean;
     isSelectButton: boolean;
     isTestLaunched: boolean;
-  
+    @Input()
+    loader: boolean;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;

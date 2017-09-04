@@ -106,7 +106,7 @@
                     </div>
 
                 </fieldset>
-                <create-test-footer [showIsPausedButton]="showIsPausedButton" [isRelaunched]="isRelaunched" [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
+                <create-test-footer [loader]="!loader" [isLaunchAlready]="isLaunchedAlready" [testDetails]="testDetails" (saveTestSettings)="saveTestSettings(testDetails.id,testDetails)" (launchTestDialog)="launchTestDialog(testDetails.id,testDetails,$event)" (pauseTest)="pauseTest()" (resumeTest)="resumeTest()" [settingsForm]="settingsForm" [validStartDate]="validStartDate" [validEndDate]="validEndDate" [validTime]="validTime"></create-test-footer>
             </div>
         </div>
     </form>
