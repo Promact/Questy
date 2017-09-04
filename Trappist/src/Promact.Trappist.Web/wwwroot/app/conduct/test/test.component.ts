@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
+﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -29,11 +29,6 @@ import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
 declare let screenfull: any;
-
-
-//Temporary imports
-import { QuestionDisplay } from '../../questions/question-display';
-import { ReportService } from '../../reports/report.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -75,6 +70,7 @@ export class TestComponent implements OnInit {
     routeForTestEnd: any;
     istestEnd: boolean;
     url: string;
+    isInitializing: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -104,8 +100,6 @@ export class TestComponent implements OnInit {
         private snackBar: MdSnackBar,
         private conductService: ConductService,
         private route: ActivatedRoute,
-        private elementRef: ElementRef,
-        private reportService: ReportService,
         private location: Location) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
@@ -134,6 +128,7 @@ export class TestComponent implements OnInit {
         this.testEnded = false;
         this.isCodeProcessing = false;
         this.url = window.location.pathname;
+        this.isInitializing = true;
     }
 
     ngOnInit() {
@@ -354,11 +349,13 @@ export class TestComponent implements OnInit {
             this.navigateToQuestionIndex(0);
 
             this.timeOutCounter = this.TIMEOUT_TIME;
+            this.isInitializing = false;
         }, err => {
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
+            this.isInitializing = false;
         });
 
     }
