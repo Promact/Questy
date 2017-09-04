@@ -266,7 +266,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     private isTestCaseValid() {
-        return this.testCases.some(testcase => testcase.testCaseType === TestCaseType.Default);
+        return this.testCases.some(testcase => +testcase.testCaseType === TestCaseType.Default);
     }
 
     /**
