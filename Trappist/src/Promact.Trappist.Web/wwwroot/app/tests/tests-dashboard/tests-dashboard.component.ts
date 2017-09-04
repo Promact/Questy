@@ -71,7 +71,7 @@ export class TestsDashboardComponent implements OnInit {
     duplicateTestDialog(test: Test) {
         test.isPaused = test.isLaunched = false;
         let newTestObject = (JSON.parse(JSON.stringify(test)));
-        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, {data : test, disableClose: true, hasBackdrop: true }).componentInstance;
         duplicateTestDialog.testName = newTestObject.testName + '_copy';
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;

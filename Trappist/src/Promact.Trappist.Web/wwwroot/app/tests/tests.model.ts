@@ -35,6 +35,7 @@ export class Test {
     numberOfTestAttendees: number;
     numberOfTestSections: number;
     numberOfTestQuestions: number;
+    testCopiedNumber: number;
 }
 
 export class TestCategory {

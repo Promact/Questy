@@ -146,4 +146,13 @@ export class TestService {
     duplicateTest(testId: number, test:Test) {
         return this.httpService.post(this.testApiUrl + '/' + testId +'/duplicateTest', test);
     }
+
+    /**
+     * Sets the number of times the test has been updated
+     * @param testId: Id of the test that is duplicated
+     * @param count: number of times the test has been duplicated
+     */
+    setTestCopiedNumber(testId: number, count: number) {
+        return this.httpService.get(this.testApiUrl + '/' + testId + '/' + count + '/setTestCopiedNumber');
+    }
 }

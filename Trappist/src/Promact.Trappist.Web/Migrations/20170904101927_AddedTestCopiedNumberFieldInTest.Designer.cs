@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170904101927_AddedTestCopiedNumberFieldInTest")]
+    partial class AddedTestCopiedNumberFieldInTest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -357,8 +358,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("Duration");
 
                     b.Property<DateTime>("EndDate");
-
-                    b.Property<int>("FocusLostTime");
 
                     b.Property<decimal>("IncorrectMarks");
 
