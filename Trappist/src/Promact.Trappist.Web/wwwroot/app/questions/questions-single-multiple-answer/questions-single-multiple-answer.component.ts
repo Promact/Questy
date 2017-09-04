@@ -80,9 +80,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
             this.indexOfOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
             this.noOfOptionShown = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length;
-            if (this.noOfOptionShown === 2) {
-                this.isClose = true;
-            }
+            this.isClose = this.noOfOptionShown === 2;
             if (this.noOfOptionShown === 10) {
                 this.isNoOfOptionOverLimit = true;
             }
@@ -122,7 +120,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     removeOption(optionIndex: number) {
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.splice(optionIndex, 1);
         this.noOfOptionShown--;
-        this.indexOfOptionSelected = null;
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
@@ -138,10 +135,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      * Add option on display page
      */
     addOption(optionIndex: number) {
-        if (this.noOfOptionShown === 2) {
-            this.isClose = false;
-        }
         this.noOfOptionShown++;
+        this.isClose = this.noOfOptionShown === 2;
         let newOption = new SingleMultipleAnswerQuestionOption();
         newOption.id = this.findMaxId() + 1;
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.push(newOption);
