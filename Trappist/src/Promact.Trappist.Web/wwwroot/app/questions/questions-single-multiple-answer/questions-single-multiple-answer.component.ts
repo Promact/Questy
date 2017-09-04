@@ -8,7 +8,7 @@ import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
-import { QuestionType } from "../enum-questiontype";
+import { QuestionType } from '../enum-questiontype';
 
 
 @Component({
@@ -114,6 +114,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             if (this.selectedCategoryName === undefined && this.selectedDifficultyLevel === undefined) {                   
                 this.selectedCategoryName = 'AllCategory';
                 this.selectedDifficultyLevel = 'All';
+                this.questionService.categorySelected.next(null);
             }
             this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);      
         },
@@ -279,29 +280,28 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 else {
                     this.snackBar.open('Question added successfully.', 'Dismiss', { duration: 3000 });
                 }
-                let questionType = QuestionType[this.singleMultipleAnswerQuestion.question.questionType];
-                this.router.navigate(['questions/dashboard/all', questionType,this.categoryName, this.difficultyLevelSelected]);
+                this.router.navigate(['questions/dashboard',this.categoryName,this.difficultyLevelSelected]);
             },
             err => {
                 this.snackBar.open('Something went wrong.Please try again later.', 'Dismiss', { duration: 3000 });
             }
             );
-
     }
 
     /**
-     * 
-     * @param categoryName
-     * @param difficultyLevel
+     * show pre-selected category and difficulty level while adding question
+     * @param categoryName name of the category selected
+     * @param difficultyLevel name of the difficulty level selected
      */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
+        this.questionService.categorySelected.next(categoryName);
+        this.questionService.difficultySelected.next(difficultyLevel);
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
             this.isCategorySelected = true;
             this.isDifficultyLevelSelected = true;
             this.categoryName = categoryName;
             this.difficultyLevelSelected = difficultyLevel;
             this.singleMultipleAnswerQuestion.question.categoryID = this.categoryArray.find(x => x.categoryName === this.categoryName).id;
-
         }
         else if (categoryName === 'AllCategory' && difficultyLevel !== 'All') {
             this.isCategorySelected = false;
@@ -316,5 +316,4 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
 
     }
-
 }

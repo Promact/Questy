@@ -75,6 +75,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionId = this.route.snapshot.params['id'];
         this.selectedCategory = this.route.snapshot.params['categoryName'];
         this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
+        this.questionsService.categorySelected.next(this.selectedCategory);
 
         if (!this.questionId) {
             this.getCodingLanguage();
@@ -306,8 +307,9 @@ export class QuestionsProgrammingComponent implements OnInit {
 
             subscription.subscribe(
                 (response) => {
-                    let questionType = QuestionType[2];
-                    this.routeToDashboard = ['questions/dashboard/all', questionType, this.selectedCategory, this.selectedDifficulty];
+                    this.questionsService.categorySelected.next(this.selectedCategory);
+                    this.questionsService.difficultySelected.next(this.selectedDifficulty);
+                    this.routeToDashboard = ['questions'];
                     this.openSnackBar(this.successMessage, true, this.routeToDashboard);
                 },
                 err => {
@@ -319,7 +321,14 @@ export class QuestionsProgrammingComponent implements OnInit {
         }
     }
 
+    /**
+     *show pre-selected category and difficulty level while adding question
+     * @param categoryName name of the category selected
+     * @param difficultyLevel name of the difficulty level selected
+     */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
+        this.questionsService.categorySelected.next(categoryName);
+        this.questionsService.difficultySelected.next(difficultyLevel);
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
             this.isCategorySelected = true;
             this.selectedDifficulty = difficultyLevel;
@@ -336,7 +345,6 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === this.selectedCategory).id;
         }
     }
-
 }
 
 class FormControlModel {

@@ -11,8 +11,6 @@ const questionsRoutes: Routes = [
         component: QuestionsComponent,
         children: [
             { path: '', component: QuestionsDashboardComponent },
-            { path: 'dashboard/all/:questionType/:categoryName/:difficultyLevelName', component: QuestionsDashboardComponent },
-
             { path: 'single-answer', component: SingleMultipleAnswerQuestionComponent },
             { path: 'single-answer/add/:categoryName/:difficultyLevelName', component: SingleMultipleAnswerQuestionComponent },
             { path: 'edit-single-answer/:id', component: SingleMultipleAnswerQuestionComponent },
@@ -26,9 +24,18 @@ const questionsRoutes: Routes = [
             { path: 'programming', component: QuestionsProgrammingComponent },
             { path: 'programming/add/:categoryName/:difficultyLevelName', component: QuestionsProgrammingComponent },
             { path: 'programming/:id', component: QuestionsProgrammingComponent },
-            { path: 'programming/duplicate/:id', component: QuestionsProgrammingComponent }
+            { path: 'programming/duplicate/:id', component: QuestionsProgrammingComponent },
         ]
-    }
+    },
+    {
+        path: 'questions/dashboard',
+        component: QuestionsComponent,
+        children: [
+            { path: ':categoryName', component: QuestionsDashboardComponent },
+            { path: ':difficultyLevelName', component: QuestionsDashboardComponent },
+            { path: ':categoryName/:difficultyLevelName',component :QuestionsDashboardComponent}
+        ]
+    },
 ];
 
 export const questionsRouting: ModuleWithProviders = RouterModule.forChild(questionsRoutes);
