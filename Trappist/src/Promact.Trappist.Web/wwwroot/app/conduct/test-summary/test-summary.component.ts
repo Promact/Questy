@@ -154,7 +154,7 @@ export class TestSummaryComponent implements OnInit {
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
 
-        this.conductService.addTestLogs(this.testAttendee.id, false, false, true).subscribe(response => {
+        this.conductService.addTestLogs(this.testAttendee.id, false,true).subscribe(response => {
             this.testLogs = response;
         });
         this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe();

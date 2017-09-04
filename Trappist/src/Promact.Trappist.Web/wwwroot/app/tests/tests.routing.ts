@@ -8,6 +8,7 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
 import { TestViewComponent } from './test-view/test-view.component';
 import { TestComponent } from '../conduct/test/test.component';
 import { TestPreviewComponent } from './test-preview/test-preview.compponent';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 
 const testsRoutes: Routes = [
@@ -20,7 +21,10 @@ const testsRoutes: Routes = [
             { path: ':id/sections', component: TestSectionsComponent },
             { path: ':id/questions', component: TestQuestionsComponent },
             { path: ':id/view', component: TestViewComponent },
-            { path: ':link/preview', component: TestPreviewComponent }
+            { path: ':link/preview', component: TestPreviewComponent },
+            { path: '**', redirectTo: '/404' },
+            {path: '404', component: PageNotFoundComponent }
+
         ]
     }
 ];

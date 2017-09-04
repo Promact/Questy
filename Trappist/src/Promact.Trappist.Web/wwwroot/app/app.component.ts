@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output } from '@angular/core';
 import { Http } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { TestService } from './tests/tests.service';
 
 
 
@@ -17,11 +17,10 @@ export class AppComponent {
     isPageTestPreview: boolean;
     disableHeader: boolean;
 
-    constructor(private http: Http) {
-        this.isPageTestPreview = true;
-        let url = window.location.pathname;
-        this.isPageTestPreview = url.substring(url.indexOf('/tests/') + 18) === 'preview';
-
+    constructor(private http: Http, private testService:TestService) {
+        this.testService.isTestPreviewIsCalled.subscribe(value => {
+            this.isPageTestPreview = value;
+        });
     }
 
     /**
