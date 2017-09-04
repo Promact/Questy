@@ -61,6 +61,10 @@ export class TestSectionsComponent implements OnInit {
             this.isCategoryExist = this.testDetails.categoryAcList.length === 0 ? false : true;
             this.testNameReference = this.testDetails.testName;
             this.loader = false;
+        }, err => {
+            this.loader = false;
+            this.openSnackbar('No test found for this id.');
+            this.router.navigate(['/tests']);
         });
     }
 

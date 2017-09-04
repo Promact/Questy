@@ -2,13 +2,17 @@
 import { HttpService } from '../core/http.service';
 import { Test } from './tests.model';
 import { QuestionBase } from '../questions/question';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 
 export class TestService {
     private testApiUrl = 'api/tests';
     private testNameApiUrl = 'api/tests/isUnique';
+    public isTestPreviewIsCalled = new Subject<any>();
     constructor(private httpService: HttpService) {
+
     }
 
     /**

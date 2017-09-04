@@ -91,9 +91,14 @@ export class TestSettingsComponent implements OnInit {
             let magicString = this.testDetails.link;
             let domain = window.location.origin;
             this.testLink = domain + '/conduct/' + magicString;
-
             this.testDetails.startDate = this.toDateString(new Date(<string>this.testDetails.startDate));
             this.testDetails.endDate = this.toDateString(new Date(<string>this.testDetails.endDate));
+            this.loader = false;
+
+        }, err => {
+            this.loader = false;
+            this.openSnackBar('No test found for this id.');
+            this.router.navigate(['/tests']);
         });
     }
 

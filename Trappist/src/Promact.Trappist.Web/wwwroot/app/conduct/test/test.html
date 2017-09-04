@@ -1,6 +1,10 @@
 ﻿<div class="loader-container" *ngIf="!isTestReady">
-  <div class="spinner">
-  </div>
+    <div class="spinner">
+    </div>
+</div>
+<div class="loader-container" *ngIf="isConnectionLoss">
+    <div class="spinner">
+    </div>
 </div>
 <div class="test" id="testElement" *ngIf="!isInitializing">
   <div class="test-header">

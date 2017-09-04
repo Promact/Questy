@@ -31,6 +31,7 @@ import { CodeResponse } from '../code.response.model';
 declare let screenfull: any;
 declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
+import { TestService } from "../../tests/tests.service";
 
 @Component({
     moduleId: module.id,
@@ -64,7 +65,6 @@ export class TestComponent implements OnInit {
     codeResult: string;
     showResult: boolean;
     isCloseWindow: boolean;
-    isConnectionLoss: boolean;
     timeWarning: boolean;
     testEnded: boolean;
     isCodeProcessing: boolean;
@@ -72,6 +72,7 @@ export class TestComponent implements OnInit {
     istestEnd: boolean;
     url: string;
     isInitializing: boolean;
+    isConnectionLoss: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -101,7 +102,10 @@ export class TestComponent implements OnInit {
         private snackBar: MdSnackBar,
         private conductService: ConductService,
         private route: ActivatedRoute,
-        private location: Location) {
+        private elementRef: ElementRef,
+        private reportService: ReportService,
+        private location: Location,
+        private testService: TestService) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
@@ -134,10 +138,6 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         this.getTestByLink(this.testLink);
-        history.pushState(null, null, null);
-        window.addEventListener('popstate', function (event) {
-            history.pushState(null, null, null);
-        });;
     }
 
 
@@ -145,7 +145,7 @@ export class TestComponent implements OnInit {
      * saves the TestLogs if server is gone off
      */
     saveTestLogs() {
-        this.conductService.addTestLogs(this.testAttendee.id, this.isCloseWindow, this.isConnectionLoss, false).subscribe(response => {
+        this.conductService.addTestLogs(this.testAttendee.id, this.isCloseWindow, false).subscribe(response => {
             this.testLogs = response;
         });
 
@@ -228,13 +228,18 @@ export class TestComponent implements OnInit {
 
     } getTestByLink(link: string) {
         let url = window.location.pathname;
-        if (link === '' || link === undefined)
+        if (link === '' || link === undefined) {
             this.testLink = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
+            history.pushState(null, null, null);
+            window.addEventListener('popstate', function (event) {
+                history.pushState(null, null, null);
+            });;
+        }
         else {
             this.testLink = link;
             this.testTypePreview = true;
         }
-
+        window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); })
         this.conductService.getTestByLink(this.testLink, this.testTypePreview).subscribe((response) => {
             this.test = response;
             this.seconds = this.test.duration * 60;
@@ -292,14 +297,16 @@ export class TestComponent implements OnInit {
                 this.shuffleOption();
             }
 
-            this.clockIntervalListener = Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
+            this.clockIntervalListener = this.getClockInterval();
             this.isTestReady = true;
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
             else this.getTestStatus(this.testAttendee.id);
         });
     }
-
+    getClockInterval() {
+        return Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
+    }
     /**
      * Gets the TestStatus of Attendee
      * @param attendeeId: Id of Attendee
@@ -312,15 +319,28 @@ export class TestComponent implements OnInit {
                 this.routeForTestEnd = 'conduct/' + this.testLink;
                 this.router.navigate(['/test-end'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
             }
+            window.addEventListener('online', () => {
+                screenfull.toggle();
+                this.isTestReady = true;
+                this.isConnectionLoss = false;
+                this.clockIntervalListener = this.getClockInterval();
+            });
             window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
-            window.addEventListener('offline', () => { this.isCloseWindow = false; this.isConnectionLoss = true; this.saveTestLogs(); this.endTest(TestStatus.completedTest); });
+            window.addEventListener('offline', () => {
+                if (screenfull.enabled)
+                    screenfull.toggle();
+                this.isConnectionLoss = true;
+                this.isCloseWindow = false;
+
+                if (this.clockIntervalListener)
+                    this.clockIntervalListener.unsubscribe();
+            });
             window.addEventListener('keydown', (event) => {
                 if (event.ctrlKey) {
-                    if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85 || event.keyCode === 72 || event.keyCode === 82 || event.keyCode === 70 || event.keyCode === 68 || event.keyCode === 71 || event.keyCode === 74)
+                    if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85 || event.keyCode === 72 || event.keyCode === 82 || event.keyCode === 70 || event.keyCode === 68 || event.keyCode === 71 || event.keyCode === 74 || event.keyCode === 18)
                         event.preventDefault();
                 }
             });
-
             this.resumeTest();
         }, err => {
             this.navigateToQuestionIndex(0);
@@ -346,9 +366,7 @@ export class TestComponent implements OnInit {
             });
 
             this.getElapsedTime();
-
             this.navigateToQuestionIndex(0);
-
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isInitializing = false;
         }, err => {
@@ -358,7 +376,6 @@ export class TestComponent implements OnInit {
             this.isTestReady = true;
             this.isInitializing = false;
         });
-
     }
 
     /**
@@ -680,7 +697,7 @@ export class TestComponent implements OnInit {
         }
 
         if (this.focusLost > this.test.browserTolerance) {
-            this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
+            this.conductService.addTestLogs(this.testAttendee.id, false, false).subscribe((response: any) => {
                 this.testLogs = response;
             });
 
@@ -689,7 +706,7 @@ export class TestComponent implements OnInit {
         else if (this.focusLost <= this.test.browserTolerance) {
 
             this.openSnackBar(message, duration);
-            this.conductService.addTestLogs(this.testAttendee.id, false, false, false).subscribe((response: any) => {
+            this.conductService.addTestLogs(this.testAttendee.id, false, false).subscribe((response: any) => {
 
                 this.testLogs = response;
             });
@@ -748,6 +765,14 @@ export class TestComponent implements OnInit {
      * @param testStatus: TestStatus object
      */
     private endTest(testStatus: TestStatus) {
+        if (this.testTypePreview) {
+            this.testService.isTestPreviewIsCalled.next(false);
+            if (screenfull.enabled)
+                screenfull.toggle();
+            this.location.back();
+            return;
+        }
+
         this.istestEnd = true;
         this.isTestReady = false;
 
@@ -760,12 +785,6 @@ export class TestComponent implements OnInit {
             this.clockIntervalListener.unsubscribe();
         }
 
-        if (this.testTypePreview) {
-            if (screenfull.enabled) {
-                screenfull.toggle();
-            }
-            this.location.back();
-        }
 
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
             || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
