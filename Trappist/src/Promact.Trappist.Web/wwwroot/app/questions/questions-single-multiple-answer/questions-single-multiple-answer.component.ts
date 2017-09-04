@@ -8,6 +8,7 @@ import { QuestionsService } from '../questions.service';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { Question } from '../../questions/question.model';
 import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-question-option.model';
+import { QuestionType } from "../enum-questiontype";
 
 
 @Component({
@@ -278,7 +279,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 else {
                     this.snackBar.open('Question added successfully.', 'Dismiss', { duration: 3000 });
                 }
-                this.router.navigate(['/questions', this.categoryName, this.difficultyLevelSelected]);
+                let questionType = QuestionType[this.singleMultipleAnswerQuestion.question.questionType];
+                this.router.navigate(['questions/dashboard/all', questionType,this.categoryName, this.difficultyLevelSelected]);
             },
             err => {
                 this.snackBar.open('Something went wrong.Please try again later.', 'Dismiss', { duration: 3000 });
