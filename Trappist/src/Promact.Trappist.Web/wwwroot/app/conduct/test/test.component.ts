@@ -31,7 +31,7 @@ import { CodeResponse } from '../code.response.model';
 declare let screenfull: any;
 declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
-import { TestService } from "../../tests/tests.service";
+import { TestService } from '../../tests/tests.service';
 
 @Component({
     moduleId: module.id,
@@ -103,8 +103,6 @@ export class TestComponent implements OnInit {
         private snackBar: MdSnackBar,
         private conductService: ConductService,
         private route: ActivatedRoute,
-        private elementRef: ElementRef,
-        private reportService: ReportService,
         private location: Location,
         private testService: TestService) {
 
@@ -240,7 +238,7 @@ export class TestComponent implements OnInit {
             this.testLink = link;
             this.testTypePreview = true;
         }
-        window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); })
+        window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); });
         this.conductService.getTestByLink(this.testLink, this.testTypePreview).subscribe((response) => {
             this.test = response;
             this.seconds = this.test.duration * 60;
