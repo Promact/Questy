@@ -923,6 +923,39 @@ footer {
     }
 }
 
+.offline-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: $color_white;
+
+    .offline-content {
+        position: absolute;
+        top: 50%;
+        left: 0px;
+        right: 0px;
+        margin-top: -42px;
+        text-align: center;
+
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        button {
+            min-width: 100px;
+
+            em {
+                vertical-align: top;
+                font-size: 18px;
+                padding-right: 5px;
+            }
+        }
+    }
+}
+
 @keyframes rotate {
     0% {
         transform: rotate(0deg);

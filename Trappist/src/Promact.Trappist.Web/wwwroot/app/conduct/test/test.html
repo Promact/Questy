@@ -2,8 +2,16 @@
     <div class="spinner">
     </div>
 </div>
-<div class="loader-container" *ngIf="isConnectionLoss">
-    <div class="spinner">
+<div class="offline-container" *ngIf="isConnectionLoss">
+    <div class="offline-content">
+        <h1>You are Offline</h1>
+        <button type="button" class="btn btn-primary" (click)="ifOnline()"><em class="material-icons">refresh</em> Retry</button>
+    </div>
+</div>
+<div class="offline-container" *ngIf="isConnectionRetrieved">
+    <div class="offline-content">
+        <h1>You are Online</h1>
+        <button type="button" class="btn btn-primary" (click)="goOnline()"><em class="material-icons">refresh</em> Resume Test</button>
     </div>
 </div>
 <div class="test" id="testElement" *ngIf="!isInitializing">
