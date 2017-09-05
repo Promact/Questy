@@ -27,13 +27,13 @@
             <div class="pull-left">
                 <h2>Test Report</h2>
                 <select class="form-control" [(ngModel)]="testCompletionStatus" (change)="setTestStatusType(testCompletionStatus)">
-                    <option value="0">All Candidates ({{count}})</option>
-                    <option value="1">Completed Test</option>
-                    <option value="2">Expired Test</option>
-                    <option value="3">Blocked Test</option>
-                    <option value="4">Unfinished Test</option>
+                    <option value="0">All Candidates ({{allCount}})</option>
+                    <option value="1">Completed Test ({{completedTestCount}})</option>
+                    <option value="2">Expired Test ({{expiredTestCount}})</option>
+                    <option value="3">Blocked Test ({{blockedTestCount}})</option>
+                    <option value="4">Unfinished Test ({{unfinishedTestCount}})</option>
                 </select>
-                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>           
+                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
                 <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!showGenerateReportButton">Download Excel</button>
                 <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
                 <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!showGenerateReportButton">Download Detailed Report</button>
@@ -70,7 +70,7 @@
                         <td><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>
                         <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="isReportGenerated(testAttendee)">file_download</em></td>
                         <td class="text-right"><a href="../individual-report/" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="isReportGenerated(testAttendee)">remove_red_eye</em></a></td>
-                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="!isReportGenerated(testAttendee)" >refresh</em></td>
+                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="!isReportGenerated(testAttendee)">refresh</em></td>
                     </tr>
                 </tbody>
                 <tfoot>
