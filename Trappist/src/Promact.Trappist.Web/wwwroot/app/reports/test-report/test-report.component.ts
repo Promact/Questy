@@ -65,6 +65,11 @@ export class TestReportComponent implements OnInit {
     isGeneratingReport: boolean;
     testTime: string;
     maxDurationOfTest: string;
+    allCount: number;
+    completedTestCount: number;
+    expiredTestCount: number;
+    blockedTestCount: number;
+    unfinishedTestCount: number;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -91,6 +96,10 @@ export class TestReportComponent implements OnInit {
         this.testInstruction = new TestInstructions();
         this.reportQuestionDetails = new Array<ReportQuestionsCount>();
         this.testAttendeeRank = new Array<TestAttendeeRank>();
+        this.completedTestCount = 0;
+        this.blockedTestCount = 0;
+        this.expiredTestCount = 0;
+        this.unfinishedTestCount = 0;
     }
 
     ngOnInit() {
@@ -131,6 +140,8 @@ export class TestReportComponent implements OnInit {
             this.isAnyCandidateExist = this.attendeeArray.some(x => x.report !== null);
             [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
             this.countAttendees();
+            this.testStatusWiseCountAttendees();
+            this.allCount = this.count;
             this.loader = false;
         });
     }
@@ -240,23 +251,22 @@ export class TestReportComponent implements OnInit {
         searchString = searchString.toLowerCase();
         this.testAttendeeArray = [];
         let starAttendeeArray: TestAttendee[] = [];
-
         if (this.showStarCandidates) {
             this.attendeeArray.forEach(k => {
                 if (k.starredCandidate)
                     starAttendeeArray.push(k);
             });
-        }else {
+        } else {
             this.attendeeArray.forEach(k => {
                 starAttendeeArray.push(k);
             });
         }
-
         switch (selectedTestStatus) {
             case 0:
                 starAttendeeArray.forEach(x => {
                     tempAttendeeArray.push(x);
                 });
+                this.allCount = tempAttendeeArray.length;
                 break;
             case 4:
                 this.showGenerateReportButton = true;
@@ -772,5 +782,24 @@ export class TestReportComponent implements OnInit {
 
     isReportGenerated(testAttendee: TestAttendee) {
         return testAttendee.report.testStatus !== TestStatus.allCandidates;
+    }
+
+    testStatusWiseCountAttendees() {
+        this.attendeeArray.forEach(attendee => {
+            let teststatus = attendee.report.testStatus
+            switch (teststatus) {
+                case 1:
+                    this.completedTestCount += 1;
+                    break;
+                case 2:
+                    this.expiredTestCount += 1;
+                    break;
+                case 3:
+                    this.blockedTestCount += 1;
+                    break;
+                default:
+                    this.unfinishedTestCount += 1;
+            }
+        })
     }
 }
