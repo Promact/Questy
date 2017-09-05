@@ -35,7 +35,7 @@ export class TestViewComponent implements OnInit {
     tests: Test[];
     isEditTestEnabled: boolean;
     loader: boolean;
-
+    count: number;
     copiedContent: boolean;
     testLink: string;
     tooltipMessage: string;
@@ -214,10 +214,18 @@ export class TestViewComponent implements OnInit {
      */
     duplicateTestDialog(test: Test) {
         let newTestObject = (JSON.parse(JSON.stringify(test)));
-        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent).componentInstance;
-        duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        this.count = newTestObject.testCopiedNumber;
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
+        if (this.count === 0)
+            duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        else
+            duplicateTestDialog.testName = newTestObject.testName + '_copy' + '_' + this.count;
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
+        this.count = this.count + 1;
+        this.testService.setTestCopiedNumber(newTestObject.id, this.count).subscribe((response) => {
+            this.count = response;
+        });
     }
 
     /**
