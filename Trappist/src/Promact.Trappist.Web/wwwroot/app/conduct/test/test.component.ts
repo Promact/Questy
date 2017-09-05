@@ -73,6 +73,7 @@ export class TestComponent implements OnInit {
     url: string;
     isInitializing: boolean;
     isConnectionLoss: boolean;
+    isConnectionRetrieved: boolean;
 
     private seconds: number;
     private focusLost: number;
@@ -264,6 +265,8 @@ export class TestComponent implements OnInit {
         });
     }
 
+
+
     /**
      * Gets Test Attendee
      * @param testId: Id of Test
@@ -319,17 +322,24 @@ export class TestComponent implements OnInit {
                 this.routeForTestEnd = 'conduct/' + this.testLink;
                 this.router.navigate(['/test-end'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
             }
-            window.addEventListener('online', () => {
-                screenfull.toggle();
-                this.isTestReady = true;
+            window.addEventListener('online', (event) => {
                 this.isConnectionLoss = false;
-                this.clockIntervalListener = this.getClockInterval();
+                this.isTestReady = false;
+                setTimeout(() => {
+                    this.isTestReady = true;
+                    this.isConnectionRetrieved = true;
+                }, 2000);
             });
+
             window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
             window.addEventListener('offline', () => {
-                if (screenfull.enabled)
-                    screenfull.toggle();
-                this.isConnectionLoss = true;
+                screenfull.exit();
+                this.isTestReady = false;
+                setTimeout(() => {
+                    this.isTestReady = true;
+                    this.isConnectionRetrieved = false;
+                    this.isConnectionLoss = true;
+                }, 2000);
                 this.isCloseWindow = false;
 
                 if (this.clockIntervalListener)
@@ -347,6 +357,22 @@ export class TestComponent implements OnInit {
             this.timeOutCounter = this.TIMEOUT_TIME;
 
         });
+    }
+    ifOnline() {
+        this.isConnectionLoss = false;
+        this.isTestReady = false;
+        setTimeout(() => {
+            let online = navigator.onLine;
+            this.isTestReady = true;
+            this.isConnectionRetrieved = online;
+            this.isConnectionLoss = !online;
+        }, 3000);
+    }
+
+    goOnline() {
+        document.documentElement.webkitRequestFullscreen();
+        this.isConnectionRetrieved = false;
+        this.clockIntervalListener = this.getClockInterval();
     }
 
     /**
