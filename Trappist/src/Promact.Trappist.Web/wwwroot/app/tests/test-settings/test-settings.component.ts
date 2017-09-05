@@ -258,6 +258,7 @@ export class TestSettingsComponent implements OnInit {
         let ip = new TestIPAddress();
         this.testDetails.testIpAddress.push(ip);
         this.IpAddressAdded(ip.ipAddress);
+        this.showErrorMessage(ip);
     }
     /**
      * Removes ip address fields 
@@ -291,8 +292,7 @@ export class TestSettingsComponent implements OnInit {
      * @param ipAddress : Contains the Ip address value entered by the user
      */
     showErrorMessage(ip: TestIPAddress) {
-        ip.isErrorMessageVisible = ip.ipAddress === '' ? true : false;
-        this.isIpAddressFieldNull = ip.isErrorMessageVisible ? true : false;
+        ip.isErrorMessageVisible = ip.ipAddress === '' || ip.ipAddress === undefined;
     }
 
     ///**
