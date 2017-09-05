@@ -70,6 +70,7 @@ export class TestReportComponent implements OnInit {
     expiredTestCount: number;
     blockedTestCount: number;
     unfinishedTestCount: number;
+    noCandidateFound: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -129,6 +130,7 @@ export class TestReportComponent implements OnInit {
             this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
             this.attendeeArray.forEach(x => {
                 if (x.report !== null)
+
                     this.testAttendeeArray.push(x);
                 else {
                     x.report = new Report();
@@ -266,6 +268,8 @@ export class TestReportComponent implements OnInit {
                 starAttendeeArray.forEach(x => {
                     tempAttendeeArray.push(x);
                 });
+                if (tempAttendeeArray.length !== 0)
+                    this.noCandidateFound = false;
                 this.allCount = tempAttendeeArray.length;
                 break;
             case 4:
@@ -275,6 +279,10 @@ export class TestReportComponent implements OnInit {
                         tempAttendeeArray.push(x);
                     }
                 });
+                if (tempAttendeeArray.length === 0)
+                    this.noCandidateFound = true;
+                else
+                    this.noCandidateFound = false;
                 break;
             default:
                 starAttendeeArray.forEach(x => {
@@ -282,6 +290,10 @@ export class TestReportComponent implements OnInit {
                         tempAttendeeArray.push(x);
                     }
                 });
+                if (tempAttendeeArray.length === 0)
+                    this.noCandidateFound = true;
+                else
+                    this.noCandidateFound = false;
         }
 
         tempAttendeeArray.forEach(x => {
@@ -786,7 +798,7 @@ export class TestReportComponent implements OnInit {
 
     testStatusWiseCountAttendees() {
         this.attendeeArray.forEach(attendee => {
-            let teststatus = attendee.report.testStatus
+            let teststatus = attendee.report.testStatus;
             switch (teststatus) {
                 case 1:
                     this.completedTestCount += 1;
@@ -800,6 +812,6 @@ export class TestReportComponent implements OnInit {
                 default:
                     this.unfinishedTestCount += 1;
             }
-        })
+        });
     }
 }
