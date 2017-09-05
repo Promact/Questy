@@ -70,6 +70,7 @@ export class TestReportComponent implements OnInit {
     expiredTestCount: number;
     blockedTestCount: number;
     unfinishedTestCount: number;
+    starredCandidateCount: number;
     noCandidateFound: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
@@ -101,6 +102,7 @@ export class TestReportComponent implements OnInit {
         this.blockedTestCount = 0;
         this.expiredTestCount = 0;
         this.unfinishedTestCount = 0;
+        this.starredCandidateCount = 0;
     }
 
     ngOnInit() {
@@ -230,8 +232,15 @@ export class TestReportComponent implements OnInit {
      */
     setTestStatusType(testCompletionStatus: string) {
         this.showGenerateReportButton = false;
-        this.selectedTestStatus = +testCompletionStatus;
-        this.filterList();
+        if (testCompletionStatus === 'star') {
+            this.selectedTestStatus = TestStatus.allCandidates;
+            this.showAllStarredCandidates();
+        }
+        else {
+            this.showStarCandidates = false;
+            this.selectedTestStatus = +testCompletionStatus;
+            this.filterList();
+        }
     }
 
     /**
@@ -258,6 +267,11 @@ export class TestReportComponent implements OnInit {
                 if (k.starredCandidate)
                     starAttendeeArray.push(k);
             });
+            this.starredCandidateCount = starAttendeeArray.length;
+            if (this.starredCandidateCount === 0)
+                this.noCandidateFound = true;
+            else
+                this.noCandidateFound = false;
         } else {
             this.attendeeArray.forEach(k => {
                 starAttendeeArray.push(k);
@@ -270,7 +284,6 @@ export class TestReportComponent implements OnInit {
                 });
                 if (tempAttendeeArray.length !== 0)
                     this.noCandidateFound = false;
-                this.allCount = tempAttendeeArray.length;
                 break;
             case 4:
                 this.showGenerateReportButton = true;
