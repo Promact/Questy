@@ -1,7 +1,7 @@
 ﻿import { Component, ViewChild} from '@angular/core';
 import { TestComponent } from '../../conduct/test/test.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TestService } from "../tests.service";
+import { TestService } from '../tests.service';
 
 @Component({
     moduleId: module.id,

@@ -14,7 +14,7 @@ import { TestConductFooterComponent } from './shared/test-conduct-footer/test-co
 import { ConductService } from './conduct.service';
 import { ReportService } from '../reports/report.service';
 import { TestsProgrammingGuideDialogComponent } from './test/tests-programming-guide-dialog.component';
-import { TestService } from "../tests/tests.service";
+import { TestService } from '../tests/tests.service';
 
 @NgModule({
     bootstrap: [ConductComponent],
