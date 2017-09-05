@@ -1,7 +1,7 @@
-﻿import { Component, OnInit, Inject } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
-import { MdSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdSnackBar, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     selector: 'duplicate-test-dialog',
     templateUrl: 'duplicate-test-dialog.html'
 })
-export class DuplicateTestDialogComponent implements OnInit {
+export class DuplicateTestDialogComponent {
     testName: string;
     testArray: Test[];
     testToDuplicate: Test;
@@ -18,19 +18,10 @@ export class DuplicateTestDialogComponent implements OnInit {
     successMessage: string;
     id: number;
     loader: boolean;
-    count: number;
-    testId: number;
 
-    constructor(public testService: TestService, public snackBar: MdSnackBar, public dialog: MdDialogRef<any>, @Inject(MD_DIALOG_DATA) public data: any, private route: Router) {
+    constructor(public testService: TestService, public snackBar: MdSnackBar, public dialog: MdDialogRef<any>, private route: Router) {
         this.successMessage = 'The selected test has been duplicated successfully.';
         this.testArray = new Array<Test>();
-    }
-
-    ngOnInit() {
-        let test = new Test();
-        test = this.data;
-        this.testId = test.id;
-        this.count = test.testCopiedNumber;
     }
 
     /**
@@ -60,21 +51,8 @@ export class DuplicateTestDialogComponent implements OnInit {
                     });
             }
             else {
-                this.count = this.count === 0 ? 1 : this.count;
-                this.duplicatedTest.testName = this.testName + '_' + this.count;
-                this.count = this.count + 1;
-                this.testService.duplicateTest(this.id, this.duplicatedTest).subscribe((response) => {
-                    this.loader = false;
-                    this.testArray.unshift(response);
-                    this.snackBar.open(this.successMessage, 'Dismiss', {
-                        duration: 3000,
-                    });
-                    this.testService.setTestCopiedNumber(this.testId, this.count).subscribe((response) => {
-                        this.count = response;
-                    });
-                    this.dialog.close();
-                    this.route.navigate(['tests/' + response.id + '/sections']);
-                });
+                this.loader = false;
+                this.error = true;
             }
         },
             err => {
