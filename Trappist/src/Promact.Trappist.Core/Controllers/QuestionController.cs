@@ -257,14 +257,18 @@ namespace Promact.Trappist.Core.Controllers
         public IActionResult BrowseImage(string CKEditorFuncNum, string CKEditor, string langCode)
         {
             var vOutput = @"<html><script>function foo(url){window.parent.opener.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ",url); window.close();}</script><body>";
-
-            var filePaths = Directory.GetFiles(@"wwwroot/uploaded_image/" + User.Identity.Name + "/");
-
-            foreach (var img in filePaths)
+            try
             {
-                var url = "'/uploaded_image/" + User.Identity.Name + "/" + Path.GetFileName(img) + "'";
-                vOutput += "<a href=\"javascript: foo(" + url + "); \"><img src=" + url + " height=\"200\" width=\"200\"></img></a>";
+                var filePaths = Directory.GetFiles(@"wwwroot/uploaded_image/" + User.Identity.Name + "/");
+
+
+                foreach (var img in filePaths)
+                {
+                    var url = "'/uploaded_image/" + User.Identity.Name + "/" + Path.GetFileName(img) + "'";
+                    vOutput += "<a href=\"#\" onclick=\"foo(" + url + "); \"><img src=" + url + " height=\"200\" width=\"200\"></img></a>";
+                }
             }
+            catch (Exception) { }
 
             vOutput += "</body></html>";
 
