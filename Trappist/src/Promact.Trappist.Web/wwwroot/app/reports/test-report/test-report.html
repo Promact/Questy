@@ -33,15 +33,14 @@
                     <option value="3">Blocked Test ({{blockedTestCount}})</option>
                     <option value="4">Unfinished Test ({{unfinishedTestCount}})</option>
                 </select>
-                <md-checkbox class="only-checkbox" (change)="showAllStarredCandidates()"> &nbsp; Show Starred Candidates &nbsp; </md-checkbox>
-                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!showGenerateReportButton">Download Excel</button>
-                <button type="button" class="btn" (click)="downloadTestReportPdf()">Download PDF</button>
-                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!showGenerateReportButton">Download Detailed Report</button>
-                <button type="button" class="btn" (click)="generateReportForUnfinishedTest()" *ngIf="showGenerateReportButton">Generate Report</button>
+                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!showGenerateReportButton && !noCandidateFound">Download Excel</button>
+                <button type="button" class="btn" (click)="downloadTestReportPdf()" *ngIf="!noCandidateFound">Download PDF</button>
+                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!showGenerateReportButton && !noCandidateFound ">Download Detailed Report</button>
+                <button type="button" class="btn" (click)="generateReportForUnfinishedTest()" *ngIf="showGenerateReportButton && !noCandidateFound">Generate Report</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
         </div>
-        <div class="grid-container">
+        <div class="grid-container" *ngIf="!noCandidateFound">
             <table class="data-grid" [md2Data]="testAttendeeArray" #report="md2DataTable" [rowsPerPage]="10" [(activePage)]="activePage">
                 <thead>
                     <tr>
@@ -84,6 +83,9 @@
                     </tr>
                 </tfoot>
             </table>
+        </div>
+        <div class="grid-container" *ngIf="noCandidateFound">
+            <h5 class="mt20 mb20">No Record(s) Found.</h5>
         </div>
     </div>
 </div>
