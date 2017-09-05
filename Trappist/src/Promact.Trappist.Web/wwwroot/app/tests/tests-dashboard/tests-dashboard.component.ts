@@ -22,9 +22,11 @@ export class TestsDashboardComponent implements OnInit {
     searchTest: string;
     isDeleteAllowed: boolean;
     loader: boolean;
+    count: number;
 
     constructor(private questionsService: QuestionsService,public dialog: MdDialog, private testService: TestService, private router: Router) {
         this.tests = new Array<Test>();
+
     }
     ngOnInit() {
         this.loader = true;
@@ -71,10 +73,18 @@ export class TestsDashboardComponent implements OnInit {
     duplicateTestDialog(test: Test) {
         test.isPaused = test.isLaunched = false;
         let newTestObject = (JSON.parse(JSON.stringify(test)));
-        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, {data : test, disableClose: true, hasBackdrop: true }).componentInstance;
-        duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        this.count = newTestObject.testCopiedNumber;
+        let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
+        if (this.count === 0)
+            duplicateTestDialog.testName = newTestObject.testName + '_copy';
+        else
+            duplicateTestDialog.testName = newTestObject.testName + '_copy' + '_' + this.count;
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
+        this.count = this.count + 1;
+        this.testService.setTestCopiedNumber(newTestObject.id, this.count).subscribe((response) => {
+            this.count = response;
+        });
     }
 
     /**
