@@ -133,7 +133,6 @@ export class TestComponent implements OnInit {
         this.isCodeProcessing = false;
         this.url = window.location.pathname;
         this.isInitializing = true;
-        console.log(document.activeElement);
     }
 
     ngOnInit() {
