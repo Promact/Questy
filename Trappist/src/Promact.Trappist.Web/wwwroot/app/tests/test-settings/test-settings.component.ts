@@ -251,6 +251,7 @@ export class TestSettingsComponent implements OnInit {
             }
         });
     }
+
     /**
      * Adds the IP address fields
      */
@@ -260,6 +261,7 @@ export class TestSettingsComponent implements OnInit {
         this.IpAddressAdded(ip.ipAddress);
         this.showErrorMessage(ip);
     }
+
     /**
      * Removes ip address fields 
      * @param index
@@ -271,12 +273,7 @@ export class TestSettingsComponent implements OnInit {
         if (ipId !== undefined)
             this.testService.deleteTestipAddress(ipId).subscribe(response => {
             });
-        if (this.testDetails.testIpAddress.length === 0) {
-            this.isIpAddressAdded = true;
-        }
-        else if (this.testDetails.testIpAddress.length > 0 && ipAddress !== undefined || ipAddress !== '' || ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'))) {
-            this.isIpAddressAdded = true;
-        }
+        this.isIpAddressAdded = this.testDetails.testIpAddress.length === 0 || (this.testDetails.testIpAddress.length > 0 && (ipAddress !== undefined || ipAddress !== '' || (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipAddress))));
     }
 
     /**
@@ -284,7 +281,7 @@ export class TestSettingsComponent implements OnInit {
      * @param ipAddress contains the Ip Address entered in the input field
      */
     IpAddressAdded(ipAddress: string) {
-        this.isIpAddressAdded = ipAddress === undefined || ipAddress === '' || !ipAddress.match(RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$')) ? false : true;
+        this.isIpAddressAdded = ipAddress === undefined || ipAddress === '' || !(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipAddress)) ? false : true;
     }
 
     /**
