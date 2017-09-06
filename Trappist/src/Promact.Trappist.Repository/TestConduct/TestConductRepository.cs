@@ -552,6 +552,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
+                isAnsweredOptionNull = false;
                 if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
                     continue;
                 var count = 0;
