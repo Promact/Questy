@@ -30,6 +30,7 @@ export class DuplicateTestDialogComponent {
     duplicateTest() {
         this.id = this.testToDuplicate.id;
         this.duplicatedTest = JSON.parse(JSON.stringify(this.testToDuplicate));
+        console.log(this.duplicatedTest);
         this.duplicatedTest.id = 0;
         this.duplicatedTest.testName = this.testName;
         this.loader = true;

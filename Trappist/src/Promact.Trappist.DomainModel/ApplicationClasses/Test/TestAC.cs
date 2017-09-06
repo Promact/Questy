@@ -54,8 +54,6 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public int NumberOfTestQuestions { get; set; }
 
-        public int TestCopiedNumber { get; set; }
-
         public string CreatedByUserId { get; set; }
     }
 }

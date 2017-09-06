@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Promact.Trappist.DomainModel.DbContext;
-using Promact.Trappist.DomainModel.Enum;
 
 namespace Promact.Trappist.Web.Migrations
 {
@@ -373,8 +372,6 @@ namespace Promact.Trappist.Web.Migrations
                     b.Property<int>("QuestionOrder");
 
                     b.Property<DateTime>("StartDate");
-
-                    b.Property<int>("TestCopiedNumber");
 
                     b.Property<string>("TestName")
                         .IsRequired()
