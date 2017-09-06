@@ -133,6 +133,7 @@ export class TestComponent implements OnInit {
         this.isCodeProcessing = false;
         this.url = window.location.pathname;
         this.isInitializing = true;
+        console.log(document.activeElement);
     }
 
     ngOnInit() {
@@ -237,6 +238,7 @@ export class TestComponent implements OnInit {
         else {
             this.testLink = link;
             this.testTypePreview = true;
+            this.isInitializing = false;
         }
         window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); });
         this.conductService.getTestByLink(this.testLink, this.testTypePreview).subscribe((response) => {
@@ -791,10 +793,9 @@ export class TestComponent implements OnInit {
     private endTest(testStatus: TestStatus) {
         if (this.testTypePreview) {
             this.testService.isTestPreviewIsCalled.next(false);
-            if (screenfull.enabled)
+            if (screenfull.isFullscreen)
                 screenfull.toggle();
             this.location.back();
-            return;
         }
 
         this.istestEnd = true;
