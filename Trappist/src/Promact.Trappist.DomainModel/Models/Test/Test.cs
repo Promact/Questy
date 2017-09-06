@@ -29,7 +29,6 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public bool IsLaunched { get; set; }
         public bool IsPaused { get; set; }
         public AllowTestResume AllowTestResume { get; set; }
-        public int TestCopiedNumber { get; set; }
         public virtual ICollection<TestAttendees> TestAttendees { get; set; }
         public virtual ICollection<TestQuestion> TestQuestion { get; set; }
         public virtual ICollection<TestCategory> TestCategory { get; set; }

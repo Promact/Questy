@@ -73,18 +73,16 @@ export class TestsDashboardComponent implements OnInit {
     duplicateTestDialog(test: Test) {
         test.isPaused = test.isLaunched = false;
         let newTestObject = (JSON.parse(JSON.stringify(test)));
-        this.count = newTestObject.testCopiedNumber;
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
-        if (this.count === 0)
-            duplicateTestDialog.testName = newTestObject.testName + '_copy';
-        else
-            duplicateTestDialog.testName = newTestObject.testName + '_copy' + '_' + this.count;
+        this.testService.setTestCopiedNumber(test.id, test.testName).subscribe((response) => {
+            this.count = response;
+            if (this.count === 1)
+                duplicateTestDialog.testName = newTestObject.testName + '_copy';
+            else
+                duplicateTestDialog.testName = newTestObject.testName + '_copy' + '_' + this.count;
+        });
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
-        this.count = this.count + 1;
-        this.testService.setTestCopiedNumber(newTestObject.id, this.count).subscribe((response) => {
-            this.count = response;
-        });
     }
 
     /**
