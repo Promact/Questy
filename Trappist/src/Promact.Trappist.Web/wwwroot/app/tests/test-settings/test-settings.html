@@ -51,7 +51,7 @@
                         </select>
                         <div class="errors-container"></div>
                     </div>
-                    <div class="form-group" *ngIf="testDetails.browserTolerance !='0'">
+                    <div class="form-group" *ngIf="testDetails.browserTolerance != 0">
                         <label>Focus Lost Time (secs)</label>
                         <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.focusLostTime" name="FocusLostTime" min="0" #FocusLostTime="ngModel" />
                         <div class="errors-container">
