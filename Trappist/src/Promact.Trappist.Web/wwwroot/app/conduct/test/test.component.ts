@@ -74,6 +74,7 @@ export class TestComponent implements OnInit {
     isInitializing: boolean;
     isConnectionLoss: boolean;
     isConnectionRetrieved: boolean;
+    clearTime: any;
 
     private seconds: number;
     private focusLost: number;
@@ -330,7 +331,7 @@ export class TestComponent implements OnInit {
                 }, 2000);
             });
 
-            window.addEventListener('blur', (event) => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); });
+            
             window.addEventListener('offline', () => {
                 screenfull.exit();
                 this.isTestReady = false;
@@ -344,6 +345,8 @@ export class TestComponent implements OnInit {
                 if (this.clockIntervalListener)
                     this.clockIntervalListener.unsubscribe();
             });
+            window.addEventListener('blur', (event) => { this.clearTime = setTimeout(() => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); }, this.test.focusLostTime * 1000); });
+            window.addEventListener('focus', () => { clearTimeout(this.clearTime); });
             window.addEventListener('keydown', (event) => {
                 if (event.ctrlKey) {
                     if (event.keyCode === 83 || event.keyCode === 80 || event.keyCode === 79 || event.keyCode === 85 || event.keyCode === 72 || event.keyCode === 82 || event.keyCode === 70 || event.keyCode === 68 || event.keyCode === 71 || event.keyCode === 74 || event.keyCode === 18)

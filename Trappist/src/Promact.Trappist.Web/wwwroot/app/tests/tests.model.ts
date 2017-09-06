@@ -17,6 +17,7 @@ export class Test {
     endDate: Date | string;
     duration: number;
     warningTime: number;
+    focusLostTime: number;
     warningMessage: string;
     correctMarks: string;
     incorrectMarks: string;

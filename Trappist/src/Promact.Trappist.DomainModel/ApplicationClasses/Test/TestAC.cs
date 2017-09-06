@@ -26,9 +26,7 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 
         public int? WarningTime { get; set; }
 
-        public string FromIpAddress { get; set; }
-
-        public string ToIpAddress { get; set; }
+        public int FocusLostTime { get; set; }
 
         public string WarningMessage { get; set; }
 
