@@ -286,6 +286,7 @@ namespace Promact.Trappist.Repository.Tests
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : DateTime.SpecifyKind(testAcObject.EndDate, DateTimeKind.Utc); //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
                 testAcObject.WarningTime = testAcObject.WarningTime == null ? defaultTime : testAcObject.WarningTime;
+                testAcObject.FocusLostTime = testAcObject.FocusLostTime == 0 ? defaultTime : testAcObject.FocusLostTime;
                 testAcObject.WarningMessage = testAcObject.WarningMessage == null ? defaultMessage : testAcObject.WarningMessage;
                 testAcObject.CorrectMarks = testAcObject.CorrectMarks == 0 ? defaultCorrectMarks : testAcObject.CorrectMarks;
                 //Fetches the category list from Category Model
@@ -384,7 +385,7 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(newTest.Id);
             //Fetch Ip Addresses in that particular test and store them in a variable of type list
             var testIpAddressList = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
-            
+
             if (testCategoryList.Any())
             {
                 var categoryList = new List<TestCategory>();
@@ -415,7 +416,7 @@ namespace Promact.Trappist.Repository.Tests
                 var ipAddressList = new List<TestIpAddress>();
                 if (testIpAddressList.Any())
                 {
-                    foreach(TestIpAddress testIpAddressObject in testIpAddressList)
+                    foreach (TestIpAddress testIpAddressObject in testIpAddressList)
                     {
                         var ipAddressObject = new TestIpAddress();
                         ipAddressObject.Test = test;

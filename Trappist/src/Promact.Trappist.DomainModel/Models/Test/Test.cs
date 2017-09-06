@@ -20,6 +20,7 @@ namespace Promact.Trappist.DomainModel.Models.Test
         public DateTime EndDate { get; set; }
         public int Duration { get; set; }
         public int? WarningTime { get; set; }
+        public int FocusLostTime { get; set; }
         public string WarningMessage { get; set; }
         public decimal CorrectMarks { get; set; }
         public decimal IncorrectMarks { get; set; }
