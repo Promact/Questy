@@ -128,7 +128,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      * Redirect to question dashboard page
      */
     cancelButtonClicked() {
-        this.router.navigate(['/questions']);
+        this.router.navigate(['/questions/dashboard',this.selectedCategoryName,this.selectedDifficultyLevel]);
     }
 
     /**

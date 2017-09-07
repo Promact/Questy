@@ -31,8 +31,8 @@ const questionsRoutes: Routes = [
         path: 'questions/dashboard',
         component: QuestionsComponent,
         children: [
+            { path: '', component: QuestionsDashboardComponent },
             { path: ':categoryName', component: QuestionsDashboardComponent },
-            { path: ':difficultyLevelName', component: QuestionsDashboardComponent },
             { path: ':categoryName/:difficultyLevelName',component :QuestionsDashboardComponent}
         ]
     },
