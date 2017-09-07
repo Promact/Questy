@@ -179,7 +179,7 @@ namespace Promact.Trappist.Repository.Tests
         /// Sets the number of times the test has been duplicated
         /// </summary>
         /// <param name="testId">Contains the test id from the route</param>
-        /// <param name="count">Contains the number of times the test has been duplicated</param>
+        /// <param name="testName">Contains the name of the test which is to be duplicated</param>
         /// <returns>The number of times the test has been duplicated</returns>
         Task<int> SetTestCopiedNumberAsync(int testId, string testName);
         #endregion
