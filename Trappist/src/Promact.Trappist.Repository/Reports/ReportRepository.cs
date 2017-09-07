@@ -32,13 +32,13 @@ namespace Promact.Trappist.Repository.Reports
         #region Public Method
         public async Task<Test> GetTestNameAsync(int id)
         {
-            return await _dbContext.Test.FindAsync(id);
+            return await _dbContext.Test.AsNoTracking().Where(x => x.Id == id).SingleAsync();
 
         }
 
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
         {
-            return await _dbContext.TestAttendees.Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
+            return await _dbContext.TestAttendees.AsNoTracking().Where(t => t.TestId == id).Include(x => x.Report).ToListAsync();
         }
 
         public async Task SetStarredCandidateAsync(int id)

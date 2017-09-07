@@ -128,9 +128,9 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
         {
-            if (await _dbContext.AttendeeAnswers.AnyAsync(x => x.Id == attendeeId))
+            if (await _dbContext.AttendeeAnswers.AsNoTracking().AnyAsync(x => x.Id == attendeeId))
             {
-                var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+                var attendeeAnswer = await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).SingleAsync();
                 var deserializedAnswer = new List<TestAnswerAC>();
 
                 if (attendeeAnswer.Answers != null)
@@ -166,25 +166,11 @@ namespace Promact.Trappist.Repository.TestConduct
                 await _dbContext.AddAsync(attendeeAnswers);
             }
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<bool> IsAnswerValidAsync(int attendeeId, TestAnswerAC answer)
-        {
-            var attendeeAnswer = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
-            if (attendeeAnswer.Answers != null)
-            {
-                var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers);
-                if (deserializedAnswer[0] != null)
-                {
-                    return !(deserializedAnswer.Where(x => x.QuestionId == answer.QuestionId && x.QuestionStatus == QuestionStatus.answered).Count() > 0);
-                }
-            }
-            return true;
-        }
+        }        
 
         public async Task<ICollection<TestAnswerAC>> GetAnswerAsync(int attendeeId)
         {
-            var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
+            var attendee = await _dbContext.AttendeeAnswers.AsNoTracking().SingleOrDefaultAsync(x => x.Id == attendeeId);
 
             if (attendee == null || attendee.Answers == null)
                 return null;
@@ -195,8 +181,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId)
         {
-            var testAttendee = await _dbContext.TestAttendees.SingleAsync(x => x.Id == attendeeId);
-            testAttendee.Report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var testAttendee = await _dbContext.TestAttendees.AsNoTracking().Include(x => x.Report).SingleAsync(x => x.Id == attendeeId);
             return testAttendee;
         }
 
@@ -255,7 +240,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)
         {
-            var report = await _dbContext.Report.OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var report = await _dbContext.Report.AsNoTracking().OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             if (report == null)
                 return TestStatus.AllCandidates;
 
@@ -411,16 +396,15 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<int> GetTestSummaryDetailsAsync(string testLink)
         {
-            var testObject = await _dbContext.Test.Where(x => x.Link == testLink)
-                    .Include(x => x.TestQuestion).Include(x => x.TestAttendees).ToListAsync();
-            if (testObject.Any())
+            var testId = await _dbContext.Test.AsNoTracking().Where(x => x.Link == testLink).Select(x => x.Id).FirstOrDefaultAsync();
+            var questionCount = 0;
+
+            if (testId > 0)
             {
-                var testSummaryDetails = testObject.First();
-                var totalNumberOfQuestions = testSummaryDetails.TestQuestion.Count();
-                return totalNumberOfQuestions;
+                questionCount = await _dbContext.TestQuestion.Where(x => x.TestId == testId).CountAsync();
             }
-            else
-                return 0;
+
+            return questionCount;
         }
 
         public async Task<List<TestLogs>> GetTestLogsAsync()
@@ -467,12 +451,11 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <summary>
         /// Transform Attendee's JSON formatted Answer stored in AttendeeAnswers table
         /// to reliable TestAnswer and TestConduct tables.
-        /// After completion of transformation Attendee's record from AttendeeAnswer is removed.
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
         private async Task TransformAttendeeAnswer(int attendeeId)
         {
-            var attendeeAnswer = await _dbContext.AttendeeAnswers.SingleOrDefaultAsync(x => x.Id == attendeeId);
+            var attendeeAnswer = await _dbContext.AttendeeAnswers.AsNoTracking().SingleOrDefaultAsync(x => x.Id == attendeeId);
             var testAnswersList = new List<TestAnswers>();
             var testConductList = new List<DomainModel.Models.TestConduct.TestConduct>();
             if (attendeeAnswer != null)
@@ -480,30 +463,29 @@ namespace Promact.Trappist.Repository.TestConduct
                 if (attendeeAnswer.Answers != null)
                 {
                     var deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
+
+                    //Remove existing transformation
+                    var testConductExist = await _dbContext.TestConduct.AnyAsync(x => x.TestAttendeeId == attendeeId);
+                    if (testConductExist)
+                    {
+                        var testConductListToRemove = await _dbContext.TestConduct.Where(x => x.TestAttendeeId == attendeeId).ToListAsync();
+                        _dbContext.TestConduct.RemoveRange(testConductListToRemove);
+                        await _dbContext.SaveChangesAsync();
+                    }
+
                     foreach (var answer in deserializedAnswer)
                     {
                         var testAnswers = new TestAnswers();
-                        var testConductExist = await _dbContext.TestConduct.AnyAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId);
+
                         var testConduct = new DomainModel.Models.TestConduct.TestConduct();
                         //Adding attempted Question to TestConduct table
-                        if (!testConductExist)
+                        testConduct = new DomainModel.Models.TestConduct.TestConduct()
                         {
-                            testConduct = new DomainModel.Models.TestConduct.TestConduct()
-                            {
-                                QuestionId = answer.QuestionId,
-                                QuestionStatus = answer.QuestionStatus,
-                                TestAttendeeId = attendeeId
-                            };
-                            testConductList.Add(testConduct);
-                        }
-                        else
-                        {
-                            testConduct = await _dbContext.TestConduct.SingleAsync(x => x.QuestionId == answer.QuestionId && x.TestAttendeeId == attendeeId);
-                            testConduct.QuestionStatus = answer.QuestionStatus;
-                            var testAnswersToRemove = await _dbContext.TestAnswers.Where(x => x.TestConductId == testConduct.Id).ToListAsync();
-                            _dbContext.TestAnswers.RemoveRange(testAnswersToRemove);
-                            await _dbContext.SaveChangesAsync();
-                        }
+                            QuestionId = answer.QuestionId,
+                            QuestionStatus = answer.QuestionStatus,
+                            TestAttendeeId = attendeeId
+                        };
+                        testConductList.Add(testConduct);
 
                         //Adding answer to TestAnswer Table
                         if (answer.OptionChoice.Count() > 0)
@@ -540,13 +522,13 @@ namespace Promact.Trappist.Repository.TestConduct
 
         private async Task GetTotalMarks(int testAttendeeId)
         {
-            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+            var testAttendee = await _dbContext.TestAttendees.AsNoTracking().Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
             decimal correctMarks = 0;
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             bool isAnsweredOptionNull = false;
-            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-            var numberOfQuestionsInATest = await _dbContext.TestQuestion.CountAsync(x => x.TestId == testAttendee.TestId);
+            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+            var numberOfQuestionsInATest = await _dbContext.TestQuestion.AsNoTracking().CountAsync(x => x.TestId == testAttendee.TestId);
 
             fullMarks = numberOfQuestionsInATest * testAttendee.Test.CorrectMarks;
 
@@ -594,7 +576,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 }
                 else
                     //Add score from coding question attempted
-                    correctMarks += (decimal)await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
+                    correctMarks += (decimal)await _dbContext.TestCodeSolution.AsNoTracking().Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);
@@ -608,7 +590,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         private async Task GetTimeTakenByAttendeeAsync(int attendeeId)
         {
-            var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+            var testLogs = await _dbContext.TestLogs.AsNoTracking().FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             DateTime date = testLogs.StartTest;
 
