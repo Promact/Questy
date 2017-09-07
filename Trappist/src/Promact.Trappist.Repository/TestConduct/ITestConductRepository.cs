@@ -44,15 +44,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// Store answers as Key-Value pair in the Database
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
-        Task AddAnswerAsync(int attendeeId, TestAnswerAC answer);
-
-        /// <summary>
-        /// Checks if the question is already answered
-        /// </summary>
-        /// <param name="attendeeId">Id of Test Attendee</param>
-        /// <param name="answer">TestAnswerAC object</param>
-        /// <returns>True if question is already answered, false otherwise.</returns>
-        Task<bool> IsAnswerValidAsync(int attendeeId, TestAnswerAC answer);
+        Task AddAnswerAsync(int attendeeId, TestAnswerAC answer);        
 
         /// <summary>
         /// Get answers from the Database

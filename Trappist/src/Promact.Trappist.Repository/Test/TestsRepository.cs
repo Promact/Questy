@@ -316,8 +316,9 @@ namespace Promact.Trappist.Repository.Tests
         {
             var questionList = new List<TestConductAC>();
 
-            var languages = await _dbContext.CodingLanguage.ToListAsync();
+            var languages = await _dbContext.CodingLanguage.AsNoTracking().ToListAsync();
             await _dbContext.TestQuestion
+                .AsNoTracking()
                 .Where(x => x.TestId == testId)
                 .Include(x => x.Question)
                 .ThenInclude(x => x.SingleMultipleAnswerQuestion)
@@ -352,20 +353,16 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
+            var test = await _dbContext.Test.AsNoTracking().SingleAsync(x => x.Link.Equals(link));            
 
-            var test = await _dbContext.Test.SingleAsync(x => x.Link.Equals(link));
+            var testAttendeeDetails = await _dbContext.TestAttendees.AsNoTracking().Where(x => x.TestId == test.Id).Select(x => x.Id).ToListAsync();
 
-            var testAttendeeDetails = await _dbContext.TestAttendees.Where(x => x.TestId == test.Id).ToListAsync();
-            foreach (var attendee in testAttendeeDetails)
-            {
-                var testLogs = await _dbContext.TestLogs.Where(x => x.TestAttendeeId == attendee.Id).FirstOrDefaultAsync();
-                if (testLogs.StartTest == default(DateTime))
-                {
-                    testLogs.StartTest = DateTime.UtcNow;
-                    _dbContext.TestLogs.Update(testLogs);
-                    await _dbContext.SaveChangesAsync();
-                }
-            }
+            var defaultDate = default(DateTime);
+            var testLogs = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate).FirstOrDefaultAsync();
+            testLogs.StartTest = DateTime.UtcNow;
+            _dbContext.TestLogs.Update(testLogs);
+            await _dbContext.SaveChangesAsync();
+
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
 
