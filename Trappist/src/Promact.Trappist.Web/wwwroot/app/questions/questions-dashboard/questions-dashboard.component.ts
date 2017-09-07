@@ -104,7 +104,7 @@ export class QuestionsDashboardComponent implements OnInit {
             if (x.categoryName === this.selectedCategoryName)
                 this.selectedCategoryId = x.id;
         });
-        this.categoryWiseFilter(this.selectedCategoryId, this.selectedCategoryName, this.SelectedDifficultyLevel);
+        this.categoryWiseFilter(this.selectedCategoryId, this.selectedCategoryName, difficulty);
     }
 
 
@@ -117,9 +117,9 @@ export class QuestionsDashboardComponent implements OnInit {
             if ((this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined))
                 this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
             else if (this.selectedCategoryName !== undefined)
-            {
-                this.SelectCategoryDifficulty('All',this.selectedCategoryName);
-            }
+                this.SelectCategoryDifficulty('All', this.selectedCategoryName);
+            else if (this.SelectedDifficultyLevel !== undefined)
+                this.SelectCategoryDifficulty(this.SelectedDifficultyLevel,'AllCategory');
             this.sortCategory();
         });
     }
@@ -193,6 +193,8 @@ export class QuestionsDashboardComponent implements OnInit {
         this.showName = categoryName;
         window.scrollTo(0, 0);
         this.difficultyLevel = difficultyLevel;
+        if (categoryName === 'All Questions')
+            categoryId = 0;
         this.categroyId = categoryId;
         this.countTheQuestion();
         this.id = 0;
@@ -204,7 +206,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
             this.selectedCategory.categoryName = categoryName;
             this.selectedCategory.id = categoryId;
-            this.router.navigate(['questions/dashboard', categoryName]);
+            this.router.navigate(['questions/dashboard', categoryName ,difficultyLevel]);
             this.loader = false;
             this.matchString = '';
         });
@@ -225,6 +227,9 @@ export class QuestionsDashboardComponent implements OnInit {
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.selectedDifficulty = DifficultyLevel[difficulty];
+            if (this.selectedCategory.categoryName === undefined)
+                this.selectedCategory.categoryName = 'All Questions';
+            this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, difficulty]);
             this.loader = false;
         });
     }

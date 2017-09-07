@@ -46,7 +46,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
-    private routeToDashboard = ['questions', this.selectedCategory,this.selectedDifficultyLevel];
+    private routeToDashboard;
 
     constructor(private questionsService: QuestionsService,
         private categoryService: CategoryService,
@@ -76,7 +76,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.selectedCategory = this.route.snapshot.params['categoryName'];
         this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
         this.questionsService.categorySelected.next(this.selectedCategory);
-
+        this.routeToDashboard = ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel];
         if (!this.questionId) {
             this.getCodingLanguage();
             this.getCategory();
@@ -96,7 +96,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     prepareToEdit(id: number) {
         if (isNaN(id)) {
-            this.openSnackBar('Question not found.', true, this.routeToDashboard);
+            this.openSnackBar('Question not found.', true, ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
         }
         this.getQuestionById(id);
     }
@@ -112,7 +112,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
                 //If question fetched is not a CodeSnippetQuestion the show error message
                 if (this.questionModel.question.questionType !== QuestionType.codeSnippetQuestion)
-                    this.openSnackBar('Question not found.', true, this.routeToDashboard);
+                    this.openSnackBar('Question not found.', true, ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
 
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
                 this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
@@ -307,10 +307,8 @@ export class QuestionsProgrammingComponent implements OnInit {
 
             subscription.subscribe(
                 (response) => {
-                    this.questionsService.categorySelected.next(this.selectedCategory);
-                    this.questionsService.difficultySelected.next(this.selectedDifficulty);
-                    this.routeToDashboard = ['questions'];
-                    this.openSnackBar(this.successMessage, true, this.routeToDashboard);
+                    this.router.navigate(['questions/dashboard', this.selectedCategory, this.selectedDifficulty]);
+                    this.openSnackBar(this.successMessage, true, ['questions/dashboard', this.selectedCategory, this.selectedDifficulty]);
                 },
                 err => {
                     this.openSnackBar(this.failedMessage);
@@ -344,6 +342,13 @@ export class QuestionsProgrammingComponent implements OnInit {
             this.isCategorySelected = true;
             this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === this.selectedCategory).id;
         }
+    }
+
+    /**
+     * Redirect to question dashboard page
+     */
+    cancelButtonClicked() {
+        this.router.navigate(['/questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
     }
 }
 
