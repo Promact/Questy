@@ -496,6 +496,9 @@ namespace Promact.Trappist.Test.Tests
             var questiontoCreate2 = "Question2";
             var question2 = CreateSingleAnswerQuestion(category1, questiontoCreate2);
             var oldTest = CreateTest("Maths");
+            var testIp = new TestIpAddress();
+            testIp.IpAddress = "127.0.0.1";
+            testIp.TestId = oldTest.Id;
             string userName = "suparna@promactinfo.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
             await _userManager.CreateAsync(user);
@@ -533,11 +536,21 @@ namespace Promact.Trappist.Test.Tests
             testQuestionList.Add(testQuestionObject1);
             testQuestionList.Add(testQuestionObject2);
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
+            var testIpAddressObject = new TestIpAddress()
+            {
+                Test = oldTest,
+                TestId = oldTest.Id,
+                IpAddress = testIp.IpAddress
+            };
+            var testIpList = new List<TestIpAddress>();
+            testIpList.Add(testIpAddressObject);
+            await _trappistDbContext.TestIpAddresses.AddRangeAsync(testIpList);
             var newTest = CreateTest("Maths_Copy");
             await _testRepository.CreateTestAsync(newTest, applicationUser.Id);
             await _testRepository.DuplicateTest(oldTest.Id, newTest);
             Assert.Equal(4, _trappistDbContext.TestQuestion.Count());
             Assert.Equal(4, _trappistDbContext.TestCategory.Count());
+            Assert.Equal(2, _trappistDbContext.TestIpAddresses.Count());
         }
         #endregion
 
