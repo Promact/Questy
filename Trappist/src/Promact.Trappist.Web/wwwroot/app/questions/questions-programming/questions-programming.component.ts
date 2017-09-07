@@ -75,7 +75,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionId = this.route.snapshot.params['id'];
         this.selectedCategory = this.route.snapshot.params['categoryName'];
         this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
-        this.questionsService.categorySelected.next(this.selectedCategory);
         this.routeToDashboard = ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel];
         if (!this.questionId) {
             this.getCodingLanguage();
@@ -96,7 +95,7 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     prepareToEdit(id: number) {
         if (isNaN(id)) {
-            this.openSnackBar('Question not found.', true, ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
+            this.openSnackBar('Question not found.', true, this.routeToDashboard);
         }
         this.getQuestionById(id);
     }
@@ -112,7 +111,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
                 //If question fetched is not a CodeSnippetQuestion the show error message
                 if (this.questionModel.question.questionType !== QuestionType.codeSnippetQuestion)
-                    this.openSnackBar('Question not found.', true, ['questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
+                    this.openSnackBar('Question not found.', true, this.routeToDashboard);
 
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
                 this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
@@ -325,8 +324,6 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param difficultyLevel name of the difficulty level selected
      */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
-        this.questionsService.categorySelected.next(categoryName);
-        this.questionsService.difficultySelected.next(difficultyLevel);
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
             this.isCategorySelected = true;
             this.selectedDifficulty = difficultyLevel;
