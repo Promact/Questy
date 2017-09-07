@@ -203,6 +203,8 @@ export class IndividualReportComponent implements OnInit {
                 break;
             case 3:
                 this.testStatus = 'Blocked';
+            case 4:
+                this.testStatus = 'Unfinished';
         }
     }
 
