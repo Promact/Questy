@@ -17,7 +17,7 @@
                     <em class="material-icons pull-right" (click)="addCategoryDialog()">add</em>
                 </div>
                 <ul class="category-list">
-                    <li class="h5" (click)="getAllQuestions()" [ngClass]="{'active' : selectedCategory.categoryName === undefined}" *ngIf="isCategoryPresent">All Questions</li>
+                    <li class="h5" (click)="getAllQuestions()" [ngClass]="{'active' : selectedCategory.categoryName === undefined ||isAllQuestionsSectionSelected}" *ngIf="isCategoryPresent">All Questions</li>
                     <li *ngFor="let category of categoryArray" class="clearfix h5" [ngClass]="isCategorySelected(category)">
                         <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category.id,category.categoryName,difficultyLevel)">{{category.categoryName}}</span>
                         <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
