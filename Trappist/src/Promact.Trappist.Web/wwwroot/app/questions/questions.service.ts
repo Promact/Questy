@@ -4,14 +4,10 @@ import { Question } from './question.model';
 import { QuestionBase } from './question';
 import { QuestionDisplay } from '../questions/question-display';
 import { DifficultyLevel } from '../questions/enum-difficultylevel';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class QuestionsService {
     private questionsApiUrl = 'api/question';
-    public categorySelected = new BehaviorSubject<any>(null);
-    public difficultySelected = new BehaviorSubject<any>(null);
-    public isSelected = new BehaviorSubject<any>(false);
     constructor(private httpService: HttpService) {
 
     }

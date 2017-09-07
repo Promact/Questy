@@ -114,7 +114,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             if (this.selectedCategoryName === undefined && this.selectedDifficultyLevel === undefined) {                   
                 this.selectedCategoryName = 'AllCategory';
                 this.selectedDifficultyLevel = 'All';
-                this.questionService.categorySelected.next(null);
             }
             this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);      
         },
@@ -294,8 +293,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
      * @param difficultyLevel name of the difficulty level selected
      */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
-        this.questionService.categorySelected.next(categoryName);
-        this.questionService.difficultySelected.next(difficultyLevel);
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
             this.isCategorySelected = true;
             this.isDifficultyLevelSelected = true;

@@ -113,7 +113,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
-            this.questionsService.isSelected.subscribe(value => { this.isSelected = value; });
             if ((this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined))
                 this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
             else if (this.selectedCategoryName !== undefined)
@@ -383,7 +382,6 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     selectSelectionAndDifficultyType(questiontype: string) {
         let categoryName = this.selectedCategory.categoryName;
-        this.questionsService.isSelected.next(true);
         let difficultyLevel = DifficultyLevel[this.selectedDifficulty];
         if (categoryName === undefined)
             categoryName = 'AllCategory';

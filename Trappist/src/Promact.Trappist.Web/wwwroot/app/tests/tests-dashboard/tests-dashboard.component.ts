@@ -25,7 +25,6 @@ export class TestsDashboardComponent implements OnInit {
 
     constructor(private questionsService: QuestionsService,public dialog: MdDialog, private testService: TestService, private router: Router) {
         this.tests = new Array<Test>();
-        this.questionsService.isSelected.next(false);
     }
     ngOnInit() {
         this.loader = true;
