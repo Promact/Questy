@@ -299,7 +299,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{testId}/{testName}/setTestCopiedNumber")]
         public async Task<IActionResult> SetTestCopiedNumberAsync([FromRoute]int testId, [FromRoute]string testName)
         {
-            return Ok(await _testRepository.SetTestCopiedNumberAsync(testId, testName));
+            var duplicatedTestName = await _testRepository.SetTestCopiedNumberAsync(testId, testName);
+            return Ok(duplicatedTestName);
         }
         #endregion
     }

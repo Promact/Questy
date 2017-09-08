@@ -23,6 +23,7 @@ export class TestsDashboardComponent implements OnInit {
     isDeleteAllowed: boolean;
     loader: boolean;
     count: number;
+    duplicatedTestName: string;
 
     constructor(private questionsService: QuestionsService,public dialog: MdDialog, private testService: TestService, private router: Router) {
         this.tests = new Array<Test>();
@@ -74,13 +75,15 @@ export class TestsDashboardComponent implements OnInit {
         test.isPaused = test.isLaunched = false;
         let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
-        this.testService.setTestCopiedNumber(test.id, test.testName).subscribe((response) => {
-            this.count = response;
-            if (this.count === 1)
-                duplicateTestDialog.testName = newTestObject.testName + '_copy';
-            else
-                duplicateTestDialog.testName = newTestObject.testName + '_copy' + '_' + this.count;
+        console.log(newTestObject.id, newTestObject.testName);
+        this.testService.setTestCopiedNumber(newTestObject.id, newTestObject.testName).subscribe((response) => {
+            console.log(response);
+            //this.duplicatedTestName = response;
+            //newTestObject.testName = this.duplicatedTestName;
+            
+            //console.log(this.duplicatedTestName);
         });
+        duplicateTestDialog.testName = newTestObject.testName;
         duplicateTestDialog.testArray = this.tests;
         duplicateTestDialog.testToDuplicate = test;
     }
@@ -118,4 +121,5 @@ export class TestsDashboardComponent implements OnInit {
             search.select();
         }, 0);
     }
+
 }

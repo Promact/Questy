@@ -436,7 +436,7 @@ namespace Promact.Trappist.Repository.Tests
                 if (test.Contains(testName))
                     count = count + 1;
             }
-            return count;
+            return duplicatedTestName;
         }
         #endregion
     }
