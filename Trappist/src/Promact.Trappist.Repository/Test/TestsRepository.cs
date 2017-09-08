@@ -369,7 +369,7 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.FindAsync(newTest.Id);
             //Fetch Ip Addresses in that particular test and store them in a variable of type list
             var testIpAddressList = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
-
+            
             if (testCategoryList.Any())
             {
                 var categoryList = new List<TestCategory>();
@@ -400,7 +400,7 @@ namespace Promact.Trappist.Repository.Tests
                 var ipAddressList = new List<TestIpAddress>();
                 if (testIpAddressList.Any())
                 {
-                    foreach (TestIpAddress testIpAddressObject in testIpAddressList)
+                    foreach(TestIpAddress testIpAddressObject in testIpAddressList)
                     {
                         var ipAddressObject = new TestIpAddress();
                         ipAddressObject.Test = test;
@@ -416,25 +416,38 @@ namespace Promact.Trappist.Repository.Tests
         }
 
         public async Task SetStartTestLogAsync(int attendeeId)
+        public async Task<int> SetTestCopiedNumberAsync(int testId, string testName)
         {
             var defaultDate = default(DateTime);
             var attendeeLog = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate && x.TestAttendeeId == attendeeId).FirstOrDefaultAsync();
             if (attendeeLog != null)
-            {
-                attendeeLog.StartTest = DateTime.UtcNow;
-                _dbContext.TestLogs.Update(attendeeLog);
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-
-        public async Task<int> SetTestCopiedNumberAsync(int testId, int count)
-        {
             var tests = await _dbContext.Test.Select(x => x.TestName).ToListAsync();
             int count = 0;
             foreach(var test in tests)
             {
+                attendeeLog.StartTest = DateTime.UtcNow;
+                _dbContext.TestLogs.Update(attendeeLog);
+                await _dbContext.SaveChangesAsync();
                 if (test.Contains(testName))
                     count = count + 1;
+            }
+            if (!tests.Any())
+            {
+                duplicatedTestName = testName;
+            }
+            else
+            {
+                string savename = "";
+                if (count == 1)
+                {
+                    savename = testName + "- Copy";
+                    duplicatedTestName = savename;
+                }
+                else
+                {
+                    savename = testName + "- Copy " + "(" + count + ")";
+                    duplicatedTestName = savename;
+                }
             }
             return duplicatedTestName;
         }
