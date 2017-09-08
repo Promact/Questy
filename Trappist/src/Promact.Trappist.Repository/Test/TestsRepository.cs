@@ -261,14 +261,13 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<TestAC> GetTestByIdAsync(int testId, string userId)
         {
             //Find the test by Id from Test Model
-            var test = await _dbContext.Test.FindAsync(testId);
+            var test = await _dbContext.Test.AsNoTracking().Where(x => x.Id == testId).Include(x => x.TestAttendees).SingleOrDefaultAsync();
 
-            var testIpAddress = await _dbContext.TestIpAddresses.Where(x => x.TestId == testId).ToListAsync();
+            var testIpAddress = await _dbContext.TestIpAddresses.AsNoTracking().Where(x => x.TestId == testId).ToListAsync();
             var testIpAddressAc = Mapper.Map<List<TestIpAddress>, List<TestIpAddressAC>>(testIpAddress);
 
             //Maps that test with TestAC
             var testAcObject = Mapper.Map<Test, TestAC>(test);
-            await _dbContext.TestAttendees.FindAsync(testId);
 
             DateTime currentDate = DateTime.UtcNow;
             string defaultMessage = _stringConstants.WarningMessage;
@@ -277,9 +276,7 @@ namespace Promact.Trappist.Repository.Tests
             int defaultCorrectMarks = 1;
             DateTime defaultEndDate = currentDate.AddDays(1);
             if (testAcObject != null)
-            {
-
-                await _dbContext.Entry(test).Collection(x => x.TestAttendees).LoadAsync();
+            {                
                 testAcObject.TestIpAddress = testIpAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate, DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
@@ -290,18 +287,18 @@ namespace Promact.Trappist.Repository.Tests
                 testAcObject.WarningMessage = testAcObject.WarningMessage == null ? defaultMessage : testAcObject.WarningMessage;
                 testAcObject.CorrectMarks = testAcObject.CorrectMarks == 0 ? defaultCorrectMarks : testAcObject.CorrectMarks;
                 //Fetches the category list from Category Model
-                var categoryList = await _dbContext.Category.ToListAsync();
+                var categoryList = await _dbContext.Category.AsNoTracking().ToListAsync();
                 //Maps Category list to CategoryAC list
                 var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
                 //Fetches the list of Categories from TestCategory Model
-                var testCategoryList = await _dbContext.TestCategory.Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
+                var testCategoryList = await _dbContext.TestCategory.AsNoTracking().Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
                 categoryListAc.ForEach(category =>
                 {
-                    category.QuestionCount = _dbContext.Question.Count(x => x.CategoryID == category.Id && x.CreatedByUserId == userId);
+                    category.QuestionCount = _dbContext.Question.AsNoTracking().Count(x => x.CategoryID == category.Id && x.CreatedByUserId == userId);
                     //If category present in TestCategory Model,then its IsSelect property made true
                     if (testCategoryList.Exists(x => x.CategoryId == category.Id))
                     {
-                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.Count(x => x.Question.CategoryID == category.Id && x.TestId == testId);
+                        category.NumberOfSelectedQuestion = _dbContext.TestQuestion.AsNoTracking().Count(x => x.Question.CategoryID == category.Id && x.TestId == testId);
                         category.IsSelect = true;
                     }
                 });
@@ -353,15 +350,15 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
-            var test = await _dbContext.Test.AsNoTracking().SingleAsync(x => x.Link.Equals(link));            
-
-            var testAttendeeDetails = await _dbContext.TestAttendees.AsNoTracking().Where(x => x.TestId == test.Id).Select(x => x.Id).ToListAsync();
+            var test = await _dbContext.Test.AsNoTracking().SingleAsync(x => x.Link.Equals(link));
 
             var defaultDate = default(DateTime);
-            var testLogs = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate).FirstOrDefaultAsync();
-            testLogs.StartTest = DateTime.UtcNow;
-            _dbContext.TestLogs.Update(testLogs);
-            await _dbContext.SaveChangesAsync();
+            var attendeeLog = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate).FirstOrDefaultAsync();
+            if (attendeeLog != null)
+            {
+                attendeeLog.StartTest = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+            }
 
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
