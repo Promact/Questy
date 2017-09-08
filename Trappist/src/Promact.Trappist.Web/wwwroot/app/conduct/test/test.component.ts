@@ -681,6 +681,19 @@ export class TestComponent implements OnInit {
         this.dialog.open(TestsProgrammingGuideDialogComponent, { disableClose: true, hasBackdrop: true });
     }
 
+    //Temporary technique to highlight color code for different result
+    getColorCode() {
+        if (this.codeResult.toLowerCase().includes('congratulation')) {
+            return 'bg-success';
+        } else if (this.codeResult.toLowerCase().includes('some')) {
+            return 'bg-warning';
+        } else if (this.codeResult.toLowerCase().includes('processing')) {
+            return 'bg-info';
+        }
+
+        return 'bg-danger';       
+    }
+
     /**
      * Shuffle testQuestions 
      */

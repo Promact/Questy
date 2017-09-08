@@ -79,8 +79,8 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run</button>
-                        <pre class="mt20" *ngIf="codeResult != ''">{{codeResult}}</pre>
+                        <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run and Save</button>
+                        <pre class="mt20 text-white" [ngClass]="getColorCode()" *ngIf="codeResult != ''">{{codeResult}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group>
