@@ -139,7 +139,7 @@ export class IndividualReportComponent implements OnInit {
                 this.numberOfQuestionsAttempted = response;
             });
 
-            this.reportsService.getStudentPercentile(this.testAttendeeId).subscribe((response) => {
+            this.reportsService.getStudentPercentile(this.testAttendeeId, this.testAttendee.test.id).subscribe((response) => {
                 this.percentile = response.toFixed(2);
                 this.isScoreVisible = true;
                 this.isPercentageVisible = true;

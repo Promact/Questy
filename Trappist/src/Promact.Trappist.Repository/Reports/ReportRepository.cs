@@ -98,17 +98,16 @@ namespace Promact.Trappist.Repository.Reports
             return testAttendeeFullAnswerList;
         }
 
-        public async Task<double> CalculatePercentileAsync(int testAttendeeId)
+        public async Task<double> CalculatePercentileAsync(int testAttendeeId,int testId)
         {
-            var testAttendee = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
             int sameMarks = 0;
             int count = 0;
-            var attendeeList = await _dbContext.TestAttendees.Include(x => x.Report).Where(x => x.TestId == testAttendee.TestId).ToListAsync();
-            double noOfScores = attendeeList.Count();
-            var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
             double studentPercentile;
 
-            var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testAttendee.TestId).OrderBy(x => x.TotalMarksScored).ToListAsync();
+            var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
+            var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testId).OrderBy(x => x.TotalMarksScored).ToListAsync();
+            double noOfScores = marksList.Count();
+
             foreach (var marks in marksList)
             {
                 if (attendee.TotalMarksScored == marks.TotalMarksScored)
@@ -218,7 +217,7 @@ namespace Promact.Trappist.Repository.Reports
                        
                     }
                 });
-                var percentile = await CalculatePercentileAsync(testAttendee);
+                var percentile = await CalculatePercentileAsync(testAttendee,testId);
                 var reportQuestions = new ReportQuestionsCountAC()
                 {
                     TestAttendeeId = testAttendee,
