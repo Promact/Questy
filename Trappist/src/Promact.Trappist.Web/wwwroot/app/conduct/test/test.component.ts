@@ -146,10 +146,6 @@ export class TestComponent implements OnInit {
         this.getTestByLink(this.testLink);
     }
 
-    //ngAfterViewInit() {
-    //    this.editor.getEditor().setOptions(this.optionsForAuto);
-    //}
-
 
     /**
      * saves the TestLogs if server is gone off
