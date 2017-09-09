@@ -425,7 +425,7 @@ export class TestComponent implements OnInit {
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
 
-        if (index < 0 || index >= this.testQuestions.length) {
+        if (index < 0 || index >= this.testQuestions.length || this.isCodeProcessing) {
             this.isTestReady = true;
             return;
         }
@@ -691,7 +691,7 @@ export class TestComponent implements OnInit {
             return 'bg-info';
         }
 
-        return 'bg-danger';       
+        return 'bg-danger';
     }
 
     /**
