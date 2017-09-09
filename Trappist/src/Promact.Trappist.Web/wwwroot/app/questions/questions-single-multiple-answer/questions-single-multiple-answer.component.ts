@@ -64,6 +64,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loader = true;
         let currentUrl = this.router.url;
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
@@ -88,6 +89,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.questionService.getQuestionById(id).subscribe((response: QuestionBase) => {
             this.singleMultipleAnswerQuestion = response;
             this.getCategoryName();
+            this.loader = false;
             this.difficultyLevelSelected = DifficultyLevel[this.singleMultipleAnswerQuestion.question.difficultyLevel];
             this.indexOfOptionSelected = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.findIndex(x => x.isAnswer === true);
             this.noOfOptionShown = this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.length;
@@ -115,7 +117,8 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
                 this.selectedCategoryName = 'AllCategory';
                 this.selectedDifficultyLevel = 'All';
             }
-            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);      
+            this.showPreSelectedCategoryAndDifficultyLevel(this.selectedCategoryName, this.selectedDifficultyLevel);
+            this.loader = false;
         },
             err => {
                 this.snackBar.open('Failed to load category.', 'Dismiss', { duration: 3000 });
