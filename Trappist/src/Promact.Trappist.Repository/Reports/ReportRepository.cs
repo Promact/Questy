@@ -87,14 +87,7 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<List<TestAnswers>> GetTestAttendeeAnswers(int testAttendeeId)
         {
-            var testAttendeeQuestionList = await _dbContext.TestConduct.Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
-            var testAttendeeFullAnswerList = new List<TestAnswers>();
-
-            foreach (DomainModel.Models.TestConduct.TestConduct testAttendeeQuestion in testAttendeeQuestionList)
-            {
-                var testAttendeeAnswerList = await _dbContext.TestAnswers.Where(x => x.TestConductId == testAttendeeQuestion.Id).ToListAsync();
-                testAttendeeFullAnswerList.AddRange(testAttendeeAnswerList);
-            }
+            var testAttendeeFullAnswerList = await _dbContext.TestAnswers.Where(x => x.TestConduct.TestAttendeeId == testAttendeeId).ToListAsync();
             return testAttendeeFullAnswerList;
         }
 
