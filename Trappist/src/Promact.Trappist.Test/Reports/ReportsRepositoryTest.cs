@@ -254,6 +254,17 @@ namespace Promact.Trappist.Test.Reports
             Assert.Equal(2, testAnswersList.Count());
         }
 
+        [Fact]
+        public async Task CalculatePercentile()
+        {
+            var test = CreateTest("Mathematics");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            var percentile = await _reportRepository.CalculatePercentileAsync(testAttendee.Id, test.Id);
+            Assert.Equal(testAttendee.Report.Percentile, percentile);
+        }
+
         private DomainModel.Models.Test.Test CreateTest(string testName)
         {
             var test = new DomainModel.Models.Test.Test
@@ -280,7 +291,7 @@ namespace Promact.Trappist.Test.Reports
                     TestAttendeeId = 1,
                     TotalMarksScored = 180,
                     Percentage = 80,
-                    Percentile = 75,
+                    Percentile = 50,
                     TestStatus = 0,
                     TimeTakenByAttendee = 150
                 }

@@ -53,9 +53,10 @@ export class ReportService {
     /**
      * Gets the percentile of the selected test attendee
      * @param testAttendeeId: Id of the test attendee
+     * @param testId: Id of the test taken by the test attendee
      */
-    getStudentPercentile(testAttendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/percentile');
+    getStudentPercentile(testAttendeeId: number, testId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/' + testId + '/percentile');
     }
 
     getAllAttendeeMarksDetails(testId: number) {
