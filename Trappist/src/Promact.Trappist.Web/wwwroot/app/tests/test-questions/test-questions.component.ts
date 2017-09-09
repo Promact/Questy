@@ -10,9 +10,9 @@ import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-questions',
-    templateUrl: 'test-questions.html'
+    templateUrl: './test-questions.html'
 })
 
 export class TestQuestionsComponent implements OnInit {

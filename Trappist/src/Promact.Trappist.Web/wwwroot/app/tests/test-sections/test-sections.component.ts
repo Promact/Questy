@@ -12,9 +12,9 @@ import { Category } from '../../questions/category.model';
 import { Test, TestCategory, TestQuestion } from '../tests.model';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-sections',
-    templateUrl: 'test-sections.html'
+    templateUrl: './test-sections.html'
 })
 
 export class TestSectionsComponent implements OnInit {

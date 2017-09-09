@@ -13,9 +13,9 @@ import { IncompleteTestCreationDialogComponent } from './incomplete-test-creatio
 import { TestIPAddress } from '../test-IPAdddress';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-settings',
-    templateUrl: 'test-settings.html'
+    templateUrl: './test-settings.html'
 })
 
 export class TestSettingsComponent implements OnInit {

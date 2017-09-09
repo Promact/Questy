@@ -19,9 +19,9 @@ import { PopoverModule } from 'ngx-popover';
 declare let screenfull: any;
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-view',
-    templateUrl: 'test-view.html'
+    templateUrl: './test-view.html'
 })
 
 export class TestViewComponent implements OnInit {

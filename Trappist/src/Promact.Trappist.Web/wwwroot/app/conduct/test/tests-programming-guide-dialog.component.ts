@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'tests-programming-guide-dialog',
-    templateUrl: 'tests.programming-guide.html'
+    templateUrl: './tests.programming-guide.html'
 })
 
 export class TestsProgrammingGuideDialogComponent {

@@ -6,9 +6,9 @@ import { TestService } from '../tests.service';
 import { TestsDashboardComponent } from './tests-dashboard.component';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-create-dialog',
-    templateUrl: 'test-create-dialog.html'
+    templateUrl: './test-create-dialog.html'
 })
 
 export class TestCreateDialogComponent {

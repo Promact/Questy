@@ -5,9 +5,9 @@ import { ApplicationUser } from '../profile.model';
 import { ProfileService } from '../profile.service';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'profile-edit',
-    templateUrl: 'profile-edit.html'
+    templateUrl: './profile-edit.html'
 })
 export class ProfileEditComponent implements OnInit {
     editUser: ApplicationUser = new ApplicationUser();

@@ -11,9 +11,9 @@ import { TestCaseType } from '../enum-test-case-type';
 import { QuestionType } from '../enum-questiontype';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'questions-programming',
-    templateUrl: 'questions-programming.html'
+    templateUrl: './questions-programming.html'
 })
 
 export class QuestionsProgrammingComponent implements OnInit {

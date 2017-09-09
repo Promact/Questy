@@ -4,9 +4,9 @@ import { ConductService } from '../conduct.service';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'register',
-    templateUrl: 'register.html',
+    templateUrl: './register.html'
 })
 export class RegisterComponent {
     testAttendees: TestAttendees;

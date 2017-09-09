@@ -5,9 +5,9 @@ import { ProfileService } from '../profile.service';
 import { MdSnackBar } from '@angular/material';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'change-password-dialog',
-    templateUrl: 'change-password-dialog.html'
+    templateUrl: './change-password-dialog.html'
 })
 export class ChangePasswordDialogComponent {
     constructor(public profileService: ProfileService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) { }

@@ -1,9 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-end',
-    templateUrl: 'test-end.html',
+    templateUrl: './test-end.html'
 })
 export class TestEndComponent implements OnInit {
 

@@ -13,9 +13,9 @@ import { QuestionType } from '../enum-questiontype';
 
 @Component({
 
-    moduleId: module.id,
+    
     selector: 'questions-single-multiple-answer',
-    templateUrl: 'questions-single-multiple-answer.html'
+    templateUrl: './questions-single-multiple-answer.html'
 })
 
 export class SingleMultipleAnswerQuestionComponent implements OnInit {

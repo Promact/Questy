@@ -4,9 +4,9 @@ import { Category } from '../../questions/category.model';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'delete-category-dialog',
-    templateUrl: 'delete-category-dialog.html'
+    templateUrl: './delete-category-dialog.html'
 })
 export class DeleteCategoryDialogComponent {
     private response: JSON;

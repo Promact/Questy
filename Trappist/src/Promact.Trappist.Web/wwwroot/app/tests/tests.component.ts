@@ -1,11 +1,11 @@
 ﻿import { Component } from '@angular/core';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'tests',
-    templateUrl: 'tests.html'
+    templateUrl: './tests.html'
 })
 
 export class TestsComponent {
-
+        
 }

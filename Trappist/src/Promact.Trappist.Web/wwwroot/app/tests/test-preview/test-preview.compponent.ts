@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TestService } from '../tests.service';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-preview',
-    templateUrl: 'test-preview.html'
+    templateUrl: './test-preview.html'
 })
 
 export class TestPreviewComponent {

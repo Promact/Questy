@@ -10,9 +10,9 @@ import { TestPreviewComponent } from '../../test-preview/test-preview.compponent
 declare let screenfull: any;
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'create-test-header',
-    templateUrl: 'create-test-header.html',
+    templateUrl: './create-test-header.html'
 })
 
 export class CreateTestHeaderComponent implements OnInit {

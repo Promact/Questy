@@ -3,9 +3,9 @@ import { Test } from '../tests.model';
 import { Router } from '@angular/router';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-launch-dialog',
-    templateUrl: 'test-launch-dialog.html'
+    templateUrl: './test-launch-dialog.html'
 })
 
 export class TestLaunchDialogComponent implements OnInit {

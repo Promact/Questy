@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <UserSecretsId>aspnet-Promact.Trappist.Web-c7bf096e-d957-474a-b495-cb046109e062</UserSecretsId>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,6 +58,16 @@
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     <PackageReference Include="Serilog.Sinks.Udp" Version="3.2.0" />
   </ItemGroup>
+
+
+  <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
+    <!-- In development, the dist files won't exist on the first run or when cloning to
+         a different machine, so rebuild them if not already present. -->
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+    <Exec Command="npm run dev" />
+  </Target>
+
+
 
   <Target Name="RunGulp" AfterTargets="ComputeFilesToPublish">
     <Exec Command="npm install" />

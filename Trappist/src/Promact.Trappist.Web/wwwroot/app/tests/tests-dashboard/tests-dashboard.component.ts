@@ -11,9 +11,9 @@ import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component'
 import { QuestionsService } from '../../questions/questions.service';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'tests-dashboard',
-    templateUrl: 'tests-dashboard.html'
+    templateUrl: './tests-dashboard.html'
 })
 
 export class TestsDashboardComponent implements OnInit {

@@ -14,9 +14,9 @@ import { TestLogs } from '../../reports/testlogs.model';
 declare let screenfull: any;
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-summary',
-    templateUrl: 'test-summary.html',
+    templateUrl: './test-summary.html'
 })
 
 export class TestSummaryComponent implements OnInit {
@@ -47,7 +47,7 @@ export class TestSummaryComponent implements OnInit {
     isTestPreview: boolean;
     timeString: string;
     timeOutCounter: number;
-    clockInterval: NodeJS.Timer;
+    clockInterval: any;
     isTestResume: boolean;
     isTestClosedUnConditionally: boolean;
     disableButton: boolean;

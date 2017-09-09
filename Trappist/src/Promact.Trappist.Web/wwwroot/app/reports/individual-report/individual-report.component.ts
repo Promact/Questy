@@ -17,9 +17,9 @@ import { QuestionStatus } from '../../conduct/question_status.enum';
 declare var jsPDF: any;
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'individual-report',
-    templateUrl: 'individual-report.html'
+    templateUrl: './individual-report.html'
 })
 
 export class IndividualReportComponent implements OnInit {

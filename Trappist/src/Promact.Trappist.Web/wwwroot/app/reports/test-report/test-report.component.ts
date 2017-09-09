@@ -12,15 +12,16 @@ import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Report } from '../report.model';
+import * as ExcelJS from 'exceljs/dist/exceljs';
+import { saveAs } from 'file-saver';
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-declare let jsPDF: any;
-declare let saveAs: any;
-declare let ExcelJS: any;
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test-report',
-    templateUrl: 'test-report.html'
+    templateUrl: './test-report.html'
 })
 
 export class TestReportComponent implements OnInit {

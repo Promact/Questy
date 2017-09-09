@@ -6,9 +6,9 @@ import { Router } from '@angular/router';
 
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'delete-test-dialog',
-    templateUrl: 'delete-test-dialog.html'
+    templateUrl: './delete-test-dialog.html'
 })
 
 export class DeleteTestDialogComponent {

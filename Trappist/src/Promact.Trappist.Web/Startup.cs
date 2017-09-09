@@ -47,6 +47,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Serilog.Sinks.Udp;
 using System.Net;
 using Serilog.Formatting.Json;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace Promact.Trappist.Web
 {
@@ -167,6 +168,11 @@ namespace Promact.Trappist.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
+                    HotModuleReplacement = true
+                });
             }
             else
             {

@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Test } from '../tests.model';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'incomplete-test-creation',
-    templateUrl: 'incomplete-test-creation-dialog.html'
+    templateUrl: './incomplete-test-creation-dialog.html'
 })
 
 export class IncompleteTestCreationDialogComponent implements OnInit {  

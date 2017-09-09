@@ -2,14 +2,9 @@
 import { Http } from '@angular/http';
 import { TestService } from './tests/tests.service';
 
-
-
-
-
 @Component({
-    moduleId: module.id,
     selector: 'app',
-    templateUrl: 'app.html',
+    templateUrl: './app.html'
 })
 export class AppComponent {
 

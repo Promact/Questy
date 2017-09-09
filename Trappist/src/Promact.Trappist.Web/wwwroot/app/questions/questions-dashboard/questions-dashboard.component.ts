@@ -15,9 +15,9 @@ import { Question } from '../question.model';
 import { QuestionCount } from '../numberOfQuestion';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'questions-dashboard',
-    templateUrl: 'questions-dashboard.html'
+    templateUrl: './questions-dashboard.html'
 })
 
 export class QuestionsDashboardComponent implements OnInit {

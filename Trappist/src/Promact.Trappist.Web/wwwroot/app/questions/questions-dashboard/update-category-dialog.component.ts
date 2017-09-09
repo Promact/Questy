@@ -5,9 +5,9 @@ import { Category } from '../category.model';
 
 @Injectable()
 @Component({
-    moduleId: module.id,
+    
     selector: 'update-category-dialog',
-    templateUrl: 'update-category-dialog.html'
+    templateUrl: './update-category-dialog.html'
 })
 
 export class UpdateCategoryDialogComponent {

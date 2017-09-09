@@ -6,9 +6,9 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'create-test-footer',
-    templateUrl: 'create-test-footer.html',
+    templateUrl: './create-test-footer.html'
 })
 
 export class CreateTestFooterComponent implements OnInit {

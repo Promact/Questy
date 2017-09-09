@@ -34,9 +34,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'test',
-    templateUrl: 'test.html',
+    templateUrl: './test.html'
 })
 export class TestComponent implements OnInit {
     @ViewChild('editor') editor: AceEditorComponent;

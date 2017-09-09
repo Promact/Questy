@@ -5,9 +5,9 @@ import { ProfileService } from '../profile.service';
 import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'profile-dashboard',
-    templateUrl: 'profile-dashboard.html'
+    templateUrl: './profile-dashboard.html'
 })
 export class ProfileDashboardComponent implements OnInit {
     user: ApplicationUser = new ApplicationUser;
