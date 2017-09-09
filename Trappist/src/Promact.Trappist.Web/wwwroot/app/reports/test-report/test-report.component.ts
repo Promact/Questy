@@ -161,6 +161,10 @@ export class TestReportComponent implements OnInit {
                 response => {
                     this.testAttendeeArray.forEach(k => k.starredCandidate = status);
                     [this.headerStarStatus, this.isAllCandidateStarred] = status ? ['star', true] : ['star_border', false];
+                    if (status)
+                        this.starredCandidateCount = this.testAttendeeArray.length;
+                    else
+                        this.starredCandidateCount = 0;
                 }
             );
         }
@@ -175,6 +179,10 @@ export class TestReportComponent implements OnInit {
             response => {
                 this.testAttendeeArray.find(x => x.id === testAttendee.id).starredCandidate = !testAttendee.starredCandidate;
                 [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
+                if (testAttendee.starredCandidate)
+                    this.starredCandidateCount += 1;
+                else
+                    this.starredCandidateCount -= 1;
             }
         );
     }
@@ -825,6 +833,8 @@ export class TestReportComponent implements OnInit {
                 default:
                     this.unfinishedTestCount += 1;
             }
+            if (attendee.starredCandidate)
+                this.starredCandidateCount += 1;
         });
     }
 }
