@@ -1,4 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
@@ -45,7 +46,7 @@ namespace Promact.Trappist.Repository.Reports
         /// </summary>
         /// <param name="id">Id of the test</param>
         /// <returns>Returns the name of the test matching with the Id</returns>
-        Task<Test> GetTestNameAsync(int id);
+        Task<TestAC> GetTestNameAsync(int id);
 
         /// <summary>
         /// Gets the details of the test attendee along with his marks and test logs

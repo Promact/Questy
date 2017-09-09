@@ -11,6 +11,7 @@ using Promact.Trappist.DomainModel.Models.Question;
 using System;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 
 namespace Promact.Trappist.Repository.Reports
 {
@@ -30,10 +31,15 @@ namespace Promact.Trappist.Repository.Reports
         #endregion
 
         #region Public Method
-        public async Task<Test> GetTestNameAsync(int id)
+        public async Task<TestAC> GetTestNameAsync(int id)
         {
-            return await _dbContext.Test.AsNoTracking().Where(x => x.Id == id).SingleAsync();
-
+            var result=await _dbContext.Test.AsNoTracking().Where(x => x.Id == id).Select(selectOnly => new { selectOnly.TestName, selectOnly.Link, }).ToListAsync();
+            var testACObject = new TestAC()
+            {
+                TestName = result.First().TestName,
+                Link = result.First().Link
+            };
+            return testACObject;
         }
 
         public async Task<IEnumerable<TestAttendees>> GetAllTestAttendeesAsync(int id)
