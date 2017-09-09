@@ -317,7 +317,11 @@ namespace Promact.Trappist.Repository.Reports
             if (attendee.Report != null)
             {
                 if (isTestEnd)
+                {
                     attendee.Report.IsTestPausedUnWillingly = false;
+                    if (attendee.Report.TestStatus == TestStatus.AllCandidates)
+                        attendee.Report.TestStatus = TestStatus.CompletedTest;
+                }
                 else
                 {
                     attendee.Report.IsTestPausedUnWillingly = false;
