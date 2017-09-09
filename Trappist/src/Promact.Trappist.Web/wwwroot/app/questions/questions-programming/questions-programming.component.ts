@@ -42,7 +42,8 @@ export class QuestionsProgrammingComponent implements OnInit {
     selectedDifficultyLevel: string;
     //To enable enum testCaseType in template 
     testCaseType: TestCaseType;
-    questionId: number;    
+    questionId: number;
+    loader: boolean;
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
@@ -72,6 +73,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loader = true;
         this.questionId = this.route.snapshot.params['id'];
         this.selectedCategory = this.route.snapshot.params['categoryName'];
         this.selectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
@@ -108,7 +110,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.questionsService.getQuestionById(id).subscribe(
             (response) => {
                 this.questionModel = response;
-
+                this.loader = false;
                 //If question fetched is not a CodeSnippetQuestion the show error message
                 if (this.questionModel.question.questionType !== QuestionType.codeSnippetQuestion)
                     this.openSnackBar('Question not found.', true, this.routeToDashboard);
@@ -204,7 +206,7 @@ export class QuestionsProgrammingComponent implements OnInit {
             //If question is being editted then set the category
             if (this.isQuestionEdited || this.isQuestionDuplicated)
                 this.selectedCategory = this.categoryList.find(x => x.id === this.questionModel.question.categoryID).categoryName;
-
+            this.loader = false;
             this.isCategoryReady = true;
         });
     }

@@ -4,7 +4,7 @@
       <h2>Question</h2>
       <h5>Programming</h5>
     </div>
-    <div class="loader-container" *ngIf="!(isCategoryReady && isLanguageReady) || isFormSubmitted">
+    <div class="loader-container" *ngIf="!(isCategoryReady && isLanguageReady) || isFormSubmitted || loader">
       <div class="spinner">
       </div>
     </div>
