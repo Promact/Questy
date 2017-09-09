@@ -30,6 +30,13 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <returns>List Of Tests</returns>
         Task<List<TestAC>> GetAllTestsAsync();
+
+        /// <summary>
+        /// Sets the start test time log of the test attendee
+        /// </summary>
+        /// <param name="attendeeId">Id of the test attendee</param>
+        /// <returns></returns>
+        Task SetStartTestLogAsync(int attendeeId);
         #endregion
 
         #region TestSettings

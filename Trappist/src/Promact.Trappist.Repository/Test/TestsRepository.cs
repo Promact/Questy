@@ -351,15 +351,6 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
             var test = await _dbContext.Test.AsNoTracking().SingleAsync(x => x.Link.Equals(link));
-
-            var defaultDate = default(DateTime);
-            var attendeeLog = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate).FirstOrDefaultAsync();
-            if (attendeeLog != null)
-            {
-                attendeeLog.StartTest = DateTime.UtcNow;
-                await _dbContext.SaveChangesAsync();
-            }
-
             return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
         }
 
@@ -423,6 +414,18 @@ namespace Promact.Trappist.Repository.Tests
                 }
             }
             return test;
+        }
+
+        public async Task SetStartTestLogAsync(int attendeeId)
+        {
+            var defaultDate = default(DateTime);
+            var attendeeLog = await _dbContext.TestLogs.Where(x => x.StartTest == defaultDate && x.TestAttendeeId == attendeeId).FirstOrDefaultAsync();
+            if (attendeeLog != null)
+            {
+                attendeeLog.StartTest = DateTime.UtcNow;
+                _dbContext.TestLogs.Update(attendeeLog);
+                await _dbContext.SaveChangesAsync();
+            }
         }
         #endregion
     }

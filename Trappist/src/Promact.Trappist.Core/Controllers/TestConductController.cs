@@ -211,7 +211,16 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            return Ok(await _testRepository.GetTestByLinkAsync(link));
+            var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
+
+            if (!await IsAttendeeValid(attendeeId))
+            {
+                return NotFound();
+            }
+
+            var testDetails = await _testRepository.GetTestByLinkAsync(link);
+            await _testRepository.SetStartTestLogAsync(attendeeId);
+            return Ok(testDetails);
         }
 
         /// <summary>

@@ -15,6 +15,10 @@ using AutoMapper;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.DomainModel.Models.TestLogs;
+using System;
+using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -25,6 +29,7 @@ namespace Promact.Trappist.Test.Tests
         private readonly ITestsRepository _testRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IQuestionRepository _questionRepository;
+        private readonly ITestConductRepository _testConductRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
@@ -536,13 +541,37 @@ namespace Promact.Trappist.Test.Tests
         }
         #endregion
 
+        #region TestLogs
+        [Fact]
+        public async Task SetStartTestLog()
+        {
+            var test = CreateTest("Mathematics");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            var testLogs = new TestLogs()
+            {
+                Id = 1,
+                TestAttendeeId = testAttendee.Id,
+                VisitTestLink = DateTime.UtcNow,
+                FillRegistrationForm = DateTime.UtcNow,
+                StartTest = default(DateTime)
+            };
+            _trappistDbContext.TestLogs.Add(testLogs);
+            await _trappistDbContext.SaveChangesAsync();
+            await _testRepository.SetStartTestLogAsync(testAttendee.Id);
+            var attendeeStartTestLog = _trappistDbContext.TestLogs.Where(x => x.TestAttendeeId == testAttendee.Id).Select(x => x.StartTest).FirstOrDefault();
+            testLogs.StartTest = attendeeStartTestLog;
+            Assert.True(testLogs.StartTest != default(DateTime));
+        }
+        #endregion
+
         #region Private Functions
         private DomainModel.Models.Test.Test CreateTest(string testName)
         {
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName,
-                BrowserTolerance = 0
+                BrowserTolerance = 0,
             };
             return test;
         }
@@ -638,6 +667,21 @@ namespace Promact.Trappist.Test.Tests
                 }
             };
             return singleAnswerQuestion;
+        }
+
+        private TestAttendees CreateTestAttendee(int testId)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Madhurima",
+                LastName = "Das",
+                Email = "dasmadhurima@gmail.com",
+                RollNumber = "1",
+                ContactNumber = "98098776708",
+                TestId = testId
+            };
+            return testAttendee;
         }
         #endregion
     }
