@@ -499,7 +499,7 @@ export class TestComponent implements OnInit {
         if (this.testTypePreview)
             this.codeResult = this.codeAnswer;
         else {
-            this.codeResult = 'Processing....';
+            this.codeResult = 'Processing...';
 
             if (this.questionStatus !== QuestionStatus.review)
                 this.questionStatus = QuestionStatus.answered;
@@ -523,7 +523,7 @@ export class TestComponent implements OnInit {
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
             }, err => {
-                this.codeResult = 'Oops! server error has occured.';
+                this.codeResult = 'Oops! Server error has occured.';
                 this.isCodeProcessing = false;
             });
         }
@@ -684,14 +684,14 @@ export class TestComponent implements OnInit {
     //Temporary technique to highlight color code for different result
     getColorCode() {
         if (this.codeResult.toLowerCase().includes('congratulation')) {
-            return 'bg-success';
+            return 'pass';
         } else if (this.codeResult.toLowerCase().includes('some')) {
-            return 'bg-warning';
+            return 'partial-fail';
         } else if (this.codeResult.toLowerCase().includes('processing')) {
-            return 'bg-info';
+            return '';
         }
 
-        return 'bg-danger';
+        return 'fail';
     }
 
     /**

@@ -34,9 +34,9 @@
                     <option value="4">Unfinished Test ({{unfinishedTestCount}})</option>
                     <option value="star">Starred Candidates ({{starredCandidateCount}})</option>
                 </select>
-                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!showGenerateReportButton && !noCandidateFound">Download Excel</button>
+                <button type="button" class="btn" (click)="downloadTestBasicDetails()" *ngIf="!noCandidateFound">Download Excel</button>
                 <button type="button" class="btn" (click)="downloadTestReportPdf()" *ngIf="!noCandidateFound">Download PDF</button>
-                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!showGenerateReportButton && !noCandidateFound ">Download Detailed Report</button>
+                <button type="button" class="btn" (click)="getExcelDetails()" *ngIf="!noCandidateFound ">Download Detailed Report</button>
                 <button type="button" class="btn" (click)="generateReportForUnfinishedTest()" *ngIf="showGenerateReportButton && !noCandidateFound">Generate Report</button>
             </div>
             <a class="pull-right back-link mt10" [routerLink]="['/tests']">< back</a>
@@ -54,28 +54,28 @@
                         <th class="h5" md2SortBy="report.percentage">Percentage</th>
                         <th class="h5"><span *ngIf="isAnyTestResume">Allow Resume?</span></th>
                         <th></th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="selectIndividualCandidate(testAttendee,testAttendee.checkedCandidate)" [disabled]="testAttendee.generatingReport"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
-                        <td class="theme-text font-semibold"> {{testAttendee.firstName}} {{testAttendee.lastName}}</td>
+                        <td><a class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.firstName}} {{testAttendee.lastName}}</a></td>
                         <td>{{testAttendee.email}}</td>
                         <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress> {{testAttendee.report.totalMarksScored}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress>{{testAttendee.report.percentage}}</td>
                         <td><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>
-                        <td><em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="isReportGenerated(testAttendee)">file_download</em></td>
-                        <td class="text-right"><a href="../individual-report/" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="isReportGenerated(testAttendee)">remove_red_eye</em></a></td>
-                        <td class="text-right"><em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="!isReportGenerated(testAttendee)">refresh</em></td>
+                        <td class="text-right">
+                            <em class="material-icons" [routerLink]="['individual-report/',testAttendee.id,'download']" *ngIf="isReportGenerated(testAttendee)">file_download</em>
+                            <a class="display-inline-block ml15" [routerLink]="['individual-report/',testAttendee.id]"><em class="material-icons" *ngIf="isReportGenerated(testAttendee)">remove_red_eye</em></a>
+                            <em class="material-icons" (click)="generateReportForUnfinishedTest(testAttendee)" *ngIf="!isReportGenerated(testAttendee)">insert_drive_file</em>
+                        </td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="4">
                             <span class="records-info">Showing {{startingIndexOfActivePage(activePage,count)}} to {{endingIndexOfActivePage(activePage,count)}} of {{count}} records </span>
                         </td>
                         <td colspan="5">
@@ -85,8 +85,6 @@
                 </tfoot>
             </table>
         </div>
-        <div class="grid-container" *ngIf="noCandidateFound">
-            <h5 class="mt20 mb20">No Record(s) Found.</h5>
-        </div>
+        <h5 class="mt20 mb20" *ngIf="noCandidateFound">No Record(s) Found.</h5>
     </div>
 </div>
