@@ -23,6 +23,7 @@ import 'brace/theme/cobalt';
 import 'brace/theme/monokai';
 import 'brace/theme/eclipse';
 import 'brace/theme/solarized_light';
+import 'brace/ext/language_tools';
 import 'brace/mode/java';
 import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
@@ -98,6 +99,12 @@ export class TestComponent implements OnInit {
     private CODING_LANGUAGES: string[] = ['Java', 'Cpp', 'C'];
     private defaultSnackBarDuration: number = 3000;
     private clockIntervalListener: Subscription;
+    optionsForAuto: any = {
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+
+    };
 
     constructor(private router: Router,
         public dialog: MdDialog,

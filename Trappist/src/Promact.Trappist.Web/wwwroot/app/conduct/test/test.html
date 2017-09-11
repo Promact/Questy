@@ -74,6 +74,7 @@
                         <ace-editor [(text)]="codeAnswer"
                                     (textChanged)="onChange($event)"
                                     [mode]="selectedMode"
+                                    [options]="optionsForAuto"
                                     [theme]="selectedTheme"
                                     #editor
                                     id="edit"
