@@ -222,6 +222,7 @@ namespace Promact.Trappist.Repository.Tests
         {
             bool isDeleted = false;
             var testQuestionList = new List<TestQuestion>();
+            var questionsToBeRemoved = new List<TestQuestion>();
             //Adds each question to TestQuestion Model whose IsSelct property is true
             foreach (var questionToAdd in questionsToAdd)
             {
@@ -230,20 +231,18 @@ namespace Promact.Trappist.Repository.Tests
                 //if question exists in TestQuestion and its IsSelect property is false,then that question will be deleted from TestQuestion
                 if (questionExistInTest != null && !questionToAdd.Question.IsSelect)
                 {
-                    _dbContext.TestQuestion.Remove(questionExistInTest);
-                    await _dbContext.SaveChangesAsync();
+                    questionsToBeRemoved.Add(questionExistInTest);
                     isDeleted = true;
                 }
                 //Checks if question's IsSelect property is true
-                else if (questionToAdd.Question.IsSelect)
+                else if (questionToAdd.Question.IsSelect && questionExistInTest == null)
                 {
                     //Creates TestQuestion Object
                     var testQuestionObj = new TestQuestion();
                     testQuestionObj.QuestionId = questionToAdd.Question.Id;
                     testQuestionObj.TestId = testId;
                     //If question is already present in the same Test, it wont be added to TestQuestion 
-                    if (questionExistInTest == null)
-                        testQuestionList.Add(testQuestionObj);
+                    testQuestionList.Add(testQuestionObj);
                 }
             }
             //Returns message that user has not selected any new question 
@@ -251,6 +250,7 @@ namespace Promact.Trappist.Repository.Tests
                 return _stringConstants.NoNewChanges;
             else
             {
+                _dbContext.TestQuestion.RemoveRange(questionsToBeRemoved);
                 await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
                 await _dbContext.SaveChangesAsync();
                 //Returns success message 
@@ -276,7 +276,7 @@ namespace Promact.Trappist.Repository.Tests
             int defaultCorrectMarks = 1;
             DateTime defaultEndDate = currentDate.AddDays(1);
             if (testAcObject != null)
-            {                
+            {
                 testAcObject.TestIpAddress = testIpAddressAc;
                 testAcObject.NumberOfTestAttendees = test.TestAttendees.Count();
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate, DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime

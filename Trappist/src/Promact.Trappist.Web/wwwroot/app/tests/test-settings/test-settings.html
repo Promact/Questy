@@ -34,7 +34,7 @@
                         <label>IP Restrictions</label>
                         <div class="ip-add-field" *ngFor="let ip of testDetails.testIpAddress; let i= index">
                             <input type="text" class="form-control small-width" id="From" name="ip_{{i}}" placeholder="IP Address {{i+1}}" (keyup)="IpAddressAdded(ip.ipAddress);showErrorMessage(ip)" (focus)="IpAddressAdded(ip.ipAddress)" #From=ngModel [(ngModel)]="ip.ipAddress" pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$" />
-                            <em class="material-icons" (click)="removeIpAddress(i,ip.id,ip.ipAddress)">close</em>
+                            <em class="material-icons" *ngIf="!(showIsPausedButton && !testDetails.isPaused)" (click)="removeIpAddress(i,ip.id,ip.ipAddress)">close</em>
                             <div class="errors-container">
                                 <span class="error-msg" *ngIf="From.errors && From.dirty" [hidden]="!From.errors.pattern">Enter IP address in correct format.</span>
                                 <span class="error-msg" *ngIf="ip.isErrorMessageVisible">Add IP Address or remove this field.</span>
