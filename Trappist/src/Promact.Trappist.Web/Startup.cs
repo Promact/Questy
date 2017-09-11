@@ -106,7 +106,7 @@ namespace Promact.Trappist.Web
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             #endregion
             
-            services.AddMiniProfiler().AddEntityFramework();
+            //services.AddMiniProfiler().AddEntityFramework();
 
             services.AddMemoryCache();
         }
@@ -146,17 +146,17 @@ namespace Promact.Trappist.Web
                 });
             }
 
-            if (env.IsDevelopment())
-            {
-                app.UseMiniProfiler(x =>
-                {
-                    // Control which SQL formatter to use
-                    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseMiniProfiler(x =>
+            //    {
+            //        // Control which SQL formatter to use
+            //        x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
 
-                    // Control storage
-                    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
-                });
-            }
+            //        // Control storage
+            //        x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
+            //    });
+            //}
 
             app.UseIdentity();
 

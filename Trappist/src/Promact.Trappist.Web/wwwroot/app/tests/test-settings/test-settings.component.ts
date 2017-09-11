@@ -19,6 +19,7 @@ import { TestIPAddress } from '../test-IPAdddress';
 })
 
 export class TestSettingsComponent implements OnInit {
+        isFocusLostNull: boolean;
     showIsPausedButton: boolean;
     isRelaunched: boolean;
     testDetails: Test;
@@ -231,6 +232,15 @@ export class TestSettingsComponent implements OnInit {
             if (response)
                 this.openSnackBar('Your test is paused.');
         });
+    }
+
+    IsFocusLostValid() {
+        this.isFocusLostNull = this.testDetails.focusLostTime.toString() === '';
+    }
+
+    changeFocusValue() {
+        this.testDetails.focusLostTime = this.testDetails.browserTolerance.toString() === '0' ? 0 : 5;
+        this.isFocusLostNull = false;
     }
 
     /**
