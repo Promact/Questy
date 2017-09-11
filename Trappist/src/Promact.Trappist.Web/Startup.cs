@@ -61,6 +61,7 @@ namespace Promact.Trappist.Web
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            Env = env;
         }
         public IConfigurationRoot Configuration { get; }
 
