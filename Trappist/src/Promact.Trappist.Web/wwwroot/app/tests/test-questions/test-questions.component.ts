@@ -145,7 +145,13 @@ export class TestQuestionsComponent implements OnInit {
             //If question list of a category is not null
             if (category.isSelect && category.questionList !== null)
                 //Every question from category are concatenated to single array which will be sent to add to test
-                this.questionsToAdd = this.questionsToAdd.concat(category.questionList);
+                category.questionList.forEach(question => {
+                    let questionToAdd = new QuestionBase();
+                    questionToAdd.question.categoryID = question.question.categoryID;
+                    questionToAdd.question.id = question.question.id;
+                    questionToAdd.question.isSelect = question.question.isSelect;
+                    this.questionsToAdd.push(questionToAdd);
+                });
         }
         if (this.isEditTestEnabled) {
             this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(response => {
