@@ -116,7 +116,12 @@ namespace Promact.Trappist.Web
 
             if (!Env.IsDevelopment())
             {
-                services.AddDistributedSqlServerCache(options => Configuration.GetSection("Cache"));
+                services.AddDistributedSqlServerCache(options =>
+                {
+                    options.ConnectionString = Configuration.GetSection("ConnectionString:Value").Value;
+                    options.SchemaName = "dbo";
+                    options.TableName = "Cache";
+                });
             }
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
