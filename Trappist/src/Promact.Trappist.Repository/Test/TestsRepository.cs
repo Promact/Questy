@@ -427,7 +427,7 @@ namespace Promact.Trappist.Repository.Tests
             }
         }
 
-        public async Task<int> SetTestCopiedNumberAsync(int testId, string testName)
+        public async Task<int> SetTestCopiedNumberAsync(string testName)
         {
             var tests = await _dbContext.Test.Select(x => x.TestName).ToListAsync();
             int count = 0;

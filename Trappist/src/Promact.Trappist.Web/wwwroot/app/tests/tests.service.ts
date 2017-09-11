@@ -149,10 +149,9 @@ export class TestService {
 
     /**
      * Sets the number of times the test has been updated
-     * @param testId: Id of the test that is duplicated
      * @param testName: name of the test that is duplicated
      */
-    setTestCopiedNumber(testId: number, testName: string) {
-        return this.httpService.get(this.testApiUrl + '/' + testId + '/' + testName + '/setTestCopiedNumber');
+    setTestCopiedNumber(testName: string) {
+        return this.httpService.get(this.testApiUrl + '/' + testName + '/setTestCopiedNumber');
     }
 }

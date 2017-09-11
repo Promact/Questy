@@ -74,7 +74,7 @@ export class TestsDashboardComponent implements OnInit {
         test.isPaused = test.isLaunched = false;
         let newTestObject = (JSON.parse(JSON.stringify(test)));
         let duplicateTestDialog = this.dialog.open(DuplicateTestDialogComponent, { disableClose: true, hasBackdrop: true }).componentInstance;
-        this.testService.setTestCopiedNumber(test.id, test.testName).subscribe((response) => {
+        this.testService.setTestCopiedNumber(test.testName).subscribe((response) => {
             this.count = response;
             if (this.count === 1)
                 duplicateTestDialog.testName = newTestObject.testName + '_copy';
