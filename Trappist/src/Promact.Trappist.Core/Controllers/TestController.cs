@@ -293,13 +293,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Sets the number of times the test has been duplicated
         /// </summary>
-        /// <param name="testId">Contains the test id from the route</param>
         /// <param name="testName">Contains the name of the test which is to be duplicated</param>
         /// <returns>The number of times the test has been duplicated</returns>
-        [HttpGet("{testId}/{testName}/setTestCopiedNumber")]
-        public async Task<IActionResult> SetTestCopiedNumberAsync([FromRoute]int testId, [FromRoute]string testName)
+        [HttpGet("{testName}/setTestCopiedNumber")]
+        public async Task<IActionResult> SetTestCopiedNumberAsync([FromRoute]string testName)
         {
-            return Ok(await _testRepository.SetTestCopiedNumberAsync(testId, testName));
+            return Ok(await _testRepository.SetTestCopiedNumberAsync(testName));
         }
         #endregion
     }

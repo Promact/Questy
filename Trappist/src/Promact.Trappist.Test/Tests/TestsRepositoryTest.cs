@@ -29,7 +29,6 @@ namespace Promact.Trappist.Test.Tests
         private readonly ITestsRepository _testRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IQuestionRepository _questionRepository;
-        private readonly ITestConductRepository _testConductRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
@@ -548,9 +547,11 @@ namespace Promact.Trappist.Test.Tests
             var newTest = CreateTest("Maths_Copy");
             await _testRepository.CreateTestAsync(newTest, applicationUser.Id);
             await _testRepository.DuplicateTest(oldTest.Id, newTest);
+            var count = await _testRepository.SetTestCopiedNumberAsync(oldTest.TestName);
             Assert.Equal(4, _trappistDbContext.TestQuestion.Count());
             Assert.Equal(4, _trappistDbContext.TestCategory.Count());
             Assert.Equal(2, _trappistDbContext.TestIpAddresses.Count());
+            Assert.Equal(1, count);
         }
         #endregion
 
