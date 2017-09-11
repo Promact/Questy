@@ -242,7 +242,7 @@
         {
             get
             {
-                return "Congratulation! All test cases passed.";
+                return "Congratulations! All test cases passed.";
             }
         }
 
@@ -258,7 +258,7 @@
         {
             get
             {
-                return "Wrong Answer. None of the test cases passed";
+                return "Wrong Answer. None of the test cases passed.";
             }
         }
         #endregion
