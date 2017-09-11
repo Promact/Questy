@@ -63,6 +63,9 @@ namespace Promact.Trappist.Web
             Configuration = builder.Build();
         }
         public IConfigurationRoot Configuration { get; }
+
+        public IHostingEnvironment Env { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -75,7 +78,7 @@ namespace Promact.Trappist.Web
 
 
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
+
             services.AddSession(options =>
             {
                 options.CookieName = ".Trappist.session";
@@ -110,12 +113,10 @@ namespace Promact.Trappist.Web
 
             services.AddMemoryCache();
 
-            services.AddDistributedSqlServerCache(options =>
+            if (!Env.IsDevelopment())
             {
-                options.ConnectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
-                options.SchemaName = "dbo";
-                options.TableName = "Cache";
-            });
+                services.AddDistributedSqlServerCache(options => Configuration.GetSection("Cache"));
+            }
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
