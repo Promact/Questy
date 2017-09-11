@@ -191,6 +191,7 @@ export class IndividualReportComponent implements OnInit {
 
     //Sets the test finish status of the candidate
     testFinishStatus() {
+        console.log(this.testAttendee.report.testStatus);
         switch (this.testAttendee.report.testStatus) {
             case 0:
                 this.testStatus = 'Incomplete';
@@ -203,8 +204,10 @@ export class IndividualReportComponent implements OnInit {
                 break;
             case 3:
                 this.testStatus = 'Blocked';
+                break;
             case 4:
                 this.testStatus = 'Unfinished';
+                break;
         }
     }
 
