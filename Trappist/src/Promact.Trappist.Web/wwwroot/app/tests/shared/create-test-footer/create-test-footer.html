@@ -16,11 +16,11 @@
             <button type="button" class="btn btn-primary" (click)="addTestQuestions()">Save & Next</button>
         </div>
         <div class="buttons-block pull-right" *ngIf="isTestSettings && loader">
-            <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded" (click)="updateTestSettings()">Save & Exit</button>
-            <button type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched && !showIsPausedButton && !isRelaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded" (click)="launchTestDialogBox()">Save & Launch</button>
+            <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="updateTestSettings()">Save & Exit</button>
+            <button type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched && !showIsPausedButton && !isRelaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="launchTestDialogBox()">Save & Launch</button>
             <button type="button" class="btn btn-primary" *ngIf="(showIsPausedButton && !testDetails.isPaused)" (click)="pausTest()">Pause</button>
-            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && showIsPausedButton)" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded" (click)="resumTest()">Resume</button>
-            <button type="button" class="btn btn-primary" *ngIf="isRelaunched && !showIsPausedButton" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded" (click)="launchTestDialogBox()">Relaunch</button>
+            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && showIsPausedButton)" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="resumTest()">Resume</button>
+            <button type="button" class="btn btn-primary" *ngIf="isRelaunched && !showIsPausedButton" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="launchTestDialogBox()">Relaunch</button>
         </div>
     </div>
 </div>

@@ -45,6 +45,8 @@ export class CreateTestFooterComponent implements OnInit {
     isTestLaunched: boolean;
     @Input()
     loader: boolean;
+    @Input()
+    isFocusLostNull: boolean;
 
     constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
         this.isTestSection = false;
