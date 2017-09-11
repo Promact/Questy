@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
+using Exceptionless;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NLog.Extensions.Logging;
-using NLog.Web;
-using Microsoft.AspNetCore.HttpOverrides;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
@@ -35,6 +35,8 @@ using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
 using Promact.Trappist.Web.Models;
+using Serilog;
+using StackExchange.Profiling.Storage;
 using System;
 using System.IO;
 using Exceptionless;
@@ -63,6 +65,10 @@ namespace Promact.Trappist.Web
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
             Env = env;
         }
         public IConfigurationRoot Configuration { get; }
@@ -140,8 +146,7 @@ namespace Promact.Trappist.Web
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
-            app.AddNLogWeb();
+            loggerFactory.AddSerilog();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
