@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <label>Browser Tolerance</label>
-                        <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" (change)=" changeFocusValue($event)" name="Browser Tolerance">
+                        <select class="form-control half-width" [(ngModel)]="testDetails.browserTolerance" (change)=" changeFocusValue()" name="Browser Tolerance">
                             <option value="0">Not Applicable</option>
                             <option value="12">Low</option>
                             <option value="7">Medium</option>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="form-group" *ngIf="testDetails.browserTolerance != 0">
                         <label>Focus Lost Time (secs)</label>
-                        <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.focusLostTime" name="FocusLostTime" (keyup)="IsFocusLostValid($event)" min="0" #FocusLostTime="ngModel" />
+                        <input type="text" pattern="[0-9]*" class="form-control small-width" placeholder="00" [(ngModel)]="testDetails.focusLostTime" name="FocusLostTime" (keyup)="IsFocusLostValid()" min="0" #FocusLostTime="ngModel" />
                         <div class="errors-container">
                             <span class="error-msg" *ngIf="FocusLostTime.errors && FocusLostTime.dirty && !FocusLostTime.valid && FocusLostTime.errors.pattern">Invalid Time</span>
                             <span class="error-msg" *ngIf="isFocusLostNull">Focus Time can not be null , set value 0 instead</span>
