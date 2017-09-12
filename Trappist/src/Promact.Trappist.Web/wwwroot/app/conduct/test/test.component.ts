@@ -663,7 +663,11 @@ export class TestComponent implements OnInit {
      * @param status: index of the question
      */
     getQuestionStatus(status: QuestionStatus) {
-        return QuestionStatus[status];
+        let classes = QuestionStatus[status];
+        if (this.isCodeProcessing) {
+            classes += ' cursor-not-allowed';
+        }
+        return classes;
     }
 
     /**

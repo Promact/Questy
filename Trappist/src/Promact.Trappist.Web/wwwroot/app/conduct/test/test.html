@@ -99,7 +99,7 @@
     <div class="test-footer">
         <div class="test-footer-top ptb10">
             <div class="container-fluid">
-                <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index" [ngClass]="{'cursor-not-allowed':isCodeProcessing}"  (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
+                <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index"  (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
             </div>
         </div>
         <div class="test-footer-bottom ptb10">
