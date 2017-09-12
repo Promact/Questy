@@ -110,17 +110,19 @@ namespace Promact.Trappist.Web
             services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
             #endregion
 
-            services.AddMiniProfiler().AddEntityFramework();
+            if (Env.IsDevelopment())
+            {
+                services.AddMiniProfiler().AddEntityFramework();
 
-            services.AddMemoryCache();
+                services.AddMemoryCache();
+            }
 
             if (!Env.IsDevelopment())
             {
-                services.AddDistributedSqlServerCache(options =>
+                services.AddDistributedRedisCache(options =>
                 {
-                    options.ConnectionString = Configuration.GetSection("ConnectionString:Value").Value;
-                    options.SchemaName = "dbo";
-                    options.TableName = "Cache";
+                    options.Configuration = "127.0.0.1";
+                    options.InstanceName = "Trappist";
                 });
             }
         }
