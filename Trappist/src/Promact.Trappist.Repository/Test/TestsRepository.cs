@@ -62,8 +62,7 @@ namespace Promact.Trappist.Repository.Tests
             tests.ForEach(test =>
             {
                 testAcObject = new TestAC();
-                testAcObject.Id = test.Id;
-                testAcObject.TestName = test.TestName;
+                testAcObject = Mapper.Map<TestAC>(test);
                 testAcObject.NumberOfTestAttendees = _dbContext.TestAttendees.Count(x => x.TestId == test.Id);
                 testAcObject.NumberOfTestSections = _dbContext.TestCategory.Count(x => x.TestId == test.Id);
                 testAcObject.NumberOfTestQuestions = _dbContext.TestQuestion.Count(x => x.TestId == test.Id);
