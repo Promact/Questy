@@ -439,7 +439,7 @@ namespace Promact.Trappist.Repository.Tests
                         count = count + 1;
                     else if (test == testName + "_copy")
                         count = count + 1;
-                    else if (test.Length == testName.Length + 7)
+                    else if (test == testName + "_copy_" + count)
                         count = count + 1;
                 }
             }
