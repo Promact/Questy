@@ -44,6 +44,9 @@ using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.DataProtection;
+using Serilog.Sinks.Udp;
+using System.Net;
+using Serilog.Formatting.Json;
 
 namespace Promact.Trappist.Web
 {
@@ -66,9 +69,16 @@ namespace Promact.Trappist.Web
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .CreateLogger();
+            var logger = new LoggerConfiguration();
+            logger.WriteTo.RollingFile("logs/log-{Date}.txt",restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning);
+
+            if (!env.IsDevelopment())
+            {
+                logger.WriteTo.Udp(IPAddress.Parse(Configuration.GetSection("LogstashIP").Value), 8081, new JsonFormatter(), restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning).Enrich.WithProperty("Application","Trappist");
+            }
+
+            Log.Logger = logger.CreateLogger();
+
             Env = env;
         }
         public IConfigurationRoot Configuration { get; }
