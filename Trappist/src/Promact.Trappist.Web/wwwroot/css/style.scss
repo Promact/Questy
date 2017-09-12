@@ -92,6 +92,10 @@ p {
     margin-top: 10px;
 }
 
+.mt15 {
+    margin-top: 15px;
+}
+
 .mb20 {
     margin-bottom: 20px;
 }
@@ -2339,6 +2343,10 @@ footer {
         td {
             padding: 10px 20px;
             border-bottom: 1px solid $color_border;
+
+            &.actions {
+                min-width: 110px;
+            }
         }
     }
 
@@ -2398,7 +2406,7 @@ footer {
     }
 
     progress {
-      width: 50px;
+        width: 50px;
     }
 }
 

@@ -122,7 +122,6 @@ export class TestReportComponent implements OnInit {
         this.getAllTestCandidates();
     }
 
-
     /**
      * Fetches all the candidates of any particular test
      */
@@ -766,46 +765,49 @@ export class TestReportComponent implements OnInit {
      * Generate report for unfinished test
      */
     generateReportForUnfinishedTest(testAttendee?: TestAttendee) {
-        this.isGeneratingReport = true;
+        let confirmation = window.confirm('Do you want to generate report of this candidate ?');
+        if (confirmation) {
+            this.isGeneratingReport = true;
 
-        let isSomeChecked: boolean;
+            let isSomeChecked: boolean;
 
-        let attendeeIdList = new Array<number>();
-        if (testAttendee) {
-            testAttendee.generatingReport = true;
-            attendeeIdList.push(testAttendee.id);
-        } else {
-            isSomeChecked = this.testAttendeeArray.some(x => x.checkedCandidate);
-            this.testAttendeeArray.forEach(x => {
-                if (!isSomeChecked && x.report.totalMarksScored === null) {
-                    x.generatingReport = true;
-                    attendeeIdList.push(x.id);
-                } else if (x.checkedCandidate && x.report.totalMarksScored === null) {
-                    x.generatingReport = true;
-                    attendeeIdList.push(x.id);
-                }
+            let attendeeIdList = new Array<number>();
+            if (testAttendee) {
+                testAttendee.generatingReport = true;
+                attendeeIdList.push(testAttendee.id);
+            } else {
+                isSomeChecked = this.testAttendeeArray.some(x => x.checkedCandidate);
+                this.testAttendeeArray.forEach(x => {
+                    if (!isSomeChecked && x.report.totalMarksScored === null) {
+                        x.generatingReport = true;
+                        attendeeIdList.push(x.id);
+                    } else if (x.checkedCandidate && x.report.totalMarksScored === null) {
+                        x.generatingReport = true;
+                        attendeeIdList.push(x.id);
+                    }
+                });
+            }
+
+            this.reportService.generateReport(attendeeIdList).subscribe(res => {
+
+                this.testAttendeeArray.forEach((o, i, a) => {
+                    if (res.some(x => x.id === a[i].id)) {
+                        a[i] = res.find(x => x.id === a[i].id);
+                    }
+                    if (!isSomeChecked) {
+                        a[i].generatingReport = false;
+                    } else if (a[i].checkedCandidate) {
+                        a[i].generatingReport = false;
+                        a[i].checkedCandidate = true;
+                    }
+                    //set report for global attendee array
+                    let attendeeIndex = this.attendeeArray.findIndex(y => y.id === a[i].id);
+                    this.attendeeArray[attendeeIndex] = a[i];
+                });
+
+                this.isGeneratingReport = false;
             });
         }
-
-        this.reportService.generateReport(attendeeIdList).subscribe(res => {
-
-            this.testAttendeeArray.forEach((o, i, a) => {
-                if (res.some(x => x.id === a[i].id)) {
-                    a[i] = res.find(x => x.id === a[i].id);
-                }
-                if (!isSomeChecked) {
-                    a[i].generatingReport = false;
-                } else if (a[i].checkedCandidate) {
-                    a[i].generatingReport = false;
-                    a[i].checkedCandidate = true;
-                }
-                //set report for global attendee array
-                let attendeeIndex = this.attendeeArray.findIndex(y => y.id === a[i].id);
-                this.attendeeArray[attendeeIndex] = a[i];
-            });
-
-            this.isGeneratingReport = false;
-        });
     }
 
     showDownloadButton() {
