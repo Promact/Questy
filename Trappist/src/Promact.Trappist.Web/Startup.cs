@@ -121,7 +121,7 @@ namespace Promact.Trappist.Web
             {
                 services.AddDistributedRedisCache(options =>
                 {
-                    options.Configuration = "127.0.0.1";
+                    options.Configuration = "localhost";
                 });
             }
         }
