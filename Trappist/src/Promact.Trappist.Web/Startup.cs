@@ -40,6 +40,8 @@ using System.IO;
 using Exceptionless;
 using StackExchange.Profiling.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using StackExchange.Redis;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Promact.Trappist.Web
 {
@@ -119,6 +121,12 @@ namespace Promact.Trappist.Web
 
             if (!Env.IsDevelopment())
             {
+
+                var redis = ConnectionMultiplexer.Connect("127.0.0.1");
+
+                services.AddDataProtection()
+                    .PersistKeysToRedis(redis, "DataProtection-Keys");
+
                 services.AddDistributedRedisCache(options =>
                 {
                     options.Configuration = "127.0.0.1";
