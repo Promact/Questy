@@ -134,4 +134,8 @@ export class ReportService {
     generateReport(attendeeIdList: number[]) {
         return this.httpService.post(this.reportsApiUrl + '/generateReport', attendeeIdList);
     }
+
+    getAttendeeIdList(testId: number) {
+        return this.httpService.get(this.reportsApiUrl + '/' + testId + '/getAttendeeIdList');
+    }
 } 

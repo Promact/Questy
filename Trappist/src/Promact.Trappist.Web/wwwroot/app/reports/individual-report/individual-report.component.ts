@@ -68,8 +68,10 @@ export class IndividualReportComponent implements OnInit {
     showPieChart: boolean;
     isPercentageVisible: boolean;
     isScoreVisible: boolean;
+    attendeeArray: number[];
+    attendeeId: number;
 
-    constructor(private reportsService: ReportService, private route: ActivatedRoute) {
+    constructor(private reportsService: ReportService, private route: ActivatedRoute, private router: Router) {
         this.loader = true;
         this.testQuestions = new Array<TestQuestion>();
         this.testAttendeeId = this.route.snapshot.params['id'];
@@ -84,6 +86,7 @@ export class IndividualReportComponent implements OnInit {
         this.isPercentileVisible = false;
         this.isPercentageVisible = false;
         this.isScoreVisible = false;
+        this.attendeeArray = new Array<number>();
     }
 
     ngOnInit() {
@@ -134,7 +137,7 @@ export class IndividualReportComponent implements OnInit {
             if (this.resumeTestLog)
                 this.testAttendee.testLogs.resumeTest = this.convertTestLogsDateTimetoLocalDateTime(this.testAttendee.testLogs.resumeTest);
 
-           
+
             this.reportsService.getTotalNumberOfAttemptedQuestions(this.testAttendeeId).subscribe((response) => {
                 this.numberOfQuestionsAttempted = response;
             });
@@ -195,7 +198,6 @@ export class IndividualReportComponent implements OnInit {
 
     //Sets the test finish status of the candidate
     testFinishStatus() {
-        console.log(this.testAttendee.report.testStatus);
         switch (this.testAttendee.report.testStatus) {
             case 0:
                 this.testStatus = 'Incomplete';
@@ -448,6 +450,24 @@ export class IndividualReportComponent implements OnInit {
             doc.setFontSize(5);
             doc.save(testName + '_' + attendeeName + '.pdf');
             this.loader = false;
+        });
+    }
+
+    getAttendeeIdListOfTest() {
+        this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
+            this.attendeeArray = response;
+            let index = this.attendeeArray.indexOf(this.testAttendeeId) + 1;
+            if (index != 0) {
+                this.attendeeId = this.attendeeArray[index - 1];
+                this.router.navigate(['/individual-report/', this.attendeeId]);
+                console.log(this.attendeeId);
+                console.log(this.router.navigate(['/individual-report/', this.attendeeId]));
+            }
+            else
+                this.router.navigate(['/individual-report/', this.testAttendeeId]);
+            console.log(this.testAttendeeId);
+            console.log(this.attendeeArray);
+            console.log(index);
         });
     }
 }

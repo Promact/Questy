@@ -390,6 +390,12 @@ namespace Promact.Trappist.Repository.Reports
 
             return await _dbContext.TestAttendees.Where(x => attendeeIdList.Any(id => id == x.Id)).Include(x => x.Report).ToListAsync();
         }
+
+        public async Task<List<int>> GetAttendeeIdListAsync(int testId)
+        {
+            var testAttendeeIdList = await _dbContext.TestAttendees.Where(x => x.TestId == testId && x.Report != null).Select(x => x.Id).ToListAsync();
+            return testAttendeeIdList;
+        }
         #endregion
         #endregion
     }
