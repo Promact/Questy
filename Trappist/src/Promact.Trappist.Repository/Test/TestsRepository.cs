@@ -74,12 +74,6 @@ namespace Promact.Trappist.Repository.Tests
         #endregion
 
         #region Test Settings
-        /// <summary>
-        /// Updates the edited Test Name
-        /// </summary>
-        /// <param name="id">The parameter "id" takes takes the value of the Id from the route</param>
-        /// <param name="testObject">The parameter "testObject" is an object of Test</param>
-        /// <returns>Updated Test Name</returns>
         public async Task UpdateTestNameAsync(int id, Test testObject)
         {
             var testSettingsToUpdate = _dbContext.Test.FirstOrDefault(x => x.Id == id);
@@ -414,7 +408,9 @@ namespace Promact.Trappist.Repository.Tests
             }
             return test;
         }
+        #endregion
 
+        #region TestLogs
         public async Task SetStartTestLogAsync(int attendeeId)
         {
             var defaultDate = default(DateTime);

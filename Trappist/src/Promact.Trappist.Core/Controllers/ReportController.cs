@@ -104,7 +104,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Gets all the answers given by the test attendee
         /// </summary>
         /// <param name="id">Id of the test attendee</param>
-        /// <returns>A listy of answers given by the test attendee</returns>
+        /// <returns>A list of answers given by the test attendee</returns>
         [HttpGet("{id}/testAnswers")]
         public async Task<IActionResult> GetTestAttendeeAnswers([FromRoute] int id)
         {
@@ -224,7 +224,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Gets the number of questions attempted by a test attendee
         /// </summary>
         /// <param name="attendeeId">Contains the value of the attendee Id from the route</param>
-        /// <returns>Number of attempted questions by an attendee</returns>
+        /// <returns>Number of questions attempted by an attendee</returns>
         [HttpGet("{attendeeId}/attemptedQuestions")]
         public async Task<int> GetTotalNumberOfAttemptedQuestionsByAttendee([FromRoute]int attendeeId)
         {

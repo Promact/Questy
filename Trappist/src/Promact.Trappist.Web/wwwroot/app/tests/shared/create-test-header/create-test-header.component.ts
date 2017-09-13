@@ -180,6 +180,7 @@ export class CreateTestHeaderComponent implements OnInit {
     /**
     * Displays the tooltip message
     * @param $event is of type Event and is used to call stopPropagation()
+    * @param testLink contains the link of the test
     */
     showTooltipMessage($event: Event, testLink: any) {
         $event.stopPropagation();

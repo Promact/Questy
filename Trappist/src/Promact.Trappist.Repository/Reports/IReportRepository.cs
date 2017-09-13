@@ -107,6 +107,7 @@ namespace Promact.Trappist.Repository.Reports
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The test code solution details of the code snippet question attended by test attendees</returns>
         Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId,int questionId);
+
         /// <summary>
         /// set test status type to allCandidate
         /// </summary>
@@ -132,7 +133,7 @@ namespace Promact.Trappist.Repository.Reports
         /// Gets the number of questions attempted by a test attendee
         /// </summary>
         /// <param name="attendeeId">Contains the value of the attendee Id from the route</param>
-        /// <returns>Number of attempted questions by an attendee</returns>
+        /// <returns>Number of questions attempted by an attendee</returns>
         Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId);
 
         /// <summary>

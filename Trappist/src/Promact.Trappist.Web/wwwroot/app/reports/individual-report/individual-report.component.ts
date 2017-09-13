@@ -168,6 +168,10 @@ export class IndividualReportComponent implements OnInit {
         });
     }
 
+    /**
+     * Converts the test logs utc date-time to local date-time
+     * @param date contains the values of the fields of test logs
+     */
     private convertTestLogsDateTimetoLocalDateTime(date: Date) {
         let testLogsDateTime = new Date(date);
         let offset = testLogsDateTime.getTimezoneOffset();
@@ -386,7 +390,7 @@ export class IndividualReportComponent implements OnInit {
         this.showPieChart = (this.easy === 0 && this.medium === 0 && this.hard === 0) ? false : true;
     }
 
-    //Sets the values of the pie chart that displays the no of correct answers in each difficulty level
+    //Sets the values of the pie chart that displays the number of correct answers in each difficulty level
     correctPieChartValue() {
         return [this.easy, this.medium, this.hard];
     }

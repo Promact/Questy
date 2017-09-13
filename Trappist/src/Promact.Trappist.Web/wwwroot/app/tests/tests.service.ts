@@ -139,7 +139,7 @@ export class TestService {
     }
 
     /**
-     * Duplicates the slected test
+     * Duplicates the selected test
      * @param testId: Id of the test that is to be duplicated
      * @param newTestId: Id of the duplicated Test
      */

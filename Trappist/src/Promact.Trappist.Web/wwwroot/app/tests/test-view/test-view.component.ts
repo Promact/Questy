@@ -148,34 +148,6 @@ export class TestViewComponent implements OnInit {
     }
 
     /**
-     * Launches the Test Dialog Box
-     * @param id contains the value of the Id from the route
-     * @param testObject is an object of class Test
-     */
-    launchTestDialog(id: number, testObject: Test) {
-        let isCategoryAdded = this.testDetails.categoryAcList.some(function (x) {
-            return x.isSelect;
-        });
-        if (isCategoryAdded) {
-            let isQuestionAdded = this.testDetails.categoryAcList.some(function (x) {
-                return (x.numberOfSelectedQuestion !== 0);
-            });
-            if (isQuestionAdded) {
-                let instance = this.dialog.open(TestLaunchDialogComponent).componentInstance;
-                instance.testSettingObject = testObject;
-            }
-            else {
-                this.testDetails.isQuestionMissing = true;
-                let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
-            }
-        }
-        else {
-            this.testDetails.isQuestionMissing = false;
-            let dialogRef = this.dialog.open(IncompleteTestCreationDialogComponent, { data: this.testDetails });
-        }
-    }
-
-    /**
      * Redirects to the Test Settings Page from the Test View Page
      */
     navigateToTestSettings() {
@@ -242,6 +214,7 @@ export class TestViewComponent implements OnInit {
     /**
    * Displays the tooltip message
    * @param $event is of type Event and is used to call stopPropagation()
+   * @param testLink is the link of the test 
    */
     showTooltipMessage($event: Event, testLink: any) {
         $event.stopPropagation();
