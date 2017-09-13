@@ -309,10 +309,10 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Test-Summary API
         /// <summary>
-        /// Returns the total number of questions in a particular test
+        /// Calculates the total number of questions in a particular test
         /// </summary>
         /// <param name="testLink">Contains the link of the Test</param>
-        /// <returns></returns>
+        /// <returns>The total number of questions of that Test</returns>
         [HttpGet("{testLink}/test-summary")]
         public async Task<int> GetTestSummaryAsync(string testLink)
         {

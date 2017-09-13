@@ -130,10 +130,10 @@ namespace Promact.Trappist.Repository.TestConduct
         Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer);
 
         /// <summary>
-        /// Returns the total number of questions for a Test
+        /// Calculates the total number of questions for a Test
         /// </summary>
         /// <param name="testLink">Contains the link of the Test</param>
-        /// <returns></returns>
+        /// <returns>The total number of questions of that Test</returns>
         Task<int> GetTestSummaryDetailsAsync(string testLink);
 
         Task<List<TestLogs>> GetTestLogsAsync();

@@ -168,11 +168,11 @@ namespace Promact.Trappist.Repository.Tests
         #endregion
         #region Duplicate Test
         /// <summary>
-        /// Duplicates questions and categories present in the test
+        /// Duplicates questions,categories and Ip addresses present in the test to be duplicated
         /// </summary>
         /// <param name="testId">Id of the test that is to be duplicated</param>
         /// <param name="newtestId">Id of the duplicated Test</param>
-        /// <returns></returns>
+        /// <returns>Test object for the duplicated test</returns>
         Task<Test> DuplicateTest(int testId, Test test);
 
         /// <summary>

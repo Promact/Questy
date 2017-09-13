@@ -273,11 +273,11 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Duplicate Test
         /// <summary>
-        /// Duplicates questions and categories present in the test
+        /// Duplicates questions,categories and Ip addresses present in the test to be duplicated
         /// </summary>
-        /// <param name="id">Id of the test that is to be duplicated</param>
-        /// <param name="newtestId">Id of the duplicated test</param>
-        /// <returns>object of the Test class</returns>
+        /// <param name="testId">Id of the test that is to be duplicated</param>
+        /// <param name="newtestId">Id of the duplicated Test</param>
+        /// <returns>Test object for the duplicated test</returns>
         [HttpPost("{id}/duplicateTest")]
         public async Task<IActionResult> DuplicateTest([FromRoute]int id, [FromBody]Test test)
         {

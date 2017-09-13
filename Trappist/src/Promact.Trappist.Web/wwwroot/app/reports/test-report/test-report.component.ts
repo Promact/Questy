@@ -741,15 +741,6 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * navigates to the individual test report component 
-     * @param testAttendeeId contains the value of the test attendee Id from the route
-     */
-    navigateToIndividualReportPage(testAttendeeId: number) {
-        this.routeForIndividualTestReport = 'reports/test/' + this.testId;
-        this.router.navigate(['/individual-report/', testAttendeeId, '/download'], { relativeTo: this.routeForIndividualTestReport });
-    }
-
-    /**
     * Selects the search text area on clicking of the search button
     * @param $event is of type Event and is used to call stopPropagation()
     * @param search is of type any

@@ -19,7 +19,7 @@ import { TestIPAddress } from '../test-IPAdddress';
 })
 
 export class TestSettingsComponent implements OnInit {
-        isFocusLostNull: boolean;
+    isFocusLostNull: boolean;
     showIsPausedButton: boolean;
     isRelaunched: boolean;
     testDetails: Test;
@@ -104,6 +104,10 @@ export class TestSettingsComponent implements OnInit {
         });
     }
 
+    /**
+     * Converts the utc date-time obtained for start and end test date-time fields into local date-time
+     * @param date contains the start and end test field values fetched from the database
+     */
     private toDateString(date: Date): string {
         return (date.getFullYear().toString() + '-'
             + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
@@ -181,9 +185,10 @@ export class TestSettingsComponent implements OnInit {
     }
 
     /**
-     * Launches the Test Dialog Box and also updates the Settings edited for the selected Test
+     * Launches the Test and also updates the Settings edited for the selected Test
      * @param id contains the value of the Id from the route
      * @param testObject is an object of class Test
+     * @param isTestLaunched is a boolean value indicating whether the test has been launched or not
      */
     launchTestDialog(id: number, testObject: Test, isTestLaunched: boolean) {
 
@@ -274,9 +279,9 @@ export class TestSettingsComponent implements OnInit {
 
     /**
      * Removes ip address fields 
-     * @param index
-     * @param ipId
-     * @param ipAddress
+     * @param index contains the index of the ip address array having the ip address to be removed
+     * @param ipId is the Id of the ip address to be removed
+     * @param ipAddress is the value of the ip address to be removed
      */
     removeIpAddress(index: number, ipId: number, ipAddress: string) {
         this.testDetails.testIpAddress.splice(index, 1);
@@ -316,6 +321,7 @@ export class TestSettingsComponent implements OnInit {
     /**
      * Displays the tooltip message
      * @param $event is of type Event and is used to call stopPropagation()
+     * @param testLink is the link of the test 
      */
     showTooltipMessage($event: Event, testLink: any) {
         $event.stopPropagation();
