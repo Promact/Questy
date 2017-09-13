@@ -227,7 +227,7 @@ namespace Promact.Trappist.Repository.Reports
             if (scores.Any(x => x.Score != scores[0].Score))
             {
                 maxScore = scores.Max(x => x.Score);
-                testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maxScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+                testCodeSolutionObject = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maxScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
             }
             else
                 testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).OrderByDescending(x => x.CreatedDateTime).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
