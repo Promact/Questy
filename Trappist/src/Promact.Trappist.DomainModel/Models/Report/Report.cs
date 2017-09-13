@@ -9,6 +9,8 @@ namespace Promact.Trappist.DomainModel.Models.Report
     {
         public double TotalMarksScored { get; set; }
 
+        public int TotalCorrectAttempts { get; set; }
+
         public double Percentage { get; set; }
 
         public double Percentile { get; set; }

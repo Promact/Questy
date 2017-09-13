@@ -7,5 +7,6 @@ export class Report {
     timeTakenByAttendee: number;
     testStatus: TestStatus;
     isTestPausedUnWillingly: boolean;
+    totalCorrectAttempts: number;
 }
 

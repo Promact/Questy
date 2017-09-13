@@ -528,6 +528,7 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal correctMarks = 0;
             decimal fullMarks = 0;
             decimal totalMarks = 0;
+            var noOfCorrectAttempts = 0;
             bool isAnsweredOptionNull = false;
 
             //Gets the list of questions attended by the test attendee and includes the test answers, question, single-multiple-answer question and single-multiple-answer options corresponding to the test attendee
@@ -590,14 +591,21 @@ namespace Promact.Trappist.Repository.TestConduct
                     if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
                         //Add score for single-multiple answer question when correct
                         correctMarks += testAttendee.Test.CorrectMarks;
+                        noOfCorrectAttempts += 1;
+                    }
 
                     else if (!isAnsweredOptionNull)
                         //Subtract score for single-multiple answer question when incorrect
                         correctMarks -= testAttendee.Test.IncorrectMarks;
                 }
                 else
+                {
                     //Add score from coding question attempted
                     correctMarks += (decimal)await _dbContext.TestCodeSolution.AsNoTracking().Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
+                    if (correctMarks == testAttendee.Test.CorrectMarks)
+                        noOfCorrectAttempts = +1;
+                }
+                    
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);
@@ -608,6 +616,7 @@ namespace Promact.Trappist.Repository.TestConduct
             report.TotalMarksScored = (double)totalMarks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
             report.Percentage = Math.Round(report.Percentage, 2);
+            report.TotalCorrectAttempts = noOfCorrectAttempts;
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
         }
