@@ -128,96 +128,61 @@ namespace Promact.Trappist.Repository.Reports
             var testQuestionList = new List<TestQuestion>();
             var allAttendeeMarksDetailsList = new List<ReportQuestionsCountAC>();
             var easyQuestionAttempted = 0; var hardQuestionAttempted = 0; var mediumQuestionAttempted = 0;
-            var correctAttemptedQuestion = 0; var totalCorrectOptions = 0; var countOptions = 0; var totalQuestionAttempted = 0;
+            var correctAttemptedQuestion = 0; var countOptions = 0; var totalQuestionAttempted = 0;
 
             //all testattendees Of a test
-            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId && x.Report != null).Select(x => x.Id).ToListAsync();
-            //all test questions of a test
-            testQuestionList = await GetTestQuestions(testId);
-            var totalNoOfTestQuestions = testQuestionList.Count();
-            //all questions and answers attempted by all attendees
+            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId).Select(x=>x.Id).ToListAsync();
+            //no test questions of a test
+            var totalNoOfTestQuestions = await _dbContext.TestQuestion.Where(x => x.TestId == testId).CountAsync();
+            //all questions attempted by all attendees
             var questionsAttemptedByAllAttendeeList = await _dbContext.TestConduct.Where(x => x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
-                                                                                  .Include(x => x.TestAnswers).ToListAsync();
+                                                           .Select(selectOnly=> new {selectOnly.Id,selectOnly.TestAttendeeId,selectOnly.QuestionId ,selectOnly.Question.QuestionType,selectOnly.Question.DifficultyLevel}).ToListAsync();
+            //all answers attempted by all attendees
+            var answeredByAllAttendeeList = await _dbContext.TestAnswers.Select(s => new { s.TestConductId, s.AnsweredOption }).ToListAsync();
+           
             //all testcode solutions of a test
             var testCodeSolutionsList = await _dbContext.TestCodeSolution.Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score }).ToListAsync();
 
             foreach (var testAttendee in allTestAttendeeList)
             {
-
                 var attemptedQuestions = questionsAttemptedByAllAttendeeList.Where(x => x.TestAttendeeId == testAttendee).ToList();
                 attemptedQuestions.ForEach(x =>
                 {
-                    if (!(x.Question.QuestionType == QuestionType.Programming))
+                    var checkAttempts = 0 ;
+                    var difficultyLevel = x.DifficultyLevel;
+                    if (!(x.QuestionType == QuestionType.Programming))
                     {
-                        var difficultyLevel = x.Question.DifficultyLevel;
-                        var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
-                        if (x.Question.QuestionType == QuestionType.Single)
-                        {
-                            var correctOption = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(z => z.SingleMultipleAnswerQuestionID == x.Question.Id && z.IsAnswer).Select(z => z.Id).ToList();
-                            var givenOptionsByAttendee = x.TestAnswers.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
-                            if (givenOptionsByAttendee.First() != null)
+                        var givenOptionsByAttendee = answeredByAllAttendeeList.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
+                        if (givenOptionsByAttendee.First() != null)
                             {
                                 totalQuestionAttempted += 1;
-                                if (givenOptionsByAttendee.First().Value == correctOption.First())
-                                    correctAttemptedQuestion += 1;
-                                if (difficultyLevel == DifficultyLevel.Easy)
-                                    easyQuestionAttempted += 1;
-                                else if (difficultyLevel == DifficultyLevel.Medium)
-                                    mediumQuestionAttempted += 1;
-                                else
-                                    hardQuestionAttempted += 1;
-                            }
-                        }
-                        else
-                        {
-                            var Options = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(y => y.SingleMultipleAnswerQuestionID == x.Question.Id).ToList();
-                            totalCorrectOptions = Options.Where(y => y.IsAnswer).Count();
-                            var givenOptionsByAttendee = x.TestAnswers.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
-                            if (givenOptionsByAttendee.First() != null)
-                            {
-                                totalQuestionAttempted += 1;
-                                givenOptionsByAttendee.ForEach(z =>
-                                {
-                                    var option = z.Value;
-                                    if (Options.Find(c => c.Id == option).IsAnswer)
-                                        countOptions += 1;
-                                    if (!Options.Find(c => c.Id == option).IsAnswer)
-                                        countOptions -= 1;
-                                });
-                                if (totalCorrectOptions == countOptions)
-                                    correctAttemptedQuestion += 1;
-                                if (difficultyLevel == DifficultyLevel.Easy)
-                                    easyQuestionAttempted += 1;
-                                else if (difficultyLevel == DifficultyLevel.Medium)
-                                    mediumQuestionAttempted += 1;
-                                else
-                                    hardQuestionAttempted += 1;
-                            }
-                        }
+                                checkAttempts = 1;                            
+                            }                     
                     }
-                    else
+                    else 
                     {
-                        var difficultyLevel = x.Question.DifficultyLevel;
                         var givenSolutionByAttendee = testCodeSolutionsList.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee).ToList();
                         if (givenSolutionByAttendee.Count() > 0)
                         {
                             totalQuestionAttempted += 1;
-                            if (difficultyLevel == DifficultyLevel.Easy)
-                                easyQuestionAttempted += 1;
-                            else
-                            {
-                                if (difficultyLevel == DifficultyLevel.Medium)
-                                    mediumQuestionAttempted += 1;
-                                else
-                                    hardQuestionAttempted += 1;
-                            }
-                        }
-                        if (givenSolutionByAttendee.Any(y => y.Score == 1 && y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee))
-                            correctAttemptedQuestion += 1;
-
+                            checkAttempts = 1;
+                        }                       
                     }
+                if (checkAttempts == 1)
+                    {
+                        if (difficultyLevel == DifficultyLevel.Easy)
+                            easyQuestionAttempted += 1;
+                        else
+                        {
+                            if (difficultyLevel == DifficultyLevel.Medium)
+                                mediumQuestionAttempted += 1;
+                            else
+                                hardQuestionAttempted += 1;
+                        }
+                    }
+                    
                 });
-                var percentile = await CalculatePercentileAsync(testAttendee, testId);
+            //    var percentile = await CalculatePercentileAsync(testAttendee,testId);
                 var reportQuestions = new ReportQuestionsCountAC()
                 {
                     TestAttendeeId = testAttendee,
@@ -226,7 +191,7 @@ namespace Promact.Trappist.Repository.Reports
                     HardQuestionAttempted = hardQuestionAttempted,
                     CorrectQuestionsAttempted = correctAttemptedQuestion,
                     NoOfQuestionAttempted = totalQuestionAttempted,
-                    Percentile = System.Math.Round(percentile, 2),
+                 //   Percentile = System.Math.Round(percentile, 2),
                     totalTestQuestions = totalNoOfTestQuestions
                 };
                 allAttendeeMarksDetailsList.Add(reportQuestions);

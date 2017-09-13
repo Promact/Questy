@@ -8,6 +8,7 @@ export class Report {
     timeTakenByAttendee: number;
     isTestPausedUnWillingly: boolean;
     isAllowResume: boolean;
+    totalCorrectAttempts: number; 
 
     constructor() {
         this.totalMarksScored = null;
@@ -17,5 +18,6 @@ export class Report {
         this.timeTakenByAttendee = 0;
         this.isTestPausedUnWillingly = null;
         this.isAllowResume = null;
+        this.totalCorrectAttempts = null;
     }
 }

@@ -604,7 +604,7 @@ export class TestReportComponent implements OnInit {
                         let timeTaken = Math.trunc(testReport.timetaken / 60) + ' mins ' + Math.trunc(Math.floor(testReport.timetaken % 60)) + ' secs ';
                         workSheet3.addRow({
                             rollNo: testReport.rollNo, name: testReport.name, email: testReport.email, easyQ: y.easyQuestionAttempted, mediumQ: y.mediumQuestionAttempted, difficultQ: y.hardQuestionAttempted, totalQ: y.noOfQuestionAttempted,
-                            coorectQ: y.correctQuestionsAttempted, time: timeTaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
+                            coorectQ: x.report.totalCorrectAttempts, time: timeTaken, totalScore: testReport.totalMarks, percentage: testReport.percentage,
                             percentile: y.percentile, rank: this.attendeeRank
                         });
                     }
@@ -708,9 +708,7 @@ export class TestReportComponent implements OnInit {
                 this.maxDuration = x.report.timeTakenByAttendee;
                 this.maxDurationOfTest = Math.trunc(this.maxDuration / 60) + ' mins ' + Math.trunc(Math.floor(this.maxDuration % 60)) + ' secs ';
             }
-        });
-        this.reportQuestionDetails.forEach(x => {
-            totalCorrectAttemptByAllAttendees += x.correctQuestionsAttempted;
+            totalCorrectAttemptByAllAttendees = x.report.totalCorrectAttempts;
         });
         this.averageCorrectAttempt = totalCorrectAttemptByAllAttendees / totalAttendee;
         this.averageTestScore = totalScoreOfAllAttendees / totalAttendee;
