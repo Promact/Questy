@@ -10,18 +10,36 @@ export class ReportService {
     constructor(private httpService: HttpService) {
     }
 
+    /**
+     * Gets the test-name with test-link from the server
+     * @param testId: Id of the test
+     */
     getTestName(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/testName' + '/' + testId);
     }
 
+    /**
+     * Gets all attendees of a test from the server
+     * @param testId: Id of the test
+     */
     getAllTestAttendees(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testId);
     }
 
+    /**
+     * Set an attendee as a starred attendee and also make unstarred as per choice
+     * @param attendeeId: Id of an attendee
+     */
     setStarredCandidate(attendeeId: number) {
         return this.httpService.post(this.reportsApiUrl + '/star' + '/' + attendeeId, attendeeId);
     }
 
+    /**
+     * Sets all attendee of a test as Starred attendees and also make unstarred as per choice
+     * @param status: status of the star field 
+     * @param searchString: Text that needs to be searched
+     * @param selectedTestStatus: Filter status
+     */
     setAllCandidatesStarred(status: boolean, searchString: string, selectedTestStatus: number) {
         return this.httpService.put(this.reportsApiUrl + '/star/all/' + selectedTestStatus + '?searchString=' + searchString, status);
     }
@@ -59,6 +77,10 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + testAttendeeId + '/' + testId + '/percentile');
     }
 
+    /**
+     * Gets all the attendee details needed for generating excel sheet from server 
+     * @param testId: testId Id of the test
+     */
     getAllAttendeeMarksDetails(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/allAttendeeMarksDeatils');
     }
@@ -103,7 +125,7 @@ export class ReportService {
 
     /**
      * Gets the total number of questions attempted by a test attendee
-     * @param attendeeId contains the id of the test attendee from the route
+     * @param attendeeId: Contains the id of the test attendee from the route
      */
     getTotalNumberOfAttemptedQuestions(attendeeId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/attemptedQuestions');

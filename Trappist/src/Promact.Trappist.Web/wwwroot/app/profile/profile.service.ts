@@ -19,8 +19,8 @@ export class ProfileService {
     }
 
     /**
-     *  update the  details of the user
-     * @param editUser of type ApplicationUser which has the updated details of the user profile
+     * Update the  details of the user
+     * @param editUser: Object of type ApplicationUser which has the updated details of the user profile
      */
     updateUserDetails(editUser: ApplicationUser) {
         return this.httpService.put(this.profileApiUrl, editUser);
@@ -28,7 +28,7 @@ export class ProfileService {
 
     /**
      * Update user Password 
-     * @param updatedPassword of type ChangePasswordModel which has the new password of the user
+     * @param updatedPassword: Object of Type ChangePasswordModel which has the new password of the user
      */
     updateUserPassword(updatedPassword: ChangePasswordModel) {
         return this.httpService.put(this.profileApiUrl + '/password', updatedPassword);

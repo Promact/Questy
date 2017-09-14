@@ -31,6 +31,7 @@ namespace Promact.Trappist.Core.Controllers
             _basicSetupRepository = basicSetupRepository;
         }
 
+        #region Login API
         /// <summary>
         /// this method is used to see the view of login
         /// </summary>
@@ -93,6 +94,9 @@ namespace Promact.Trappist.Core.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
+        #endregion
+
+        #region ForgotPassword API
         /// <summary>
         /// this method is used  to see the view of forgot password form
         /// </summary>
@@ -126,7 +130,7 @@ namespace Promact.Trappist.Core.Controllers
                 var result = await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName,
                      body: $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>",
                     subject: "Reset Password");
-                if(!result)
+                if (!result)
                 {
                     ViewBag.EmailError = _stringConstant.FailedToSendEmailError;
                     return View(forgotPasswordModel);
@@ -144,7 +148,9 @@ namespace Promact.Trappist.Core.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region ResetPassword API
         /// <summary>
         /// this method is called when link is clicked through mail
         /// </summary>
@@ -206,4 +212,5 @@ namespace Promact.Trappist.Core.Controllers
             return View();
         }
     }
+    #endregion
 }

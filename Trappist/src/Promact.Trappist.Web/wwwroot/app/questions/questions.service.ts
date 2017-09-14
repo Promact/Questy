@@ -14,7 +14,7 @@ export class QuestionsService {
 
     /**
      * Add single multiple answer question
-     * @param question
+     * @param question: Object of QuestionBase type
      */
     addSingleMultipleAnswerQuestion(question: QuestionBase) {
         return this.httpService.post(this.questionsApiUrl, question);
@@ -22,7 +22,8 @@ export class QuestionsService {
 
     /**
      * Update single multiple answer question
-     * @param question
+     * @param questionId: Id of the question
+     * @param question: Object of QuestionBase type
      */
     updateSingleMultipleAnswerQuestion(questionId: number, question: QuestionBase) {
         return this.httpService.put(this.questionsApiUrl + '/' + questionId, question);
@@ -60,7 +61,7 @@ export class QuestionsService {
 
     /**
      * API to delete Question
-     * @param id:Id to delete Question
+     * @param id: Id to delete Question
      */
     deleteQuestion(id: number) {
         return this.httpService.delete(this.questionsApiUrl + '/' + id);
@@ -74,10 +75,12 @@ export class QuestionsService {
     updateQuestionById(id: number, question: QuestionBase) {
         return this.httpService.put(this.questionsApiUrl + '/' + id, question);
     }
-    /**
-     * Calls API to get number of questions
-     * @param categoryId
-     */
+
+   /**
+    * Calls API to get number of questions
+    * @param categoryId: Id of the category
+    * @param searchQuestion: Question that needs to be searched
+    */
     countTheQuestion(categoryId: number, searchQuestion: string) {
         return this.httpService.get(this.questionsApiUrl + '/numberOfQuestions/' + categoryId + '/' + searchQuestion);
     }

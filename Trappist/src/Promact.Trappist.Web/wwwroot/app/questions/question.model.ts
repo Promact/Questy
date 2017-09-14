@@ -2,6 +2,7 @@
 import { QuestionType } from '../questions/enum-questiontype';
 import { Category } from '../questions/category.model';
 import { CodeSnippetQuestion } from './code.snippet.model';
+
 export class Question {
     id: number;
     questionDetail: string;
@@ -10,6 +11,4 @@ export class Question {
     category: Category;
     categoryID: number;
     isSelect: boolean;
-  
 }
-

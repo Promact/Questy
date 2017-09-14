@@ -151,7 +151,7 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Sets all the candidates as starred candidates
-     * @param testId
+     * @param testId: Id of a test
      */
     setAllCandidatesStarred() {
         let status = this.headerStarStatus === 'star_border';
@@ -171,7 +171,7 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Toggles the star condition of a candidate
-     * @param testAttendee
+     * @param testAttendee: Object of TestAttendee type 
      */
     setStarredCandidate(testAttendee: TestAttendee) {
         this.reportService.setStarredCandidate(testAttendee.id).subscribe(
@@ -186,8 +186,8 @@ export class TestReportComponent implements OnInit {
         );
     }
     /**
-     * resumes test if Allow test resume is supervised
-     * @param attendee
+     * Resumes test if Allow test resume is supervised
+     * @param attendee: Object of TestAttendee type
      */
     resumeTest(attendee: TestAttendee) {
         this.reportService.createSessionForAttendee(attendee, this.test.link, false).subscribe(response => {
@@ -203,7 +203,7 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Checks whther a candidate is satrred
-     * @param attendee
+     * @param attendee: Object of TestAttendee type
      */
     isStarredCandidate(attendee: TestAttendee) {
         return attendee.starredCandidate ? 'star' : 'star_border';
@@ -219,7 +219,7 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Sets the search criteria
-     * @param searchString
+     * @param searchString: String that needs to be searched 
      */
     getTestAttendeeMatchingSearchCriteria(searchString: string) {
         this.searchString = searchString;
@@ -234,8 +234,8 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * Sets the test status of the candidate
-     * @param typeOfTest
+     * Sets the test completion status to fliter accordingly
+     * @param testCompletionStatus: Value of test-completion-status
      */
     setTestStatusType(testCompletionStatus: string) {
         this.showGenerateReportButton = false;
@@ -261,8 +261,8 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Filters the test attendee list based on test status of the candidate and search string provided by user
-     * @param selectedTestStatus
-     * @param searchString
+     * @param selectedTestStatus Status selected for filtering
+     * @param searchString String that to be searched
      */
     filter(selectedTestStatus: TestStatus, searchString: string, showStarCandidates: boolean) {
         let tempAttendeeArray: TestAttendee[] = [];
@@ -336,8 +336,8 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Keeps tarck of starting index of the active page
-     * @param activePage
-     * @param count
+     * @param activePage: Number of the page which is active at current moment
+     * @param count: Total number of attendees in a test 
      */
     startingIndexOfActivePage(activePage: number, count: number) {
         return count === 0 ? 0 : (activePage - 1) * 10 + 1;
@@ -345,8 +345,8 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Keeps track of the last index of the active page
-     * @param activePage
-     * @param count
+     * @param activePage: Number of the page which is active at current moment
+     * @param count: Total number of attendees in a test
      */
     endingIndexOfActivePage(activePage: number, count: number) {
         let pagetracker = activePage * 10;
@@ -421,7 +421,7 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * download basic excel report for a test
+     * Download basic excel report for a test
      */
     downloadTestBasicDetails() {
         let testName = this.test.testName;
@@ -629,7 +629,7 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Convert utc time into localtime
-     * @param dateTime time of test
+     * @param dateTime: Time of test
      */
     calculateLocalTime(dateTime: Date) {
         let offset = dateTime.getTimezoneOffset();
@@ -665,8 +665,8 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Select individual candidate of a test
-     * @param testAttendee is object of the testAttendee table
-     * @param select is the checkbox value of the checked candidate
+     * @param testAttendee: Object of the testAttendee table
+     * @param select: Checkbox value of the checked candidate
      */
     selectIndividualCandidate(testAttendee: TestAttendee, select: boolean) {
         testAttendee.checkedCandidate = select;
@@ -675,11 +675,10 @@ export class TestReportComponent implements OnInit {
 
     /**
      * Calculate testfinish status and generate individual report link for a every attendee 
-     * @param testStatus status of the test
-     * @param testID id of the test
-     * @param testAttendeeId id of an attendee
+     * @param testStatus: Status of the test
+     * @param testID: Id of the test
+     * @param testAttendeeId: Id of an attendee
      */
-
     testTakerDetails(testStatus: number, testID: number, testAttendeeId: number) {
         switch (testStatus) {
             case 1:
@@ -695,7 +694,7 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * calculate testSummary details of a particular test
+     * Calculate testSummary details of a particular test
      */
     calculateTestSummaryDetails() {
         let totalTimeByAllAttendees = 0;
@@ -719,7 +718,7 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * calculate all attendee ranks based on their totalmarks
+     * Calculate all attendee ranks based on their totalmarks
      */
     caculateAttendeeRank() {
         let rank = 1;
@@ -742,8 +741,8 @@ export class TestReportComponent implements OnInit {
 
     /**
     * Selects the search text area on clicking of the search button
-    * @param $event is of type Event and is used to call stopPropagation()
-    * @param search is of type any
+    * @param $event: is of type Event and is used to call stopPropagation()
+    * @param search: is of type any
     */
     selectTextArea($event: any, search: any) {
         $event.stopPropagation();
@@ -810,6 +809,9 @@ export class TestReportComponent implements OnInit {
         return testAttendee.report.testStatus !== TestStatus.allCandidates;
     }
 
+    /**
+     * Count Test attendees based on teststatus
+     */
     testStatusWiseCountAttendees() {
         this.attendeeArray.forEach(attendee => {
             let teststatus = attendee.report.testStatus;

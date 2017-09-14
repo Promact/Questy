@@ -220,6 +220,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             this.isEditQuestion = false;
         }
     }
+
     /**
      * Get category id based on category name
      * @param category: Category selected by the user
@@ -257,10 +258,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     /**
-     * Add or update single/multiple answer question and redirect to question dashboard page
-     * @param singleAnswerQuestion
+     * Add or update or duplicate single/multiple answer question and redirect to question dashboard page
+     * @param singleAnswerQuestion: Question of singleMultipleAnswerType will be added, edited or duplicated
      */
-
     saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.id = 0);
@@ -291,9 +291,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     /**
-     * show pre-selected category and difficulty level while adding question
-     * @param categoryName name of the category selected
-     * @param difficultyLevel name of the difficulty level selected
+     * Show pre-selected category and difficulty level while adding question
+     * @param categoryName: Name of the category selected
+     * @param difficultyLevel: Name of the difficulty level selected
      */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {
