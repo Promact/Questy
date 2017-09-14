@@ -485,6 +485,61 @@ namespace Promact.Trappist.Test.TestConduct
 
             Assert.NotNull(codeRespone);
         }
+
+        /// <summary>
+        /// Test case for setting the browser tolerance value of an attendee
+        /// </summary>
+        [Fact]
+        public async Task SetAttendeeBrowserToleranceValueAsyncTest()
+        {
+            var test = CreateTest("Mathematics");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            testAttendee.AttendeeBrowserToleranceCount = 2;
+            await _testConductRepository.SetAttendeeBrowserToleranceValueAsync(testAttendee.Id,testAttendee.AttendeeBrowserToleranceCount);
+            Assert.True(testAttendee.AttendeeBrowserToleranceCount != 0);
+        }
+
+        /// <summary>
+        /// Test case for getting the test summary details
+        /// </summary>
+        [Fact]
+        public async Task GetTestSummaryDetailsAsyncTest()
+        {
+            var categoryList = new List<DomainModel.Models.Category.Category>();
+            var category1 = CreateCategory("history");
+            await _categoryRepository.AddCategoryAsync(category1);
+            categoryList.Add(category1);
+            var category2 = CreateCategory("indian culture");
+            await _categoryRepository.AddCategoryAsync(category2);
+            categoryList.Add(category2);
+            var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+
+            //Creating questions
+            var question1 = CreateQuestionAc(true, "Who was the father of Humayun ?", category1.Id, 0);
+            var question2 = CreateQuestionAc(true, "Bharatnatyam is a popular dance form of which state ?", category2.Id, 0);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, "5");
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "5");
+            var allQuestions = await _questionRepository.GetAllQuestionsAsync("5", 0, 0, "All", null);
+            var test = CreateTest("General Awareness");
+            await _testRepository.CreateTestAsync(test, "5");
+
+            //Adding categories to test
+            await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
+            var questionListAc = new List<QuestionAC>();
+            var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(allQuestions.ToList());
+            foreach (var question in questionDetailList)
+            {
+                var questionAc = new QuestionAC();
+                question.IsSelect = true;
+                questionAc.Question = question;
+                questionListAc.Add(questionAc);
+            }
+            await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
+            var questionCount = await _testConductRepository.GetTestSummaryDetailsAsync(test.Link);
+            Assert.Equal(2, questionCount);
+        }
         #endregion
 
         #region Private Methods
@@ -620,6 +675,80 @@ namespace Promact.Trappist.Test.TestConduct
                 SingleMultipleAnswerQuestion = null
             };
             return codingQuestion;
+        }
+
+        /// <summary>
+        /// Creates a test
+        /// </summary>
+        /// <param name="testName">Contains the name of the test created</param>
+        /// <returns>Object of Test</returns>
+        private DomainModel.Models.Test.Test CreateTest(string testName)
+        {
+            var test = new DomainModel.Models.Test.Test
+            {
+                TestName = testName,
+                IncorrectMarks = 1,
+                BrowserTolerance = BrowserTolerance.Medium,
+            };
+            return test;
+        }
+
+        /// <summary>
+        /// Creates an attendee for a test
+        /// </summary>
+        /// <param name="testId">Id of the test taken by an attendee</param>
+        /// <returns>Object of TestAttendees</returns>
+        private TestAttendees CreateTestAttendee(int testId)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Madhurima",
+                LastName = "Das",
+                Email = "dasmadhurima96@gmail.com",
+                RollNumber = "1",
+                TestId = testId,
+                AttendeeBrowserToleranceCount = 0
+            };
+            return testAttendee;
+        }
+
+        /// <summary>
+        /// Creates questions
+        /// </summary>
+        /// <param name="isSelect">A boolean value</param>
+        /// <param name="questionDetails">Contains the details of a question</param>
+        /// <param name="categoryId">Id of the category to which the question is added</param>
+        /// <param name="id">Id of the question</param>
+        /// <returns></returns>
+        private QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
+        {
+
+            var questionAc = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    Id = id,
+                    IsSelect = isSelect,
+                    QuestionDetail = questionDetails,
+                    QuestionType = 0,
+                    DifficultyLevel = 0,
+                    CategoryID = categoryId
+                },
+                CodeSnippetQuestion = null,
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="A",
+                            IsAnswer=true
+                        },
+                    }
+                }
+            };
+            return questionAc;
         }
         #endregion
     }

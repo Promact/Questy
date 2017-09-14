@@ -483,7 +483,7 @@ namespace Promact.Trappist.Test.Tests
 
         #region Duplicate Test
         /// <summary>
-        /// Duplicates a test and save it in database
+        /// Test case for duplicating a test
         /// </summary>
         [Fact]
         public async Task DuplicateTest()
@@ -556,6 +556,9 @@ namespace Promact.Trappist.Test.Tests
         #endregion
 
         #region TestLogs
+        /// <summary>
+        /// Test case for setting start test log 
+        /// </summary>
         [Fact]
         public async Task SetStartTestLog()
         {
@@ -580,6 +583,11 @@ namespace Promact.Trappist.Test.Tests
         #endregion
 
         #region Private Functions
+        /// <summary>
+        /// Creates a test
+        /// </summary>
+        /// <param name="testName">Contains the name of the Test to be created</param>
+        /// <returns>Object of Test</returns>
         private DomainModel.Models.Test.Test CreateTest(string testName)
         {
             var test = new DomainModel.Models.Test.Test
@@ -590,6 +598,11 @@ namespace Promact.Trappist.Test.Tests
             return test;
         }
 
+        /// <summary>
+        /// Creates category
+        /// </summary>
+        /// <param name="categoryName">Contains the name of the category to be created</param>
+        /// <returns>Object of Category</returns>
         private DomainModel.Models.Category.Category CreateCategory(string categoryName)
         {
             var category = new DomainModel.Models.Category.Category
@@ -599,6 +612,10 @@ namespace Promact.Trappist.Test.Tests
             return category;
         }
 
+        /// <summary>
+        /// Initializes Test Attendees values
+        /// </summary>
+        /// <returns>Object of TestAttendees</returns>
         private DomainModel.Models.TestConduct.TestAttendees TestAttendee()
         {
             var testAttendee = new DomainModel.Models.TestConduct.TestAttendees()
@@ -610,6 +627,14 @@ namespace Promact.Trappist.Test.Tests
             return testAttendee;
         }
 
+        /// <summary>
+        /// Creates question application class
+        /// </summary>
+        /// <param name="isSelect">A boolean value indicating a question is being selected or not</param>
+        /// <param name="questionDetails">Contains the description of the questions</param>
+        /// <param name="categoryId">Contains the Id of the category to which the question is added</param>
+        /// <param name="id">Id of the question</param>
+        /// <returns>Object of QuestionDetailAC</returns>
         public QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
         {
 
@@ -640,6 +665,12 @@ namespace Promact.Trappist.Test.Tests
             return questionAc;
         }
 
+        /// <summary>
+        /// Creates Single Answer Question
+        /// </summary>
+        /// <param name="categoryToCreate">Contains the name of the category to be created</param>
+        /// <param name="question">Contains the details of the question</param>
+        /// <returns>Object of QuestionAC</returns>
         private async Task<QuestionAC> CreateSingleAnswerQuestion(DomainModel.Models.Category.Category categoryToCreate, string question)
         {
             var category = await _trappistDbContext.Category.AddAsync(categoryToCreate);
@@ -683,6 +714,11 @@ namespace Promact.Trappist.Test.Tests
             return singleAnswerQuestion;
         }
 
+        /// <summary>
+        /// Creates test attendee
+        /// </summary>
+        /// <param name="testId">Contains the Id of the Test taken by the test attendee</param>
+        /// <returns>Object of Test Attendees</returns>
         private TestAttendees CreateTestAttendee(int testId)
         {
             var testAttendee = new TestAttendees()
