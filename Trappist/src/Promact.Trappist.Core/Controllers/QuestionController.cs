@@ -30,7 +30,8 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion
 
-        #region Question API
+        #region Public Methods
+        #region Add-Edit-Delete Question API
         /// <summary>
         /// Post API to save the question
         /// </summary>
@@ -65,30 +66,6 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             return Ok(questionAC);
-        }
-
-        /// <summary>
-        /// API to get all the Questions
-        /// </summary>
-        /// <returns>Questions List</returns>
-        [HttpGet("{id}/{categoryId}/{difficultyLevel}/{searchQuestion?}")]
-        public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int id, [FromRoute] int categoryId, [FromRoute] string difficultyLevel, [FromRoute] string searchQuestion)
-        {
-            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
-            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, id, categoryId, difficultyLevel, searchQuestion));
-        }
-
-        /// <summary>
-        /// Returns all the coding languages
-        /// </summary>
-        /// <returns>
-        /// Coding language object of type CodingLanguageAC
-        /// </returns>
-        [HttpGet("codinglanguage")]
-        public async Task<IActionResult> GetAllCodingLanguagesAsync()
-        {
-            var codinglanguages = await _questionsRepository.GetAllCodingLanguagesAsync();
-            return Ok(codinglanguages);
         }
 
         /// <summary>
@@ -154,6 +131,32 @@ namespace Promact.Trappist.Core.Controllers
             await _questionsRepository.DeleteQuestionAsync(id);
             return NoContent();
         }
+        #endregion
+
+        #region GetQuestions API
+        /// <summary>
+        /// API to get all the Questions
+        /// </summary>
+        /// <returns>Questions List</returns>
+        [HttpGet("{id}/{categoryId}/{difficultyLevel}/{searchQuestion?}")]
+        public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int id, [FromRoute] int categoryId, [FromRoute] string difficultyLevel, [FromRoute] string searchQuestion)
+        {
+            var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+            return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, id, categoryId, difficultyLevel, searchQuestion));
+        }
+
+        /// <summary>
+        /// Returns all the coding languages
+        /// </summary>
+        /// <returns>
+        /// Coding language object of type CodingLanguageAC
+        /// </returns>
+        [HttpGet("codinglanguage")]
+        public async Task<IActionResult> GetAllCodingLanguagesAsync()
+        {
+            var codinglanguages = await _questionsRepository.GetAllCodingLanguagesAsync();
+            return Ok(codinglanguages);
+        }
 
         /// <summary>
         /// Returns Question of specific Id
@@ -173,6 +176,12 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(questionAC);
         }
 
+        /// <summary>
+        /// Calculates the the total number of questions, number of questions difficulty wise,category wise and question which is searched by its name
+        /// </summary>
+        /// <param name="categoryId">Id of the selected category</param>
+        /// <param name="searchQuestion">Substring of the question name</param>
+        /// <returns>Total number of questions, difficulty wise questions, category wise questions</returns>
         [HttpGet("numberOfQuestions/{categoryId}/{searchQuestion?}")]
         public async Task<IActionResult> GetNumberOfQuestions([FromRoute] int categoryId, [FromRoute] string searchQuestion)
         {
@@ -180,6 +189,7 @@ namespace Promact.Trappist.Core.Controllers
             var question = await _questionsRepository.GetNumberOfQuestionsAsync(applicationUser.Id, categoryId, searchQuestion);
             return Ok(question);
         }
+        #endregion
         #endregion
     }
 }

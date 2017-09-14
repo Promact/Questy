@@ -9,15 +9,21 @@ namespace Promact.Trappist.Repository.Profile
 {
     public class ProfileRepository : IProfileRepository
     {
+        #region Private Variables
         private readonly TrappistDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        #endregion
 
+        #region Constructor
         public ProfileRepository(TrappistDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
         }
+        #endregion
 
+        #region IProfileRepository Methods
+        #region Public Methods
         public async Task<ApplicationUser> GetUserDetailsAsync(string name)
         {
             var user = await _userManager.FindByNameAsync(name);
@@ -30,7 +36,7 @@ namespace Promact.Trappist.Repository.Profile
             _dbContext.SaveChanges();
         }
 
-        public async Task<bool> UpdateUserPasswordAsync(string name,ChangePasswordModel model)
+        public async Task<bool> UpdateUserPasswordAsync(string name, ChangePasswordModel model)
         {
             var user = await _userManager.FindByEmailAsync(name);
             if (user != null)
@@ -44,5 +50,7 @@ namespace Promact.Trappist.Repository.Profile
             }
             return false;
         }
+        #endregion
+        #endregion
     }
 }

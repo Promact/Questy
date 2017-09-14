@@ -25,8 +25,7 @@ namespace Promact.Trappist.Core.Controllers
         }
         #endregion
 
-        #region Report API
-
+        #region Public Methods
         /// <summary>
         /// Method to get the details of all the Test-Attendees of the respective test
         /// </summary>
@@ -196,9 +195,10 @@ namespace Promact.Trappist.Core.Controllers
         }
 
         /// <summary>
-        /// sends request to the conductor for test resume 
+        /// Sends request to the conductor for test resume
         /// </summary>
         /// <param name="attendeeId"></param>
+        /// <param name="isTestResume"></param>
         /// <returns></returns>
         [HttpGet("{attendeeId}/{isTestResume}/sendRequest")]
         public async Task<bool> SendRequestToResumeTestAsync([FromRoute] int attendeeId, [FromRoute] bool isTestResume)
@@ -206,8 +206,9 @@ namespace Promact.Trappist.Core.Controllers
             await _reportRepository.SetWindowCloseAsync(attendeeId, isTestResume);
             return true;
         }
+
         /// <summary>
-        /// gets the status of test if it is resumed
+        /// Gets the status of test if it is resumed
         /// </summary>
         /// <param name="attendeeId"></param>
         /// <returns></returns>

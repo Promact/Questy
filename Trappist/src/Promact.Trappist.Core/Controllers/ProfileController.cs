@@ -13,17 +13,22 @@ namespace Promact.Trappist.Core.Controllers
     [Route("api/profile")]
     public class ProfileController : Controller
     {
+        #region Private Variables
         private readonly IProfileRepository _profileRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IStringConstants _stringConstant;
+        #endregion
 
+        #region Constructor
         public ProfileController(IProfileRepository profileRepository, SignInManager<ApplicationUser> signInManager, IStringConstants stringConstant)
         {
             _profileRepository = profileRepository;
             _signInManager = signInManager;
             _stringConstant = stringConstant;
         }
+        #endregion
 
+        #region Public Methods
         /// <summary>
         /// Gets current user profile details
         /// </summary>
@@ -65,7 +70,7 @@ namespace Promact.Trappist.Core.Controllers
                 ModelState.AddModelError("error", _stringConstant.InvalidPasswordFormatError);
                 return BadRequest(ModelState);
             }
-            var result=await _profileRepository.UpdateUserPasswordAsync(User.Identity.Name,model);
+            var result = await _profileRepository.UpdateUserPasswordAsync(User.Identity.Name, model);
             if (!result)
             {
                 ModelState.AddModelError("error", _stringConstant.InvalidOldPasswordError);
@@ -85,5 +90,6 @@ namespace Promact.Trappist.Core.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(AccountController.Login), "Account");
         }
+        #endregion
     }
 }

@@ -315,7 +315,6 @@ namespace Promact.Trappist.Repository.Questions
             });
             return questionCount;
         }
+        #endregion
     }
-
-    #endregion
 }

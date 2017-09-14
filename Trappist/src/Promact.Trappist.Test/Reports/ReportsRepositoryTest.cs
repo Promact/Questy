@@ -32,6 +32,7 @@ namespace Promact.Trappist.Test.Reports
     [Collection("Register Dependency")]
     public class ReportsRepositoryTest : BaseTest
     {
+        #region Private Methods
         private readonly ITestConductRepository _testConductRepository;
         private readonly IReportRepository _reportRepository;
         private readonly Mock<IGlobalUtil> _globalUtil;
@@ -40,7 +41,9 @@ namespace Promact.Trappist.Test.Reports
         private readonly IQuestionRepository _questionRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        #endregion
 
+        #region Constructor
         public ReportsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             _testConductRepository = _scope.ServiceProvider.GetService<ITestConductRepository>();
@@ -52,7 +55,10 @@ namespace Promact.Trappist.Test.Reports
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
         }
+        #endregion
 
+        #region Testing Methods
+        #region Public Methods
         /// <summary>
         /// Test to get test attendee report
         /// </summary>
@@ -101,58 +107,6 @@ namespace Promact.Trappist.Test.Reports
             var createTest = await CreateTestAsync();
             var testName = await _reportRepository.GetTestNameAsync(createTest.Id);
             Assert.True(testName.TestName.Equals("GK"));
-        }
-
-        /// <summary>
-        ///This method used to initialize test attendee model parameters.  
-        /// </summary>
-        /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>
-        private TestAttendees TestAttendeeReport(int id)
-        {
-            var testAttendee = new TestAttendees()
-            {
-                Id = 1,
-                FirstName = "Hardik",
-                LastName = "Patel",
-                Email = "phardi@gmail.com",
-                ContactNumber = "1234567890",
-                RollNumber = "13it055",
-                StarredCandidate = true,
-                TestId = id,
-                Report = new Report()
-                {
-                    Percentage = 45.55,
-                    Percentile = 46,
-                    TotalMarksScored = 45.55,
-                    TestStatus = TestStatus.BlockedTest,
-                    TimeTakenByAttendee = 45
-                }
-            };
-            return testAttendee;
-        }
-
-        /// <summary>
-        /// This method used for creating a test.
-        /// </summary>
-        /// <returns></returns>
-        private async Task<DomainModel.Models.Test.Test> CreateTestAsync()
-        {
-            var test = new DomainModel.Models.Test.Test()
-            {
-                TestName = "GK",
-                Duration = 70,
-                WarningTime = 2,
-                CorrectMarks = 4,
-                IncorrectMarks = -1
-
-            };
-            _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
-            string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
-            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            await _testRepository.CreateTestAsync(test, applicationUser.Id);
-            return test;
         }
 
         /// <summary>
@@ -254,6 +208,10 @@ namespace Promact.Trappist.Test.Reports
             Assert.Equal(2, testAnswersList.Count());
         }
 
+        /// <summary>
+        /// Calculates the percentile of an attendee
+        /// </summary>
+        /// <returns>Percentile of an attendee</returns>
         [Fact]
         public async Task CalculatePercentile()
         {
@@ -300,6 +258,10 @@ namespace Promact.Trappist.Test.Reports
             return testAttendee;
         }
 
+        /// <summary>
+        /// Test case to get all amrks details of all attendees for excel sheet are calculated proper or not
+        /// </summary>
+        /// <returns>Returns true if return value of actual method is matched with checking value </returns>
         [Fact]
         public async Task GetAllAttendeeMarksDetailsAsyncTest()
         {
@@ -393,6 +355,80 @@ namespace Promact.Trappist.Test.Reports
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
             Assert.Equal(2, easyQuestionAttempted);
             Assert.Equal(1, correctAttempted);
+        }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// This method is used to create a test with the given testname
+        /// </summary>
+        /// <param name="testName">Name of the test that needs to be created</param>
+        /// <returns>Returns the object of type Test</returns>
+        private DomainModel.Models.Test.Test CreateTest(string testName)
+        {
+            var test = new DomainModel.Models.Test.Test
+            {
+                TestName = testName,
+                IncorrectMarks = 1
+            };
+            return test;
+        }
+
+        /// <summary>
+        /// This method is used to create a test attendee with attendee details under a test
+        /// </summary>
+        /// <param name="testId">Id of the test</param>
+        /// <returns>returns the object of type TestAttendees</returns>
+        private TestAttendees CreateTestAttendee(int testId)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Ritika",
+                LastName = "Mohata",
+                Email = "ritika@gmail.com",
+                RollNumber = "1",
+                TestId = testId,
+                Report = new DomainModel.Models.Report.Report()
+                {
+                    Id = 1,
+                    TestAttendeeId = 1,
+                    TotalMarksScored = 180,
+                    Percentage = 80,
+                    Percentile = 50,
+                    TestStatus = 0,
+                    TimeTakenByAttendee = 150
+                }
+            };
+            return testAttendee;
+        }
+
+        /// <summary>
+        ///This method used to initialize test attendee model parameters.  
+        /// </summary>
+        /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>
+        private TestAttendees TestAttendeeReport(int id)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Hardik",
+                LastName = "Patel",
+                Email = "phardi@gmail.com",
+                ContactNumber = "1234567890",
+                RollNumber = "13it055",
+                StarredCandidate = true,
+                TestId = id,
+                Report = new Report()
+                {
+                    Percentage = 45.55,
+                    Percentile = 46,
+                    TotalMarksScored = 45.55,
+                    TestStatus = TestStatus.BlockedTest,
+                    TimeTakenByAttendee = 45
+                }
+            };
+            return testAttendee;
         }
 
         /// <summary>
@@ -664,6 +700,11 @@ namespace Promact.Trappist.Test.Reports
             return testAnswerAC;
         }
 
+        /// <summary>
+        /// This method is used to add the created answer to database
+        /// </summary>
+        /// <param name="answer">Object of TestAnswerAC type</param>
+        /// <param name="testConductId">Test conduct id</param>
         private void AddTestAnswer(TestAnswerAC answer, int testConductId)
         {
             if (answer.OptionChoice.Count() > 0)
@@ -681,6 +722,15 @@ namespace Promact.Trappist.Test.Reports
             }
         }
 
+        /// <summary>
+        /// This method will create a question with question details 
+        /// </summary>
+        /// <param name="isSelect">Boolean value to set the question as selected question or not</param>
+        /// <param name="questionDetails">Description of the Question</param>
+        /// <param name="categoryId">Id of the category</param>
+        /// <param name="id">Id of the question</param>
+        /// <param name="questionTyp">Type of the question</param>
+        /// <returns>Returns the object of type QuestionAC</returns>
         private QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id, QuestionType questionTyp)
         {
 
@@ -725,6 +775,11 @@ namespace Promact.Trappist.Test.Reports
             return questionAC;
         }
 
+        /// <summary>
+        /// Create a category and return the category object
+        /// </summary>
+        /// <param name="categoryName">Name of the category</param>
+        /// <returns>Returns the object of created category</returns>
         private DomainModel.Models.Category.Category CreateCategory(string categoryName)
         {
             var category = new DomainModel.Models.Category.Category
@@ -777,6 +832,14 @@ namespace Promact.Trappist.Test.Reports
             return singleAnswerQuestion;
         }
 
+        /// <summary>
+        /// This method is used to create a coding type quetion 
+        /// </summary>
+        /// <param name="isSelect">Boolean value to set the question as selected question or not</param>
+        /// <param name="categoryId">Id of the category</param>
+        /// <param name="id">Id of the question</param>
+        /// <param name="questionType">Type of the question</param>
+        /// <returns></returns>
         private QuestionAC CreateCodingQuestionAc(bool isSelect, int categoryId, int id, QuestionType questionType)
         {
             QuestionAC questionAC = new QuestionAC()
@@ -815,5 +878,7 @@ namespace Promact.Trappist.Test.Reports
             };
             return questionAC;
         }
+        #endregion
+        #endregion
     }
 }

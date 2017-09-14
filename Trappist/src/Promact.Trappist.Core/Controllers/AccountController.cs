@@ -14,13 +14,16 @@ namespace Promact.Trappist.Core.Controllers
 {
     public class AccountController : Controller
     {
+        #region Private variables
         private readonly IStringConstants _stringConstant;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly EmailSettings _emailSettings;
         private readonly IBasicSetupRepository _basicSetupRepository;
+        #endregion
 
+        #region Constructor
         public AccountController(IStringConstants stringConstant, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService, EmailSettings emailSettings, IBasicSetupRepository basicSetupRepository)
         {
             _stringConstant = stringConstant;
@@ -30,7 +33,9 @@ namespace Promact.Trappist.Core.Controllers
             _emailSettings = emailSettings;
             _basicSetupRepository = basicSetupRepository;
         }
+        #endregion
 
+        #region Public Methods
         #region Login API
         /// <summary>
         /// this method is used to see the view of login
@@ -211,6 +216,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             return View();
         }
+        #endregion
+        #endregion
     }
-    #endregion
 }

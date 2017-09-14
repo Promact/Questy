@@ -44,7 +44,8 @@ namespace Promact.Trappist.Repository.BasicSetup
         }
         #endregion
 
-        #region IBasicSetupRepository methods      
+        #region IBasicSetupRepository methods
+        #region Public Methods
         public async Task<ServiceResponse> CreateAdminUser(BasicSetupModel model)
         {
             var user = new ApplicationUser()
@@ -68,6 +69,28 @@ namespace Promact.Trappist.Repository.BasicSetup
             }
         }
 
+        public async Task<bool> ValidateConnectionString(ConnectionString model)
+        {
+            return await _dbUtility.TryOpenSqlConnection(model);
+        }
+
+        public async Task<bool> ValidateEmailSetting(EmailSettings model)
+        {
+            _emailSettings.UserName = model.UserName;
+            _emailSettings.Password = model.Password;
+            _emailSettings.Server = model.Server;
+            _emailSettings.Port = model.Port;
+            _emailSettings.ConnectionSecurityOption = model.ConnectionSecurityOption;
+            return await _emailService.SendMailAsync(_emailSettings.UserName, _emailSettings.UserName, _stringConstants.TestMailBody, _stringConstants.TestMailSubject);
+        }
+
+        public bool IsFirstTimeUser()
+        {
+            return string.IsNullOrWhiteSpace(_connectionString.Value);
+        }
+        #endregion
+
+        #region Private Methods
         /// <summary>
         /// Method used for create user and initialize database
         /// </summary>
@@ -98,21 +121,6 @@ namespace Promact.Trappist.Repository.BasicSetup
             }
         }
 
-        public async Task<bool> ValidateConnectionString(ConnectionString model)
-        {
-            return await _dbUtility.TryOpenSqlConnection(model);
-        }
-
-        public async Task<bool> ValidateEmailSetting(EmailSettings model)
-        {
-            _emailSettings.UserName = model.UserName;
-            _emailSettings.Password = model.Password;
-            _emailSettings.Server = model.Server;
-            _emailSettings.Port = model.Port;
-            _emailSettings.ConnectionSecurityOption = model.ConnectionSecurityOption;
-            return await _emailService.SendMailAsync(_emailSettings.UserName, _emailSettings.UserName, _stringConstants.TestMailBody, _stringConstants.TestMailSubject);
-        }
-
         /// <summary>
         /// This method used for saving setup parameter in Setup.json file
         /// </summary>
@@ -130,11 +138,6 @@ namespace Promact.Trappist.Repository.BasicSetup
             return _fileUtility.WriteJson(path, jsonData);
         }
 
-        public bool IsFirstTimeUser()
-        {
-            return string.IsNullOrWhiteSpace(_connectionString.Value);
-        }
-
         /// <summary>
         /// This method is used to retrieve setup.json file path.
         /// </summary>
@@ -143,6 +146,7 @@ namespace Promact.Trappist.Repository.BasicSetup
         {
             return Path.Combine(_environment.ContentRootPath.ToString(), _stringConstants.SetupConfigFileName);
         }
+        #endregion
         #endregion
     }
 }

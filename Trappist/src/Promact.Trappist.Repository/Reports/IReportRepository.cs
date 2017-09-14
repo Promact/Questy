@@ -38,7 +38,7 @@ namespace Promact.Trappist.Repository.Reports
         /// Method to check whether a candidate exist or not
         /// </summary>
         /// <param name="attendeeId">Id of the candidate</param>
-        /// <returns>returns boolean type result depending on whether the candidate exist or not</returns>
+        /// <returns>Returns boolean type result depending on whether the candidate exist or not</returns>
         Task<bool> IsCandidateExistAsync(int attendeeId);
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Promact.Trappist.Repository.Reports
         /// Calculate all marks details of all attendee of a particular test
         /// </summary>
         /// <param name="testId">Id of a test</param>
-        /// <returns></returns>
+        /// <returns>Returns the list of attempted questions number,percentile,totaltestquestions of all attendees in a test</returns>
         Task<List<ReportQuestionsCountAC>> GetAllAttendeeMarksDetailsAsync(int testId);
 
         /// <summary>

@@ -27,8 +27,8 @@ namespace Promact.Trappist.Repository.Questions
         /// <param name="userId">Id of logged in user</param>
         /// <param name="id">number of times fetched the questions</param>
         /// <param name="categoryId">Id of category</param>
-        /// <param name="difficultyLevel">string value for difficulty "Easy" "Medium" "Hard" or "All"</param>
-        /// <param name="searchQuestion">string value, if contained in question names return those questions</param>
+        /// <param name="difficultyLevel">String value for difficulty "Easy" "Medium" "Hard" or "All"</param>
+        /// <param name="searchQuestion">String value, if contained in question names return those questions</param>
         /// <returns></returns>
         Task<IEnumerable<Question>> GetAllQuestionsAsync(string userId, int id, int categoryId, string difficultyLevel, string searchQuestion);
 
@@ -83,9 +83,9 @@ namespace Promact.Trappist.Repository.Questions
         /// <summary>
         /// Method to get number of questions
         /// </summary>
-        /// <param name="categodryId">categoryId if not equals to 0 to get number of questions of each category has</param>
+        /// <param name="categodryId">CategoryId if not equals to 0 to get number of questions of each category has</param>
         /// <param name="userId">Id of logged in user</param>
-        /// <param name="searchQuestion">string value, if contained in question names return those questions</param>
+        /// <param name="searchQuestion">String value, if contained in question names return those questions</param>
         /// <returns>object of QuestionCount</returns>
         Task<QuestionCount> GetNumberOfQuestionsAsync(string userId, int categodryId, string matchString);
     }
