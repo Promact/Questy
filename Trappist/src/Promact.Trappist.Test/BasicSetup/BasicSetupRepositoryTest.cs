@@ -41,7 +41,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check user is created.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if the user is created successfully</returns>
         [Fact]
         public async Task CreateAdminUserTest()
         {
@@ -55,7 +55,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check connection string is valid.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if connection string is valid</returns>
         [Fact]
         public async Task ValidateConnectionStringTest()
         {
@@ -68,7 +68,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check email settings are valid.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns true if email settings details are valid</returns>
         [Fact]
         public async Task ValidateEmailSettingTest()
         {
@@ -102,7 +102,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check user is not created.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns false if user is not created</returns>
         [Fact]
         public async Task InvalidCreateAdminUserTest()
         {
@@ -116,7 +116,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check connection string is invalid
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns false if connection string is invalid</returns>
         [Fact]
         public async Task InvalidValidateConnectionStringTest()
         {
@@ -129,7 +129,7 @@ namespace Promact.Trappist.Test.BasicSetup
         /// <summary>
         /// This test case used to check email settings are invalid.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns false if email settings are invalid</returns>
         [Fact]
         public async Task InvalidValidateEmailSettingTest()
         {

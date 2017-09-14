@@ -12,16 +12,22 @@ namespace Promact.Trappist.Test.Profile
     [Collection("Register Dependency")]
     public class ProfileRepositoryTest : BaseTest
     {
+        #region Private Methods
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProfileRepository _profileRepository;
+        #endregion
 
+        #region Constructor
         public ProfileRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             //resolve dependency to be used in tests
             _profileRepository = _scope.ServiceProvider.GetService<IProfileRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
         }
+        #endregion
 
+        #region Testing Methods
+        #region Public Methods
         /// <summary>
         /// Test case to get the details of the user
         /// </summary>
@@ -67,9 +73,9 @@ namespace Promact.Trappist.Test.Profile
         }
 
         /// <summary>
-        /// test case to check invalid old password
+        /// Test case to check invalid old password
         /// </summary>
-        /// <returns>returns false and does not update the new password as old password is wrong</returns>
+        /// <returns>Returns false and does not update the new password as old password is wrong</returns>
         [Fact]
         public async Task InvalidUpdateUserPasswordAsync()
         {
@@ -79,7 +85,13 @@ namespace Promact.Trappist.Test.Profile
             var result = await _profileRepository.UpdateUserPasswordAsync(user.Email, passwordOfUser);
             Assert.False(result);
         }
+        #endregion
 
+        #region Private Methods
+        /// <summary>
+        /// This method is used to create a user with profile details
+        /// </summary>
+        /// <returns>Returns the object of the details related to created </returns>
         private ApplicationUser UserDetails()
         {
             var userDetails = new ApplicationUser()
@@ -93,6 +105,10 @@ namespace Promact.Trappist.Test.Profile
             return userDetails;
         }
 
+        /// <summary>
+        /// This method is used create a new password to change old password
+        /// </summary>
+        /// <returns>Returns the object of changepassword model </returns>
         private ChangePasswordModel Password()
         {
             var userPassword = new ChangePasswordModel()
@@ -103,5 +119,7 @@ namespace Promact.Trappist.Test.Profile
             };
             return userPassword;
         }
+        #endregion
+        #endregion
     }
 }

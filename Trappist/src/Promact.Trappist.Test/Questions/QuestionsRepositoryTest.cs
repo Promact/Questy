@@ -20,11 +20,14 @@ namespace Promact.Trappist.Test.Questions
     [Collection("Register Dependency")]
     public class QuestionsRepositoryTest : BaseTest
     {
+        #region Private Variables
         private readonly IQuestionRepository _questionRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITestsRepository _testRepository;
+        #endregion
 
+        #region Constructor
         public QuestionsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             //resolve dependency to be used in tests
@@ -34,7 +37,10 @@ namespace Promact.Trappist.Test.Questions
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
+        #endregion
 
+        #region Testing Methods
+        #region Public Methods
         /// <summary>
         ///Test to get all Questions 
         /// </summary>
@@ -209,53 +215,6 @@ namespace Promact.Trappist.Test.Questions
             Assert.True(multipleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Option == updatedMultipleAnswerQuestionOption[1].Option);
             Assert.True(updatedMultipleAnswerQuestion.DifficultyLevel == multipleAnswerQuestion.Question.DifficultyLevel);
             Assert.True(updatedMultipleAnswerQuestion.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);
-        }
-
-        /// <summary>
-        /// Creating multiple answer Question
-        /// </summary>
-        /// <returns>Object of multiple answer Question</returns>
-        private async Task<QuestionAC> CreateMultipleAnswerQuestion()
-        {
-            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
-            var multipleAnswerQuestion = new QuestionAC()
-            {
-                Question = new QuestionDetailAC()
-                {
-                    QuestionDetail = "Question 1",
-                    CategoryID = category.Entity.Id,
-                    DifficultyLevel = DifficultyLevel.Hard,
-                    QuestionType = QuestionType.Multiple
-                },
-                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
-                {
-                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
-                    {
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = true,
-                            Option = "A",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = true,
-                            Option = "B",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = false,
-                            Option = "C",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = false,
-                            Option = "D",
-                        }
-                    }
-                }
-            };
-            return multipleAnswerQuestion;
         }
 
         /// <summary>
@@ -459,6 +418,33 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
+        /// Test Case for getting number of questions difficulty wise
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task GetNumberOfQuestion()
+        {
+            string userName = "asif@gmail.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            var codinQuestion = await CreateCodingQuestion();
+            await _questionRepository.AddCodeSnippetQuestionAsync(codinQuestion, applicationUser.Id);
+
+            var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, 0, null);
+            Assert.Equal(1, numberOfQuestions.EasyCount);
+            Assert.Equal(0, numberOfQuestions.MediumCount);
+            Assert.Equal(0, numberOfQuestions.HardCount);
+            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, codinQuestion.Question.CategoryID, "Write");
+            Assert.Equal(1, numberOfQuestionsWithCategory.EasyCount);
+            Assert.Equal(0, numberOfQuestionsWithCategory.MediumCount);
+            Assert.Equal(0, numberOfQuestionsWithCategory.HardCount);
+
+        }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
         /// Creates Coding Question
         /// </summary>
         /// <returns>Created CodingQuestion object</returns>
@@ -501,30 +487,6 @@ namespace Promact.Trappist.Test.Questions
             };
             return codingQuestion;
         }
-        /// <summary>
-        /// Test Case for getting number of questions difficulty wise
-        /// </summary>
-        /// <returns></returns>
-        [Fact]
-        public async Task GetNUmberOfQuestion()
-        {
-            string userName = "asif@gmail.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
-            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            var codinQuestion = await CreateCodingQuestion();
-            await _questionRepository.AddCodeSnippetQuestionAsync(codinQuestion, applicationUser.Id);
-
-            var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, 0, null);
-            Assert.Equal(1, numberOfQuestions.EasyCount);
-            Assert.Equal(0, numberOfQuestions.MediumCount);
-            Assert.Equal(0, numberOfQuestions.HardCount);
-            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, codinQuestion.Question.CategoryID, "Write");
-            Assert.Equal(1, numberOfQuestionsWithCategory.EasyCount);
-            Assert.Equal(0, numberOfQuestionsWithCategory.MediumCount);
-            Assert.Equal(0, numberOfQuestionsWithCategory.HardCount);
-
-        }
 
         /// <summary>
         /// Creates dummy category
@@ -548,5 +510,54 @@ namespace Promact.Trappist.Test.Questions
             };
             return test;
         }
+
+        /// <summary>
+        /// Creating multiple answer Question
+        /// </summary>
+        /// <returns>Object of multiple answer Question</returns>
+        private async Task<QuestionAC> CreateMultipleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var multipleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Multiple
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return multipleAnswerQuestion;
+        }
+        #endregion
+        #endregion
     }
 }

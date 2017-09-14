@@ -61,10 +61,11 @@ namespace Promact.Trappist.Test.TestConduct
         #endregion
 
         #region Testing Methods
+        #region Public Methods
         /// <summary>
         /// This test case used to check test attendee successfully register.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if testattendee added successfully</returns>
         [Fact]
         public async Task ValidRegisterTestAttendeesAsync()
         {
@@ -79,7 +80,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// <summary>
         /// This test case used to check test attendee successfully not register.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns false if attendee registration failed</returns>
         [Fact]
         public async Task InvalidRegisterTestAttendeesAsync()
         {
@@ -95,7 +96,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// <summary>
         /// This test case used for check test attendee already exist.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if test attendee with same credentials already exists</returns>
         [Fact]
         public async Task IsTestAttendeeExist()
         {
@@ -109,7 +110,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// <summary>
         /// This test case used for check test attendee not exist.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns false if test attendee with same credentials not exists</returns>
         [Fact]
         public async Task IsTestAttendeeNotExist()
         {
@@ -122,7 +123,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// <summary>
         /// This test case used to check test magic string is exist.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true or false depending upon test link's existence</returns>
         [Fact]
         public async Task IsTestLinkExistAsync()
         {
@@ -142,11 +143,10 @@ namespace Promact.Trappist.Test.TestConduct
             Assert.False(linkNotExist);
         }
 
-
         /// <summary>
         /// This test case is used to test the test instructions details
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns True if returned object of actual method is not null</returns>
         [Fact]
         public async Task GetAllTestInformationAsync()
         {
@@ -184,7 +184,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// <summary>
         /// This test case is used to test the test instruction details for invalid testLink
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if test details of invalid testlink is null </returns>
         [Fact]
         public async Task GetAllNotValidTestInformationAsync()
         {
@@ -836,6 +836,7 @@ namespace Promact.Trappist.Test.TestConduct
             };
             return questionAC;
         }
+        #endregion
         #endregion
     }
 }

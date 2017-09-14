@@ -19,7 +19,7 @@ namespace Promact.Trappist.Repository.Reports
     {
         #region Private Members
         private readonly TrappistDbContext _dbContext;
-        private readonly ITestConductRepository _testConductRepository; 
+        private readonly ITestConductRepository _testConductRepository;
         #endregion
 
         #region Constructor
@@ -30,10 +30,11 @@ namespace Promact.Trappist.Repository.Reports
         }
         #endregion
 
-        #region Public Method
+        #region IReportRepository Methods
+        #region Public Methods
         public async Task<TestAC> GetTestNameAsync(int id)
         {
-            var result=await _dbContext.Test.AsNoTracking().Where(x => x.Id == id).Select(selectOnly => new { selectOnly.TestName, selectOnly.Link, }).ToListAsync();
+            var result = await _dbContext.Test.AsNoTracking().Where(x => x.Id == id).Select(selectOnly => new { selectOnly.TestName, selectOnly.Link, }).ToListAsync();
             var testACObject = new TestAC()
             {
                 TestName = result.First().TestName,
@@ -97,7 +98,7 @@ namespace Promact.Trappist.Repository.Reports
             return testAttendeeFullAnswerList;
         }
 
-        public async Task<double> CalculatePercentileAsync(int testAttendeeId,int testId)
+        public async Task<double> CalculatePercentileAsync(int testAttendeeId, int testId)
         {
             int sameMarks = 0;
             int count = 0;
@@ -130,7 +131,7 @@ namespace Promact.Trappist.Repository.Reports
             var correctAttemptedQuestion = 0; var totalCorrectOptions = 0; var countOptions = 0; var totalQuestionAttempted = 0;
 
             //all testattendees Of a test
-            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId && x.Report != null).Select(x=>x.Id).ToListAsync();
+            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId && x.Report != null).Select(x => x.Id).ToListAsync();
             //all test questions of a test
             testQuestionList = await GetTestQuestions(testId);
             var totalNoOfTestQuestions = testQuestionList.Count();
@@ -138,7 +139,7 @@ namespace Promact.Trappist.Repository.Reports
             var questionsAttemptedByAllAttendeeList = await _dbContext.TestConduct.Where(x => x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
                                                                                   .Include(x => x.TestAnswers).ToListAsync();
             //all testcode solutions of a test
-            var testCodeSolutionsList = await _dbContext.TestCodeSolution.Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId ,selectOnly.Score}).ToListAsync();
+            var testCodeSolutionsList = await _dbContext.TestCodeSolution.Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score }).ToListAsync();
 
             foreach (var testAttendee in allTestAttendeeList)
             {
@@ -150,7 +151,7 @@ namespace Promact.Trappist.Repository.Reports
                     {
                         var difficultyLevel = x.Question.DifficultyLevel;
                         var question = testQuestionList.FirstOrDefault(y => y.QuestionId == x.QuestionId);
-                        if (x.Question.QuestionType==QuestionType.Single)
+                        if (x.Question.QuestionType == QuestionType.Single)
                         {
                             var correctOption = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(z => z.SingleMultipleAnswerQuestionID == x.Question.Id && z.IsAnswer).Select(z => z.Id).ToList();
                             var givenOptionsByAttendee = x.TestAnswers.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
@@ -161,14 +162,14 @@ namespace Promact.Trappist.Repository.Reports
                                     correctAttemptedQuestion += 1;
                                 if (difficultyLevel == DifficultyLevel.Easy)
                                     easyQuestionAttempted += 1;
-                                else if(difficultyLevel == DifficultyLevel.Medium)
-                                        mediumQuestionAttempted += 1;
-                                    else
-                                        hardQuestionAttempted += 1;
+                                else if (difficultyLevel == DifficultyLevel.Medium)
+                                    mediumQuestionAttempted += 1;
+                                else
+                                    hardQuestionAttempted += 1;
                             }
                         }
                         else
-                        {                        
+                        {
                             var Options = question.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Where(y => y.SingleMultipleAnswerQuestionID == x.Question.Id).ToList();
                             totalCorrectOptions = Options.Where(y => y.IsAnswer).Count();
                             var givenOptionsByAttendee = x.TestAnswers.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
@@ -188,17 +189,17 @@ namespace Promact.Trappist.Repository.Reports
                                 if (difficultyLevel == DifficultyLevel.Easy)
                                     easyQuestionAttempted += 1;
                                 else if (difficultyLevel == DifficultyLevel.Medium)
-                                        mediumQuestionAttempted += 1;
-                                    else
-                                        hardQuestionAttempted += 1;
+                                    mediumQuestionAttempted += 1;
+                                else
+                                    hardQuestionAttempted += 1;
                             }
-                        }                        
+                        }
                     }
-                    else 
+                    else
                     {
                         var difficultyLevel = x.Question.DifficultyLevel;
                         var givenSolutionByAttendee = testCodeSolutionsList.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee).ToList();
-                        if(givenSolutionByAttendee.Count() >0)
+                        if (givenSolutionByAttendee.Count() > 0)
                         {
                             totalQuestionAttempted += 1;
                             if (difficultyLevel == DifficultyLevel.Easy)
@@ -213,10 +214,10 @@ namespace Promact.Trappist.Repository.Reports
                         }
                         if (givenSolutionByAttendee.Any(y => y.Score == 1 && y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee))
                             correctAttemptedQuestion += 1;
-                       
+
                     }
                 });
-                var percentile = await CalculatePercentileAsync(testAttendee,testId);
+                var percentile = await CalculatePercentileAsync(testAttendee, testId);
                 var reportQuestions = new ReportQuestionsCountAC()
                 {
                     TestAttendeeId = testAttendee,
@@ -229,7 +230,7 @@ namespace Promact.Trappist.Repository.Reports
                     totalTestQuestions = totalNoOfTestQuestions
                 };
                 allAttendeeMarksDetailsList.Add(reportQuestions);
-                
+
                 easyQuestionAttempted = mediumQuestionAttempted = hardQuestionAttempted = correctAttemptedQuestion = countOptions = totalQuestionAttempted = 0;
 
             };
@@ -348,6 +349,7 @@ namespace Promact.Trappist.Repository.Reports
                 await _dbContext.SaveChangesAsync();
             }
         }
+
         public async Task<Report> GetWindowCloseAsync(int attendeeId)
         {
             var reportObject = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
@@ -389,13 +391,14 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<List<TestAttendees>> GenerateReportForUnfinishedTestAsync(List<int> attendeeIdList)
         {
-            foreach(var id in attendeeIdList)
+            foreach (var id in attendeeIdList)
             {
                 await _testConductRepository.SetAttendeeTestStatusAsync(id, TestStatus.UnfinishedTest);
             }
 
             return await _dbContext.TestAttendees.Where(x => attendeeIdList.Any(id => id == x.Id)).Include(x => x.Report).ToListAsync();
         }
+        #endregion
         #endregion
     }
 }
