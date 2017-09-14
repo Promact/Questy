@@ -270,6 +270,7 @@ namespace Promact.Trappist.Test.Reports
             var test = new DomainModel.Models.Test.Test
             {
                 TestName = testName,
+                CorrectMarks = 3,
                 IncorrectMarks = 1
             };
             return test;
@@ -294,7 +295,7 @@ namespace Promact.Trappist.Test.Reports
                     Percentile = 50,
                     TestStatus = 0,
                     TimeTakenByAttendee = 150
-                }
+                },
             };
             return testAttendee;
         }
@@ -392,6 +393,264 @@ namespace Promact.Trappist.Test.Reports
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
             Assert.Equal(2, easyQuestionAttempted);
             Assert.Equal(1, correctAttempted);
+        }
+
+        /// <summary>
+        /// Test case for getting the number of questions attended by a test attendee
+        /// </summary>
+        [Fact]
+        public async Task GetAttemptedQuestionsByAttendeeAsyncTest()
+        {
+            var test = CreateTest("General Awareness");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            var testConduct1 = new DomainModel.Models.TestConduct.TestConduct()
+            {
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = 1,
+                QuestionStatus = QuestionStatus.answered
+            };
+            var testConduct2 = new DomainModel.Models.TestConduct.TestConduct()
+            {
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = 1,
+                QuestionStatus = QuestionStatus.review
+            };
+            var testConduct3 = new DomainModel.Models.TestConduct.TestConduct()
+            {
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = 1,
+                QuestionStatus = QuestionStatus.review
+            };
+            _trappistDbContext.TestConduct.Add(testConduct1);
+            _trappistDbContext.TestConduct.Add(testConduct2);
+            _trappistDbContext.TestConduct.Add(testConduct3);
+            await _trappistDbContext.SaveChangesAsync();
+            var testAnswer1 = new TestAnswers()
+            {
+                AnsweredOption = 2,
+                TestConductId = testConduct1.Id
+            };
+            var testAnswer2 = new TestAnswers()
+            {
+                AnsweredOption = 4,
+                TestConductId = testConduct2.Id
+            };
+            var testAnswer3 = new TestAnswers()
+            {
+                AnsweredOption = null,
+                TestConductId = testConduct3.Id
+            };
+            _trappistDbContext.TestAnswers.Add(testAnswer1);
+            _trappistDbContext.TestAnswers.Add(testAnswer2);
+            _trappistDbContext.TestAnswers.Add(testAnswer3);
+            await _trappistDbContext.SaveChangesAsync();
+            var numberOfQuestionsAttemptedByAttendee = await _reportRepository.GetAttemptedQuestionsByAttendeeAsync(testAttendee.Id);
+            Assert.Equal(2,numberOfQuestionsAttemptedByAttendee);
+        }
+
+        /// <summary>
+        /// Test case for getting the total marks scored by an attendee in code snippet question
+        /// </summary>
+        [Fact]
+        public async Task GetTotalMarksOfCodeSnippetQuestionAsyncTest()
+        {
+            var test = CreateTest("Programming");
+            await _testRepository.CreateTestAsync(test,"5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            //create category
+            var category = CreateCategory("programming");
+            await _categoryRepository.AddCategoryAsync(category);
+            //create coding question 
+            var question = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
+            await _questionRepository.AddCodeSnippetQuestionAsync(question, test.CreatedByUserId);
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question.Question.QuestionDetail)).Id;
+            var answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = questionId,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            //add test code solution
+            var codeSolution1 = new TestCodeSolution()
+            {
+                Id = 1,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 1
+            };
+            var codeSolution2 = new TestCodeSolution()
+            {
+                Id = 2,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 0
+            };
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
+            await _trappistDbContext.SaveChangesAsync();
+            var marksScoredInCodeSnippetQuestion = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, questionId);
+            var marksScoredWhenQuestionIdAbsent = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, 3);
+            Assert.Equal(3, marksScoredInCodeSnippetQuestion);
+            Assert.Equal(-1, marksScoredWhenQuestionIdAbsent);
+        }
+
+        /// <summary>
+        /// Test case for getting the details of test code solution of a code snippet question
+        /// </summary>
+        [Fact]
+        public async Task GetTestCodeSolutionDetailsAsyncTest()
+        {
+            var test = CreateTest("Coding Test");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            //create category
+            var category = CreateCategory("programming");
+            await _categoryRepository.AddCategoryAsync(category);
+            //create coding question 
+            var question = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
+            await _questionRepository.AddCodeSnippetQuestionAsync(question, test.CreatedByUserId);
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question.Question.QuestionDetail)).Id;
+            var answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = questionId,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            //add test code solution
+            var codeSolution1 = new TestCodeSolution()
+            {
+                Id = 1,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 1
+            };
+            var codeSolution2 = new TestCodeSolution()
+            {
+                Id = 2,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 0
+            };
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
+            await _trappistDbContext.SaveChangesAsync();
+            var codeSolutionObject = await _reportRepository.GetTestCodeSolutionDetailsAsync(testAttendee.Id, 3);
+            var codeSolutionAcObject = await _reportRepository.GetTestCodeSolutionDetailsAsync(testAttendee.Id, questionId);
+            Assert.Equal(null, codeSolutionObject);
+            Assert.Equal(answer.Code.Language, codeSolutionAcObject.Language);
+            Assert.Equal(answer.Code.Source, codeSolutionAcObject.CodeSolution);
+            Assert.Equal(1, codeSolutionAcObject.NumberOfSuccessfulAttempts);
+            Assert.Equal(2, codeSolutionAcObject.TotalNumberOfAttempts);
+        }
+
+        /// <summary>
+        /// Test case for getting the details of code snippet question
+        /// </summary>
+        [Fact]
+        public async Task GetCodeSnippetDetailsAsync()
+        {
+            var test = CreateTest("Coding Test1");
+            await _testRepository.CreateTestAsync(test, "5");
+            var testAttendee = CreateTestAttendee(test.Id);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            //create category
+            var category = CreateCategory("coding question");
+            await _categoryRepository.AddCategoryAsync(category);
+            //create coding question 
+            var question = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
+            await _questionRepository.AddCodeSnippetQuestionAsync(question, test.CreatedByUserId);
+            var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question.Question.QuestionDetail)).Id;
+            
+            var answer = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = questionId,
+                Code = new Code()
+                {
+                    Input = "input",
+                    Source = "source",
+                    Language = ProgrammingLanguage.C
+                },
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            var testCaseResultList = new List<TestCaseResult>();
+            //add test code solution
+            var codeSolution1 = new TestCodeSolution()
+            {
+                Id = 1,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 1
+            };
+            var codeSolution2 = new TestCodeSolution()
+            {
+                Id = 2,
+                TestAttendeeId = testAttendee.Id,
+                QuestionId = questionId,
+                Solution = answer.Code.Source,
+                Language = answer.Code.Language,
+                Score = 0
+            };
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
+            await _trappistDbContext.SaveChangesAsync();
+            //add test case result
+            var testCaseResult1 = new TestCaseResult()
+            {
+                Id = 1,
+                Processing = 180,
+                Memory = 50,
+                Output = "5",
+                CodeSnippetQuestionTestCasesId = question.CodeSnippetQuestion.CodeSnippetQuestionTestCases[0].CodeSnippetQuestionId,
+                TestCodeSolutionId = codeSolution1.Id
+            };
+            var testCaseResult2 = new TestCaseResult()
+            {
+                Id = 2,
+                Processing = 190,
+                Memory = 70,
+                Output = "Hello World",
+                CodeSnippetQuestionTestCasesId = question.CodeSnippetQuestion.CodeSnippetQuestionTestCases[0].CodeSnippetQuestionId,
+                TestCodeSolutionId = codeSolution2.Id
+            };
+            await _trappistDbContext.TestCaseResult.AddAsync(testCaseResult1);
+            await _trappistDbContext.TestCaseResult.AddAsync(testCaseResult2);
+            await _trappistDbContext.SaveChangesAsync();
+            testCaseResultList.Add(testCaseResult1);
+            testCaseResultList.Add(testCaseResult2);
+            codeSolution1.TestCaseResultCollection = testCaseResultList;
+            codeSolution2.TestCaseResultCollection = testCaseResultList;
+            var codeSnippetDetailsObject = await _reportRepository.GetCodeSnippetDetailsAsync(testAttendee.Id, questionId);
+            Assert.Equal(2, codeSnippetDetailsObject.Count());
         }
 
         private TestAnswerAC CreateAnswerAc(int id)
