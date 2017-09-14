@@ -29,7 +29,7 @@ export class SetupComponent {
 
     /**
      * This method used for validating connection string.
-     * @param setup
+     * @param setup: Takes the connection string value
      */
     validateConnectionString(setup: any) {
         this.loader = true;
@@ -47,7 +47,7 @@ export class SetupComponent {
 
     /**
      * This method used for verifying email Settings
-     * @param setup
+     * @param setup: Takes all the field's values of emailsetting form 
      */
     validateEmailSettings(setup: any) {
         this.loader = true;
@@ -72,7 +72,7 @@ export class SetupComponent {
 
     /**
      * This method used for Creating user
-     * @param setup
+     * @param setup: Takes all the field's values of createuser form 
      */
     createUser(setup: any) {
         this.loader = true;
@@ -95,6 +95,9 @@ export class SetupComponent {
         });
     }
 
+    /**
+     * Navigate to login page
+     */
     navigateToLogin() {
         window.location.href = '/login';
     }

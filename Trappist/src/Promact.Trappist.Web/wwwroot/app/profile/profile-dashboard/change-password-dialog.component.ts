@@ -20,7 +20,7 @@ export class ChangePasswordDialogComponent {
 
     /**
      * update the database with new password
-     * @param userPassword of type ChangePasswordModel which has the new password of the user
+     * @param userPassword: Object of type ChangePasswordModel which has the new password of the user
      */
     changePassword(userPassword: ChangePasswordModel) {
         this.loader = true;
@@ -45,6 +45,10 @@ export class ChangePasswordDialogComponent {
             this.isPasswordSame = false;
         }
     }
+
+    /**
+     * Sets the conditions for checking and showing error message if changed password and confirm password are not same
+     */
     changeCurrentPassword() {
         this.isPasswordSame = true;
         this.errorCorrection = false;

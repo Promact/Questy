@@ -20,7 +20,7 @@ export class ProfileEditComponent implements OnInit {
     }
 
     /**
-    * get details of the user and display them in the profile edit page so that the user can edit them
+    * Get details of the user and display them in the profile edit page so that the user can edit them
     */
     getUserDetails() {
         this.profileService.getUserDetails().subscribe((response) => {
@@ -29,7 +29,7 @@ export class ProfileEditComponent implements OnInit {
     }
 
     /**
-    * update the  details of the user
+    * Update the details of a user
     */
     updateUserDetails() {
         this.loader = true;

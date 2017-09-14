@@ -134,7 +134,7 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
         }
         /// <summary>
-        /// creates session for the candidate to resume the test
+        /// Creates session for the candidate to resume the test
         /// </summary>
         /// <param name="attendee"></param>
         /// <param name="testLink"></param>
@@ -142,7 +142,6 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
         public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink,[FromRoute] bool isTestEnd)
         {
-
             if (isTestEnd)
             {
                var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
@@ -157,9 +156,7 @@ namespace Promact.Trappist.Core.Controllers
                 if (response == null)
                     return NotFound();
             }
-            return Ok(attendee);
-
-            
+            return Ok(attendee);           
         }
 
         /// <summary>

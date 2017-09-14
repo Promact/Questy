@@ -5,6 +5,7 @@ import { SetupComponent } from './setup.component';
 import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { SetupService } from './setup.service';
+
 @NgModule({
     bootstrap: [SetupComponent],
     imports: [

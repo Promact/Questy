@@ -8,23 +8,26 @@ export class CategoryService {
     private categoriesApiUrl = 'api/category';
     constructor(private httpService: HttpService) {
     }
-    //To get all the Categories
+
+    /**
+     *API to get all the categories
+     */
     getAllCategories() {
         return this.httpService.get(this.categoriesApiUrl);
     }
 
     /**
-     *Api to add Category
-     * @param category: Category object
+     *API to add Category
+     * @param category: Object of type Category
      */
     addCategory(category: Category) {
         return this.httpService.post(this.categoriesApiUrl, category);
     }
 
     /**
-     * Api to update Category
-     * @param id: Category whose value will be changed
-     * @param category:Category object
+     * API to update Category
+     * @param id: Id of the category that will be updated
+     * @param category: Object of type Category
      */
     updateCategory(id: number, category: Category) {
         return this.httpService.put(this.categoriesApiUrl + '/' + id, category);
@@ -32,7 +35,7 @@ export class CategoryService {
 
     /**
     * API to delete Category
-    * @param categoryId:Id to delete Category
+    * @param categoryId: Id of the category
     */
     deleteCategory(id: number) {
         return this.httpService.delete(this.categoriesApiUrl + '/' + id);

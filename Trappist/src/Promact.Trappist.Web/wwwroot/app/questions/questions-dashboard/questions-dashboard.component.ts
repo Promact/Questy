@@ -86,7 +86,10 @@ export class QuestionsDashboardComponent implements OnInit {
         window.scrollTo(0, 0);
     }
 
-    //To check whether the option is correct or not
+   /**
+    * To check whether the option is correct or not
+    * @param isAnswer: Contains true of false value
+    */
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return 'correct';
@@ -94,9 +97,9 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * select difficulty and category and filter as per selection
-     * @param difficulty difficulty selected while adding
-     * @param categoryName catergory selected while adding
+     * Select difficulty and category and filter as per selection
+     * @param difficulty: Difficulty selected while adding
+     * @param categoryName: Catergory selected while adding
      */
     SelectCategoryDifficulty(difficulty: string, categoryName: string) {
         this.selectedDifficulty = DifficultyLevel[difficulty];
@@ -109,7 +112,9 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryWiseFilter(this.selectedCategoryId, this.selectedCategoryName, difficulty);
     }
 
-    //To get all the Categories
+    /**
+     * To get all the Categories
+     */
     getAllCategories() {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
@@ -124,7 +129,9 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // get All questions
+    /**
+     * To get all the questions
+     */
     getAllQuestions() {
         this.loader = true;
         this.categroyId = 0;
@@ -149,7 +156,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * sort category in alphabatical order
+     * Sort category in alphabatical order
      */
     sortCategory() {
         this.categoryArray.sort(function (a, b) {
@@ -161,7 +168,9 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    //To get Questions while scrolling
+    /**
+     * To get Questions while scrolling
+     */
     getQuestionsOnScrolling() {
         this.isAllQuestionsHaveCome = true;
         this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
@@ -179,7 +188,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     /**
      * To set the Category active
-     * @param category
+     * @param category : Object of type Category
      */
     isCategorySelected(category: Category) {
         this.isAllQuestionsSelected = false;
@@ -187,10 +196,12 @@ export class QuestionsDashboardComponent implements OnInit {
             return 'active';
     }
 
-    /**
-     * To select the Category
-     * @param category
-     */
+   /**
+    * To filter the questions as selected category wise
+    * @param categoryId: Id of the category
+    * @param categoryName: Name of the category
+    * @param difficultyLevel: Difficultylevel that is selected
+    */
     categoryWiseFilter(categoryId: number, categoryName: string, difficultyLevel: string) {
         this.loader = true;
         this.showName = categoryName;
@@ -221,8 +232,8 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-     * To select the DifficultyLevel
-     * @param difficulty
+     * To filter the questions as selected difficultylevel wise
+     * @param difficulty: Difficultylevel that is selected
      */
     difficultyWiseSearch(difficulty: string) {
         this.loader = true;
@@ -250,7 +261,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     /**
      * To get the Search criteria from the user
-     * @param matchString
+     * @param matchString: String that needs to be searched
      */
     getQuestionsMatchingSearchCriteria(matchString: string) {
         this.matchString = matchString;
@@ -280,7 +291,9 @@ export class QuestionsDashboardComponent implements OnInit {
         return this.showSearchInput = this.matchString.length > 0;
     }
 
-    // Open Add Category Dialog
+    /**
+     * Open add category dialog
+     */
     addCategoryDialog() {
         let adddialogRef = this.dialog.open(AddCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
         adddialogRef.afterClosed().subscribe(categoryToAdd => {
@@ -292,7 +305,10 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open update Category Dialog
+    /**
+     * Open update category dialog
+     * @param category: Object of type Catgeory which will be updated
+     */
     updateCategoryDialog(category: Category) {
         let categoryToUpdate = this.categoryArray.find(x => x.id === category.id);
         let updateDialogRef = this.dialog.open(UpdateCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
@@ -309,7 +325,10 @@ export class QuestionsDashboardComponent implements OnInit {
         });
     }
 
-    // Open delete Category dialog
+    /**
+     * Open delete category dialog
+     * @param category: Object of type Catgeory which will be deleted
+     */
     deleteCategoryDialog(category: Category) {
         let deleteDialogRef = this.dialog.open(DeleteCategoryDialogComponent, { disableClose: true, hasBackdrop: true });
         deleteDialogRef.componentInstance.category = category;
@@ -322,7 +341,10 @@ export class QuestionsDashboardComponent implements OnInit {
             });
     }
 
-    // Open delete question dialog
+    /**
+     * Open delete question dialog
+     * @param questionToDelete: Object of type Question which will be deleted
+     */
     deleteQuestionDialog(questionToDelete: Question) {
         let deleteDialogRef = this.dialog.open(DeleteQuestionDialogComponent, { disableClose: true, hasBackdrop: true });
         deleteDialogRef.componentInstance.question = questionToDelete;
@@ -338,7 +360,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     /**
      * Routes to respective components for editing Question
-     * @param question: QuestionDisplay object
+     * @param question: Object of type QuestionDisplay 
      */
     editQuestion(question: QuestionDisplay) {
         if (question.questionType === QuestionType.codeSnippetQuestion) {
@@ -364,7 +386,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
 
     /**
-     * Method to duplicate Question
+     * Method to navigate to questions to duplicate the question
      * @param question:QuestionDisplay object
      */
     duplicateQuestion(question: QuestionDisplay) {
@@ -381,8 +403,8 @@ export class QuestionsDashboardComponent implements OnInit {
 
     /**
     * Selects the search text area on clicking of the search button
-    * @param $event is of type Event and is used to call stopPropagation()
-    * @param search is of type any
+    * @param $event: is of type Event and is used to call stopPropagation()
+    * @param search: is of type any
     */
     selectTextArea($event: any, search: any) {
         $event.stopPropagation();
@@ -393,7 +415,7 @@ export class QuestionsDashboardComponent implements OnInit {
 
     /**
      * Select selected catgeory and difficulty level and pass it to route while adding question
-     * @param questiontype type of the question
+     * @param questiontype: Type of the question
      */
     selectSelectionAndDifficultyType(questiontype: string) {
         let categoryName = this.selectedCategory.categoryName;

@@ -17,7 +17,6 @@ import { QuestionType } from '../enum-questiontype';
 })
 
 export class QuestionsProgrammingComponent implements OnInit {
-
     selectedLanguageList: string[];
     codingLanguageList: string[];
     selectedCategory: string;
@@ -131,7 +130,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     /**
-     *  Adds test cases of code snippet question
+     * Adds test cases of code snippet question
      */
     addTestCases() {
         let testCase = new CodeSnippetQuestionsTestCases();
@@ -323,9 +322,9 @@ export class QuestionsProgrammingComponent implements OnInit {
     }
 
     /**
-     *show pre-selected category and difficulty level while adding question
-     * @param categoryName name of the category selected
-     * @param difficultyLevel name of the difficulty level selected
+     *Show pre-selected category and difficulty level while adding question
+     * @param categoryName: Name of the category selected
+     * @param difficultyLevel: Name of the difficulty level selected
      */
     showPreSelectedCategoryAndDifficultyLevel(categoryName: string, difficultyLevel: string) {
         if (categoryName !== 'AllCategory' && difficultyLevel !== 'All') {

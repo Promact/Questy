@@ -20,7 +20,7 @@ export class ProfileDashboardComponent implements OnInit {
     }
 
     /**
-    * get details of the user
+    * Get details of the user
     */
     getUserDetails() {
         this.profileService.getUserDetails().subscribe((response) => {
@@ -29,7 +29,9 @@ export class ProfileDashboardComponent implements OnInit {
         });
     }
 
-    // Open Change Password Dialog
+    /**
+     * Open Change Password Dialog
+     */
     changePasswordDialog() {
         this.dialog.open(ChangePasswordDialogComponent, { disableClose: true, hasBackdrop: true });
     }
