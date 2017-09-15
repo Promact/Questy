@@ -67,7 +67,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns true if testattendee added successfully</returns>
         [Fact]
-        public async Task ValidRegisterTestAttendeesAsync()
+        public async Task ValidRegisterTestAttendeesAsyncTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
@@ -82,7 +82,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns false if attendee registration failed</returns>
         [Fact]
-        public async Task InvalidRegisterTestAttendeesAsync()
+        public async Task InvalidRegisterTestAttendeesAsyncTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
@@ -98,7 +98,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns true if test attendee with same credentials already exists</returns>
         [Fact]
-        public async Task IsTestAttendeeExist()
+        public async Task IsTestAttendeeExistTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
@@ -112,7 +112,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns false if test attendee with same credentials not exists</returns>
         [Fact]
-        public async Task IsTestAttendeeNotExist()
+        public async Task IsTestAttendeeNotExistTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
@@ -125,7 +125,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns true or false depending upon test link's existence</returns>
         [Fact]
-        public async Task IsTestLinkExistAsync()
+        public async Task IsTestLinkExistAsyncTest()
         {
             var testObject = await CreateTestAsync();
             var testIp = new DomainModel.Models.Test.TestIpAddress();
@@ -148,7 +148,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns True if returned object of actual method is not null</returns>
         [Fact]
-        public async Task GetAllTestInformationAsync()
+        public async Task GetTestInstructionsAsyncTest()
         {
             //Creating test
             var test = await CreateTestAsync();
@@ -186,7 +186,7 @@ namespace Promact.Trappist.Test.TestConduct
         /// </summary>
         /// <returns>Returns true if test details of invalid testlink is null </returns>
         [Fact]
-        public async Task GetAllNotValidTestInformationAsync()
+        public async Task InvalidGetTestInstructionsAsyncTest()
         {
             var testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
             Assert.Null(testInstruction);

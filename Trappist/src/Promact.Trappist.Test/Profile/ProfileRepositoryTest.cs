@@ -32,7 +32,7 @@ namespace Promact.Trappist.Test.Profile
         /// Test case to get the details of the user
         /// </summary>
         [Fact]
-        public async Task GetUserDetailsAsync()
+        public async Task GetUserDetailsAsyncTest()
         {
             var user = UserDetails();
             await _userManager.CreateAsync(user);
@@ -44,7 +44,7 @@ namespace Promact.Trappist.Test.Profile
         /// Test case to update profile details of the user
         /// </summary>
         [Fact]
-        public async Task UpdateProfile()
+        public async Task UpdateUserProfileTest()
         {
             var user = UserDetails();
             await _userManager.CreateAsync(user);
@@ -63,7 +63,7 @@ namespace Promact.Trappist.Test.Profile
         /// </summary>
         /// <returns>Returns true and updates the new password of the user</returns>
         [Fact]
-        public async Task UpdateUserPasswordAsync()
+        public async Task UpdateUserPasswordAsyncTest()
         {
             var user = UserDetails();
             var passwordOfUser = Password();
@@ -77,7 +77,7 @@ namespace Promact.Trappist.Test.Profile
         /// </summary>
         /// <returns>Returns false and does not update the new password as old password is wrong</returns>
         [Fact]
-        public async Task InvalidUpdateUserPasswordAsync()
+        public async Task InvalidUpdateUserPasswordAsyncTest()
         {
             var user = UserDetails();
             var passwordOfUser = Password();
