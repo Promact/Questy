@@ -191,10 +191,7 @@ export class TestSettingsComponent implements OnInit {
      * @param isTestLaunched is a boolean value indicating whether the test has been launched or not
      */
     launchTestDialog(id: number, testObject: Test, isTestLaunched: boolean) {
-
-        testObject.startDate = new Date(<string>testObject.startDate).toISOString();
-        testObject.endDate = new Date(<string>testObject.endDate).toISOString();
-
+        
         let isCategoryAdded = this.testDetails.categoryAcList.some(x => {
             return x.isSelect;
         });
@@ -206,6 +203,8 @@ export class TestSettingsComponent implements OnInit {
                 this.testDetails.isLaunched = true;
                 this.isRelaunched = new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched;
                 this.showIsPausedButton = new Date(<string>this.testDetails.startDate).getTime() <= Date.now() && this.testDetails.isLaunched;
+                testObject.startDate = new Date(<string>testObject.startDate).toISOString();
+                testObject.endDate = new Date(<string>testObject.endDate).toISOString();
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
                     this.ngOnInit();
                     this.openSnackBar('Your test has been launched successfully.');
