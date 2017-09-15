@@ -89,7 +89,7 @@ namespace Promact.Trappist.Test.Reports
         /// Test to set all candidates matching certain criterias as starred candidate
         /// </summary>
         [Fact]
-        public async Task SetAllCandidateStarredAsync()
+        public async Task SetAllCandidateStarredAsyncTest()
         {
             var createTest = await CreateTestAsync();
             var testAttendeeReport = TestAttendeeReport(createTest.Id);
@@ -113,7 +113,7 @@ namespace Promact.Trappist.Test.Reports
         /// Gets the details of a test attendee along with his marks and test logs by his Id
         /// </summary>
         [Fact]
-        public async Task GetTestAttendeeDetailsByIdAsync()
+        public async Task GetTestAttendeeDetailsByIdAsyncTest()
         {
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "1");
@@ -127,7 +127,7 @@ namespace Promact.Trappist.Test.Reports
         /// Gets all the questions present in a test by test Id
         /// </summary>
         [Fact]
-        public async Task GetTestQuestions()
+        public async Task GetTestQuestionsTest()
         {
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "4");
@@ -172,7 +172,7 @@ namespace Promact.Trappist.Test.Reports
         /// Gets all the answers given by a test attendee by his Id
         /// </summary>
         [Fact]
-        public async Task GetTestAttendeeAnswers()
+        public async Task GetTestAttendeeAnswersTest()
         {
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "5");
@@ -213,7 +213,7 @@ namespace Promact.Trappist.Test.Reports
         /// </summary>
         /// <returns>Percentile of an attendee</returns>
         [Fact]
-        public async Task CalculatePercentile()
+        public async Task CalculatePercentileTest()
         {
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "5");

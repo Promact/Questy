@@ -72,7 +72,7 @@ namespace Promact.Trappist.Test.Questions
         /// Test to add single answer Question
         /// </summary>
         [Fact]
-        public async Task AddSingleAnswerQuestionAsync()
+        public async Task AddSingleAnswerQuestionAsyncTest()
         {
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
@@ -125,57 +125,10 @@ namespace Promact.Trappist.Test.Questions
         }
 
         /// <summary>
-        /// Creating single answer Question
-        /// </summary>
-        /// <returns>Object of single answer Question</returns>
-        private async Task<QuestionAC> CreateSingleAnswerQuestion()
-        {
-            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
-            var singleAnswerQuestion = new QuestionAC()
-            {
-                Question = new QuestionDetailAC()
-                {
-                    QuestionDetail = "Question 1",
-                    CategoryID = category.Entity.Id,
-                    DifficultyLevel = DifficultyLevel.Hard,
-                    QuestionType = QuestionType.Single
-                },
-                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
-                {
-                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
-                    {
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = true,
-                            Option = "A",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = false,
-                            Option = "B",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = false,
-                            Option = "C",
-                        },
-                        new SingleMultipleAnswerQuestionOption()
-                        {
-                            IsAnswer = false,
-                            Option = "D",
-                        }
-                    }
-                }
-            };
-            return singleAnswerQuestion;
-        }
-
-        /// <summary>
         /// Test to add multiple answer Question
         /// </summary>
         [Fact]
-        public async Task AddMultipleAnswerQuestionAsync()
+        public async Task AddMultipleAnswerQuestionAsyncTest()
         {
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
@@ -221,7 +174,7 @@ namespace Promact.Trappist.Test.Questions
         /// Test to add new code snippet question
         /// </summary>
         [Fact]
-        public async Task AddCodeSnippetQuestionAsync()
+        public async Task AddCodeSnippetQuestionAsyncTest()
         {
             string userName = "deepankar@promactinfo.com";
 
@@ -422,7 +375,7 @@ namespace Promact.Trappist.Test.Questions
         /// </summary>
         /// <returns></returns>
         [Fact]
-        public async Task GetNumberOfQuestion()
+        public async Task GetNumberOfQuestionTest()
         {
             string userName = "asif@gmail.com";
             ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
@@ -556,6 +509,53 @@ namespace Promact.Trappist.Test.Questions
                 }
             };
             return multipleAnswerQuestion;
+        }
+
+        /// <summary>
+        /// Creating single answer Question
+        /// </summary>
+        /// <returns>Object of single answer Question</returns>
+        private async Task<QuestionAC> CreateSingleAnswerQuestion()
+        {
+            var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
+            var singleAnswerQuestion = new QuestionAC()
+            {
+                Question = new QuestionDetailAC()
+                {
+                    QuestionDetail = "Question 1",
+                    CategoryID = category.Entity.Id,
+                    DifficultyLevel = DifficultyLevel.Hard,
+                    QuestionType = QuestionType.Single
+                },
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                {
+                    SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    {
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = true,
+                            Option = "A",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "B",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "C",
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            IsAnswer = false,
+                            Option = "D",
+                        }
+                    }
+                }
+            };
+            return singleAnswerQuestion;
         }
         #endregion
         #endregion
