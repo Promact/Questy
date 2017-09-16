@@ -62,7 +62,7 @@ export class TestComponent implements OnInit {
     codeAnswer: string;
     selectedTheme: string;
     testLogs: TestLogs;
-    codeResult: string;
+    codeResponse: CodeResponse;
     showResult: boolean;
     isCloseWindow: boolean;
     timeWarning: boolean;
@@ -75,6 +75,8 @@ export class TestComponent implements OnInit {
     isConnectionLoss: boolean;
     isConnectionRetrieved: boolean;
     clearTime: any;
+    customInput: string;
+    showCustomInput: boolean;
     count: number;
 
     private seconds: number;
@@ -128,13 +130,14 @@ export class TestComponent implements OnInit {
         this.selectedMode = 'java';
         this.codeAnswer = this.JAVA_CODE;
         this.themes = ['eclipse', 'solarized_light', 'monokai', 'cobalt'];
-        this.codeResult = '';
+        this.codeResponse = new CodeResponse();
         this.showResult = false;
         this.timeWarning = false;
         this.testEnded = false;
         this.isCodeProcessing = false;
         this.url = window.location.pathname;
         this.isInitializing = true;
+        this.showCustomInput = false;
         this.count = 0;
     }
 
@@ -469,15 +472,16 @@ export class TestComponent implements OnInit {
             this.languageMode = this.testQuestions[index].question.codeSnippetQuestion.languageList;
             if (codingAnswer !== undefined) {
                 this.codeAnswer = codingAnswer.code.source;
-                this.selectLanguage = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];
-                this.codeResult = codingAnswer.code.result;
-                if (this.codeResult)
-                    this.showResult = true;
+                this.selectLanguage = isNaN(+codingAnswer.code.language) ? codingAnswer.code.language : this.CODING_LANGUAGES[codingAnswer.code.language];                
+                this.codeResponse = codingAnswer.code.codeResponse;
+                this.showResult = true;
             } else {
                 this.selectLanguage = this.languageMode[0];
                 this.changeText();
-                this.codeResult = '';
+                this.codeResponse = new CodeResponse();
+                this.codeResponse.output = '';
             }
+            this.showCustomInput = false;
             this.isTestReady = true;
         }
 
@@ -495,13 +499,13 @@ export class TestComponent implements OnInit {
         this.timeOutCounter = 0;
     }
 
-    runCode() {
+    runCode(runOnlyDefault: boolean) {
         this.showResult = true;
         this.isCodeProcessing = true;
         if (this.testTypePreview)
-            this.codeResult = this.codeAnswer;
+            this.codeResponse.message = this.codeAnswer;
         else {
-            this.codeResult = 'Processing...';
+            this.codeResponse.message = 'Processing...';
 
             if (this.questionStatus !== QuestionStatus.review)
                 this.questionStatus = QuestionStatus.answered;
@@ -509,24 +513,25 @@ export class TestComponent implements OnInit {
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
             solution.code.language = this.selectLanguage;
+            solution.code.input = this.showCustomInput ? this.customInput : null;
             solution.questionId = this.testQuestions[this.questionIndex].question.question.id;
             solution.questionStatus = QuestionStatus.answered;
-
-            //Remove previous question's answer from the array 
-            let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
-            if (index !== -1)
-                this.testAnswers.splice(index, 1);
-
-            this.conductService.execute(this.testAttendee.id, solution).subscribe(res => {
+            
+            this.conductService.execute(this.testAttendee.id, runOnlyDefault, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
-                codeResponse = res;
-                this.codeResult = !codeResponse.errorOccurred ? codeResponse.message : codeResponse.error;
-                solution.code.result = this.codeResult;
+                this.codeResponse = res;
+
+                solution.code.codeResponse = this.codeResponse;
+
+                //Remove previous question's answer from the array 
+                let index = this.testAnswers.findIndex(x => x.questionId === solution.questionId);
+                if (index !== -1)
+                    this.testAnswers.splice(index, 1);
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
                 this.openDialog(codeResponse.message, codeResponse.error);
             }, err => {
-                this.codeResult = 'Oops! Server error has occured.';
+                this.codeResponse.message = 'Oops! Server error has occured.';
                 this.isCodeProcessing = false;
             });
         }
@@ -567,8 +572,7 @@ export class TestComponent implements OnInit {
         } else {
             testAnswer.code.source = this.codeAnswer;
             testAnswer.code.language = this.selectLanguage;
-            testAnswer.code.result = this.codeResult;
-            testAnswer.isAnswered = this.codeResult !== '';
+            testAnswer.code.codeResponse = this.codeResponse;
             if (testQuestion.questionStatus === QuestionStatus.selected) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
@@ -616,8 +620,7 @@ export class TestComponent implements OnInit {
         if (this.questionStatus !== QuestionStatus.review)
             this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
         else if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion
-            && (this.testAnswers.some(x => x.questionId === this.testQuestions[index].question.question.id && x.code.result !== ''))) {
-            this.testQuestions[index].questionStatus = QuestionStatus.selected;
+            && (this.testAnswers.some(x => x.questionId === this.testQuestions[index].question.question.id && x.code.codeResponse.message !== ''))) {
             this.questionStatus = QuestionStatus.answered;
         } else {
             this.questionStatus = QuestionStatus.unanswered;
@@ -714,16 +717,17 @@ export class TestComponent implements OnInit {
         this.dialog.open(TestsProgrammingGuideDialogComponent, { disableClose: true, hasBackdrop: true });
     }
 
-    //Temporary technique to highlight color code for different result
+    //Temporary technique to highlight color code for different result Default test case passed.
     getColorCode() {
-        if (this.codeResult.toLowerCase().includes('congratulation')) {
+        if (this.codeResponse.totalTestCasePassed === 0 && this.codeResponse.totalTestCases !== 0) {
+            return 'fail';
+        } else if (this.codeResponse.totalTestCasePassed === this.codeResponse.totalTestCases && this.codeResponse.totalTestCases !== 0) {
             return 'pass';
-        } else if (this.codeResult.toLowerCase().includes('some')) {
+        } else if (this.codeResponse.totalTestCasePassed > 0) {
             return 'partial-fail';
-        } else if (this.codeResult.toLowerCase().includes('processing')) {
-            return '';
         }
-        return 'fail';
+
+        return '';
     }
 
     /**
