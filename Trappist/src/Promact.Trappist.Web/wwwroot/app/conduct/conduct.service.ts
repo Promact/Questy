@@ -120,12 +120,14 @@ export class ConductService {
         return this.httpService.get(this.testConductUrl + testLink + '/test-summary');
     }
 
-    execute(attendeeId: number, testAnswer: TestAnswer) {
-        return this.httpService.post(this.testConductUrl + 'code/' + attendeeId, testAnswer);
+    execute(attendeeId: number, runOnlyDefault: boolean, testAnswer: TestAnswer) {
+        return this.httpService.post(this.testConductUrl + 'code/' + runOnlyDefault + '/' + attendeeId, testAnswer);
     }
+
     getTestLogs() {
         return this.httpService.get(this.testConductUrl + 'testLogs');
     }
+
     getTestForSummary(link: string) {
         return this.httpService.get(this.testConductUrl + 'getTestSummary/' + link);
     }

@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.Enum;
+﻿using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
+using Promact.Trappist.DomainModel.Enum;
 
 namespace CodeBaseSimulator.Models
 {
@@ -10,8 +11,8 @@ namespace CodeBaseSimulator.Models
 
         public string Input;
 
-        public string Result;
-
         public ProgrammingLanguage Language;
+
+        public CodeResponse CodeResponse;
     }
 }

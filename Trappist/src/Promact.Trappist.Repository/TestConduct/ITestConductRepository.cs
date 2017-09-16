@@ -127,7 +127,14 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <param name="code">Code Object</param>
         /// <returns>True if all test case is passed else false</returns>
-        Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer);
+        Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, bool runOnlyDefault, TestAnswerAC testAnswer);
+
+        /// <summary>
+        /// Evaluate code with custom input
+        /// </summary>
+        /// <param name="code">Code Object</param>
+        /// <returns>CodeResponse Object</returns>
+        Task<CodeResponse> ExecuteCustomInputAsync(int attendeeId, TestAnswerAC testAnswer);
 
         /// <summary>
         /// Calculates the total number of questions for a Test

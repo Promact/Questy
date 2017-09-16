@@ -254,6 +254,14 @@
             }
         }
 
+        public string DefaultTestCasePassed
+        {
+            get
+            {
+                return "Default test case passed.";
+            }
+        }
+
         public string SomeTestCasePassed
         {
             get
@@ -270,7 +278,13 @@
             }
         }
 
-       
+        public string DefaultTestCaseFailed
+        {
+            get
+            {
+                return "Default test case failed.";
+            }
+        }
         #endregion
     }
 }
