@@ -595,7 +595,7 @@ namespace Promact.Trappist.Test.TestConduct
             }));
             //End of Mocking
 
-            var codeRespone = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, answer);
+            var codeRespone = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, false, answer);
 
             Assert.NotNull(codeRespone);
         }

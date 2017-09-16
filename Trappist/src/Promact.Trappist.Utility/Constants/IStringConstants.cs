@@ -166,9 +166,13 @@
         #region Code Response
         string AllTestCasePassed { get; }
 
+        string DefaultTestCasePassed { get; }
+
         string SomeTestCasePassed { get; }
 
         string NoTestCasePassed { get; }
+
+        string DefaultTestCaseFailed { get; }
         #endregion
     }
 }

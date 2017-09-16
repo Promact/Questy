@@ -269,8 +269,8 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(testStatus);
         }
 
-        [HttpPost("code/{attendeeId}")]
-        public async Task<IActionResult> EvaluateCodeSnippet([FromRoute]int attendeeId, [FromBody]TestAnswerAC testAnswer)
+        [HttpPost("code/{runOnlyDefault}/{attendeeId}")]
+        public async Task<IActionResult> EvaluateCodeSnippet([FromRoute]int attendeeId, [FromRoute]bool runOnlyDefault, [FromBody]TestAnswerAC testAnswer)
         {
             if (!ModelState.IsValid)
             {
@@ -281,7 +281,9 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            var codeResponse = await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, testAnswer);
+            var codeResponse = testAnswer.Code.Input == null 
+                ? await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, runOnlyDefault, testAnswer)
+                : await _testConductRepository.ExecuteCustomInputAsync(attendeeId, testAnswer);
 
             return Ok(codeResponse);
         }

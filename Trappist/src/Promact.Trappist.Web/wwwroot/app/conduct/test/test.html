@@ -78,8 +78,12 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button e2e="run-and-save-btn" type="button" class="btn btn-primary" [disabled]="isCodeProcessing" value="run" (click)="runCode()">Run and Save</button>
-                        <pre e2e="test-case-pass-fail-message" [ngClass]="getColorCode()" *ngIf="codeResult != ''">{{codeResult}}</pre>
+                        <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>
+                        <button type="button" class="btn btn-primary" value="run" (click)="runCode(false)">Submit</button><br />
+                        <input type="checkbox" [(ngModel)]="showCustomInput"/>Run against custom input<br />
+                        <textarea rows="4" *ngIf="showCustomInput" [(ngModel)]="customInput"></textarea><br/>
+                        <pre [ngClass]="getColorCode()" *ngIf="codeResponse.message && showResult">{{codeResponse.message}}</pre>
+                        <pre [ngClass]="getColorCode()" *ngIf="!codeResponse.message && showResult">{{codeResponse.output}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group e2e="single-que-ans-radio-grp">

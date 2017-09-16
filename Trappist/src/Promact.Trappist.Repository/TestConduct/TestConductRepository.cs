@@ -260,7 +260,7 @@ namespace Promact.Trappist.Repository.TestConduct
             }
         }
 
-        public async Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, TestAnswerAC testAnswer)
+        public async Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, bool runOnlyDefault, TestAnswerAC testAnswer)
         {
             var allTestCasePassed = true;
             var countPassedTest = 0;
@@ -269,7 +269,7 @@ namespace Promact.Trappist.Repository.TestConduct
             var score = 0d;
             var code = testAnswer.Code;
             var codeResponse = new CodeResponse();
-            var testCases = new List<DomainModel.Models.Question.CodeSnippetQuestionTestCases>();
+            var testCases = new List<CodeSnippetQuestionTestCases>();
             var results = new List<Result>();
             var testCaseResults = new List<TestCaseResult>();
 
@@ -279,11 +279,11 @@ namespace Promact.Trappist.Repository.TestConduct
 
             //Filter Test Cases
             testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Default).ToList());
-            if (testCaseChecks.RunBasicTestCase)
+            if (testCaseChecks.RunBasicTestCase && !runOnlyDefault)
                 testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Basic).ToList());
-            if (testCaseChecks.RunCornerTestCase)
+            if (testCaseChecks.RunCornerTestCase && !runOnlyDefault)
                 testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Corner).ToList());
-            if (testCaseChecks.RunNecessaryTestCase)
+            if (testCaseChecks.RunNecessaryTestCase && !runOnlyDefault)
                 testCases.AddRange(completeTestCases.Where(x => x.TestCaseType == TestCaseType.Necessary).ToList());
             //End of filter
 
@@ -349,17 +349,17 @@ namespace Promact.Trappist.Repository.TestConduct
             codeResponse.ErrorOccurred = false;
             if (allTestCasePassed && !errorEncounter)
             {
-                codeResponse.Message = _stringConstants.AllTestCasePassed;
+                codeResponse.Message = runOnlyDefault ? _stringConstants.DefaultTestCasePassed : _stringConstants.AllTestCasePassed;
             }
             else if (!errorEncounter)
             {
                 if (countPassedTest > 0)
                 {
-                    codeResponse.Message = _stringConstants.SomeTestCasePassed;
+                    codeResponse.Message = runOnlyDefault ? _stringConstants.DefaultTestCaseFailed : _stringConstants.SomeTestCasePassed;
                 }
                 else
                 {
-                    codeResponse.Message = _stringConstants.NoTestCasePassed;
+                    codeResponse.Message = runOnlyDefault ? _stringConstants.DefaultTestCaseFailed : _stringConstants.NoTestCasePassed;
                 }
             }
             else
@@ -369,7 +369,33 @@ namespace Promact.Trappist.Repository.TestConduct
             }
 
             //Add answer to the database
-            testAnswer.Code.Result = codeResponse.ErrorOccurred ? codeResponse.Error : codeResponse.Message;
+            testAnswer.Code.CodeResponse = codeResponse;
+            codeResponse.TotalTestCases = testCases.Count();
+            codeResponse.TotalTestCasePassed = countPassedTest;
+            await AddAnswerAsync(attendeeId, testAnswer);
+
+            return codeResponse;
+        }
+
+        public async Task<CodeResponse> ExecuteCustomInputAsync(int attendeeId, TestAnswerAC testAnswer)
+        {
+            var result = new Result();
+            if(testAnswer.Code.Input != null)
+                result = await ExecuteCodeAsync(testAnswer.Code);
+
+            var codeResponse = new CodeResponse()
+            {
+                ErrorOccurred = result.CompilerOutput != "",
+                Error = result.CompilerOutput,
+                Message = null,
+                Output = result.CompilerOutput == "" ? result.Output : result.CompilerOutput,
+                TimeConsumed = result.RunTime,
+                MemoryConsumed = result.MemoryConsumed,
+                TotalTestCasePassed = 0,
+                TotalTestCases = 0
+            };
+
+            testAnswer.Code.CodeResponse = codeResponse;
             await AddAnswerAsync(attendeeId, testAnswer);
 
             return codeResponse;
