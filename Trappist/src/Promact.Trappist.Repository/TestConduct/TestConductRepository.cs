@@ -522,41 +522,58 @@ namespace Promact.Trappist.Repository.TestConduct
 
         private async Task GetTotalMarks(int testAttendeeId)
         {
+            //Gets the details of the test attendee and also includes the test details taken by that test attendee
             var testAttendee = await _dbContext.TestAttendees.AsNoTracking().Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == testAttendeeId);
+
             decimal correctMarks = 0;
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             bool isAnsweredOptionNull = false;
+
+            //Gets the list of questions attended by the test attendee and includes the test answers, question, single-multiple-answer question and single-multiple-answer options corresponding to the test attendee
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+
+            //Gets the number of questions in the test taken by the test attendee
             var numberOfQuestionsInATest = await _dbContext.TestQuestion.AsNoTracking().CountAsync(x => x.TestId == testAttendee.TestId);
 
+            //Calculates the full marks of the test taken by the test attendee
             fullMarks = numberOfQuestionsInATest * testAttendee.Test.CorrectMarks;
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
                 isAnsweredOptionNull = false;
+
+                //Checks the status of the question attended by the test attendee and continues with the loop if the question status is either unanswered or selected
                 if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
                     continue;
-                var count = 0;
-                var correctOption = 0;
+
+                var numberOfcorrectOptionsAnsweredByTestAttendee = 0;
+                var numberOfCorrectOptionsOfMultipleAnswerQuestion = 0;
+
                 if (attendedQuestion.Question.QuestionType != QuestionType.Programming)
                 {
                     var isAnsweredOptionCorrect = true;
-                    var noOfOptions = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
+
+                    //Gets the options of the single and multiple-answer question attempted by the test attendee
+                    var listOfOptions = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
+
+                    //Calculates the number of correct options saved for the multiple-answer question attempted by the test attendee
                     if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
-                        noOfOptions.ForEach(correct =>
+                        listOfOptions.ForEach(correct =>
                         {
-                            correctOption = correct.IsAnswer ? correctOption + 1 : correctOption;
+                            numberOfCorrectOptionsOfMultipleAnswerQuestion = correct.IsAnswer ? numberOfCorrectOptionsOfMultipleAnswerQuestion + 1 : numberOfCorrectOptionsOfMultipleAnswerQuestion;
                         });
 
                     foreach (var answers in attendedQuestion.TestAnswers)
                     {
                         var answeredOption = answers.AnsweredOption;
+                        //Checks if none of the options are marked by a test attendee for single-multiple-answer question
                         if (answeredOption == null)
                         {
                             isAnsweredOptionNull = true;
                             continue;
                         }
+                        //Checks whether the option answered by the test attendee for the single-answer question is correct or not
                         if (!attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer && attendedQuestion.Question.QuestionType == QuestionType.Single)
                         {
                             isAnsweredOptionCorrect = false;
@@ -564,14 +581,18 @@ namespace Promact.Trappist.Repository.TestConduct
                         }
                         else if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
                         {
-                            count = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? count = count + 1 : count - 1;
-                            isAnsweredOptionCorrect = count == correctOption;
+                            //Calculates the number of answers given correctly for multiple-answer question by the test attendee
+                            numberOfcorrectOptionsAnsweredByTestAttendee = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? numberOfcorrectOptionsAnsweredByTestAttendee = numberOfcorrectOptionsAnsweredByTestAttendee + 1 : numberOfcorrectOptionsAnsweredByTestAttendee - 1;
+                            //Returns true if the number of correct options given by the test attendee for the multiple-answer question attempted equals the number of correct options saved for that multiple-answer question else returns false
+                            isAnsweredOptionCorrect = numberOfcorrectOptionsAnsweredByTestAttendee == numberOfCorrectOptionsOfMultipleAnswerQuestion;
                         }
                     }
                     if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
+                        //Add score for single-multiple answer question when correct
                         correctMarks += testAttendee.Test.CorrectMarks;
 
                     else if (!isAnsweredOptionNull)
+                        //Subtract score for single-multiple answer question when incorrect
                         correctMarks -= testAttendee.Test.IncorrectMarks;
                 }
                 else
@@ -580,7 +601,10 @@ namespace Promact.Trappist.Repository.TestConduct
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);
+
+            //Gets the report details of the the test attendee
             var report = await _dbContext.Report.SingleOrDefaultAsync(x => x.TestAttendeeId == testAttendeeId);
+
             report.TotalMarksScored = (double)totalMarks;
             report.Percentage = (report.TotalMarksScored / (double)fullMarks) * 100;
             report.Percentage = Math.Round(report.Percentage, 2);
