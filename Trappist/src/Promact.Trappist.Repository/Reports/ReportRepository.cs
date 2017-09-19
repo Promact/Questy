@@ -128,10 +128,12 @@ namespace Promact.Trappist.Repository.Reports
             var testQuestionList = new List<TestQuestion>();
             var allAttendeeMarksDetailsList = new List<ReportQuestionsCountAC>();
             var easyQuestionAttempted = 0; var hardQuestionAttempted = 0; var mediumQuestionAttempted = 0;
-            var correctAttemptedQuestion = 0; var countOptions = 0; var totalQuestionAttempted = 0;
+            var correctAttemptedQuestion = 0; var countOptions = 0; var totalQuestionAttempted = 0; var sameMarks = 0;
+            var count = 0;
 
             //all testattendees Of a test
-            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId).Select(x=>x.Id).ToListAsync();
+            var allTestAttendeeList = await _dbContext.TestAttendees.Where(x => x.TestId == testId).Include(x=>x.Report).Select(x=>x.Id).ToListAsync();
+            var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testId).OrderBy(x => x.TotalMarksScored).Select( s=> new { s.TestAttendeeId, s.TotalMarksScored }).ToListAsync();
             //no test questions of a test
             var totalNoOfTestQuestions = await _dbContext.TestQuestion.Where(x => x.TestId == testId).CountAsync();
             //all questions attempted by all attendees
@@ -182,7 +184,21 @@ namespace Promact.Trappist.Repository.Reports
                     }
                     
                 });
-            //    var percentile = await CalculatePercentileAsync(testAttendee,testId);
+
+                double noOfScores = marksList.Count();
+
+                var attendee = marksList.Where(z => z.TestAttendeeId == testAttendee).ToList();
+                foreach (var marks in marksList)
+                {
+                    if (attendee.First().TotalMarksScored == marks.TotalMarksScored)
+                         sameMarks = sameMarks + 1;
+                    else if (marks.TotalMarksScored < attendee.First().TotalMarksScored)
+                         count = count + 1;
+                }
+
+                var rank = count + (0.5 * sameMarks);
+                double percentile = rank / noOfScores;
+                var studentPercentile = percentile * 100;
                 var reportQuestions = new ReportQuestionsCountAC()
                 {
                     TestAttendeeId = testAttendee,
@@ -191,13 +207,13 @@ namespace Promact.Trappist.Repository.Reports
                     HardQuestionAttempted = hardQuestionAttempted,
                     CorrectQuestionsAttempted = correctAttemptedQuestion,
                     NoOfQuestionAttempted = totalQuestionAttempted,
-                 //   Percentile = System.Math.Round(percentile, 2),
+                    Percentile = System.Math.Round(studentPercentile, 2),
                     totalTestQuestions = totalNoOfTestQuestions
                 };
                 allAttendeeMarksDetailsList.Add(reportQuestions);
-
-                easyQuestionAttempted = mediumQuestionAttempted = hardQuestionAttempted = correctAttemptedQuestion = countOptions = totalQuestionAttempted = 0;
-
+                
+                easyQuestionAttempted = mediumQuestionAttempted = hardQuestionAttempted = correctAttemptedQuestion = countOptions = totalQuestionAttempted =0;
+                studentPercentile = 0.0;
             };
             return allAttendeeMarksDetailsList;
         }
