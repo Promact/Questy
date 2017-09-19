@@ -316,10 +316,10 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
             await _trappistDbContext.SaveChangesAsync();
             var allAttendeeMarksDetails = await _reportRepository.GetAllAttendeeMarksDetailsAsync(createTest.Id);
-            var correctAttempted = allAttendeeMarksDetails.First().CorrectQuestionsAttempted;
+            var totalQuestionAttempted = allAttendeeMarksDetails.First().NoOfQuestionAttempted;
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
             Assert.Equal(2, easyQuestionAttempted);
-            Assert.Equal(1, correctAttempted);
+            Assert.Equal(2, totalQuestionAttempted);           
         }
 
         /// <summary>
