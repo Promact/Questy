@@ -42,6 +42,7 @@ export class TestCategory {
     public id: number;
     public categoryId: number;
     public testId: number;
+    public isSelect: boolean;
 }
 
 export class TestQuestion {
@@ -69,6 +70,15 @@ export class TestQuestion {
         this.codeSnippetQuestionTestCasesDetails = new Array<CodeSnippetTestCasesDetails>();
         this.testCodeSolutionDetails = new TestCodeSolutionDetails();
     }
+
+}
+
+export class TestQuestionAC {
+    public id: number
+
+    public categoryID: number
+
+    public isSelect: boolean
 }
 
 

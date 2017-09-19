@@ -2,7 +2,12 @@
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.Test
 {
-    public class TestQuestionAC : TestQuestion
+    public class TestQuestionAC
     {
+        public int Id { get; set; }
+
+        public int CategoryID { get; set; }
+
+        public bool IsSelect { get; set; }
     }
 }
