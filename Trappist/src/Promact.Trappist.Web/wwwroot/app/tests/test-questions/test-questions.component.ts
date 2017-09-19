@@ -44,7 +44,6 @@ export class TestQuestionsComponent implements OnInit {
             this.testId = params['id'];
         });
         this.getTestDetails();
-        this.isTestAttendeeExist();
     }
 
     openSnackBar(text: string) {
@@ -106,6 +105,7 @@ export class TestQuestionsComponent implements OnInit {
             this.isAnyCategorySelectedForTest = this.testDetails.categoryAcList.some(function (category) {
                 return category.isSelect;
             });
+            this.isEditTestEnabled = this.isTestAttendeeExist();
             this.loader = false;
         }, err => {
             this.loader = false;
@@ -212,17 +212,11 @@ export class TestQuestionsComponent implements OnInit {
     * Checks if any candidate has taken the test
     */
     isTestAttendeeExist() {
-        if (!(new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)) {
-            this.isEditTestEnabled = true;
-            return
-        }
-        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-            if (res.response) {
-                this.isEditTestEnabled = false;
-            }
-            else {
-                this.isEditTestEnabled = true;
-            }
-        });
+        if (new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)
+            return true;
+        else
+            this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
+                return res.response;
+            });
     }
 }
