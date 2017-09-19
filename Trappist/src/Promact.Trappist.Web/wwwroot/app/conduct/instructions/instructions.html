@@ -1,6 +1,6 @@
 ﻿<div class="test-conduct">
     <test-conduct-header></test-conduct-header>
-    <div class="loader-container" *ngIf="loader">
+    <div e2e="progress-loader" class="loader-container" *ngIf="loader">
         <div class="spinner"></div>
     </div>
     <div class="content-block">
@@ -33,7 +33,7 @@
         </ul>
         <div class="text-center">
             <h2 class="mb20">All the Best!</h2>
-            <button type="button" class="btn btn-primary" (click)="startTest()">Start Test</button>
+            <button e2e="start-test-btn" type="button" class="btn btn-primary" (click)="startTest()">Start Test</button>
         </div>
     </div>
     <test-conduct-footer></test-conduct-footer>

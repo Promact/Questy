@@ -1,4 +1,4 @@
-﻿<div class="loader-container" *ngIf="loader">
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
     <div class="spinner"></div>
 </div>
 <div class="test-conduct" *ngIf="!loader">
@@ -22,14 +22,14 @@
         </table>
         <div class="text-center" *ngIf="isButtonVisible && !isTestBlocked && !isTestExpired">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
-            <button type="button" class="btn" (click)="startTest()">Back to Test</button>
-            <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
+            <button e2e="back-to-test-btn" type="button" class="btn" (click)="startTest()">Back to Test</button>
+            <button e2e="end-test-btn" type="button" class="btn btn-primary" (click)="endTestButtonClicked()">End Test</button>
         </div>
         <div class="text-center" *ngIf="isTestClosedUnConditionally && !isTestBlocked && !isTestExpired">
             <h5 class="ptb20">Test once ended, cannot be resumed. Are you sure, you want to end your test?</h5>
-            <button class="btn" *ngIf="!isAllowed" [disabled]="disableButton || testAttendee.report.isTestPausedUnWillingly" (click)="sendRequestForResume()">Request to Resume</button>
-            <button type="button" class="btn" *ngIf="isAllowed" (click)="startTest()">Back to Test</button>
-            <button type="button" class="btn btn-primary" (click)="endYourTest()">End Test</button>
+            <button e2e="request-to-resume-btn" class="btn" *ngIf="!isAllowed" [disabled]="disableButton || testAttendee.report.isTestPausedUnWillingly" (click)="sendRequestForResume()">Request to Resume</button>
+            <button e2e="back-to-test-btn" type="button" class="btn" *ngIf="isAllowed" (click)="startTest()">Back to Test</button>
+            <button e2e="end-test-btn" type="button" class="btn btn-primary" (click)="endYourTest()">End Test</button>
             <br />
             <div class="errors-container">
                 <span *ngIf="!isAllowed && !testAttendee.report.isTestPausedUnWillingly" class="error-msg mt20">Please contact the supervisor if you want to resume the test.</span>
