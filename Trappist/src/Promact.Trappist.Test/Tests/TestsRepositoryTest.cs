@@ -314,8 +314,16 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
             //creating new question under categoryObj
             var questionAc = CreateQuestionAc(true, "Question in Category", categoryObj.Id, 1);
-            var questionAcList = new List<QuestionAC>();
-            questionAcList.Add(questionAc);
+            var questionAcList = new List<TestQuestionAC>
+            {
+                new TestQuestionAC()
+                {
+                    Id=questionAc.Question.Id,
+                    IsSelect=true,
+                    CategoryID=questionAc.Question.CategoryID
+                }
+
+            };
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAc, applicationUser.Id);
             var testQuestion = new TestQuestion();
@@ -354,17 +362,27 @@ namespace Promact.Trappist.Test.Tests
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-            var questionListAc = new List<QuestionAC>();
+            var questionListAc = new List<TestQuestionAC>();
             var question1 = CreateQuestionAc(true, "This will be added..", category.Id, 1);
-            questionListAc.Add(question1);
-            var question2 = CreateQuestionAc(false, "This will not be added.", category.Id, 2);
-            questionListAc.Add(question2);
+            questionListAc.Add(new TestQuestionAC()
+            {
 
+                Id = question1.Question.Id,
+                IsSelect = true,
+                CategoryID = question1.Question.CategoryID
+            });
+            var question2 = CreateQuestionAc(false, "This will not be added.", category.Id, 2);
+            questionListAc.Add(new TestQuestionAC()
+            {
+                Id = question2.Question.Id,
+                IsSelect = question2.Question.IsSelect,
+                CategoryID = question2.Question.CategoryID
+            });
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(_trappistDbContext.TestQuestion.Count() == 1);
             var message = await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(message == "No new questions selected..");
-            question1.Question.IsSelect = false;
+            questionListAc[0].IsSelect = false;
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             Assert.True(_trappistDbContext.TestQuestion.Count() == 0);
         }
@@ -401,13 +419,13 @@ namespace Promact.Trappist.Test.Tests
 
             //Adding categories to test
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-            var questionListAc = new List<QuestionAC>();
+            var questionListAc = new List<TestQuestionAC>();
             var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(allQuestions.ToList());
             foreach (var question in questionDetailList)
             {
-                var questionAc = new QuestionAC();
-                question.IsSelect = true;
-                questionAc.Question = question;
+                var questionAc = new TestQuestionAC();
+                questionAc.IsSelect = true;
+                questionAc.Id = question.Id;
                 questionListAc.Add(questionAc);
             }
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
@@ -430,8 +448,12 @@ namespace Promact.Trappist.Test.Tests
             await _categoryRepository.AddCategoryAsync(categoryObj);
 
             var questionAC = CreateQuestionAc(true, "This is some question detail", categoryObj.Id, 1);
-            var questionACList = new List<QuestionAC>();
-            questionACList.Add(questionAC);
+            var questionACList = new List<TestQuestionAC>();
+            var testQuestionAc = new TestQuestionAC();
+            testQuestionAc.Id = questionAC.Question.Id;
+            testQuestionAc.CategoryID = questionAC.Question.CategoryID;
+            testQuestionAc.IsSelect = questionAC.Question.IsSelect;
+            questionACList.Add(testQuestionAc);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(questionAC, applicationUser.Id);
 
             var test = CreateTest("Maths");

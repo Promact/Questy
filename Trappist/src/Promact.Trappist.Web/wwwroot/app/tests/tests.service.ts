@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
-import { Test } from './tests.model';
+import { Test, TestQuestionAC } from './tests.model';
 import { QuestionBase } from '../questions/question';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -89,10 +89,8 @@ export class TestService {
         return this.httpService.get(this.testApiUrl + '/' + testId + '/testAttendee');
     }
 
-    
-
-    addTestCategories(testId: number, testCategory: any ) {
-        return this.httpService.post(this.testApiUrl + '/' + 'addTestCategories/' +testId, testCategory);
+    addTestCategories(testId: number, testCategory: any) {
+        return this.httpService.post(this.testApiUrl + '/' + 'addTestCategories/' + testId, testCategory);
     }
 
     /**
@@ -126,7 +124,7 @@ export class TestService {
      * @param selectedQuestions is a list of questions user wants to add to the test
      * @param testId is passed to identify that particular "Test"
      */
-    addTestQuestions(selectedQuestions: QuestionBase[], testId: number) {
+    addTestQuestions(selectedQuestions: TestQuestionAC[], testId: number) {
         return this.httpService.post(this.testApiUrl + '/questions/' + testId, selectedQuestions);
     }
 
@@ -143,8 +141,8 @@ export class TestService {
      * @param testId: Id of the test that is to be duplicated
      * @param newTestId: Id of the duplicated Test
      */
-    duplicateTest(testId: number, test:Test) {
-        return this.httpService.post(this.testApiUrl + '/' + testId +'/duplicateTest', test);
+    duplicateTest(testId: number, test: Test) {
+        return this.httpService.post(this.testApiUrl + '/' + testId + '/duplicateTest', test);
     }
 
     /**

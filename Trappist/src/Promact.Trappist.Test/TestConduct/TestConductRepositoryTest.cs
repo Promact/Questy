@@ -176,7 +176,16 @@ namespace Promact.Trappist.Test.TestConduct
                 CreateQuestionAC(true,"Category3 type question", category3.Id, 3),
                 CreateQuestionAC(true,"Category3 type question", category3.Id, 4),
             };
-            await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
+            var testQuestionList = new List<TestQuestionAC>();
+            questionList.ForEach(x =>
+            {
+                var testQuestion = new TestQuestionAC();
+                testQuestion.CategoryID = x.Question.CategoryID;
+                testQuestion.Id = x.Question.Id;
+                testQuestion.IsSelect = x.Question.IsSelect;
+                testQuestionList.Add(testQuestion);
+            });
+            await _testRepository.AddTestQuestionsAsync(testQuestionList, test.Id);
             var testInstruction = await _testConductRepository.GetTestInstructionsAsync(_stringConstants.MagicString);
             Assert.NotNull(testInstruction);
         }
@@ -338,14 +347,20 @@ namespace Promact.Trappist.Test.TestConduct
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question6, "");
 
             //Creating test questions
-            var questionList = new List<QuestionAC>
+            var questionList = new List<TestQuestionAC>
             {
-                question1,
-                question2,
-                question3,
-                question4,
-                question5,
-                question6
+                new TestQuestionAC(){
+                    Id=question1.Question.Id,
+                    IsSelect=question1.Question.IsSelect,
+                    CategoryID=question1.Question.CategoryID
+                },
+                new TestQuestionAC()
+                {
+                     Id=question2.Question.Id,
+                    IsSelect=question2.Question.IsSelect,
+                    CategoryID=question2.Question.CategoryID
+
+                }
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
@@ -440,10 +455,20 @@ namespace Promact.Trappist.Test.TestConduct
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "");
 
             //Creating test questions
-            var questionList = new List<QuestionAC>
+            var questionList = new List<TestQuestionAC>
             {
-                question1,
-                question2,
+                new TestQuestionAC(){
+                    Id=question1.Question.Id,
+                    IsSelect=question1.Question.IsSelect,
+                    CategoryID=question1.Question.CategoryID
+                },
+                new TestQuestionAC()
+                {
+                     Id=question2.Question.Id,
+                    IsSelect=question2.Question.IsSelect,
+                    CategoryID=question2.Question.CategoryID
+
+                }
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
@@ -498,9 +523,13 @@ namespace Promact.Trappist.Test.TestConduct
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, testAttendee.Email);
             var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
             //Creating test questions
-            var questionList = new List<QuestionAC>
+            var questionList = new List<TestQuestionAC>
             {
-                codingQuestion
+                new TestQuestionAC(){
+                    Id=codingQuestion.Question.Id,
+                    IsSelect=codingQuestion.Question.IsSelect,
+                    CategoryID=codingQuestion.Question.CategoryID
+                }
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
