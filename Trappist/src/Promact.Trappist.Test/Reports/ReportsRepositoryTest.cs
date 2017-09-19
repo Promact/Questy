@@ -245,9 +245,17 @@ namespace Promact.Trappist.Test.Reports
             //add test category
             var categoryList = new List<DomainModel.Models.Category.Category>();
             categoryList.Add(category);
-            var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
-            categoryListAc[0].IsSelect = true;
-            await _testRepository.AddTestCategoriesAsync(createTest.Id, categoryListAc);
+            var testCategoryList = new List<TestCategoryAC>
+            {
+                new TestCategoryAC
+                {
+                    CategoryId=category.Id,
+                    IsSelect=true,
+                }
+            };
+            //var categoryListAc = Mapper.Map<List<CategoryAC>>(categoryList);
+            //categoryListAc[0].IsSelect = true;
+            await _testRepository.AddTestCategoriesAsync(createTest.Id, testCategoryList);
 
             //add test Question
             var questionList = new List<TestQuestionAC>
@@ -266,18 +274,6 @@ namespace Promact.Trappist.Test.Reports
                 }
 
             };
-            //questionList.Add(new TestQuestionAC()
-            //{
-            //    Id = question1.Question.Id,
-            //    CategoryID = question1.Question.CategoryID,
-            //    IsSelect = question1.Question.IsSelect
-            //});
-            //questionList.Add(new TestQuestionAC()
-            //{
-            //    Id = question2.Question.Id,
-            //    IsSelect = question2.Question.IsSelect,
-            //    CategoryID = question2.Question.CategoryID
-            //});
             await _testRepository.AddTestQuestionsAsync(questionList, createTest.Id);
 
             //create test attednee
