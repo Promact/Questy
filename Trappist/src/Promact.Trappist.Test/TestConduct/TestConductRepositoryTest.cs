@@ -72,6 +72,8 @@ namespace Promact.Trappist.Test.TestConduct
             await CreateTestAsync();
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(_trappistDbContext.TestAttendees.Count() == 1);
+            Assert.True(testAttendee.TestLogs.VisitTestLink != default(DateTime));
+            Assert.True(testAttendee.TestLogs.FillRegistrationForm != default(DateTime));
         }
 
         /// <summary>
@@ -86,6 +88,8 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
+            Assert.True(testAttendee.TestLogs.VisitTestLink != default(DateTime));
+            Assert.True(testAttendee.TestLogs.FillRegistrationForm != default(DateTime));
         }
 
         /// <summary>
@@ -311,21 +315,37 @@ namespace Promact.Trappist.Test.TestConduct
             var categoryList = new List<DomainModel.Models.Category.Category>();
             var category1 = CreateCategory("Mathematics");
             await _categoryRepository.AddCategoryAsync(category1);
+            var category2 = CreateCategory("History");
+            await _categoryRepository.AddCategoryAsync(category2);
             categoryList.Add(category1);
+            categoryList.Add(category2);
             var categoryListAc = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
             categoryListAc[0].IsSelect = true;
+            categoryListAc[1].IsSelect = true;
             await _testRepository.AddTestCategoriesAsync(test.Id, categoryListAc);
 
             var question1 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, "");
-            var question2 = CreateQuestionAC(true, "Category1 type question 2", category1.Id, 2);
+            var question2 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 2);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "");
+            var question3 = CreateQuestionAC(true, "Who was the father of Akbar ?", category2.Id, 3);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question3, "");
+            var question4 = CreateQuestionAC(true, "When was the first battle of Panipat fought ?", category2.Id, 4);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question4, "");
+            var question5 = CreateQuestionAc(true, "When were the battles of Terrain fought ?", category2.Id, 5);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question5, "");
+            var question6 = CreateQuestionAc(true, "Mention the years of two important battles fought by Prithviraj Chauhan ?", category2.Id, 6);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question6, "");
 
             //Creating test questions
             var questionList = new List<QuestionAC>
             {
                 question1,
                 question2,
+                question3,
+                question4,
+                question5,
+                question6
             };
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
@@ -333,15 +353,15 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
-            var answer = new TestAnswerAC()
+            var answer1 = new TestAnswerAC()
             {
                 OptionChoice = new List<int>() { question1.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id },
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer1);
 
-            answer = new TestAnswerAC()
+            var answer2 = new TestAnswerAC()
             {
                 OptionChoice = new List<int>(),
                 QuestionId = 2,
@@ -349,16 +369,54 @@ namespace Promact.Trappist.Test.TestConduct
                 {
                     Input = "input",
                     Source = "source",
-                    Language = ProgrammingLanguage.C
+                    Language = ProgrammingLanguage.C,
                 },
                 QuestionStatus = QuestionStatus.unanswered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer2);
+
+            var answer3 = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>(),
+                QuestionId = 3,
+                QuestionStatus = QuestionStatus.review
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer3);
+
+            var answer4 = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>() { question4.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Id },
+                QuestionId = 4,
+                QuestionStatus = QuestionStatus.review
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer4);
+
+            var answer5 = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>() { question5.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Id,
+                question5.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Id },
+                QuestionId = 5,
+                QuestionStatus = QuestionStatus.answered
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer5);
+
+            var answer6 = new TestAnswerAC()
+            {
+                OptionChoice = new List<int>() { question6.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Id,
+                question6.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[2].Id },
+                QuestionId = 6,
+                QuestionStatus = QuestionStatus.review
+            };
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer6);
+
             //Setting Attendee TestStatus
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
 
             Assert.True(testStatus == TestStatus.CompletedTest);
+            Assert.True(testAttendee.TestLogs.FinishTest != default(DateTime));
+            Assert.True(testAttendee.Report.TimeTakenByAttendee != 0);
+            Assert.True(testAttendee.Report.TotalMarksScored == 6);
         }
 
         [Fact]
@@ -475,8 +533,9 @@ namespace Promact.Trappist.Test.TestConduct
                 RunTime = 1
             };
             var serializedResult = Newtonsoft.Json.JsonConvert.SerializeObject(result);
-            
-            _httpService.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>())).Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
+
+            _httpService.Setup(x => x.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>())).Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+            {
                 Content = new StringContent(serializedResult, System.Text.Encoding.UTF8, "application/json")
             }));
             //End of Mocking
@@ -497,7 +556,7 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = CreateTestAttendee(test.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
             testAttendee.AttendeeBrowserToleranceCount = 2;
-            await _testConductRepository.SetAttendeeBrowserToleranceValueAsync(testAttendee.Id,testAttendee.AttendeeBrowserToleranceCount);
+            await _testConductRepository.SetAttendeeBrowserToleranceValueAsync(testAttendee.Id, testAttendee.AttendeeBrowserToleranceCount);
             Assert.True(testAttendee.AttendeeBrowserToleranceCount != 0);
         }
 
@@ -517,8 +576,8 @@ namespace Promact.Trappist.Test.TestConduct
             var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
 
             //Creating questions
-            var question1 = CreateQuestionAc(true, "Who was the father of Humayun ?", category1.Id, 0);
-            var question2 = CreateQuestionAc(true, "Bharatnatyam is a popular dance form of which state ?", category2.Id, 0);
+            var question1 = CreateQuestionAC(true, "Who was the father of Humayun ?", category1.Id, 0);
+            var question2 = CreateQuestionAC(true, "Bharatnatyam is a popular dance form of which state ?", category2.Id, 0);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, "5");
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question2, "5");
             var allQuestions = await _questionRepository.GetAllQuestionsAsync("5", 0, 0, "All", null);
@@ -555,7 +614,7 @@ namespace Promact.Trappist.Test.TestConduct
                 Duration = 70,
                 BrowserTolerance = BrowserTolerance.High,
                 CorrectMarks = 4,
-                IncorrectMarks = -1
+                IncorrectMarks = 1
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
@@ -578,7 +637,19 @@ namespace Promact.Trappist.Test.TestConduct
                 LastName = "Patel",
                 Email = "phardi@gmail.com",
                 ContactNumber = "1234567890",
-                RollNumber = "13it055"
+                RollNumber = "13it055",
+                TestLogs = new DomainModel.Models.TestLogs.TestLogs()
+                {
+                    VisitTestLink = default(DateTime),
+                    FillRegistrationForm = default(DateTime),
+                    StartTest = default(DateTime),
+                    FinishTest = default(DateTime)
+                },
+                Report = new DomainModel.Models.Report.Report()
+                {
+                    TimeTakenByAttendee = 0,
+                    TotalMarksScored = 4
+                }
             };
             return testAttendee;
         }
@@ -630,6 +701,11 @@ namespace Promact.Trappist.Test.TestConduct
                             Option="A",
                             IsAnswer=true
                         },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="1764",
+                            IsAnswer=false
+                        }
                     }
                 }
             };
@@ -714,25 +790,25 @@ namespace Promact.Trappist.Test.TestConduct
         }
 
         /// <summary>
-        /// Creates questions
+        /// Creating Question application class
         /// </summary>
-        /// <param name="isSelect">A boolean value</param>
-        /// <param name="questionDetails">Contains the details of a question</param>
-        /// <param name="categoryId">Id of the category to which the question is added</param>
-        /// <param name="id">Id of the question</param>
+        /// <param name="isSelect">boolean value to indicate if question is selected or not</param>
+        /// <param name="questionDetails">details about a question</param>
+        /// <param name="categoryId">categoryid under which the question belongs to</param>
+        /// <param name="id">question no</param>
         /// <returns></returns>
         private QuestionAC CreateQuestionAc(bool isSelect, string questionDetails, int categoryId, int id)
         {
 
-            var questionAc = new QuestionAC()
+            QuestionAC questionAC = new QuestionAC()
             {
                 Question = new QuestionDetailAC()
                 {
                     Id = id,
                     IsSelect = isSelect,
                     QuestionDetail = questionDetails,
-                    QuestionType = 0,
-                    DifficultyLevel = 0,
+                    QuestionType = QuestionType.Multiple,
+                    DifficultyLevel = DifficultyLevel.Hard,
                     CategoryID = categoryId
                 },
                 CodeSnippetQuestion = null,
@@ -742,13 +818,23 @@ namespace Promact.Trappist.Test.TestConduct
                     {
                         new SingleMultipleAnswerQuestionOption()
                         {
-                            Option="A",
+                            Option="1911",
                             IsAnswer=true
                         },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option="1912",
+                            IsAnswer=true
+                        },
+                        new SingleMultipleAnswerQuestionOption()
+                        {
+                            Option = "1909",
+                            IsAnswer = false
+                        }
                     }
                 }
             };
-            return questionAc;
+            return questionAC;
         }
         #endregion
     }
