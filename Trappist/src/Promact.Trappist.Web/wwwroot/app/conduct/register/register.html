@@ -1,6 +1,6 @@
 ﻿<div class="test-conduct">
     <test-conduct-header></test-conduct-header>
-    <div class="loader-container" *ngIf="loader">
+    <div e2e="progress-loader" class="loader-container" *ngIf="loader">
         <div class="spinner"></div>
     </div>
     <div class="registration-block">
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
+                <button e2e="submit-btn" type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid" (click)="registerTestAttendee()">Submit</button>
             </div>
         </form>
     </div>

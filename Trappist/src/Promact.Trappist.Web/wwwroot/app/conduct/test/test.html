@@ -1,4 +1,4 @@
-﻿<div class="loader-container" *ngIf="!isTestReady">
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="!isTestReady">
     <div class="spinner">
     </div>
 </div>
@@ -27,7 +27,7 @@
                     <p *ngIf="testTypePreview" class="mb0">Attendee Name</p>
                 </div>
                 <div class="display-table-cell text-right">
-                    <button type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
+                    <button e2e="finsh-test-btn" type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
                     <br class="hidden-lg" />
                     <h5 class="mlr10">Time Remaining:</h5>
                     <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
@@ -78,15 +78,15 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button type="button" class="btn btn-primary" value="run" (click)="runCode()">Run and Save</button>
-                        <pre [ngClass]="getColorCode()" *ngIf="codeResult != ''">{{codeResult}}</pre>
+                        <button e2e="run-and-save-btn" type="button" class="btn btn-primary" value="run" (click)="runCode()">Run and Save</button>
+                        <pre e2e="test-case-pass-fail-message" [ngClass]="getColorCode()" *ngIf="codeResult != ''">{{codeResult}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
-                        <md-radio-group>
+                        <md-radio-group e2e="single-que-ans-radio-grp">
                             <md-radio-button *ngFor="let option of options;let i = index" value="{{option.id}}" name="option.option_{{i}}" (change)="selectOption(questionIndex,i,true)" [checked]="option.isAnswer">{{option.option}}</md-radio-button>
                         </md-radio-group>
                     </div>
-                    <div class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice && !isQuestionCodeSnippetType">
+                    <div e2e="multiple-ans-list" class="display-table-cell ans-area ptb20 pl15" *ngIf="!isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-checkbox *ngFor="let option of options; let i = index" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
                             {{option.option}}
                         </md-checkbox>
@@ -98,7 +98,7 @@
     </div>
     <div class="test-footer">
         <div class="test-footer-top ptb10">
-            <div class="container-fluid">
+            <div e2e="questions-list" class="container-fluid">
                 <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index"  (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
             </div>
         </div>
@@ -108,9 +108,9 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 hidden-lg mb10">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus !== 1">Mark for Review</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
+                                <button e2e="clear-response-btn" type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
+                                <button e2e="mark-for-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus !== 1">Mark for Review</button>
+                                <button e2e="unmark-from-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
                                 <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
@@ -135,9 +135,9 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 visible-lg-block">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <button type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus !== 1">Mark for Review</button>
-                                <button type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
+                                <button e2e="clear-response-btn" type="button" class="btn" (click)="clearResponse(questionIndex)">Clear Response</button>
+                                <button e2e="mark-for-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus !== 1">Mark for Review</button>
+                                <button e2e="unmark-from-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
                                 <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
