@@ -250,9 +250,34 @@ namespace Promact.Trappist.Test.Reports
             await _testRepository.AddTestCategoriesAsync(createTest.Id, categoryListAc);
 
             //add test Question
-            var questionList = new List<QuestionAC>();
-            questionList.Add(question1);
-            questionList.Add(question2);
+            var questionList = new List<TestQuestionAC>
+            {
+                new TestQuestionAC()
+                {
+                    Id = question1.Question.Id,
+                    CategoryID = question1.Question.CategoryID,
+                    IsSelect = question1.Question.IsSelect
+                },
+                new TestQuestionAC()
+                {
+                     Id = question2.Question.Id,
+                    IsSelect = question2.Question.IsSelect,
+                    CategoryID = question2.Question.CategoryID
+                }
+
+            };
+            //questionList.Add(new TestQuestionAC()
+            //{
+            //    Id = question1.Question.Id,
+            //    CategoryID = question1.Question.CategoryID,
+            //    IsSelect = question1.Question.IsSelect
+            //});
+            //questionList.Add(new TestQuestionAC()
+            //{
+            //    Id = question2.Question.Id,
+            //    IsSelect = question2.Question.IsSelect,
+            //    CategoryID = question2.Question.CategoryID
+            //});
             await _testRepository.AddTestQuestionsAsync(questionList, createTest.Id);
 
             //create test attednee

@@ -114,7 +114,7 @@ namespace Promact.Trappist.Repository.Tests
         #region Delete Test
         public async Task<bool> IsTestAttendeeExistAsync(int id)
         {
-            Test test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
+            var test = await _dbContext.Test.Include(x => x.TestAttendees).FirstOrDefaultAsync(x => x.Id == id);
             return test.TestAttendees.Any();
         }
 
@@ -128,49 +128,36 @@ namespace Promact.Trappist.Repository.Tests
 
         #region Category selection
 
-        public async Task AddTestCategoriesAsync(int testId, List<CategoryAC> categoryAcList)
+        public async Task AddTestCategoriesAsync(int testId, List<TestCategoryAC> categoryAcList)
         {
             var testCategoryList = new List<TestCategory>();
             foreach (var categoryAc in categoryAcList)
             {
-                var category = Mapper.Map<CategoryAC, Category>(categoryAc);
                 // to check whether the category already exists 
-                var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.CategoryId == category.Id && x.TestId == testId);
+                var testCategoryObj = await _dbContext.TestCategory.FirstOrDefaultAsync(x => x.CategoryId == categoryAc.CategoryId && x.TestId == testId);
                 // If the category exists and is deselected from the test
                 if (testCategoryObj != null && !categoryAc.IsSelect)
-                {
                     _dbContext.TestCategory.Remove(testCategoryObj);
-                    await _dbContext.SaveChangesAsync();
-                }
-                else
+                if (testCategoryObj == null && categoryAc.IsSelect)
                 {
                     // If category does not exists               
                     var testCategory = new TestCategory();
                     testCategory.TestId = testId;
-                    testCategory.CategoryId = category.Id;
+                    testCategory.CategoryId = categoryAc.CategoryId;
                     //If the category does not exists and is selected by user, then it will be added
-                    if (testCategoryObj == null && categoryAc.IsSelect)
-                        testCategoryList.Add(testCategory);
+                    testCategoryList.Add(testCategory);
                 }
             }
-            await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
+            if (testCategoryList.Any())
+                await _dbContext.TestCategory.AddRangeAsync(testCategoryList);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> DeselectCategoryAync(int categoryId, int testId)
         {
             // Listing all the questions category wise.
-            var questions = await _dbContext.Question.OrderBy(x => x.CategoryID).ToListAsync();
-            // To check if the question from that category is added to the test.
-            var testQuestions = await _dbContext.TestQuestion.OrderBy(x => x.QuestionId).ToListAsync();
-            // Iterating every question listed category wise.
-            foreach (var question in questions)
-            {
-                // To check if any question in the test belongs to the category, which is to be deselected from the test.
-                if (question.CategoryID == categoryId && testQuestions.Exists(testQuestion => testQuestion.QuestionId == question.Id && testQuestion.TestId == testId))
-                    return true;
-            }
-            return false;
+            var questions = await _dbContext.TestQuestion.Where(x => x.Question.CategoryID == categoryId && x.TestId == testId).ToListAsync();
+            return questions.Count != 0;
         }
 
         public async Task RemoveCategoryAndQuestionAsync(TestCategory testCategory)
@@ -180,12 +167,9 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.TestCategory.Remove(testCategoryObj);
             // To find if any question from the removed category is added to the test or not. If any such question found, it is also removed from the test.
             var testQuestions = _dbContext.TestQuestion.Where(x => x.Question.CategoryID == testCategory.CategoryId && x.TestId == testCategory.TestId).ToList();
-            _dbContext.TestQuestion.RemoveRange(testQuestions);
+            if (testQuestions.Any())
+                _dbContext.TestQuestion.RemoveRange(testQuestions);
             await _dbContext.SaveChangesAsync();
-            var category = await _dbContext.Category.FirstAsync(x => x.Id == testCategoryObj.CategoryId);
-            var categoryAc = Mapper.Map<Category, CategoryAC>(category);
-            // After the category is removed from the test it is supposed to be deselected, hence setting the isSelect property to false.
-            categoryAc.IsSelect = false;
         }
         #endregion
 
@@ -211,7 +195,7 @@ namespace Promact.Trappist.Repository.Tests
             return questionListAc;
         }
 
-        public async Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAdd, int testId)
+        public async Task<string> AddTestQuestionsAsync(List<TestQuestionAC> questionsToAdd, int testId)
         {
             bool isDeleted = false;
             var testQuestionList = new List<TestQuestion>();
@@ -220,19 +204,19 @@ namespace Promact.Trappist.Repository.Tests
             foreach (var questionToAdd in questionsToAdd)
             {
                 //Checks if the question exists in TestQuestion for the same test
-                var questionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == questionToAdd.Question.Id && x.TestId == testId);
+                var questionExistInTest = await _dbContext.TestQuestion.FirstOrDefaultAsync(x => x.QuestionId == questionToAdd.Id && x.TestId == testId);
                 //if question exists in TestQuestion and its IsSelect property is false,then that question will be deleted from TestQuestion
-                if (questionExistInTest != null && !questionToAdd.Question.IsSelect)
+                if (questionExistInTest != null && !questionToAdd.IsSelect)
                 {
                     questionsToBeRemoved.Add(questionExistInTest);
                     isDeleted = true;
                 }
                 //Checks if question's IsSelect property is true
-                else if (questionToAdd.Question.IsSelect && questionExistInTest == null)
+                else if (questionToAdd.IsSelect && questionExistInTest == null)
                 {
                     //Creates TestQuestion Object
                     var testQuestionObj = new TestQuestion();
-                    testQuestionObj.QuestionId = questionToAdd.Question.Id;
+                    testQuestionObj.QuestionId = questionToAdd.Id;
                     testQuestionObj.TestId = testId;
                     //If question is already present in the same Test, it wont be added to TestQuestion 
                     testQuestionList.Add(testQuestionObj);

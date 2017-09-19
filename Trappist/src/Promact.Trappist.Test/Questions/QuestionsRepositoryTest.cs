@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Categories;
@@ -287,7 +288,7 @@ namespace Promact.Trappist.Test.Questions
         [Fact]
         public async Task IsQuestionExistInTestTest()
         {
-            var questionList = new List<QuestionAC>();
+            var questionList = new List<TestQuestionAC>();
             string userName = "partha@promactinfo.com";
             ApplicationUser user = new ApplicationUser()
             {
@@ -302,24 +303,22 @@ namespace Promact.Trappist.Test.Questions
             //create single-multipleQuestion
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
-
+            var testCodingQuestion = new TestQuestionAC();
+            
             var codeSnippetquestion = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail);
-            codingQuestion.Question.Id = codeSnippetquestion.Id;
+            testCodingQuestion.Id = codeSnippetquestion.Id;
+            testCodingQuestion.CategoryID = codeSnippetquestion.CategoryID;
+            testCodingQuestion.IsSelect = true;
             var singleMultipleQuestion = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);
             multipleAnswerQuestion.Question.Id = singleMultipleQuestion.Id;
-
-            codingQuestion.Question.IsSelect = true;
-            questionList.Add(codingQuestion);
+            questionList.Add(testCodingQuestion);
             //create Test
             var test = CreateTest("DemoTest");
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
-
-            var codeSinpperQuestionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == codingQuestion.Question.QuestionDetail)).Id;
-            var singleMultipleQuestionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
-            Assert.True(await _questionRepository.IsQuestionExistInTestAsync(codeSinpperQuestionId));
+            Assert.True(await _questionRepository.IsQuestionExistInTestAsync(codeSnippetquestion.Id));
             //If Question doesnot exist in test
-            Assert.False(await _questionRepository.IsQuestionExistInTestAsync(singleMultipleQuestionId));
+            Assert.False(await _questionRepository.IsQuestionExistInTestAsync(multipleAnswerQuestion.Question.Id));
         }
 
         /// <summary>

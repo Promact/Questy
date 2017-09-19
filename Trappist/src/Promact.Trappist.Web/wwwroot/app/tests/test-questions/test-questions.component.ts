@@ -5,7 +5,7 @@ import { TestService } from '../tests.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
-import { Test } from '../tests.model';
+import { Test, TestQuestionAC } from '../tests.model';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
 
@@ -19,7 +19,7 @@ export class TestQuestionsComponent implements OnInit {
     editName: boolean;
     DifficultyLevel = DifficultyLevel;
     QuestionType = QuestionType;
-    questionsToAdd: QuestionBase[];
+    questionsToAdd: TestQuestionAC[];
     testId: number;
     isSaveExit: boolean;
     testDetails: Test;
@@ -139,17 +139,17 @@ export class TestQuestionsComponent implements OnInit {
      */
     saveNext() {
         this.loader = true;
-        this.questionsToAdd = new Array<QuestionBase>();
+        this.questionsToAdd = new Array<TestQuestionAC>();
         //It checks for every category of a test
         for (let category of this.testDetails.categoryAcList) {
             //If question list of a category is not null
             if (category.isSelect && category.questionList !== null)
                 //Every question from category are concatenated to single array which will be sent to add to test
                 category.questionList.forEach(question => {
-                    let questionToAdd = new QuestionBase();
-                    questionToAdd.question.categoryID = question.question.categoryID;
-                    questionToAdd.question.id = question.question.id;
-                    questionToAdd.question.isSelect = question.question.isSelect;
+                    let questionToAdd = new TestQuestionAC();
+                    questionToAdd.categoryID = question.question.categoryID;
+                    questionToAdd.id = question.question.id;
+                    questionToAdd.isSelect = question.question.isSelect;
                     this.questionsToAdd.push(questionToAdd);
                 });
         }
@@ -212,6 +212,10 @@ export class TestQuestionsComponent implements OnInit {
     * Checks if any candidate has taken the test
     */
     isTestAttendeeExist() {
+        if (!(new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)) {
+            this.isEditTestEnabled = true;
+            return
+        }
         this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
             if (res.response) {
                 this.isEditTestEnabled = false;
