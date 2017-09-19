@@ -74,11 +74,11 @@ export class TestQuestion {
 }
 
 export class TestQuestionAC {
-    public id: number
+    public id: number;
 
-    public categoryID: number
+    public categoryID: number;
 
-    public isSelect: boolean
+    public isSelect: boolean;
 }
 
 
