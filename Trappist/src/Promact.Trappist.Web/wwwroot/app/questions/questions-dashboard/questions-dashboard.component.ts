@@ -51,6 +51,7 @@ export class QuestionsDashboardComponent implements OnInit {
     selectedCategoryId: number;
     isSelected: boolean;
     isAllQuestionsSectionSelected: boolean;
+    searchText: string;
 
     constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
         this.category = new Category();
@@ -80,6 +81,11 @@ export class QuestionsDashboardComponent implements OnInit {
         this.getQuestionsOnScrolling();
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
+        this.searchText = this.route.snapshot.params['matchString'];
+        if (this.searchText !== undefined) {
+            this.showSearchInput = true;
+            this.matchString = this.searchText;
+        }           
         this.getAllCategories();
         this.countTheQuestion();
         //Scroll to top when navigating back from other components.
@@ -134,6 +140,7 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     getAllQuestions() {
         this.loader = true;
+        this.searchText = this.route.snapshot.params['matchString'];
         this.categroyId = 0;
         this.countTheQuestion();
         this.difficultyLevel = 'All';
@@ -146,7 +153,12 @@ export class QuestionsDashboardComponent implements OnInit {
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
-            this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel]);
+            if (this.searchText !== undefined && this.matchString.length >0) {
+                this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel, this.searchText]);
+                this.showSearchInput = true;
+            }
+            else
+                 this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel]);
             this.loader = false;
             this.id++;
             this.selectedCategory = new Category();
@@ -204,6 +216,7 @@ export class QuestionsDashboardComponent implements OnInit {
     */
     categoryWiseFilter(categoryId: number, categoryName: string, difficultyLevel: string) {
         this.loader = true;
+        this.searchText = this.route.snapshot.params['matchString'];
         this.showName = categoryName;
         window.scrollTo(0, 0);
         this.difficultyLevel = difficultyLevel;
@@ -225,9 +238,16 @@ export class QuestionsDashboardComponent implements OnInit {
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
             this.selectedCategory.categoryName = categoryName;
             this.selectedCategory.id = categoryId;
-            this.router.navigate(['questions/dashboard', categoryName, difficultyLevel]);
+            if (this.searchText !== undefined) {
+                this.router.navigate(['questions/dashboard', categoryName, difficultyLevel, this.searchText]);
+                this.showSearchInput = true;
+                this.matchString = this.searchText;              
+            }
+            else
+                this.router.navigate(['questions/dashboard', categoryName, difficultyLevel]);
+
+            
             this.loader = false;
-            this.matchString = '';
         });
     }
 
@@ -237,6 +257,7 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     difficultyWiseSearch(difficulty: string) {
         this.loader = true;
+        this.searchText = this.route.snapshot.params['matchString'];
         window.scrollTo(0, 0);
         this.id = 0;
         this.difficultyLevel = difficulty;
@@ -254,10 +275,22 @@ export class QuestionsDashboardComponent implements OnInit {
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.selectedDifficulty = DifficultyLevel[difficulty];
-            this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, difficulty]);
+            if (this.searchText !== undefined) {
+                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, difficulty, this.searchText]);
+                this.showSearchInput = true;
+                this.matchString = this.searchText;
+            }
+            else
+                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, difficulty]);
             this.loader = false;
         });
     }
+
+    redirect()
+    {
+        
+    }
+
 
     /**
      * To get the Search criteria from the user
@@ -265,14 +298,24 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     getQuestionsMatchingSearchCriteria(matchString: string) {
         this.matchString = matchString;
+        if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
+            this.router.navigate(['question/search', this.matchString]);
+            this.showSearchInput = true; 
+        }
+        else
+            this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
         if (matchString.trim().length > 2) {
             this.id = 0;
             this.isAllQuestionsHaveCome = false;
+            if (this.selectedCategory.categoryName === undefined)
+                this.selectedCategory.categoryName = 'AllCategory';
+           
             this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
                 this.questionDisplay = questionsList;
+                console.log(this.questionDisplay);
                 if (this.questionDisplay.length !== 0)
                     this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
-                this.countTheQuestion();
+                this.countTheQuestion();            
             });
         }
         else if (matchString.trim().length === 0) {
@@ -280,6 +323,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.isAllQuestionsHaveCome = false;
             this.countTheQuestion();
             this.questionDisplay = new Array<QuestionDisplay>();
+            this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.difficultyLevel]);
             this.getQuestionsOnScrolling();
         }
     }
@@ -407,6 +451,7 @@ export class QuestionsDashboardComponent implements OnInit {
     * @param search: is of type any
     */
     selectTextArea($event: any, search: any) {
+        this.showSearchInput = true;
         $event.stopPropagation();
         setTimeout(() => {
             search.select();
