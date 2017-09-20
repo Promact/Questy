@@ -33,9 +33,19 @@ const questionsRoutes: Routes = [
         children: [
             { path: '', component: QuestionsDashboardComponent },
             { path: ':categoryName', component: QuestionsDashboardComponent },
-            { path: ':categoryName/:difficultyLevelName',component :QuestionsDashboardComponent}
+            { path: ':categoryName/:difficultyLevelName', component: QuestionsDashboardComponent },
+            { path: ':categoryName/:difficultyLevelName/:matchString', component: QuestionsDashboardComponent }
         ]
     },
+
+    {
+        path: 'question/search',
+        component: QuestionsComponent,
+        children: [
+            { path: '', component: QuestionsDashboardComponent },
+            { path: ':matchString', component: QuestionsDashboardComponent }
+        ]
+    }
 ];
 
 export const questionsRouting: ModuleWithProviders = RouterModule.forChild(questionsRoutes);
