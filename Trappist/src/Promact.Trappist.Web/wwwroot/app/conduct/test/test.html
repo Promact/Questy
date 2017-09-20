@@ -90,7 +90,7 @@
                         <md-checkbox *ngFor="let option of options; let i = index" (change)="selectOption(questionIndex,i)" [checked]="option.isAnswer">
                             {{option.option}}
                         </md-checkbox>
-                        <p class="theme-text h7">Note: This question can have more than one answer.</p>
+                        <p e2e="muliple-ans-msg" class="theme-text h7">Note: This question can have more than one answer.</p>
                     </div>
                 </div>
             </div>
@@ -113,8 +113,8 @@
                                 <button e2e="unmark-from-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)">Next <em class="material-icons">keyboard_arrow_right</em></button>
+                                <button e2e="prev-btn" type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                                <button e2e="nxt-btn" type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)">Next <em class="material-icons">keyboard_arrow_right</em></button>
                             </div>
                         </div>
                     </div>
@@ -140,8 +140,8 @@
                                 <button e2e="unmark-from-review-btn" type="button" class="btn" (click)="markAsReview(questionIndex)" *ngIf="questionStatus === 1">Unmark from Review</button>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 text-right">
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
-                                <button type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1 || isCodeProcessing">Next <em class="material-icons">keyboard_arrow_right</em></button>
+                                <button e2e="prev-btn" type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex-1)" [disabled]="questionIndex === 0 || isCodeProcessing"><em class="material-icons">keyboard_arrow_left</em> Previous</button>
+                                <button e2e="nxt-btn" type="button" class="btn" (click)="navigateToQuestionIndex(questionIndex+1)" [disabled]="questionIndex === this.testQuestions.length - 1 || isCodeProcessing">Next <em class="material-icons">keyboard_arrow_right</em></button>
                             </div>
                         </div>
                     </div>
