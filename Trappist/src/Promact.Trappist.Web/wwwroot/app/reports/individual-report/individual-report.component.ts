@@ -69,7 +69,8 @@ export class IndividualReportComponent implements OnInit {
     isPercentageVisible: boolean;
     isScoreVisible: boolean;
     attendeeArray: number[];
-    attendeeId: number;
+    attendeeId: string;
+    idOfTestAttendee: number;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute, private router: Router) {
         this.loader = true;
@@ -453,21 +454,42 @@ export class IndividualReportComponent implements OnInit {
         });
     }
 
-    getAttendeeIdListOfTest() {
+    moveToPreviousIndividualReport() {
+        this.loader = true;
         this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
             this.attendeeArray = response;
-            let index = this.attendeeArray.indexOf(this.testAttendeeId) + 1;
-            if (index != 0) {
-                this.attendeeId = this.attendeeArray[index - 1];
-                this.router.navigate(['/individual-report/', this.attendeeId]);
-                console.log(this.attendeeId);
-                console.log(this.router.navigate(['/individual-report/', this.attendeeId]));
+            this.attendeeId = this.testAttendeeId.toString();
+            let index = this.attendeeArray.toString().indexOf(this.attendeeId);
+            if (index === 0) {
+                index = this.attendeeArray.length - 1;
+                this.idOfTestAttendee = this.attendeeArray[index];
+                window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
             }
-            else
-                this.router.navigate(['/individual-report/', this.testAttendeeId]);
-            console.log(this.testAttendeeId);
-            console.log(this.attendeeArray);
-            console.log(index);
+            else if (index > 0) {
+                index = index - 6;
+                index = index / 6;
+                this.idOfTestAttendee = this.attendeeArray[index];
+                window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
+            }
+        });
+    }
+
+    moveToNextIndividualReport() {
+        this.loader = true;
+        this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
+            this.attendeeArray = response;
+            this.attendeeId = this.testAttendeeId.toString();
+            let index = this.attendeeArray.toString().indexOf(this.attendeeId);
+            index = index / 6;
+            if (index === (this.attendeeArray.length - 1)) {
+                this.idOfTestAttendee = this.attendeeArray[0];
+                window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
+            }
+            else if (index === 0 || index < (this.attendeeArray.length - 1)) {
+                index = index + 1;
+                this.idOfTestAttendee = this.attendeeArray[index];
+                window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
+            }
         });
     }
 }
