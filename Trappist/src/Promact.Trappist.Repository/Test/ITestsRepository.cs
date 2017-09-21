@@ -108,7 +108,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="testId"
         /// <param name="categoryAcList"></param>
         /// <returns>list of categories added</returns>        
-        Task AddTestCategoriesAsync(int testId, List<CategoryAC> categoryAcList);
+        Task AddTestCategoriesAsync(int testId, List<TestCategoryAC> categoryAcList);
 
         /// <summary>
         /// To deselect a category
@@ -142,7 +142,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="QuestionsToAddTest">Parameter "QuestionsToAddTest" is a list of questions to be added to Test which takes value from body</param>
         /// <param name="testId">Parameter "testId" takes value of a Test's Id from route</param>
         /// <returns>A string message of Success</returns>
-        Task<string> AddTestQuestionsAsync(List<QuestionAC> questionsToAdd, int testId);
+        Task<string> AddTestQuestionsAsync(List<TestQuestionAC> questionsToAdd, int testId);
 
         /// <summary>
         /// Get details of a Test

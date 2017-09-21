@@ -120,9 +120,9 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(testObject);
         }
         [HttpGet("isPausedResume/{id}/{isPause}")]
-        public async Task<IActionResult> PauseTestAsync([FromRoute] int id,[FromRoute] bool isPause)
+        public async Task<IActionResult> PauseTestAsync([FromRoute] int id, [FromRoute] bool isPause)
         {
-            await _testRepository.PauseResumeTestAsync(id,isPause);
+            await _testRepository.PauseResumeTestAsync(id, isPause);
             return Ok(isPause);
         }
 
@@ -181,15 +181,10 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="categoryAcList"></param>
         /// <returns>testCategory</returns>
         [HttpPost("addTestCategories/{testId}")]
-        public async Task<ActionResult> AddTestCategoriesAsync([FromRoute] int testId, [FromBody] List<CategoryAC> categoryAcList)
+        public async Task<ActionResult> AddTestCategoriesAsync([FromRoute] int testId, [FromBody] List<TestCategoryAC> categoryAcList)
         {
-            if (!await _testRepository.IsTestAttendeeExistAsync(testId))
-            {
-                await _testRepository.AddTestCategoriesAsync(testId, categoryAcList);
-                return Ok(categoryAcList);
-            }
-            else
-                return NotFound();
+            await _testRepository.AddTestCategoriesAsync(testId, categoryAcList);
+            return Ok(true);
         }
 
         /// <summary>
@@ -201,8 +196,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("deselectCategory/{categoryId}/{testId}")]
         public async Task<bool> DeselectCategoryAsync([FromRoute] int categoryId, [FromRoute] int testId)
         {
-                var isQuestionExists = await _testRepository.DeselectCategoryAync(categoryId, testId);
-                return isQuestionExists;
+            var isQuestionExists = await _testRepository.DeselectCategoryAync(categoryId, testId);
+            return isQuestionExists;
         }
 
         /// <summary>
@@ -213,13 +208,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("deselectCategory")]
         public async Task<ActionResult> RemoveCategoryAndQuestionAsync([FromBody] TestCategory testCategory)
         {
-            if (!await _testRepository.IsTestAttendeeExistAsync(testCategory.TestId))
-            {
-                await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
-                return Ok(testCategory);
-            }
-            else
-                return NotFound();
+            await _testRepository.RemoveCategoryAndQuestionAsync(testCategory);
+            return Ok(testCategory);
         }
         #endregion
 
@@ -244,11 +234,11 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testId">id of test in which questions will be added</param>
         /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
-        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<QuestionAC> questionToAdd, [FromRoute] int testId)
+        public async Task<IActionResult> AddTestQuestionsAsync([FromBody] List<TestQuestionAC> questionToAdd, [FromRoute] int testId)
         {
             if (!ModelState.IsValid && await _testRepository.IsTestAttendeeExistAsync(testId))
                 return BadRequest(ModelState);
-            else 
+            else
             {
                 var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
                 return Ok(new { message = message });

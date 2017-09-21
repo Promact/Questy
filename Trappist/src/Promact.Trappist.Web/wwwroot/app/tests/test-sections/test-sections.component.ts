@@ -28,6 +28,7 @@ export class TestSectionsComponent implements OnInit {
     isEditTestEnabled: boolean;
     isCategoryExist: boolean;
     disablePreview: boolean;
+    testCategoryAC: TestCategory[] = [];
 
     constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
         this.testCategoryObj = new TestCategory();
@@ -102,9 +103,15 @@ export class TestSectionsComponent implements OnInit {
      * @param isSelectButton whose value will indicate what to do next, if it is false it will save changes to the test and exit to the test dashboard. And if the isSelectButton is true, it will save changes and move to the question selection page.
      */
     saveCategoryToExitOrMoveNext(isSelectButton: boolean) {
+        this.testDetails.categoryAcList.forEach(x => {
+            let testCategory = new TestCategory();
+            testCategory.categoryId = x.id;
+            testCategory.isSelect = x.isSelect;
+            this.testCategoryAC.push(testCategory);
+        });
         this.loader = true;
         if (this.isEditTestEnabled) {
-            this.testService.addTestCategories(this.testDetails.id, this.testDetails.categoryAcList).subscribe((response) => {
+            this.testService.addTestCategories(this.testDetails.id, this.testCategoryAC).subscribe((response) => {
                 if (response) {
                     if (isSelectButton) {
                         this.loader = false;
@@ -140,6 +147,10 @@ export class TestSectionsComponent implements OnInit {
      * Checks if any candidate has taken the test
      */
     isTestAttendeeExist() {
+        if (!(new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)) {
+            this.isEditTestEnabled = true;
+            return
+        }
         this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
             if (res.response)
                 this.isEditTestEnabled = false;
