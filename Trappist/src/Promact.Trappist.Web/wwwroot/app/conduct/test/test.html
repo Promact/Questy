@@ -30,7 +30,7 @@
                     <button e2e="finsh-test-btn" type="button" class="btn btn-primary" (click)="endTestButtonClicked()">Finish Test</button>
                     <br class="hidden-lg" />
                     <h5 class="mlr10">Time Remaining:</h5>
-                    <h2 class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
+                    <h2 e2e="timer-display" class="mt3" [ngClass]="{'warning':timeWarning}">{{timeString}}</h2>
                 </div>
             </div>
         </div>

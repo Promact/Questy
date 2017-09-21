@@ -5,7 +5,7 @@
     <test-conduct-header></test-conduct-header>
     <div class="content-block">
         <h2 class="mb30">Test Summary</h2>
-        <p class="test-info"><span class="h4">Time Left: </span><span class="h2">{{timeString}}</span></p>
+        <p e2e="time-left-txt" class="test-info"><span class="h4">Time Left: </span><span class="h2">{{timeString}}</span></p>
         <p class="test-info"><span class="h4">Total Questions: </span><span class="h2">{{totalQuestionsInTest}}</span></p>
         <p class="test-info"><span class="h4">Attempt Summary: </span></p>
         <table>
@@ -15,9 +15,9 @@
                 <th class="h5">Questions Marked for Review</th>
             </tr>
             <tr>
-                <td class="h2 theme-text">{{numberOfAttemptedQuestions}}</td>
-                <td class="h2">{{numberOfUnAttemptedQuestions}}</td>
-                <td class="h2 yellow-text">{{numberOfReviewedQuestions}}</td>
+                <td e2e="attempted-que-count" class="h2 theme-text">{{numberOfAttemptedQuestions}}</td>
+                <td e2e="non-attempted-que-count" class="h2">{{numberOfUnAttemptedQuestions}}</td>
+                <td e2e="mark-for-review-que-count" class="h2 yellow-text">{{numberOfReviewedQuestions}}</td>
             </tr>
         </table>
         <div class="text-center" *ngIf="isButtonVisible && !isTestBlocked && !isTestExpired">
