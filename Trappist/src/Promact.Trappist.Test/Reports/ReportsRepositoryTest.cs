@@ -223,41 +223,6 @@ namespace Promact.Trappist.Test.Reports
             Assert.Equal(testAttendee.Report.Percentile, percentile);
         }
 
-        private DomainModel.Models.Test.Test CreateTest(string testName)
-        {
-            var test = new DomainModel.Models.Test.Test
-            {
-                TestName = testName,
-                CorrectMarks = 3,
-                IncorrectMarks = 1
-            };
-            return test;
-        }
-
-        private TestAttendees CreateTestAttendee(int testId)
-        {
-            var testAttendee = new TestAttendees()
-            {
-                Id = 1,
-                FirstName = "Ritika",
-                LastName = "Mohata",
-                Email = "ritika@gmail.com",
-                RollNumber = "1",
-                TestId = testId,
-                Report = new DomainModel.Models.Report.Report()
-                {
-                    Id = 1,
-                    TestAttendeeId = 1,
-                    TotalMarksScored = 180,
-                    Percentage = 80,
-                    Percentile = 50,
-                    TestStatus = 0,
-                    TimeTakenByAttendee = 150
-                },
-            };
-            return testAttendee;
-        }
-
         /// <summary>
         /// Test case to get all amrks details of all attendees for excel sheet are calculated proper or not
         /// </summary>
@@ -356,80 +321,6 @@ namespace Promact.Trappist.Test.Reports
             Assert.Equal(2, easyQuestionAttempted);
             Assert.Equal(1, correctAttempted);
         }
-        #endregion
-
-        #region Private Methods
-        /// <summary>
-        /// This method is used to create a test with the given testname
-        /// </summary>
-        /// <param name="testName">Name of the test that needs to be created</param>
-        /// <returns>Returns the object of type Test</returns>
-        private DomainModel.Models.Test.Test CreateTest(string testName)
-        {
-            var test = new DomainModel.Models.Test.Test
-            {
-                TestName = testName,
-                IncorrectMarks = 1
-            };
-            return test;
-        }
-
-        /// <summary>
-        /// This method is used to create a test attendee with attendee details under a test
-        /// </summary>
-        /// <param name="testId">Id of the test</param>
-        /// <returns>returns the object of type TestAttendees</returns>
-        private TestAttendees CreateTestAttendee(int testId)
-        {
-            var testAttendee = new TestAttendees()
-            {
-                Id = 1,
-                FirstName = "Ritika",
-                LastName = "Mohata",
-                Email = "ritika@gmail.com",
-                RollNumber = "1",
-                TestId = testId,
-                Report = new DomainModel.Models.Report.Report()
-                {
-                    Id = 1,
-                    TestAttendeeId = 1,
-                    TotalMarksScored = 180,
-                    Percentage = 80,
-                    Percentile = 50,
-                    TestStatus = 0,
-                    TimeTakenByAttendee = 150
-                }
-            };
-            return testAttendee;
-        }
-
-        /// <summary>
-        ///This method used to initialize test attendee model parameters.  
-        /// </summary>
-        /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>
-        private TestAttendees TestAttendeeReport(int id)
-        {
-            var testAttendee = new TestAttendees()
-            {
-                Id = 1,
-                FirstName = "Hardik",
-                LastName = "Patel",
-                Email = "phardi@gmail.com",
-                ContactNumber = "1234567890",
-                RollNumber = "13it055",
-                StarredCandidate = true,
-                TestId = id,
-                Report = new Report()
-                {
-                    Percentage = 45.55,
-                    Percentile = 46,
-                    TotalMarksScored = 45.55,
-                    TestStatus = TestStatus.BlockedTest,
-                    TimeTakenByAttendee = 45
-                }
-            };
-            return testAttendee;
-        }
 
         /// <summary>
         /// Test case for getting the number of questions attended by a test attendee
@@ -483,7 +374,7 @@ namespace Promact.Trappist.Test.Reports
             _trappistDbContext.TestAnswers.Add(testAnswer3);
             await _trappistDbContext.SaveChangesAsync();
             var numberOfQuestionsAttemptedByAttendee = await _reportRepository.GetAttemptedQuestionsByAttendeeAsync(testAttendee.Id);
-            Assert.Equal(2,numberOfQuestionsAttemptedByAttendee);
+            Assert.Equal(2, numberOfQuestionsAttemptedByAttendee);
         }
 
         /// <summary>
@@ -493,7 +384,7 @@ namespace Promact.Trappist.Test.Reports
         public async Task GetTotalMarksOfCodeSnippetQuestionAsyncTest()
         {
             var test = CreateTest("Programming");
-            await _testRepository.CreateTestAsync(test,"5");
+            await _testRepository.CreateTestAsync(test, "5");
             var testAttendee = CreateTestAttendee(test.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
             //create category
@@ -622,7 +513,7 @@ namespace Promact.Trappist.Test.Reports
             var question = CreateCodingQuestionAc(true, category.Id, 2, QuestionType.Programming);
             await _questionRepository.AddCodeSnippetQuestionAsync(question, test.CreatedByUserId);
             var questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == question.Question.QuestionDetail)).Id;
-            
+
             var answer = new TestAnswerAC()
             {
                 OptionChoice = new List<int>(),
@@ -688,6 +579,107 @@ namespace Promact.Trappist.Test.Reports
             var codeSnippetDetailsObject = await _reportRepository.GetCodeSnippetDetailsAsync(testAttendee.Id, questionId);
             Assert.Equal(2, codeSnippetDetailsObject.Count());
         }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// This method is used to create a test with the given testname
+        /// </summary>
+        /// <param name="testName">Name of the test that needs to be created</param>
+        /// <returns>Returns the object of type Test</returns>
+        private DomainModel.Models.Test.Test CreateTest(string testName)
+        {
+            var test = new DomainModel.Models.Test.Test
+            {
+                TestName = testName,
+                CorrectMarks = 3,
+                IncorrectMarks = 1
+            };
+            return test;
+        }
+
+        // <summary>
+        /// This method used for creating a test.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<DomainModel.Models.Test.Test> CreateTestAsync()
+        {
+            var test = new DomainModel.Models.Test.Test()
+            {
+                TestName = "GK",
+                Duration = 70,
+                WarningTime = 2,
+                CorrectMarks = 4,
+                IncorrectMarks = -1
+
+            };
+            _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
+            string userName = "suparna@promactinfo.com";
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            await _testRepository.CreateTestAsync(test, applicationUser.Id);
+            return test;
+        }
+
+        /// <summary>
+        /// This method is used to create a test attendee with attendee details under a test
+        /// </summary>
+        /// <param name="testId">Id of the test</param>
+        /// <returns>returns the object of type TestAttendees</returns>
+        private TestAttendees CreateTestAttendee(int testId)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Ritika",
+                LastName = "Mohata",
+                Email = "ritika@gmail.com",
+                RollNumber = "1",
+                TestId = testId,
+                Report = new DomainModel.Models.Report.Report()
+                {
+                    Id = 1,
+                    TestAttendeeId = 1,
+                    TotalMarksScored = 180,
+                    Percentage = 80,
+                    Percentile = 50,
+                    TestStatus = 0,
+                    TimeTakenByAttendee = 150
+                },
+            };
+            return testAttendee;
+        }
+
+        /// <summary>
+        ///This method used to initialize test attendee model parameters.  
+        /// </summary>
+        /// <returns>It return TestAttendee model object which contain first name,last name,email,contact number,roll number</returns>
+        private TestAttendees TestAttendeeReport(int id)
+        {
+            var testAttendee = new TestAttendees()
+            {
+                Id = 1,
+                FirstName = "Hardik",
+                LastName = "Patel",
+                Email = "phardi@gmail.com",
+                ContactNumber = "1234567890",
+                RollNumber = "13it055",
+                StarredCandidate = true,
+                TestId = id,
+                Report = new Report()
+                {
+                    Percentage = 45.55,
+                    Percentile = 46,
+                    TotalMarksScored = 45.55,
+                    TestStatus = TestStatus.BlockedTest,
+                    TimeTakenByAttendee = 45
+                }
+            };
+            return testAttendee;
+        }
+
+       
 
         private TestAnswerAC CreateAnswerAc(int id)
         {
