@@ -293,12 +293,12 @@ export class TestReportComponent implements OnInit {
                     this.noCandidateFound = false;
                 break;
             case 4:
-                this.showGenerateReportButton = true;
                 starAttendeeArray.forEach(x => {
                     if (x.report.testStatus === TestStatus.allCandidates || x.report.testStatus === TestStatus.unfinishedTest) {
                         tempAttendeeArray.push(x);
                     }
                 });
+                this.showGenerateReportButton = tempAttendeeArray.some(x => x.report.totalMarksScored === null);
                 if (tempAttendeeArray.length === 0)
                     this.noCandidateFound = true;
                 else
@@ -794,6 +794,7 @@ export class TestReportComponent implements OnInit {
                 });
 
                 this.isGeneratingReport = false;
+                this.showGenerateReportButton = this.testAttendeeArray.some(x => x.report.totalMarksScored === null);
             });
         }
     }
