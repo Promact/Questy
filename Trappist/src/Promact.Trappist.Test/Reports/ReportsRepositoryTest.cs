@@ -224,10 +224,6 @@ namespace Promact.Trappist.Test.Reports
         }
 
         /// <summary>
-        /// Test case to get all amrks details of all attendees for excel sheet are calculated proper or not
-        /// </summary>
-        /// <returns>Returns true if return value of actual method is matched with checking value </returns>
-        /// <summary>
         /// Test case for fetching the list of attendees taking a test
         /// </summary>
         [Fact]
@@ -241,41 +237,10 @@ namespace Promact.Trappist.Test.Reports
             Assert.Equal(1, attendeeIdList.Count());
         }
 
-        private DomainModel.Models.Test.Test CreateTest(string testName)
-        {
-            var test = new DomainModel.Models.Test.Test
-            {
-                TestName = testName,
-                CorrectMarks = 3,
-                IncorrectMarks = 1
-            };
-            return test;
-        }
-
-        private TestAttendees CreateTestAttendee(int testId)
-        {
-            var testAttendee = new TestAttendees()
-            {
-                Id = 1,
-                FirstName = "Ritika",
-                LastName = "Mohata",
-                Email = "ritika@gmail.com",
-                RollNumber = "1",
-                TestId = testId,
-                Report = new DomainModel.Models.Report.Report()
-                {
-                    Id = 1,
-                    TestAttendeeId = 1,
-                    TotalMarksScored = 180,
-                    Percentage = 80,
-                    Percentile = 50,
-                    TestStatus = 0,
-                    TimeTakenByAttendee = 150
-                },
-            };
-            return testAttendee;
-        }
-
+        /// <summary>
+        /// Test case to get all amrks details of all attendees for excel sheet are calculated proper or not
+        /// </summary>
+        /// <returns>Returns true if return value of actual method is matched with checking value </returns>
         [Fact]
         public async Task GetAllAttendeeMarksDetailsAsyncTest()
         {

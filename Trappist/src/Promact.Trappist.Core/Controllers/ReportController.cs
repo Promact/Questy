@@ -235,6 +235,11 @@ namespace Promact.Trappist.Core.Controllers
             return Ok(await _reportRepository.GenerateReportForUnfinishedTestAsync(attendeeIdList));
         }
 
+        /// <summary>
+        /// Gets the list of attendee Ids of a particular test
+        /// </summary>
+        /// <param name="testId">Contains the Id of the test from the route</param>
+        /// <returns>The list of attendee Ids of a particular test</returns>
         [HttpGet("{testId}/getAttendeeIdList")]
         public async Task<IActionResult> GetAttendeeIdListOfATest([FromRoute]int testId)
         {
