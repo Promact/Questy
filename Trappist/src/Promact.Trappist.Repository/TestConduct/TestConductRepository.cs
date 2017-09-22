@@ -589,6 +589,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         }
                     }
                     if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
+                    {
                         //Add score for single-multiple answer question when correct
                         correctMarks += testAttendee.Test.CorrectMarks;
                         noOfCorrectAttempts += 1;
@@ -605,7 +606,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     if (correctMarks == testAttendee.Test.CorrectMarks)
                         noOfCorrectAttempts = +1;
                 }
-                    
+
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);
