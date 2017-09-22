@@ -253,8 +253,7 @@ namespace Promact.Trappist.Test.Reports
                     IsSelect=true,
                 }
             };
-            //var categoryListAc = Mapper.Map<List<CategoryAC>>(categoryList);
-            //categoryListAc[0].IsSelect = true;
+            
             await _testRepository.AddTestCategoriesAsync(createTest.Id, testCategoryList);
 
             //add test Question
