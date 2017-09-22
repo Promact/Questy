@@ -454,6 +454,9 @@ export class IndividualReportComponent implements OnInit {
         });
     }
 
+    /**
+     * Navigates the user to the previous individual test report
+     */
     moveToPreviousIndividualReport() {
         this.loader = true;
         this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
@@ -474,6 +477,9 @@ export class IndividualReportComponent implements OnInit {
         });
     }
 
+    /**
+     * Navigates the user to the next individual test report
+     */
     moveToNextIndividualReport() {
         this.loader = true;
         this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {

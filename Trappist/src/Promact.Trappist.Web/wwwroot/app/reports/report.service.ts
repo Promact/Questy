@@ -135,6 +135,10 @@ export class ReportService {
         return this.httpService.post(this.reportsApiUrl + '/generateReport', attendeeIdList);
     }
 
+    /**
+     * Gets the list of attendee Ids of a particular test
+     * @param testId contains the id of the test from the route
+     */
     getAttendeeIdList(testId: number) {
         return this.httpService.get(this.reportsApiUrl + '/' + testId + '/getAttendeeIdList');
     }
