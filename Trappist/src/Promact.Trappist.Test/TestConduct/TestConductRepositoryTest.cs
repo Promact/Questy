@@ -159,7 +159,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _categoryRepository.AddCategoryAsync(category2);
             var category3 = CreateCategory("History");
             await _categoryRepository.AddCategoryAsync(category3);
-         
+
             var testCategoryAC = new List<TestCategoryAC>
             {
                 new TestCategoryAC()
@@ -178,7 +178,7 @@ namespace Promact.Trappist.Test.TestConduct
                 }
 
             };
-           
+
             await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAC);
             //Creating test questions
             var questionList = new List<QuestionAC>
@@ -333,6 +333,7 @@ namespace Promact.Trappist.Test.TestConduct
             var test = await CreateTestAsync();
             //Creating test category
             var category1 = CreateCategory("Mathematics");
+            var category2 = CreateCategory("History");
             await _categoryRepository.AddCategoryAsync(category1);
             var testCategoryAC = new List<TestCategoryAC>
             {
@@ -343,7 +344,7 @@ namespace Promact.Trappist.Test.TestConduct
                 }
 
             };
-           
+
             await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAC);
 
             var question1 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1);
@@ -453,7 +454,7 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             // Creating test
             var test = await CreateTestAsync();
-           
+
             var category1 = CreateCategory("Mathematics");
             await _categoryRepository.AddCategoryAsync(category1);
             var testCategroyAC = new List<TestCategoryAC>
@@ -464,7 +465,7 @@ namespace Promact.Trappist.Test.TestConduct
                     CategoryId=category1.Id
                 }
             };
-            
+
             await _testRepository.AddTestCategoriesAsync(test.Id, testCategroyAC);
 
             var question1 = CreateQuestionAC(true, "Category1 type question 1", category1.Id, 1);
@@ -529,9 +530,9 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             // Creating test
             var test = await CreateTestAsync();
-          
+
             var categoryToCreate = CreateCategory("Coding");
-           
+
             await _categoryRepository.AddCategoryAsync(categoryToCreate);
             var testCategoryAC = new List<TestCategoryAC>
             {
@@ -618,14 +619,25 @@ namespace Promact.Trappist.Test.TestConduct
         [Fact]
         public async Task GetTestSummaryDetailsAsyncTest()
         {
-            var categoryList = new List<DomainModel.Models.Category.Category>();
             var category1 = CreateCategory("history");
             await _categoryRepository.AddCategoryAsync(category1);
-            categoryList.Add(category1);
+          
             var category2 = CreateCategory("indian culture");
             await _categoryRepository.AddCategoryAsync(category2);
-            categoryList.Add(category2);
-            var categoryAcList = Mapper.Map<List<DomainModel.Models.Category.Category>, List<CategoryAC>>(categoryList);
+            var testCategoryList = new List<TestCategoryAC>
+            {
+                new TestCategoryAC()
+                {
+                    IsSelect=true,
+                    CategoryId=category1.Id
+                },
+                new TestCategoryAC()
+                {
+                    IsSelect=true,
+                    CategoryId=category2.Id
+                }
+
+            };
 
             //Creating questions
             var question1 = CreateQuestionAC(true, "Who was the father of Humayun ?", category1.Id, 0);
@@ -637,17 +649,18 @@ namespace Promact.Trappist.Test.TestConduct
             await _testRepository.CreateTestAsync(test, "5");
 
             //Adding categories to test
-            await _testRepository.AddTestCategoriesAsync(test.Id, categoryAcList);
-            var questionListAc = new List<QuestionAC>();
-            var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(allQuestions.ToList());
-            foreach (var question in questionDetailList)
+            await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryList);
+            var qtestQuestionList = new List<TestQuestionAC>();
+            var questionDetailList = Mapper.Map<List<QuestionDetailAC>>(allQuestions.ToList());
+            foreach (var question in allQuestions.ToList())
             {
-                var questionAc = new QuestionAC();
-                question.IsSelect = true;
-                questionAc.Question = question;
-                questionListAc.Add(questionAc);
+                var testQuestion = new TestQuestionAC();
+                testQuestion.IsSelect = true;
+                testQuestion.CategoryID = question.CategoryID;
+                testQuestion.Id = question.Id;
+                qtestQuestionList.Add(testQuestion);
             }
-            await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
+            await _testRepository.AddTestQuestionsAsync(qtestQuestionList, test.Id);
             var questionCount = await _testConductRepository.GetTestSummaryDetailsAsync(test.Link);
             Assert.Equal(2, questionCount);
         }
