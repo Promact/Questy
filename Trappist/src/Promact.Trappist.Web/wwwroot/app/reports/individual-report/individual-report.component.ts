@@ -69,7 +69,6 @@ export class IndividualReportComponent implements OnInit {
     isPercentageVisible: boolean;
     isScoreVisible: boolean;
     attendeeArray: number[];
-    attendeeId: string;
     idOfTestAttendee: number;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute, private router: Router) {
@@ -461,16 +460,14 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
             this.attendeeArray = response;
-            this.attendeeId = this.testAttendeeId.toString();
-            let index = this.attendeeArray.toString().indexOf(this.attendeeId);
+            let index = this.attendeeArray.indexOf(Number(this.testAttendeeId));
             if (index === 0) {
                 index = this.attendeeArray.length - 1;
                 this.idOfTestAttendee = this.attendeeArray[index];
                 window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
             }
             else if (index > 0) {
-                index = index - 6;
-                index = index / 6;
+                index = index - 1;
                 this.idOfTestAttendee = this.attendeeArray[index];
                 window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
             }
@@ -484,9 +481,7 @@ export class IndividualReportComponent implements OnInit {
         this.loader = true;
         this.reportsService.getAttendeeIdList(this.testId).subscribe((response) => {
             this.attendeeArray = response;
-            this.attendeeId = this.testAttendeeId.toString();
-            let index = this.attendeeArray.toString().indexOf(this.attendeeId);
-            index = index / 6;
+            let index = this.attendeeArray.indexOf(Number(this.testAttendeeId));
             if (index === (this.attendeeArray.length - 1)) {
                 this.idOfTestAttendee = this.attendeeArray[0];
                 window.location.href = window.location.origin + '/reports/test/' + this.testId + '/individual-report/' + this.idOfTestAttendee;
