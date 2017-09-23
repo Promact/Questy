@@ -56,7 +56,7 @@ export class TestSectionsComponent implements OnInit {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
             this.testCategories = this.testDetails.categoryAcList.filter(x => x.questionCount !== 0);
-            this.isEditTestEnabled = this.isTestAttendeeExist();
+            this.isTestAttendeeExist();
             this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.isCategoryExist = this.testDetails.categoryAcList.length === 0 ? false : true;
             this.testNameReference = this.testDetails.testName;
@@ -148,10 +148,10 @@ export class TestSectionsComponent implements OnInit {
      */
     isTestAttendeeExist() {
         if (new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)
-            return true;
+            this.isEditTestEnabled = true;
         else
             this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-                return res.response;
+                this.isEditTestEnabled = !res.response;
             });
     }
 }
