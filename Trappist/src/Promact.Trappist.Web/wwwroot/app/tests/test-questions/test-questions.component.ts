@@ -105,7 +105,7 @@ export class TestQuestionsComponent implements OnInit {
             this.isAnyCategorySelectedForTest = this.testDetails.categoryAcList.some(function (category) {
                 return category.isSelect;
             });
-            this.isEditTestEnabled = this.isTestAttendeeExist();
+            this.isTestAttendeeExist();
             this.loader = false;
         }, err => {
             this.loader = false;
@@ -213,10 +213,10 @@ export class TestQuestionsComponent implements OnInit {
     */
     isTestAttendeeExist() {
         if (new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched)
-            return true;
+            this.isEditTestEnabled = true;
         else
             this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-                return res.response;
+                this.isEditTestEnabled = !res.response;
             });
     }
 }
