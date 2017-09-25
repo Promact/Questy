@@ -331,7 +331,7 @@ export class TestComponent implements OnInit {
                 }, 2000);
             });
 
-            
+
             window.addEventListener('offline', () => {
                 screenfull.exit();
                 this.isTestReady = false;
@@ -446,8 +446,9 @@ export class TestComponent implements OnInit {
                 if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion) {
                     this.addAnswer(this.testQuestions[this.questionIndex]);
                 } else {
-                    //Add code snippet answer if its marked as unanswered or review
+                    //Add code snippet answer
                     if (this.questionStatus === QuestionStatus.review || this.questionStatus === QuestionStatus.unanswered) {
+                        this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
                         this.addAnswer(this.testQuestions[this.questionIndex]);
                     }
                     this.isTestReady = true;
@@ -565,6 +566,7 @@ export class TestComponent implements OnInit {
             testAnswer.code.source = this.codeAnswer;
             testAnswer.code.language = this.selectLanguage;
             testAnswer.code.result = this.codeResult;
+            testAnswer.isAnswered = this.codeResult !== '';
             if (testQuestion.questionStatus === QuestionStatus.selected) {
                 testAnswer.questionStatus = QuestionStatus.unanswered;
             } else {
@@ -613,6 +615,7 @@ export class TestComponent implements OnInit {
             this.testQuestions[index].questionStatus = this.questionStatus = QuestionStatus.review;
         else if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion
             && (this.testAnswers.some(x => x.questionId === this.testQuestions[index].question.question.id && x.code.result !== ''))) {
+            this.testQuestions[index].questionStatus = QuestionStatus.selected;
             this.questionStatus = QuestionStatus.answered;
         } else {
             this.questionStatus = QuestionStatus.unanswered;

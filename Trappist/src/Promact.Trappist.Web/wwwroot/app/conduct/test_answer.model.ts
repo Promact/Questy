@@ -5,6 +5,7 @@ export class TestAnswer {
     optionChoice: number[];
     code: Code;
     questionStatus: QuestionStatus;
+    isAnswered: boolean;
 
     constructor() {
         this.optionChoice = new Array<number>();

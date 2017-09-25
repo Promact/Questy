@@ -10,6 +10,8 @@ namespace Promact.Trappist.DomainModel.Models.TestConduct
 
         public int QuestionId { get; set; }
 
+        public bool IsAnswered { get; set; }
+
         public QuestionStatus QuestionStatus { get; set; }
 
         [ForeignKey("TestAttendeeId")]
