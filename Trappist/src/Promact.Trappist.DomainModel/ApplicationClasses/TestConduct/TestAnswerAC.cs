@@ -14,6 +14,8 @@ namespace Promact.Trappist.DomainModel.ApplicationClasses.TestConduct
 
         public Code Code { get; set; }
 
+        public bool IsAnswered { get; set; }
+
         public QuestionStatus QuestionStatus { get; set; }
     }
 }

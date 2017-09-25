@@ -9,9 +9,10 @@ using Promact.Trappist.DomainModel.Enum;
 namespace Promact.Trappist.Web.Migrations
 {
     [DbContext(typeof(TrappistDbContext))]
-    partial class TrappistDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170925064206_IsAnsweredAddedTestConductTable")]
+    partial class IsAnsweredAddedTestConductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

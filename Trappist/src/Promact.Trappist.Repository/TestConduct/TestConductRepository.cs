@@ -483,7 +483,8 @@ namespace Promact.Trappist.Repository.TestConduct
                         {
                             QuestionId = answer.QuestionId,
                             QuestionStatus = answer.QuestionStatus,
-                            TestAttendeeId = attendeeId
+                            TestAttendeeId = attendeeId,
+                            IsAnswered = answer.IsAnswered
                         };
                         testConductList.Add(testConduct);
 

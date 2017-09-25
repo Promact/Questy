@@ -369,7 +369,7 @@ namespace Promact.Trappist.Repository.Reports
                     {
                         if (conduct.Id == answer.TestConductId)
                             count = count + 1;
-                        if (answer.AnsweredOption != null && count == 1)
+                        if ((answer.AnsweredOption != null && count == 1 || conduct.IsAnswered))
                         {
                             numberOfAnsweredButReviewedQuestions = numberOfAnsweredButReviewedQuestions + 1;
                         }
