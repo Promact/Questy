@@ -267,7 +267,7 @@ namespace Promact.Trappist.Test.Reports
                     IsSelect=true,
                 }
             };
-            
+
             await _testRepository.AddTestCategoriesAsync(createTest.Id, testCategoryList);
 
             //add test Question
@@ -353,7 +353,7 @@ namespace Promact.Trappist.Test.Reports
             var totalQuestionAttempted = allAttendeeMarksDetails.First().NoOfQuestionAttempted;
             var easyQuestionAttempted = allAttendeeMarksDetails.First().EasyQuestionAttempted;
             Assert.Equal(2, easyQuestionAttempted);
-            Assert.Equal(2, totalQuestionAttempted);           
+            Assert.Equal(2, totalQuestionAttempted);
         }
 
         /// <summary>
@@ -438,7 +438,8 @@ namespace Promact.Trappist.Test.Reports
                     Source = "source",
                     Language = ProgrammingLanguage.C
                 },
-                QuestionStatus = QuestionStatus.answered
+                QuestionStatus = QuestionStatus.answered,
+                IsAnswered = true
             };
             await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
             //add test code solution
@@ -449,7 +450,9 @@ namespace Promact.Trappist.Test.Reports
                 QuestionId = questionId,
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
-                Score = 1
+                Score = 1,
+                CreatedDateTime = DateTime.UtcNow
+
             };
             var codeSolution2 = new TestCodeSolution()
             {
@@ -458,14 +461,15 @@ namespace Promact.Trappist.Test.Reports
                 QuestionId = questionId,
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
-                Score = 0
+                Score = 0,
+                CreatedDateTime = DateTime.UtcNow.AddHours(2)
             };
             await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
             await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
             await _trappistDbContext.SaveChangesAsync();
             var marksScoredInCodeSnippetQuestion = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, questionId);
             var marksScoredWhenQuestionIdAbsent = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, 3);
-            Assert.Equal(3, marksScoredInCodeSnippetQuestion);
+            Assert.Equal(0, marksScoredInCodeSnippetQuestion);
             Assert.Equal(-1, marksScoredWhenQuestionIdAbsent);
         }
 
@@ -713,7 +717,7 @@ namespace Promact.Trappist.Test.Reports
             return testAttendee;
         }
 
-       
+
 
         private TestAnswerAC CreateAnswerAc(int id)
         {
