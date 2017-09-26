@@ -219,18 +219,9 @@ namespace Promact.Trappist.Repository.Reports
 
         public async Task<List<CodeSnippetTestCasesCalculationAC>> GetCodeSnippetDetailsAsync(int attendeeId, int questionId)
         {
-            var maxScore = 0.0;
-            var testCodeSolutionObject = new TestCodeSolution();
             if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
                 return null;
-            var scores = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).Select(x => new { x.Score }).ToListAsync();
-            if (scores.Any(x => x.Score != scores[0].Score))
-            {
-                maxScore = scores.Max(x => x.Score);
-                testCodeSolutionObject = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maxScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
-            }
-            else
-                testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).OrderByDescending(x => x.CreatedDateTime).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+            var testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).OrderByDescending(x => x.CreatedDateTime).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
             var codeSnippetTestCaseList = new List<CodeSnippetTestCasesCalculationAC>();
             var testCaseObjectList = testCodeSolutionObject.TestCaseResultCollection;
 
@@ -266,31 +257,21 @@ namespace Promact.Trappist.Repository.Reports
             {
                 return -1;
             }
-            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).MaxAsync(x => x.Score);
-            var testObject = await _dbContext.TestAttendees.Include(x => x.Test).FirstOrDefaultAsync(x => x.Id == attendeeId);
-            var totalMarksObtainedInCodeSnippetQuestion = (decimal)maximumScoreObtainedByAttendeeInCodeSnippetQuestion * testObject.Test.CorrectMarks;
+            var testCodeSolution = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).Select(x => new { x.Score }).FirstOrDefaultAsync();
+            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = testCodeSolution.Score;
+            var testObjectCorrectMarks = await _dbContext.TestAttendees.Where(x => x.Id == attendeeId).Include(x => x.Test).Select(x => new { x.Test.CorrectMarks }).FirstOrDefaultAsync();
+            var totalMarksObtainedInCodeSnippetQuestion = (decimal)maximumScoreObtainedByAttendeeInCodeSnippetQuestion * testObjectCorrectMarks.CorrectMarks;
             totalMarksObtainedInCodeSnippetQuestion = Math.Round(totalMarksObtainedInCodeSnippetQuestion, 2);
             return totalMarksObtainedInCodeSnippetQuestion;
         }
 
         public async Task<TestCodeSolutionDetailsAC> GetTestCodeSolutionDetailsAsync(int attendeeId, int questionId)
         {
-            var maxScore = 0.0;
-            var testCodeSolutionObject = new TestCodeSolution();
             if (!await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId).AnyAsync(x => x.QuestionId == questionId))
                 return null;
-            var scores = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).Select(x => new { x.Score }).ToListAsync();
-            if (scores.Any(x => x.Score != scores[0].Score))
-            {
-                maxScore = scores.Max(x => x.Score);
-                testCodeSolutionObject = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Include(x => x.TestCaseResultCollection).FirstOrDefaultAsync(x => x.Score == maxScore && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
-            }
-            else
-                testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).OrderByDescending(x => x.CreatedDateTime).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
-            var testCodeSolutionListOfMaximumScore = await _dbContext.TestCodeSolution.Where(x => x.Score == 1 && x.TestAttendeeId == attendeeId && x.QuestionId == questionId).ToListAsync();
-            var totalNumberOfSuccessfulAttempts = testCodeSolutionListOfMaximumScore.Count();
-            var testCodeSolutionList = await _dbContext.TestCodeSolution.Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).ToListAsync();
-            var totalNumberOfAttemptsMadeByAttendee = testCodeSolutionList.Count();
+            var testCodeSolutionObject = await _dbContext.TestCodeSolution.Include(x => x.TestCaseResultCollection).OrderByDescending(x => x.CreatedDateTime).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+            var totalNumberOfSuccessfulAttempts = await _dbContext.TestCodeSolution.CountAsync(x => x.Score == 1 && x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
+            var totalNumberOfAttemptsMadeByAttendee = await _dbContext.TestCodeSolution.CountAsync(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId);
 
             var testCodeSolutionDetailsObject = new TestCodeSolutionDetailsAC()
             {
