@@ -145,10 +145,10 @@ export class TestComponent implements OnInit {
      * saves the TestLogs if server is gone off
      */
     saveTestLogs() {
-        this.conductService.addTestLogs(this.testAttendee.id, this.isCloseWindow, false).subscribe(response => {
-            this.testLogs = response;
-        });
-
+        if (window.confirm('dvvguivhuivhi'))
+            this.conductService.addTestLogs(this.testAttendee.id, this.isCloseWindow, false).subscribe(response => {
+                this.testLogs = response;
+            });
     }
 
     /**
