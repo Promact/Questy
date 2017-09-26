@@ -603,11 +603,14 @@ namespace Promact.Trappist.Repository.TestConduct
                 else
                 {
                     //Add score from coding question attempted
-                    correctMarks += (decimal)await _dbContext.TestCodeSolution.AsNoTracking().Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).MaxAsync(x => x.Score) * testAttendee.Test.CorrectMarks;
-                    if (correctMarks == testAttendee.Test.CorrectMarks)
-                        noOfCorrectAttempts = +1;
+                    var testSolution = await _dbContext.TestCodeSolution.AsNoTracking().OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).Select(x => new { x.Score }).FirstOrDefaultAsync();
+                    if (testSolution != null)
+                    {
+                        correctMarks += (decimal)testSolution.Score * testAttendee.Test.CorrectMarks;
+                        if (correctMarks == testAttendee.Test.CorrectMarks)
+                            noOfCorrectAttempts = +1;
+                    }
                 }
-
             }
             totalMarks = correctMarks;
             totalMarks = Math.Round(totalMarks, 2);
