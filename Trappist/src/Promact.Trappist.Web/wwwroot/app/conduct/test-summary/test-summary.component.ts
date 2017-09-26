@@ -66,7 +66,7 @@ export class TestSummaryComponent implements OnInit {
         this.numberOfAttemptedQuestions = 0;
         this.numberOfUnAttemptedQuestions = 0;
         this.numberOfReviewedQuestions = 0;
-
+        window.onbeforeunload = undefined;
     }
 
     ngOnInit() {
@@ -100,7 +100,7 @@ export class TestSummaryComponent implements OnInit {
         this.conductService.getElapsedTime(this.testAttendee.id).subscribe(value => {
             let spanTimeInSeconds = value * 60;
             let durationInSeconds = this.test.duration * 60;
-            this.timeLeft =  durationInSeconds - spanTimeInSeconds;
+            this.timeLeft = durationInSeconds - spanTimeInSeconds;
             this.timeLeft = this.timeLeft < 0 ? 0 : Math.round(this.timeLeft);
             this.timeString = this.secToTimeString(this.timeLeft);
             if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
@@ -139,7 +139,7 @@ export class TestSummaryComponent implements OnInit {
             let reviewedQuestions = this.testAnswers.filter(x => x.questionStatus === QuestionStatus.review);
             this.numberOfReviewedQuestions = reviewedQuestions.length;
             this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
-            
+
         }, err => {
             this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest;
         });
@@ -154,7 +154,7 @@ export class TestSummaryComponent implements OnInit {
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
 
-        this.conductService.addTestLogs(this.testAttendee.id, false,true).subscribe(response => {
+        this.conductService.addTestLogs(this.testAttendee.id, false, true).subscribe(response => {
             this.testLogs = response;
         });
         this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe();
