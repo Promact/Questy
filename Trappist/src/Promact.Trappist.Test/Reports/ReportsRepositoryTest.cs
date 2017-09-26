@@ -469,7 +469,7 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.SaveChangesAsync();
             var marksScoredInCodeSnippetQuestion = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, questionId);
             var marksScoredWhenQuestionIdAbsent = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, 3);
-            Assert.Equal(0, marksScoredInCodeSnippetQuestion);
+            Assert.Equal(3, marksScoredInCodeSnippetQuestion);
             Assert.Equal(-1, marksScoredWhenQuestionIdAbsent);
         }
 
