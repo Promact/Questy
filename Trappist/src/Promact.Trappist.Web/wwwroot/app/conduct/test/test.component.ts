@@ -658,6 +658,10 @@ export class TestComponent implements OnInit {
         } else {
             let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
             this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
+            if (this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)) {
+                this.testQuestions[questionIndex].questionStatus = QuestionStatus.selected;
+                this.questionStatus = QuestionStatus.unanswered;
+            }
         }
     }
 
