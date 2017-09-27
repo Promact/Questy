@@ -136,15 +136,15 @@ namespace Promact.Trappist.Repository.Reports
             //all testAttendees marks list
             var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testId).OrderBy(x => x.TotalMarksScored).Select(s => new { s.TestAttendeeId, s.TotalMarksScored }).ToListAsync();
             //no test questions of a test
-            var totalNoOfTestQuestions = await _dbContext.TestQuestion.Where(x => x.TestId == testId).CountAsync();
+            var totalNoOfTestQuestions = await _dbContext.TestQuestion.CountAsync(x => x.TestId == testId);
             //all questions attempted by all attendees
-            var questionsAttemptedByAllAttendeeList = await _dbContext.TestConduct.Where(x => x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
-                                                           .Select(selectOnly => new { selectOnly.Id, selectOnly.TestAttendeeId, selectOnly.QuestionId, selectOnly.Question.QuestionType, selectOnly.Question.DifficultyLevel }).ToListAsync();
+            var questionsAttemptedByAllAttendeeList = _dbContext.TestConduct.Where(x => x.TestAttendees.TestId == testId && x.QuestionStatus == QuestionStatus.answered || x.QuestionStatus == QuestionStatus.review)
+                                                           .Select(selectOnly => new { selectOnly.Id, selectOnly.TestAttendeeId, selectOnly.QuestionId, selectOnly.Question.QuestionType, selectOnly.Question.DifficultyLevel });
             //all answers attempted by all attendees
-            var answeredByAllAttendeeList = await _dbContext.TestAnswers.Select(s => new { s.TestConductId, s.AnsweredOption }).ToListAsync();
+            var answeredByAllAttendeeList = await _dbContext.TestAnswers.Where(x => x.TestConduct.TestAttendees.TestId == testId).Select(s => new { s.TestConductId, s.AnsweredOption }).ToListAsync();
 
             //all testcode solutions of a test
-            var testCodeSolutionsList = await _dbContext.TestCodeSolution.Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score }).ToListAsync();
+            var testCodeSolutionsList =  _dbContext.TestCodeSolution.Where(x => x.TestAttendee.TestId == testId).Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score });
 
             foreach (var testAttendee in allTestAttendeeList)
             {
@@ -154,10 +154,10 @@ namespace Promact.Trappist.Repository.Reports
                 {
                     var checkAttempts = 0;
                     var difficultyLevel = x.DifficultyLevel;
-                    if (!(x.QuestionType == QuestionType.Programming))
+                    if (x.QuestionType != QuestionType.Programming)
                     {
-                        var givenOptionsByAttendee = answeredByAllAttendeeList.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).ToList();
-                        if (givenOptionsByAttendee.First() != null)
+                        var givenOptionsByAttendee = answeredByAllAttendeeList.Where(y => y.TestConductId == x.Id).Select(y => y.AnsweredOption).FirstOrDefault();
+                        if (givenOptionsByAttendee != null)
                         {
                             totalQuestionAttempted += 1;
                             checkAttempts = 1;
@@ -176,23 +176,20 @@ namespace Promact.Trappist.Repository.Reports
                     {
                         if (difficultyLevel == DifficultyLevel.Easy)
                             easyQuestionAttempted += 1;
+                        else if (difficultyLevel == DifficultyLevel.Medium)
+                            mediumQuestionAttempted += 1;
                         else
-                        {
-                            if (difficultyLevel == DifficultyLevel.Medium)
-                                mediumQuestionAttempted += 1;
-                            else
-                                hardQuestionAttempted += 1;
-                        }
+                            hardQuestionAttempted += 1;
                     }
                 });
                 //calculate percentile
                 double noOfScores = marksList.Count();
-                var attendee = marksList.Where(z => z.TestAttendeeId == testAttendee).ToList();
+                var attendee = marksList.FirstOrDefault(z => z.TestAttendeeId == testAttendee);
                 foreach (var marks in marksList)
                 {
-                    if (attendee.First().TotalMarksScored == marks.TotalMarksScored)
+                    if (attendee != null && attendee.TotalMarksScored == marks.TotalMarksScored)
                         sameMarks = sameMarks + 1;
-                    else if (marks.TotalMarksScored < attendee.First().TotalMarksScored)
+                    else if (attendee != null && marks.TotalMarksScored < attendee.TotalMarksScored)
                         count = count + 1;
                 }
                 var rank = count + (0.5 * sameMarks);
@@ -206,7 +203,7 @@ namespace Promact.Trappist.Repository.Reports
                     MediumQuestionAttempted = mediumQuestionAttempted,
                     HardQuestionAttempted = hardQuestionAttempted,
                     NoOfQuestionAttempted = totalQuestionAttempted,
-                    Percentile = System.Math.Round(studentPercentile, 2),
+                    Percentile = Math.Round(studentPercentile, 2),
                     totalTestQuestions = totalNoOfTestQuestions
                 };
                 allAttendeeMarksDetailsList.Add(reportQuestions);
@@ -257,10 +254,9 @@ namespace Promact.Trappist.Repository.Reports
             {
                 return -1;
             }
-            var testCodeSolution = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).Select(x => new { x.Score }).FirstOrDefaultAsync();
-            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = testCodeSolution.Score;
-            var testObjectCorrectMarks = await _dbContext.TestAttendees.Where(x => x.Id == attendeeId).Include(x => x.Test).Select(x => new { x.Test.CorrectMarks }).FirstOrDefaultAsync();
-            var totalMarksObtainedInCodeSnippetQuestion = (decimal)maximumScoreObtainedByAttendeeInCodeSnippetQuestion * testObjectCorrectMarks.CorrectMarks;
+            var maximumScoreObtainedByAttendeeInCodeSnippetQuestion = await _dbContext.TestCodeSolution.OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == attendeeId && x.QuestionId == questionId).Select(x => x.Score).FirstOrDefaultAsync();
+            var testObjectCorrectMarks = await _dbContext.TestAttendees.Where(x => x.Id == attendeeId).Include(x => x.Test).Select(x => x.Test.CorrectMarks).FirstOrDefaultAsync();
+            var totalMarksObtainedInCodeSnippetQuestion = (decimal)maximumScoreObtainedByAttendeeInCodeSnippetQuestion * testObjectCorrectMarks;
             totalMarksObtainedInCodeSnippetQuestion = Math.Round(totalMarksObtainedInCodeSnippetQuestion, 2);
             return totalMarksObtainedInCodeSnippetQuestion;
         }
