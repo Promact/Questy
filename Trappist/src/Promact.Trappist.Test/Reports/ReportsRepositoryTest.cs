@@ -452,6 +452,7 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 1,
+                CreatedDateTime = DateTime.UtcNow
             };
 
             var codeSolution2 = new TestCodeSolution()
@@ -462,6 +463,7 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 0,
+                CreatedDateTime = DateTime.UtcNow.AddDays(1)
             };
             list.Add(codeSolution1);
             list.Add(codeSolution2);
