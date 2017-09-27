@@ -73,6 +73,7 @@ export class TestReportComponent implements OnInit {
     starredCandidateCount: number;
     noCandidateFound: boolean;
 
+
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
@@ -135,6 +136,7 @@ export class TestReportComponent implements OnInit {
                     this.testAttendeeArray.push(x);
                 else {
                     x.report = new Report();
+                    x.reporNotFoundYet = true;
                     this.testAttendeeArray.push(x);
                 }
             });

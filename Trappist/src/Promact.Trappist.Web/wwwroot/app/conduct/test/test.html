@@ -78,7 +78,7 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button e2e="run-and-save-btn" type="button" class="btn btn-primary" value="run" (click)="runCode()">Run and Save</button>
+                        <button e2e="run-and-save-btn" type="button" class="btn btn-primary" [disabled]="isCodeProcessing" value="run" (click)="runCode()">Run and Save</button>
                         <pre e2e="test-case-pass-fail-message" [ngClass]="getColorCode()" *ngIf="codeResult != ''">{{codeResult}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
@@ -99,7 +99,7 @@
     <div class="test-footer">
         <div class="test-footer-top ptb10">
             <div e2e="questions-list" class="container-fluid">
-                <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index"  (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
+                <span class={{getQuestionStatus(testQuestion.questionStatus)}} *ngFor="let testQuestion of testQuestions; let i = index" (click)="navigateToQuestionIndex(i)">{{i+1}}</span>
             </div>
         </div>
         <div class="test-footer-bottom ptb10">
