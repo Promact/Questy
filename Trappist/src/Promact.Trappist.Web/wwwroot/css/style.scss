@@ -2344,6 +2344,11 @@ footer {
             padding: 10px 20px;
             border-bottom: 1px solid $color_border;
 
+            .stop-redirection {
+                cursor: default;
+                pointer-events: none;
+            }
+
             &.actions {
                 min-width: 110px;
             }
