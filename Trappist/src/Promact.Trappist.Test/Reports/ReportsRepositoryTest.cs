@@ -441,6 +441,7 @@ namespace Promact.Trappist.Test.Reports
                 QuestionStatus = QuestionStatus.answered,
                 IsAnswered = true
             };
+            var list = new List<TestCodeSolution>();
             await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
             //add test code solution
             var codeSolution1 = new TestCodeSolution()
@@ -451,9 +452,8 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 1,
-                CreatedDateTime = DateTime.UtcNow
-
             };
+
             var codeSolution2 = new TestCodeSolution()
             {
                 Id = 2,
@@ -462,14 +462,14 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 0,
-                CreatedDateTime = DateTime.UtcNow.AddHours(2)
             };
-            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
-            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
+            list.Add(codeSolution1);
+            list.Add(codeSolution2);
+            await _trappistDbContext.TestCodeSolution.AddRangeAsync(list);
             await _trappistDbContext.SaveChangesAsync();
             var marksScoredInCodeSnippetQuestion = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, questionId);
             var marksScoredWhenQuestionIdAbsent = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, 3);
-            Assert.Equal(3, marksScoredInCodeSnippetQuestion);
+            Assert.Equal(0, marksScoredInCodeSnippetQuestion);
             Assert.Equal(-1, marksScoredWhenQuestionIdAbsent);
         }
 
