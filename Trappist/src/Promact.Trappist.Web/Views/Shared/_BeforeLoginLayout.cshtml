@@ -39,16 +39,19 @@
             </div>
         </div>
         <footer>
-            <div class="container-fluid">
-                <span>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</span>
+            <div class="container">
                 @{
                     var revisionFilePath = System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, ".revision");
                     if (System.IO.File.Exists(revisionFilePath))
                     {
                         var commitId = System.IO.File.ReadAllText(revisionFilePath);
-                        <span class="pull-right"><a target="_blank" href='https://github.com/Promact/trappist/commit/@commitId'>Buid - @commitId</a></span>
+                        <span class="pull-left">Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</span>
+                        <span class="pull-right"><a target="_blank" href='https://github.com/Promact/trappist/commit/@commitId' style="color: #fff;">Build - @commitId</a></span>
                     }
-
+                    else
+                    {
+                        <span>Copyright &copy;2017 Promact Infotech Pvt. Ltd. All Rights Reserved.</span>
+                    }
                 }
             </div>
         </footer>
