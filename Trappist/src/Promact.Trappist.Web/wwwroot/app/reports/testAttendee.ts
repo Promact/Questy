@@ -1,4 +1,4 @@
-﻿import {Report} from '../reports/report';
+﻿import { Report } from '../reports/report';
 
 export class TestAttendee {
     id: number;
@@ -13,6 +13,7 @@ export class TestAttendee {
     report: Report;
     backToTest: boolean;
     generatingReport: boolean;
+    reporNotFoundYet: boolean;
 
     constructor() {
         this.report = new Report();

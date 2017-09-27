@@ -66,7 +66,7 @@
                     <tr *ngFor="let testAttendee of report.data;let i = index">
                         <td><md-checkbox class="only-checkbox" [(ngModel)]="testAttendee.checkedCandidate" (change)="selectIndividualCandidate(testAttendee,testAttendee.checkedCandidate)" [disabled]="testAttendee.generatingReport"></md-checkbox></td>
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
-                        <td><a class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]">{{testAttendee.firstName}} {{testAttendee.lastName}}</a></td>
+                        <td><a class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]" [class.disabled]="testAttendee.reporNotFoundYet">{{testAttendee.firstName}} {{testAttendee.lastName}}</a></td>
                         <td>{{testAttendee.email}}</td>
                         <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress> {{testAttendee.report.totalMarksScored}}</td>
