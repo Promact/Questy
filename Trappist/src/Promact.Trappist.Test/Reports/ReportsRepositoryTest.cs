@@ -452,9 +452,10 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 1,
-                CreatedDateTime = DateTime.UtcNow
             };
 
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution1);
+            await _trappistDbContext.SaveChangesAsync();
             var codeSolution2 = new TestCodeSolution()
             {
                 Id = 2,
@@ -463,11 +464,9 @@ namespace Promact.Trappist.Test.Reports
                 Solution = answer.Code.Source,
                 Language = answer.Code.Language,
                 Score = 0,
-                CreatedDateTime = DateTime.UtcNow.AddDays(1)
             };
-            list.Add(codeSolution1);
-            list.Add(codeSolution2);
-            await _trappistDbContext.TestCodeSolution.AddRangeAsync(list);
+            await Task.Delay(500);
+            await _trappistDbContext.TestCodeSolution.AddAsync(codeSolution2);
             await _trappistDbContext.SaveChangesAsync();
             var marksScoredInCodeSnippetQuestion = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, questionId);
             var marksScoredWhenQuestionIdAbsent = await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(testAttendee.Id, 3);
