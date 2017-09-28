@@ -129,14 +129,19 @@ namespace Promact.Trappist.Test.Reports
         [Fact]
         public async Task GetTestQuestionsTest()
         {
+            string userName = "asif@gmail.com";
+            //Configuring Application User
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            await _userManager.CreateAsync(user);
+            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+
+
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "4");
             var category = CreateCategory("Maths");
             var questionToCreate1 = "Question1";
-            var question1 = CreateSingleAnswerQuestion(category, questionToCreate1);
-
-            var questionToCreate2 = "Question2";
-            var question2 = CreateSingleAnswerQuestion(category, questionToCreate2);
+            var question1 = CreateQuestionAc(true, questionToCreate1, category.Id, 1, QuestionType.Single);
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(question1, applicationUser.Id);
             var testCategoryObject = new TestCategory()
             {
                 CategoryId = category.Id,
@@ -148,24 +153,17 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.SaveChangesAsync();
             var testQuestionObject1 = new TestQuestion()
             {
-                QuestionId = question1.Id,
+                QuestionId = question1.Question.Id,
                 TestId = test.Id,
                 Test = test,
 
             };
-            var testQuestionObject2 = new TestQuestion()
-            {
-                QuestionId = question2.Id,
-                TestId = test.Id,
-                Test = test,
-            };
             var testQuestionList = new List<TestQuestion>();
             testQuestionList.Add(testQuestionObject1);
-            testQuestionList.Add(testQuestionObject2);
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
             await _trappistDbContext.SaveChangesAsync();
             var testQuestions = await _reportRepository.GetTestQuestions(test.Id);
-            Assert.Equal(2, testQuestions.Count());
+            Assert.Equal(1, testQuestions.Count());
         }
 
         /// <summary>
