@@ -3,12 +3,12 @@
 }
 
 <app>
-  <div class="loader-container main-loader">
-    <div class="loader-block">
-      <div class="spinner"></div>
-      <p class="font-semibold mt10">Loading...</p>
+    <div class="loader-container main-loader">
+        <div class="loader-block">
+            <div class="spinner"></div>
+            <p class="font-semibold mt10">Loading...</p>
+        </div>
     </div>
-  </div>
 </app>
 <form asp-controller="Profile" asp-action="LogOut" method="post" id="logoutForm" class="navbar-right"></form>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.bundle.min.js"></script>
@@ -22,16 +22,16 @@
     <script src="/node_modules/exceljs/dist/exceljs.js"></script>
     <script src="/node_modules/systemjs/dist/system.src.js"></script>
     <script src="/node_modules/screenfull/dist/screenfull.js"></script>
-    
 
-  <script src="/systemjs.config.js"></script>
-  <script>
-    System.import('/app/main.js').catch(function (err) { console.error(err); });
-  </script>
+
+    <script src="/systemjs.config.js"></script>
+    <script>
+        System.import('/app/main.js').catch(function (err) { console.error(err); });
+    </script>
 </environment>
 
 <environment names="Staging,Production">
-  <script>window.module = "aot";</script>
-  <script src="/dist/shims.js"></script>
-  <script src="/dist/app.bundle.js"></script>
+    <script>window.module = "aot";</script>
+    <script src="/dist/shims.js"></script>
+    <script src="/dist/app.bundle.js"></script>
 </environment>

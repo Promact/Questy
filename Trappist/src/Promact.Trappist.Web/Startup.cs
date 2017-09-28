@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -39,14 +38,13 @@ using Serilog;
 using StackExchange.Profiling.Storage;
 using System;
 using System.IO;
-using Exceptionless;
-using StackExchange.Profiling.Storage;
-using Microsoft.Extensions.Caching.Memory;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.DataProtection;
 using Serilog.Sinks.Udp;
 using System.Net;
 using Serilog.Formatting.Json;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace Promact.Trappist.Web
 {
@@ -70,11 +68,11 @@ namespace Promact.Trappist.Web
             Configuration = builder.Build();
 
             var logger = new LoggerConfiguration();
-            logger.WriteTo.RollingFile("logs/log-{Date}.txt",restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning);
+            logger.WriteTo.RollingFile("logs/log-{Date}.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning);
 
             if (!env.IsDevelopment())
             {
-                logger.WriteTo.Udp(IPAddress.Parse(Configuration.GetSection("LogstashIP").Value), 8081, new JsonFormatter(), restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning).Enrich.WithProperty("Application","Trappist");
+                logger.WriteTo.Udp(IPAddress.Parse(Configuration.GetSection("LogstashIP").Value), 8081, new JsonFormatter(), restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning).Enrich.WithProperty("Application", "Trappist");
             }
 
             Log.Logger = logger.CreateLogger();
@@ -95,12 +93,11 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSession(options =>
             {
-                options.CookieName = ".Trappist.session";
+                options.Cookie.Name = ".Trappist.session";
                 options.IdleTimeout = TimeSpan.FromDays(1);
             });
 
@@ -174,6 +171,8 @@ namespace Promact.Trappist.Web
             }
 
             app.UseStaticFiles();
+           
+
 
             if (env.IsDevelopment())
             {
@@ -186,17 +185,17 @@ namespace Promact.Trappist.Web
 
             if (env.IsDevelopment())
             {
-                app.UseMiniProfiler(x =>
-                {
-                    // Control which SQL formatter to use
-                    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+                //app.UseMiniProfiler(x =>
+                //{
+                //    // Control which SQL formatter to use
+                //    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
 
-                    // Control storage
-                    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
-                });
+                //    // Control storage
+                //    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
+                //});
             }
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             app.UseSession();
 
