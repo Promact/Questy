@@ -30,6 +30,8 @@ using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.DomainModel.Models.Test;
 using Microsoft.Extensions.Configuration;
 using Promact.Trappist.Utility.HttpUtil;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Promact.Trappist.Test
 {

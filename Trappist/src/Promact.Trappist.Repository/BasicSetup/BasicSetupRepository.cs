@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
 using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 using System;
@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.FileUtil;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Trappist.Repository.BasicSetup
 {

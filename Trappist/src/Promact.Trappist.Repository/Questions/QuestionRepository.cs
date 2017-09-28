@@ -33,6 +33,7 @@ namespace Promact.Trappist.Repository.Questions
 
         public async Task<IEnumerable<Question>> GetAllQuestionsAsync(string userId, int id, int categoryId, string difficultyLevel, string searchQuestion)
         {
+            var singleMultipleQuestion = await _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
             var questionList = _dbContext.Question.Where(u => u.CreatedByUserId.Equals(userId));
             if (categoryId != 0)
             {
@@ -46,9 +47,19 @@ namespace Promact.Trappist.Repository.Questions
             if (searchQuestion != null)
                 questionList = questionList.Where(x => x.QuestionDetail.ToLowerInvariant().Contains(searchQuestion.ToLowerInvariant()));
             if (id == 0)
-                return await questionList.Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
+            {
+                foreach (var question in questionList)
+                    if (question.QuestionType != QuestionType.Programming)
+                        question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
+                return await questionList.Include(x => x.Category).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
+            }
             else
-                return await questionList.Include(x => x.Category).Include(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
+            {
+                foreach (var question in questionList)
+                    if (question.QuestionType != QuestionType.Programming)
+                        question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
+                return await questionList.Include(x => x.Category).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
+            }
         }
 
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAC, string userId)
@@ -205,7 +216,8 @@ namespace Promact.Trappist.Repository.Questions
                 return null;
             if (question.QuestionType == QuestionType.Programming)
                 await _dbContext.Entry(question).Reference(x => x.CodeSnippetQuestion).LoadAsync();
-            else { 
+            else
+            {
                 await _dbContext.Entry(question).Reference(x => x.SingleMultipleAnswerQuestion).LoadAsync();
                 await _dbContext.Entry(question.SingleMultipleAnswerQuestion).Collection(x => x.SingleMultipleAnswerQuestionOption).LoadAsync();
             }

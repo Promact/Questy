@@ -1,4 +1,5 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
+﻿
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { DeleteTestDialogComponent } from './delete-test-dialog.component';
 import { TestService } from '../tests.service';
@@ -9,6 +10,7 @@ import { TestSettingsComponent } from '../../tests/test-settings/test-settings.c
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
 import { QuestionsService } from '../../questions/questions.service';
+
 
 @Component({
     moduleId: module.id,
@@ -23,9 +25,12 @@ export class TestsDashboardComponent implements OnInit {
     isDeleteAllowed: boolean;
     loader: boolean;
     count: number;
+    
 
-    constructor(private questionsService: QuestionsService,public dialog: MdDialog, private testService: TestService, private router: Router) {
+    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private testService: TestService, private router: Router) {
         this.tests = new Array<Test>();
+
+        
 
     }
     ngOnInit() {
