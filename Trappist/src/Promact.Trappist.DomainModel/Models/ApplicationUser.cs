@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Promact.Trappist.Web.Models
 {

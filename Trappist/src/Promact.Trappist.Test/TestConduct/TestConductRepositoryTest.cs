@@ -85,7 +85,8 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task InvalidRegisterTestAttendeesAsyncTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
-            await CreateTestAsync();
+            var test = await CreateTestAsync();
+            testAttendee.TestId = test.Id;
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
@@ -101,7 +102,8 @@ namespace Promact.Trappist.Test.TestConduct
         public async Task IsTestAttendeeExistTest()
         {
             var testAttendee = InitializeTestAttendeeParameters();
-            await CreateTestAsync();
+            var test = await CreateTestAsync();
+            testAttendee.TestId = test.Id;
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
@@ -621,7 +623,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var category1 = CreateCategory("history");
             await _categoryRepository.AddCategoryAsync(category1);
-          
+
             var category2 = CreateCategory("indian culture");
             await _categoryRepository.AddCategoryAsync(category2);
             var testCategoryList = new List<TestCategoryAC>

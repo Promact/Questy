@@ -78,7 +78,7 @@ namespace Promact.Trappist.Repository.TestConduct
             if (testObject != null)
             {
                 testAttendee.TestId = testObject.Id;
-                var isTestAttendeeExist = await (_dbContext.TestAttendees.AnyAsync(x => (x.Email == testAttendee.Email && x.TestId == testAttendee.TestId && x.RollNumber == testAttendee.RollNumber)));
+                var isTestAttendeeExist = await _dbContext.TestAttendees.AnyAsync(x => x.Email == testAttendee.Email && x.TestId == testAttendee.TestId && x.RollNumber == testAttendee.RollNumber);
                 return isTestAttendeeExist;
             }
             return false;

@@ -178,15 +178,17 @@ namespace Promact.Trappist.Repository.Tests
         {
             var questionAc = new QuestionAC();
             var questionListAc = new List<QuestionAC>();
+            var testQuestions = new List<Question>();
             var testQuestionList = await _dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
+            var singleMultipleQuestions = await _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
             //Fetches the list of questions from Question Model
-            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.CreatedByUserId == userId).Include(y => y.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
+            var questionList = await _dbContext.Question.Where(x => x.CategoryID == categoryId && x.CreatedByUserId == userId).ToListAsync();
             //Maps the each question in Question Model to QuestionAC object and make list of type QuestionAC
             questionList.ForEach(question =>
             {
                 questionAc = new QuestionAC();
-                questionAc.Question = Mapper.Map<Question, QuestionDetailAC>(question);
-                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>(question.SingleMultipleAnswerQuestion);
+                questionAc.Question = Mapper.Map<QuestionDetailAC>(question);
+                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(x => x.Id == question.Id));
                 //Checks if the question is already exists in TestQuestion Model,if exists,its IsSelect property made true
                 if (testQuestionList.Exists(x => x.QuestionId == questionAc.Question.Id && x.TestId == testId))
                     questionAc.Question.IsSelect = true;
@@ -289,38 +291,35 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<ICollection<TestConductAC>> GetTestQuestionByTestIdAsync(int testId)
         {
             var questionList = new List<TestConductAC>();
-
+            var singleMultipleQuestions = await _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
+            var codesnippetQuestions = await _dbContext.CodeSnippetQuestion.Include(x => x.QuestionLanguangeMapping).ToListAsync();
             var languages = await _dbContext.CodingLanguage.AsNoTracking().ToListAsync();
-            await _dbContext.TestQuestion
-                .AsNoTracking()
-                .Where(x => x.TestId == testId)
-                .Include(x => x.Question)
-                .ThenInclude(x => x.SingleMultipleAnswerQuestion)
-                .ThenInclude(x => x.SingleMultipleAnswerQuestionOption)
-                .Include(x => x.Question.CodeSnippetQuestion)
-                .ThenInclude(x => x.QuestionLanguangeMapping)
-                .ForEachAsync(x =>
+            var testQuestionList = await _dbContext.TestQuestion
+                 .AsNoTracking()
+                 .Where(x => x.TestId == testId).Include(x => x.Question).Include(x => x.Question).ToListAsync();
+
+            foreach (var question in testQuestionList)
+            {
+                var questionAc = new QuestionAC();
+                questionAc.Question = Mapper.Map<QuestionDetailAC>(question.Question);
+                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(single => single.Id == question.QuestionId));
+
+                if (question.Question.QuestionType == QuestionType.Programming)
                 {
-                    var question = new QuestionAC();
-                    question.Question = Mapper.Map<QuestionDetailAC>(x.Question);
-                    question.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(x.Question.CodeSnippetQuestion);
-                    question.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(x.Question.SingleMultipleAnswerQuestion);
+                    var questionCodeSnippet = codesnippetQuestions.Find(z => z.Id == question.QuestionId);
+                    questionAc.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(questionCodeSnippet);
 
-                    if (question.Question.QuestionType == QuestionType.Programming)
-                    {
-                        var languageIds = x.Question.CodeSnippetQuestion.QuestionLanguangeMapping.Select(map => map.LanguageId);
-                        question.CodeSnippetQuestion.LanguageList = new List<string>();
-                        foreach (var id in languageIds)
-                        {
-                            question.CodeSnippetQuestion.LanguageList.Add(languages.Where(lang => lang.Id == id).Select(lang => lang.Language).Single());
-                        }
-                    }
+                    var languageIds = questionCodeSnippet.QuestionLanguangeMapping.Select(map => map.LanguageId);
+                    questionAc.CodeSnippetQuestion.LanguageList = new List<string>();
+                    foreach (var id in languageIds)
+                        questionAc.CodeSnippetQuestion.LanguageList.Add(languages.Where(lang => lang.Id == id).Select(lang => lang.Language).Single());
+                }
 
-                    //Removing correct answer(s)
-                    if (question.SingleMultipleAnswerQuestion != null)
-                        question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
-                    questionList.Add(new TestConductAC() { Question = question, QuestionStatus = QuestionStatus.unanswered });
-                });
+                //Removing correct answer(s)
+                if (questionAc.SingleMultipleAnswerQuestion != null)
+                    questionAc.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
+                questionList.Add(new TestConductAC() { Question = questionAc, QuestionStatus = QuestionStatus.unanswered });
+            }
 
             return questionList;
         }

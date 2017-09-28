@@ -60,8 +60,8 @@
             'buffer': 'npm:buffer',
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
-            'ace-builds': 'npm:ace-builds/src-min',
-            'traceur': 'npm:traceur'
+            'ace-builds': 'npm:ace-builds/src-min'
+
         },
         // packages tells the System loader how to load when no filename and/or no extension
         packages: {
