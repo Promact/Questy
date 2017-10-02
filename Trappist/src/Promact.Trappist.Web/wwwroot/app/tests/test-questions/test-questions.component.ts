@@ -30,6 +30,9 @@ export class TestQuestionsComponent implements OnInit {
     isAnyCategorySelectedForTest: boolean;
     isEditTestEnabled: boolean;
     disablePreview: boolean;
+    array: QuestionBase[];
+    randomQuestionsArray: QuestionBase[];
+    questionList: QuestionBase[];
 
     constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
         this.testDetails = new Test();
@@ -37,6 +40,8 @@ export class TestQuestionsComponent implements OnInit {
         this.questionsToAdd = [];
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.disablePreview = false;
+        this.array = [];
+        this.questionList = [];
     }
 
     ngOnInit() {
@@ -65,6 +70,9 @@ export class TestQuestionsComponent implements OnInit {
                 category.isAlreadyClicked = true;
                 this.testService.getQuestions(this.testDetails.id, category.id).subscribe(response => {
                     this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
+                    this.array = this.testDetails.categoryAcList[i].questionList.slice();
+                    this.questionList = this.testDetails.categoryAcList[i].questionList;
+                    this.testDetails.categoryAcList[i].isTextAreaVisible = false;
                     this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(question => {
                         return question.question.isSelect;
                     }).length;
@@ -218,5 +226,33 @@ export class TestQuestionsComponent implements OnInit {
             this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
                 this.isEditTestEnabled = !res.response;
             });
+    }
+
+    GetShuffledQuestionArray(k: number) {
+        this.randomQuestionsArray = this.shuffleArray(this.array);
+        this.testDetails.categoryAcList[k].isTextAreaVisible = true;
+    }
+
+    selectRandomQuestions(n: number, k: number) {
+        n = Number(n);
+        this.questionList.forEach(x => x.question.isSelect = false);
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < this.testDetails.categoryAcList[k].questionList.length; j++) {
+                if (this.testDetails.categoryAcList[k].questionList[j].question.id === this.randomQuestionsArray[i].question.id)
+                    this.testDetails.categoryAcList[k].questionList[j].question.isSelect = true;
+            }
+        }
+        this.testDetails.categoryAcList[k].numberOfSelectedQuestion = this.testDetails.categoryAcList[k].questionList.filter(question => {
+            return question.question.isSelect;
+        }).length;
+    }
+
+    private shuffleArray(arrayToShuffle: any[]) {
+        let max = arrayToShuffle.length - 1;
+        for (let i = 0; i < max; i++) {
+            let pickIndex = Math.floor(Math.random() * max);
+            [arrayToShuffle[i], arrayToShuffle[pickIndex]] = [arrayToShuffle[pickIndex], arrayToShuffle[i]];
+        }
+        return arrayToShuffle;
     }
 }
