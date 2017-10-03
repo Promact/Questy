@@ -1,20 +1,17 @@
 ﻿<div class="dialog">
   <div class="dialog-title clearfix">
-    <h1 class="pull-left" md-dialog-title>Share Test</h1>
+    <h1 class="pull-left" md-dialog-title>Random Question Selection</h1>
     <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
   </div>
   <md-dialog-content>
     <div class="form-group">
-      <label>Global URL</label>
-      <div class="url-container">
-        <input type="text" class="form-control" [(ngModel)]="testLink" name="link" id="link" #link />
-        <em class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" mdTooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>
-      </div>
-          <div class="errors-container"></div>
+      <label>Please enter the number of questions to be selected.</label>
+      <input type="text" class="form-control" [(ngModel)]="data.numberOfQuestions"/>
+      <div class="errors-container"></div>
     </div>
   </md-dialog-content>
   <md-dialog-actions>
+    <button type="button" class="btn" [md-dialog-close]="data.numberOfQuestions">Ok</button>
     <button type="button" class="btn" md-dialog-close>Close</button>
-    <button type="submit" class="btn btn-primary" [class.btn-success]="copiedContent" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true">Copy</button>
   </md-dialog-actions>
 </div>

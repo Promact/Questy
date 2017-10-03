@@ -28,6 +28,7 @@
               <h5>Select All</h5>
               <span class="h7">(total {{category.questionCount}} questions)</span>
             </div>
+            <input type="button" id="select" value="Select Random Questions" (click)="GetShuffledQuestionArray(k);openDialog(category,k)" />
             <ng-container *ngFor="let question of category.questionList;let i=index">
               <div class="qs-container">
                 <md-checkbox class="only-checkbox mr10" [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)" [disabled]="!isEditTestEnabled"></md-checkbox>
@@ -44,13 +45,10 @@
                 </div>
               </div>
             </ng-container>
-            <input type="button" id="btnSearch" value="Select" (click)="GetShuffledQuestionArray(k)" />
-            <input type="text" id="text" #box (keyup)="selectRandomQuestions(box.value,k)"  [(ngModel)]="category.numberOfRandomQuestionsSelected" *ngIf="category.isTextAreaVisible"/>
           </div>
         </md2-accordion-tab>
       </md2-accordion>
     </ng-container>
-
   </div>
   <create-test-footer (saveExit)="saveExit()" (saveNext)="saveNext()"></create-test-footer>
 </div>

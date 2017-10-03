@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { DeleteTestDialogComponent } from '../tests-dashboard/delete-test-dialog.component';
 import { Question } from '../../questions/question.model';
 import { Category } from '../../questions/category.model';

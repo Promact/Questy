@@ -7,7 +7,7 @@ import { TestsDashboardComponent } from './tests-dashboard/tests-dashboard.compo
 import { TestCreateDialogComponent } from './tests-dashboard/test-create-dialog.component';
 import { DeleteTestDialogComponent } from './tests-dashboard/delete-test-dialog.component';
 import { TestSettingsComponent } from './test-settings/test-settings.component';
-import { TestLaunchDialogComponent } from './test-settings/test-launch-dialog.component';
+import { RandomQuestionSelectionDialogComponent } from './test-settings/test-launch-dialog.component';
 import { TestSectionsComponent } from './test-sections/test-sections.component';
 import { TestService } from './tests.service';
 import { FilterPipe } from './tests-dashboard/test-dashboard.pipe';
@@ -39,7 +39,7 @@ import { ConductService } from '../conduct/conduct.service';
         DeleteTestDialogComponent,
         DuplicateTestDialogComponent,
         TestSettingsComponent,
-        TestLaunchDialogComponent,
+        RandomQuestionSelectionDialogComponent,
         TestSectionsComponent,
         TestQuestionsComponent,
         TestViewComponent,
@@ -54,7 +54,7 @@ import { ConductService } from '../conduct/conduct.service';
     entryComponents: [
         TestCreateDialogComponent,
         DeleteTestDialogComponent,
-        TestLaunchDialogComponent,
+        RandomQuestionSelectionDialogComponent,
         DeselectCategoryComponent,
         IncompleteTestCreationDialogComponent,
         DuplicateTestDialogComponent

@@ -1,6 +1,7 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject } from '@angular/core';
 import { Test } from '../tests.model';
 import { Router } from '@angular/router';
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
     moduleId: module.id,
@@ -8,42 +9,12 @@ import { Router } from '@angular/router';
     templateUrl: 'test-launch-dialog.html'
 })
 
-export class TestLaunchDialogComponent implements OnInit {
-    copiedContent: boolean;
-    testSettingObject: Test;
-    testLink: string;
-    tooltipMessage: string;
+export class RandomQuestionSelectionDialogComponent implements OnInit {
 
-    constructor(private router: Router) {
-        this.testSettingObject = new Test();
-        this.copiedContent = true;
-        this.tooltipMessage = 'Copy to Clipboard';
-    }
 
-    ngOnInit() {
-        let magicString = this.testSettingObject.link;
-        let domain = window.location.origin;
-        this.testLink = domain + '/conduct/' + magicString;
-    }
+    constructor(public dialogRef: MdDialogRef<RandomQuestionSelectionDialogComponent>,
+        @Inject(MD_DIALOG_DATA) public data: any) { }
 
-    /**
-     * Displays the tooltip message
-     * @param $event is of type Event and is used to call stopPropagation()
-     */
-    showTooltipMessage($event: Event, testLink: any) {
-        $event.stopPropagation();
-        setTimeout(() => {
-            testLink.select();
-        }, 0);
-        this.tooltipMessage = 'Copied';
-    }
-
-    /**
-     * Changes the tooltip message
-     */
-    changeTooltipMessage() {
-        this.tooltipMessage = 'Copy to Clipboard';
-    }
-
+    ngOnInit() { }
 }
 
