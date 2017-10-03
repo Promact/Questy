@@ -3,7 +3,6 @@ import { TestService } from '../tests.service';
 import { MdDialog, MdSnackBar, MdSnackBarRef, SimpleSnackBar, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { TestLaunchDialogComponent } from '../test-settings/test-launch-dialog.component';
 import { FormGroup } from '@angular/forms';
 import { DeselectCategoryComponent } from '../test-sections/deselect-category.component';
 import { Question } from '../../questions/question.model';
