@@ -13,5 +13,4 @@ export class Category {
         questionCount: number;
         isQuestionAbsent: boolean;
         numberOfRandomQuestionsSelected: number;
-        isTextAreaVisible: boolean;
 } 

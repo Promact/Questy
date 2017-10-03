@@ -3,11 +3,12 @@ import { Question } from '../../questions/question.model';
 import { Category } from '../../questions/category.model';
 import { TestService } from '../tests.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import { MdSnackBar, MdSnackBarConfig, MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { Test, TestQuestionAC } from '../tests.model';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
+import { RandomQuestionSelectionDialogComponent } from '../../tests/test-settings/test-launch-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -34,7 +35,7 @@ export class TestQuestionsComponent implements OnInit {
     randomQuestionsArray: QuestionBase[];
     questionList: QuestionBase[];
 
-    constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router) {
+    constructor(private testService: TestService, public snackBar: MdSnackBar, public router: ActivatedRoute, public route: Router, public dialog: MdDialog) {
         this.testDetails = new Test();
         this.isSaveExit = false;
         this.questionsToAdd = [];
@@ -72,7 +73,6 @@ export class TestQuestionsComponent implements OnInit {
                     this.testDetails.categoryAcList[i].questionList = response;//gets the total number of questions of particular category
                     this.array = this.testDetails.categoryAcList[i].questionList.slice();
                     this.questionList = this.testDetails.categoryAcList[i].questionList;
-                    this.testDetails.categoryAcList[i].isTextAreaVisible = false;
                     this.testDetails.categoryAcList[i].numberOfSelectedQuestion = this.testDetails.categoryAcList[i].questionList.filter(question => {
                         return question.question.isSelect;
                     }).length;
@@ -228,13 +228,20 @@ export class TestQuestionsComponent implements OnInit {
             });
     }
 
+    /**
+     * Gets the shuffled array for the question array of a particular category
+     * @param k contains the index number of the category which is being selected
+     */
     GetShuffledQuestionArray(k: number) {
         this.randomQuestionsArray = this.shuffleArray(this.array);
-        this.testDetails.categoryAcList[k].isTextAreaVisible = true;
     }
 
+    /**
+     * Selects the questions in a random order in the select questions page
+     * @param n contains the number of questions to be selected in random order
+     * @param k contains the index of the category which is being selected
+     */
     selectRandomQuestions(n: number, k: number) {
-        n = Number(n);
         this.questionList.forEach(x => x.question.isSelect = false);
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < this.testDetails.categoryAcList[k].questionList.length; j++) {
@@ -245,8 +252,13 @@ export class TestQuestionsComponent implements OnInit {
         this.testDetails.categoryAcList[k].numberOfSelectedQuestion = this.testDetails.categoryAcList[k].questionList.filter(question => {
             return question.question.isSelect;
         }).length;
+        this.testDetails.categoryAcList[k].selectAll = this.testDetails.categoryAcList[k].questionList.every(x => x.question.isSelect);
     }
 
+    /**
+     * Shuffles the contents of the array
+     * @param arrayToShuffle contains the array whose contents are to be shuffled
+     */
     private shuffleArray(arrayToShuffle: any[]) {
         let max = arrayToShuffle.length - 1;
         for (let i = 0; i < max; i++) {
@@ -255,4 +267,26 @@ export class TestQuestionsComponent implements OnInit {
         }
         return arrayToShuffle;
     }
+
+    /**
+     * Opens the dialog box where the number of questions to be selected randomly is to be entered
+     * @param category is the object of Category
+     * @param k contains the index of the category which is being selected
+     */
+    openDialog(category: Category, k: number): void {
+        let dialogRef = this.dialog.open(RandomQuestionSelectionDialogComponent, {
+            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            category.numberOfRandomQuestionsSelected = result;
+            if(result !== '')
+                this.selectRandomQuestions(category.numberOfRandomQuestionsSelected, k);
+            else
+                category.numberOfRandomQuestionsSelected = this.testDetails.categoryAcList[k].numberOfSelectedQuestion = this.testDetails.categoryAcList[k].questionList.filter(question => {
+                    return question.question.isSelect;
+                }).length;
+        });
+    }
 }
+
