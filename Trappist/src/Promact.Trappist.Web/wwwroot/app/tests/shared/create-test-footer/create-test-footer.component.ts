@@ -21,8 +21,6 @@ export class CreateTestFooterComponent implements OnInit {
     @Input('validStartDate')
     public validStartDate: boolean;
     @Input()
-    isRelaunched: boolean;
-    @Input()
     showIsPausedButton: boolean;
     @Input('validEndDate')
     public validEndDate: boolean;

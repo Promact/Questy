@@ -635,8 +635,28 @@ export class TestComponent implements OnInit {
      * @param index: index of question
      */
     clearResponse(index: number) {
-        if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion)
-            this.codeAnswer = '';
+        if (this.testQuestions[index].question.question.questionType === QuestionType.codeSnippetQuestion) {
+            if (this.selectLanguage.toLowerCase() === 'c')
+                this.codeAnswer = [
+                    ' #include <stdio.h>'
+                    , 'int main()'
+                    , '{'
+                    , '     printf("Hello, World!");'
+                    , '     return 0;'
+                    , '}'
+                ].join('\n');
+            if (this.selectLanguage.toLowerCase() === 'cpp')
+                this.codeAnswer = [
+                    '#include <iostream>'
+                    , 'using namespace std;'
+                    , 'int main()'
+                    , '{'
+                    , '     cout << "Hello World!";'
+                    , '}'
+                ].join('\n');
+            if (this.selectLanguage.toLowerCase() === 'java')
+                this.codeAnswer = this.JAVA_CODE;
+        }
         else
             this.testQuestions[index].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.isAnswer = false);
         //Leave the reviewed question
@@ -657,9 +677,9 @@ export class TestComponent implements OnInit {
         } else {
             let checked = this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer;
             this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[optionIndex].isAnswer = !checked;
-            if (this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)) {
+            if (!this.testQuestions[questionIndex].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.some(x => x.isAnswer)) {
                 this.testQuestions[questionIndex].questionStatus = QuestionStatus.selected;
-                this.questionStatus = QuestionStatus.unanswered;
+                this.questionStatus = this.questionStatus !== QuestionStatus.review ? QuestionStatus.unanswered : this.questionStatus;
             }
         }
     }
