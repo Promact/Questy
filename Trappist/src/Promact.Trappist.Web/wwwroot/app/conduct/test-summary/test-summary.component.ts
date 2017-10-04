@@ -11,6 +11,7 @@ import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
+import { ConnectionService } from '../../core/connection.service';
 declare let screenfull: any;
 
 @Component({
@@ -55,7 +56,7 @@ export class TestSummaryComponent implements OnInit {
     isTestBlocked: boolean;
     isTestExpired: boolean;
 
-    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar) {
+    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
         this.testAttendee = new TestAttendee();
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
@@ -78,6 +79,11 @@ export class TestSummaryComponent implements OnInit {
         history.pushState(null, null, null);
         window.addEventListener('popstate', function (event) {
             history.pushState(null, null, null);
+        });
+
+        this.connectionService.recievedAttendee.subscribe(attendee => {
+            this.testAttendee.report = attendee.report;
+            this.isAllowed = this.testAttendee.report.isAllowResume;
         });
     }
 
@@ -198,13 +204,13 @@ export class TestSummaryComponent implements OnInit {
         this.isTestResume = true;
         this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(response => {
             if (response) {
+                this.connectionService.sendRequest(this.testAttendee.id);
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
                     duration: 4000,
                 });
                 this.testAttendee.report.isTestPausedUnWillingly = true;
                 this.disableButton = true;
             }
-
         });
     }
     /**
