@@ -84,8 +84,6 @@ export class TestSettingsComponent implements OnInit {
     getTestById(id: number) {
         this.testService.getTestById(id).subscribe((response) => {
             this.testDetails = (response);
-            this.isRelaunched = new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched;
-            this.showIsPausedButton = new Date(<string>this.testDetails.startDate).getTime() <= Date.now() && this.testDetails.isLaunched;
             this.testNameReference = this.testDetails.testName;
             this.disablePreview = this.testDetails.categoryAcList === null || this.testDetails.categoryAcList.every(x => !x.isSelect) || this.testDetails.categoryAcList.every(x => x.numberOfSelectedQuestion === 0);
             this.loader = false;
@@ -200,8 +198,6 @@ export class TestSettingsComponent implements OnInit {
             });
             if (isQuestionAdded) {
                 this.testDetails.isLaunched = true;
-                this.isRelaunched = new Date(<string>this.testDetails.startDate).getTime() > Date.now() && this.testDetails.isLaunched;
-                this.showIsPausedButton = new Date(<string>this.testDetails.startDate).getTime() <= Date.now() && this.testDetails.isLaunched;
                 testObject.startDate = new Date(<string>testObject.startDate).toISOString();
                 testObject.endDate = new Date(<string>testObject.endDate).toISOString();
                 this.testService.updateTestById(id, testObject).subscribe((response) => {
@@ -250,7 +246,6 @@ export class TestSettingsComponent implements OnInit {
     * Resumes the test
     */
     resumeTest() {
-
         this.testDetails.isPaused = false;
         let testObject = JSON.parse(JSON.stringify(this.testDetails));
 
