@@ -7,6 +7,7 @@ import { TestReportComponent } from './test-report/test-report.component';
 import { IndividualReportComponent } from './individual-report/individual-report.component';
 import { ReportService } from './report.service';
 import { ConductService } from '../conduct/conduct.service';
+import { ConnectionService } from '../core/connection.service';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { ConductService } from '../conduct/conduct.service';
     ],
     providers: [
         ReportService,
-        ConductService
+        ConductService,
+        ConnectionService
     ]
 })
 export class ReportsModule { }

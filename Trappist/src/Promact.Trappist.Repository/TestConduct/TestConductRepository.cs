@@ -56,6 +56,7 @@ namespace Promact.Trappist.Repository.TestConduct
         }
         #endregion
 
+
         #region Public Method
         public async Task RegisterTestAttendeesAsync(TestAttendees testAttendee, string magicString)
         {
@@ -214,16 +215,16 @@ namespace Promact.Trappist.Repository.TestConduct
                 return 0.0;
         }
 
-        public async Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
+        public async Task<TestAttendees> SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
         {
-            var report = await _dbContext.Report.OrderBy(x => x.TestAttendeeId).FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            if (report == null)
+            var testAttendee = await _dbContext.TestAttendees.Where(x => x.Id == attendeeId).Include(x => x.Report).FirstOrDefaultAsync();
+            if (testAttendee.Report == null)
             {
-                report = new Report();
-                report.TestAttendeeId = attendeeId;
-                await _dbContext.Report.AddAsync(report);
+                testAttendee.Report = new Report();
+                testAttendee.Report.TestAttendeeId = attendeeId;
+                await _dbContext.Report.AddAsync(testAttendee.Report);
             }
-            report.TestStatus = testStatus;
+            testAttendee.Report.TestStatus = testStatus;
             await _dbContext.SaveChangesAsync();
             if (testStatus != TestStatus.AllCandidates)
             {
@@ -236,6 +237,7 @@ namespace Promact.Trappist.Repository.TestConduct
             _dbContext.TestLogs.Update(testLogs);
             await _dbContext.SaveChangesAsync();
             await GetTimeTakenByAttendeeAsync(attendeeId);
+            return testAttendee;
         }
 
         public async Task<TestStatus> GetAttendeeTestStatusAsync(int attendeeId)

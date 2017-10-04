@@ -19,6 +19,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 import { AceEditorModule } from 'ng2-ace-editor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedComponentsModule } from '../shared/shared-components.module';
+import { ConnectionService } from '../core/connection.service';
 
 @NgModule({
     bootstrap: [ConductComponent],
@@ -32,7 +33,8 @@ import { SharedComponentsModule } from '../shared/shared-components.module';
     providers: [
         ConductService,
         ReportService,
-        TestService
+        TestService,
+        ConnectionService
     ],
     declarations: [
         ConductComponent,

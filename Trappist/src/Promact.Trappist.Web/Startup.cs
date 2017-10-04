@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Exceptionless;
+using Promact.Trappist.Core.TrappistHub;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +45,7 @@ using Serilog.Sinks.Udp;
 using System.Net;
 using Serilog.Formatting.Json;
 using Microsoft.AspNetCore.Identity;
-
+using Newtonsoft.Json.Serialization;
 
 namespace Promact.Trappist.Web
 {
@@ -88,7 +89,10 @@ namespace Promact.Trappist.Web
         {
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
-
+            services.AddSignalR(options =>
+            {
+                options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
@@ -171,7 +175,7 @@ namespace Promact.Trappist.Web
             }
 
             app.UseStaticFiles();
-           
+
 
 
             if (env.IsDevelopment())
@@ -196,6 +200,10 @@ namespace Promact.Trappist.Web
             }
 
             app.UseAuthentication();
+            app.UseSignalR(mapHub =>
+            {
+                 mapHub.MapHub<TrappistHub>("TrappistHub");
+            });
 
             app.UseSession();
 

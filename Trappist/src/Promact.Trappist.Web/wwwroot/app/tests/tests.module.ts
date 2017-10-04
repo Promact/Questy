@@ -21,6 +21,7 @@ import { DuplicateTestDialogComponent } from './tests-dashboard/duplicate-test-d
 import { DeselectCategoryComponent } from './test-sections/deselect-category.component';
 import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
 import { ConductService } from '../conduct/conduct.service';
+import { ConnectionService } from '../core/connection.service';
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import { ConductService } from '../conduct/conduct.service';
     providers: [
         TestService,
         Test,
-        ConductService
+        ConductService,
+        ConnectionService
     ]
 })
 export class TestsModule { }

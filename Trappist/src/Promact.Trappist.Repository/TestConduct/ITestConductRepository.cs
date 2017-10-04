@@ -94,7 +94,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="attendeeId">Id of the Attendee</param>
         /// <param name="testStatus">TestStatus enum</param>
-        Task SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus);
+        Task<TestAttendees> SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus);
 
         /// <summary>
         /// Gets the Test Status of the Attendee

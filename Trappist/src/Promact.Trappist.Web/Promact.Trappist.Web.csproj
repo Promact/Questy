@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\app\core\connection.service.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Promact.Trappist.Core\Promact.Trappist.Core.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Repository\Promact.Trappist.Repository.csproj" />
     <ProjectReference Include="..\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj" />
@@ -78,6 +82,10 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.Caching.SqlConfig.Tools" Version="1.0.0-msbuild3-final" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\app\core\connection.service.ts" />
   </ItemGroup>
 
 </Project>

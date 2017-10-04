@@ -2,6 +2,7 @@
 import { TestAttendees } from './register.model';
 import { ConductService } from '../conduct.service';
 import { Router } from '@angular/router';
+import { ConnectionService } from '../../core/connection.service';
 
 @Component({
     moduleId: module.id,
@@ -13,7 +14,7 @@ export class RegisterComponent {
     loader: boolean;
     isErrorMessage: boolean;
 
-    constructor(private conductService: ConductService, private router: Router) {
+    constructor(private conductService: ConductService, private router: Router, private connectionService: ConnectionService) {
         this.testAttendees = new TestAttendees();
         this.loader = true;
         this.conductService.getSessionPath().subscribe(path => {
@@ -33,9 +34,13 @@ export class RegisterComponent {
         let registrationUrl = window.location.pathname;
         let magicString = registrationUrl.substring(registrationUrl.indexOf('/conduct/') + 9, registrationUrl.indexOf('/register'));
         this.conductService.registerTestAttendee(magicString, this.testAttendees).subscribe(response => {
-            this.isErrorMessage = false;
-            this.loader = false;
-            this.router.navigate(['instructions'], { replaceUrl: true });
+            if (response) {
+                this.connectionService.sendReport(response);
+                this.isErrorMessage = false;
+                this.loader = false;
+                this.router.navigate(['instructions'], { replaceUrl: true });
+            }
+
         }, err => {
             if (err.status === 404) {
                 this.isErrorMessage = true;

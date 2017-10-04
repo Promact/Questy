@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../report.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
@@ -12,6 +12,9 @@ import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { TestLogs } from '../testlogs.model';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Report } from '../report.model';
+import { ConnectionService } from '../../core/connection.service';
+
+
 
 declare let jsPDF: any;
 declare let saveAs: any;
@@ -72,9 +75,11 @@ export class TestReportComponent implements OnInit {
     unfinishedTestCount: number;
     starredCandidateCount: number;
     noCandidateFound: boolean;
+    attendees: TestAttendee[] = [];
+    testAttendeeSignalR: TestAttendee;
 
 
-    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar) {
+    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
         this.sortedAttendeeArray = new Array<TestAttendee>();
@@ -104,6 +109,8 @@ export class TestReportComponent implements OnInit {
         this.expiredTestCount = 0;
         this.unfinishedTestCount = 0;
         this.starredCandidateCount = 0;
+        this.testAttendeeSignalR = new TestAttendee();
+
     }
 
     ngOnInit() {
@@ -120,8 +127,25 @@ export class TestReportComponent implements OnInit {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
         });
+
         this.getAllTestCandidates();
+        this.connectionService.recievedAttendee.subscribe(attendee => {
+            let testAttendee = this.testAttendeeArray.find(x => x.id === attendee.id);
+            if (testAttendee !== undefined)
+                this.testAttendeeArray.splice(this.testAttendeeArray.findIndex(x => x.id === testAttendee.id), 1);
+            if (attendee.report === null)
+                attendee.report = new Report();
+            this.testAttendeeArray.unshift(attendee);
+        });
+        this.connectionService.recievedAttendeeId.subscribe(attendeeId => {
+            let attendee = this.testAttendeeArray.find(x => x.id === attendeeId);
+            attendee.report.isTestPausedUnWillingly = true;
+            this.testAttendeeArray.splice(this.testAttendeeArray.findIndex(x => x.id === attendeeId), 1);
+            this.testAttendeeArray.unshift(attendee);
+            this.isAnyTestResume = true;
+        });
     }
+
 
     /**
      * Fetches all the candidates of any particular test
@@ -132,7 +156,6 @@ export class TestReportComponent implements OnInit {
             this.isAnyCandidateExist = this.attendeeArray.length === 0 ? false : true;
             this.attendeeArray.forEach(x => {
                 if (x.report !== null)
-
                     this.testAttendeeArray.push(x);
                 else {
                     x.report = new Report();
@@ -195,6 +218,7 @@ export class TestReportComponent implements OnInit {
         this.reportService.createSessionForAttendee(attendee, this.test.link, false).subscribe(response => {
             if (response) {
                 attendee.report.isTestPausedUnWillingly = false;
+                this.connectionService.sendReport(response);
                 this.isAnyTestResume = this.testAttendeeArray.some(x => x.report.isTestPausedUnWillingly);
                 this.snackbarRef.open('Test resumed successfully', 'Dismiss', {
                     duration: 4000,
