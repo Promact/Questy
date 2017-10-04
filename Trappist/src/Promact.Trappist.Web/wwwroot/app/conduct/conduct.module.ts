@@ -1,7 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { conductRouting } from './conduct.routing';
 import { ConductComponent } from './conduct.component';
@@ -15,14 +14,27 @@ import { ConductService } from './conduct.service';
 import { ReportService } from '../reports/report.service';
 import { TestsProgrammingGuideDialogComponent } from './test/tests-programming-guide-dialog.component';
 import { TestService } from '../tests/tests.service';
+import { MdSelectModule, MdDialogModule, MdSnackBarModule, MdCheckboxModule, MdRadioModule } from '@angular/material';
+import { TestComponent } from '../conduct/test/test.component';
+import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { FormsModule } from '@angular/forms';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     bootstrap: [ConductComponent],
     imports: [
         BrowserModule,
         conductRouting,
-        SharedModule,
-        CoreModule
+        CoreModule,
+        MdSelectModule,
+        MdDialogModule,
+        MdSnackBarModule,
+        MdCheckboxModule,
+        MdRadioModule,
+        FormsModule,
+        AceEditorModule,
+        BrowserAnimationsModule
     ],
     providers: [
         ConductService,
@@ -37,7 +49,9 @@ import { TestService } from '../tests/tests.service';
         TestEndComponent,
         TestConductHeaderComponent,
         TestConductFooterComponent,
-        TestsProgrammingGuideDialogComponent
+        TestsProgrammingGuideDialogComponent,
+        TestComponent,
+        PageNotFoundComponent
     ], entryComponents: [
         TestsProgrammingGuideDialogComponent
     ]
