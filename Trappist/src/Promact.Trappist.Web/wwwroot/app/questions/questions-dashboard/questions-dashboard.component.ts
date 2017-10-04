@@ -85,17 +85,17 @@ export class QuestionsDashboardComponent implements OnInit {
         if (this.searchText !== undefined) {
             this.showSearchInput = true;
             this.matchString = this.searchText;
-        }           
+        }
         this.getAllCategories();
         this.countTheQuestion();
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
 
-   /**
-    * To check whether the option is correct or not
-    * @param isAnswer: Contains true of false value
-    */
+    /**
+     * To check whether the option is correct or not
+     * @param isAnswer: Contains true of false value
+     */
     isCorrectAnswer(isAnswer: boolean) {
         if (isAnswer) {
             return 'correct';
@@ -153,17 +153,16 @@ export class QuestionsDashboardComponent implements OnInit {
             if (this.questionDisplay.length !== 0)
                 this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
-            if (this.searchText !== undefined && this.matchString.length >0) {
+            if (this.searchText !== undefined && this.matchString.length > 0) {
                 this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel, this.searchText]);
                 this.showSearchInput = true;
             }
             else
-                 this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel]);
+                this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel]);
             this.loader = false;
             this.id++;
             this.selectedCategory = new Category();
             this.isAllQuestionsHaveCome = false;
-            this.matchString = '';
         });
     }
 
@@ -208,12 +207,12 @@ export class QuestionsDashboardComponent implements OnInit {
             return 'active';
     }
 
-   /**
-    * To filter the questions as selected category wise
-    * @param categoryId: Id of the category
-    * @param categoryName: Name of the category
-    * @param difficultyLevel: Difficultylevel that is selected
-    */
+    /**
+     * To filter the questions as selected category wise
+     * @param categoryId: Id of the category
+     * @param categoryName: Name of the category
+     * @param difficultyLevel: Difficultylevel that is selected
+     */
     categoryWiseFilter(categoryId: number, categoryName: string, difficultyLevel: string) {
         this.loader = true;
         this.searchText = this.route.snapshot.params['matchString'];
@@ -241,12 +240,10 @@ export class QuestionsDashboardComponent implements OnInit {
             if (this.searchText !== undefined) {
                 this.router.navigate(['questions/dashboard', categoryName, difficultyLevel, this.searchText]);
                 this.showSearchInput = true;
-                this.matchString = this.searchText;              
+                this.matchString = this.searchText;
             }
             else
                 this.router.navigate(['questions/dashboard', categoryName, difficultyLevel]);
-
-            
             this.loader = false;
         });
     }
@@ -285,13 +282,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.loader = false;
         });
     }
-
-    redirect()
-    {
-        
-    }
-
-
+    
     /**
      * To get the Search criteria from the user
      * @param matchString: String that needs to be searched
@@ -300,22 +291,27 @@ export class QuestionsDashboardComponent implements OnInit {
         this.matchString = matchString;
         if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
             this.router.navigate(['question/search', this.matchString]);
-            this.showSearchInput = true; 
+            this.showSearchInput = true;
         }
-        else
-            this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
+        else {
+            console.log(this.selectedCategory.categoryName);
+            if (this.selectedCategory.categoryName === undefined)
+                this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
+            else
+                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
+        }
         if (matchString.trim().length > 2) {
             this.id = 0;
             this.isAllQuestionsHaveCome = false;
-            if (this.selectedCategory.categoryName === undefined)
+            if (this.selectedCategory.categoryName === 'AllCategory')
                 this.selectedCategory.categoryName = 'AllCategory';
-           
+
             this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
                 this.questionDisplay = questionsList;
                 console.log(this.questionDisplay);
                 if (this.questionDisplay.length !== 0)
                     this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
-                this.countTheQuestion();            
+                this.countTheQuestion();
             });
         }
         else if (matchString.trim().length === 0) {
@@ -323,6 +319,8 @@ export class QuestionsDashboardComponent implements OnInit {
             this.isAllQuestionsHaveCome = false;
             this.countTheQuestion();
             this.questionDisplay = new Array<QuestionDisplay>();
+            if (this.selectedCategory.categoryName === undefined)
+                this.selectedCategory.categoryName = 'AllCategory';
             this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.difficultyLevel]);
             this.getQuestionsOnScrolling();
         }
@@ -446,11 +444,24 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     /**
-    * Selects the search text area on clicking of the search button
-    * @param $event: is of type Event and is used to call stopPropagation()
-    * @param search: is of type any
-    */
-    selectTextArea($event: any, search: any) {
+     * Selects the search text area on clicking of the search button
+     * @param $event:is of type Event and is used to call stopPropagation()
+     * @param search:is of type any
+     * @param matchString:is string that needs to be searched
+     */
+    selectTextArea($event: any, search: any, matchString: string) {
+        this.matchString = matchString;
+        if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
+            this.router.navigate(['question/search', this.matchString]);
+            this.showSearchInput = true;
+        }
+        else {
+            console.log(this.selectedCategory.categoryName);
+            if (this.selectedCategory.categoryName === undefined)
+                this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
+            else
+                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
+        }
         this.showSearchInput = true;
         $event.stopPropagation();
         setTimeout(() => {
