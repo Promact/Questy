@@ -11,10 +11,19 @@ import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 export class RandomQuestionSelectionDialogComponent implements OnInit {
 
+    isErrorMessageVisible: boolean;
+    isPatternMismatched: boolean;
 
     constructor(public dialogRef: MdDialogRef<RandomQuestionSelectionDialogComponent>,
-        @Inject(MD_DIALOG_DATA) public data: any) { }
+        @Inject(MD_DIALOG_DATA) public data: any) {
+        this.isErrorMessageVisible = false;
+    }
 
     ngOnInit() { }
+
+    isNumberOfQuestionsEnteredValid(numberOfQuestionsToBeSelectedRandomly: number) {
+        this.isErrorMessageVisible = +numberOfQuestionsToBeSelectedRandomly > this.data.numberOfQuestionsInSelectedCategory;
+        this.isPatternMismatched = !(/^[0-9]*$/.test(numberOfQuestionsToBeSelectedRandomly.toString()));
+    }
 }
 

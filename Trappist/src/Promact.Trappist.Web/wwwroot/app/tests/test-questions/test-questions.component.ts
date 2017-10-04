@@ -79,6 +79,7 @@ export class TestQuestionsComponent implements OnInit {
                     category.selectAll = category.questionList.every(question => {
                         return question.question.isSelect;
                     });
+                    this.testDetails.categoryAcList[i].numberOfRandomQuestionsSelected = this.testDetails.categoryAcList[i].numberOfSelectedQuestion;
                     this.loader_question = false;
                 });
             } else {
@@ -233,6 +234,7 @@ export class TestQuestionsComponent implements OnInit {
      * @param k contains the index number of the category which is being selected
      */
     GetShuffledQuestionArray(k: number) {
+        this.testDetails.categoryAcList[k].numberOfRandomQuestionsSelected = this.testDetails.categoryAcList[k].numberOfSelectedQuestion;
         this.randomQuestionsArray = this.shuffleArray(this.array);
     }
 
@@ -275,7 +277,7 @@ export class TestQuestionsComponent implements OnInit {
      */
     openDialog(category: Category, k: number): void {
         let dialogRef = this.dialog.open(RandomQuestionSelectionDialogComponent, {
-            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected }
+            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected, numberOfQuestionsInSelectedCategory: category.questionList.length }
         });
 
         dialogRef.afterClosed().subscribe(result => {
