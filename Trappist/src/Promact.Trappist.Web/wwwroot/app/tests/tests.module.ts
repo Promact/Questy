@@ -24,6 +24,7 @@ import { DeselectCategoryComponent } from './test-sections/deselect-category.com
 import { IncompleteTestCreationDialogComponent } from './test-settings/incomplete-test-creation-dialog.component';
 
 import { ConductService } from '../conduct/conduct.service';
+import { ConnectionService } from '../core/connection.service';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { ConductService } from '../conduct/conduct.service';
     providers: [
         TestService,
         Test,
-        ConductService
+        ConductService,
+        ConnectionService
     ]
 })
 export class TestsModule { }

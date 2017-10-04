@@ -15,6 +15,7 @@ import { ConductService } from './conduct.service';
 import { ReportService } from '../reports/report.service';
 import { TestsProgrammingGuideDialogComponent } from './test/tests-programming-guide-dialog.component';
 import { TestService } from '../tests/tests.service';
+import { ConnectionService } from '../core/connection.service';
 
 @NgModule({
     bootstrap: [ConductComponent],
@@ -27,7 +28,8 @@ import { TestService } from '../tests/tests.service';
     providers: [
         ConductService,
         ReportService,
-        TestService
+        TestService,
+        ConnectionService
     ],
     declarations: [
         ConductComponent,

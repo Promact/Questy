@@ -32,6 +32,7 @@ declare let screenfull: any;
 declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
+import { ConnectionService } from '../../core/connection.service';
 
 @Component({
     moduleId: module.id,
@@ -106,7 +107,7 @@ export class TestComponent implements OnInit {
         private conductService: ConductService,
         private route: ActivatedRoute,
         private location: Location,
-        private testService: TestService) {
+        private testService: TestService, private connectionService: ConnectionService) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
@@ -140,6 +141,7 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         this.getTestByLink(this.testLink);
+      
     }
 
 
@@ -218,6 +220,7 @@ export class TestComponent implements OnInit {
      */
     onChange(code: string) {
         this.codeAnswer = code;
+
     }
 
     /**
@@ -877,8 +880,11 @@ export class TestComponent implements OnInit {
     private closeWindow(testStatus: TestStatus) {
         if (this.resumable === AllowTestResume.Supervised) {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                this.testEnded = true;
-                this.router.navigate(['test-summary'], { replaceUrl: true });
+                if (response) {
+                    this.connectionService.sendReport(response);
+                    this.testEnded = true;
+                    this.router.navigate(['test-summary'], { replaceUrl: true });
+                }
             });
         }
         else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest && testStatus !== TestStatus.expiredTest)
