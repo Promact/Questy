@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.TestConduct;
+using Promact.Trappist.Utility.Constants;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Web.Controllers
@@ -12,14 +14,16 @@ namespace Promact.Trappist.Web.Controllers
         #region Dependencies
         private readonly IBasicSetupRepository _basicSetup;
         private readonly ITestConductRepository _testConduct;
+        private readonly IStringConstants _stringConstants;
         #endregion
         #endregion
 
         #region Constructor
-        public HomeController(IBasicSetupRepository basicSetup, ITestConductRepository testConduct)
+        public HomeController(IBasicSetupRepository basicSetup, ITestConductRepository testConduct, IStringConstants stringConstants)
         {
             _basicSetup = basicSetup;
             _testConduct = testConduct;
+            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -55,6 +59,7 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Conduct(string link)
         {
+            ViewBag.SessionId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
             var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].ToString();
             if (string.IsNullOrEmpty(ipAddress))
                 ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();

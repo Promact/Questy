@@ -232,7 +232,7 @@ export class TestComponent implements OnInit {
             history.pushState(null, null, null);
             window.addEventListener('popstate', function (event) {
                 history.pushState(null, null, null);
-            });;
+            });
         }
         else {
             this.testLink = link;

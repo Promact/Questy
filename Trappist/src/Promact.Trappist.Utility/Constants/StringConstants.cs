@@ -235,6 +235,14 @@
                 return "MAGIC_LINK";
             }
         }
+
+        public string Path
+        {
+            get
+            {
+                return "Path";
+            }
+        }
         #endregion
 
         #region Code Response
@@ -261,6 +269,8 @@
                 return "Wrong Answer. None of the test cases passed.";
             }
         }
+
+       
         #endregion
     }
 }

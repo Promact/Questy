@@ -138,4 +138,9 @@ export class ConductService {
     setAttendeeBrowserToleranceValue(attendeeId: number, focusLostCount: number) {
         return this.httpService.get(this.testConductUrl + attendeeId + '/' + focusLostCount + '/setTolerance');
     }
+
+
+    getSessionPath() {
+        return this.httpService.get(this.testConductUrl + 'getSessionPath');
+    }
 }
