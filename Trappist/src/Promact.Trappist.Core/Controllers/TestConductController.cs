@@ -46,7 +46,8 @@ namespace Promact.Trappist.Core.Controllers
                 HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
                 HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
                 return Ok(true);
-            }else if(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
+            }
+            else if (await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
             {
                 var attendee = await _testConductRepository.GetTestAttendeeByEmailIdAndRollNo(testAttendee.Email, testAttendee.RollNumber, testAttendee.TestId);
 
@@ -200,6 +201,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("testbylink/{link}/{isPreview}")]
         public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link, [FromRoute] bool isPreview)
         {
+
             if (link == null)
             {
                 return BadRequest();
@@ -243,7 +245,6 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
-
             return Ok(attendeeId);
         }
 
@@ -259,8 +260,11 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId));
+            var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+            if (testStatus != TestStatus.AllCandidates)
+                HttpContext.Session.SetString(_stringConstants.Path, "");
+            else HttpContext.Session.SetString(_stringConstants.Path, "test");
+            return Ok(testStatus);
         }
 
         [HttpPost("code/{attendeeId}")]
@@ -302,6 +306,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{testLink}/instructions")]
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
         {
+            HttpContext.Session.SetString(_stringConstants.Path, "instructions");
             var result = await _testConductRepository.GetTestInstructionsAsync(testLink);
             return result;
         }
@@ -346,13 +351,13 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testLogs">It is an object of Test Logs type</param>
         /// <returns></returns>
         [HttpGet("testLogs/{attendeeId}/{isCloseWindow}/{isTestResume}")]
-        public async Task<IActionResult> SetTestLogsAsync([FromRoute]int attendeeId, [FromRoute] bool isCloseWindow,  [FromRoute] bool isTestResume)
+        public async Task<IActionResult> SetTestLogsAsync([FromRoute]int attendeeId, [FromRoute] bool isCloseWindow, [FromRoute] bool isTestResume)
         {
-            var response = await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow,  isTestResume);
+            var response = await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow, isTestResume);
             if (!response)
                 return NotFound();
             else
-                return Ok(await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow,  isTestResume));
+                return Ok(await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow, isTestResume));
         }
 
         [HttpGet("testlogs")]
@@ -366,8 +371,22 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("getTestSummary/{link}")]
         public async Task<IActionResult> GetSummary([FromRoute] string link)
         {
+            HttpContext.Session.SetString(_stringConstants.Path, "test-summary");
             return Ok(await _testRepository.GetTestSummary(link));
         }
+
+        [HttpGet("getSessionPath")]
+        public IActionResult GetSessionPath()
+        {
+            var attendee = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+            if (attendee != null)
+            {
+                var path = HttpContext.Session.GetString(_stringConstants.Path);
+                return Ok(new { path = path });
+            }
+            return NotFound();
+        }
+
         #endregion
     }
 }
