@@ -59,7 +59,6 @@ namespace Promact.Trappist.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Conduct(string link)
         {
-            ViewBag.SessionId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
             var ipAddress = HttpContext.Request.Headers["X-Forwarded-For"].ToString();
             if (string.IsNullOrEmpty(ipAddress))
                 ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();

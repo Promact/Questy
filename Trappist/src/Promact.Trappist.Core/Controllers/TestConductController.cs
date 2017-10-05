@@ -201,7 +201,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("testbylink/{link}/{isPreview}")]
         public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link, [FromRoute] bool isPreview)
         {
-
+            var attendeeId = 0;
             if (link == null)
             {
                 return BadRequest();
@@ -212,15 +212,17 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
-
-            if (!await IsAttendeeValid(attendeeId))
+            if (isPreview == false)
             {
-                return NotFound();
+                attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
+                if (!await IsAttendeeValid(attendeeId))
+                {
+                    return NotFound();
+                }
             }
-
             var testDetails = await _testRepository.GetTestByLinkAsync(link);
-            await _testRepository.SetStartTestLogAsync(attendeeId);
+            if (isPreview == false)
+                await _testRepository.SetStartTestLogAsync(attendeeId);
             return Ok(testDetails);
         }
 
