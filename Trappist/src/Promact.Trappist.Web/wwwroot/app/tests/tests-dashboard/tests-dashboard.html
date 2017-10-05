@@ -22,7 +22,7 @@
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
                             <div class="test-title clearfix">
-                                <h5 class="pull-left" title="{{test.testName}}" [routerLink]="[test.id,'view']">{{test.testName}}</h5>
+                                <a  [routerLink]="[test.id,'view']"><h5 class="pull-left" title="{{test.testName}}">{{test.testName}}</h5></a>
                                 <em class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                                     <button md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
@@ -37,7 +37,7 @@
                                 <p class="light-text">{{test.numberOfTestAttendees}} Candidates</p>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-primary" [routerLink]="['/reports/test/',test.id]">View Report</button>
+                               <a class="btn btn-primary" [routerLink]="['/reports/test/',test.id]" role="button">View Report</a> 
                             </div>
                         </div>
                     </div>

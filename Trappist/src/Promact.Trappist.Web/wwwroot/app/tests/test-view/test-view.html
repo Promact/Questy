@@ -70,7 +70,7 @@
         </ng-container>
         <div class="bottom-info">
             <span>{{testDetails.numberOfTestAttendees}} Candidates</span>
-            <button type="button" class="btn btn-primary" [routerLink]="['/reports/test',testDetails.id]">View Report</button>
+            <a class="btn btn-primary" [routerLink]="['/reports/test',testDetails.id]" role="button">View Report</a>
         </div>
     </div>
 </div>
