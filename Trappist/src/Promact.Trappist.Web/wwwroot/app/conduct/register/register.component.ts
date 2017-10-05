@@ -15,13 +15,21 @@ export class RegisterComponent {
 
     constructor(private conductService: ConductService, private router: Router) {
         this.testAttendees = new TestAttendees();
+        this.loader = true;
+        this.conductService.getSessionPath().subscribe(path => {
+            if (path)
+                this.router.navigate([path.path], { replaceUrl: true });
+            this.loader = false;
+        }, err => {
+            this.loader = false;
+        });
+
     }
 
     /**
      * This method used for register test attendee.
      */
     registerTestAttendee() {
-        this.loader = true;
         let registrationUrl = window.location.pathname;
         let magicString = registrationUrl.substring(registrationUrl.indexOf('/conduct/') + 9, registrationUrl.indexOf('/register'));
         this.conductService.registerTestAttendee(magicString, this.testAttendees).subscribe(response => {
@@ -32,7 +40,7 @@ export class RegisterComponent {
             if (err.status === 404) {
                 this.isErrorMessage = true;
                 this.loader = false;
-            }            
+            }
         });
     }
 }

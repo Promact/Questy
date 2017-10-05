@@ -157,6 +157,10 @@
         /// Session Key to get or set Test Link 
         /// </summary>
         string TestLinkSessionKey { get; }
+
+        string Path { get; }
+
+
         #endregion
 
         #region Code Response
