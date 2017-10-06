@@ -294,7 +294,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.showSearchInput = true;
         }
         else {
-            console.log(this.selectedCategory.categoryName);
             if (this.selectedCategory.categoryName === undefined)
                 this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
             else
@@ -456,7 +455,6 @@ export class QuestionsDashboardComponent implements OnInit {
             this.showSearchInput = true;
         }
         else {
-            console.log(this.selectedCategory.categoryName);
             if (this.selectedCategory.categoryName === undefined)
                 this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
             else

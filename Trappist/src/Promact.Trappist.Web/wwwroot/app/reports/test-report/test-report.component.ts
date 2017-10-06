@@ -423,81 +423,6 @@ export class TestReportComponent implements OnInit {
     }
 
     /**
-     * Download basic excel report for a test
-     */
-    downloadTestBasicDetails() {
-        let testName = this.test.testName;
-        let space = ' ';
-        let workBook = new ExcelJS.Workbook();
-        workBook.views = [ {
-            x: 0, y: 0, width: 10000, height: 20000,
-            firstSheet: 0, visibility: 'visible'
-        }];
-        let workSheet1 = workBook.addWorksheet('Test-Takers-Details', {
-            pageSetup: { paperSize: 9, orientation: 'landscape' }
-        });
-        workSheet1.columns = [
-            { header: 'ROLL NO', key: 'rollNo', width: 20 },
-            { header: 'NAME', key: 'name', width: 30 },
-            { header: 'EMAIL ID', key: 'email', width: 30 },
-            { header: 'CONTACT NO', key: 'contact', width: 30 },
-            { header: 'TEST DATE', key: 'testDate', width: 30 },
-            { header: 'TEST TIME', key: 'testTime', width: 30 },
-            { header: 'TEST STATUS', key: 'testStatus', width: 20 },
-            { header: 'TIME TAKEN', key: 'timeTaken', width: 20 },
-            { header: 'SCORE', key: 'totalMarks', width: 20 },
-            { header: 'PERCENTAGE', key: 'percentage', width: 20 },
-            { header: 'REPORT LINK', key: 'reportLink', width: 100 }
-        ];
-        if (!this.checkedAllCandidate) {
-            this.isAnyCandidateSelected = this.testAttendeeArray.some(x => {
-                return x.checkedCandidate;
-            });
-            if (!this.isAnyCandidateSelected) {
-                this.selectAllCandidates();
-            }
-        }
-        this.testAttendeeArray.forEach(x => {
-            if (x.checkedCandidate) {
-                let testDate = document.getElementById('date').innerHTML;
-                let datetime = new Date(x.createdDateTime);
-                this.calculateLocalTime(datetime);
-                let attendeeId = x.id;
-                let timeTaken = Math.trunc(x.report.timeTakenByAttendee / 60) + ' mins ' + Math.trunc(Math.floor(x.report.timeTakenByAttendee % 60)) + ' secs ';
-                this.calculateTestSummaryDetails();
-                this.testTakerDetails(x.report.testStatus, this.testId, x.id);
-                let testTakers = {
-                    'rollNo': x.rollNumber,
-                    'name': x.firstName + space + x.lastName,
-                    'email': x.email,
-                    'contact': x.contactNumber,
-                    'testDate': testDate,
-                    'testTime': this.testTime,
-                    'testStatus': this.testFinishStatus,
-                    'timeTaken': timeTaken,
-                    'totalMarks': x.report.totalMarksScored,
-                    'percentage': x.report.percentage,
-                    'reportLink': this.reportLink,
-                };
-                workSheet1.addRow({
-                    rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
-                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, timeTaken: testTakers.timeTaken, totalMarks: testTakers.totalMarks,
-                    percentage: testTakers.percentage, reportLink: this.reportLink
-                });
-            }
-        });
-
-        workBook.xlsx.writeBuffer(workBook).then(function (buffer: any) {
-            let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64' });
-            saveAs(blob, testName + '_Report.xlsx');
-        });
-        this.checkedAllCandidate = false;
-        this.testAttendeeArray.forEach(x => {
-            x.checkedCandidate = false;
-        });
-    }
-
-    /**
      * Download test score report in excel format
      */
     downloadTestReportExcel() {
@@ -566,7 +491,7 @@ export class TestReportComponent implements OnInit {
         }
         this.sortedAttendeeArray = this.sortedAttendeeArray.sort((a, b) => b.report.totalMarksScored - a.report.totalMarksScored);
         this.maxScore = this.sortedAttendeeArray[0].report.totalMarksScored;
-        this.caculateAttendeeRank();
+        this.calculateAttendeeRank();
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
                 let testDate = document.getElementById('date').innerHTML;
@@ -720,7 +645,7 @@ export class TestReportComponent implements OnInit {
     /**
      * Calculate all attendee ranks based on their totalmarks
      */
-    caculateAttendeeRank() {
+    calculateAttendeeRank() {
         let rank = 1;
         let previousScore = 0;
         for (let i = 0; i < this.sortedAttendeeArray.length; i++) {
