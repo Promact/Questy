@@ -168,7 +168,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0 || isButtonClicked">Save</button>
       </div>
     </form>
   </div>
