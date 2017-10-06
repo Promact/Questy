@@ -274,7 +274,8 @@ export class TestQuestionsComponent implements OnInit {
      */
     openDialog(category: Category, k: number): void {
         let dialogRef = this.dialog.open(RandomQuestionSelectionDialogComponent, {
-            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected, numberOfQuestionsInSelectedCategory: category.questionList.length }
+            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected, numberOfQuestionsInSelectedCategory: category.questionList.length },
+            disableClose: true, hasBackdrop: true 
         });
 
         dialogRef.afterClosed().subscribe(result => {
