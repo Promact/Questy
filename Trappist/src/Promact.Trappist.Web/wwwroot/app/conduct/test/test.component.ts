@@ -913,14 +913,14 @@ export class TestComponent implements OnInit {
      * @param errorMessage contains the informaion whether there is any syntax errors
      */
     openDialog(message: string, errorMessage: string) {
-        if (message != null) {
+        if (message !== null) {
             if (message.toLowerCase().includes('congratulation')) 
                 this.count = 0;
             else if (message.toLowerCase().includes('some') || message.toLowerCase().includes('none')) {
                 this.count = this.count + 1;
             }
         }
-        else if (errorMessage != null)
+        else if (errorMessage !== null)
             this.count = this.count + 1;
         if (this.count === 5) {
             this.dialog.open(TestsProgrammingGuideDialogComponent, { disableClose: true, hasBackdrop: true });

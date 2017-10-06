@@ -10,8 +10,8 @@
         <input type="text" class="form-control" [(ngModel)]="data.numberOfQuestions" required pattern="^[0-9]*$" name="noOfQuestions" #noOfQuestions="ngModel" (keyup)="isNumberOfQuestionsEnteredValid(data.numberOfQuestions)"/>
         <div class="errors-container">
           <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.required">Required</span>
-          <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.pattern">You are allowed to enter integer values.</span>
-          <span class="error-msg" *ngIf="isErrorMessageVisible && !isPatternMismatched">Number of questions must be less than the number of questions present in the selected category.</span>
+          <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.pattern">You are allowed to enter integer values without space.</span>
+          <span class="error-msg" *ngIf="isErrorMessageVisible && !isPatternMismatched">Number of questions entered must be less than the number of questions present in the selected category.</span>
         </div>
       </div>
     </md-dialog-content>
