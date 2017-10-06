@@ -21,6 +21,10 @@ export class RandomQuestionSelectionDialogComponent implements OnInit {
 
     ngOnInit() { }
 
+    /**
+     * Checks whether the number of questions to be selected randomly is lesser or greater than the number of questions present in the selected category
+     * @param numberOfQuestionsToBeSelectedRandomly contains the number of questions entered for selecting randomly
+     */
     isNumberOfQuestionsEnteredValid(numberOfQuestionsToBeSelectedRandomly: number) {
         this.isErrorMessageVisible = +numberOfQuestionsToBeSelectedRandomly > this.data.numberOfQuestionsInSelectedCategory;
         this.isPatternMismatched = !(/^[0-9]*$/.test(numberOfQuestionsToBeSelectedRandomly.toString()));
