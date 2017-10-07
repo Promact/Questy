@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Test } from '../tests.model';
 import { TestService } from '../tests.service';
 import { MdSnackBar, MdDialogRef } from '@angular/material';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     selector: 'duplicate-test-dialog',
     templateUrl: 'duplicate-test-dialog.html'
 })
-export class DuplicateTestDialogComponent {
+export class DuplicateTestDialogComponent implements OnInit {
     testName: string;
     testArray: Test[];
     testToDuplicate: Test;
@@ -24,6 +24,10 @@ export class DuplicateTestDialogComponent {
         this.testArray = new Array<Test>();
     }
 
+    ngOnInit() {
+        this.selectTextArea();
+    }
+
     /**
      * duplicates the selected test
      */
@@ -33,7 +37,7 @@ export class DuplicateTestDialogComponent {
         this.duplicatedTest.id = 0;
         this.duplicatedTest.testName = this.testName;
         this.loader = true;
-        
+
         //Verifies that the test name is unique
         this.testService.IsTestNameUnique(this.duplicatedTest.testName, this.duplicatedTest.id).subscribe((isTestNameUnique) => {
             if (isTestNameUnique) {
@@ -63,5 +67,15 @@ export class DuplicateTestDialogComponent {
     // this method is used to disable the errorMessage
     onErrorChange() {
         this.error = false;
+    }
+
+    /**
+     * Selects the text area present in the dialog when the dialog gets opened
+     */
+    selectTextArea() {
+        let textArea: any = document.getElementById('testName');
+        setTimeout(() => {
+            textArea.select();
+        }, 500);
     }
 }
