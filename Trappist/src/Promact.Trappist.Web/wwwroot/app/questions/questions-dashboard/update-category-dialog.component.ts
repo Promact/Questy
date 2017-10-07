@@ -1,4 +1,4 @@
-﻿import { Component, Injectable } from '@angular/core';
+﻿import { Component, Injectable, OnInit } from '@angular/core';
 import { CategoryService } from '../categories.service';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { Category } from '../category.model';
@@ -10,7 +10,7 @@ import { Category } from '../category.model';
     templateUrl: 'update-category-dialog.html'
 })
 
-export class UpdateCategoryDialogComponent {
+export class UpdateCategoryDialogComponent implements OnInit {
     private response: any;
     private successMessage: string;
 
@@ -24,6 +24,10 @@ export class UpdateCategoryDialogComponent {
         this.isCategoryNameExist = false;
         this.successMessage = 'Category name updated successfully.';
         this.isButtonClicked = false;;
+    }
+
+    ngOnInit() {
+        this.selectTextArea();
     }
 
     /**
@@ -73,5 +77,15 @@ export class UpdateCategoryDialogComponent {
         if (!this.isButtonClicked && category.categoryName) {
             this.updateCategory(category);
         }
+    }
+
+    /**
+     * Selects the text area present in the dialog when the dialog gets opened
+     */
+    selectTextArea() {
+        let textArea: any = document.getElementById('categoryName');
+        setTimeout(() => {
+            textArea.select();
+        }, 500);
     }
 }

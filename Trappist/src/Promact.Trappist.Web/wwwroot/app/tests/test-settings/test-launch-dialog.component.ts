@@ -19,7 +19,9 @@ export class RandomQuestionSelectionDialogComponent implements OnInit {
         this.isErrorMessageVisible = false;
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.selectTextArea();
+    }
 
     /**
      * Checks whether the number of questions to be selected randomly is lesser or greater than the number of questions present in the selected category
@@ -28,6 +30,16 @@ export class RandomQuestionSelectionDialogComponent implements OnInit {
     isNumberOfQuestionsEnteredValid(numberOfQuestionsToBeSelectedRandomly: number) {
         this.isErrorMessageVisible = +numberOfQuestionsToBeSelectedRandomly > this.data.numberOfQuestionsInSelectedCategory;
         this.isPatternMismatched = !(/^[0-9]*$/.test(numberOfQuestionsToBeSelectedRandomly.toString()));
+    }
+
+    /**
+     * Selects the text area present in the dialog when the dialog gets opened
+     */
+    selectTextArea() {
+        let textArea: any = document.getElementById('selectRandomQuestions');
+        setTimeout(() => {
+            textArea.select();
+        }, 500);
     }
 }
 
