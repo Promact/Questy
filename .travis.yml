@@ -8,8 +8,6 @@ services:
 cache:
   directories:
     - Trappist/src/Promact.Trappist.Web/node_modules
-    - $HOME/.nuget
-    - $HOME/.nvm
 before_install:
 - nvm install 6.9.1
 - nvm use 6.9.1
