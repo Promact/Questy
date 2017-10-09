@@ -18,8 +18,10 @@ install:
 script:
 - dotnet build ./Trappist/Trappist.sln
 - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
-- yarn run lint --prefix ./Trappist/src/Promact.Trappist.Web
-- yarn run ngc --prefix ./Trappist/src/Promact.Trappist.Web
+- cd ./Trappist/src/Promact.Trappist.Web
+- yarn run lint
+- yarn run ngc
+- cd ../../../
 deploy:
 - provider: script
   script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
