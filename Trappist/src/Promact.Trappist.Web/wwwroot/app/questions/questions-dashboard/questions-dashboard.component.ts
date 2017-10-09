@@ -87,7 +87,8 @@ export class QuestionsDashboardComponent implements OnInit {
             this.matchString = this.searchText;
         }
         this.getAllCategories();
-        this.countTheQuestion();
+        if (!this.router.url.includes('dashboard'))
+            this.countTheQuestion();
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
