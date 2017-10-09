@@ -5,6 +5,9 @@ mono: none
 dotnet: 1.0.1
 services:
 - docker
+cache:
+  directories:
+    - Trappist/src/Promact.Trappist.Web/node_modules
 before_install:
 - nvm install 6.9.1
 - nvm use 6.9.1
