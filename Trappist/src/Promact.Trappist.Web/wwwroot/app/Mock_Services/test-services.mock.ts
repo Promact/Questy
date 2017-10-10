@@ -4,6 +4,10 @@ import { Response, ResponseOptions } from '@angular/http';
 import { MockTestData } from "../Mock_Data/test_data.mock";
 
 
+export class MockQuestionService {
+
+}
+
 
 
 export class TestServicesMock {
