@@ -16,6 +16,7 @@ import { inject } from '@angular/core/testing';
 import { Test } from '../tests.model';
 import { testsRouting } from '../tests.routing';
 import { TestServicesMock, MockQuestionService } from '../../Mock_Services/test-services.mock';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -23,7 +24,7 @@ class RouterStub {
     navigateByUrl(url: string) { return url; }
 }
 
-describe('Test Dashboard Com[ponent', () => {
+describe('Test Dashboard Component', () => {
     let testDashboard: TestsDashboardComponent;
     let fixture: ComponentFixture<TestsDashboardComponent>;
 
@@ -36,7 +37,7 @@ describe('Test Dashboard Com[ponent', () => {
                 { provide: TestService, useClass: TestServicesMock },
                 { provide: Router, useClass: RouterStub }
             ],
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule]
+            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule]
         }).compileComponents();
     }));
     beforeEach(() => {
