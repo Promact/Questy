@@ -2,6 +2,7 @@
 import { SharedModule } from '../shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { testsRouting } from './tests.routing';
+
 import { TestsComponent } from './tests.component';
 import { TestsDashboardComponent } from './tests-dashboard/tests-dashboard.component';
 import { TestCreateDialogComponent } from './tests-dashboard/test-create-dialog.component';
