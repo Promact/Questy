@@ -117,9 +117,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testId">Id of the test taken by the test attendee</param>
         /// <returns>The percentile calculated for the selected candidate</returns>
         [HttpGet("{attendeeId}/{testId}/percentile")]
-        public async Task<IActionResult> GetStudentPercentile([FromRoute]int attendeeId,[FromRoute]int testId)
+        public async Task<IActionResult> GetStudentPercentile([FromRoute]int attendeeId, [FromRoute]int testId)
         {
-            return Ok(await _reportRepository.CalculatePercentileAsync(attendeeId,testId));
+            return Ok(await _reportRepository.CalculatePercentileAsync(attendeeId, testId));
         }
 
         /// <summary>
@@ -139,11 +139,12 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="testLink"></param>
         /// <returns></returns>
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
-        public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink,[FromRoute] bool isTestEnd)
+        public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink, [FromRoute] bool isTestEnd)
         {
             if (isTestEnd)
             {
-               var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                HttpContext.Session.SetString(_stringConstants.Path, "");
+                var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
                 if (response == null)
                     return NotFound();
             }
@@ -155,7 +156,7 @@ namespace Promact.Trappist.Core.Controllers
                 if (response == null)
                     return NotFound();
             }
-            return Ok(attendee);           
+            return Ok(attendee);
         }
 
         /// <summary>
@@ -165,9 +166,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>List of details of each test case for code snippet question attended by test attendee</returns>
         [HttpGet("{attendeeId}/{questionId}/codeSnippetTestCasesDetails")]
-        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId,int questionId)
+        public async Task<IActionResult> GetCodeSnippetTestCasesDetailsAsync([FromRoute] int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetCodeSnippetDetailsAsync(attendeeId, questionId));
         }
 
         /// <summary>
@@ -177,9 +178,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The total marks obtained by test attendee in code snippet question</returns>
         [HttpGet("{attendeeId}/{questionId}/scoreOfCodeSnippetQuestion")]
-        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId,int questionId)
+        public async Task<IActionResult> GetCodeSnippetQuestionMarksAsync([FromRoute]int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetTotalMarksOfCodeSnippetQuestionAsync(attendeeId, questionId));
         }
 
         /// <summary>
@@ -189,9 +190,9 @@ namespace Promact.Trappist.Core.Controllers
         /// <param name="questionId">It contains the question id of code snippet question of a particular test</param>
         /// <returns>The test code solution details of the code snippet question attended by test attendees</returns>
         [HttpGet("{attendeeId}/{questionId}/testCodeSolutionDetails")]
-        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId,int questionId)
+        public async Task<IActionResult> GetTestCodeSolutionDetailsAsync([FromRoute]int attendeeId, int questionId)
         {
-            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId,questionId));
+            return Ok(await _reportRepository.GetTestCodeSolutionDetailsAsync(attendeeId, questionId));
         }
 
         /// <summary>
