@@ -9,13 +9,13 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import { RouterModule, Router } from '@angular/router';
 import { FilterPipe } from './test-dashboard.pipe';
-import { QuestionsService } from "../../questions/questions.service";
-import { Http, HttpModule } from "@angular/http";
-import { TestService } from "../tests.service";
-import { inject } from "@angular/core/testing";
-import { Test } from "../tests.model";
+import { QuestionsService } from '../../questions/questions.service';
+import { Http, HttpModule } from '@angular/http';
+import { TestService } from '../tests.service';
+import { inject } from '@angular/core/testing';
+import { Test } from '../tests.model';
 import { testsRouting } from '../tests.routing';
-import { TestServicesMock, MockQuestionService } from "../../Mock_Services/test-services.mock";
+import { TestServicesMock, MockQuestionService } from '../../Mock_Services/test-services.mock';
 
 
 
@@ -48,4 +48,4 @@ describe('Test Dashboard Com[ponent', () => {
         testDashboard.getAllTests();
         expect(testDashboard.tests.length).toBe(2);
     });
-})
+});
