@@ -23,12 +23,14 @@
             </div>
           </md2-accordion-header>
           <div class="collapsible-body p0">
-            <div class="select-all">
-              <md-checkbox class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
-              <h5>Select All</h5>
-              <span class="h7">(total {{category.questionCount}} questions)</span>
+            <div class="select-all clearfix">
+              <div class="pull-left mt6">
+                  <md-checkbox class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
+                  <h5>Select All</h5>
+                  <span class="h7">(total {{category.questionCount}} questions)</span>
+              </div>  
+              <button type="button" class="btn pull-right" (click)="GetShuffledQuestionArray(k);openDialog(category,k)">Select Random Questions</button>
             </div>
-            <input type="button" id="select" value="Select Random Questions" (click)="GetShuffledQuestionArray(k);openDialog(category,k)" />
             <ng-container *ngFor="let question of category.questionList;let i=index">
               <div class="qs-container">
                 <md-checkbox class="only-checkbox mr10" [(ngModel)]="question.question.isSelect" (change)="selectQuestion(question,category)" [disabled]="!isEditTestEnabled"></md-checkbox>

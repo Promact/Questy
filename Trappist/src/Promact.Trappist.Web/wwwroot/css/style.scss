@@ -156,6 +156,10 @@ p {
     margin-top: 5px;
 }
 
+.mt6 {
+  margin-top: 6px;
+}
+
 .mb30 {
     margin-bottom: 30px;
 }
@@ -1901,6 +1905,12 @@ footer {
             margin-left: -10px;
         }
     }
+}
+
+.test-status {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #EDEDED;
+  margin: -5px 0 20px;
 }
 
 .test-create-footer {
