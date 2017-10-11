@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { SharedComponentsModule } from './shared-components.module';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -18,8 +17,7 @@ import { SelectTextAreaDirective } from '../tests/directive';
 
 @NgModule({
     imports: [
-        CommonModule,
-        FormsModule,
+        SharedComponentsModule,
         BrowserAnimationsModule,
         MaterialModule,
         RouterModule,
@@ -29,7 +27,7 @@ import { SelectTextAreaDirective } from '../tests/directive';
         PopoverModule,
         ChartsModule,
         AceEditorModule,
-        ClipboardModule
+        ClipboardModule,
     ],
     declarations: [
         TestComponent,
@@ -37,8 +35,7 @@ import { SelectTextAreaDirective } from '../tests/directive';
         SelectTextAreaDirective
     ],
     exports: [
-        CommonModule,
-        FormsModule,
+        SharedComponentsModule,
         MaterialModule,
         Md2AccordionModule,
         Md2DataTableModule,
@@ -53,3 +50,4 @@ import { SelectTextAreaDirective } from '../tests/directive';
     ]
 })
 export class SharedModule { }
+
