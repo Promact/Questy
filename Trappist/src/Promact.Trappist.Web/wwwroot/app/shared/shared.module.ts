@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { SharedComponentsModule } from './shared-components.module';
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -10,15 +9,12 @@ import { ChartsModule } from 'ng2-charts';
 import { PopoverModule } from 'ngx-popover';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ClipboardModule } from 'ngx-clipboard';
-import { TestComponent } from '../conduct/test/test.component';
-import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
 
 
 
 @NgModule({
     imports: [
-        CommonModule,
-        FormsModule,
+        SharedComponentsModule,
         BrowserAnimationsModule,
         MaterialModule,
         RouterModule,
@@ -28,15 +24,13 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
         PopoverModule,
         ChartsModule,
         AceEditorModule,
-        ClipboardModule
+        ClipboardModule,
     ],
     declarations: [
-        TestComponent,
-        PageNotFoundComponent
+
     ],
     exports: [
-        CommonModule,
-        FormsModule,
+        SharedComponentsModule,
         MaterialModule,
         Md2AccordionModule,
         Md2DataTableModule,
@@ -44,9 +38,8 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
         ChartsModule,
         PopoverModule,
         AceEditorModule,
-        ClipboardModule,
-        TestComponent,
-        PageNotFoundComponent
+        ClipboardModule
     ]
 })
 export class SharedModule { }
+
