@@ -1,23 +1,23 @@
 ﻿<div class="dialog">
   <form #dialogForm="ngForm">
     <div class="dialog-title clearfix">
-      <h1 class="pull-left" md-dialog-title>Random Question Selection</h1>
+      <h1 class="pull-left" md-dialog-title>Random Questions Selection</h1>
       <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
     </div>
     <md-dialog-content>
       <div class="form-group">
-        <label>Please enter the number of questions to be selected.</label>
+        <label>Please enter the number of questions you want to select:</label>
         <input type="text" class="form-control" [(ngModel)]="data.numberOfQuestions" required pattern="^[0-9]*$" name="noOfQuestions" #noOfQuestions="ngModel" (keyup)="isNumberOfQuestionsEnteredValid(data.numberOfQuestions)"/>
         <div class="errors-container">
           <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.required">Required</span>
-          <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.pattern">You are allowed to enter integer values without space.</span>
+          <span class="error-msg" *ngIf="noOfQuestions.dirty && !noOfQuestions.valid && noOfQuestions.errors.pattern">You are allowed to enter positive integer values without space.</span>
           <span class="error-msg" *ngIf="isErrorMessageVisible && !isPatternMismatched">Number of questions entered must be less than the number of questions present in the selected category.</span>
         </div>
       </div>
     </md-dialog-content>
     <md-dialog-actions>
-      <button type="button" class="btn" [md-dialog-close]="data.numberOfQuestions" [disabled]="dialogForm.invalid || isErrorMessageVisible">Ok</button>
-      <button type="button" class="btn" md-dialog-close>Close</button>
+      <button type="button" class="btn" md-dialog-close>Cancel</button>
+      <button type="button" class="btn btn-primary" [md-dialog-close]="data.numberOfQuestions" [disabled]="dialogForm.invalid || isErrorMessageVisible">Ok</button>
     </md-dialog-actions>
   </form>
 </div>
