@@ -1130,7 +1130,6 @@ footer {
                 h5 {
                     overflow: hidden;
                     width: 90%;
-                    cursor: pointer;
                     line-height: normal;
                     padding-right: 5px;
                     height: 44px;
@@ -1141,6 +1140,14 @@ footer {
 
                     &:focus {
                         outline: none;
+                    }
+
+                    a {
+                      color: inherit;
+
+                      &:hover {
+                        text-decoration: none;
+                      }
                     }
                 }
 

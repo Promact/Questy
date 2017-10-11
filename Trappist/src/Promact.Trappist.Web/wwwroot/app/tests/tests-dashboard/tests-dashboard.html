@@ -22,7 +22,7 @@
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
                             <div class="test-title clearfix">
-                                <a  [routerLink]="[test.id,'view']"><h5 class="pull-left" title="{{test.testName}}">{{test.testName}}</h5></a>
+                                <h5 class="pull-left" title="{{test.testName}}"><a [routerLink]="[test.id,'view']">{{test.testName}}</a></h5>
                                 <em class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
                                     <button md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
