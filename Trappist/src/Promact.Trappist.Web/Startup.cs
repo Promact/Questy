@@ -185,14 +185,14 @@ namespace Promact.Trappist.Web
 
             if (env.IsDevelopment())
             {
-                //app.UseMiniProfiler(x =>
-                //{
-                //    // Control which SQL formatter to use
-                //    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+                app.UseMiniProfiler(x =>
+                {
+                    // Control which SQL formatter to use
+                    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
 
-                //    // Control storage
-                //    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
-                //});
+                    // Control storage
+                    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
+                });
             }
 
             app.UseAuthentication();
