@@ -80,8 +80,6 @@
     "lint": "gulp lint",
     "ngc": "gulp ngc",
     "prod": "gulp prod",
-    "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
-    "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
-    "tsc": "tsc && karma start karma.conf.js --single-run"
+    "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\""
   }
 }
