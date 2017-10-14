@@ -52,7 +52,7 @@ export class TestSettingsComponent implements OnInit {
     isIpAddressAdded: boolean;
     isIpAddressFieldNull: boolean;
     
-    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, private snackbarRef: MdSnackBar) {
+    constructor(public dialog: MdDialog, private testService: TestService, private router: Router, private route: ActivatedRoute, public snackbarRef: MdSnackBar) {
         this.testDetails = new Test();
         this.isLaunchedAlready = false;
         this.validEndDate = false;
@@ -74,7 +74,6 @@ export class TestSettingsComponent implements OnInit {
         this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestById(this.testId);
-        this.isAttendeeExists();
     }
 
     /**
@@ -298,17 +297,6 @@ export class TestSettingsComponent implements OnInit {
      */
     showErrorMessage(ip: TestIPAddress) {
         ip.isErrorMessageVisible = ip.ipAddress === '' || ip.ipAddress === undefined;
-    }
-
-    ///**
-    // * To check if any attendee for the test exixt or not
-    // */
-    isAttendeeExists() {
-        this.testService.isTestAttendeeExist(this.testId).subscribe((isTestAttendeeExists) => {
-            if (isTestAttendeeExists.response) {
-                this.isAttendeeExistForTest = true;
-            }
-        });
     }
 
     /**

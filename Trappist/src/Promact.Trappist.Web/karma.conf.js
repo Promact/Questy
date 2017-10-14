@@ -34,6 +34,11 @@
             { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
             { pattern: 'wwwroot/**/*.css', included: false, watched: true },
+            { pattern: 'node_modules/md2/bundles/md2.umd.js', included: false, watched: false },
+            { pattern: 'node_modules/ngx-popover/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ngx-clipboard/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/clipboard/dist/clipboard.js', included: false, watched: false },
+            { pattern: 'node_modules/ng2-charts/**/*.js', included: false, watched: false }
 
 
         ],
