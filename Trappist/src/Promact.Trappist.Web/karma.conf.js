@@ -45,7 +45,7 @@
             { pattern: 'node_modules/angular2-infinite-scroll/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/tinymce/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-tinymce/dist/**.js', included: false, watched: false },
-
+            { pattern: 'node_modules/ng2-charts/**/*.js', included: false, watched: false }
         ],
 
         mime: {
