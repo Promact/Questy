@@ -72,6 +72,8 @@ export class IndividualReportComponent implements OnInit {
     idOfTestAttendee: number;
     totalMarksOfTest: number;
     numberOfQuestionsInTest: number;
+    noOfAnswersCorrect: number;
+    isTestAttendeeAnswerCorrect: boolean;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute, private router: Router) {
         this.loader = true;
@@ -322,23 +324,22 @@ export class IndividualReportComponent implements OnInit {
      * @param options is an array of SingleMultipleAnswerQuestionOption Type
      */
     noOfAnswersCorrectGivenbyAttendee(options: Array<SingleMultipleAnswerQuestionOption>) {
-        let noOfAnswersCorrect = 0;
-        let isTestAttendeeAnswerCorrect: boolean;
+        this.noOfAnswersCorrect = 0;
         for (let option = 0; option < this.testAnswers.length; option++) {
             for (let i = 0; i < options.length; i++) {
                 if (this.testAnswers[option].answeredOption === options[i].id) {
                     if (options[i].isAnswer) {
-                        isTestAttendeeAnswerCorrect = true;
-                        noOfAnswersCorrect++;
+                        this.isTestAttendeeAnswerCorrect = true;
+                        this.noOfAnswersCorrect++;
                     }
                     else {
-                        isTestAttendeeAnswerCorrect = false;
-                        noOfAnswersCorrect++;
+                        this.isTestAttendeeAnswerCorrect = false;
+                        this.noOfAnswersCorrect++;
                     }
                 }
             }
         };
-        return noOfAnswersCorrect;
+        return this.noOfAnswersCorrect;
     }
 
     /**
@@ -347,18 +348,17 @@ export class IndividualReportComponent implements OnInit {
      * @param isAnswer is a boolean type variable for checking the answered option is correct or not
      */
     isAttendeeAnswerCorrect(optionId: number, isAnswer: boolean) {
-        let isTestAttendeeAnswerCorrect: boolean;
         for (let option = 0; option < this.testAnswers.length; option++) {
             if (this.testAnswers[option].answeredOption === optionId) {
                 if (isAnswer) {
-                    isTestAttendeeAnswerCorrect = true;
+                    this.isTestAttendeeAnswerCorrect = true;
                 }
                 else {
-                    isTestAttendeeAnswerCorrect = false;
+                    this.isTestAttendeeAnswerCorrect = false;
                 }
             }
         };
-        return isTestAttendeeAnswerCorrect;
+        return this.isTestAttendeeAnswerCorrect;
     }
 
     /**

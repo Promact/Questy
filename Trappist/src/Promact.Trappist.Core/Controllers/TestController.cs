@@ -144,7 +144,7 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> IsTestAttendeeExistAsync(int id)
         {
             var isAttendeeExist = await _testRepository.IsTestAttendeeExistAsync(id);
-            return Ok(new { response = isAttendeeExist });
+            return Ok(isAttendeeExist);
         }
 
         /// <summary>
