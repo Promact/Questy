@@ -9,7 +9,7 @@ import { FormsModule } from "@angular/forms";
 import { BrowserModule, By } from "@angular/platform-browser";
 import { MaterialModule } from "@angular/material";
 import { TestAttendees } from "../register/register.model";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Rx";
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
@@ -52,18 +52,9 @@ describe('testting of conduct-registration', () => {
         router = TestBed.get(Router);
     });
 
-    //it('should call the registerTestAttendee function when submit button is clicked', fakeAsync(() => {
-    //    spyOn(registerComponent, 'registerTestAttendee').and.callFake(() => { });
-    //    let form = fixture.debugElement.query(By.css('form'));
-    //    form.triggerEventHandler('submit', null);
-    //    fixture.detectChanges();
-    //    expect(registerComponent.registerTestAttendee).toHaveBeenCalled();
-    //}))
-
     it('should register a testattendee for a test and navigate to instructions page', fakeAsync(() => {
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
-            let registrationData = new BehaviorSubject(testAttendee);
-            return registrationData.asObservable();
+            return Observable.of(testAttendee);
         });
         spyOn(router, 'navigate').and.callFake(() => { });
         registerComponent.registerTestAttendee();
