@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build: 
+    docker:
+      - image: rushi216/aspnetcore-build
+
+    steps:
+      - checkout 
+      - setup_remote_docker
+
+      - run:
+          name: Restore Nuget
+          command: dotnet restore ./Trappist/Trappist.sln
+
+      - restore_cache:
+          key: npm-cache-{{ checksum "./Trappist/src/Promact.Trappist.Web/package.json" }}
+      - run: 
+          name: Install NPM
+          command: cd ./Trappist/src/Promact.Trappist.Web && npm install && cd ../../../
+      - save_cache:
+          key: npm-cache-{{ checksum "./Trappist/src/Promact.Trappist.Web/package.json" }}
+          paths: ./Trappist/src/Promact.Trappist.Web/node_modules
+
+      - run:
+          name: Build Project
+          command: dotnet build ./Trappist/Trappist.sln
+
+      - run:
+          name: Test Project
+          command: dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
+
+      - run:
+          name: Lint Project
+          command: npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
+
+      - run:
+          name: Validate AOT
+          command: npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "development" ]; then
+             chmod +x ./deploy.sh
+             sh deploy.sh
+            fi
