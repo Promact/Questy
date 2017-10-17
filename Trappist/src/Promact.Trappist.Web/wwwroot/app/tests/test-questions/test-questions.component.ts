@@ -42,13 +42,14 @@ export class TestQuestionsComponent implements OnInit {
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.disablePreview = false;
         this.array = [];
-        this.questionList = [];
+        this.questionList = [];  
+        this.router.params.subscribe(params => {
+            this.testId = params['id'];
+            console.log(this.testId);
+        });
     }
 
     ngOnInit() {
-        this.router.params.subscribe(params => {
-            this.testId = params['id'];
-        });
         this.getTestDetails();
         this.isTestAttendeeExist();
     }
@@ -221,9 +222,9 @@ export class TestQuestionsComponent implements OnInit {
     * Checks if any candidate has taken the test
     */
     isTestAttendeeExist() {
-            this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-                this.isEditTestEnabled = !res.response;
-            });
+        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
+            this.isEditTestEnabled = !res.response;
+        });
     }
 
     /**
@@ -275,12 +276,12 @@ export class TestQuestionsComponent implements OnInit {
     openDialog(category: Category, k: number): void {
         let dialogRef = this.dialog.open(RandomQuestionSelectionDialogComponent, {
             data: { numberOfQuestions: category.numberOfRandomQuestionsSelected, numberOfQuestionsInSelectedCategory: category.questionList.length },
-            disableClose: true, hasBackdrop: true 
+            disableClose: true, hasBackdrop: true
         });
 
         dialogRef.afterClosed().subscribe(result => {
             category.numberOfRandomQuestionsSelected = result;
-            if(result !== '')
+            if (result !== '')
                 this.selectRandomQuestions(category.numberOfRandomQuestionsSelected, k);
             else
                 category.numberOfRandomQuestionsSelected = this.testDetails.categoryAcList[k].numberOfSelectedQuestion = this.testDetails.categoryAcList[k].questionList.filter(question => {

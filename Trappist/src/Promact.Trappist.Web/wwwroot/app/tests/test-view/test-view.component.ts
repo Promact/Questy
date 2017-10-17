@@ -46,7 +46,6 @@ export class TestViewComponent implements OnInit {
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
         this.totalNumberOfQuestions = [];
-
         this.tooltipMessage = 'Copy to Clipboard';
         this.isCategorySelected = false;
         this.disablePreview = false;
