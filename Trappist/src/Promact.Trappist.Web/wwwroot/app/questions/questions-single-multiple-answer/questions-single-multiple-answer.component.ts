@@ -63,6 +63,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         this.isCategorySelected = false;
         this.isDifficultyLevelSelected = false;
         this.isbuttonClicked = false;
+         
     }
 
     ngOnInit() {

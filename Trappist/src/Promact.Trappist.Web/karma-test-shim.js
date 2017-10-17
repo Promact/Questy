@@ -40,6 +40,18 @@ console.log(allSpecFiles);
 SystemJS.config({
     baseURL: '/base',
 
+    meta: {
+
+        'node_modules/tinymce/plugins/advlist/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/autoresize/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/code/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/link/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/lists/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/paste/plugin.js': { format: 'global' },
+        'node_modules/tinymce/plugins/table/plugin.js': { format: 'global' },
+        'node_modules/tinymce/themes/modern/theme.js': { format: 'global' }
+    },
+
     map: {
 
         '@angular/core/testing': 'node_modules/@angular/core/bundles/core-testing.umd.js',
