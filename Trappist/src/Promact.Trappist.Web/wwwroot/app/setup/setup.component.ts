@@ -32,6 +32,7 @@ export class SetupComponent {
      * @param setup: Takes the connection string value
      */
     validateConnectionString(setup: any) {
+        console.log(setup);
         this.loader = true;
         this.setupService.validateConnectionString(this.connectionString).subscribe((response) => {
             if (response === true)
@@ -50,6 +51,7 @@ export class SetupComponent {
      * @param setup: Takes all the field's values of emailsetting form 
      */
     validateEmailSettings(setup: any) {
+        console.log(setup);
         this.loader = true;
         this.setupService.validateEmailSettings(this.emailSettings).subscribe(response => {
             if (response === true)
@@ -75,6 +77,7 @@ export class SetupComponent {
      * @param setup: Takes all the field's values of createuser form 
      */
     createUser(setup: any) {
+        console.log(setup);
         this.loader = true;
         this.basicSetup.emailSettings = this.emailSettings;
         this.basicSetup.connectionString = this.connectionString;
