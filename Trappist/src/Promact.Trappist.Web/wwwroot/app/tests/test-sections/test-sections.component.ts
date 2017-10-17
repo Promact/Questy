@@ -36,13 +36,13 @@ export class TestSectionsComponent implements OnInit {
         this.testDetails = new Test();
         this.isCategoryExist = false;
         this.disablePreview = false;
+       
     }
 
     /**
     * Gets the Id of the Test from the route and fills the Settings saved for the selected Test in their respective fields
     */
     ngOnInit() {
-        this.loader = true;
         this.testId = this.route.snapshot.params['id'];
         this.getTestById(this.testId);
         this.isTestAttendeeExist();
@@ -76,7 +76,7 @@ export class TestSectionsComponent implements OnInit {
             if (!category.isSelect)
                 category.isSelect = true;
             else {
-                this.testService.deselectCategory(category.id, this.testDetails.id).subscribe((isQuestionAdded) => {
+                this.testService.deselectCategory(category.id, this.testDetails.id).subscribe(isQuestionAdded => {
                     if (isQuestionAdded) {
                         this.testCategoryObj.testId = this.testId;
                         this.testCategoryObj.categoryId = category.id;
