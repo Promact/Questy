@@ -34,8 +34,19 @@
             { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
             { pattern: 'wwwroot/**/*.css', included: false, watched: true },
+            { pattern: 'node_modules/md2/bundles/md2.umd.js', included: false, watched: false },
+            { pattern: 'node_modules/ngx-popover/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ngx-clipboard/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/clipboard/dist/clipboard.js', included: false, watched: false },
+            { pattern: 'node_modules/angular2-infinite-scroll/**/*.js', included: false, watched: false },
+            //'node_modules/angular2-infinite-scroll/src/infinite-scroll.js',
+            //'node_modules/angular2-infinite-scroll/src/axis-resolver.js',
+            //'node_modules/angular2-infinite-scroll/src/position-resolver.js',
+            //'node_modules/angular2-infinite-scroll/src/scroll-register.js'
+            { pattern: 'node_modules/tinymce/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/angular2-tinymce/dist/**/*.js', included: false, watched: false }
 
-
+            
         ],
 
         mime: {

@@ -20,7 +20,7 @@ export class DeselectCategoryComponent {
      * When user selects 'Yes' to deselect the category, category is deselected
      */
     yesDeselectCategory() {
-        this.testService.removeDeselectedCategory(this.data).subscribe((response) => {
+        this.testService.removeDeselectedCategory(this.data).subscribe(response => {
             this.dialogRef.close(response);
         },
             err => {

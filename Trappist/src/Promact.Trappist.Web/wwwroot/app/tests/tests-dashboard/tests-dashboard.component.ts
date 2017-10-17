@@ -36,6 +36,7 @@ export class TestsDashboardComponent implements OnInit {
     ngOnInit() {
         this.loader = true;
         this.getAllTests();
+      
     }
 
     // get All The Tests From Server
