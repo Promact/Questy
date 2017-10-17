@@ -34,8 +34,11 @@
             { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
             { pattern: 'wwwroot/**/*.css', included: false, watched: true },
-
-
+           
+            { pattern: 'node_modules/angular2-wizard-fix/dist/index.js', included: false, watched: false },
+            { pattern: 'node_modules/md2/bundles/md2.umd.js', included: false, watched: false },
+            { pattern: 'node_modules/angular2-wizard-fix/dist/src/wizard.component.js', included: false, watched: false },
+            { pattern: 'node_modules/angular2-wizard-fix/dist/src/wizard-step.component.js', included: false, watched: false }
         ],
 
         mime: {
