@@ -532,8 +532,8 @@ namespace Promact.Trappist.Repository.TestConduct
             var noOfCorrectAttempts = 0;
             bool isAnsweredOptionNull = false;
 
-            //Gets the list of questions attended by the test attendee and includes the test answers, question, single-multiple-answer question and single-multiple-answer options corresponding to the test attendee
-            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
+            //Gets the list of questions attended by the test attendee and includes the test answers and question details corresponding to the test attendee
+            var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
 
             //Gets the number of questions in the test taken by the test attendee
             var numberOfQuestionsInATest = await _dbContext.TestQuestion.AsNoTracking().CountAsync(x => x.TestId == testAttendee.TestId);
@@ -556,8 +556,11 @@ namespace Promact.Trappist.Repository.TestConduct
                 {
                     var isAnsweredOptionCorrect = true;
 
+                    //Gets the single multiple question details along with the single multiple question options for a question attended by the test attendee when it is not a coding question 
+                    var testConductObject = await _dbContext.TestConduct.Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).FirstOrDefaultAsync();
+
                     //Gets the options of the single and multiple-answer question attempted by the test attendee
-                    var listOfOptions = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
+                    var listOfOptions = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
 
                     //Calculates the number of correct options saved for the multiple-answer question attempted by the test attendee
                     if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
@@ -576,7 +579,7 @@ namespace Promact.Trappist.Repository.TestConduct
                             continue;
                         }
                         //Checks whether the option answered by the test attendee for the single-answer question is correct or not
-                        if (!attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer && attendedQuestion.Question.QuestionType == QuestionType.Single)
+                        if (!testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer && attendedQuestion.Question.QuestionType == QuestionType.Single)
                         {
                             isAnsweredOptionCorrect = false;
                             break;
@@ -584,7 +587,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         else if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
                         {
                             //Calculates the number of answers given correctly for multiple-answer question by the test attendee
-                            numberOfcorrectOptionsAnsweredByTestAttendee = attendedQuestion.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? numberOfcorrectOptionsAnsweredByTestAttendee = numberOfcorrectOptionsAnsweredByTestAttendee + 1 : numberOfcorrectOptionsAnsweredByTestAttendee - 1;
+                            numberOfcorrectOptionsAnsweredByTestAttendee = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? numberOfcorrectOptionsAnsweredByTestAttendee = numberOfcorrectOptionsAnsweredByTestAttendee + 1 : numberOfcorrectOptionsAnsweredByTestAttendee - 1;
                             //Returns true if the number of correct options given by the test attendee for the multiple-answer question attempted equals the number of correct options saved for that multiple-answer question else returns false
                             isAnsweredOptionCorrect = numberOfcorrectOptionsAnsweredByTestAttendee == numberOfCorrectOptionsOfMultipleAnswerQuestion;
                         }
