@@ -1,21 +1,21 @@
 ﻿<div class="dialog">
-    <div class="dialog-title clearfix">
-        <h1 class="pull-left" md-dialog-title>Create New Test</h1>
-        <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+  <div class="dialog-title clearfix">
+    <h1 class="pull-left" md-dialog-title>Create New Test</h1>
+    <button type="button" class="pull-right" md-dialog-close><em class="material-icons">close</em></button>
+  </div>
+  <md-dialog-content>
+    <div class="form-group">
+      <label>Test Name</label><em class="danger-text h4">*</em>
+      <input type="text" id="name" name="name" class="form-control" (ngModelChange)="changeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (keyup.enter)="onEnter(testNameReference)" defaultSelect />
+      <div class="errors-container">
+        <span class="error-msg" *ngIf="isWhiteSpaceError || (name.errors && name.dirty && !name.valid && name.errors.required)">Required</span>
+        <span class="error-msg" *ngIf="name.errors && !name.valid && name.errors.pattern">Test name should be alphanumeric.Allowed special symbols are @, _ and white space.</span>
+        <span class="error-msg" *ngIf="errorMessage">Test with this name already exists.</span>
+      </div>
     </div>
-    <md-dialog-content>
-        <div class="form-group">
-            <label>Test Name</label><em class="danger-text h4">*</em>
-            <input type="text" id="name" name="name" class="form-control" (ngModelChange)="changeError()" placeholder="Ex. Software Developer Recruitment Test" [(ngModel)]="testNameReference" #name="ngModel" required pattern="^[a-zA-Z0-9_ @]*$" maxlength="150" (keyup.enter)="onEnter(testNameReference)" />
-            <div class="errors-container">
-                <span class="error-msg" *ngIf="isWhiteSpaceError || (name.errors && name.dirty && !name.valid && name.errors.required)">Required</span>
-                <span class="error-msg" *ngIf="name.errors && !name.valid && name.errors.pattern">Test name should be alphanumeric.Allowed special symbols are @, _ and white space.</span>
-                <span class="error-msg" *ngIf="errorMessage">Test with this name already exists.</span>
-            </div>
-        </div>
-    </md-dialog-content>
-    <md-dialog-actions>
-        <button type="button" class="btn" md-dialog-close tabindex="1">Cancel</button>
-        <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError || isButtonClicked" (click)="addTest(testNameReference)">Create Test</button>
-    </md-dialog-actions>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <button type="button" class="btn" md-dialog-close tabindex="1">Cancel</button>
+    <button type="submit" class="btn btn-primary" tabindex="0" [disabled]="name.invalid || errorMessage || isWhiteSpaceError || isButtonClicked" (click)="addTest(testNameReference)">Create Test</button>
+  </md-dialog-actions>
 </div>

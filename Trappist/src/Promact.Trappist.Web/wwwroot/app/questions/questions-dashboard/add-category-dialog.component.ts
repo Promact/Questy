@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Category } from '../category.model';
 import { CategoryService } from '../categories.service';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
@@ -10,7 +10,7 @@ import { QuestionsDashboardComponent } from './questions-dashboard.component';
     templateUrl: 'add-category-dialog.html'
 })
 
-export class AddCategoryDialogComponent implements OnInit {
+export class AddCategoryDialogComponent {
     private response: any;
     private successMessage: string;
 
@@ -25,10 +25,6 @@ export class AddCategoryDialogComponent implements OnInit {
         this.category = new Category();
         this.successMessage = 'Category added successfully.';
         this.isButtonClicked = false;
-    }
-
-    ngOnInit() {
-        this.selectTextArea();
     }
 
     /**
@@ -79,13 +75,4 @@ export class AddCategoryDialogComponent implements OnInit {
             this.addCategory(category);
     }
 
-    /**
-     * Selects the text area present in the dialog when the dialog gets opened
-     */
-    selectTextArea() {
-        let textArea: any = document.getElementById('categoryName');
-        setTimeout(() => {
-            textArea.select();
-        }, 500);
-    }
 }

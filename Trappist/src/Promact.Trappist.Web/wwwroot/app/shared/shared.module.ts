@@ -12,6 +12,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TestComponent } from '../conduct/test/test.component';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { SelectTextAreaDirective } from '../tests/directive';
 
 
 
@@ -32,7 +33,8 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
     ],
     declarations: [
         TestComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        SelectTextAreaDirective
     ],
     exports: [
         CommonModule,
@@ -46,7 +48,8 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
         AceEditorModule,
         ClipboardModule,
         TestComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        SelectTextAreaDirective
     ]
 })
 export class SharedModule { }

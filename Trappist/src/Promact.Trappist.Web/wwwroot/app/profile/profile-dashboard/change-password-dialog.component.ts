@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { ChangePasswordModel } from '../password.model';
 import { MdDialogRef } from '@angular/material';
 import { ProfileService } from '../profile.service';
@@ -9,7 +9,7 @@ import { MdSnackBar } from '@angular/material';
     selector: 'change-password-dialog',
     templateUrl: 'change-password-dialog.html'
 })
-export class ChangePasswordDialogComponent implements OnInit {
+export class ChangePasswordDialogComponent {
     constructor(public profileService: ProfileService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar) { }
     user: ChangePasswordModel = new ChangePasswordModel();
     isPasswordSame: boolean = true;
@@ -17,10 +17,6 @@ export class ChangePasswordDialogComponent implements OnInit {
     errorMesseage: any;
     errorCorrection: boolean = true;
     loader: boolean;
-
-    ngOnInit() {
-        this.selectTextArea();
-    }
 
     /**
      * update the database with new password
@@ -56,15 +52,5 @@ export class ChangePasswordDialogComponent implements OnInit {
     changeCurrentPassword() {
         this.isPasswordSame = true;
         this.errorCorrection = false;
-    }
-
-    /**
-     * Selects the text area where current password is to be entered when the dialog gets opened
-     */
-    selectTextArea() {
-        let textArea: any = (document.getElementById('oldpassword'));
-        setTimeout(() => {
-            textArea.select();
-        }, 500);
     }
 }
