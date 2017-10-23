@@ -6,7 +6,7 @@
     <md-dialog-content>
         <div class="form-group">
             <label>Section Name</label>
-            <input type="text" class="form-control" id="categoryName" [(ngModel)]="category.categoryName" (keyup.enter)="onEnter(category)" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" required />
+            <input type="text" class="form-control" id="categoryName" [(ngModel)]="category.categoryName" (keyup.enter)="onEnter(category)" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" required defaultSelect/>
             <div class="errors-container">
                 <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
                 <span *ngIf="categoryName.errors && (categoryName.dirty || categoryName.touched)" [hidden]="!categoryName.errors.required" class="error-msg">Required</span>
