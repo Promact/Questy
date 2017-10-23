@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Test } from '../tests.model';
@@ -8,23 +8,21 @@ import { TestsDashboardComponent } from './tests-dashboard.component';
 @Component({
     moduleId: module.id,
     selector: 'test-create-dialog',
-    templateUrl: 'test-create-dialog.html'
+    templateUrl: 'test-create-dialog.html',
 })
 
-export class TestCreateDialogComponent implements OnInit {
+
+export class TestCreateDialogComponent {
     errorMessage: boolean;
     test: Test;
     testNameReference: string;
     isWhiteSpaceError: boolean;
     isButtonClicked: boolean;
+    
 
     constructor(public dialogRef: MdDialogRef<TestCreateDialogComponent>, private testService: TestService, private snackbar: MdSnackBar, public route: Router) {
         this.test = new Test();
         this.isButtonClicked = false;
-    }
-
-    ngOnInit() {
-        this.selectTextArea();
     }
 
     /**
@@ -88,13 +86,4 @@ export class TestCreateDialogComponent implements OnInit {
             this.addTest(testName);
     }
 
-    /**
-     * Selects text area present in the dialog when the dialog gets opened
-     */
-    selectTextArea() {
-        let textArea: any = document.getElementById('name');
-        setTimeout(() => {
-            textArea.select();
-        }, 500);
-    }
 }

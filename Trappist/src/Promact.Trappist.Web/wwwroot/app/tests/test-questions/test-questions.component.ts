@@ -8,7 +8,7 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { Test, TestQuestionAC } from '../tests.model';
 import { QuestionBase } from '../../questions/question';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { RandomQuestionSelectionDialogComponent } from '../../tests/test-settings/test-launch-dialog.component';
+import { RandomQuestionSelectionDialogComponent } from './random-question-selection-dialog.component';
 
 @Component({
     moduleId: module.id,
