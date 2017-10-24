@@ -7,7 +7,8 @@
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
             require('karma-coverage'),
-            require('karma-jasmine-html-reporter')
+            require('karma-jasmine-html-reporter'),
+            require('karma-firefox-launcher')
         ],
         files: [
 
@@ -59,7 +60,7 @@
         //    // source files, that you wanna generate coverage for 
         //    // do not include tests or libraries 
         //    // (these files will be instrumented by Istanbul) 
-        //    'wwwroot/app/**/!(*spec).js': ['coverage']
+        //    'wwwroot/app/**/!(*spec.*).js': ['coverage']
         //},
 
         client: {
@@ -75,18 +76,18 @@
             ]
         },
 
-        customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        },
+        //customLaunchers: {
+        //    Chrome_travis_ci: {
+        //        base: 'Chrome',
+        //        flags: ['--no-sandbox']
+        //    }
+        //},
 
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        browsers: ['Chrome'],
+        browsers: ['Chrome','Firefox'],
         singleRun: false
     });
 };
