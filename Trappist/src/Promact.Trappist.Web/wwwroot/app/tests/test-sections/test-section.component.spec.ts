@@ -26,18 +26,13 @@ import { TestSectionsComponent } from './test-sections.component';
 import { DeselectCategoryComponent } from './deselect-category.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-class MockActivatedRoute {
-    params = Observable.of({ });
-}
-
-
 describe('Test Section', () => {
     let fixtureSection: ComponentFixture<TestSectionsComponent>;
     let testSection: TestSectionsComponent;
     let router: Router;
     let routeTo: any[];
     let mockData: any[] = [];
-    
+
 
     beforeEach(async(() => {
         TestBed.overrideModule(BrowserDynamicTestingModule, {
@@ -48,8 +43,8 @@ describe('Test Section', () => {
         TestBed.configureTestingModule({
             declarations: [TestSectionsComponent, FilterPipe, CreateTestFooterComponent, CreateTestHeaderComponent, TestsDashboardComponent, DeselectCategoryComponent],
             providers: [
-                 QuestionsService, 
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                QuestionsService,
+                { provide: ActivatedRoute, useValue: { params: Observable.of({}) } },
                 TestService,
                 HttpService,
                 MdSnackBar,
@@ -64,7 +59,10 @@ describe('Test Section', () => {
         router = TestBed.get(Router);
         fixtureSection = TestBed.createComponent(TestSectionsComponent);
         testSection = fixtureSection.componentInstance;
-        spyOn(TestService.prototype, 'getTestById').and.callFake(function (id: number) {
+        spyOn(TestService.prototype, 'getTestById').and.callFake((id: number) => {
+            let test = mockData.find(x => x.id === id);
+            if (test === undefined)
+                return Observable.throw('Not found');
             return Observable.of(mockData.find(x => x.id === id));
         });
         spyOn(TestService.prototype, 'deselectCategory').and.callFake(function (categoryId: number, testId: number) {
@@ -75,12 +73,19 @@ describe('Test Section', () => {
         spyOn(router, 'navigate').and.callFake((route: any[]) => {
             routeTo = route;
         });
+        spyOn(MdSnackBar.prototype, 'open').and.callThrough();
     });
 
     it('getTestById', () => {
         testSection.getTestById(MockTestData[0].id);
         expect(testSection.testDetails).toBe(mockData[0]);
         expect(testSection.testDetails.testName).toBe(MockTestData[0].testName);
+    });
+
+    it('getTestById error handling', () => {
+        testSection.getTestById(5);
+        expect(MdSnackBar.prototype.open).toHaveBeenCalled();
+        expect(routeTo[0]).toBe('/tests');
     });
 
 
@@ -100,6 +105,15 @@ describe('Test Section', () => {
         expect(routeTo[0]).toBe('/tests/' + MockTestData[0].id + '/questions');
         testSection.saveCategoryToExitOrMoveNext(false);
         expect(routeTo[0]).toBe('/tests');
+    });
+
+    it('saveCategoryToExitOrMoveNext error handling', () => {
+        spyOn(TestService.prototype, 'addTestCategories').and.returnValue(Observable.throw('error'));
+        testSection.getTestById(MockTestData[0].id);
+        testSection.testId = MockTestData[0].id;
+        testSection.isEditTestEnabled = true;
+        testSection.saveCategoryToExitOrMoveNext(true);
+        expect(MdSnackBar.prototype.open).toHaveBeenCalled();
     });
 
 
