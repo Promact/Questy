@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for tests\test-questions\test-questions.component.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">tests/test-questions/</a> test-questions.component.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">68.24% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>116/170</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>30/60</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.89% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>22/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">69.14% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>112/162</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+var __decorate = (this &amp;&amp; this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c &lt; 3 ? target : <span class="branch-1 cbranch-no" title="branch not covered" >desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,</span> d;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else <span class="cstat-no" title="statement not covered" >for (var i = decorators.length - 1; i &gt;= 0; i--) <span class="cstat-no" title="statement not covered" >if (d = decorators[i]) <span class="cstat-no" title="statement not covered" >r = (c &lt; 3 ? d(r) : c &gt; 3 ? d(target, key, r) : d(target, key)) || r;</span></span></span>
+    return c &gt; 3 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >r </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >Object.defineProperty(target, key, r),</span> r;
+};
+var __metadata = (this &amp;&amp; this.__metadata) || function (k, v) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var tests_service_1 = require("../tests.service");
+var router_1 = require("@angular/router");
+var material_1 = require("@angular/material");
+var enum_difficultylevel_1 = require("../../questions/enum-difficultylevel");
+var tests_model_1 = require("../tests.model");
+var enum_questiontype_1 = require("../../questions/enum-questiontype");
+var test_launch_dialog_component_1 = require("../../tests/test-settings/test-launch-dialog.component");
+var TestQuestionsComponent = (function () {
+    function TestQuestionsComponent(testService, snackBar, router, route, dialog) {
+        var _this = this;
+        this.testService = testService;
+        this.snackBar = snackBar;
+        this.router = router;
+        this.route = route;
+        this.dialog = dialog;
+        this.DifficultyLevel = enum_difficultylevel_1.DifficultyLevel;
+        this.QuestionType = enum_questiontype_1.QuestionType;
+        this.loader = false;
+        this.loader_question = false;
+        this.testDetails = new tests_model_1.Test();
+        this.isSaveExit = false;
+        this.questionsToAdd = [];
+        this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        this.disablePreview = false;
+        this.array = [];
+        this.questionList = [];
+        this.router.params.subscribe(function (params) {
+            _this.testId = params['id'];
+            console.log(_this.testId);
+        });
+    }
+    TestQuestionsComponent.prototype.ngOnInit = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        this.getTestDetails();</span>
+<span class="cstat-no" title="statement not covered" >        this.isTestAttendeeExist();</span>
+    };
+    TestQuestionsComponent.prototype.openSnackBar = function (text) {
+        this.snackBar.open(text, 'Dismiss', {
+            duration: 3000
+        });
+    };
+    /**
+     * Gets all the questions of particular category by passing its Id
+     * @param category
+     * @param i is index of category
+     */
+    TestQuestionsComponent.prototype.getAllquestions = function (category, i) {
+        var _this = this;
+        this.loader_question = true;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (!category.isAccordionOpen) {
+            category.isAccordionOpen = true;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (!category.isAlreadyClicked) {
+                category.isAlreadyClicked = true;
+                this.testService.getQuestions(this.testDetails.id, category.id).subscribe(function (response) {
+                    _this.testDetails.categoryAcList[i].questionList = response; //gets the total number of questions of particular category
+                    _this.array = _this.testDetails.categoryAcList[i].questionList.slice();
+                    _this.questionList = _this.testDetails.categoryAcList[i].questionList;
+                    _this.testDetails.categoryAcList[i].numberOfSelectedQuestion = _this.testDetails.categoryAcList[i].questionList.filter(function (question) {
+                        return question.question.isSelect;
+                    }).length;
+                    category.selectAll = category.questionList.every(function (question) {
+                        return question.question.isSelect;
+                    });
+                    _this.testDetails.categoryAcList[i].numberOfRandomQuestionsSelected = _this.testDetails.categoryAcList[i].numberOfSelectedQuestion;
+                    _this.loader_question = false;
+                });
+            }
+            else {
+<span class="cstat-no" title="statement not covered" >                category.isAlreadyClicked = true;</span>
+<span class="cstat-no" title="statement not covered" >                this.loader_question = false;</span>
+            }
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            category.isAccordionOpen = false;</span>
+<span class="cstat-no" title="statement not covered" >            this.loader_question = false;</span>
+        }
+    };
+    /**
+     * returns 'correct' class for correct option
+     * @param isAnswer
+     */
+    TestQuestionsComponent.prototype.isCorrectAnswer = <span class="fstat-no" title="function not covered" >function (isAnswer) {</span>
+<span class="cstat-no" title="statement not covered" >        if (isAnswer) {</span>
+<span class="cstat-no" title="statement not covered" >            return 'correct';</span>
+        }
+    };
+    /**
+     * Gets the details of a test by passing its Id
+     */
+    TestQuestionsComponent.prototype.getTestDetails = function () {
+        var _this = this;
+        this.loader = true;
+        this.testService.getTestById(this.testId).subscribe(function (response) {
+            _this.testDetails = response;
+            _this.disablePreview = _this.testDetails.categoryAcList === null || _this.testDetails.categoryAcList.every(function (x) { return !x.isSelect; }) || _this.testDetails.categoryAcList.every(function (x) { return x.numberOfSelectedQuestion === 0; });
+            _this.testNameReference = _this.testDetails.testName;
+            _this.isAnyCategorySelectedForTest = _this.testDetails.categoryAcList.some(function (category) {
+                return category.isSelect;
+            });
+            _this.loader = false;
+        }, function (err) {
+            _this.loader = false;
+            _this.openSnackBar('No test found for this id.');
+            _this.route.navigate(['/tests']);
+        });
+    };
+    /**
+     * Selects questions from the list of questions of a particular category
+     * @param question is an object of QuestionBase
+     * @param category is an object of Category
+     */
+    TestQuestionsComponent.prototype.selectQuestion = function (questionToSelect, category) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (questionToSelect.question.isSelect) {
+            var isAllSelected = category.questionList.every(function (question) {
+                return question.question.isSelect;
+            });
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (isAllSelected)
+                category.selectAll = true;
+            category.numberOfSelectedQuestion++;
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            category.selectAll = false;</span>
+<span class="cstat-no" title="statement not covered" >            questionToSelect.question.isSelect = false;</span>
+<span class="cstat-no" title="statement not covered" >            category.numberOfSelectedQuestion--;</span>
+        }
+    };
+    /**
+     * Adds all the questions to to database and navigate to test-settings.component
+     */
+    TestQuestionsComponent.prototype.saveNext = function () {
+        var _this = this;
+        this.loader = true;
+        this.questionsToAdd = new Array();
+        //It checks for every category of a test
+        for (var _i = 0, _a = this.testDetails.categoryAcList; _i &lt; _a.length; _i++) {
+            var category = _a[_i];
+            //If question list of a category is not null
+            if (category.isSelect &amp;&amp; category.questionList !== null)
+                //Every question from category are concatenated to single array which will be sent to add to test
+                category.questionList.forEach(function (question) {
+                    var questionToAdd = new tests_model_1.TestQuestionAC();
+                    questionToAdd.categoryID = question.question.categoryID;
+                    questionToAdd.id = question.question.id;
+                    questionToAdd.isSelect = question.question.isSelect;
+                    _this.questionsToAdd.push(questionToAdd);
+                });
+        }
+        if (this.isEditTestEnabled) {
+            this.testService.addTestQuestions(this.questionsToAdd, this.testId).subscribe(function (response) {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (response) {
+                    _this.openSnackBar(response.message);
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (_this.isSaveExit) {
+<span class="cstat-no" title="statement not covered" >                        _this.loader = false;</span>
+<span class="cstat-no" title="statement not covered" >                        _this.route.navigate(['/tests']);</span>
+                    }
+                    else {
+                        _this.loader = false;
+                        _this.route.navigate(['tests/' + _this.testId + '/settings']);
+                    }
+                }
+            }, <span class="fstat-no" title="function not covered" >function (error) {</span>
+<span class="cstat-no" title="statement not covered" >                _this.loader = false;</span>
+<span class="cstat-no" title="statement not covered" >                _this.openSnackBar('Something went wrong. Please try again later.');</span>
+            });
+        }
+        else
+            this.route.navigate(['tests/' + this.testId + '/settings']);
+    };
+    /**
+     * Selects and deselect all the questions of a category
+     * @param category object
+     * @param questionCount number of all the questions of a category
+     */
+    TestQuestionsComponent.prototype.selectAll = <span class="fstat-no" title="function not covered" >function (category) {</span>
+<span class="cstat-no" title="statement not covered" >        category.questionList.map(<span class="fstat-no" title="function not covered" >function (questionList) {</span></span>
+            //If selectAll checkbox is selected
+<span class="cstat-no" title="statement not covered" >            if (category.selectAll) {</span>
+                //every question is selected
+<span class="cstat-no" title="statement not covered" >                questionList.question.isSelect = true;</span>
+<span class="cstat-no" title="statement not covered" >                category.numberOfSelectedQuestion = category.questionCount;</span>
+            }
+            else {
+                //If selectAll checkbox is unselected ,then every question is deselected
+<span class="cstat-no" title="statement not covered" >                questionList.question.isSelect = false;</span>
+<span class="cstat-no" title="statement not covered" >                category.numberOfSelectedQuestion = 0;</span>
+            }
+        });
+    };
+    /**
+     * Adds the questions to question table and redirect to test dashboard
+     */
+    TestQuestionsComponent.prototype.saveExit = function () {
+        this.isSaveExit = true;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.isEditTestEnabled)
+<span class="cstat-no" title="statement not covered" >            this.saveNext();</span>
+        else
+            this.route.navigate(['/tests']);
+    };
+    /**
+    * Checks if any candidate has taken the test
+    */
+    TestQuestionsComponent.prototype.isTestAttendeeExist = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.testService.isTestAttendeeExist(this.testId).subscribe(<span class="fstat-no" title="function not covered" >function (res) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.isEditTestEnabled = !res.response;</span>
+        });
+    };
+    /**
+     * Gets the shuffled array for the question array of a particular category
+     * @param k contains the index number of the category which is being selected
+     */
+    TestQuestionsComponent.prototype.GetShuffledQuestionArray = <span class="fstat-no" title="function not covered" >function (k) {</span>
+<span class="cstat-no" title="statement not covered" >        this.testDetails.categoryAcList[k].numberOfRandomQuestionsSelected = this.testDetails.categoryAcList[k].numberOfSelectedQuestion;</span>
+<span class="cstat-no" title="statement not covered" >        this.randomQuestionsArray = this.shuffleArray(this.array);</span>
+    };
+    /**
+     * Selects the questions in a random order in the select questions page
+     * @param n contains the number of questions to be selected in random order
+     * @param k contains the index of the category which is being selected
+     */
+    TestQuestionsComponent.prototype.selectRandomQuestions = <span class="fstat-no" title="function not covered" >function (n, k) {</span>
+<span class="cstat-no" title="statement not covered" >        this.questionList.forEach(<span class="fstat-no" title="function not covered" >function (x) {</span> <span class="cstat-no" title="statement not covered" >return x.question.isSelect = false; </span>});</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; n; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            for (var j = 0; j &lt; this.testDetails.categoryAcList[k].questionList.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                if (this.testDetails.categoryAcList[k].questionList[j].question.id === this.randomQuestionsArray[i].question.id)</span>
+<span class="cstat-no" title="statement not covered" >                    this.testDetails.categoryAcList[k].questionList[j].question.isSelect = true;</span>
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        this.testDetails.categoryAcList[k].numberOfSelectedQuestion = this.testDetails.categoryAcList[k].questionList.filter(<span class="fstat-no" title="function not covered" >function (question) {</span></span>
+<span class="cstat-no" title="statement not covered" >            return question.question.isSelect;</span>
+        }).length;
+<span class="cstat-no" title="statement not covered" >        this.testDetails.categoryAcList[k].selectAll = this.testDetails.categoryAcList[k].questionList.every(<span class="fstat-no" title="function not covered" >function (x) {</span> <span class="cstat-no" title="statement not covered" >return x.question.isSelect; </span>});</span>
+    };
+    /**
+     * Shuffles the contents of the array
+     * @param arrayToShuffle contains the array whose contents are to be shuffled
+     */
+    TestQuestionsComponent.prototype.shuffleArray = <span class="fstat-no" title="function not covered" >function (arrayToShuffle) {</span>
+<span class="cstat-no" title="statement not covered" >        var max = arrayToShuffle.length - 1;</span>
+<span class="cstat-no" title="statement not covered" >        for (var i = 0; i &lt; max; i++) {</span>
+<span class="cstat-no" title="statement not covered" >            var pickIndex = Math.floor(Math.random() * max);</span>
+<span class="cstat-no" title="statement not covered" >            _a = [arrayToShuffle[pickIndex], arrayToShuffle[i]], arrayToShuffle[i] = _a[0], arrayToShuffle[pickIndex] = _a[1];</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return arrayToShuffle;</span>
+<span class="cstat-no" title="statement not covered" >        var _a;</span>
+    };
+    /**
+     * Opens the dialog box where the number of questions to be selected randomly is to be entered
+     * @param category is the object of Category
+     * @param k contains the index of the category which is being selected
+     */
+    TestQuestionsComponent.prototype.openDialog = <span class="fstat-no" title="function not covered" >function (category, k) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        var dialogRef = this.dialog.open(test_launch_dialog_component_1.RandomQuestionSelectionDialogComponent, {</span>
+            data: { numberOfQuestions: category.numberOfRandomQuestionsSelected, numberOfQuestionsInSelectedCategory: category.questionList.length },
+            disableClose: true, hasBackdrop: true
+        });
+<span class="cstat-no" title="statement not covered" >        dialogRef.afterClosed().subscribe(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >            category.numberOfRandomQuestionsSelected = result;</span>
+<span class="cstat-no" title="statement not covered" >            if (result !== '')</span>
+<span class="cstat-no" title="statement not covered" >                _this.selectRandomQuestions(category.numberOfRandomQuestionsSelected, k);</span>
+            else
+<span class="cstat-no" title="statement not covered" >                category.numberOfRandomQuestionsSelected = _this.testDetails.categoryAcList[k].numberOfSelectedQuestion = _this.testDetails.categoryAcList[k].questionList.filter(<span class="fstat-no" title="function not covered" >function (question) {</span></span>
+<span class="cstat-no" title="statement not covered" >                    return question.question.isSelect;</span>
+                }).length;
+        });
+    };
+    return TestQuestionsComponent;
+}());
+TestQuestionsComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'test-questions',
+        templateUrl: 'test-questions.html'
+    }),
+    __metadata("design:paramtypes", [tests_service_1.TestService, material_1.MdSnackBar, router_1.ActivatedRoute, router_1.Router, material_1.MdDialog])
+], TestQuestionsComponent);
+exports.TestQuestionsComponent = TestQuestionsComponent;
+//# sourceMappingURL=test-questions.component.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 24 2017 11:08:34 GMT+0530 (India Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

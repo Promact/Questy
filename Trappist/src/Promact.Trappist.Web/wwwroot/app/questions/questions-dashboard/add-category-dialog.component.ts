@@ -35,7 +35,7 @@ export class AddCategoryDialogComponent {
             duration: 3000,
         });
     }
-
+   
     /**
      *Method to add Category 
      * @param category:Category object
@@ -52,8 +52,8 @@ export class AddCategoryDialogComponent {
                 },
                 err => {
                     this.isCategoryNameExist = true;
-                    this.response = (err.json());
-                    this.errorMessage = this.response['error'][0];
+                    this.response = err;
+                    this.errorMessage = err.message;
                     this.isButtonClicked = false;
                 });
         }
