@@ -52,8 +52,8 @@ export class AddCategoryDialogComponent {
                 },
                 err => {
                     this.isCategoryNameExist = true;
-                    this.response = err;
-                    this.errorMessage = err.message;
+                    this.response = err.json();
+                    this.errorMessage = this.response['error'];
                     this.isButtonClicked = false;
                 });
         }

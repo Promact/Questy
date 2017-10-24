@@ -271,3 +271,5 @@ package-lock.json
 
 #ignore log files
 **/logs/
+
+**/coverage/
