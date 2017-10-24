@@ -83,6 +83,6 @@
     "ngc": "gulp ngc",
     "prod": "gulp prod",
     "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
-    "test_travis": "./node_modules/.bin/karma start --browsers Firefox --single-run"
+    "test_travis": "./node_modules/.bin/karma start --browsers Chrome --single-run"
   }
 }
