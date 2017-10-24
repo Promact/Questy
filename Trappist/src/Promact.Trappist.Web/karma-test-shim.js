@@ -33,7 +33,7 @@ var allSpecFiles = Object.keys(window.__karma__.files)
     .filter(isSpecFile)
     .filter(isBuiltFile);
 
-console.log(allSpecFiles);
+console.log(builtPaths);
 
 // (7)
 
