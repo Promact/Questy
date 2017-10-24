@@ -22,7 +22,7 @@ script:
 - npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run tsc --prefix ./Trappist/src/Promact.Trappist.Web
-- npm run test_travis --prefix ./Trappist/src/Promact.Trappist.Web
+- npm run test --prefix ./Trappist/src/Promact.Trappist.Web
 after_success:
   - cat ./coverage/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 deploy:

@@ -83,6 +83,7 @@
     "lint": "gulp lint",
     "ngc": "gulp ngc",
     "prod": "gulp prod",
+    "tsc": "tsc",
     "test": "tsc && concurrently \"tsc -w\" \"karma start karma.conf.js\"",
     "test_travis": "./node_modules/.bin/karma start karma.conf.js --single-run"
   }
