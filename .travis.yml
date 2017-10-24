@@ -12,17 +12,12 @@ before_install:
 install:
 - dotnet restore ./Trappist/Trappist.sln
 - cd ./Trappist/src/Promact.Trappist.Web && npm install && cd ../../../
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+
 script:
 - dotnet build ./Trappist/Trappist.sln
 - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
 - npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
-- npm run test_travis --prefix ./Trappist/src/Promact.Trappist.Web
-after_success:
-  - cat ./coverage/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 deploy:
 - provider: script
   script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh

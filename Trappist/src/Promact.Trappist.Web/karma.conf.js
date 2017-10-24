@@ -59,7 +59,7 @@
             // source files, that you wanna generate coverage for 
             // do not include tests or libraries 
             // (these files will be instrumented by Istanbul) 
-            'wwwroot/app/**/!(*spec*).js': ['coverage']
+            'wwwroot/app/**/!(*spec).js': ['coverage']
         },
 
         client: {
