@@ -1,12 +1,11 @@
-language: csharp node_js
+language: csharp 
 dist: trusty
 os: linux
 mono: none
 dotnet: 2.0.0
-node_js:
-  - 0.8
 services:
 - docker
+
 before_install:
 - nvm install 6.9.1
 - nvm use 6.9.1
@@ -23,7 +22,8 @@ script:
 - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
 - npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
-- npm build ./Trappist/src/Promact.Trappist.Web
+- npm test
+- tsc
 - npm run test_travis --prefix ./Trappist/src/Promact.Trappist.Web
 
 after_success:
