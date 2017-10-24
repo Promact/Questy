@@ -20,7 +20,7 @@ script:
 - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
 - npm run lint --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
-- npm run test_travis --prefix ./Trappist/src/Promact.Trappist.Web
+- karma start config/karma.conf.js --single-run
 after_success:
   - cat ./coverage/*/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 deploy:
