@@ -1,9 +1,8 @@
-language: csharp
+language: csharp node_js
 dist: trusty
 os: linux
 mono: none
 dotnet: 2.0.0
-language: node_js
 node_js:
   - 0.8
 services:
