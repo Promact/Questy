@@ -24,9 +24,9 @@ import { QuestionCount } from '../numberOfQuestion';
 
 
 
-class MockActivatedRoute {
-    params = Observable.of({ 'id': MockTestData[0].id });
-}
+//class MockActivatedRoute {
+//    params = Observable.of({ 'id': MockTestData[0].id });
+//}
 
 describe('Question dashboard', () => {
     let questionFixture: ComponentFixture<QuestionsDashboardComponent>;
@@ -49,7 +49,7 @@ describe('Question dashboard', () => {
             declarations: [QuestionsDashboardComponent, AddCategoryDialogComponent, UpdateCategoryDialogComponent, DeleteCategoryDialogComponent, DeleteQuestionDialogComponent],
             providers: [
                 { provide: APP_BASE_HREF, useValue: '/' },
-                { provide: ActivatedRoute, useClass: MockActivatedRoute },
+                { provide: ActivatedRoute, useValue: { params: Observable.of({ 'id': MockTestData[0].id }) } },
                 QuestionsService,
                 CategoryService,
                 HttpService
