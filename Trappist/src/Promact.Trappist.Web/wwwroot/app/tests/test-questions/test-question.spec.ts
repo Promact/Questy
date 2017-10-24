@@ -59,23 +59,32 @@ describe('Test question Component', () => {
         fixture = TestBed.createComponent(TestQuestionsComponent);
         testQuestion = fixture.componentInstance;
         router = TestBed.get(Router);
-        spyOn(TestService.prototype, 'getTestById').and.callFake(function (id: number) {
-            console.log(id);
-            return Observable.of(mockdata.find(x => x.id === id));
+        spyOn(TestService.prototype, 'getTestById').and.callFake((id: number) => {
+            let test = mockdata.find(x => x.id === id);
+            if (test === undefined)
+                return Observable.throw('test not found');
+            else return Observable.of(test);
         });
         spyOn(TestService.prototype, 'getQuestions').and.returnValue(Observable.of(MockTestData[0].categoryAcList[0].questionList));
         spyOn(router, 'navigate').and.callFake(function (route: any[]) {
-            routeTo = route; 
+            routeTo = route;
         });
     });
 
 
     it('getTestDetails ', () => {
         testQuestion.getTestDetails();
-        console.log('original data');
-        console.log(MockTestData);
         expect(testQuestion.testDetails).toBe(mockdata[0]);
         expect(testQuestion.isAnyCategorySelectedForTest).toBe(true);
+    });
+
+    it('getTestDetails error handling ', () => {
+        spyOn(MdSnackBar.prototype, 'open').and.callThrough();
+        testQuestion.testId = 5;
+        testQuestion.getTestDetails();
+        expect(MdSnackBar.prototype.open).toHaveBeenCalled();
+        expect(testQuestion.isAnyCategorySelectedForTest).toBe(undefined);
+        expect(routeTo[0]).toBe('/tests');
     });
 
     it('getAllQuestions ', () => {
@@ -100,7 +109,7 @@ describe('Test question Component', () => {
         expect(routeTo[0]).toBe('tests/' + MockTestData[0].id + '/settings');
     });
 
-    it('svae exit', () => {
+    it('save exit', () => {
         testQuestion.saveExit();
         expect(routeTo[0]).toBe('/tests');
     });

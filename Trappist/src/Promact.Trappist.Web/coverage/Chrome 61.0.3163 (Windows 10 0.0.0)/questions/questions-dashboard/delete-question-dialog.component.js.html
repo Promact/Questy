@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for questions\questions-dashboard\delete-question-dialog.component.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">questions/questions-dashboard/</a> delete-question-dialog.component.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">58.54% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>24/41</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">42.42% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>14/33</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>4/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">61.11% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>22/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+var __decorate = (this &amp;&amp; this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c &lt; 3 ? target : <span class="branch-1 cbranch-no" title="branch not covered" >desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,</span> d;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else <span class="cstat-no" title="statement not covered" >for (var i = decorators.length - 1; i &gt;= 0; i--) <span class="cstat-no" title="statement not covered" >if (d = decorators[i]) <span class="cstat-no" title="statement not covered" >r = (c &lt; 3 ? d(r) : c &gt; 3 ? d(target, key, r) : d(target, key)) || r;</span></span></span>
+    return c &gt; 3 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >r </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >Object.defineProperty(target, key, r),</span> r;
+};
+var __metadata = (this &amp;&amp; this.__metadata) || function (k, v) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var questions_service_1 = require("../questions.service");
+var material_1 = require("@angular/material");
+var DeleteQuestionDialogComponent = (function () {
+    function DeleteQuestionDialogComponent(questionService, dialogRef, snackBar) {
+        this.questionService = questionService;
+        this.dialogRef = dialogRef;
+        this.snackBar = snackBar;
+        this.successMessage = 'Question deleted successfully.';
+        this.errorMessage = 'Something went wrong. Question can not be deleted.';
+    }
+    /**
+    * Open a Snackbar
+    * @param message:To show at Snackbar
+    * @param enableRouting:Redirect to page
+    */
+    DeleteQuestionDialogComponent.prototype.openSnackBar = <span class="fstat-no" title="function not covered" >function (message, enableRouting) {</span>
+<span class="cstat-no" title="statement not covered" >        if (enableRouting === void 0) { <span class="cstat-no" title="statement not covered" >enableRouting = false; </span>}</span>
+<span class="cstat-no" title="statement not covered" >        var snackBarAction = this.snackBar.open(message, 'Dismiss', {</span>
+            duration: 3000
+        });
+    };
+    /**
+     * Method to delete Question
+     * @param question:Question object
+     */
+    DeleteQuestionDialogComponent.prototype.deleteQuestion = <span class="fstat-no" title="function not covered" >function (question) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.questionService.deleteQuestion(question.id).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.dialogRef.close(question);</span>
+<span class="cstat-no" title="statement not covered" >            _this.openSnackBar(_this.successMessage);</span>
+        }, <span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >            if (err.status === 400) {</span>
+<span class="cstat-no" title="statement not covered" >                _this.response = err.json();</span>
+<span class="cstat-no" title="statement not covered" >                _this.errorMessage = _this.response['error'][0];</span>
+<span class="cstat-no" title="statement not covered" >                _this.dialogRef.close(null);</span>
+<span class="cstat-no" title="statement not covered" >                _this.openSnackBar(_this.errorMessage);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            _this.dialogRef.close(null);</span>
+<span class="cstat-no" title="statement not covered" >            _this.openSnackBar(_this.errorMessage);</span>
+        });
+    };
+    return DeleteQuestionDialogComponent;
+}());
+DeleteQuestionDialogComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'delete-question-dialog',
+        templateUrl: 'delete-question-dialog.html'
+    }),
+    __metadata("design:paramtypes", [questions_service_1.QuestionsService, material_1.MdDialogRef, material_1.MdSnackBar])
+], DeleteQuestionDialogComponent);
+exports.DeleteQuestionDialogComponent = DeleteQuestionDialogComponent;
+//# sourceMappingURL=delete-question-dialog.component.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 24 2017 11:08:34 GMT+0530 (India Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

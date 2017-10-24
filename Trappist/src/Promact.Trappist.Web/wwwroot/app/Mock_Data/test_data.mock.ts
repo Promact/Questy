@@ -191,3 +191,12 @@ export const MockTestAttendee = {
     'createdDateTime': '2017-09-29T10:31:30.3441832',
     'updateDateTime': '2017-09-29T10:31:41.1104293'
 };
+
+export const mockCategory = {
+        'categoryName': 'Anda',
+        'question': null,
+        'id': 1,
+        'createdDateTime': '2017-09-29T09:40:54.8176177',
+        'updateDateTime': null
+    };
+

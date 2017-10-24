@@ -6,6 +6,7 @@
         plugins: [
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
+            require('karma-coverage'),
             require('karma-jasmine-html-reporter')
         ],
         files: [
@@ -39,10 +40,6 @@
             { pattern: 'node_modules/ngx-clipboard/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/clipboard/dist/clipboard.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-infinite-scroll/**/*.js', included: false, watched: false },
-            //'node_modules/angular2-infinite-scroll/src/infinite-scroll.js',
-            //'node_modules/angular2-infinite-scroll/src/axis-resolver.js',
-            //'node_modules/angular2-infinite-scroll/src/position-resolver.js',
-            //'node_modules/angular2-infinite-scroll/src/scroll-register.js'
             { pattern: 'node_modules/tinymce/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-tinymce/dist/**/*.js', included: false, watched: false }
 
@@ -53,16 +50,31 @@
             'text/x-typescript': ['ts', 'tsx']
         },
 
-
+        
         proxies: {
             "/app/": "/base/wwwroot/app/"
+        },
+
+        preprocessors: {
+            // source files, that you wanna generate coverage for 
+            // do not include tests or libraries 
+            // (these files will be instrumented by Istanbul) 
+            'wwwroot/app/**/!(*spec*).js': ['coverage']
         },
 
 
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        reporters: ['progress', 'kjhtml'],
+        reporters: ['progress', 'coverage','kjhtml'],
+
+        coverageReporter: {
+            dir: 'coverage/',
+            reporters: [
+                { type: 'html' },
+                { type: 'lcov' }
+            ]
+        },
 
         port: 9876,
         colors: true,
@@ -71,4 +83,5 @@
         browsers: ['Chrome'],
         singleRun: false
     });
+    
 };

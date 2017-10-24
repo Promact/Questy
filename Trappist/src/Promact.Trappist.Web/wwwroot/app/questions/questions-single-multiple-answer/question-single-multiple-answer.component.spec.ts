@@ -68,11 +68,6 @@ describe('Single multiple questions', () => {
         expect(singleMultipleComponent.noOfOptionShown).toBe(3);
         singleMultipleComponent.removeOption(2);
         expect(singleMultipleComponent.noOfOptionShown).toBe(2);
-
-
-        //let optionName = mockData[0].categoryAcList[0].questionList[0].singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option;
-        //singleMultipleComponent.isTwoOptionsSame(optionName, 1);
-
     });
 
     it('isTwoOptinsSame', () => {
@@ -102,6 +97,17 @@ describe('Single multiple questions', () => {
         singleMultipleComponent.isEditQuestion = true;
         singleMultipleComponent.saveSingleMultipleAnswerQuestion(question);
         expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard/' + mockData[0].categoryAcList[0].categoryName + '/0');
+    });
+    it('save question Error handling', () => {
+        spyOn(MdSnackBar.prototype, 'open').and.callThrough();
+        spyOn(QuestionsService.prototype, 'addSingleMultipleAnswerQuestion').and.returnValue(Observable.throw('Internal server error'));
+        let question: QuestionBase;
+        question = new QuestionBase();
+        question.question = mockData[0].categoryAcList[0].questionList[0].question;
+        question.singleMultipleAnswerQuestion = mockData[0].categoryAcList[0].questionList[0].singleMultipleAnswerQuestion;
+        singleMultipleComponent.indexOfOptionSelected = 0;
+        singleMultipleComponent.saveSingleMultipleAnswerQuestion(question);
+        expect(MdSnackBar.prototype.open).toHaveBeenCalled();
     });
 
 });

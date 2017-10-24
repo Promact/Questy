@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for conduct\test-summary\test-summary.component.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">conduct/test-summary/</a> test-summary.component.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">45.06% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>73/162</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">26.23% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>16/61</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.57% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/35</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">46.1% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>71/154</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+var __decorate = (this &amp;&amp; this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c &lt; 3 ? target : <span class="branch-1 cbranch-no" title="branch not covered" >desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,</span> d;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else <span class="cstat-no" title="statement not covered" >for (var i = decorators.length - 1; i &gt;= 0; i--) <span class="cstat-no" title="statement not covered" >if (d = decorators[i]) <span class="cstat-no" title="statement not covered" >r = (c &lt; 3 ? d(r) : c &gt; 3 ? d(target, key, r) : d(target, key)) || r;</span></span></span>
+    return c &gt; 3 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >r </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >Object.defineProperty(target, key, r),</span> r;
+};
+var __metadata = (this &amp;&amp; this.__metadata) || function (k, v) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof Reflect === "object" &amp;&amp; typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var conduct_service_1 = require("../conduct.service");
+var router_1 = require("@angular/router");
+var teststatus_enum_1 = require("../teststatus.enum");
+var testattendee_model_1 = require("../../reports/testattendee.model");
+var tests_model_1 = require("../../tests/tests.model");
+var question_status_enum_1 = require("../question_status.enum");
+var enum_allowtestresume_1 = require("../../tests/enum-allowtestresume");
+var report_service_1 = require("../../reports/report.service");
+var material_1 = require("@angular/material");
+var TestSummaryComponent = (function () {
+    function TestSummaryComponent(conductService, route, router, reportService, snackbarRef) {
+        this.conductService = conductService;
+        this.route = route;
+        this.router = router;
+        this.reportService = reportService;
+        this.snackbarRef = snackbarRef;
+        this.TIMEOUT_TIME = 10;
+        this.testAttendee = new testattendee_model_1.TestAttendee();
+        this.test = new tests_model_1.Test();
+        this.testAnswers = new Array();
+        this.isTimeLeftZero = false;
+        this.isTestPreview = false;
+        this.timeOutCounter = 0;
+        this.timeString = '00:00:00';
+        this.numberOfAttemptedQuestions = 0;
+        this.numberOfUnAttemptedQuestions = 0;
+        this.numberOfReviewedQuestions = 0;
+        window.onbeforeunload = undefined;
+    }
+    TestSummaryComponent.prototype.ngOnInit = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        this.loader = true;</span>
+<span class="cstat-no" title="statement not covered" >        var url = window.location.pathname;</span>
+<span class="cstat-no" title="statement not covered" >        this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test-summary'));</span>
+<span class="cstat-no" title="statement not covered" >        this.getTotalQuestions();</span>
+<span class="cstat-no" title="statement not covered" >        this.getTestDetails(this.magicString);</span>
+<span class="cstat-no" title="statement not covered" >        history.pushState(null, null, null);</span>
+<span class="cstat-no" title="statement not covered" >        window.addEventListener('popstate', <span class="fstat-no" title="function not covered" >function (event) {</span></span>
+<span class="cstat-no" title="statement not covered" >            history.pushState(null, null, null);</span>
+        });
+    };
+    /**
+     * Gets the total number of questions in a particular test
+     */
+    TestSummaryComponent.prototype.getTotalQuestions = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.getTestSummary(this.magicString).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.testSummaryObject = response;</span>
+<span class="cstat-no" title="statement not covered" >            _this.totalQuestionsInTest = _this.testSummaryObject;</span>
+        });
+    };
+    /**
+     * Gets the elapsed time of test to calculate the time left of the test
+     * @param attendeeId is the Id of the attendee giving the selected test
+     */
+    TestSummaryComponent.prototype.timeLeftOfTest = <span class="fstat-no" title="function not covered" >function (attendeeId) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.loader = true;</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.getElapsedTime(this.testAttendee.id).subscribe(<span class="fstat-no" title="function not covered" >function (value) {</span></span>
+<span class="cstat-no" title="statement not covered" >            var spanTimeInSeconds = value * 60;</span>
+<span class="cstat-no" title="statement not covered" >            var durationInSeconds = _this.test.duration * 60;</span>
+<span class="cstat-no" title="statement not covered" >            _this.timeLeft = durationInSeconds - spanTimeInSeconds;</span>
+<span class="cstat-no" title="statement not covered" >            _this.timeLeft = _this.timeLeft &lt; 0 ? 0 : Math.round(_this.timeLeft);</span>
+<span class="cstat-no" title="statement not covered" >            _this.timeString = _this.secToTimeString(_this.timeLeft);</span>
+<span class="cstat-no" title="statement not covered" >            if (!_this.isTestClosedUnConditionally)</span>
+<span class="cstat-no" title="statement not covered" >                _this.clockInterval = setInterval(<span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >_this.countDown(); <span class="cstat-no" title="statement not covered" ></span>_this.timeOut(); </span>}, 1000);</span>
+<span class="cstat-no" title="statement not covered" >            _this.loader = false;</span>
+        });
+    };
+    /**
+     * Gets the details of the test by the test link
+     * @param testLink contains the link of the test from the route
+     */
+    TestSummaryComponent.prototype.getTestDetails = <span class="fstat-no" title="function not covered" >function (testLink) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.getTestForSummary(testLink).subscribe(<span class="fstat-no" title="function not covered" >function (response1) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.test = response1;</span>
+<span class="cstat-no" title="statement not covered" >            _this.isTestClosedUnConditionally = _this.test.allowTestResume === enum_allowtestresume_1.AllowTestResume.Supervised;</span>
+<span class="cstat-no" title="statement not covered" >            _this.testDuration = _this.test.duration;</span>
+<span class="cstat-no" title="statement not covered" >            _this.getTestAttendee(_this.test.id);</span>
+        });
+    };
+    /**
+     * Gets the details required for displaying the test summary
+     * @param testAttendeeId contains the Id of the test attendee giving the test
+     */
+    TestSummaryComponent.prototype.getSummaryDetailsByAttendeeId = <span class="fstat-no" title="function not covered" >function (testAttendeeId) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.getAnswer(testAttendeeId).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.testAnswers = response;</span>
+<span class="cstat-no" title="statement not covered" >            var answeredQuestions = _this.testAnswers.filter(<span class="fstat-no" title="function not covered" >function (e) {</span> <span class="cstat-no" title="statement not covered" >return e.questionStatus === question_status_enum_1.QuestionStatus.answered; </span>});</span>
+<span class="cstat-no" title="statement not covered" >            _this.numberOfAttemptedQuestions = answeredQuestions.length;</span>
+<span class="cstat-no" title="statement not covered" >            if (isNaN(_this.numberOfAttemptedQuestions)) {</span>
+<span class="cstat-no" title="statement not covered" >                _this.numberOfAttemptedQuestions = 0;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            var reviewedQuestions = _this.testAnswers.filter(<span class="fstat-no" title="function not covered" >function (x) {</span> <span class="cstat-no" title="statement not covered" >return x.questionStatus === question_status_enum_1.QuestionStatus.review; </span>});</span>
+<span class="cstat-no" title="statement not covered" >            _this.numberOfReviewedQuestions = reviewedQuestions.length;</span>
+<span class="cstat-no" title="statement not covered" >            _this.numberOfUnAttemptedQuestions = _this.totalQuestionsInTest - _this.numberOfAttemptedQuestions - _this.numberOfReviewedQuestions;</span>
+        }, <span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >            _this.numberOfUnAttemptedQuestions = _this.totalQuestionsInTest;</span>
+        });
+    };
+    /**
+     * Takes the student back to the test on clicking the back to test button
+     */
+    TestSummaryComponent.prototype.startTest = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+        //Unsubscribe the clock once the test resumes
+<span class="cstat-no" title="statement not covered" >        if (!this.isTestClosedUnConditionally)</span>
+<span class="cstat-no" title="statement not covered" >            clearInterval(this.clockInterval);</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.addTestLogs(this.testAttendee.id, false, true).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.testLogs = response;</span>
+        });
+<span class="cstat-no" title="statement not covered" >        this.reportService.updateCandidateInfo(this.testAttendee.id, true).subscribe();</span>
+        //Back to test
+<span class="cstat-no" title="statement not covered" >        this.router.navigate(['test'], { replaceUrl: true });</span>
+    };
+    /**
+     * Called when end test button is clicked
+     */
+    TestSummaryComponent.prototype.endTestButtonClicked = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        this.loader = true;</span>
+<span class="cstat-no" title="statement not covered" >        this.endTest(teststatus_enum_1.TestStatus.completedTest);</span>
+    };
+    /**
+    * Gets Test Attendee
+    * @param testId: Id of Test
+    */
+    TestSummaryComponent.prototype.getTestAttendee = <span class="fstat-no" title="function not covered" >function (testId) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.getTestAttendeeByTestId(testId, this.isTestPreview).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.testAttendee = response;</span>
+<span class="cstat-no" title="statement not covered" >            _this.getSummaryDetailsByAttendeeId(_this.testAttendee.id);</span>
+<span class="cstat-no" title="statement not covered" >            if (_this.test.allowTestResume === enum_allowtestresume_1.AllowTestResume.Supervised)</span>
+<span class="cstat-no" title="statement not covered" >                _this.getCandidateInfoToResumeTest();</span>
+<span class="cstat-no" title="statement not covered" >            if (_this.testAttendee.report !== null) {</span>
+<span class="cstat-no" title="statement not covered" >                _this.isTestBlocked = _this.testAttendee.report.testStatus === teststatus_enum_1.TestStatus.blockedTest;</span>
+<span class="cstat-no" title="statement not covered" >                _this.isTestExpired = _this.testAttendee.report.testStatus === teststatus_enum_1.TestStatus.expiredTest;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            _this.timeLeftOfTest(_this.testAttendee.id);</span>
+<span class="cstat-no" title="statement not covered" >            _this.isButtonVisible = _this.test.allowTestResume === 0 ? false : true;</span>
+        }, <span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >            _this.router.navigate(['']);</span>
+        });
+    };
+    /**
+     * sends request to the test conductor for test resume
+     */
+    TestSummaryComponent.prototype.sendRequestForResume = function () {
+        var _this = this;
+        this.isTestResume = true;
+        this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(function (response) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (response) {
+                _this.snackbarRef.open('Request sent successfully', 'Dismiss', {
+                    duration: 4000,
+                });
+                _this.testAttendee.report.isTestPausedUnWillingly = true;
+                _this.disableButton = true;
+            }
+        });
+    };
+    /**
+     * checks if test has been allowed to resume
+     */
+    TestSummaryComponent.prototype.getCandidateInfoToResumeTest = function () {
+        var _this = this;
+        this.reportService.getInfoResumeTest(this.testAttendee.id).subscribe(function (response) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (response) {
+                _this.testAttendee.report = response;
+                _this.isAllowed = _this.testAttendee.report.isAllowResume;
+            }
+        });
+    };
+    /**
+     * Converts seconds to time string format HH:MM:SS
+     * @param seconds: Seconds to convert
+     */
+    TestSummaryComponent.prototype.secToTimeString = <span class="fstat-no" title="function not covered" >function (seconds) {</span>
+<span class="cstat-no" title="statement not covered" >        var hh = Math.floor(seconds / 3600);</span>
+<span class="cstat-no" title="statement not covered" >        var mm = Math.floor((seconds - hh * 3600) / 60);</span>
+<span class="cstat-no" title="statement not covered" >        var ss = Math.floor(seconds - (hh * 3600 + mm * 60));</span>
+<span class="cstat-no" title="statement not covered" >        return (hh &lt; 10 ? '0' + hh : hh) + ':' + (mm &lt; 10 ? '0' + mm : mm) + ':' + (ss &lt; 10 ? '0' + ss : ss);</span>
+    };
+    /**
+     * Counts down time
+     */
+    TestSummaryComponent.prototype.countDown = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        this.timeLeft = this.timeLeft - 1;</span>
+        //Prevent displaying negative time
+<span class="cstat-no" title="statement not covered" >        if (this.timeLeft &lt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            this.timeLeft = 0;</span>
+        }
+<span class="cstat-no" title="statement not covered" >        this.timeString = this.secToTimeString(this.timeLeft);</span>
+<span class="cstat-no" title="statement not covered" >        if (this.timeLeft &lt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >            this.endTest(teststatus_enum_1.TestStatus.expiredTest);</span>
+        }
+    };
+    /**
+     * Updates time on the server
+     */
+    TestSummaryComponent.prototype.timeOut = <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        this.timeOutCounter += 1;</span>
+<span class="cstat-no" title="statement not covered" >        if (this.timeOutCounter &gt;= this.TIMEOUT_TIME) {</span>
+<span class="cstat-no" title="statement not covered" >            var timeElapsed = this.test.duration * 60 - this.timeLeft;</span>
+<span class="cstat-no" title="statement not covered" >            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();</span>
+<span class="cstat-no" title="statement not covered" >            this.timeOutCounter = 0;</span>
+        }
+    };
+    /**
+    * Ends test and route to test-end page
+    * @param testStatus: TestStatus object
+    */
+    TestSummaryComponent.prototype.endTest = <span class="fstat-no" title="function not covered" >function (testStatus) {</span>
+<span class="cstat-no" title="statement not covered" >        var _this = this;</span>
+        //Unsubscribe the clock timer
+<span class="cstat-no" title="statement not covered" >        if (!this.isTestClosedUnConditionally)</span>
+<span class="cstat-no" title="statement not covered" >            clearInterval(this.clockInterval);</span>
+<span class="cstat-no" title="statement not covered" >        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(<span class="fstat-no" title="function not covered" >function (response) {</span></span>
+<span class="cstat-no" title="statement not covered" >            _this.router.navigate(['test-end'], { replaceUrl: true });</span>
+<span class="cstat-no" title="statement not covered" >            _this.loader = false;</span>
+        });
+    };
+    TestSummaryComponent.prototype.endYourTest = function () {
+        var _this = this;
+        this.loader = true;
+        this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(function (response) {
+            _this.router.navigate(['test-end'], { replaceUrl: true });
+            _this.loader = false;
+        });
+    };
+    return TestSummaryComponent;
+}());
+TestSummaryComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'test-summary',
+        templateUrl: 'test-summary.html',
+    }),
+    __metadata("design:paramtypes", [conduct_service_1.ConductService, router_1.ActivatedRoute, router_1.Router, report_service_1.ReportService, material_1.MdSnackBar])
+], TestSummaryComponent);
+exports.TestSummaryComponent = TestSummaryComponent;
+//# sourceMappingURL=test-summary.component.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Oct 24 2017 11:08:34 GMT+0530 (India Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
