@@ -75,13 +75,6 @@
             ]
         },
 
-        customLaunchers: {
-            Chrome_travis_ci: {
-                base: 'Chrome',
-                flags: ['--no-sandbox']
-            }
-        },
-        
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
@@ -90,7 +83,4 @@
         singleRun: false
     });
 
-    if (process.env.TRAVIS) {
-        configuration.browsers = ['Chrome_travis_ci'];
-    }
 };
