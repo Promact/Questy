@@ -272,5 +272,4 @@ package-lock.json
 #ignore log files
 **/logs/
 
-/coverage.data
-/coverage/
+**/coverage/
