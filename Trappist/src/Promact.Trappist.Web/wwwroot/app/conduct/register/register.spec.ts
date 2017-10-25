@@ -10,11 +10,16 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 import { TestAttendees } from '../register/register.model';
 import { Observable } from 'rxjs/Rx';
+import { ResponseOptions } from "@angular/http";
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
     navigate() { return true; }
     isActive() { return true; }
+}
+
+class Error {
+    status = 404;
 }
 
 describe('testting of conduct-registration:-', () => {
@@ -30,6 +35,8 @@ describe('testting of conduct-registration:-', () => {
     testAttendee.lastName = 'acharya';
     testAttendee.rollNumber = 'cse-055';
     testAttendee.contactNumber = '9874563210';
+
+   
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -62,4 +69,13 @@ describe('testting of conduct-registration:-', () => {
             expect(urls[0]).toBe('/conduct/' + testLink + '/instructions');
         });
     }));
+
+    it('should throw error message if registration fails', () => {
+       
+        spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
+            return Observable.throw(new Error());
+        });
+        registerComponent.registerTestAttendee();
+        expect(registerComponent.isErrorMessage).toBeTruthy();
+    })
 });
