@@ -42,7 +42,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     isCategorySelected: boolean;
     isDifficultyLevelSelected: boolean;
     loader: boolean;
-    isbuttonClicked: boolean;
 
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute) {
         this.noOfOptionShown = 2;
@@ -62,7 +61,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         }
         this.isCategorySelected = false;
         this.isDifficultyLevelSelected = false;
-        this.isbuttonClicked = false;
     }
 
     ngOnInit() {
@@ -260,11 +258,18 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     /**
+     * Prevent multiple click event on same button 
+     * @param $event:event on button click
+     */
+    stopMultipleClick($event: any) {
+        $event.stopImmediatePropagation();
+    }
+
+    /**
      * Add or update or duplicate single/multiple answer question and redirect to question dashboard page
      * @param singleAnswerQuestion: Question of singleMultipleAnswerType will be added, edited or duplicated
      */
     saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion: QuestionBase) {
-        this.isbuttonClicked = true;
         this.singleMultipleAnswerQuestion.question.difficultyLevel = DifficultyLevel[this.difficultyLevelSelected];
         this.singleMultipleAnswerQuestion.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption.forEach(x => x.id = 0);
         if (singleMultipleAnswerQuestion.question.questionType === 0) {

@@ -59,8 +59,8 @@
             </div>
             <div class="actions-area">
                 <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-                <button type="submit" *ngIf="!isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficultyLevelSelected === 'default' || categoryName === 'default' ||!isOptionSelected() || isTwoOptionSame || isButtonClicked ">Save</button>
-                <button type="submit" *ngIf="isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || !isOptionSelected()">Update</button>
+                <button type="submit" *ngIf="!isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || difficultyLevelSelected === 'default' || categoryName === 'default' ||!isOptionSelected() || isTwoOptionSame " (click)="stopMultipleClick($event)">Save</button>
+                <button type="submit" *ngIf="isEditQuestion" class="btn btn-primary" [disabled]="singleMultipleAnswerQuestionForm.invalid || !isOptionSelected()" (click)="stopMultipleClick($event)">Update</button>
             </div>
         </form>
 
