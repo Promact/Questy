@@ -77,8 +77,7 @@ export class QuestionsDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loader = true;
-        this.getQuestionsOnScrolling();
+        this.loader = true;       
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
         this.searchText = this.route.snapshot.params['matchString'];
@@ -86,6 +85,8 @@ export class QuestionsDashboardComponent implements OnInit {
             this.showSearchInput = true;
             this.matchString = this.searchText;
         }
+        if (this.selectedCategoryName === undefined && this.SelectedDifficultyLevel === undefined)
+            this.getQuestionsOnScrolling();
         this.getAllCategories();
         if (!this.router.url.includes('dashboard'))
             this.countTheQuestion();
@@ -161,7 +162,6 @@ export class QuestionsDashboardComponent implements OnInit {
             else
                 this.router.navigate(['questions/dashboard', 'AllCategory', this.difficultyLevel]);
             this.loader = false;
-            this.id++;
             this.selectedCategory = new Category();
             this.isAllQuestionsHaveCome = false;
         });
