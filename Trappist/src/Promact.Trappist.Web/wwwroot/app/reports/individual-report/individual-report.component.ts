@@ -70,6 +70,8 @@ export class IndividualReportComponent implements OnInit {
     isScoreVisible: boolean;
     attendeeArray: number[];
     idOfTestAttendee: number;
+    totalMarksOfTest: number;
+    numberOfQuestionsInTest: number;
 
     constructor(private reportsService: ReportService, private route: ActivatedRoute, private router: Router) {
         this.loader = true;
@@ -155,6 +157,8 @@ export class IndividualReportComponent implements OnInit {
                 //Gets all the questions present in the test
                 this.reportsService.getTestQuestions(this.testAttendee.test.id).subscribe((response) => {
                     this.testQuestions = response;
+                    this.numberOfQuestionsInTest = this.testQuestions.length;
+                    this.totalMarksOfTest = this.numberOfQuestionsInTest * Number(this.correctMarks);
                     this.testFinishStatus();
                     this.attendeeAnswers();
                     this.questionPieChartValue();
