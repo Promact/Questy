@@ -43,7 +43,6 @@ export class QuestionsProgrammingComponent implements OnInit {
     testCaseType: TestCaseType;
     questionId: number;
     loader: boolean;
-    isButtonClicked: boolean;
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
@@ -70,7 +69,6 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.isDefaultTestCaseAdded = true;
         this.isQuestionEmpty = true;
         this.isCkeditorDirtly = false;
-        this.isButtonClicked = false;
     }
 
     ngOnInit() {
@@ -288,7 +286,6 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param isCodeSnippetFormValid : Validation status of code snippet form
      */
     addCodingQuestion(isCodeSnippetFormValid: boolean) {
-        this.isButtonClicked = true;
         this.isDefaultTestCaseAdded = this.isTestCaseValid();
 
         if (isCodeSnippetFormValid && !this.nolanguageSelected && this.isDefaultTestCaseAdded) {
@@ -352,6 +349,14 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     cancelButtonClicked() {
         this.router.navigate(['/questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
+    }
+
+    /**
+     * Prevent multiple click event on same button 
+     * @param $event:event on button click
+     */
+    stopMultipleClick($event: any) {
+        $event.stopImmediatePropagation();
     }
 }
 
