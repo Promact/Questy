@@ -53,7 +53,7 @@ export class QuestionsDashboardComponent implements OnInit {
     isAllQuestionsSectionSelected: boolean;
     searchText: string;
 
-    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
+    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.numberOfQuestions = new QuestionCount();
@@ -88,8 +88,7 @@ export class QuestionsDashboardComponent implements OnInit {
         if (this.selectedCategoryName === undefined && this.SelectedDifficultyLevel === undefined)
             this.getQuestionsOnScrolling();
         this.getAllCategories();
-        if (!this.router.url.includes('dashboard'))
-            this.countTheQuestion();
+        this.countTheQuestion();
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
