@@ -98,12 +98,6 @@ describe('Test View Component', () => {
         }
     }
 
-    class MockSnackBar {
-        open() {
-            return true;
-        }
-    }
-
     beforeEach(async(() => {
 
         TestBed.overrideModule(BrowserDynamicTestingModule, {
@@ -118,10 +112,9 @@ describe('Test View Component', () => {
 
             providers: [
                 TestService,
-                HttpService, MdDialogModule,
+                HttpService, MdDialogModule, MdSnackBar,
                 { provide: Router, useClass: MockRouter },
                 { provide: MdDialogRef, useClass: MockDialog },
-                { provide: MdSnackBar, useClass: MockSnackBar },
                 { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 123 }) } }
             ],
 
@@ -152,10 +145,12 @@ describe('Test View Component', () => {
             let result = new BehaviorSubject(true);
             return result.asObservable();
         });
+        spyOn(testView.dialog, 'open').and.callThrough();
         testView.deleteTestDialog(test);
         expect(testView.isDeleteAllowed).toBe(false);
         expect(testView.deleteTestDialogData.testToDelete).toBe(test);
         expect(testView.deleteTestDialogData.testArray).toBe(testView.tests);
+        expect(testView.dialog.open).toHaveBeenCalled();
     });
 
     it('should open delete test dialog on call of deleteTestDialog with a message confirming if the user wants to delete the test', () => {
@@ -163,10 +158,12 @@ describe('Test View Component', () => {
             let result = new BehaviorSubject(false);
             return result.asObservable();
         });
+        spyOn(testView.dialog, 'open').and.callThrough();
         testView.deleteTestDialog(test);
         expect(testView.isDeleteAllowed).toBe(true);
         expect(testView.deleteTestDialogData.testToDelete).toBe(test);
         expect(testView.deleteTestDialogData.testArray).toBe(testView.tests);
+        expect(testView.dialog.open).toHaveBeenCalled();
     });
 
     it('should open duplicate test dialog on call of duplicateTestDialog and display test name as testName_copy', () => {
@@ -174,11 +171,13 @@ describe('Test View Component', () => {
             let result = new BehaviorSubject(1);
             return result.asObservable();
         });
+        spyOn(testView.dialog, 'open').and.callThrough();
         testView.duplicateTestDialog(test);
         expect(testView.count).toBe(1);
         expect(testView.duplicateTestDialogData.testName).toBe(test.testName + '_copy');
         expect(testView.duplicateTestDialogData.testArray).toBe(testView.tests);
         expect(testView.duplicateTestDialogData.testToDuplicate).toBe(test);
+        expect(testView.dialog.open).toHaveBeenCalled();
     });
 
     it('should open duplicate test dialog on call of duplicateTestDialog and display test name as testName_copy_5 [number of times the test has been copied]', () => {
@@ -186,11 +185,13 @@ describe('Test View Component', () => {
             let result = new BehaviorSubject(5);
             return result.asObservable();
         });
+        spyOn(testView.dialog, 'open').and.callThrough();
         testView.duplicateTestDialog(test);
         expect(testView.count).toBe(5);
         expect(testView.duplicateTestDialogData.testName).toBe(test.testName + '_copy_' + testView.count);
         expect(testView.duplicateTestDialogData.testArray).toBe(testView.tests);
         expect(testView.duplicateTestDialogData.testToDuplicate).toBe(test);
+        expect(testView.dialog.open).toHaveBeenCalled();
     });
 
     it('should check that editing of test is enabled when number of attendees is 0', () => {
@@ -280,6 +281,20 @@ describe('Test View Component', () => {
             urls = url;
             expect(urls[0]).toBe('/tests/' + test.id + '/settings');
         });
+    });
+
+    it('should not get the details of the test on getting error', () => {
+        spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
+            return Observable.throw(Error);
+        });
+        spyOn(testView.snackBar, 'open').and.callThrough();
+        spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
+            urls = url;
+            expect(urls[0]).toBe('/tests');
+        });
+        testView.getTestDetails(test.id);
+        expect(testView.loader).toBe(false);
+        expect(testView.snackBar.open).toHaveBeenCalled();
     });
 });
 

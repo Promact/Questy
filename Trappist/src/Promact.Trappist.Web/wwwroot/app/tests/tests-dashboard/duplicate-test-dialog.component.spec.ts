@@ -106,12 +106,16 @@ describe('Duplicate Test Dialog Component', () => {
         spyOn(router, 'navigate').and.callFake(function (url: any) {
             urls = url;
         });
+        spyOn(duplicateTestDialogComponent.snackBar, 'open').and.callThrough();
+        spyOn(duplicateTestDialogComponent.dialog, 'close').and.callThrough();
         duplicateTestDialogComponent.testArray[0] = test;
         duplicateTestDialogComponent.testToDuplicate = test;
         duplicateTestDialogComponent.duplicateTest();
         tick();
         expect(duplicateTestDialogComponent.testArray.length).toBe(2);
         expect(urls[0]).toBe('tests/' + MockTestData[0].id + '/sections');
+        expect(duplicateTestDialogComponent.snackBar.open).toHaveBeenCalled();
+        expect(duplicateTestDialogComponent.dialog.close).toHaveBeenCalled();
     })));
 
     it('should not make the error value true by not duplicating the test', fakeAsync((() => {
@@ -127,6 +131,39 @@ describe('Duplicate Test Dialog Component', () => {
     it('should make the error value false', () => {
         duplicateTestDialogComponent.onErrorChange();
         expect(duplicateTestDialogComponent.error).toBe(false);
+    });
+
+    it('should not duplicate the test on getting error', () => {
+        spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
+            return Observable.throw(Error);
+        });
+        spyOn(TestService.prototype, 'duplicateTest').and.callFake(() => {
+            return Observable.of(MockTestData[0]);
+        });
+        duplicateTestDialogComponent.testArray[0] = test;
+        duplicateTestDialogComponent.testToDuplicate = test;
+        duplicateTestDialogComponent.duplicateTest();
+        expect(duplicateTestDialogComponent.testArray.length).toBe(1);
+        expect(duplicateTestDialogComponent.loader).toBe(false);
+        expect(TestService.prototype.duplicateTest).toHaveBeenCalledTimes(0);
+    });
+
+    it('should not duplicate the test on getting error from duplicate test service', () => {
+        spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
+            return Observable.of(true);
+        });
+        spyOn(TestService.prototype, 'duplicateTest').and.callFake(() => {
+            return Observable.throw(Error);
+        });
+        spyOn(duplicateTestDialogComponent.snackBar, 'open').and.callThrough();
+        spyOn(duplicateTestDialogComponent.dialog, 'close').and.callThrough();
+        duplicateTestDialogComponent.testArray[0] = test;
+        duplicateTestDialogComponent.testToDuplicate = test;
+        duplicateTestDialogComponent.duplicateTest();
+        expect(duplicateTestDialogComponent.testArray.length).toBe(1);
+        expect(duplicateTestDialogComponent.loader).toBe(false);
+        expect(duplicateTestDialogComponent.snackBar.open).toHaveBeenCalledTimes(0);
+        expect(duplicateTestDialogComponent.dialog.close).toHaveBeenCalledTimes(0);
     });
 
 });

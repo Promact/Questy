@@ -102,10 +102,28 @@ describe('Delete Test Dialog Component', () => {
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
             return Observable.of('');
         });
+        spyOn(deleteTestDialogComponent.snackBar, 'open').and.callThrough();
+        spyOn(deleteTestDialogComponent.dialog, 'close').and.callThrough();
         deleteTestDialogComponent.testToDelete = test;
         deleteTestDialogComponent.testArray[0] = test;
         deleteTestDialogComponent.deleteTest();
         expect(deleteTestDialogComponent.testArray.length).toBe(0);
+        expect(deleteTestDialogComponent.snackBar.open).toHaveBeenCalled();
+        expect(deleteTestDialogComponent.dialog.close).toHaveBeenCalled();
     }));
+
+    it('should not delete the test on getting error', () => {
+        spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
+            return Observable.throw(Error);
+        });
+        spyOn(deleteTestDialogComponent.snackBar, 'open').and.callThrough();
+        spyOn(deleteTestDialogComponent.dialog, 'close').and.callThrough();
+        deleteTestDialogComponent.testToDelete = test;
+        deleteTestDialogComponent.testArray[0] = test;
+        deleteTestDialogComponent.deleteTest();
+        expect(deleteTestDialogComponent.testArray.length).toBe(1);
+        expect(deleteTestDialogComponent.snackBar.open).toHaveBeenCalled();
+        expect(deleteTestDialogComponent.dialog.close).toHaveBeenCalledTimes(0);
+    });
 
 });

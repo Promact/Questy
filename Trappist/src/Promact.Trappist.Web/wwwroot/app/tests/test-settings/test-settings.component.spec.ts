@@ -8,7 +8,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { QuestionsService } from '../../questions/questions.service';
-import { Http, HttpModule } from '@angular/http';
+import { Http, HttpModule, ResponseOptions } from '@angular/http';
 import { TestService } from '../tests.service';
 import { inject } from '@angular/core/testing';
 import { Test } from '../tests.model';
@@ -35,7 +35,6 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { TestSettingsComponent } from './test-settings.component';
 import { CreateTestHeaderComponent } from '../shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from '../shared/create-test-footer/create-test-footer.component';
-
 import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
 import { TestIPAddress } from '../test-IPAdddress';
 
@@ -50,6 +49,12 @@ class MockRouter {
     }
 
     navigateByUrl(url: string) { return url; }
+}
+
+class MockError {
+    json(): Observable<any> {
+        return Observable.of({ 'error': ['Settings cannot be updated'] });
+    }
 }
 
 describe('Test Settings Component', () => {
@@ -243,6 +248,31 @@ describe('Test Settings Component', () => {
         testSettings.launchTestDialog(test.id, test, isTestLaunched);
         testSettings.getTestById(test.id);
         expect(testSettings.testDetails.isLaunched).toBe(true);
+        expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
+
+    it('should not get test details by id', () => {
+        spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
+            return Observable.throw(Error);
+        });
+        router = TestBed.get(Router);
+        spyOn(router, 'navigate').and.callFake(function (url: any) {
+            urls = url;
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.getTestById(test.id);
+        expect(testSettings.loader).toBe(false);
+        expect(urls[0]).toBe('/tests');
+        expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
+
+    it('should not update the changes made in the settings of a test', () => {
+        spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
+            return Observable.throw(new MockError());
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.saveTestSettings(test.id, test);
+        expect(testSettings.loader).toBe(false);
         expect(testSettings.snackbarRef.open).toHaveBeenCalled();
     });
 
