@@ -5,18 +5,15 @@ mono: none
 dotnet: 2.0.0
 services:
 - docker
-
 before_install:
 - nvm install 6.9.1
 - nvm use 6.9.1
 - npm install -g npm
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-
 install:
 - dotnet restore ./Trappist/Trappist.sln
 - cd ./Trappist/src/Promact.Trappist.Web && npm install && cd ../../../
-
 script:
 - dotnet build ./Trappist/Trappist.sln
 - dotnet test Trappist/src/Promact.Trappist.Test/Promact.Trappist.Test.csproj
@@ -24,7 +21,6 @@ script:
 - npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run tsc --prefix ./Trappist/src/Promact.Trappist.Web
 - npm run test --prefix ./Trappist/src/Promact.Trappist.Web
-
 after_success:
   - npm run coveralls --prefix ./Trappist/src/Promact.Trappist.Web
 deploy:
