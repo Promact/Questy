@@ -18,9 +18,8 @@ class MockMdDialogRef {
     close(data: any) { return data; }
 }
 class MockResponse {
-
     json(): Observable<any> {
-        return null;
+        return Observable.of({'error':['Internal server error']});
     }
 }
 
@@ -61,10 +60,10 @@ describe('Add-Category-Dialog', () => {
         expect(MdSnackBar.prototype.open).toHaveBeenCalled();
     });
 
-    it('addCategory Error Handling', () => {
+    it('addCategory Error Handling', () => { 
         let category: any;
         category = mockCategory;
-        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.throw('Internal Server Error'));
+        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.throw(new MockResponse()));
         addCategoryComponent.addCategory(category);
         expect(addCategoryComponent.isCategoryNameExist).toBe(true);
         expect(addCategoryComponent.isButtonClicked).toBe(false);

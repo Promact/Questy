@@ -1,12 +1,15 @@
 ﻿module.exports = function (config) {
+  
     config.set({
         basePath: '',
         frameworks: ['jasmine'],
+        
 
         plugins: [
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
             require('karma-coverage'),
+            require('karma-remap-istanbul'),
             require('karma-jasmine-html-reporter')
         ],
         files: [
@@ -30,8 +33,8 @@
 
             'karma-test-shim.js',
             { pattern: 'node_modules/@angular/**/*.js', included: false, watched: false },
-            { pattern: 'wwwroot/app/**/*.js', included: false, watched: true },
-            { pattern: 'wwwroot/app/**/*.ts', included: false, watched: true },
+            { pattern: 'wwwroot/app/**/!(*.aot)*.js', included: false, watched: true },
+            { pattern: 'wwwroot/app/**/!(*.aot)*.ts', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
             { pattern: 'wwwroot/**/*.css', included: false, watched: true },
@@ -41,47 +44,35 @@
             { pattern: 'node_modules/clipboard/dist/clipboard.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-infinite-scroll/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/tinymce/**/*.js', included: false, watched: false },
-            { pattern: 'node_modules/angular2-tinymce/dist/**/*.js', included: false, watched: false }
+            { pattern: 'node_modules/angular2-tinymce/dist/**.js', included: false, watched: false },
 
-            
         ],
 
         mime: {
             'text/x-typescript': ['ts', 'tsx']
         },
-
-        
+        remapIstanbulReporter: {
+            remapOptions: {}, //additional remap options 
+            reportOptions: {}, //additional report options 
+            reports: {
+                lcovonly: 'coverage/lcov.info',
+                html: 'coverage/html/report'
+            }
+        },
         proxies: {
             "/app/": "/base/wwwroot/app/"
         },
-
-        //preprocessors: {
-        //    // source files, that you wanna generate coverage for 
-        //    // do not include tests or libraries 
-        //    // (these files will be instrumented by Istanbul) 
-        //    'wwwroot/app/**/!(*spec.*).js': ['coverage']
-        //},
+        preprocessors: {
+            // source files, that you wanna generate coverage for 
+            // do not include tests or libraries 
+            // (these files will be instrumented by Istanbul) 
+            'wwwroot/app/**/!(*spec)*.js': ["coverage"]
+        },
 
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        reporters: ['progress', 'coverage','kjhtml'],
-
-        coverageReporter: {
-            dir: 'coverage/',
-            reporters: [
-                { type: 'html' },
-                { type: 'lcov' }
-            ]
-        },
-
-        //customLaunchers: {
-        //    Chrome_travis_ci: {
-        //        base: 'Chrome',
-        //        flags: ['--no-sandbox']
-        //    }
-        //},
-
+        reporters: ["progress", "karma-remap-istanbul", "kjhtml",'coverage'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
