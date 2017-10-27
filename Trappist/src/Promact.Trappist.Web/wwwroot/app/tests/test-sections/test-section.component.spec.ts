@@ -65,11 +65,7 @@ describe('Test Section', () => {
                 return Observable.throw('Not found');
             return Observable.of(mockData.find(x => x.id === id));
         });
-        spyOn(TestService.prototype, 'deselectCategory').and.callFake(function (categoryId: number, testId: number) {
-            let test = MockTestData.find(x => x.id === testId);
-            let category = test.categoryAcList.find(x => x.id === categoryId);
-            return Observable.of(category.questionList !== null);
-        });
+        
         spyOn(router, 'navigate').and.callFake((route: any[]) => {
             routeTo = route;
         });
@@ -90,17 +86,48 @@ describe('Test Section', () => {
 
 
     it('onSelect', () => {
+        spyOn(TestService.prototype, 'deselectCategory').and.callFake(function (categoryId: number, testId: number) {
+            let test = MockTestData.find(x => x.id === testId);
+            let category = test.categoryAcList.find(x => x.id === categoryId);
+            return Observable.of(category.questionList !== null);
+        });
         spyOn(testSection.dialog, 'open').and.callThrough();
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(true));
         testSection.isEditTestEnabled = true;
         testSection.getTestById(MockTestData[0].id);
         testSection.onSelect(MockTestData[0].categoryAcList[0]);
         expect(testSection.dialog.open).toHaveBeenCalled();
+        expect(MdDialogRef.prototype.afterClosed).toHaveBeenCalled();
+        
+    });
+
+    it('onSelect False condition', () => {
+        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(Observable.of(false));
+        testSection.getTestById(MockTestData[0].id);
+        testSection.isEditTestEnabled = true;
+        MockTestData[0].categoryAcList[0].isSelect = true;
+        testSection.onSelect(MockTestData[0].categoryAcList[0]);
+    });
+
+    it('onSelect Error Handling', () => {
+        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(Observable.throw('Internal server Error'));
+        testSection.getTestById(MockTestData[0].id);
+        testSection.isEditTestEnabled = true;
+        MockTestData[0].categoryAcList[0].isSelect = true;
+        testSection.onSelect(MockTestData[0].categoryAcList[0]);
+
     });
 
     it('saveCategoryToExitOrMoveNext', () => {
         spyOn(TestService.prototype, 'addTestCategories').and.returnValue(Observable.of(true));
         testSection.getTestById(MockTestData[0].id);
         testSection.testId = MockTestData[0].id;
+        testSection.isEditTestEnabled = true;
+        testSection.saveCategoryToExitOrMoveNext(true);
+        expect(routeTo[0]).toBe('/tests/' + MockTestData[0].id + '/questions');
+        testSection.saveCategoryToExitOrMoveNext(false);
+        expect(routeTo[0]).toBe('/tests');
+        testSection.isEditTestEnabled = false;
         testSection.saveCategoryToExitOrMoveNext(true);
         expect(routeTo[0]).toBe('/tests/' + MockTestData[0].id + '/questions');
         testSection.saveCategoryToExitOrMoveNext(false);

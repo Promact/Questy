@@ -115,7 +115,8 @@
         }],
         'isSelect': true,
         'numberOfSelectedQuestion': 0,
-        'questionCount': 1
+        'questionCount': 1,
+        'isAlreadyClicked': false
     }, {
         'id': 1035,
         'categoryName': 'chemistry',

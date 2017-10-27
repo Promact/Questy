@@ -84,14 +84,13 @@ export class TestSectionsComponent implements OnInit {
                         dialogRef.afterClosed().subscribe(result => {
                             if (result)
                                 category.isSelect = false;
-                        },
-                            err => {
-                                this.openSnackbar('Something went wrong.Please try again later.');
-                            });
+                        });
                     }
                     else {
                         category.isSelect = false;
                     }
+                }, err => {
+                    this.openSnackbar('Something went wrong.Please try again later.');
                 });
             }
         }

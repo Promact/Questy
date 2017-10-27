@@ -66,6 +66,7 @@ export class TestQuestionsComponent implements OnInit {
      * @param i is index of category
      */
     getAllquestions(category: Category, i: number) {
+        console.log(category);
         this.loader_question = true;
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
