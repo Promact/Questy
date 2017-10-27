@@ -158,23 +158,16 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId, [FromRoute] bool isPreview)
         {
             if (!await _testRepository.IsTestExists(testId))
-            {
                 return NotFound();
-            }
-
             if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null && !isPreview)
-            {
                 return NotFound();
-            }
-
             var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
-
             if (!await IsAttendeeValid(attendeeId))
-            {
                 return NotFound();
-            }
-
-            return Ok(await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId));
+            var testAttendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
+            if (testAttendee.Report != null && (testAttendee.Report.TestStatus == TestStatus.BlockedTest || testAttendee.Report.TestStatus == TestStatus.ExpiredTest))
+                HttpContext.Session.SetString(_stringConstants.Path, "");
+            return Ok(testAttendee);
         }
 
         /// <summary>
@@ -245,10 +238,8 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-
-            var attendee = await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
-
-            return Ok(attendee);
+            await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
+            return Ok(attendeeId);
         }
 
         /// <summary>
@@ -376,6 +367,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("getTestSummary/{link}")]
         public async Task<IActionResult> GetSummary([FromRoute] string link)
         {
+
             HttpContext.Session.SetString(_stringConstants.Path, "test-summary");
             return Ok(await _testRepository.GetTestSummary(link));
         }
