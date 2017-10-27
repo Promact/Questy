@@ -204,7 +204,7 @@ export class TestSummaryComponent implements OnInit {
         this.isTestResume = true;
         this.reportService.updateCandidateInfo(this.testAttendee.id, false).subscribe(response => {
             if (response) {
-                this.connectionService.sendRequest(this.testAttendee.id);
+                this.connectionService.sendCandidateIdWhoRequestedForResumeTest(this.testAttendee.id);
                 this.snackbarRef.open('Request sent successfully', 'Dismiss', {
                     duration: 4000,
                 });

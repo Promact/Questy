@@ -22,28 +22,28 @@ export class ConnectionService {
     //This method defines that what action should be taken when getReport and getRequest methods are invoked from the TrappistHub
     registerProxy() {
         this.hubConnection.on('getReport', (testAttendee) => { this._zone.run(() => this.recievedAttendee.emit(testAttendee));});
-        this.hubConnection.on('getRequest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id));});
+        this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id));});
     }
     //starts the connection between hub and client
     startConnection() {
-        this.hubConnection.start().then(() => {
-            console.log(new Date());
-        });
+        this.hubConnection.start();
+           
+      
     }
     //This method sends the testAttendee object to the hub method SendReport
     sendReport(testAttendee) {
         this.hubConnection.invoke('sendReport', testAttendee);
     }
     //Sends the id of candidate to the hub method sendRequest
-    sendRequest(attendeeId: number) {
-        this.hubConnection.invoke('sendRequest', attendeeId);
+    sendCandidateIdWhoRequestedForResumeTest(attendeeId: number) {
+        this.hubConnection.invoke('sendCandidateIdWhoRequestedForResumeTest', attendeeId);
     }
 
     getReport(testAttendee: any) {
         return testAttendee;
     }
 
-    getRequest(id: number) {
-        return id;
+    getAttendeeIdWhoRequestedForResumeTest(attendeeId: number) {
+        return attendeeId;
     }
 }
