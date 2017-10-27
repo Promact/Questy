@@ -21,13 +21,13 @@ namespace Promact.Trappist.Core.TrappistHub
         }
 
         /// <summary>
-        /// This method gets the id of the candidate who requests for resume test and pass this id to getRequest method in test report page
+        /// This method gets the id of the candidate who requests for resume test and pass this id to getAttendeeIdWhoRequestedForResumeTest method in test report page
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>invokes the method getRequest and pass the id in test report page</returns>
-        public Task SendRequest(int id)
+        /// <param name="attendeeId"></param>
+        /// <returns>invokes the method getAttendeeIdWhoRequestedForResumeTest and pass the id in test report page</returns>
+        public Task SendCandidateIdWhoRequestedForResumeTest(int attendeeId)
         {
-            return Clients.All.InvokeAsync("getRequest", id);
+            return Clients.All.InvokeAsync("getAttendeeIdWhoRequestedForResumeTest", attendeeId);
         }
     }
 }
