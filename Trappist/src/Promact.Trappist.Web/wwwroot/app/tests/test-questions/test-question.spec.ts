@@ -28,7 +28,7 @@ import { Test } from '../tests.model';
 
 
 class MockActivatedRoute {
-
+   
     params = Observable.of({ 'id': MockTestData[0].id });
 }
 
@@ -90,6 +90,13 @@ describe('Test question Component', () => {
     it('getAllQuestions ', () => {
         testQuestion.getTestDetails();
         testQuestion.getAllquestions(mockdata[0].categoryAcList[0], 0);
+        mockdata[0].categoryAcList[0].isAccordionOpen = false;
+        mockdata[0].categoryAcList[0].isAlreadyClicked = true;
+        testQuestion.getAllquestions(mockdata[0].categoryAcList[0], 0);
+        mockdata[0].categoryAcList[0].isAccordionOpen = true;
+        testQuestion.getAllquestions(mockdata[0].categoryAcList[0], 0);
+        let value = testQuestion.isCorrectAnswer(true);
+        expect(value).toBe('correct');
     });
     it('selectQuestion ', () => {
         let questionToSelect = mockdata[0].categoryAcList[0].questionList[0];
@@ -97,14 +104,23 @@ describe('Test question Component', () => {
         testQuestion.getAllquestions(mockdata[0].categoryAcList[0], 0);
         testQuestion.selectQuestion(questionToSelect, mockdata[0].categoryAcList[0]);
         expect(testQuestion.testDetails.categoryAcList[0].selectAll).toBe(true);
+        questionToSelect.question.isSelect = false;
+        testQuestion.selectQuestion(questionToSelect, mockdata[0].categoryAcList[0]);
+        expect(testQuestion.testDetails.categoryAcList[0].selectAll).toBe(false);
     });
     it('save next ', () => {
         spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(Observable.of({ message: 'question Added' }));
         testQuestion.getTestDetails();
         testQuestion.isEditTestEnabled = true;
         testQuestion.testId = MockTestData[0].id;
-        testQuestion.saveNext();
         testQuestion.isEditTestEnabled = false;
+        testQuestion.saveNext();
+        expect(routeTo[0]).toBe('tests/' + MockTestData[0].id + '/settings');
+        testQuestion.isSaveExit = true;
+        testQuestion.isEditTestEnabled = true;
+        testQuestion.saveNext();
+        expect(routeTo[0]).toBe('/tests');
+        testQuestion.isSaveExit = false;
         testQuestion.saveNext();
         expect(routeTo[0]).toBe('tests/' + MockTestData[0].id + '/settings');
     });
@@ -112,5 +128,26 @@ describe('Test question Component', () => {
     it('save exit', () => {
         testQuestion.saveExit();
         expect(routeTo[0]).toBe('/tests');
+    });
+
+    it('save next error handeling', () => {
+        spyOn(MdSnackBar.prototype, 'open').and.callThrough();
+        spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(Observable.throw({ message: 'question Added' }));
+        testQuestion.isEditTestEnabled = true;
+        testQuestion.saveNext();
+        expect(MdSnackBar.prototype.open).toHaveBeenCalled();
+    });
+
+    it('selectAll', () => {
+        testQuestion.selectAll(mockdata[0].categoryAcList[0]);
+        mockdata[0].categoryAcList[0].selectAll = true;
+        testQuestion.selectAll(mockdata[0].categoryAcList[0]);
+        expect(mockdata[0].categoryAcList[0].questionList[0].question.isSelect).toBe(true);
+    });
+
+    it('isTestAttendeeExist', () => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.returnValue(Observable.of({ response: true }));
+        testQuestion.isTestAttendeeExist();
+        expect(testQuestion.isEditTestEnabled).toBe(false);
     });
 });
