@@ -128,17 +128,6 @@ describe('Test View Component', () => {
         testView = fixture.componentInstance;
     });
 
-    it('should edit test on number of attendees for a particular test is 0', () => {
-        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(false);
-        });
-        testView.editTest(test);
-        spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
-            urls = url;
-            expect(urls[0]).toBe('/tests/' + test.id + '/sections');
-        });
-    });
-
     it('should not edit test when attendees exists for a particular test', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
             return Observable.of(true);
@@ -350,6 +339,17 @@ describe('Test View Component', () => {
     it('should change the tooltip message', () => {
         testView.changeTooltipMessage();
         expect(testView.tooltipMessage).toBe('Copy to Clipboard');
+    });
+
+    it('should edit test on number of attendees for a particular test is 0', () => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
+            return Observable.of(false);
+        });
+        testView.editTest(test);
+        spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
+            urls = url;
+            expect(urls[0]).toBe('/tests/' + test.id + '/sections');
+        });
     });
 });
 
