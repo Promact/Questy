@@ -48,7 +48,7 @@ class MockRouter {
 
 class MockActivatedRoute {
     constructor() {
-        this._paramsValue = { id: 1, name: "matchString" };
+        this._paramsValue = { id: 1, name: 'matchString' };
         this._queryParamsValue = { id: 1 };
     }
     // ActivatedRoute.params is Observable

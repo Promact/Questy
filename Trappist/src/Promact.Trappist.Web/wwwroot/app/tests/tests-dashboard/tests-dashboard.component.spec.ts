@@ -106,7 +106,6 @@ describe('Test Dashboard Component', () => {
         });
         tick();
         testDashboard.getAllTests();
-        console.log(testDashboard.tests);
         expect(testDashboard.tests.length).toBe(2);
     }));
 
@@ -189,6 +188,16 @@ describe('Test Dashboard Component', () => {
         expect(testDashboard.duplicateTestDialogData.testArray).toBe(testDashboard.tests);
         expect(testDashboard.duplicateTestDialogData.testToDuplicate).toBe(test);
         expect(testDashboard.dialog.open).toHaveBeenCalled();
+    });
+
+    it('should call ngOnInit()', () => {
+        spyOn(TestService.prototype, 'getTests').and.callFake(() => {
+            return Observable.of(MockTestData);
+        });
+        spyOn(testDashboard, 'getAllTests').and.callThrough();
+        testDashboard.ngOnInit();
+        expect(testDashboard.loader).toBe(false);
+        expect(testDashboard.getAllTests).toHaveBeenCalled();
     });
 
 });

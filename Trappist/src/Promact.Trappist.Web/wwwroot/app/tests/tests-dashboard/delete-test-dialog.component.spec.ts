@@ -45,6 +45,8 @@ class MockRouter {
     }
 
     navigateByUrl(url: string) { return url; }
+
+    url = '/tests/1/view';
 }
 
 class MockDialog {
@@ -104,6 +106,10 @@ describe('Delete Test Dialog Component', () => {
         });
         spyOn(deleteTestDialogComponent.snackBar, 'open').and.callThrough();
         spyOn(deleteTestDialogComponent.dialog, 'close').and.callThrough();
+        spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
+            urls = url;
+            expect(urls[0]).toBe('/tests');
+        });
         deleteTestDialogComponent.testToDelete = test;
         deleteTestDialogComponent.testArray[0] = test;
         deleteTestDialogComponent.deleteTest();
@@ -111,6 +117,19 @@ describe('Delete Test Dialog Component', () => {
         expect(deleteTestDialogComponent.snackBar.open).toHaveBeenCalled();
         expect(deleteTestDialogComponent.dialog.close).toHaveBeenCalled();
     }));
+
+    //it('should not navigate to test dashboard page', () => {
+    //    let mockRouterObject = new MockRouter();
+    //    mockRouterObject.url = '/';
+    //    spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
+    //        return Observable.of('');
+    //    });
+    //    spyOn(Router.prototype, 'navigate').and.callThrough();
+    //    deleteTestDialogComponent.testToDelete = test;
+    //    deleteTestDialogComponent.testArray[0] = test;
+    //    deleteTestDialogComponent.deleteTest();
+    //    expect(Router.prototype.navigate).toHaveBeenCalledTimes(0);
+    //});
 
     it('should not delete the test on getting error', () => {
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
