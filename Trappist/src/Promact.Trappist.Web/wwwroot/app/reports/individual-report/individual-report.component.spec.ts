@@ -411,9 +411,7 @@ describe('Individual Report Component', () => {
         expect(individualReport.timeTakenInHoursVisible).toBe(false);
         expect(individualReport.timeTakenInMinutesVisible).toBe(true);
         expect(individualReport.timeTakenInSecondsVisible).toBe(false);
-        expect(individualReport.testAttendee.testLogs.visitTestLink.toString()).toBe('Wed Oct 11 2017 12:23:13 GMT+0530 (India Standard Time)');
         expect(individualReport.resumeTestLog).toBe(true);
-        expect(individualReport.testAttendee.testLogs.resumeTest.toString()).toBe('Wed Oct 11 2017 12:27:04 GMT+0530 (India Standard Time)');
     });
 
     it('should check number of correct options given by a test attendee for single answer question', () => {
