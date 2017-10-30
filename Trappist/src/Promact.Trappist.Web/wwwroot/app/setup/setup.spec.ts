@@ -103,6 +103,7 @@ describe('Testing of setup component:-', () => {
             return Observable.of(response);
         });
         spyOn(setup, 'complete');
+        spyOn(setupComponent, 'navigateToLogin');
         setupComponent.createUser(setup);
         expect(setup.complete).toHaveBeenCalled();
     });
