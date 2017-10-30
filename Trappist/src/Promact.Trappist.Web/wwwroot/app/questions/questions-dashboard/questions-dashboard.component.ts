@@ -53,7 +53,7 @@ export class QuestionsDashboardComponent implements OnInit {
     isAllQuestionsSectionSelected: boolean;
     searchText: string;
 
-    constructor(private questionsService: QuestionsService, private dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
+    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.numberOfQuestions = new QuestionCount();
