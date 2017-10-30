@@ -23,22 +23,6 @@ script:
 - npm run test --prefix ./Trappist/src/Promact.Trappist.Web
 after_success:
   - npm run coveralls --prefix ./Trappist/src/Promact.Trappist.Web
-deploy:
-- provider: script
-  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-  skip_cleanup: true
-  on:
-    branch: master
-- provider: script
-  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-  skip_cleanup: true
-  on:
-    branch: staging
-- provider: script
-  script: chmod +x $TRAVIS_BUILD_DIR/deploy.sh && sh $TRAVIS_BUILD_DIR/deploy.sh
-  skip_cleanup: true
-  on:
-    branch: development
 notifications:
   slack:
     rooms:
