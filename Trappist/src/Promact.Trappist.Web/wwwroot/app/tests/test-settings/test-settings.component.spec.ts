@@ -301,4 +301,21 @@ describe('Test Settings Component', () => {
         testSettings.changeTooltipMessage();
         expect(testSettings.tooltipMessage).toBe('Copy to Clipboard');
     });
+
+    it('should not launch the test', () => {
+        spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
+            return Observable.throw(new MockError());
+        });
+        spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
+            return Observable.of(test);
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        category.numberOfSelectedQuestion = 1;
+        test.categoryAcList[0] = category;
+        testSettings.testDetails = test;
+        let isTestLaunched: boolean;
+        testSettings.launchTestDialog(test.id, test, isTestLaunched);
+        testSettings.getTestById(test.id);
+        expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
 });

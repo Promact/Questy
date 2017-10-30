@@ -118,19 +118,6 @@ describe('Delete Test Dialog Component', () => {
         expect(deleteTestDialogComponent.dialog.close).toHaveBeenCalled();
     }));
 
-    //it('should not navigate to test dashboard page', () => {
-    //    let mockRouterObject = new MockRouter();
-    //    mockRouterObject.url = '/';
-    //    spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
-    //        return Observable.of('');
-    //    });
-    //    spyOn(Router.prototype, 'navigate').and.callThrough();
-    //    deleteTestDialogComponent.testToDelete = test;
-    //    deleteTestDialogComponent.testArray[0] = test;
-    //    deleteTestDialogComponent.deleteTest();
-    //    expect(Router.prototype.navigate).toHaveBeenCalledTimes(0);
-    //});
-
     it('should not delete the test on getting error', () => {
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
             return Observable.throw(Error);
