@@ -21,12 +21,27 @@ import { HttpService } from '../../core/http.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fakeAsync } from '@angular/core/testing';
+import { DeleteTestDialogComponent } from './delete-test-dialog.component';
+import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
 
 
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
     navigate(url: any[]) { return url; }
+    isActive() {
+        return true;
+    }
+}
+
+class MockDialog {
+    open() {
+        return true;
+    }
+
+    close() {
+        return true;
+    }
 }
 
 describe('Test Dashboard Component', () => {
@@ -39,15 +54,22 @@ describe('Test Dashboard Component', () => {
     let mockData: any[] = [];
     let urlRedirect: any[] = [];
 
+    let test = new Test();
+    test.id = 1;
+    test.numberOfTestAttendees = 2;
+    test.testName = 'History';
+    test.isEditTestEnabled = true;
+    let urls: any[];
+
     beforeEach(async(() => {
         TestBed.overrideModule(BrowserDynamicTestingModule, {
             set: {
-                entryComponents: [TestCreateDialogComponent]
+                entryComponents: [TestCreateDialogComponent, DeleteTestDialogComponent, DuplicateTestDialogComponent]
             }
 
         });
         TestBed.configureTestingModule({
-            declarations: [TestsDashboardComponent, FilterPipe, TestCreateDialogComponent],
+            declarations: [TestsDashboardComponent, FilterPipe, TestCreateDialogComponent, DeleteTestDialogComponent, DuplicateTestDialogComponent],
             providers: [
                 QuestionsService,
                 TestService,
@@ -83,5 +105,96 @@ describe('Test Dashboard Component', () => {
         testDashboard.createTestDialog();
         expect(testDashboard.dialog.open).toHaveBeenCalled();
         expect(testDashboard.tests.length).toBe(1);
+    });
+
+    it('should edit test on number of attendees for a particular test is 0', fakeAsync(() => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
+            return Observable.of(false);
+        });
+        router = TestBed.get(Router);
+        spyOn(router, 'navigate').and.callFake(function (url: any[]) {
+            urls = url;
+        });
+        testDashboard.editTest(test);
+        expect(urls[0]).toBe('/tests/' + test.id + '/sections');
+    }));
+
+    it('should not edit the test when attendees exist for a particular test', () => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
+            return Observable.of(true);
+        });
+        spyOn(testDashboard, 'editTest').and.callThrough();
+        testDashboard.editTest(test);
+        expect(testDashboard.editTest).toHaveBeenCalled();
+    });
+
+    it('should check whether any attendee has taken a particular test', () => {
+        testDashboard.tests[0] = test;
+        testDashboard.disableEditForTheTestsIfAttendeesExist();
+        expect(testDashboard.tests[0].isEditTestEnabled).toBe(false);
+    });
+
+    it('should open delete test dialog on call of deleteTestDialog with a message informing test cannot be deleted', () => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
+            let result = new BehaviorSubject(true);
+            return result.asObservable();
+        });
+        spyOn(testDashboard.dialog, 'open').and.callThrough();
+        testDashboard.deleteTestDialog(test);
+        expect(testDashboard.isDeleteAllowed).toBe(false);
+        expect(testDashboard.deleteTestDialogData.testToDelete).toBe(test);
+        expect(testDashboard.deleteTestDialogData.testArray).toBe(testDashboard.tests);
+        expect(testDashboard.dialog.open).toHaveBeenCalled();
+    });
+
+    it('should open delete test dialog on call of deleteTestDialog with a message confirming if the user wants to delete the test', () => {
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
+            let result = new BehaviorSubject(false);
+            return result.asObservable();
+        });
+        spyOn(testDashboard.dialog, 'open').and.callThrough();
+        testDashboard.deleteTestDialog(test);
+        expect(testDashboard.isDeleteAllowed).toBe(true);
+        expect(testDashboard.deleteTestDialogData.testToDelete).toBe(test);
+        expect(testDashboard.deleteTestDialogData.testArray).toBe(testDashboard.tests);
+        expect(testDashboard.dialog.open).toHaveBeenCalled();
+    });
+
+    it('should open duplicate test dialog on call of duplicateTestDialog and display test name as testName_copy_5 [number of times the test has been copied]', () => {
+        spyOn(TestService.prototype, 'setTestCopiedNumber').and.callFake(() => {
+            let result = new BehaviorSubject(5);
+            return result.asObservable();
+        });
+        spyOn(testDashboard.dialog, 'open').and.callThrough();
+        testDashboard.duplicateTestDialog(test);
+        expect(testDashboard.count).toBe(5);
+        expect(testDashboard.duplicateTestDialogData.testName).toBe(test.testName + '_copy_' + testDashboard.count);
+        expect(testDashboard.duplicateTestDialogData.testArray).toBe(testDashboard.tests);
+        expect(testDashboard.duplicateTestDialogData.testToDuplicate).toBe(test);
+        expect(testDashboard.dialog.open).toHaveBeenCalled();
+    });
+
+    it('should open duplicate test dialog on call of duplicateTestDialog and display test name as testName_copy', () => {
+        spyOn(TestService.prototype, 'setTestCopiedNumber').and.callFake(() => {
+            let result = new BehaviorSubject(1);
+            return result.asObservable();
+        });
+        spyOn(testDashboard.dialog, 'open').and.callThrough();
+        testDashboard.duplicateTestDialog(test);
+        expect(testDashboard.count).toBe(1);
+        expect(testDashboard.duplicateTestDialogData.testName).toBe(test.testName + '_copy');
+        expect(testDashboard.duplicateTestDialogData.testArray).toBe(testDashboard.tests);
+        expect(testDashboard.duplicateTestDialogData.testToDuplicate).toBe(test);
+        expect(testDashboard.dialog.open).toHaveBeenCalled();
+    });
+
+    it('should call ngOnInit()', () => {
+        spyOn(TestService.prototype, 'getTests').and.callFake(() => {
+            return Observable.of(MockTestData);
+        });
+        spyOn(testDashboard, 'getAllTests').and.callThrough();
+        testDashboard.ngOnInit();
+        expect(testDashboard.loader).toBe(false);
+        expect(testDashboard.getAllTests).toHaveBeenCalled();
     });
 });
