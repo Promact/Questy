@@ -88,7 +88,8 @@ export class QuestionsDashboardComponent implements OnInit {
         if (this.selectedCategoryName === undefined && this.SelectedDifficultyLevel === undefined)
             this.getQuestionsOnScrolling();
         this.getAllCategories();
-        this.countTheQuestion();
+        if (!this.router.url.includes('dashboard'))
+            this.countTheQuestion();
         //Scroll to top when navigating back from other components.
         window.scrollTo(0, 0);
     }
@@ -307,7 +308,6 @@ export class QuestionsDashboardComponent implements OnInit {
 
             this.questionsService.getQuestions(this.id, this.categroyId, this.difficultyLevel, this.matchString).subscribe((questionsList) => {
                 this.questionDisplay = questionsList;
-                console.log(this.questionDisplay);
                 if (this.questionDisplay.length !== 0)
                     this.id = this.questionDisplay[this.questionDisplay.length - 1].id;
                 this.countTheQuestion();
@@ -479,7 +479,7 @@ export class QuestionsDashboardComponent implements OnInit {
         if (questiontype === 'single-answer')
             this.router.navigate(['questions', 'single-answer', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'multiple-answer')
-            this.router.navigate(['questions', 'multiple-answers', 'add', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'multiple-answer', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'programming')
             this.router.navigate(['questions', 'programming', 'add', categoryName, difficultyLevel]);
     }
