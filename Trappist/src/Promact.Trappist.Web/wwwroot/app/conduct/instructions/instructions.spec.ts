@@ -12,12 +12,13 @@ import { TestConductFooterComponent } from '../shared/test-conduct-footer/test-c
 import { CoreModule } from '../../core/core.module';
 import { DebugElement } from '@angular/core/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Rx';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
 }
 
-describe('testing of test-instruction:-', () => {
+describe('Testing of conduct-instruction component:-', () => {
     let fixture: ComponentFixture<InstructionsComponent>;
     let componentInstruction: InstructionsComponent;
     let testLink = '1Pu48OQy6d';
@@ -50,21 +51,33 @@ describe('testing of test-instruction:-', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(InstructionsComponent);
         componentInstruction = fixture.componentInstance;
-        spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
-            let instructionData = new BehaviorSubject(testInstructions);
-            return instructionData.asObservable();
-        });
     });
 
 
-    it('should return all instructions by test link', fakeAsync(() => {
+    it('should return all instructions by test link', () => {
+        spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
+            return Observable.of(testInstructions);
+        });
         componentInstruction.getTestInstructionsByLink(testLink);
         expect(componentInstruction.testInstructions.duration).toBe(5);
         expect(componentInstruction.testInstructions.categoryNameList).toContain('Aptitude');
-    }));
+    });
 
-    it('should display negativeSign if incorrect marks is not zero', fakeAsync(() => {
+    it('should display negativeSign if incorrect marks is not zero', () => {
+        spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
+            return Observable.of(testInstructions);
+        });
         componentInstruction.getTestInstructionsByLink(testLink);
         expect(componentInstruction.negativeSign).toBe('-');
-    }));
+    });
+
+    it('should not display negativeSign if incorrect marks is zero', () => {
+        testInstructions.incorrectMarks = 0;
+        spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
+            return Observable.of(testInstructions);
+        });
+        componentInstruction.getTestInstructionsByLink(testLink);
+        expect(componentInstruction.negativeSign).toBe(undefined);
+    });
+
 });

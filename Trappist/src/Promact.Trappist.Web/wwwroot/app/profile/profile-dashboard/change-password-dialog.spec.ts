@@ -7,12 +7,12 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { HttpService } from '../../core/http.service';
 import { CoreModule } from '../../core/core.module';
 import { DebugElement } from '@angular/core/core';
-import { ChangePasswordDialogComponent } from "./change-password-dialog.component";
-import { ProfileService } from "../profile.service";
-import { ChangePasswordModel } from "../password.model";
-import { Observable } from "rxjs/Rx";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpModule } from "@angular/http";
+import { ChangePasswordDialogComponent } from './change-password-dialog.component';
+import { ProfileService } from '../profile.service';
+import { ChangePasswordModel } from '../password.model';
+import { Observable } from 'rxjs/Rx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpModule } from '@angular/http';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
@@ -28,13 +28,13 @@ class MockDialog {
     }
 }
 
-class Error {
+class MockError {
     json(): Observable<any> {
-        return Observable.of({ 'error': ['old password is not correct'] });
+        return Observable.of({ 'error': ['old password is wrong'] });
     }
 }
 
-describe('testing of change password component:-', () => {
+describe('Testing of change-password component:-', () => {
     let fixture: ComponentFixture<ChangePasswordDialogComponent>;
     let changePasswordComponent: ChangePasswordDialogComponent;
 
@@ -55,7 +55,7 @@ describe('testing of change password component:-', () => {
                 { provide: MdDialogRef, useClass: MockDialog },
             ],
 
-            imports: [BrowserModule, FormsModule, MaterialModule, HttpModule,RouterModule, CoreModule, MdDialogModule, BrowserAnimationsModule]
+            imports: [BrowserModule, FormsModule, MaterialModule, HttpModule, RouterModule, CoreModule, MdDialogModule, BrowserAnimationsModule]
         }).compileComponents();
     }));
 
@@ -77,6 +77,14 @@ describe('testing of change password component:-', () => {
         expect(changePasswordComponent.snackBar.open).toHaveBeenCalled();
     });
 
+    it('should throw error message if password update fails', () => {
+        spyOn(ProfileService.prototype, 'updateUserPassword').and.callFake(() => {
+            return Observable.throw(new MockError());
+        });
+        changePasswordComponent.changePassword(changedPassword);
+        expect(changePasswordComponent.errorCorrection).toBeTruthy();
+    });
+
     it('should show error message if new and confirm pasword are not same', () => {
         spyOn(ProfileService.prototype, 'updateUserPassword').and.callFake(() => {
             return Observable.of(false);
@@ -84,5 +92,10 @@ describe('testing of change password component:-', () => {
         changedPassword.confirmPassword = 'Abv@123456';
         changePasswordComponent.changePassword(changedPassword);
         expect(changePasswordComponent.isPasswordSame).toBeFalsy();
+    });
+
+    it('should check condition for showing error message', () => {
+        changePasswordComponent.changeCurrentPassword();
+        expect(changePasswordComponent.isPasswordSame).toBeTruthy();
     });
 });

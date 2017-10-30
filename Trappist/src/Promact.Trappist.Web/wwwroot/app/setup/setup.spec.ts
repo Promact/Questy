@@ -103,8 +103,8 @@ describe('Testing of setup component:-', () => {
             return Observable.of(response);
         });
         spyOn(setup, 'complete');
-        //setupComponent.createUser(setup);
-        //expect(setup.complete).toHaveBeenCalled();
+        setupComponent.createUser(setup);
+        expect(setup.complete).toHaveBeenCalled();
     });
 
     it('should show error message if user creation fails', () => {

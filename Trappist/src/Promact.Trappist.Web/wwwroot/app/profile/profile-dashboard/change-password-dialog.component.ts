@@ -37,7 +37,7 @@ export class ChangePasswordDialogComponent {
                     this.loader = false;
                     this.errorCorrection = true;
                     this.response = (err.json());
-                    this.errorMesseage = this.response['error'][0];
+                    this.errorMesseage = this.response['error'];
                 });
         }
         else {
