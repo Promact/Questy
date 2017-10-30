@@ -174,4 +174,12 @@ describe('Create Test Footer Component', () => {
         expect(saveCategory.emit).toHaveBeenCalled();
     });
 
+    it('should should call the getComponent()', () => {
+        createTestFooterComponent.testId = test.id;
+        createTestFooterComponent.getComponent();
+        expect(createTestFooterComponent.isTestSection).toBe(false);
+        expect(createTestFooterComponent.isTestQuestion).toBe(false);
+        expect(createTestFooterComponent.isTestSettings).toBe(false);
+    });
+
 });

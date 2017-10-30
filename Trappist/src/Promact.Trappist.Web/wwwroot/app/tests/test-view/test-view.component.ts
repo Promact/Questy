@@ -43,7 +43,7 @@ export class TestViewComponent implements OnInit {
     duplicateTestDialogData: DuplicateTestDialogComponent;
     deleteTestDialogData: DeleteTestDialogComponent;
 
-    constructor(public dialog: MdDialog, private testService: TestService, public snackBar: MdSnackBar, private router: Router, public route: ActivatedRoute) {
+    constructor(public dialog: MdDialog, private testService: TestService, public snackBar: MdSnackBar, private router: Router, private route: ActivatedRoute) {
         this.testDetails = new Test();
         this.tests = new Array<Test>();
         this.optionName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
