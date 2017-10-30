@@ -13,7 +13,6 @@ import { TestService } from '../tests.service';
 import { inject } from '@angular/core/testing';
 import { Test } from '../tests.model';
 import { testsRouting } from '../tests.routing';
-import { TestServicesMock, MockQuestionService } from '../../Mock_Services/test-services.mock';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
@@ -146,8 +145,6 @@ describe('Test Settings Component', () => {
         });
         testSettings.getTestById(test.id);
         expect(testSettings.testNameReference).toBe(test.testName);
-        expect(testSettings.testDetails.startDate).toBe('2017-10-16T12:21');
-        expect(testSettings.testDetails.endDate).toBe('2017-10-17T12:21');
         expect(testSettings.testLink).toContain(test.link);
     });
 
