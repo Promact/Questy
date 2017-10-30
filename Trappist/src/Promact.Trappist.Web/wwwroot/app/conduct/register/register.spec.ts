@@ -10,7 +10,7 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 import { TestAttendees } from '../register/register.model';
 import { Observable } from 'rxjs/Rx';
-import { ResponseOptions } from "@angular/http";
+import { ResponseOptions } from '@angular/http';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
@@ -22,7 +22,7 @@ class Error {
     status = 404;
 }
 
-describe('testting of conduct-registration:-', () => {
+describe('Testing of conduct-register component:-', () => {
     let fixture: ComponentFixture<RegisterComponent>;
     let registerComponent: RegisterComponent;
     let router: Router;
@@ -35,8 +35,6 @@ describe('testting of conduct-registration:-', () => {
     testAttendee.lastName = 'acharya';
     testAttendee.rollNumber = 'cse-055';
     testAttendee.contactNumber = '9874563210';
-
-   
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -71,11 +69,20 @@ describe('testting of conduct-registration:-', () => {
     }));
 
     it('should throw error message if registration fails', () => {
-       
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
             return Observable.throw(new Error());
         });
         registerComponent.registerTestAttendee();
         expect(registerComponent.isErrorMessage).toBeTruthy();
-    })
+    });
+
+    it('should throw different error message if error status is different', () => {
+        let error = new Error();
+        error.status = 500;
+        spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
+            return Observable.throw(error);
+        });
+        registerComponent.registerTestAttendee();
+        expect(registerComponent.registerTestAttendee).toThrowError();
+    });
 });

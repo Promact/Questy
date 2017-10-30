@@ -27,7 +27,7 @@ class ElementRef {
     nativeElement: any;
 }
 
-describe('testting of test report:-', () => {
+describe('Testing of test-report component:-', () => {
     let fixture: ComponentFixture<TestReportComponent>;
     let testReportComponent: TestReportComponent;
     let router: Router;
@@ -143,13 +143,23 @@ describe('testting of test report:-', () => {
     });
 
     it('should set all candidate as starred candidates', () => {
-
         spyOn(ReportService.prototype, 'setAllCandidatesStarred').and.callFake(() => {
             return Observable.of(true);
         });
         testReportComponent.setAllCandidatesStarred();
         expect(testReportComponent.isAllCandidateStarred).toBeTruthy();
+        expect(testReportComponent.headerStarStatus).toBe('star');
         expect(testReportComponent.starredCandidateCount).toBe(3);
+    });
+
+    it('should set all candidate as unstarred candidates', () => {
+        testReportComponent.headerStarStatus = 'star';
+        spyOn(ReportService.prototype, 'setAllCandidatesStarred').and.callFake(() => {
+            return Observable.of(false);
+        });
+        testReportComponent.setAllCandidatesStarred();
+        expect(testReportComponent.headerStarStatus).toBe('star_border');
+        expect(testReportComponent.starredCandidateCount).toBe(0);
     });
 
     it('should set some candidates as starred candidates', () => {
@@ -157,13 +167,22 @@ describe('testting of test report:-', () => {
             return Observable.of(attendee1.id).merge(attendee4.id);
         });
         testReportComponent.starredCandidateCount = 0;
-        testReportComponent.testAttendeeArray.find(x => x.id === attendee1.id).starredCandidate = false;
-        testReportComponent.testAttendeeArray.find(x => x.id === attendee2.id).starredCandidate = false;
-        testReportComponent.testAttendeeArray.find(x => x.id === attendee4.id).starredCandidate = false;
+        testReportComponent.testAttendeeArray.forEach(x => x.starredCandidate = false);
         testReportComponent.headerStarStatus = 'star-border';
         testReportComponent.setStarredCandidate(attendee1);
         testReportComponent.setStarredCandidate(attendee4);
         expect(testReportComponent.starredCandidateCount).toBe(2);
+    });
+
+    it('should set one candidates as unstarred candidates', () => {
+        attendee1.starredCandidate = false;
+        spyOn(ReportService.prototype, 'setStarredCandidate').and.callFake(() => {
+            return Observable.of(attendee1);
+        });
+        testReportComponent.setStarredCandidate(attendee1);
+        expect(testReportComponent.isAllCandidateStarred).toBeFalsy();
+        expect(testReportComponent.headerStarStatus).toBe('star_border');
+        expect(testReportComponent.starredCandidateCount).toBe(1);
     });
 
     it('should send a request to resume the test', () => {
@@ -261,6 +280,10 @@ describe('testting of test report:-', () => {
         testReportComponent.testTakerDetails(attendee2.report.testStatus, 1001, attendee2.id);
         expect(testReportComponent.testFinishStatus).toBe('Expired');
         expect(testReportComponent.reportLink).toBe('    http://localhost:50805/reports/test/1001/individual-report/2');
+        testReportComponent.testTakerDetails(attendee4.report.testStatus, 1001, attendee4.id);
+        expect(testReportComponent.testFinishStatus).toBe('Completed');
+        testReportComponent.testTakerDetails(attendee1.report.testStatus, 1001, attendee1.id);
+        expect(testReportComponent.testFinishStatus).toBe('Blocked');
     });
 
     it('should return the maximum duration of a test for excel report ', () => {

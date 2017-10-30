@@ -6,11 +6,11 @@ import { BrowserModule, By } from '@angular/platform-browser';
 import { HttpService } from '../../core/http.service';
 import { CoreModule } from '../../core/core.module';
 import { DebugElement } from '@angular/core/core';
-import { ProfileEditComponent } from "./profile-edit.component";
-import { ProfileService } from "../profile.service";
-import { ApplicationUser } from "../profile.model";
-import { Observable } from "rxjs/Rx";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ProfileEditComponent } from './profile-edit.component';
+import { ProfileService } from '../profile.service';
+import { ApplicationUser } from '../profile.model';
+import { Observable } from 'rxjs/Rx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
