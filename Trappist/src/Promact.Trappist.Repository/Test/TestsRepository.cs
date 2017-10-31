@@ -59,13 +59,20 @@ namespace Promact.Trappist.Repository.Tests
             var testAcList = new List<TestAC>();
             TestAC testAcObject;
             var tests = await _dbContext.Test.OrderByDescending(x => x.CreatedDateTime).ToListAsync();
+
+            var testIds = tests.Select(x => x.Id).ToList();
+
+            var testAttendeeIds = _dbContext.TestAttendees.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
+            var testCategorieIds = _dbContext.TestCategory.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
+            var testQuestionsIds = _dbContext.TestQuestion.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
+
             tests.ForEach(test =>
             {
                 testAcObject = new TestAC();
                 testAcObject = Mapper.Map<TestAC>(test);
-                testAcObject.NumberOfTestAttendees = _dbContext.TestAttendees.Count(x => x.TestId == test.Id);
-                testAcObject.NumberOfTestSections = _dbContext.TestCategory.Count(x => x.TestId == test.Id);
-                testAcObject.NumberOfTestQuestions = _dbContext.TestQuestion.Count(x => x.TestId == test.Id);
+                testAcObject.NumberOfTestAttendees = testAttendeeIds.Count(x => x == test.Id);
+                testAcObject.NumberOfTestSections = testAttendeeIds.Count(x => x == test.Id);
+                testAcObject.NumberOfTestQuestions = testAttendeeIds.Count(x => x == test.Id);
                 testAcList.Add(testAcObject);
             });
 
