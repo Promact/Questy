@@ -16,6 +16,7 @@ import { Md2DataTableModule } from 'md2';
 import { ConductService } from '../../conduct/conduct.service';
 import { Observable } from 'rxjs/Rx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReportQuestionsCount } from './reportquestionscount';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; };
@@ -81,11 +82,30 @@ describe('Testing of test-report component:-', () => {
     attendee4.report.testStatus = 1;
     attendee4.report.timeTakenByAttendee = 150;
 
+    let attendee5 = new TestAttendee();
+    attendee5.id = 5;
+    attendee5.firstName = 'ritu';
+    attendee5.lastName = 'shah';;
+    attendee5.email = 'ritu@promactinfo.com';
+    attendee5.report.totalMarksScored = null;
+    attendee5.reporNotFoundYet = true;
+    attendee5.report.testStatus = 4;
+
     let attendees = new Array<TestAttendee>();
     attendees.push(attendee1);
     attendees.push(attendee2);
     attendees.push(attendee3);
     attendees.push(attendee4);
+    attendees.push(attendee5);
+
+    let excelDetails1 = new ReportQuestionsCount();
+    excelDetails1.easyQuestionAttempted = 1;
+    excelDetails1.noOfQuestionAttempted = 2;
+    excelDetails1.testAttendeeId = 1;
+    excelDetails1.totalTestQuestions = 5;
+
+    let excelDetailsList = new Array<ReportQuestionsCount>();
+    excelDetailsList.push(excelDetails1);
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -113,6 +133,7 @@ describe('Testing of test-report component:-', () => {
         testReportComponent.attendeeArray.push(attendee2);
         testReportComponent.attendeeArray.push(attendee3);
         testReportComponent.attendeeArray.push(attendee4);
+        testReportComponent.attendeeArray.push(attendee5);
     });
 
     it('should return the test name', () => {
@@ -176,6 +197,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should set one candidates as unstarred candidates', () => {
         attendee1.starredCandidate = false;
+        testReportComponent.testAttendeeArray.find(x => x.id === attendee1.id).starredCandidate = false;
         spyOn(ReportService.prototype, 'setStarredCandidate').and.callFake(() => {
             return Observable.of(attendee1);
         });
@@ -237,7 +259,12 @@ describe('Testing of test-report component:-', () => {
 
     it('should return the filtered list of candidates if filter criteria as per searching', () => {
         testReportComponent.filter(0, 'promact', false);
-        expect(testReportComponent.testAttendeeArray.length).toBe(2);
+        expect(testReportComponent.testAttendeeArray.length).toBe(3);
+    });
+
+    it('should return the filtered list of candidates if filter criteria as per searching', () => {
+        testReportComponent.filter(4, 'promact', false);
+        expect(testReportComponent.testAttendeeArray.length).toBe(1);
     });
 
     it('should return the total number of attendees', () => {
@@ -245,11 +272,32 @@ describe('Testing of test-report component:-', () => {
         expect(testReportComponent.count).toBe(3);
     });
 
+    it('should return all excel deatils and call the download excel function', () => {
+        spyOn(testReportComponent, 'downloadTestReportExcel');
+        spyOn(ReportService.prototype, 'getAllAttendeeMarksDetails').and.callFake(() => {
+            return Observable.of(excelDetailsList);
+        });
+        testReportComponent.getExcelDetails();
+        expect(testReportComponent.reportQuestionDetails.length).toBe(1);
+    });
+
     it('should return the test time in local time format', () => {
-        let testCreateTime = '2017-10-12T06:02:00.4463941';
+        let testCreateTime = '2017-10-12T06:02:00.4463941Z';
         let testDateTime = new Date(testCreateTime);
+        let offset = testDateTime.getTimezoneOffset();
+        let hoursDiff = Math.trunc(offset / 60);
+        let minutesDiff = Math.trunc(offset % 60);
+        let localHours = testDateTime.getHours() - hoursDiff;
+        let localMinutes = testDateTime.getMinutes() - minutesDiff;
+        if (localMinutes >= 60) {
+            let hours = Math.trunc(localMinutes / 60);
+            let minutes = Math.trunc(localMinutes % 60);
+            localHours += hours;
+            localMinutes = minutes;
+        }
+        let time = localHours + ' : ' + localMinutes;
         testReportComponent.calculateLocalTime(testDateTime);
-        expect(testReportComponent.testTime).toBe('11 : 32');
+        expect(testReportComponent.testTime).toBe(time);
     });
 
     it('should select all candiate at a time', () => {
@@ -310,4 +358,16 @@ describe('Testing of test-report component:-', () => {
         expect(testReportComponent.expiredTestCount).toBe(1);
         expect(testReportComponent.completedTestCount).toBe(1);
     });
+
+    it('should select the text area', () => {
+        let event: any = {};
+        let search: any = {};
+        event.stopPropagation = function () { };
+        search.select = function () { };
+        spyOn(event, 'stopPropagation');
+        testReportComponent.selectTextArea(event, search);
+        expect(event.stopPropagation).toHaveBeenCalled();
+    });
+
+   
 });

@@ -32,7 +32,7 @@ import { Category } from '../category.model';
 
 class MockActivatedRoute {
     constructor() {
-        this._paramsValue = { matchString: 'Search', name: 'matchString' };
+        this._paramsValue = { matchString: 'Search' };
         this._queryParamsValue = { matchString: 'Search' };
     }
     // ActivatedRoute.params is Observable
@@ -41,7 +41,7 @@ class MockActivatedRoute {
 
     // Test parameters
     private _testParams: {};
-    private _paramsValue: { matchString: string, name: string };
+    private _paramsValue: { matchString: string };
     private _queryParamsValue: { matchString: string };
 
     get testParams() { return this._testParams; }
@@ -53,13 +53,13 @@ class MockActivatedRoute {
     get snapshot() {
         return { params: this._paramsValue, queryParams: this._queryParamsValue };
     }
-    set snapshot(param: { params: { matchString: string, name: string }, queryParams: { matchString: string } }) {
+    set snapshot(param: { params: { matchString: string }, queryParams: { matchString: string } }) {
         this._paramsValue = param.params;
         this._queryParamsValue = param.queryParams;
     }
 }
 
-describe('Testing of question-dashboard component', () => {
+describe('Testing of question-dashboard component:-', () => {
     let questionFixture: ComponentFixture<QuestionsDashboardComponent>;
     let questionComponent: QuestionsDashboardComponent;
     let mockData: any[] = [];
@@ -349,25 +349,25 @@ describe('Testing of question-dashboard component', () => {
         categoryName = 'Verbal';
         questionComponent.categoryWiseFilter(categoryId, categoryName, difficulty);
         expect(questionComponent.isAllQuestionsSectionSelected).toBeFalsy();
-        questionComponent.searchText = undefined;
-        questionComponent.categoryWiseFilter(categoryId, categoryName, difficulty);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/Verbal' + '/All');
-
     });
 
     it('should filter questions as difficulty wise', () => {
         let difficulty: string;
         difficulty = 'Easy';
-        questionDisplayList.pop();
-        questionDisplayList.pop();
+        let list = new Array<QuestionDisplay>();
         questionComponent.selectedCategory.categoryName = undefined;
         spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(questionDisplayList);
+            return Observable.of(list);
         });
         spyOn(QuestionsService.prototype, 'countTheQuestion').and.callThrough();
         questionComponent.difficultyWiseSearch(difficulty);
         expect(questionComponent.questionDisplay.length).toBe(0);
-
+        difficulty = 'Medium';
+        questionComponent.selectedCategory.categoryName = 'Verbal';
+        questionComponent.selectedCategoryName = 'Verbal';
+        list.push(questionDisplay1);
+        questionComponent.difficultyWiseSearch(difficulty);
+        expect(questionComponent.isAllQuestionsSectionSelected).toBeFalsy();
     });
 
     it('should filter questions as searched', () => {
@@ -395,11 +395,15 @@ describe('Testing of question-dashboard component', () => {
         expect(questionComponent.questionDisplay.length).toBe(1);
         searchString = '';
         list.pop();
+        questionComponent.selectedCategory.categoryName = 'AllCategory';
         questionComponent.difficultyLevel = 'Medium';
         questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/Verbal' + '/Medium');
+        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/AllCategory' + '/Medium');
         expect(questionComponent.questionDisplay.length).toBe(0);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/Verbal' + '/Medium');
+        questionComponent.selectedCategory.categoryName = 'AllCategory';
+        searchString = 'Suparna';
+        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+        expect(questionComponent.questionDisplay.length).toBe(0);
     });
 
     it('should return true if searching text length is not zero', () => {
@@ -434,6 +438,20 @@ describe('Testing of question-dashboard component', () => {
         questionComponent.selectedDifficulty = 1;
         questionComponent.selectSelectionAndDifficultyType('programming');
         expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3] + '/' + routeTo[4]).toBe('questions/' + 'programming/' + 'add/' + 'Verbal/' + 'Medium');
-
     });
-}); 
+
+    it('should select the text area when search icon is clicked', () => {
+        let event: any = {};
+        event.stopPropagation = function () { };
+        let search: any = {};
+        search.select = function () { };
+        let searchString = 'how';
+        spyOn(event, 'stopPropagation');
+        spyOn(search, 'select');
+        questionComponent.selectedCategoryName = undefined;
+        questionComponent.SelectedDifficultyLevel = undefined;
+        questionComponent.selectTextArea(event, search, searchString);
+        expect(routeTo[0] + '/' + routeTo[1]).toBe('question/search' + '/how');
+    });
+
+});
