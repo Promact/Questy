@@ -348,18 +348,20 @@ export class IndividualReportComponent implements OnInit {
      * @param isAnswer is a boolean type variable for checking the answered option is correct or not
      */
     isAttendeeAnswerCorrect(optionId: number, isAnswer: boolean) {
+        let isTestAttendeeAnswerCorrect: boolean;
         for (let option = 0; option < this.testAnswers.length; option++) {
             if (this.testAnswers[option].answeredOption === optionId) {
                 if (isAnswer) {
-                    this.isTestAttendeeAnswerCorrect = true;
+                    isTestAttendeeAnswerCorrect = true;
                 }
                 else {
-                    this.isTestAttendeeAnswerCorrect = false;
+                    isTestAttendeeAnswerCorrect = false;
                 }
             }
         };
-        return this.isTestAttendeeAnswerCorrect;
+        return isTestAttendeeAnswerCorrect;
     }
+
 
     /**
      * Checks for the corrrect option of a particular question

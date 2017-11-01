@@ -91,19 +91,24 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<List<TestQuestion>> GetTestQuestions(int testId)
         {
             var listOfQuestionsInTest = await _dbContext.TestQuestion.Include(x => x.Question).Where(x => x.TestId == testId).ToListAsync();
+            var testQuestionIds = listOfQuestionsInTest.Where(x => x.Question.QuestionType != QuestionType.Programming && x.TestId == testId).Select(x => x.Id).ToList();
+            var questionObjectList = await _dbContext.TestQuestion.Include(x => x.Question).Include(x => x.Question.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => testQuestionIds.Contains(x.Id) && x.TestId == testId).ToListAsync();
+
             var testQuestionList = new List<TestQuestion>();
+
             foreach (var question in listOfQuestionsInTest)
             {
                 if (question.Question.QuestionType == QuestionType.Programming)
                     testQuestionList.Add(question);
                 else
                 {
-                    var testQuestionObject = await _dbContext.TestQuestion.Include(x => x.Question).Include(x => x.Question.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.QuestionId == question.QuestionId && x.TestId == testId).FirstOrDefaultAsync();
-                    testQuestionList.Add(testQuestionObject);
+                    var questionObject = questionObjectList.Where(x => x.QuestionId == question.QuestionId).FirstOrDefault();
+                    testQuestionList.Add(questionObject);
                 }
             }
             return testQuestionList;
         }
+
 
         public async Task<List<TestAnswers>> GetTestAttendeeAnswers(int testAttendeeId)
         {
@@ -157,7 +162,7 @@ namespace Promact.Trappist.Repository.Reports
             var answeredByAllAttendeeList = await _dbContext.TestAnswers.Where(x => x.TestConduct.TestAttendees.TestId == testId).Select(s => new { s.TestConductId, s.AnsweredOption }).ToListAsync();
 
             //all testcode solutions of a test
-            var testCodeSolutionsList =  _dbContext.TestCodeSolution.Where(x => x.TestAttendee.TestId == testId).Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score });
+            var testCodeSolutionsList = _dbContext.TestCodeSolution.Where(x => x.TestAttendee.TestId == testId).Select(selectOnly => new { selectOnly.QuestionId, selectOnly.TestAttendeeId, selectOnly.Score });
 
             foreach (var testAttendee in allTestAttendeeList)
             {
