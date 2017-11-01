@@ -12,7 +12,7 @@ __karma__.loaded = function () { };
 
 // (3)
 function isJsFile(path) {
-    return path.slice(-3) == '.js';
+    return path.slice(-3) === '.js';
 }
 
 // (4)
