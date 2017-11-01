@@ -535,11 +535,19 @@ namespace Promact.Trappist.Repository.TestConduct
             //Gets the list of questions attended by the test attendee and includes the test answers and question details corresponding to the test attendee
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
 
+            //Gets the Ids of questions attended by test attendee
+            var attendedQuestionIds = listOfQuestionsAttendedByTestAttendee.Where(x => x.Question.QuestionType != QuestionType.Programming && x.TestAttendeeId == testAttendeeId).Select(x => x.Id).ToList();
+
+            //Gets the testConduct details of the questions attended by test attendee which are not coding type questions
+            var testConductObjectList = await _dbContext.TestConduct.Include(x => x.Question).Include(x => x.Question.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => attendedQuestionIds.Contains(x.Id) && x.TestAttendeeId == testAttendeeId).ToListAsync();
+
             //Gets the number of questions in the test taken by the test attendee
             var numberOfQuestionsInATest = await _dbContext.TestQuestion.AsNoTracking().CountAsync(x => x.TestId == testAttendee.TestId);
 
             //Calculates the full marks of the test taken by the test attendee
             fullMarks = numberOfQuestionsInATest * testAttendee.Test.CorrectMarks;
+
+            var testSolutionList = await _dbContext.TestCodeSolution.AsNoTracking().OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
@@ -557,7 +565,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     var isAnsweredOptionCorrect = true;
 
                     //Gets the single multiple question details along with the single multiple question options for a question attended by the test attendee when it is not a coding question 
-                    var testConductObject = await _dbContext.TestConduct.Include(x => x.Question).ThenInclude(x => x.SingleMultipleAnswerQuestion).ThenInclude(x => x.SingleMultipleAnswerQuestionOption).Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).FirstOrDefaultAsync();
+                    var testConductObject = testConductObjectList.Where(x => x.QuestionId == attendedQuestion.QuestionId).FirstOrDefault();
 
                     //Gets the options of the single and multiple-answer question attempted by the test attendee
                     var listOfOptions = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
@@ -572,18 +580,21 @@ namespace Promact.Trappist.Repository.TestConduct
                     foreach (var answers in attendedQuestion.TestAnswers)
                     {
                         var answeredOption = answers.AnsweredOption;
+
                         //Checks if none of the options are marked by a test attendee for single-multiple-answer question
                         if (answeredOption == null)
                         {
                             isAnsweredOptionNull = true;
                             continue;
                         }
+
                         //Checks whether the option answered by the test attendee for the single-answer question is correct or not
                         if (!testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer && attendedQuestion.Question.QuestionType == QuestionType.Single)
                         {
                             isAnsweredOptionCorrect = false;
                             break;
                         }
+
                         else if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
                         {
                             //Calculates the number of answers given correctly for multiple-answer question by the test attendee
@@ -592,6 +603,7 @@ namespace Promact.Trappist.Repository.TestConduct
                             isAnsweredOptionCorrect = numberOfcorrectOptionsAnsweredByTestAttendee == numberOfCorrectOptionsOfMultipleAnswerQuestion;
                         }
                     }
+
                     if (isAnsweredOptionCorrect && !isAnsweredOptionNull)
                     {
                         //Add score for single-multiple answer question when correct
@@ -606,7 +618,7 @@ namespace Promact.Trappist.Repository.TestConduct
                 else
                 {
                     //Add score from coding question attempted
-                    var testSolution = await _dbContext.TestCodeSolution.AsNoTracking().OrderByDescending(x => x.CreatedDateTime).Where(x => x.TestAttendeeId == testAttendeeId && x.QuestionId == attendedQuestion.QuestionId).Select(x => new { x.Score }).FirstOrDefaultAsync();
+                    var testSolution = testSolutionList.Where(x => x.QuestionId == attendedQuestion.QuestionId).Select(x => new { x.Score }).FirstOrDefault();
                     if (testSolution != null)
                     {
                         correctMarks += (decimal)testSolution.Score * testAttendee.Test.CorrectMarks;

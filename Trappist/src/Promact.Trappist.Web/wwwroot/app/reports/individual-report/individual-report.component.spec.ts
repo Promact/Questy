@@ -428,8 +428,8 @@ describe('Individual Report Component', () => {
 
     it('should check if the answers given by the candidate are correct or not', () => {
         individualReport.testAnswers = testAnswersList;
-        individualReport.isAttendeeAnswerCorrect(6, true);
-        expect(individualReport.isTestAttendeeAnswerCorrect).toBe(true);
+        let a = individualReport.isAttendeeAnswerCorrect(6, true);
+        expect(a).toBe(true);
     });
 
     it('should set the test status of a particular candidate as completed', () => {
