@@ -275,9 +275,7 @@ export class TestComponent implements OnInit {
             window.location.href = window.location.origin + '/pageNotFound';
         });
     }
-
-
-
+    
     /**
      * Gets Test Attendee
      * @param testId: Id of Test

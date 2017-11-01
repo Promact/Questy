@@ -31,6 +31,7 @@
             'node_modules/screenfull/dist/screenfull.js',
             'node_modules/jspdf/dist/jspdf.debug.js',
             'node_modules/exceljs/dist/exceljs.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js',
 
             { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
 
@@ -41,10 +42,20 @@
             { pattern: 'wwwroot/app/**/*.js.map', included: false, watched: true },
             { pattern: 'wwwroot/app/**/*.html', included: false, watched: true },
             { pattern: 'wwwroot/**/*.css', included: false, watched: true },
-            { pattern: 'node_modules/md2/bundles/md2.umd.js', included: false, watched: false },
+            { pattern: 'node_modules/ng2-ckeditor/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/ngx-popover/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ng2-ace-editor/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/clipboard/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/w3c-blob/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ng2-charts/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/brace/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/buffer/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/base64-js/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ieee754/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/md2/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/ngx-clipboard/**/*.js', included: false, watched: false },
-            { pattern: 'node_modules/clipboard/dist/clipboard.js', included: false, watched: false },
+            { pattern: 'node_modules/md2/bundles/md2.umd.js', included: false, watched: false },
+            { pattern: 'node_modules/ngx-clipboard/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-infinite-scroll/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/tinymce/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-tinymce/dist/**.js', included: false, watched: false },
@@ -61,6 +72,16 @@
             { pattern: 'node_modules/ace-builds/**/*.js', included: false, watched: false }
 
         ],
+
+        coverageReporter: { type: 'in-memory' },
+        remapCoverageReporter: {
+            html: 'coverage/html',
+            cobertura: 'coverage/cobertura.xml'
+        },
+        remapOptions: {},
+        preprocessors: {
+            'wwwroot/app/**/!(*spec)*.js': ['coverage']
+        },
 
         mime: {
             'text/x-typescript': ['ts', 'tsx']
