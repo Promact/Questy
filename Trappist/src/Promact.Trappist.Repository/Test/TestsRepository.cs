@@ -63,7 +63,7 @@ namespace Promact.Trappist.Repository.Tests
             var testIds = tests.Select(x => x.Id).ToList();
 
             var testAttendeeIds = _dbContext.TestAttendees.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
-            var testCategorieIds = _dbContext.TestCategory.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
+            var testCategoriesIds = _dbContext.TestCategory.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
             var testQuestionsIds = _dbContext.TestQuestion.Where(x => testIds.Contains(x.TestId)).Select(x => x.TestId).ToList();
 
             tests.ForEach(test =>
@@ -71,8 +71,8 @@ namespace Promact.Trappist.Repository.Tests
                 testAcObject = new TestAC();
                 testAcObject = Mapper.Map<TestAC>(test);
                 testAcObject.NumberOfTestAttendees = testAttendeeIds.Count(x => x == test.Id);
-                testAcObject.NumberOfTestSections = testAttendeeIds.Count(x => x == test.Id);
-                testAcObject.NumberOfTestQuestions = testAttendeeIds.Count(x => x == test.Id);
+                testAcObject.NumberOfTestSections = testCategoriesIds.Count(x => x == test.Id);
+                testAcObject.NumberOfTestQuestions = testQuestionsIds.Count(x => x == test.Id);
                 testAcList.Add(testAcObject);
             });
 
