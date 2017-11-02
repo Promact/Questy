@@ -367,7 +367,5 @@ describe('Testing of test-report component:-', () => {
         spyOn(event, 'stopPropagation');
         testReportComponent.selectTextArea(event, search);
         expect(event.stopPropagation).toHaveBeenCalled();
-    });
-
-   
+    });   
 });
