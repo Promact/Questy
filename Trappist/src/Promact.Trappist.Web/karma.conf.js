@@ -48,6 +48,7 @@
             { pattern: 'node_modules/ng2-charts/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/angular2-wizard-fix/dist/index.js', included: false, watched: false },           
             { pattern: 'node_modules/angular2-wizard-fix/dist/src/*.js', included: false, watched: false },
+            { pattern: 'node_modules//ng2-ckeditor/lib/*.js', included: false, watched: false },
 
         ],
 
@@ -65,17 +66,17 @@
         proxies: {
             "/app/": "/base/wwwroot/app/"
         },
-        preprocessors: {
-            // source files, that you wanna generate coverage for 
-            // do not include tests or libraries 
-            // (these files will be instrumented by Istanbul) 
-            'wwwroot/app/**/!(*spec)*.js': ["coverage"]
-        },
+        //preprocessors: {
+        //    // source files, that you wanna generate coverage for 
+        //    // do not include tests or libraries 
+        //    // (these files will be instrumented by Istanbul) 
+        //    'wwwroot/app/**/!(*spec)*.js': ["coverage"]
+        //},
 
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        reporters: ["progress", "karma-remap-istanbul", "kjhtml",'coverage'],
+        reporters: ["progress", "kjhtml"],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,

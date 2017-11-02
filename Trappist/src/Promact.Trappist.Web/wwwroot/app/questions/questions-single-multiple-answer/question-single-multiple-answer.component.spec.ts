@@ -18,12 +18,13 @@ import { TinymceModule } from 'angular2-tinymce';
 import { QuestionBase } from '../question';
 import { Category } from '../category.model';
 import { BehaviorSubject } from 'rxjs/Rx';
+import { MockRouteService } from "./mock-single-multiple-routes.service.";
 
 class MockActivatedRoute {
     params = Observable.of({ 'id': MockTestData[0].id });
 }
 
-describe('Single multiple questions', () => {
+describe('Testing of single-multiple-answer component:-', () => {
     let singleMultipleFixture: ComponentFixture<SingleMultipleAnswerQuestionComponent>;
     let singleMultipleComponent: SingleMultipleAnswerQuestionComponent;
     let mockData: any[] = [];
@@ -174,5 +175,11 @@ describe('Single multiple questions', () => {
         singleMultipleComponent.selectedDifficultyLevel = 'Hard';
         singleMultipleComponent.cancelButtonClicked();
         expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('/questions/dashboard' + '/Verbal' + '/Hard');
+    });
+
+    it('should check question type', () => {
+        spyOn(MockRouteService.prototype, 'getOnlySingleType').and.callThrough();
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeTruthy();
     });
 });
