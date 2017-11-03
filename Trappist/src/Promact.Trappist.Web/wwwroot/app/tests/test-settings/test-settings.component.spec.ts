@@ -133,7 +133,7 @@ describe('Test Settings Component', () => {
                 MockRouteService
             ],
 
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot(), MdDialogModule]
+            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule, MdDialogModule]
         }).compileComponents();
 
     }));

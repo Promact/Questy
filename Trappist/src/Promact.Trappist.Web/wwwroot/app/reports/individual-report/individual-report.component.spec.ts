@@ -361,7 +361,7 @@ describe('Individual Report Component', () => {
                 { provide: window, useClass: MockWindow }
             ],
 
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot(), MdDialogModule, ChartsModule]
+            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule, MdDialogModule, ChartsModule]
         }).compileComponents();
 
     }));
