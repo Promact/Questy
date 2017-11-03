@@ -350,14 +350,6 @@ export class QuestionsProgrammingComponent implements OnInit {
     cancelButtonClicked() {
         this.router.navigate(['/questions/dashboard', this.selectedCategory, this.selectedDifficultyLevel]);
     }
-
-    /**
-     * Prevent multiple click event on same button 
-     * @param $event:event on button click
-     */
-    stopMultipleClick($event: any) {
-        $event.stopImmediatePropagation();
-    }
 }
 
 class FormControlModel {

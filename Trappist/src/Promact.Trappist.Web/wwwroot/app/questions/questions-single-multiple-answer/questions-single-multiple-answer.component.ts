@@ -260,14 +260,6 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     }
 
     /**
-     * Prevent multiple click event on same button 
-     * @param $event:event on button click
-     */
-    stopMultipleClick($event: any) {
-        $event.stopImmediatePropagation();
-    }
-
-    /**
      * Add or update or duplicate single/multiple answer question and redirect to question dashboard page
      * @param singleAnswerQuestion: Question of singleMultipleAnswerType will be added, edited or duplicated
      */
