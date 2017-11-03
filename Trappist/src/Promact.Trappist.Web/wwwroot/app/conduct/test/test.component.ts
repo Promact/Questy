@@ -777,10 +777,12 @@ export class TestComponent implements OnInit {
      * Increments focus lost counter and shows warning message
      * @param event: Focus event 
      */
-    private windowFocusLost(event: FocusEvent) {
+    public windowFocusLost(event: FocusEvent) {
         this.focusLost += 1;
         let message: string;
         let duration: number = 0;
+
+        console.log(this.focusLost + ' ' + this.test.browserTolerance);
 
         if (this.focusLost <= this.test.browserTolerance) {
             message = this.ALERT_BROWSER_FOCUS_LOST;

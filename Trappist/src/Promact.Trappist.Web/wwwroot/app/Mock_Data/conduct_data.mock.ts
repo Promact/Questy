@@ -3,7 +3,7 @@
     'createdDateTime': '2017-10-04T11:21:01.054085',
     'testName': 'Hello',
     'link': 'hjxJ4cQ2fI',
-    'browserTolerance': 0,
+    'browserTolerance': 1,
     'startDate': '2017-10-04T11:50:00',
     'endDate': '2017-10-07T11:21:00',
     'duration': 60,
@@ -61,21 +61,28 @@ export const FakeTestQuestions = [{
         "question": {
             "question": {
                 "id": 8008,
-                "questionDetail": "<p>WAP to echo</p>\n",
-                "questionType": 2,
+                "questionDetail": "Q2",
+                "questionType": 0,
                 "difficultyLevel": 0,
                 "categoryID": 6,
                 "isSelect": false
-            }, "singleMultipleAnswerQuestion": null,
-            "codeSnippetQuestion": {
-                "checkCodeComplexity": false,
-                "checkTimeComplexity": false,
-                "runBasicTestCase": true,
-                "runCornerTestCase": true,
-                "runNecessaryTestCase": true,
-                "languageList": ["C", "Cpp"],
-                "codeSnippetQuestionTestCases": []
-            }
+            }, "singleMultipleAnswerQuestion": {
+                "id": 1000,
+                "singleMultipleAnswerQuestionOption": [{
+                    "id": 10,
+                    "option": "a",
+                    "isAnswer": false,
+                    "singleMultipleAnswerQuestionId": 1000,
+                    "isTwoOptionsSame": "false"
+                }, {
+                    "id": 11,
+                    "option": "b",
+                    "isAnswer": false,
+                    "singleMultipleAnswerQuestionId": 1000,
+                    "isTwoOptionsSame": "false"
+                }]
+            },
+            "codeSnippetQuestion": null,
         }, "questionStatus": 3
     }]
 
@@ -99,5 +106,5 @@ export const FakeResumeData = [{
     'optionChoice': [1, 2],
     'code': '',
     'questionStatus': 1,
-    'isAnswered': 'true'
+    'isAnswered': true
 }]
