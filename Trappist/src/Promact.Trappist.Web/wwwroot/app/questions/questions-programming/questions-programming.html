@@ -8,7 +8,7 @@
       <div class="spinner">
       </div>
     </div>
-    <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)">
+    <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)" onsubmit="saveBtn.disabled = true; return true;">
       <div class="form-fields">
         <div class="form-group">
           <label>Section</label><em class="danger-text h4">*</em>
@@ -168,7 +168,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0" (click)="stopMultipleClick($event)">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0" id="saveBtn">Save</button>
       </div>
     </form>
   </div>
