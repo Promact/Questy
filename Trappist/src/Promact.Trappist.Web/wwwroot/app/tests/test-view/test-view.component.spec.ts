@@ -119,7 +119,7 @@ describe('Test View Component', () => {
                 MockRouteService
             ],
 
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot()]
+            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule]
         }).compileComponents();
 
     }));
