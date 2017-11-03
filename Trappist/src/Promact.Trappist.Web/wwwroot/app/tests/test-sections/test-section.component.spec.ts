@@ -52,7 +52,7 @@ describe('Test Section', () => {
                 { provide: APP_BASE_HREF, useValue: '/' },
                 MockRouteService
             ],
-            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule, Md2AccordionModule.forRoot(), PopoverModule, ClipboardModule]
+            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule, Md2AccordionModule, PopoverModule, ClipboardModule]
         }).compileComponents();
     }));
 
