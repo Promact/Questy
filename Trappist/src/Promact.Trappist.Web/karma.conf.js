@@ -66,17 +66,17 @@
         proxies: {
             "/app/": "/base/wwwroot/app/"
         },
-        //preprocessors: {
-        //    // source files, that you wanna generate coverage for 
-        //    // do not include tests or libraries 
-        //    // (these files will be instrumented by Istanbul) 
-        //    'wwwroot/app/**/!(*spec)*.js': ["coverage"]
-        //},
+        preprocessors: {
+            // source files, that you wanna generate coverage for 
+            // do not include tests or libraries 
+            // (these files will be instrumented by Istanbul) 
+            'wwwroot/app/**/!(*spec)*.js': ["coverage"]
+        },
 
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        reporters: ["progress", "kjhtml"],
+        reporters: ["progress", "karma-remap-istanbul", "kjhtml", 'coverage'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
