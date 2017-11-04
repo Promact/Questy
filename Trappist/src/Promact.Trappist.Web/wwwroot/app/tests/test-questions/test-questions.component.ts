@@ -45,7 +45,6 @@ export class TestQuestionsComponent implements OnInit {
         this.questionList = [];  
         this.router.params.subscribe(params => {
             this.testId = params['id'];
-            console.log(this.testId);
         });
     }
 
@@ -66,7 +65,6 @@ export class TestQuestionsComponent implements OnInit {
      * @param i is index of category
      */
     getAllquestions(category: Category, i: number) {
-        console.log(category);
         this.loader_question = true;
         if (!category.isAccordionOpen) {
             category.isAccordionOpen = true;
@@ -223,8 +221,8 @@ export class TestQuestionsComponent implements OnInit {
     * Checks if any candidate has taken the test
     */
     isTestAttendeeExist() {
-        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-            this.isEditTestEnabled = !res.response;
+        this.testService.isTestAttendeeExist(this.testId).subscribe(res => {
+            this.isEditTestEnabled = !res;
         });
     }
 

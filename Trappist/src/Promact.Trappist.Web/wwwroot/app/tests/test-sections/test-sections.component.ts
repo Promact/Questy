@@ -145,8 +145,8 @@ export class TestSectionsComponent implements OnInit {
      * Checks if any candidate has taken the test
      */
     isTestAttendeeExist() {
-        this.testService.isTestAttendeeExist(this.testId).subscribe((res) => {
-            this.isEditTestEnabled = !res.response;
+        this.testService.isTestAttendeeExist(this.testId).subscribe(res => {
+            this.isEditTestEnabled = !res;
         });
     }
 }
