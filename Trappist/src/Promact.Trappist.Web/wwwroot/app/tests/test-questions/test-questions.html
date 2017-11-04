@@ -29,7 +29,7 @@
                   <h5>Select All</h5>
                   <span class="h7">(total {{category.questionCount}} questions)</span>
               </div>  
-              <button type="button" class="btn pull-right" (click)="GetShuffledQuestionArray(k);openDialog(category,k)">Select Random Questions</button>
+              <button type="button" class="btn pull-right" (click)="GetShuffledQuestionArray(k);openDialog(category,k)" [disabled]="!isEditTestEnabled">Select Random Questions</button>
             </div>
             <ng-container *ngFor="let question of category.questionList;let i=index">
               <div class="qs-container">
