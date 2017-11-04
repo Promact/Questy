@@ -18,7 +18,7 @@ import { TinymceModule } from 'angular2-tinymce';
 import { QuestionBase } from '../question';
 import { Category } from '../category.model';
 import { BehaviorSubject } from 'rxjs/Rx';
-import { MockRouteService } from "./mock-single-multiple-routes.service.";
+import { MockRouteService } from './mock-route.service';
 
 class MockActivatedRoute {
     params = Observable.of({ 'id': MockTestData[0].id });
@@ -55,7 +55,8 @@ describe('Testing of single-multiple-answer component:-', () => {
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
                 QuestionsService,
                 CategoryService,
-                HttpService
+                HttpService,
+                MockRouteService
             ],
             imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule, TinymceModule]
         }).compileComponents();
@@ -177,9 +178,63 @@ describe('Testing of single-multiple-answer component:-', () => {
         expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('/questions/dashboard' + '/Verbal' + '/Hard');
     });
 
-    it('should check question type', () => {
-        spyOn(MockRouteService.prototype, 'getOnlySingleType').and.callThrough();
+    it('should load component of only single-answer question type', () => {
+        let url = '/questions/single-answer';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
         singleMultipleComponent.getQuestionType();
         expect(singleMultipleComponent.isSingleAnswerQuestion).toBeTruthy();
+    });
+
+    it('should load component of add-single-answer question type', () => {
+        let url = '/questions/single-answer/add/AllCategory/All';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeTruthy();
+        expect(singleMultipleComponent.isEditQuestion).toBeFalsy();
+    });
+
+    it('should load component of edit-single-answer question type', () => {
+        let url = '/questions/edit-single-answer/32';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeTruthy();
+    });
+
+    it('should load component of duplicate-single-answer question type', () => {
+        let url = '/questions/single-answer/duplicate/32';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeTruthy();
+        expect(singleMultipleComponent.isduplicateQuestion).toBeTruthy();
+    });
+
+    it('should load component of only multiple-answers question type', () => {
+        let url = '/questions/multiple-answers';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeFalsy();
+    });
+
+    it('should load component of add-multiple-answers question type', () => {
+        let url = '/questions/multiple-answers/add/AllCategory/All';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeFalsy();
+        expect(singleMultipleComponent.isEditQuestion).toBeFalsy();
+    });
+
+    it('should load component of edit-multiple-answers question type', () => {
+        let url = '/questions/edit-multiple-answers/32';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeFalsy();
+    });
+
+    it('should load component of duplicate-multiple-answers question type', () => {
+        let url = '/questions/multiple-answers/duplicate/32';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        singleMultipleComponent.getQuestionType();
+        expect(singleMultipleComponent.isSingleAnswerQuestion).toBeFalsy();
+        expect(singleMultipleComponent.isduplicateQuestion).toBeTruthy();
     });
 });
