@@ -13,6 +13,7 @@ import { QuestionsService } from './questions.service';
 import { CategoryService } from './categories.service';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { TinymceModule } from 'angular2-tinymce';
+import { MockRouteService } from './questions-single-multiple-answer/mock-route.service';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { TinymceModule } from 'angular2-tinymce';
     ],
     providers: [
         QuestionsService,
-        CategoryService
+        CategoryService,
+        MockRouteService
     ]
 })
 export class QuestionsModule { }

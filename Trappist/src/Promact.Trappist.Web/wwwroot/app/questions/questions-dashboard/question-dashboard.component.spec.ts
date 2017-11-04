@@ -433,7 +433,7 @@ describe('Testing of question-dashboard component:-', () => {
         questionComponent.selectedCategory.categoryName = undefined;
         questionComponent.selectedDifficulty = 1;
         questionComponent.selectSelectionAndDifficultyType('multiple-answer');
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3] + '/' + routeTo[4]).toBe('questions/' + 'multiple-answer/' + 'add/' + 'AllCategory/' + 'Medium');
+        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3] + '/' + routeTo[4]).toBe('questions/' + 'multiple-answers/' + 'add/' + 'AllCategory/' + 'Medium');
         questionComponent.selectedCategory.categoryName = 'Verbal';
         questionComponent.selectedDifficulty = 1;
         questionComponent.selectSelectionAndDifficultyType('programming');

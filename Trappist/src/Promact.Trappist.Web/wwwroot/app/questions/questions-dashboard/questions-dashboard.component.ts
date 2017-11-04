@@ -479,7 +479,7 @@ export class QuestionsDashboardComponent implements OnInit {
         if (questiontype === 'single-answer')
             this.router.navigate(['questions', 'single-answer', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'multiple-answer')
-            this.router.navigate(['questions', 'multiple-answer', 'add', categoryName, difficultyLevel]);
+            this.router.navigate(['questions', 'multiple-answers', 'add', categoryName, difficultyLevel]);
         else if (questiontype === 'programming')
             this.router.navigate(['questions', 'programming', 'add', categoryName, difficultyLevel]);
     }
