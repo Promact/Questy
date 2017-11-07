@@ -176,7 +176,7 @@
           <p>{{testAttendee?.testLogs.finishTest |date:'MMMM d, y, HH:mm:ss'}} : Finished the test.</p>
           <p *ngIf="awayFromTestWindowVisible">{{testAttendee?.testLogs.awayFromTestWindow |date:'MMMM d, y, HH:mm:ss'}} : Away from the test window.</p>
           <p *ngIf="testLogsVisible">{{testAttendee?.testLogs.disconnectedFromServer |date:'MMMM d, y, HH:mm:ss'}} : Disconnected from the server.</p>
-          <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'MMMM d, y, HH:mm:ss'}} User Closed the test window without finishing the test.</p>
+          <p *ngIf="closeWindowLogVisible">{{testAttendee?.testLogs.closeWindowWithoutFinishingTest |date:'MMMM d, y, HH:mm:ss'}} : User Closed the test window without finishing the test.</p>
           <p *ngIf="resumeTestLog">{{testAttendee?.testLogs.resumeTest |date:'MMMM d, y, HH:mm:ss'}} : Resumed the test.</p>
           <p>{{numberOfQuestionsAttempted}} : Total number of questions attempted by the Attendee.</p>
         </div>

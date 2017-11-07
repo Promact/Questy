@@ -255,6 +255,7 @@ export class TestComponent implements OnInit {
             this.resumable = this.test.allowTestResume;
 
             window.onbeforeunload = (ev) => {
+                this.isCloseWindow = true;
                 this.saveTestLogs();
                 let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
                 ev.returnValue = dialogText;
