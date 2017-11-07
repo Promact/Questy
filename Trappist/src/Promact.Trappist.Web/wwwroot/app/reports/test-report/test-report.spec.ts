@@ -341,7 +341,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should return average time taken in a test for excel report ', () => {
         testReportComponent.calculateTestSummaryDetails();
-        expect(testReportComponent.averageTimeTaken).toBe(141);
+        expect(testReportComponent.averageTimeTaken).toBe(2);
     });
 
     it('should return highest ranked candiate of a test ', () => {
