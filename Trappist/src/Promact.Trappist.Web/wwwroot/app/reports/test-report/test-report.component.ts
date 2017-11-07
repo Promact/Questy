@@ -450,7 +450,8 @@ export class TestReportComponent implements OnInit {
             { header: 'TEST DATE', key: 'testDate', width: 30 },
             { header: 'TEST TIME', key: 'testTime', width: 30 },
             { header: 'FINISH STATUS', key: 'testStatus', width: 15 },
-            { header: 'OVERALL MARKS', key: 'totalMarks', width: 15 },
+            { header: 'OBTAINED MARKS', key: 'obtainedMarks', width: 20 },
+            { header: 'TOTAL MARKS', key: 'totalMarks', width: 15 },
             { header: 'REPORT LINK', key: 'reportLink', width: 100 }
         ];
         workSheet2.columns = [
@@ -507,12 +508,8 @@ export class TestReportComponent implements OnInit {
                     'testDate': testDate,
                     'testTime': this.testTime,
                     'testStatus': this.testFinishStatus,
-                    'totalMarks': x.report.totalMarksScored
+                    'obtainedMarks': x.report.totalMarksScored
                 };
-                workSheet1.addRow({
-                    rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
-                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, totalMarks: testTakers.totalMarks, reportLink: this.reportLink
-                });
                 let testReport = {
                     'rollNo': x.rollNumber,
                     'name': x.firstName + space + x.lastName,
@@ -536,6 +533,11 @@ export class TestReportComponent implements OnInit {
                         });
                     }
                     this.totalNoOfTestQuestions = y.totalTestQuestions;
+                });
+                let totalMarks = this.totalNoOfTestQuestions * parseInt(this.test.correctMarks);
+                workSheet1.addRow({
+                    rollNo: testTakers.rollNo, name: testTakers.name, email: testTakers.email, contact: testTakers.contact, testDate: testTakers.testDate,
+                    testTime: testTakers.testTime, testStatus: testTakers.testStatus, obtainedMarks: testTakers.obtainedMarks, totalMarks: totalMarks, reportLink: this.reportLink
                 });
             }
         });
@@ -639,7 +641,7 @@ export class TestReportComponent implements OnInit {
         });
         this.averageCorrectAttempt = totalCorrectAttemptByAllAttendees / totalAttendee;
         this.averageTestScore = totalScoreOfAllAttendees / totalAttendee;
-        this.averageTimeTaken = totalTimeByAllAttendees / totalAttendee;
+        this.averageTimeTaken = Math.trunc((totalTimeByAllAttendees / totalAttendee) / 60);
     }
 
     /**
