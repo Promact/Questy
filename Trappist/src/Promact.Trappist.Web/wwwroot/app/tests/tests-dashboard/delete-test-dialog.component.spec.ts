@@ -30,6 +30,7 @@ import { DeleteTestDialogComponent } from './delete-test-dialog.component';
 import { AppComponent } from '../../app.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MdSnackBar } from '@angular/material';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 
@@ -44,8 +45,6 @@ class MockRouter {
     }
 
     navigateByUrl(url: string) { return url; }
-
-    url = '/tests/1/view';
 }
 
 class MockDialog {
@@ -86,7 +85,8 @@ describe('Delete Test Dialog Component', () => {
                 HttpService, MdDialogModule,
                 { provide: Router, useClass: MockRouter },
                 { provide: MdDialogRef, useClass: MockDialog },
-                { provide: MdSnackBar, useClass: MockSnackBar }
+                { provide: MdSnackBar, useClass: MockSnackBar },
+                MockRouteService
             ],
 
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule]
@@ -100,6 +100,8 @@ describe('Delete Test Dialog Component', () => {
     });
 
     it('should delete the test', (() => {
+        let url = '/tests/1/view';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
             return Observable.of('');
         });
@@ -129,6 +131,19 @@ describe('Delete Test Dialog Component', () => {
         expect(deleteTestDialogComponent.testArray.length).toBe(1);
         expect(deleteTestDialogComponent.snackBar.open).toHaveBeenCalled();
         expect(deleteTestDialogComponent.dialog.close).toHaveBeenCalledTimes(0);
+    });
+
+    it('should not be in test view page', () => {
+        let url = '/';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
+            return Observable.of('');
+        });
+        spyOn(Router.prototype, 'navigate').and.callFake(() => { });
+        deleteTestDialogComponent.testToDelete = test;
+        deleteTestDialogComponent.testArray[0] = test;
+        deleteTestDialogComponent.deleteTest();
+        expect(Router.prototype.navigate).toHaveBeenCalledTimes(0);
     });
 
 });

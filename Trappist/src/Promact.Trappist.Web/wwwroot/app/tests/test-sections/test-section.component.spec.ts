@@ -25,6 +25,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TestSectionsComponent } from './test-sections.component';
 import { DeselectCategoryComponent } from './deselect-category.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 describe('Test Section', () => {
     let fixtureSection: ComponentFixture<TestSectionsComponent>;
@@ -48,7 +49,8 @@ describe('Test Section', () => {
                 TestService,
                 HttpService,
                 MdSnackBar,
-                { provide: APP_BASE_HREF, useValue: '/' }
+                { provide: APP_BASE_HREF, useValue: '/' },
+                MockRouteService
             ],
             imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule, Md2AccordionModule.forRoot(), PopoverModule, ClipboardModule]
         }).compileComponents();

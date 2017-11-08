@@ -36,6 +36,7 @@ import { CreateTestHeaderComponent } from '../shared/create-test-header/create-t
 import { CreateTestFooterComponent } from '../shared/create-test-footer/create-test-footer.component';
 import { IncompleteTestCreationDialogComponent } from './incomplete-test-creation-dialog.component';
 import { TestIPAddress } from '../test-IPAdddress';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 class MockRouter {
@@ -126,7 +127,8 @@ describe('Test Settings Component', () => {
                 TestService,
                 HttpService, 
                 { provide: MdDialogRef, useClass: MockDialog },
-                { provide: APP_BASE_HREF, useValue: '/'},
+                { provide: APP_BASE_HREF, useValue: '/' },
+                MockRouteService
             ],
 
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot(), MdDialogModule]

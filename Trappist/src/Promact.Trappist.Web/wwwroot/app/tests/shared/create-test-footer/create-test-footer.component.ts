@@ -4,6 +4,7 @@ import { TestService } from '../../tests.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { MockRouteService } from '../../../questions/questions-single-multiple-answer/mock-route.service';
 
 @Component({
     moduleId: module.id,
@@ -46,7 +47,7 @@ export class CreateTestFooterComponent implements OnInit {
     @Input()
     isFocusLostNull: boolean;
 
-    constructor(private testService: TestService, public router: Router, private route: ActivatedRoute) {
+    constructor(private testService: TestService, public router: Router, private route: ActivatedRoute, private mockRouteService: MockRouteService) {
         this.isTestSection = false;
         this.isTestQuestion = false;
         this.isTestSettings = false;
@@ -74,9 +75,10 @@ export class CreateTestFooterComponent implements OnInit {
      * Displays the Component whose route matches that of the url
      */
     getComponent() {
-        this.isTestSection = this.router.url === '/tests/' + this.testId + '/sections' ? true : false;
-        this.isTestQuestion = this.router.url === '/tests/' + this.testId + '/questions' ? true : false;
-        this.isTestSettings = this.router.url === '/tests/' + this.testId + '/settings' ? true : false;
+        let url = this.mockRouteService.getCurrentUrl(this.router);
+        this.isTestSection = url === '/tests/' + this.testId + '/sections' ? true : false;
+        this.isTestQuestion = url === '/tests/' + this.testId + '/questions' ? true : false;
+        this.isTestSettings = url === '/tests/' + this.testId + '/settings' ? true : false;
     }
 
     /**

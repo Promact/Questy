@@ -37,6 +37,7 @@ import { DifficultyLevel } from '../../questions/enum-difficultylevel';
 import { TestSectionsComponent } from '../test-sections/test-sections.component';
 import { CreateTestHeaderComponent } from '../shared/create-test-header/create-test-header.component';
 import { CreateTestFooterComponent } from '../shared/create-test-footer/create-test-footer.component';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 class MockRouter {
@@ -114,7 +115,8 @@ describe('Test View Component', () => {
                 HttpService, MdDialogModule, MdSnackBar,
                 { provide: Router, useClass: MockRouter },
                 { provide: MdDialogRef, useClass: MockDialog },
-                { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 123 }) } }
+                { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 123 }) } },
+                MockRouteService
             ],
 
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot()]

@@ -23,6 +23,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fakeAsync } from '@angular/core/testing';
 import { DeleteTestDialogComponent } from './delete-test-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 
@@ -74,7 +75,8 @@ describe('Test Dashboard Component', () => {
                 QuestionsService,
                 TestService,
                 HttpService,
-                { provide: Router, useClass: RouterStub }
+                { provide: Router, useClass: RouterStub },
+                MockRouteService
 
             ],
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, HttpModule, BrowserAnimationsModule, MdDialogModule]
