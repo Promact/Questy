@@ -29,6 +29,7 @@ import { TestSettingsComponent } from '../../test-settings/test-settings.compone
 import { HttpService } from '../../../core/http.service';
 import { CreateTestFooterComponent } from '../create-test-footer/create-test-footer.component';
 import { IncompleteTestCreationDialogComponent } from '../../test-settings/incomplete-test-creation-dialog.component';
+import { MockRouteService } from '../../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 class MockRouter {
@@ -92,10 +93,11 @@ describe('Create Test Footer Component', () => {
             declarations: [TestSettingsComponent, CreateTestHeaderComponent, CreateTestFooterComponent, IncompleteTestCreationDialogComponent],
 
             providers: [
-                TestService,
-                HttpService,
                 { provide: MdDialogRef, useClass: MockDialog },
                 { provide: APP_BASE_HREF, useValue: '/' },
+                TestService,
+                HttpService,
+                MockRouteService
             ],
 
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule.forRoot(), MdDialogModule]
@@ -113,6 +115,45 @@ describe('Create Test Footer Component', () => {
         pauseTest.emit = function () { };
         resumeTest.emit = function () { };
         saveCategory.emit = function () { };
+        createTestFooterComponent.testId = test.id;
+    });
+
+
+
+    it('should should call the getComponent()', () => {
+        let url = '/';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        createTestFooterComponent.getComponent();
+        expect(createTestFooterComponent.isTestSection).toBe(false);
+        expect(createTestFooterComponent.isTestQuestion).toBe(false);
+        expect(createTestFooterComponent.isTestSettings).toBe(false);
+    });
+
+    it('should load the test sections component', () => {
+        let url = '/tests/3/sections';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        createTestFooterComponent.getComponent();
+        expect(createTestFooterComponent.isTestSection).toBe(true);
+        expect(createTestFooterComponent.isTestQuestion).toBe(false);
+        expect(createTestFooterComponent.isTestSettings).toBe(false);
+    });
+
+    it('should load the test questions component', () => {
+        let url = '/tests/3/questions';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        createTestFooterComponent.getComponent();
+        expect(createTestFooterComponent.isTestSection).toBe(false);
+        expect(createTestFooterComponent.isTestQuestion).toBe(true);
+        expect(createTestFooterComponent.isTestSettings).toBe(false);
+    });
+
+    it('should load the test settings component', () => {
+        let url = '/tests/3/settings';
+        spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
+        createTestFooterComponent.getComponent();
+        expect(createTestFooterComponent.isTestSection).toBe(false);
+        expect(createTestFooterComponent.isTestQuestion).toBe(false);
+        expect(createTestFooterComponent.isTestSettings).toBe(true);
     });
 
     it('should emit the event saveTestSettings', () => {
@@ -172,14 +213,6 @@ describe('Create Test Footer Component', () => {
         createTestFooterComponent.saveSelectedCategoryAndMoveNext();
         expect(createTestFooterComponent.isSelectButton).toBe(true);
         expect(saveCategory.emit).toHaveBeenCalled();
-    });
-
-    it('should should call the getComponent()', () => {
-        createTestFooterComponent.testId = test.id;
-        createTestFooterComponent.getComponent();
-        expect(createTestFooterComponent.isTestSection).toBe(false);
-        expect(createTestFooterComponent.isTestQuestion).toBe(false);
-        expect(createTestFooterComponent.isTestSettings).toBe(false);
     });
 
 });

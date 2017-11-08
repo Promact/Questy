@@ -3,6 +3,7 @@ import { Test } from '../tests.model';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { TestService } from '../tests.service';
 import { Router } from '@angular/router';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class DeleteTestDialogComponent {
     errorMessage: string;
     successMessage: string;
 
-    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar, private router:Router) {
+    constructor(private testService: TestService, public dialog: MdDialogRef<any>, public snackBar: MdSnackBar, private router:Router, private mockRouteService: MockRouteService) {
         this.errorMessage = 'Something went wrong.Please try again later.';
         this.successMessage = 'The selected test is deleted.';
     }
@@ -28,13 +29,14 @@ export class DeleteTestDialogComponent {
      * Delete the test from the test dashboard page
      */
     deleteTest() {
+        let url = this.mockRouteService.getCurrentUrl(this.router);
         this.testService.deleteTest(this.testToDelete.id).subscribe((response) => {
             this.testArray.splice(this.testArray.indexOf(this.testToDelete), 1);
             this.dialog.close();
             this.snackBar.open(this.successMessage, 'Dismiss', {
                 duration: 3000,
             });
-            if (this.router.url === '/tests/' + this.testToDelete.id + '/view')
+            if (url === '/tests/' + this.testToDelete.id + '/view')
                 this.router.navigate(['/tests']);
         },
             err => {
