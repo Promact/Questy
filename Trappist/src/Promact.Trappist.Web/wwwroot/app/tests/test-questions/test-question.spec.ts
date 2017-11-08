@@ -24,6 +24,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { Observable } from 'rxjs/Observable';
 import { APP_BASE_HREF } from '@angular/common';
 import { Test } from '../tests.model';
+import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 
 
@@ -48,7 +49,8 @@ describe('Test question Component', () => {
                 TestService,
                 HttpService,
                 MdSnackBar,
-                { provide: APP_BASE_HREF, useValue: '/' }
+                { provide: APP_BASE_HREF, useValue: '/' },
+                MockRouteService
             ],
             imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule, Md2AccordionModule.forRoot(), PopoverModule, ClipboardModule]
         }).compileComponents();
