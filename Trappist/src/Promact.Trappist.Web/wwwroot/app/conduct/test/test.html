@@ -78,12 +78,14 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>
-                        <button type="button" class="btn btn-primary" value="run" (click)="runCode(false)">Submit</button><br />
-                        <input type="checkbox" [(ngModel)]="showCustomInput"/>Run against custom input<br />
-                        <textarea rows="4" *ngIf="showCustomInput" [(ngModel)]="customInput"></textarea><br/>
-                        <pre [ngClass]="getColorCode()" *ngIf="codeResponse.message && showResult">{{codeResponse.message}}</pre>
-                        <pre [ngClass]="getColorCode()" *ngIf="!codeResponse.message && showResult">{{codeResponse.output}}</pre>
+                        <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>{{showCustomInput}}
+                        <button type="button" class="btn btn-primary" value="run" (click)="showCustomInput = false; runCode(false);">Submit</button><br />
+                        <div class="display-table-cell ptb20">
+                          <md-checkbox class="only-checkbox mr10" [(ngModel)]="showCustomInput"> Run against custom input</md-checkbox><br />
+                          <textarea rows="4" *ngIf="showCustomInput" [(ngModel)]="customInput"></textarea><br/>
+                        </div>
+                        <pre [ngClass]="getColorCode()" *ngIf="codeResponse.message && showResult">{{codeResponse.message}} <img *ngIf="isCodeProcessing" src="../images/dual-ring.gif" /></pre>
+                        <pre [ngClass]="getColorCode()" *ngIf="codeResponse.output && showResult">{{codeResponse.output}}</pre>
                     </div>
                     <div class="display-table-cell ans-area ptb20 pl15" *ngIf="isQuestionSingleChoice && !isQuestionCodeSnippetType">
                         <md-radio-group e2e="single-que-ans-radio-grp">
