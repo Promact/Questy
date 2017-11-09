@@ -132,9 +132,6 @@ describe('Test Component', () => {
         spyOn(ConductService.prototype, 'getElapsedTime').and.callFake(() => {
             return Observable.of(4.5);
         });
-        //spyOn(TestComponent.prototype, 'getClockInterval').and.callFake(() => {
-        //    return;
-        //});
     });
 
     afterEach(() => {
@@ -201,6 +198,25 @@ describe('Test Component', () => {
         });
 
         testComponent.test = JSON.parse(JSON.stringify(FakeTest));
+        testComponent.testAttendee = JSON.parse(JSON.stringify(FakeAttendee));
+        testComponent.getTestQuestion(2002);
+        expect(testComponent.testQuestions.length).toBe(2);
+    });
+
+    it('should get Test Question part 2', () => {
+        spyOn(ConductService.prototype, 'getQuestions').and.callFake(() => {
+            return Observable.of(FakeTestQuestions);
+        });
+        spyOn(ConductService.prototype, 'getTestByLink').and.callFake(() => {
+            return Observable.of(FakeTest);
+        });
+        spyOn(TestComponent.prototype, 'getClockInterval').and.callFake(() => {
+            return;
+        });
+
+        testComponent.test = JSON.parse(JSON.stringify(FakeTest));
+        testComponent.test.questionOrder = TestOrder.Fixed;
+        testComponent.test.optionOrder = TestOrder.Fixed;
         testComponent.testAttendee = JSON.parse(JSON.stringify(FakeAttendee));
         testComponent.getTestQuestion(2002);
         expect(testComponent.testQuestions.length).toBe(2);
@@ -315,7 +331,20 @@ describe('Test Component', () => {
     it('should navigate to other question', () => {
         testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
         testComponent.questionIndex = -1;
+        testComponent.navigateToQuestionIndex(-1);
         testComponent.navigateToQuestionIndex(0);
+        testComponent.navigateToQuestionIndex(1);
+        expect(testComponent.isTestReady).toBeTruthy; 
+
+        testComponent.navigateToQuestionIndex(0);
+        expect(testComponent.isTestReady).toBeTruthy;
+
+        testComponent.questionIndex = 0;
+        testComponent.navigateToQuestionIndex(0);
+        expect(testComponent.isTestReady).toBeTruthy;
+
+        testComponent.questionIndex = 0;
+        testComponent.questionStatus = QuestionStatus.review;
         testComponent.navigateToQuestionIndex(1);
         expect(testComponent.isTestReady).toBeTruthy;
     });
@@ -357,6 +386,8 @@ describe('Test Component', () => {
 
         testComponent.openProgramGuide();
 
+        testComponent.onChange('abcd');
+        expect(testComponent.codeAnswer).toBe('abcd');
     });
 
     it('should get color code', () => {
@@ -450,13 +481,28 @@ describe('Test Component', () => {
             return Observable.of('');
         });
 
-        testComponent.questionIndex = 0;
-        testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
-        testComponent.addAnswer(testComponent.testQuestions[0]);
-
-        fixture.whenStable().then(() => {
+        fixture.whenStable().then(() => {            
+            testComponent.questionIndex = 0;
+            testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
+            testComponent.addAnswer(testComponent.testQuestions[0]);
+        
             testComponent.changeLanguage('c');
             expect(testComponent.editor._mode).toBe('c');
+        });
+    });
+
+    it('should change editor language part 2', () => {
+        fixture.whenStable().then(() => {
+            testComponent.selectLanguage = 'cpp';
+            testComponent.changeLanguage('cpp');
+            expect(testComponent.editor._mode).toBe('cpp');
+        });
+    });
+
+    it('should change editor theme', () => {
+        fixture.whenStable().then(() => {
+            testComponent.changeTheme('eclipse');
+            expect(testComponent.editor._theme).toBe('eclipse');
         });
     });
 });
