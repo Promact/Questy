@@ -49,6 +49,13 @@
             { pattern: 'node_modules/angular2-wizard-fix/dist/index.js', included: false, watched: false },           
             { pattern: 'node_modules/angular2-wizard-fix/dist/src/*.js', included: false, watched: false },
             { pattern: 'node_modules//ng2-ckeditor/lib/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ng2-ace-editor/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/brace/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/w3c-blob/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/buffer/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ieee754/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/base64-js/**/*.js', included: false, watched: false },
+            { pattern: 'node_modules/ace-builds/**/*.js', included: false, watched: false }
 
         ],
 

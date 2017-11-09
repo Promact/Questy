@@ -139,6 +139,7 @@ export class TestComponent implements OnInit {
         this.isInitializing = true;
         this.showCustomInput = false;
         this.count = 0;
+        this.customInput = '';
     }
 
     ngOnInit() {
@@ -502,13 +503,15 @@ export class TestComponent implements OnInit {
     runCode(runOnlyDefault: boolean) {
         this.showResult = true;
         this.isCodeProcessing = true;
+        this.codeResponse = new CodeResponse();
+        
+        //scroll to bottom 
+        window.scrollTo(0, document.body.scrollHeight);
+
         if (this.testTypePreview)
             this.codeResponse.message = this.codeAnswer;
         else {
             this.codeResponse.message = 'Processing...';
-
-            if (this.questionStatus !== QuestionStatus.review)
-                this.questionStatus = QuestionStatus.answered;
 
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
