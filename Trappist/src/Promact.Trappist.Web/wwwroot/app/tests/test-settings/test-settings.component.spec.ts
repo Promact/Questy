@@ -93,6 +93,8 @@ describe('Test Settings Component', () => {
     test.link = 'a6thsjk8';
     test.duration = 10;
     test.warningTime = 5;
+    test.focusLostTime = 5;
+    test.browserTolerance = 0;
     test.startDate = '2017-10-16T06:51:49.4283026Z';
     test.endDate = '2017-10-17T06:51:49.4283026Z';
     test.testIpAddress[0] = testIpAddress;
@@ -316,5 +318,92 @@ describe('Test Settings Component', () => {
         testSettings.launchTestDialog(test.id, test, isTestLaunched);
         testSettings.getTestById(test.id);
         expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
+
+    it('should pause the test', () => {
+        spyOn(TestService.prototype, 'updateTestPauseResume').and.callFake(() => {
+            return Observable.of(true);
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.pauseTest();
+        expect(testSettings.testDetails.isPaused).toBe(true);
+        expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
+
+    it('should not pause the test', () => {
+        spyOn(TestService.prototype, 'updateTestPauseResume').and.callFake(() => {
+            return Observable.of(false);
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.pauseTest();
+        expect(testSettings.snackbarRef.open).toHaveBeenCalledTimes(0);
+    });
+
+    it('should call IsFocusLostValid()', () => {
+        testSettings.testDetails = test;
+        testSettings.IsFocusLostValid();
+        expect(testSettings.isFocusLostNull).toBe(false);
+    });
+
+    it('should call changeFocusValue()', () => {
+        testSettings.testDetails = test;
+        testSettings.changeFocusValue();
+        expect(testSettings.isFocusLostNull).toBe(false);
+        expect(testSettings.testDetails.focusLostTime).toBe(0);
+        testSettings.testDetails.browserTolerance = 1;
+        testSettings.changeFocusValue();
+        expect(testSettings.testDetails.focusLostTime).toBe(5);
+    });
+
+    it('should resume the test', () => {
+        spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
+            return Observable.of(test);
+        });
+        spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
+            return Observable.of(test);
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.testDetails = test;
+        testSettings.resumeTest();
+        expect(testSettings.testDetails.isPaused).toBe(false);
+        expect(testSettings.snackbarRef.open).toHaveBeenCalled();
+    });
+
+    it('should not resume the test', () => {
+        spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
+            return Observable.of(test);
+        });
+        spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
+            return Observable.of('');
+        });
+        spyOn(testSettings.snackbarRef, 'open').and.callThrough();
+        testSettings.testDetails = test;
+        testSettings.resumeTest();
+        expect(testSettings.snackbarRef.open).toHaveBeenCalledTimes(0);
+        expect(TestService.prototype.getTestById).toHaveBeenCalledTimes(0);
+    });
+
+    it('should add ip address fields', () => {
+        testSettings.addIpFields();
+        expect(testSettings.testDetails.testIpAddress.length).toBe(1);
+    });
+
+    it('should remove ip address fields', () => {
+        spyOn(TestService.prototype, 'deleteTestipAddress').and.callFake(() => {
+            return Observable.of('');
+        });
+        testSettings.removeIpAddress(0, testIpAddress.id, testIpAddress.ipAddress);
+        expect(TestService.prototype.deleteTestipAddress).toHaveBeenCalled();
+        testIpAddress.id = undefined;
+        testSettings.removeIpAddress(0, testIpAddress.id, testIpAddress.ipAddress);
+        expect(testSettings.isIpAddressAdded).toBe(true);
+        let testIpAddress1 = new TestIPAddress();
+        testIpAddress1.id = 2;
+        testIpAddress1.ipAddress = '102.21.55.35';
+        testIpAddress1.testId = 3;
+        test.testIpAddress[1] = testIpAddress1;
+        testSettings.testDetails = test;
+        testSettings.removeIpAddress(0, testIpAddress.id, testIpAddress.ipAddress);
+        expect(testSettings.isIpAddressAdded).toBe(true);
     });
 });
