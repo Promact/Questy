@@ -44,7 +44,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// Store answers as Key-Value pair in the Database
         /// </summary>
         /// <param name="attendeeId">Id of Test Attendee</param>
-        Task AddAnswerAsync(int attendeeId, TestAnswerAC answer);        
+        Task AddAnswerAsync(int attendeeId, TestAnswerAC answer, double secs);
 
         /// <summary>
         /// Get answers from the Database
@@ -152,5 +152,6 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeBrowserToleranceCount">Contains the attendee browser tolerance count from the route</param>
         /// <returns>The browser tolerance count left for an attendee</returns>
         Task SetAttendeeBrowserToleranceValueAsync(int attendeeId, int attendeeBrowserToleranceCount);
+
     }
 }

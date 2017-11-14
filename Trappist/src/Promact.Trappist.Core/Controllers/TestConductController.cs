@@ -88,7 +88,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
 
             return Ok(answer);
         }

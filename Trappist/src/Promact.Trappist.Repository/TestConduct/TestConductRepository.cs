@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CodeBaseSimulator.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -127,7 +128,7 @@ namespace Promact.Trappist.Repository.TestConduct
             else return testObject != null && DateTime.Compare(currentDate, testObject.StartDate) >= 0 && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.IsLaunched;
         }
 
-        public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer)
+        public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer, double seconds)
         {
             if (await _dbContext.AttendeeAnswers.AsNoTracking().AnyAsync(x => x.Id == attendeeId))
             {
@@ -157,6 +158,7 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 var attendeeAnswers = new AttendeeAnswers();
                 attendeeAnswers.Id = attendeeId;
+                attendeeAnswers.TimeElapsed = (seconds / 60d);
 
                 if (answer != null)
                 {
@@ -196,12 +198,12 @@ namespace Promact.Trappist.Repository.TestConduct
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
             if (attendee != null)
             {
-                attendee.TimeElapsed = ((double)seconds / 60d);
+                attendee.TimeElapsed += ((double)seconds / 60d);
                 await _dbContext.SaveChangesAsync();
             }
             else
             {
-                await AddAnswerAsync(attendeeId, null);
+                await AddAnswerAsync(attendeeId, null, (double)seconds);
             }
         }
 
@@ -453,7 +455,6 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.SaveChangesAsync();
         }
         #endregion
-
         #region Private Method
 
         /// <summary>
