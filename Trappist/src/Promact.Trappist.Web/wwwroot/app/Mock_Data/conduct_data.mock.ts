@@ -23,7 +23,7 @@
     'numberOfTestSections': 1,
     'numberOfTestQuestions': 3,
     'createdByUserId': '654cc152-b54c-49a2-b9d6-89ba9140e545'
-}
+};
 
 export const FakeAttendee = {
     'id': 1,
@@ -33,58 +33,58 @@ export const FakeAttendee = {
     'contactNumber': '0000000000',
     'rollNumber': 'FAKE-0',
     'attendeeBrowserToleranceCount': 0
-}
+};
 
 //Don't add any new question here until you have modified unit test
 export const FakeTestQuestions = [{
-    "question": {
-        "question": {
-            "id": 7008,
-            "questionDetail": "Programming Question",
-            "questionType": 2,
-            "difficultyLevel": 0,
-            "categoryID": 6,
-            "isSelect": false
-        }, "singleMultipleAnswerQuestion": null,
-        "codeSnippetQuestion": {
-            "checkCodeComplexity": true,
-            "checkTimeComplexity": true,
-            "runBasicTestCase": true,
-            "runCornerTestCase": true,
-            "runNecessaryTestCase": true,
-            "languageList": ["C", "Cpp", "Java"],
-            "codeSnippetQuestionTestCases": []
+    'question': {
+        'question': {
+            'id': 7008,
+            'questionDetail': 'Programming Question',
+            'questionType': 2,
+            'difficultyLevel': 0,
+            'categoryID': 6,
+            'isSelect': false
+        }, 'singleMultipleAnswerQuestion': null,
+        'codeSnippetQuestion': {
+            'checkCodeComplexity': true,
+            'checkTimeComplexity': true,
+            'runBasicTestCase': true,
+            'runCornerTestCase': true,
+            'runNecessaryTestCase': true,
+            'languageList': ['C', 'Cpp', 'Java'],
+            'codeSnippetQuestionTestCases': []
         }
-    }, "questionStatus": 3
+    }, 'questionStatus': 3
 },
-    {
-        "question": {
-            "question": {
-                "id": 8008,
-                "questionDetail": "Q2",
-                "questionType": 0,
-                "difficultyLevel": 0,
-                "categoryID": 6,
-                "isSelect": false
-            }, "singleMultipleAnswerQuestion": {
-                "id": 1000,
-                "singleMultipleAnswerQuestionOption": [{
-                    "id": 10,
-                    "option": "a",
-                    "isAnswer": false,
-                    "singleMultipleAnswerQuestionId": 1000,
-                    "isTwoOptionsSame": "false"
-                }, {
-                    "id": 11,
-                    "option": "b",
-                    "isAnswer": false,
-                    "singleMultipleAnswerQuestionId": 1000,
-                    "isTwoOptionsSame": "false"
-                }]
-            },
-            "codeSnippetQuestion": null,
-        }, "questionStatus": 3
-    }]
+{
+    'question': {
+        'question': {
+            'id': 8008,
+            'questionDetail': 'Q2',
+            'questionType': 0,
+            'difficultyLevel': 0,
+            'categoryID': 6,
+            'isSelect': false
+        }, 'singleMultipleAnswerQuestion': {
+            'id': 1000,
+            'singleMultipleAnswerQuestionOption': [{
+                'id': 10,
+                'option': 'a',
+                'isAnswer': false,
+                'singleMultipleAnswerQuestionId': 1000,
+                'isTwoOptionsSame': 'false'
+            }, {
+                'id': 11,
+                'option': 'b',
+                'isAnswer': false,
+                'singleMultipleAnswerQuestionId': 1000,
+                'isTwoOptionsSame': 'false'
+            }]
+        },
+        'codeSnippetQuestion': null,
+    }, 'questionStatus': 3
+}];
 
 export const FakeTestLogs = {
     'visitTestLink': new Date('Wed Oct 11 2017 06:53:13 GMT+0530 (India Standard Time)'),
@@ -93,13 +93,13 @@ export const FakeTestLogs = {
     'finishTest': new Date('Tue Oct 17 2017 09:08:45 GMT+0530 (India Standard Time)'),
     'resumeTest': new Date('Wed Oct 11 2017 06:57:04 GMT+0530 (India Standard Time)'),
     'awayFromTestWindow': new Date('Wed Oct 11 2017 07:00:31 GMT+0530 (India Standard Time)')
-}
+};
 
 export const FakeCodeResponse = {
     'message': 'Success',
     'error': '',
     'errorOccurred': false
-}
+};
 
 export const FakeResumeData = [{
     'questionId': 100,
@@ -107,4 +107,4 @@ export const FakeResumeData = [{
     'code': '',
     'questionStatus': 1,
     'isAnswered': true
-}]
+}];

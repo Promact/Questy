@@ -323,7 +323,7 @@ describe('Test Component', () => {
 
     it('should select option (Multiple Option Type) part 2', () => {
         testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
-        testComponent.testQuestions[1].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer = true
+        testComponent.testQuestions[1].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer = true;
         testComponent.selectOption(1, 0, false);
         expect(testComponent.testQuestions[1].question.singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].isAnswer).toBeFalsy();
     });
@@ -504,5 +504,15 @@ describe('Test Component', () => {
             testComponent.changeTheme('eclipse');
             expect(testComponent.editor._theme).toBe('eclipse');
         });
+    });
+
+    it('should save test logs', () => {
+        spyOn(ConductService.prototype, 'addTestLogs').and.callFake(() => {
+            return Observable.of(FakeTestLogs);
+        });
+
+        testComponent.saveTestLogs();
+
+        expect(testComponent.testLogs.resumeTest).toBe(FakeTestLogs.resumeTest);
     });
 });
