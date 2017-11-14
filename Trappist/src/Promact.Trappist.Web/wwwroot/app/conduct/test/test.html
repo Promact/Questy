@@ -78,7 +78,7 @@
                                     id="edit"
                                     class="code-editor">
                         </ace-editor>
-                        <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>{{showCustomInput}}
+                        <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>
                         <button type="button" class="btn btn-primary" value="run" (click)="showCustomInput = false; runCode(false);">Submit</button><br />
                         <div class="display-table-cell ptb20">
                           <md-checkbox class="only-checkbox mr10" [(ngModel)]="showCustomInput"> Run against custom input</md-checkbox><br />
