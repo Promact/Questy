@@ -35,6 +35,7 @@ export class RegisterComponent {
         let magicString = registrationUrl.substring(registrationUrl.indexOf('/conduct/') + 9, registrationUrl.indexOf('/register'));
         this.conductService.registerTestAttendee(magicString, this.testAttendees).subscribe(response => {
             if (response) {
+                //this.connectionService.registerAttndee(response.id);
                 this.connectionService.sendReport(response);
                 this.isErrorMessage = false;
                 this.loader = false;

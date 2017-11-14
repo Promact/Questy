@@ -283,6 +283,7 @@ export class TestComponent implements OnInit {
     getTestAttendee(testId: number, testTypePreview: boolean) {
         this.conductService.getTestAttendeeByTestId(testId, testTypePreview).subscribe((response) => {
             this.testAttendee = response;
+            this.connectionService.registerAttndee(this.testAttendee.id);
             this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
             this.getTestQuestion(this.test.id);
         }, err => {
@@ -317,7 +318,7 @@ export class TestComponent implements OnInit {
         });
     }
     getClockInterval() {
-        return Observable.interval(1000).subscribe(() => { this.countDown(); if (!this.testTypePreview) this.timeOut(); });
+        return Observable.interval(1000).subscribe(() => { this.countDown(); /*if (!this.testTypePreview);*/});
     }
     /**
      * Gets the TestStatus of Attendee
@@ -841,11 +842,11 @@ export class TestComponent implements OnInit {
     private timeOut() {
         this.timeOutCounter += 1;
 
-        if (this.timeOutCounter >= this.TIMEOUT_TIME) {
-            let timeElapsed = this.test.duration * 60 - this.seconds;
-            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
-            this.timeOutCounter = 0;
-        }
+        //if (this.timeOutCounter >= this.TIMEOUT_TIME) {
+        //    let timeElapsed = this.test.duration * 60 - this.seconds;
+        //    this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
+        //    this.timeOutCounter = 0;
+        //}
     }
 
     /**

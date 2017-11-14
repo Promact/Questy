@@ -46,4 +46,12 @@ export class ConnectionService {
     getAttendeeIdWhoRequestedForResumeTest(attendeeId: number) {
         return attendeeId;
     }
+
+    registerAttndee(id: number) {
+        this.hubConnection.invoke('registerAttendee', id);
+    }
+
+    addTestLogs(id: number) {
+        this.hubConnection.invoke('addTestLogs', id);
+    }
 }

@@ -98,7 +98,7 @@ namespace Promact.Trappist.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".Trappist.session";
@@ -120,6 +120,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IHttpService, HttpService>();
             services.AddSingleton<IConfiguration>(Configuration);
+           
             #endregion
 
             #region Options configuration

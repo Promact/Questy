@@ -292,7 +292,7 @@ namespace Promact.Trappist.Test.Reports
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
             //AddTestAnswer
             var answer1 = CreateAnswerAc(questionId1);
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer1);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer1,0.0);
             var answer2 = new TestAnswerAC()
             {
                 OptionChoice = new List<int>(),
@@ -305,7 +305,7 @@ namespace Promact.Trappist.Test.Reports
                 },
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer2);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer2,0.0);
 
             //create test conduct
             var testConduct1 = new DomainModel.Models.TestConduct.TestConduct()
@@ -440,7 +440,7 @@ namespace Promact.Trappist.Test.Reports
                 IsAnswered = true
             };
             var list = new List<TestCodeSolution>();
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer,0.0);
             //add test code solution
             var codeSolution1 = new TestCodeSolution()
             {
@@ -501,7 +501,7 @@ namespace Promact.Trappist.Test.Reports
                 },
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer,0.0);
             //add test code solution
             var codeSolution1 = new TestCodeSolution()
             {
@@ -563,7 +563,7 @@ namespace Promact.Trappist.Test.Reports
                 },
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer);
+            await _testConductRepository.AddAnswerAsync(testAttendee.Id, answer,0.0);
             var testCaseResultList = new List<TestCaseResult>();
             //add test code solution
             var codeSolution1 = new TestCodeSolution()
