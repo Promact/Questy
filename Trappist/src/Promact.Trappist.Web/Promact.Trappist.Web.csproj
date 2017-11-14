@@ -98,4 +98,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.Caching.SqlConfig.Tools" Version="1.0.0-msbuild3-final" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties package_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 </Project>
