@@ -514,9 +514,6 @@ export class TestComponent implements OnInit {
         else {
             this.codeResponse.message = 'Processing...';
 
-            if (this.questionStatus !== QuestionStatus.review)
-                this.questionStatus = QuestionStatus.answered;
-
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
             solution.code.language = this.selectLanguage;
@@ -527,6 +524,9 @@ export class TestComponent implements OnInit {
             this.conductService.execute(this.testAttendee.id, runOnlyDefault, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 this.codeResponse = res;
+
+                if (this.questionStatus !== QuestionStatus.review && !runOnlyDefault && !this.showCustomInput)
+                    this.questionStatus = QuestionStatus.answered;
 
                 solution.code.codeResponse = this.codeResponse;
 
