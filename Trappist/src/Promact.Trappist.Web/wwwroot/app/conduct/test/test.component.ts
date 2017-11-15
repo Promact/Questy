@@ -514,6 +514,9 @@ export class TestComponent implements OnInit {
         else {
             this.codeResponse.message = 'Processing...';
 
+            if (this.questionStatus !== QuestionStatus.review)
+                this.questionStatus = QuestionStatus.answered;
+
             let solution = new TestAnswer();
             solution.code.source = this.codeAnswer;
             solution.code.language = this.selectLanguage;
