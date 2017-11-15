@@ -483,6 +483,7 @@ export class TestComponent implements OnInit {
                 this.codeResponse.output = '';
             }
             this.showCustomInput = false;
+            this.customInput = '';
             this.isTestReady = true;
         }
 
