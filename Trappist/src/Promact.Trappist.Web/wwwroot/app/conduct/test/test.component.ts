@@ -429,6 +429,7 @@ export class TestComponent implements OnInit {
      */
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
+        this.customInput = '';
 
         if (index < 0 || index >= this.testQuestions.length || this.isCodeProcessing) {
             this.isTestReady = true;
@@ -523,6 +524,9 @@ export class TestComponent implements OnInit {
             this.conductService.execute(this.testAttendee.id, runOnlyDefault, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 this.codeResponse = res;
+
+                if (this.questionStatus !== QuestionStatus.review && !runOnlyDefault && !this.showCustomInput)
+                    this.questionStatus = QuestionStatus.answered;
 
                 solution.code.codeResponse = this.codeResponse;
 
