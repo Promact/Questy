@@ -483,6 +483,7 @@ export class TestComponent implements OnInit {
                 this.codeResponse.output = '';
             }
             this.showCustomInput = false;
+            this.customInput = '';
             this.isTestReady = true;
         }
 
@@ -523,6 +524,9 @@ export class TestComponent implements OnInit {
             this.conductService.execute(this.testAttendee.id, runOnlyDefault, solution).subscribe(res => {
                 let codeResponse = new CodeResponse();
                 this.codeResponse = res;
+
+                if (this.questionStatus !== QuestionStatus.review && !runOnlyDefault && !this.showCustomInput)
+                    this.questionStatus = QuestionStatus.answered;
 
                 solution.code.codeResponse = this.codeResponse;
 
