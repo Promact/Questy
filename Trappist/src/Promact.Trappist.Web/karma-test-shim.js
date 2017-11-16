@@ -98,8 +98,11 @@ SystemJS.config({
     },
 
     packages: {
-
         rxjs: {
+            defaultExtension: 'js'
+        },
+        'rxjs/operators': {
+            main: 'index.js',
             defaultExtension: 'js'
         },
         'angular2-wizard-fix': {
