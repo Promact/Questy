@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MdSelectModule, MdDialogModule, MdSnackBarModule, MdCheckboxModule, MdRadioModule } from '@angular/material';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { ConnectionService } from '../core/connection.service';
 
 @NgModule({
     imports: [
@@ -16,6 +17,9 @@ import { AceEditorModule } from 'ng2-ace-editor';
         MdCheckboxModule,
         MdRadioModule,
         AceEditorModule
+    ],
+    providers: [
+        ConnectionService
     ],
     declarations: [
         TestComponent,
