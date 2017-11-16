@@ -16,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 import { ReportService } from '../../reports/report.service';
 import { TestConductFooterComponent } from '../shared/test-conduct-footer/test-conduct-footer.component';
 import { TestConductHeaderComponent } from '../shared/test-conduct-header/test-conduct-header.component';
+import { ConnectionService } from '../../core/connection.service';
 
 
 class MockActivatedRoute {
@@ -33,7 +34,7 @@ describe('Test Summary', () => {
         TestBed.configureTestingModule({
             declarations: [TestSummaryComponent, TestConductFooterComponent, TestConductHeaderComponent],
             imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule],
-            providers: [ConductService, HttpService, ReportService, ConductService,
+            providers: [ConnectionService , ConductService, HttpService, ReportService, ConductService,
                 { provide: APP_BASE_HREF, useValue: '/' },
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
             ]
