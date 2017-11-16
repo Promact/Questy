@@ -77,6 +77,7 @@ gulp.task('bundle-shims', function () {
 });
 
 //bundle main dashboard app
+//gulp-ngc is not compatible with angular 5
 gulp.task('ngc', function (done) {
     return ngc('./wwwroot/tsconfig.aot.json');
 });
