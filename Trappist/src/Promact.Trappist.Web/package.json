@@ -38,6 +38,7 @@
     "screenfull": "^3.3.1",
     "systemjs": "0.19.40",
     "tinymce": "^4.6.4",
+    "typescript": "^2.4.2",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
@@ -85,7 +86,7 @@
   },
   "scripts": {
     "lint": "gulp lint",
-    "ngc": "gulp ngc",
+    "ngc": "ngc -p ./wwwroot/tsconfig.aot.json",
     "prod": "gulp prod",
     "tsc": "tsc -p ./wwwroot",
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run",
