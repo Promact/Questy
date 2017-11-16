@@ -145,7 +145,7 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         this.getTestByLink(this.testLink);
-      
+
     }
 
 
@@ -259,6 +259,7 @@ export class TestComponent implements OnInit {
 
             window.onbeforeunload = (ev) => {
                 this.isCloseWindow = true;
+                this.setElapsedTime();
                 this.saveTestLogs();
                 let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
                 ev.returnValue = dialogText;
@@ -318,7 +319,7 @@ export class TestComponent implements OnInit {
         });
     }
     getClockInterval() {
-        return Observable.interval(1000).subscribe(() => { this.countDown(); /*if (!this.testTypePreview);*/});
+        return Observable.interval(1000).subscribe(() => { this.countDown(); /*if (!this.testTypePreview);*/ });
     }
     /**
      * Gets the TestStatus of Attendee
@@ -839,8 +840,11 @@ export class TestComponent implements OnInit {
     /**
      * Updates time on the server
      */
-    private timeOut() {
+    private setElapsedTime() {
         this.timeOutCounter += 1;
+
+        let timeElapsed = this.test.duration * 60 - this.seconds;
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
 
         //if (this.timeOutCounter >= this.TIMEOUT_TIME) {
         //    let timeElapsed = this.test.duration * 60 - this.seconds;
@@ -865,7 +869,7 @@ export class TestComponent implements OnInit {
         this.isTestReady = false;
 
         this.snackBar.dismiss();
-
+        this.setElapsedTime();
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
             this.focusLost = response;
         });
@@ -933,7 +937,7 @@ export class TestComponent implements OnInit {
      */
     openDialog(message: string, errorMessage: string) {
         if (message !== null) {
-            if (message.toLowerCase().includes('congratulation')) 
+            if (message.toLowerCase().includes('congratulation'))
                 this.count = 0;
             else if (message.toLowerCase().includes('some') || message.toLowerCase().includes('none')) {
                 this.count = this.count + 1;
