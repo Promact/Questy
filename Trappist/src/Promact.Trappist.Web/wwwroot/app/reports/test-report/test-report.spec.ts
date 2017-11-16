@@ -17,6 +17,7 @@ import { ConductService } from '../../conduct/conduct.service';
 import { Observable } from 'rxjs/Rx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReportQuestionsCount } from './reportquestionscount';
+import { ConnectionService } from '../../core/connection.service';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; };
@@ -115,6 +116,7 @@ describe('Testing of test-report component:-', () => {
             providers: [
                 ReportService,
                 ConductService,
+                ConnectionService,
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useclass: ActivatedRoute }
             ],

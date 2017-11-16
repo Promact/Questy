@@ -11,6 +11,7 @@ import { MaterialModule } from '@angular/material';
 import { TestAttendees } from '../register/register.model';
 import { Observable } from 'rxjs/Rx';
 import { ResponseOptions } from '@angular/http';
+import { ConnectionService } from '../../core/connection.service';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
@@ -44,6 +45,7 @@ describe('Testing of conduct-register component:-', () => {
                 TestConductFooterComponent
             ],
             providers: [
+                ConnectionService,
                 { provide: Router, useClass: RouterStub },
                 { provide: ConductService, useClass: ConductService },
                 { provide: ActivatedRoute, useclass: ActivatedRoute }
