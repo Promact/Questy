@@ -88,7 +88,7 @@
     "ngc": "gulp ngc",
     "prod": "gulp prod",
     "tsc": "tsc -p ./wwwroot",
-    "test": "./node_modules/.bin/karma start karma.conf.js",
+    "test": "./node_modules/.bin/karma start karma.conf.js --single-run",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js"
   }
 }
