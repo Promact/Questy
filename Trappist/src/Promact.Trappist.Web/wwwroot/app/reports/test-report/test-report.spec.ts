@@ -120,7 +120,7 @@ describe('Testing of test-report component:-', () => {
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useclass: ActivatedRoute }
             ],
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, CoreModule, Md2DataTableModule.forRoot(), BrowserAnimationsModule],
+            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, CoreModule, Md2DataTableModule, BrowserAnimationsModule],
         }).compileComponents();
     }));
 

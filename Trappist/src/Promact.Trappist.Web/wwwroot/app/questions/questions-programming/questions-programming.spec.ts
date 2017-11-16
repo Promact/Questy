@@ -42,7 +42,7 @@ describe('Testing of questions-programming component:-', () => {
                 CategoryService,
                 HttpService
             ],
-            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, TinymceModule, CKEditorModule, Md2AccordionModule.forRoot()]
+            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, TinymceModule, CKEditorModule, Md2AccordionModule]
         }).compileComponents();
 
 
