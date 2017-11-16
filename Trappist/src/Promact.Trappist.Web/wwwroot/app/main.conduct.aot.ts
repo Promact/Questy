@@ -2,7 +2,7 @@
 
 import { platformBrowser } from '@angular/platform-browser';
 
-import { ConductModuleNgFactory } from '../aot/app/conduct/conduct.module.ngfactory';
+import { ConductModuleNgFactory } from './conduct/conduct.module.ngfactory';
 
 enableProdMode();
 

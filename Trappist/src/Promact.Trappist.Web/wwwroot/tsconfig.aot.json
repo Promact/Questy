@@ -8,7 +8,11 @@
     "experimentalDecorators": true,
     "lib": [ "es2015", "dom" ],
     "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "aot",
+    "typeRoots": [
+      "../node_modules/@types/"
+    ]
   },
 
   "files": [
@@ -21,7 +25,6 @@
   ],
 
   "angularCompilerOptions": {
-    "genDir": "aot",
     "skipMetadataEmit": true
   }
 }
