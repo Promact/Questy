@@ -14,7 +14,7 @@
 </conduct>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
-
+<script src="/node_modules/@@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js"></script>
 <environment names="Development">
     <!-- Polyfill(s) for older browsers -->
     <script src="/node_modules/core-js/client/shim.min.js"></script>
@@ -22,7 +22,7 @@
     <script src="/node_modules/screenfull/dist/screenfull.js"></script>
     <script src="/node_modules/systemjs/dist/system.src.js"></script>
     <script src="/systemjs.config.js"></script>
-    <script src="/node_modules/@@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js"></script>
+    
     <script>
         System.import('/app/main.conduct.js').catch(function (err) { console.error(err); });
     </script>

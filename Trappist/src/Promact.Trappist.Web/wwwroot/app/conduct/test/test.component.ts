@@ -259,7 +259,6 @@ export class TestComponent implements OnInit {
 
             window.onbeforeunload = (ev) => {
                 this.isCloseWindow = true;
-                this.setElapsedTime();
                 this.saveTestLogs();
                 let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
                 ev.returnValue = dialogText;
@@ -284,7 +283,7 @@ export class TestComponent implements OnInit {
     getTestAttendee(testId: number, testTypePreview: boolean) {
         this.conductService.getTestAttendeeByTestId(testId, testTypePreview).subscribe((response) => {
             this.testAttendee = response;
-            this.connectionService.registerAttndee(this.testAttendee.id);
+           
             this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
             this.getTestQuestion(this.test.id);
         }, err => {
@@ -311,7 +310,6 @@ export class TestComponent implements OnInit {
                 this.shuffleOption();
             }
 
-            this.clockIntervalListener = this.getClockInterval();
             this.isTestReady = true;
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
@@ -319,7 +317,7 @@ export class TestComponent implements OnInit {
         });
     }
     getClockInterval() {
-        return Observable.interval(1000).subscribe(() => { this.countDown(); /*if (!this.testTypePreview);*/ });
+        return Observable.interval(1000).subscribe(() => { this.countDown(); });
     }
     /**
      * Gets the TestStatus of Attendee
@@ -436,7 +434,8 @@ export class TestComponent implements OnInit {
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
         this.customInput = '';
-
+        this.connectionService.registerAttndee(this.testAttendee.id);
+        this.clockIntervalListener = this.getClockInterval();
         if (index < 0 || index >= this.testQuestions.length || this.isCodeProcessing) {
             this.isTestReady = true;
             return;
@@ -841,16 +840,8 @@ export class TestComponent implements OnInit {
      * Updates time on the server
      */
     private setElapsedTime() {
-        this.timeOutCounter += 1;
-
         let timeElapsed = this.test.duration * 60 - this.seconds;
         this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
-
-        //if (this.timeOutCounter >= this.TIMEOUT_TIME) {
-        //    let timeElapsed = this.test.duration * 60 - this.seconds;
-        //    this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
-        //    this.timeOutCounter = 0;
-        //}
     }
 
     /**
@@ -869,7 +860,6 @@ export class TestComponent implements OnInit {
         this.isTestReady = false;
 
         this.snackBar.dismiss();
-        this.setElapsedTime();
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
             this.focusLost = response;
         });
@@ -883,6 +873,7 @@ export class TestComponent implements OnInit {
             //Add answer and close window
             this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
+                this.setElapsedTime();
                 this.isTestReady = false;
                 this.closeWindow(testStatus);
             });

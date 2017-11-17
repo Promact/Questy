@@ -80,7 +80,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// </summary>
         /// <param name="attendeeId">Id of Attendee</param>
         /// <param name="seconds">Elapsed seconds</param>
-        Task SetElapsedTimeAsync(int attendeeId, long seconds);
+        Task SetElapsedTimeAsync(int attendeeId, long seconds,bool isDisconnected);
 
         /// <summary>
         /// Get the time elapsed from start of Test
