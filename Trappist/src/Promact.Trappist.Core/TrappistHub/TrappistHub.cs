@@ -38,43 +38,34 @@ namespace Promact.Trappist.Core.TrappistHub
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            var currentDate = DateTime.UtcNow;
+            var currentDate = DateTime.Now;
+            Console.Write(currentDate);
             string connectionId = Context.ConnectionId;
             Attendee attendee;
             Attendees.TryGetValue(connectionId, out attendee);
             var totalSeconds = (currentDate - attendee.StartDate).TotalSeconds;
             var sec = (long)totalSeconds;
-            await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, sec);
+            await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, sec, true);
             await base.OnDisconnectedAsync(exception);
         }
 
         public void RegisterAttendee(int id)
         {
+            var startDate = DateTime.Now;
             string connectionId = Context.ConnectionId;
-            var attendee = Attendees.GetOrAdd(connectionId, _ => new Attendee
+            var attendee = new Attendee()
             {
                 AttendeeId = id,
-                StartDate = DateTime.UtcNow,
+                StartDate = startDate,
                 ConnectionIds = new HashSet<string>()
-            });
+            };
+            Attendees.AddOrUpdate(connectionId, attendee, (key, oldvalue) => attendee);
             lock (attendee.ConnectionIds)
             {
                 attendee.ConnectionIds.Add(connectionId);
             }
 
         }
-        //public async Task AddTestLogs(int id)
-        //{
-        //    string connectionId = Context.ConnectionId;
-        //    Attendee testAttendee;
-        //    Attendees.TryGetValue(connectionId, out testAttendee);
-        //    var startDate = DateTime.UtcNow;
-        //    var attendee = new Attendee();
-        //    attendee.StartDate = startDate;
-        //    attendee.AttendeeId = testAttendee.AttendeeId;
-        //    attendee.ConnectionIds = testAttendee.ConnectionIds;
-        //    Attendees.TryUpdate(connectionId , attendee, testAttendee);
-        //}
 
         /// <summary>
         /// This method gets the generated report of the candidate and then sends back to the report display page 

@@ -158,7 +158,8 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 var attendeeAnswers = new AttendeeAnswers();
                 attendeeAnswers.Id = attendeeId;
-                attendeeAnswers.TimeElapsed = (seconds / 60d);
+                if (seconds != 0.0)
+                    attendeeAnswers.TimeElapsed = (seconds / 60d);
 
                 if (answer != null)
                 {
@@ -193,12 +194,15 @@ namespace Promact.Trappist.Repository.TestConduct
             return await _dbContext.TestAttendees.AnyAsync(x => x.Id == attendeeId);
         }
 
-        public async Task SetElapsedTimeAsync(int attendeeId, long seconds)
+        public async Task SetElapsedTimeAsync(int attendeeId, long seconds, bool isDisconnected)
         {
             var attendee = await _dbContext.AttendeeAnswers.FindAsync(attendeeId);
             if (attendee != null)
             {
-                attendee.TimeElapsed += ((double)seconds / 60d);
+                if (isDisconnected)
+                    attendee.TimeElapsed += ((double)seconds / 60d);
+                else
+                    attendee.TimeElapsed = ((double)seconds / 60d);
                 await _dbContext.SaveChangesAsync();
             }
             else
@@ -376,7 +380,7 @@ namespace Promact.Trappist.Repository.TestConduct
             testAnswer.Code.CodeResponse = codeResponse;
             codeResponse.TotalTestCases = testCases.Count();
             codeResponse.TotalTestCasePassed = countPassedTest;
-            await AddAnswerAsync(attendeeId, testAnswer);
+            await AddAnswerAsync(attendeeId, testAnswer, 0.0);
 
             return codeResponse;
         }
@@ -384,7 +388,7 @@ namespace Promact.Trappist.Repository.TestConduct
         public async Task<CodeResponse> ExecuteCustomInputAsync(int attendeeId, TestAnswerAC testAnswer)
         {
             var result = new Result();
-            if(testAnswer.Code.Input != null)
+            if (testAnswer.Code.Input != null)
                 result = await ExecuteCodeAsync(testAnswer.Code);
 
             var codeResponse = new CodeResponse()
@@ -400,7 +404,7 @@ namespace Promact.Trappist.Repository.TestConduct
             };
 
             testAnswer.Code.CodeResponse = codeResponse;
-            await AddAnswerAsync(attendeeId, testAnswer);
+            await AddAnswerAsync(attendeeId, testAnswer, 0.0);
 
             return codeResponse;
         }

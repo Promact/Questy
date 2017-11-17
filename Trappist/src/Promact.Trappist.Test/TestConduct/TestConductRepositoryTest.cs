@@ -227,13 +227,13 @@ namespace Promact.Trappist.Test.TestConduct
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer, 0.0);
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
 
             Assert.True(attendeeAnswer.Answers != null);
 
             var newAnswer = new TestAnswerAC() { OptionChoice = new List<int>() { 4, 5 } };
-            await _testConductRepository.AddAnswerAsync(attendeeId, newAnswer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, newAnswer, 0.0);
 
             Assert.True(attendeeAnswer.Answers != null);
         }
@@ -250,7 +250,7 @@ namespace Promact.Trappist.Test.TestConduct
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer, 0.0);
             var attendeeAnswer = await _testConductRepository.GetAnswerAsync(attendeeId);
 
             Assert.True(attendeeAnswer.Count == 1);
@@ -296,9 +296,9 @@ namespace Promact.Trappist.Test.TestConduct
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             //New entry to AttendeeAnswer table will be made since no answer is saved
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 10);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 10, false);
             //AttendeeAnswer entry will be updated with elapsed time
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 12);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 12, false);
 
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
             Assert.NotNull(attendeeAnswer.TimeElapsed);
@@ -316,9 +316,9 @@ namespace Promact.Trappist.Test.TestConduct
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             //New entry to AttendeeAnswer table will be made since no answer is saved
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 1);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 1, false);
             //AttendeeAnswer entry will be updated with elapsed time
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 2);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 2, false);
 
             var elapsedTime = await _testConductRepository.GetElapsedTimeAsync(attendeeId);
             Assert.True(elapsedTime >= 0.0d);
@@ -390,7 +390,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer1,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer1, 0.0);
 
             var answer2 = new TestAnswerAC()
             {
@@ -404,7 +404,7 @@ namespace Promact.Trappist.Test.TestConduct
                 },
                 QuestionStatus = QuestionStatus.unanswered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer2,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer2, 0.0);
 
             var answer3 = new TestAnswerAC()
             {
@@ -412,7 +412,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 3,
                 QuestionStatus = QuestionStatus.review
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer3,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer3, 0.0);
 
             var answer4 = new TestAnswerAC()
             {
@@ -420,7 +420,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 4,
                 QuestionStatus = QuestionStatus.review
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer4,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer4, 0.0);
 
             var answer5 = new TestAnswerAC()
             {
@@ -429,7 +429,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 5,
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer5,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer5, 0.0);
 
             var answer6 = new TestAnswerAC()
             {
@@ -438,7 +438,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 6,
                 QuestionStatus = QuestionStatus.review
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer6,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer6, 0.0);
 
             //Setting Attendee TestStatus
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
@@ -503,7 +503,7 @@ namespace Promact.Trappist.Test.TestConduct
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.answered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer, 0.0);
 
             answer = new TestAnswerAC()
             {
@@ -517,7 +517,7 @@ namespace Promact.Trappist.Test.TestConduct
                 },
                 QuestionStatus = QuestionStatus.unanswered
             };
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer, 0.0);
             //Setting Attendee TestStatus
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
             var testStatus = await _trappistDbContext.TestConduct.Where(x => x.TestAttendeeId == attendeeId).ToListAsync();

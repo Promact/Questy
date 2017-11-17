@@ -54,4 +54,5 @@ export class ConnectionService {
     addTestLogs(id: number) {
         this.hubConnection.invoke('addTestLogs', id);
     }
+
 }

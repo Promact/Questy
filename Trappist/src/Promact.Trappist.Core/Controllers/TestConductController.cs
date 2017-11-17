@@ -47,7 +47,7 @@ namespace Promact.Trappist.Core.Controllers
                 HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
                 return Ok(testAttendee);
             }
-            if(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
+            if (await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
             {
                 var attendee = await _testConductRepository.GetTestAttendeeByEmailIdAndRollNo(testAttendee.Email, testAttendee.RollNumber, testAttendee.TestId);
                 var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendee.Id);
@@ -88,7 +88,7 @@ namespace Promact.Trappist.Core.Controllers
                 return BadRequest();
             }
 
-            await _testConductRepository.AddAnswerAsync(attendeeId, answer,0.0);
+            await _testConductRepository.AddAnswerAsync(attendeeId, answer, 0.0);
 
             return Ok(answer);
         }
@@ -105,7 +105,7 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            await _testConductRepository.SetElapsedTimeAsync(attendeeId, seconds);
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, seconds, false);
 
             return Ok(attendeeId);
         }
@@ -273,7 +273,7 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            var codeResponse = testAnswer.Code.Input == null 
+            var codeResponse = testAnswer.Code.Input == null
                 ? await _testConductRepository.ExecuteCodeSnippetAsync(attendeeId, runOnlyDefault, testAnswer)
                 : await _testConductRepository.ExecuteCustomInputAsync(attendeeId, testAnswer);
 
