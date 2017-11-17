@@ -353,7 +353,7 @@ namespace Promact.Trappist.Core.Controllers
             if (!response)
                 return NotFound();
             else
-                return Ok(await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow, isTestResume));
+                return Ok(response);
         }
 
         [HttpGet("testlogs")]
