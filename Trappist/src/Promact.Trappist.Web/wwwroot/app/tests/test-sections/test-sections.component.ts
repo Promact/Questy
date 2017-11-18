@@ -36,7 +36,7 @@ export class TestSectionsComponent implements OnInit {
         this.testDetails = new Test();
         this.isCategoryExist = false;
         this.disablePreview = false;
-       
+        this.loader = true;
     }
 
     /**
