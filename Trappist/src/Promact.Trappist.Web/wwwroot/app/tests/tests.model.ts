@@ -36,6 +36,11 @@ export class Test {
     numberOfTestSections: number;
     numberOfTestQuestions: number;
     testCopiedNumber: number;
+
+    constructor() {
+        this.isLaunched = false;
+        this.isPaused = false;
+    }
 }
 
 export class TestCategory {

@@ -85,6 +85,10 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return NotFound();
             }
+            if (await _questionsRepository.IsQuestionExistInLiveTestAsync(id))
+            {
+                return BadRequest("Question exist in a live test.");
+            }
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
 
             try

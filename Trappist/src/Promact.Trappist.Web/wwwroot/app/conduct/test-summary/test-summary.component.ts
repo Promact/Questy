@@ -277,10 +277,13 @@ export class TestSummaryComponent implements OnInit {
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
 
-        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-            this.router.navigate(['test-end'], { replaceUrl: true });
-            this.loader = false;
-        });
+        let timeElapsed = this.test.duration * 60 - this.timeLeft;
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(() => {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                this.router.navigate(['test-end'], { replaceUrl: true });
+                this.loader = false;
+            });
+        });        
     }
     endYourTest() {
         this.loader = true;
