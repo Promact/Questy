@@ -44,6 +44,9 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
     isDifficultyLevelSelected: boolean;
     loader: boolean;
 
+    private successMessage: string = 'Question saved successfully.';
+    private failedMessage: string = 'Question failed to save.';
+
     constructor(private categoryService: CategoryService, private questionService: QuestionsService, private router: Router, public snackBar: MdSnackBar, private route: ActivatedRoute, private mockRouteService: MockRouteService) {
         this.noOfOptionShown = 2;
         this.indexOfOptionSelected = null;
@@ -278,16 +281,11 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
             (this.questionService.updateSingleMultipleAnswerQuestion(this.questionId, singleMultipleAnswerQuestion)) :
             (this.questionService.addSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion))).subscribe(
             (response) => {
-                if (this.isEditQuestion) {
-                    this.snackBar.open('Question updated successfully.', 'Dismiss', { duration: 3000 });
-                }
-                else {
-                    this.snackBar.open('Question added successfully.', 'Dismiss', { duration: 3000 });
-                }
+                this.snackBar.open(this.successMessage, 'Dismiss', { duration: 3000 });
                 this.router.navigate(['questions/dashboard',this.categoryName,this.difficultyLevelSelected]);
             },
             err => {
-                this.snackBar.open('Something went wrong.Please try again later.', 'Dismiss', { duration: 3000 });
+                this.snackBar.open(this.failedMessage + ' ' + err._body, 'Dismiss', { duration: 3000 });
             }
             );
     }

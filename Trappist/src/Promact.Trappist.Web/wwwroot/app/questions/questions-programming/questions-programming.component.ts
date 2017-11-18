@@ -313,7 +313,7 @@ export class QuestionsProgrammingComponent implements OnInit {
                     this.openSnackBar(this.successMessage, true, ['questions/dashboard', this.selectedCategory, this.selectedDifficulty]);
                 },
                 err => {
-                    this.openSnackBar(this.failedMessage);
+                    this.openSnackBar(this.failedMessage + ' ' + err._body);
                     //Release the form for user to retry
                     this.isFormSubmitted = false;
                 }
