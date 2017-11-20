@@ -96,6 +96,7 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
+
         #region Test-Pause-Resume
         public async Task PauseResumeTestAsync(int id, bool isPause)
         {
@@ -104,7 +105,13 @@ namespace Promact.Trappist.Repository.Tests
             _dbContext.Test.Update(testObject);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<bool> IsTestPausedAsync(int testId)
+        {
+            return await _dbContext.Test.AnyAsync(x => x.IsPaused && x.Id == testId);
+        }
         #endregion
+
         public async Task<bool> IsTestExists(int id)
         {
             return await _dbContext.Test.AnyAsync(x => x.Id == id);
