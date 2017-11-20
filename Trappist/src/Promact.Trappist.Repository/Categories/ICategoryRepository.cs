@@ -53,5 +53,12 @@ namespace Promact.Trappist.Repository.Categories
         /// <param name="categoryId">Id to check Category</param>
         /// <returns>True if exist else false</returns>
         Task<bool> IsCategoryExistInQuestionAsync(int id);
+
+        /// <summary>
+        /// Method to check Category exist in Test or not
+        /// </summary>
+        /// <param name="categoryId">Id to check Category</param>
+        /// <returns>True if exist else false</returns>
+        Task<bool> IsCategoryExistInTestAsync(int categoryId);
     }
 }

@@ -77,6 +77,12 @@ namespace Promact.Trappist.Core.Controllers
                 ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryNameExistsError);
                 return BadRequest(ModelState);
             }
+            if(await _categoryRepository.IsCategoryExistInTestAsync(id))
+            {
+                ModelState.AddModelError(_stringConstants.ErrorKey, _stringConstants.CategoryExistInTestError);
+                return BadRequest(ModelState);
+            }
+
             categoryToUpdate.CategoryName = category.CategoryName;
             await _categoryRepository.UpdateCategoryAsync(categoryToUpdate);
             return Ok(categoryToUpdate);

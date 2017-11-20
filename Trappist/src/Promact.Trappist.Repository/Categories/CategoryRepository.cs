@@ -62,6 +62,11 @@ namespace Promact.Trappist.Repository.Categories
         {
             return await _dbContext.Question.AnyAsync(x => x.CategoryID == id);
         }
+
+        public async Task<bool> IsCategoryExistInTestAsync(int categoryId)
+        {
+            return await _dbContext.TestCategory.AnyAsync(x => x.CategoryId == categoryId);
+        }
         #endregion
     }
 }
