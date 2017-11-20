@@ -154,6 +154,14 @@
                 return "This Category belongs to Questions. You can not delete this Category.";
             }
         }
+
+        public string CategoryExistInTestError
+        {
+            get
+            {
+                return "This Category exist in a test";
+            }
+        }
         #endregion
 
         #region "TestSettings Constants"
@@ -198,6 +206,14 @@
             get
             {
                 return "Question exist in Test. Question can not be deleted.";
+            }
+        }
+
+        public string QuestionEditError
+        {
+            get
+            {
+                return "Question exist in a Test.";
             }
         }
         #endregion

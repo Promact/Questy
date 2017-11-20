@@ -68,13 +68,6 @@ namespace Promact.Trappist.Repository.Questions
         Task<bool> IsQuestionExistInTestAsync(int id);
 
         /// <summary>
-        /// Method to check Question exist in live test or not
-        /// </summary>
-        /// <param name="id">Id to check Question</param>
-        /// <returns>True if exist else false</returns>
-        Task<bool> IsQuestionExistInLiveTestAsync(int id);
-
-        /// <summary>
         /// Method to delete Question
         /// </summary>
         /// <param name="question">Question object</param>

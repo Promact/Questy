@@ -102,6 +102,11 @@
         /// Property CategoryExistInQuestion is used to check Category exist in Question or not
         /// </summary>
         string CategoryExistInQuestionError { get; }
+
+        /// <summary>
+        /// Property CategoryExistInQuestion is used to check Category exist in Question or not
+        /// </summary>
+        string CategoryExistInTestError { get; }
         #endregion
 
         #region "TestSettings Constants"
@@ -134,7 +139,13 @@
         /// Property QuestionExistInTestError is used when Question exist in Test
         /// </summary>
         string QuestionExistInTestError { get; }
+
+        /// <summary>
+        /// Property QuestionExistInTestError is used when Question exist in Test
+        /// </summary>
+        string QuestionEditError { get; }
         #endregion
+
         #region "Test-Question-Selection"
         /// <summary>
         /// This property defines that the questions are saved successfully to test
