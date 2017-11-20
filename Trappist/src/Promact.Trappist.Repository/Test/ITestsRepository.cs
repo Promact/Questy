@@ -64,6 +64,7 @@ namespace Promact.Trappist.Repository.Tests
         Task UpdateTestNameAsync(int id, Test testObject);
 
         #endregion
+
         #region Test-Pause-Resume
 
         /// <summary>
@@ -73,7 +74,15 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="isPause">isPaused is boolean Test property</param>
         /// <returns></returns>
         Task PauseResumeTestAsync(int id, bool isPause);
+
+        /// <summary>
+        /// Checks if Test is paused or not
+        /// </summary>
+        /// <param name="id">id is test Id</param>        
+        /// <returns>Returns true if Test is paused else false</returns>
+        Task<bool> IsTestPausedAsync(int id);
         #endregion
+
         #region Delete-Test-Ip-Address
         /// <summary>
         /// Deletes Ip Address field for a test
@@ -82,6 +91,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns></returns>
         Task DeleteIpAddressAsync(int id);
         #endregion
+
         #region Delete Test
         /// <summary>
         /// Delete test from the test model
@@ -166,6 +176,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <returns>TestAC object</returns>
         Task<TestAC> GetTestByLinkAsync(string link);
         #endregion
+
         #region Duplicate Test
         /// <summary>
         /// Duplicates questions,categories and Ip addresses present in the test to be duplicated
