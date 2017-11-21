@@ -70,7 +70,7 @@ gulp.task('bundle-shims', function () {
         './node_modules/file-saver/FileSaver.js',
         './node_modules/exceljs/dist/exceljs.js',
         './node_modules/screenfull/dist/screenfull.js',
-        './node_modules/@@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js'
+        './node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js'
     ])
         .pipe(concat('shims.js'))
         .pipe(uglify())
