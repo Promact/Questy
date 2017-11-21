@@ -24,7 +24,7 @@ gulp.task('prod', function (done) {
 
 gulp.task('lint', function (done) {
     gulp.src("./wwwroot/app/**/*.ts")
-        .pipe(tslint({formatter:"stylish"}))
+        .pipe(tslint({ formatter: "stylish" }))
         .pipe(tslint.report());
 });
 
@@ -48,8 +48,8 @@ gulp.task("bundle-css", function () {
         './node_modules/@angular/material/prebuilt-themes/indigo-pink.css',
         './wwwroot/css/style.css'
     ])
-    .pipe(concat('bundle.css'))
-    .pipe(gulp.dest('./wwwroot/dist'));
+        .pipe(concat('bundle.css'))
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //Converts ts files to js with html template inline
@@ -69,11 +69,12 @@ gulp.task('bundle-shims', function () {
         './node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js',
         './node_modules/file-saver/FileSaver.js',
         './node_modules/exceljs/dist/exceljs.js',
-        './node_modules/screenfull/dist/screenfull.js'
+        './node_modules/screenfull/dist/screenfull.js',
+        './node_modules/@@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js'
     ])
-    .pipe(concat('shims.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('./wwwroot/dist'));
+        .pipe(concat('shims.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 //bundle main dashboard app
