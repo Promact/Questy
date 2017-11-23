@@ -258,6 +258,8 @@ _references.js
 **/wwwroot/css/*.css
 
 **/wwwroot/dist/
+**/wwwroot/dist_conduct/
+**/wwwroot/dist_setup/
 
 # published output
 **/published/
