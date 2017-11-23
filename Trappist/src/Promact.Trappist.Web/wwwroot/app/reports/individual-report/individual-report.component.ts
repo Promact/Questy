@@ -14,7 +14,7 @@ import { CodeSnippetTestCasesDetails } from '../code-snippet-test-cases-details.
 import { ProgrammingLanguage } from '../programminglanguage.enum';
 import { TestCodeSolutionDetails } from '../test-code-solution-details.model';
 import { QuestionStatus } from '../../conduct/question_status.enum';
-declare var jsPDF: any;
+import * as jsPDF from 'jspdf';
 
 @Component({
     moduleId: module.id,
