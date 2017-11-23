@@ -15,8 +15,7 @@ import { Report } from '../report.model';
 import { ConnectionService } from '../../core/connection.service';
 
 import * as jsPDF from 'jspdf';
-//import * as ExcelJS from 'exceljs';
-declare let ExcelJS: any;
+import * as ExcelJS from 'exceljs/dist/exceljs';
 declare let saveAs: any;
 
 @Component({
