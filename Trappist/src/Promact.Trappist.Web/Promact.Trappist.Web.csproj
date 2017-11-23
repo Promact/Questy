@@ -60,6 +60,13 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--Remove all wwwroot files while publishing and re-add in below step-->
+    <Content Update="wwwroot\**">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <Target Name="RunGulp" AfterTargets="ComputeFilesToPublish">
     <Exec Command="npm install" />
     <Exec Command="npm run prod" />
