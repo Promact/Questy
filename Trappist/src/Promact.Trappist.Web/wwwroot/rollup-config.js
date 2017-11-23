@@ -3,7 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 
 export default {
-    entry: 'wwwroot/app/main.aot.js',
+    input: 'wwwroot/app/main.aot.js',
     sourceMap: false,
     format: 'iife',
     onwarn: function (warning) {

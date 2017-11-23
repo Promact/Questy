@@ -5,6 +5,7 @@
   "dependencies": {
     "@angular/animations": "5.0.0",
     "@angular/cdk": "2.0.0-beta.8",
+    "@angular/cli": "^1.5.3",
     "@angular/common": "5.0.0",
     "@angular/compiler": "5.0.0",
     "@angular/compiler-cli": "5.0.0",
@@ -26,7 +27,7 @@
     "exceljs": "^0.5.1",
     "file-saver": "^1.3.3",
     "ieee754": "^1.1.8",
-    "jspdf": "^1.3.3",
+    "jspdf": "^1.3.5",
     "jspdf-autotable": "^2.3.2",
     "md2": "0.0.28",
     "ng2-ace-editor": "^0.2.3",
@@ -39,6 +40,7 @@
     "systemjs": "0.19.40",
     "tinymce": "^4.6.4",
     "typescript": "^2.4.2",
+    "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
@@ -73,11 +75,11 @@
     "karma-remap-istanbul": "^0.6.0",
     "karma-typescript": "^3.0.8",
     "lite-server": "^2.3.0",
-    "rollup": "^0.41.6",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup": "^0.51.8",
+    "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^1.0.1",
-    "rollup-stream": "^1.19.0",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-stream": "^1.24.1",
     "run-sequence": "^1.2.2",
     "systemjs-builder": "^0.16.3",
     "tslint": "^4.0.0",
@@ -87,7 +89,7 @@
   "scripts": {
     "lint": "gulp lint",
     "ngc": "ngc -p ./wwwroot/tsconfig.aot.json",
-    "prod": "gulp prod",
+    "prod": "ng build --app main --prod --aot --output-hash=none && ng build --app conduct --prod --aot --output-hash=none && ng build --app setup --prod --aot --output-hash=none",
     "tsc": "tsc -p ./wwwroot",
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js"

@@ -25,7 +25,8 @@
 </environment>
 
 <environment names="Staging,Production">
-    <script>window.module = "aot";</script>
-    <script src="/dist/shims.js"></script>
-    <script src="/dist/app.setup.bundle.js"></script>
+  <script src="/dist_setup/inline.bundle.js"></script>
+  <script src="/dist_setup/polyfills.bundle.js"></script>
+  <script src="/dist_setup/main.bundle.js"></script>
+  <link href="/dist_setup/styles.bundle.css" rel="stylesheet" />
 </environment>

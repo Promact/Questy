@@ -14,11 +14,10 @@ import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Report } from '../report.model';
 import { ConnectionService } from '../../core/connection.service';
 
-
-
-declare let jsPDF: any;
-declare let saveAs: any;
+import * as jsPDF from 'jspdf';
+//import * as ExcelJS from 'exceljs';
 declare let ExcelJS: any;
+declare let saveAs: any;
 
 @Component({
     moduleId: module.id,

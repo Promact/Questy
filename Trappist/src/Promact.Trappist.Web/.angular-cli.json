@@ -1,0 +1,92 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "Trappist"
+  },
+  "apps": [
+    {
+      "name": "main",
+      "root": "wwwroot",
+      "outDir": "wwwroot/dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "app/app.html",
+      "main": "app/main.ts",
+      "polyfills": "polyfills.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "styles": [
+        "css/style.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "conduct",
+      "root": "wwwroot",
+      "outDir": "wwwroot/dist_conduct",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "app/conduct/conduct.html",
+      "main": "app/main.conduct.ts",
+      "polyfills": "polyfills.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "styles": [
+        "css/style.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "setup",
+      "root": "wwwroot",
+      "outDir": "wwwroot/dist_setup",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "app/setup/setup.html",
+      "main": "app/main.setup.ts",
+      "polyfills": "polyfills.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "styles": [
+        "css/style.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "lint": [
+    {
+      "project": "tslint.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}
