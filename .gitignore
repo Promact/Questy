@@ -275,3 +275,5 @@ package-lock.json
 **/logs/
 
 **/coverage/
+**/wwwroot/polyfills.js.map
+**/wwwroot/polyfills.js
