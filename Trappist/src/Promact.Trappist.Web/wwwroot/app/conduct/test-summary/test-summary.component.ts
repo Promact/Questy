@@ -12,7 +12,7 @@ import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { TestLogs } from '../../reports/testlogs.model';
 import { ConnectionService } from '../../core/connection.service';
-declare let screenfull: any;
+import * as screenfull from 'screenfull';
 
 @Component({
     moduleId: module.id,
