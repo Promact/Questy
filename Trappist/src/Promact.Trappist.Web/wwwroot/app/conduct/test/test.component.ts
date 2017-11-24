@@ -28,7 +28,7 @@ import 'brace/mode/c_cpp';
 import { TestLogs } from '../../reports/testlogs.model';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
-declare let screenfull: any;
+import * as screenfull from 'screenfull';
 declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';

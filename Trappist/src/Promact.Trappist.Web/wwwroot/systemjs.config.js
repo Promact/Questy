@@ -61,7 +61,10 @@
             'buffer': 'npm:buffer',
             'ieee754': 'npm:ieee754',
             'base64-js': 'npm:base64-js',
-            'ace-builds': 'npm:ace-builds/src-min'
+            'ace-builds': 'npm:ace-builds/src-min',
+            'exceljs/dist/exceljs.min': 'npm:exceljs/dist/exceljs.min.js',
+            '@aspnet/signalr-client': 'npm:@aspnet/signalr-client/dist/browser/signalr-client-1.0.0-alpha2-final.min.js',
+            'screenfull': 'npm:screenfull/dist/screenfull.js'
 
         },
         // packages tells the System loader how to load when no filename and/or no extension

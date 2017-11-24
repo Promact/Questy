@@ -77,5 +77,5 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 import 'jspdf';
 import 'jspdf-autotable';
-import 'screenfull';
-import 'exceljs/dist/exceljs.min';
+import 'screenfull/dist/screenfull';
+import 'exceljs/dist/exceljs';
