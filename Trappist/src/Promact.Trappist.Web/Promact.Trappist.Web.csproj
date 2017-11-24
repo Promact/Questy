@@ -61,7 +61,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--Remove all wwwroot files while publishing and re-add in below step-->
     <Content Update="wwwroot\**">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </Content>
@@ -70,10 +69,22 @@
   <Target Name="RunGulp" AfterTargets="ComputeFilesToPublish">
     <Exec Command="npm install" />
     <Exec Command="npm run prod" />
-
-    <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="wwwroot\dist\**;wwwroot\dist_conduct\**;wwwroot\dist_setup\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+    <ItemGroup>
+      <DistFiles Include="wwwroot\images\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+    <ItemGroup>
+      <DistFiles Include="wwwroot\assets\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
