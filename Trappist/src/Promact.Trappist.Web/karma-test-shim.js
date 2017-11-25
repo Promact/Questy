@@ -93,8 +93,10 @@ SystemJS.config({
         'buffer': 'node_modules/buffer',
         'ieee754': 'node_modules/ieee754',
         'base64-js': 'node_modules/base64-js',
-        'ace-builds': 'node_modules/ace-builds/src-min'
-
+        'ace-builds': 'node_modules/ace-builds/src-min',
+        'exceljs/dist/exceljs.min': 'node_modules/exceljs/dist/exceljs.min.js',
+        '@aspnet/signalr-client': 'node_modules/@aspnet/signalr-client/dist/browser/signalr-client-1.0.0-alpha2-final.min.js',
+        'screenfull': 'node_modules/screenfull'
     },
 
     packages: {
@@ -104,6 +106,10 @@ SystemJS.config({
         'rxjs/operators': {
             main: 'index.js',
             defaultExtension: 'js'
+        },
+        'screenfull': {
+            main: 'dist/screenfull.js',
+            defaultExtension:'js'
         },
         'angular2-wizard-fix': {
             main: 'index.js',

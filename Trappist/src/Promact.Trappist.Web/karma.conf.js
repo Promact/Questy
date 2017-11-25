@@ -27,8 +27,10 @@
             'node_modules/zone.js/dist/jasmine-patch.js',
             'node_modules/zone.js/dist/async-test.js',
             'node_modules/zone.js/dist/fake-async-test.js',
-            'node_modules/@aspnet/signalr-client/dist/browser/signalr-clientES5-1.0.0-alpha2-final.js',
-
+            'node_modules/@aspnet/signalr-client/dist/browser/signalr-client-1.0.0-alpha2-final.min.js',
+            'node_modules/screenfull/dist/screenfull.js',
+            'node_modules/jspdf/dist/jspdf.debug.js',
+            'node_modules/exceljs/dist/exceljs.min.js',
 
             { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
 

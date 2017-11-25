@@ -137,19 +137,19 @@ namespace Promact.Trappist.Web
                 services.AddMemoryCache();
             }
 
-            //if (!Env.IsDevelopment())
-            //{
+            if (!Env.IsDevelopment())
+            {
 
-            //    var redis = ConnectionMultiplexer.Connect("127.0.0.1");
+                var redis = ConnectionMultiplexer.Connect("127.0.0.1");
 
-            //    services.AddDataProtection()
-            //        .PersistKeysToRedis(redis, "DataProtection-Keys");
+                services.AddDataProtection()
+                    .PersistKeysToRedis(redis, "DataProtection-Keys");
 
-            //    services.AddDistributedRedisCache(options =>
-            //    {
-            //        options.Configuration = "127.0.0.1,syncTimeout=10000";
-            //    });
-            //}
+                services.AddDistributedRedisCache(options =>
+                {
+                    options.Configuration = "127.0.0.1,syncTimeout=10000";
+                });
+            }
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
