@@ -63,11 +63,13 @@ describe('Testing of conduct-register component:-', () => {
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
             return Observable.of(testAttendee);
         });
-        registerComponent.registerTestAttendee();
+        spyOn(ConnectionService.prototype, 'sendReport').and.callFake(() => { });
         spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
             urls = url;
             expect(urls[0]).toBe('/conduct/' + testLink + '/instructions');
         });
+
+        registerComponent.registerTestAttendee();        
     }));
 
     it('should throw error message if registration fails', () => {
