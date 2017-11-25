@@ -254,6 +254,8 @@ paket-files/
 _references.js
 **/wwwroot/app/**/*.js
 **/wwwroot/app/**/*.js.map
+**/wwwroot/polyfills.js
+**/wwwroot/polyfills.js.map
 
 **/wwwroot/css/*.css
 
