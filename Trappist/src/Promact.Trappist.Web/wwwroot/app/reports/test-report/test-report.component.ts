@@ -115,6 +115,7 @@ export class TestReportComponent implements OnInit {
         this.testId = this.route.snapshot.params['id'];
         this.loader = true;
         this.getTestName();
+        this.connectionService.joinAdminGroup();
         this.domain = window.location.origin;
     }
 
@@ -782,4 +783,6 @@ export class TestReportComponent implements OnInit {
                 this.starredCandidateCount += 1;
         });
     }
+
+
 }

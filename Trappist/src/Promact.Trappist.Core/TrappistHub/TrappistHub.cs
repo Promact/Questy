@@ -1,18 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.TestConduct;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.Utility.Constants;
-using System.Linq;
 using Promact.Trappist.Repository.TestConduct;
+using System;
 using System.Collections.Concurrent;
-using Promact.Trappist.DomainModel.Models.TestLogs;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.TrappistHub
 {
@@ -30,6 +23,7 @@ namespace Promact.Trappist.Core.TrappistHub
        = new ConcurrentDictionary<string, Attendee>();
         private readonly ITestConductRepository _testConductRepository;
         private readonly TrappistDbContext _dbContext;
+        private const string ADMIN_GROUP = "__admin";
         public TrappistHub(ITestConductRepository testConductRepository, TrappistDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -85,6 +79,16 @@ namespace Promact.Trappist.Core.TrappistHub
         public Task SendCandidateIdWhoRequestedForResumeTest(int attendeeId)
         {
             return Clients.All.InvokeAsync("getAttendeeIdWhoRequestedForResumeTest", attendeeId);
+        }
+
+        public Task GetExpectedEndTime(long seconds)
+        {
+            return Clients.Group(ADMIN_GROUP).InvokeAsync("");
+        }
+
+        public Task JoinAdminGroup()
+        {
+            return Groups.AddAsync(Context.ConnectionId, ADMIN_GROUP);
         }
     }
 

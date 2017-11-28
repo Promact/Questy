@@ -423,6 +423,7 @@ export class TestComponent implements OnInit {
             let spanTime = response;
             let spanTimeInSeconds = Math.round(spanTime * 60);
             this.seconds -= spanTimeInSeconds;
+            this.connectionService.updateExpectedEndTime(this.seconds);
             this.isTestReady = true;
         });
     }
@@ -434,8 +435,7 @@ export class TestComponent implements OnInit {
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
         this.customInput = '';
-        this.connectionService.registerAttndee(this.testAttendee.id);
-        this.clockIntervalListener = this.getClockInterval();
+        this.connectionService.registerAttendee(this.testAttendee.id);
         if (index < 0 || index >= this.testQuestions.length || this.isCodeProcessing) {
             this.isTestReady = true;
             return;
