@@ -153,5 +153,6 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <returns>The browser tolerance count left for an attendee</returns>
         Task SetAttendeeBrowserToleranceValueAsync(int attendeeId, int attendeeBrowserToleranceCount);
 
+        Task<string> GetExpectedTestEndTime(double testDuration);
     }
 }
