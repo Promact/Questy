@@ -7,7 +7,7 @@
         <h5 *ngIf="!isCategoryExist">No Sections have been created yet. To do so, please click <a class="theme-text" [routerLink]="['/questions']">here</a>.</h5>
         <h5 *ngIf="isCategoryExist && isEditTestEnabled">Select sections to add in your test</h5>
         <h5 *ngIf="!isEditTestEnabled">Selected sections have been added in your test. You cannot edit an ongoing test.</h5>
-        <ul class="sections-list">
+        <ul e2e="select-section-list" class="sections-list">
             <li *ngFor="let categories of testCategories"
                 (click)="onSelect(categories)">
                 <label for="{{categories.categoryName}}">
