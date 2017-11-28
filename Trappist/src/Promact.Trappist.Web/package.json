@@ -89,7 +89,7 @@
   "scripts": {
     "lint": "gulp lint",
     "ngc": "ngc -p ./wwwroot/tsconfig.aot.json",
-    "prod": "ng build --app main --prod --aot --output-hash=none && ng build --app conduct --prod --aot --output-hash=none && ng build --app setup --prod --aot --output-hash=none",
+    "prod": "gulp sass && ng build --app main --prod --aot --output-hash=none --progress=false && ng build --app conduct --prod --aot --output-hash=none --progress=false && ng build --app setup --prod --aot --output-hash=none --progress=false",
     "tsc": "tsc -p ./wwwroot",
     "test": "./node_modules/.bin/karma start karma.conf.js --single-run",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js"
