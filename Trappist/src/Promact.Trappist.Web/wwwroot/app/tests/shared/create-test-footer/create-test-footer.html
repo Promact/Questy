@@ -9,11 +9,11 @@
         </ul>
         <div class="buttons-block pull-right" *ngIf="isTestSection">
             <button type="button" class="btn" (click)="saveSelectedCategoryAndExit()">Save & Exit</button>
-            <button type="button" class="btn btn-primary" (click)="saveSelectedCategoryAndMoveNext()">Save & Next</button>
+            <button e2e="save-next-btn" type="button" class="btn btn-primary" (click)="saveSelectedCategoryAndMoveNext()">Save & Next</button>
         </div>
         <div class="buttons-block pull-right" *ngIf="isTestQuestion">
             <button type="button" class="btn" (click)="saveAndExit()">Save & Exit</button>
-            <button type="button" class="btn btn-primary" (click)="addTestQuestions()">Save & Next</button>
+            <button e2e="save-next-btn" type="button" class="btn btn-primary" (click)="addTestQuestions()">Save & Next</button>
         </div>
         <div class="buttons-block pull-right" *ngIf="isTestSettings && loader">
             <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="updateTestSettings()">Save & Exit</button>
