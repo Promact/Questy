@@ -8,7 +8,7 @@ export class ConnectionService {
 
     public recievedAttendee: EventEmitter<any>;
     public recievedAttendeeId: EventEmitter<any>;
-   
+    public recievedEstimatedEndTime: EventEmitter<any>;    
    
     constructor(private _zone: NgZone) {
         this.recievedAttendee = new EventEmitter<any>();
@@ -22,7 +22,8 @@ export class ConnectionService {
     //This method defines that what action should be taken when getReport and getRequest methods are invoked from the TrappistHub
     registerProxy() {
         this.hubConnection.on('getReport', (testAttendee) => { this._zone.run(() => this.recievedAttendee.emit(testAttendee));});
-        this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id));});
+        this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id)); });
+        this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedAttendeeId.emit(remainingTime)); });
     }
     //starts the connection between hub and client
     startConnection() {
@@ -47,7 +48,7 @@ export class ConnectionService {
         return attendeeId;
     }
 
-    registerAttndee(id: number) {
+    registerAttendee(id: number) {
         this.hubConnection.invoke('registerAttendee', id);
     }
 
@@ -55,4 +56,11 @@ export class ConnectionService {
         this.hubConnection.invoke('addTestLogs', id);
     }
 
+    updateExpectedEndTime(seconds: number) {
+        this.hubConnection.invoke('GetExpectedEndTime', seconds);
+    }
+
+    joinAdminGroup() {
+        this.hubConnection.invoke('JoinAdminGroup');
+    }
 }
