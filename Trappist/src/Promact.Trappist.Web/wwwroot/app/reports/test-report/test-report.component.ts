@@ -152,11 +152,11 @@ export class TestReportComponent implements OnInit {
             this.isAnyTestResume = true;
         });
         this.connectionService.recievedEstimatedEndTime.subscribe(estimatedTime => {
-            var options = {
-                weekday: "short",
-                year: "numeric",
-                month: "short",
-                day: "numeric"
+            let options = {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
             };
 
             let expectedEndDate = new Date(estimatedTime + 'Z'); //'Z' is for telling this method that the time is in UTC!!!
