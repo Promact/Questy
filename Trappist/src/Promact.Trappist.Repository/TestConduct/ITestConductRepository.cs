@@ -3,6 +3,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -153,6 +154,12 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <returns>The browser tolerance count left for an attendee</returns>
         Task SetAttendeeBrowserToleranceValueAsync(int attendeeId, int attendeeBrowserToleranceCount);
 
-        Task<string> GetExpectedTestEndTime(double testDuration);
+        /// <summary>
+        /// Calculates the
+        /// </summary>
+        /// <param name="testDuration"></param>
+        /// <param name="testId"></param>
+        /// <returns></returns>
+        Task<DateTime> GetExpectedTestEndTime(double testDuration, int testId);
     }
 }

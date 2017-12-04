@@ -145,7 +145,7 @@ export class TestComponent implements OnInit {
 
     ngOnInit() {
         this.getTestByLink(this.testLink);
-
+        this.connectionService.startConnection();
     }
 
 
@@ -267,8 +267,9 @@ export class TestComponent implements OnInit {
 
             if (this.testTypePreview)
                 this.getTestQuestion(this.test.id);
-            else this.getTestAttendee(this.test.id, this.testTypePreview);
-
+            else {
+                this.getTestAttendee(this.test.id, this.testTypePreview);
+            }
         }, err => {
             window.location.href = window.location.origin + '/pageNotFound';
         });
@@ -314,6 +315,8 @@ export class TestComponent implements OnInit {
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
             else this.getTestStatus(this.testAttendee.id);
+
+            this.clockIntervalListener = this.getClockInterval();
         });
     }
     getClockInterval() {
@@ -407,6 +410,7 @@ export class TestComponent implements OnInit {
             this.timeOutCounter = this.TIMEOUT_TIME;
             this.isInitializing = false;
         }, err => {
+            this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
             this.timeOutCounter = this.TIMEOUT_TIME;
@@ -423,7 +427,6 @@ export class TestComponent implements OnInit {
             let spanTime = response;
             let spanTimeInSeconds = Math.round(spanTime * 60);
             this.seconds -= spanTimeInSeconds;
-            this.connectionService.updateExpectedEndTime(this.seconds);
             this.isTestReady = true;
         });
     }
@@ -890,6 +893,7 @@ export class TestComponent implements OnInit {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 if (response) {
                     this.connectionService.sendReport(response);
+                    this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
                     this.testEnded = true;
                     this.router.navigate(['test-summary'], { replaceUrl: true });
                 }

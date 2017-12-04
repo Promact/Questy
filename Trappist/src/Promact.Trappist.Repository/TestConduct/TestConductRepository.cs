@@ -454,7 +454,38 @@ namespace Promact.Trappist.Repository.TestConduct
             _dbContext.TestAttendees.Update(attendeeBrowserToleranceValue);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<DateTime> GetExpectedTestEndTime(double testDuration, int testId)
+        {
+            var resumedAttendee = await _dbContext.TestLogs.Include(x => x.TestAttendee).Where(x => x.TestAttendee.TestId == testId).OrderByDescending(x => x.ResumeTest).FirstOrDefaultAsync();
+            var startedAttendee = await _dbContext.TestLogs.Include(x => x.TestAttendee).Where(x => x.TestAttendee.TestId == testId).OrderByDescending(x => x.StartTest).FirstOrDefaultAsync();
+            var timeSpan = TimeSpan.FromMinutes(testDuration);
+
+            if (startedAttendee == null)
+                return DateTime.MinValue;
+
+            if (resumedAttendee.ResumeTest == null || resumedAttendee.ResumeTest.Value <= startedAttendee.StartTest)
+            {
+                if(startedAttendee.FinishTest != DateTime.MinValue && startedAttendee.FinishTest <= DateTime.UtcNow)
+                {
+                    return DateTime.MinValue;
+                }
+
+                return startedAttendee.StartTest.Add(timeSpan);
+            }
+
+            if (resumedAttendee.FinishTest != DateTime.MinValue && resumedAttendee.ResumeTest.Value <= resumedAttendee.FinishTest && resumedAttendee.FinishTest <= DateTime.UtcNow)
+            {
+                return DateTime.MinValue;
+            }
+
+            var timeSpanBeforeResume = resumedAttendee.FinishTest.Subtract(resumedAttendee.StartTest);
+            var timeSpanLeft = timeSpan - timeSpanBeforeResume;
+
+            return resumedAttendee.ResumeTest.Value.Add(timeSpanLeft);            
+        }
         #endregion
+
         #region Private Method
 
         /// <summary>
@@ -683,29 +714,6 @@ namespace Promact.Trappist.Repository.TestConduct
 
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<string> GetExpectedTestEndTime(double testDuration)
-        {
-            var resumedAttendee = await _dbContext.TestLogs.OrderByDescending(x => x.ResumeTest).FirstOrDefaultAsync();
-            var startedAttendee = await _dbContext.TestLogs.OrderByDescending(x => x.StartTest).FirstOrDefaultAsync();
-            var timeSpan = TimeSpan.FromSeconds(testDuration);
-
-            if (resumedAttendee == null)
-            {                
-                return startedAttendee.StartTest.Add(timeSpan).ToShortTimeString();
-            }
-            else
-            {
-                var timeSpanBeforeResume = resumedAttendee.FinishTest.Subtract(resumedAttendee.StartTest);
-                var expectedTime = timeSpan - timeSpanBeforeResume;
-                
-                return resumedAttendee;
-            }
-
-            var finishedAttendee = await _dbContext.TestLogs.OrderByDescending(x => x.FinishTest).FirstOrDefaultAsync();
-
-            return finishedAttendee.
         }
         #endregion
     }
