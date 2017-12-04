@@ -76,11 +76,11 @@ namespace Promact.Trappist.Repository.Tests
         Task PauseResumeTestAsync(int id, bool isPause);
 
         /// <summary>
-        /// Checks if Test is paused or not
+        /// Checks if Test can be edited or not
         /// </summary>
         /// <param name="id">id is test Id</param>        
-        /// <returns>Returns true if Test is paused else false</returns>
-        Task<bool> IsTestPausedAsync(int id);
+        /// <returns>Returns true if Test is editable else false</returns>
+        Task<bool> IsTestEditableAsync(int id);
         #endregion
 
         #region Delete-Test-Ip-Address

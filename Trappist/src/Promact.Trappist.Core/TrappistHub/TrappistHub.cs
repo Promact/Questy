@@ -81,9 +81,16 @@ namespace Promact.Trappist.Core.TrappistHub
             return Clients.All.InvokeAsync("getAttendeeIdWhoRequestedForResumeTest", attendeeId);
         }
 
-        public Task GetExpectedEndTime(long seconds)
+        /// <summary>
+        /// Gets the expected test end time
+        /// </summary>
+        /// <param name="duration">Test duration</param>
+        /// <param name="testId">Test Id</param>
+        /// <returns>Invokes setEstimatedEndTime method in client side</returns>
+        public async Task<Task> GetExpectedEndTime(double duration, int testId)
         {
-            return Clients.Group(ADMIN_GROUP).InvokeAsync("");
+            var expectedTimeString = await _testConductRepository.GetExpectedTestEndTime(duration, testId);
+            return Clients.Group(ADMIN_GROUP).InvokeAsync("setEstimatedEndTime", expectedTimeString);
         }
 
         public Task JoinAdminGroup()

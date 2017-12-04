@@ -4,7 +4,7 @@
         <h1 class="pull-left">
             <span [hidden]="!isLabelVisible">
                 <span class="test-name">{{testDetails.testName}}</span>
-                <button type="button" class="icon-btn ml10" [disabled]="testDetails.isLaunched && !testDetails.isPaused" [hidden]="!testDetails.isPaused" (click)="hideEditButton()"><em class="material-icons">edit</em></button>
+                <button type="button" class="icon-btn ml10" [disabled]="testDetails.isLaunched && !testDetails.isPaused" [hidden]="!testDetails.isPaused && testDetails.isLaunched" (click)="hideEditButton()"><em class="material-icons">edit</em></button>
             </span>
             <span [hidden]="isLabelVisible">
                 <input type="text" id="name" #box name="name" class="form-control" placeholder="Ex. Software Developer Recruitment Test" (keyup)="changeErrorMessage()"

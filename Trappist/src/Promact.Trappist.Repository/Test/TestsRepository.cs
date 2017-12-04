@@ -106,9 +106,9 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsTestPausedAsync(int testId)
+        public async Task<bool> IsTestEditableAsync(int testId)
         {
-            return await _dbContext.Test.AnyAsync(x => x.IsPaused && x.Id == testId);
+            return !await _dbContext.Test.AnyAsync(x => !x.IsPaused && x.IsLaunched && x.Id == testId);
         }
         #endregion
 
