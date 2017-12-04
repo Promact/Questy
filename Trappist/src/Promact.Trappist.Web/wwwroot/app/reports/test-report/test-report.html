@@ -13,10 +13,14 @@
             </div>
         </div>
     </div>
-    <div class="test-status">
+    <div class="test-status" *ngIf="isAnyCandidateExist">
         <div class="container">
-            <h5>Estimated Test Completion Time: <span class="theme-text">12:30:15</span></h5>
-            <h5 class="theme-text">This test is completed.</h5>
+            <h5 *ngIf="!isTestCompleted">Estimated Test Completion Time: <span class="theme-text">{{estimatedTime}}</span></h5>
+            <h5 class="theme-text" *ngIf="isTestCompleted">This test is completed.</h5>
+  
+            <h5>Total Attendee(s): <span class="theme-text">{{attendeeArray.length}}</span></h5>
+            <h5>Active Attendee(s): <span class="theme-text">{{getNumberOfActiveAttendee()}}</span></h5>
+            <h5>Completed Attendee(s): <span class="theme-text">{{getNumberOfCompletedAttendee()}}</span></h5>
         </div>
     </div>
     <div class="container" *ngIf="!isAnyCandidateExist">

@@ -25,6 +25,7 @@ export class RegisterComponent {
             this.loader = false;
         });
 
+        this.connectionService.startConnection();
     }
 
     /**

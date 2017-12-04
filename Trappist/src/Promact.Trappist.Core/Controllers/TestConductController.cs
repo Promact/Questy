@@ -238,8 +238,8 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return BadRequest();
             }
-            await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
-            return Ok(attendeeId);
+            var attendee = await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, testStatus);
+            return Ok(attendee);
         }
 
         /// <summary>

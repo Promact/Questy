@@ -5,6 +5,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 @Injectable()
 export class ConnectionService {
     hubConnection: any;
+    isConnected: boolean;
 
     public recievedAttendee: EventEmitter<any>;
     public recievedAttendeeId: EventEmitter<any>;
@@ -13,24 +14,34 @@ export class ConnectionService {
     constructor(private _zone: NgZone) {
         this.recievedAttendee = new EventEmitter<any>();
         this.recievedAttendeeId = new EventEmitter<any>();
-        
+        this.recievedEstimatedEndTime = new EventEmitter<any>();
         //makes a connection with hub
         this.hubConnection = new HubConnection('/TrappistHub');
         this.registerProxy();
-        this.startConnection();
+        this.isConnected = false;
     }
     //This method defines that what action should be taken when getReport and getRequest methods are invoked from the TrappistHub
     registerProxy() {
         this.hubConnection.on('getReport', (testAttendee) => { this._zone.run(() => this.recievedAttendee.emit(testAttendee));});
         this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id)); });
-        this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedAttendeeId.emit(remainingTime)); });
+        this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedEstimatedEndTime.emit(remainingTime)); });
     }
     //starts the connection between hub and client
-    startConnection() {
-        this.hubConnection.start();
-           
-      
+    startConnection(_callback?: any) {
+        if (!this.isConnected) {
+            this.hubConnection.start().then(() => {
+                if (_callback)
+                    _callback();
+
+                this.isConnected = true;
+            });
+        }
     }
+
+    isHubConnected() {
+        return this.isConnected;
+    }
+
     //This method sends the testAttendee object to the hub method SendReport
     sendReport(testAttendee) {
         this.hubConnection.invoke('sendReport', testAttendee);
@@ -56,8 +67,12 @@ export class ConnectionService {
         this.hubConnection.invoke('addTestLogs', id);
     }
 
-    updateExpectedEndTime(seconds: number) {
-        this.hubConnection.invoke('GetExpectedEndTime', seconds);
+    updateExpectedEndTime(seconds: number, testId: number) {
+        this.hubConnection.invoke('GetExpectedEndTime', seconds, testId);
+    }
+
+    setEstimatedEndTime(time: Date) {
+        return time;
     }
 
     joinAdminGroup() {
