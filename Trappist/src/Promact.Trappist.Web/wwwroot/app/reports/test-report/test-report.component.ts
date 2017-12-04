@@ -75,7 +75,8 @@ export class TestReportComponent implements OnInit {
     noCandidateFound: boolean;
     attendees: TestAttendee[] = [];
     testAttendeeSignalR: TestAttendee;
-
+    estimatedTime: string;
+    isTestCompleted: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -108,14 +109,14 @@ export class TestReportComponent implements OnInit {
         this.unfinishedTestCount = 0;
         this.starredCandidateCount = 0;
         this.testAttendeeSignalR = new TestAttendee();
-
+        this.isTestCompleted = false;
+        this.estimatedTime = 'Getting status...';
     }
 
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.loader = true;
+        this.loader = true;        
         this.getTestName();
-        this.connectionService.joinAdminGroup();
         this.domain = window.location.origin;
     }
 
@@ -125,6 +126,11 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
+            //start socket connection and retrieve estimated end time
+            this.connectionService.startConnection(() => {
+                this.connectionService.joinAdminGroup();
+                this.connectionService.updateExpectedEndTime(this.test.duration, this.testId);
+            });
         });
 
         this.getAllTestCandidates();
@@ -135,6 +141,8 @@ export class TestReportComponent implements OnInit {
             if (attendee.report === null)
                 attendee.report = new Report();
             this.testAttendeeArray.unshift(attendee);
+            this.isAnyCandidateExist = this.testAttendeeArray.some(x => x.report !== null);
+            [this.headerStarStatus, this.isAllCandidateStarred] = this.testAttendeeArray.some(x => !x.starredCandidate) ? ['star_border', false] : ['star', true];
         });
         this.connectionService.recievedAttendeeId.subscribe(attendeeId => {
             let attendee = this.testAttendeeArray.find(x => x.id === attendeeId);
@@ -142,6 +150,21 @@ export class TestReportComponent implements OnInit {
             this.testAttendeeArray.splice(this.testAttendeeArray.findIndex(x => x.id === attendeeId), 1);
             this.testAttendeeArray.unshift(attendee);
             this.isAnyTestResume = true;
+        });
+        this.connectionService.recievedEstimatedEndTime.subscribe(estimatedTime => {
+            var options = {
+                weekday: "short",
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            };
+
+            let expectedEndDate = new Date(estimatedTime + 'Z'); //'Z' is for telling this method that the time is in UTC!!!
+            this.estimatedTime = expectedEndDate.toLocaleDateString('en', options) + ', ' + expectedEndDate.toLocaleTimeString('en-US');
+
+            let currentDate = new Date();
+
+            this.isTestCompleted = currentDate.getTime() > expectedEndDate.getTime();
         });
     }
 
@@ -784,5 +807,31 @@ export class TestReportComponent implements OnInit {
         });
     }
 
+    /**
+     * Returns the number of Active Attendee
+     */
+    getNumberOfActiveAttendee() {
+        let count = 0;
+        this.attendeeArray.forEach(x => {
+            if (!this.isReportGenerated(x)) {
+                count++;
+            }
+        });
 
+        return count;
+    }
+
+    /**
+     * Returns the number of Attendee completed the test
+     */
+    getNumberOfCompletedAttendee() {
+        let count = 0;
+        this.attendeeArray.forEach(x => {
+            if (this.isReportGenerated(x)) {
+                count++;
+            }
+        });
+
+        return count;
+    }
 }
