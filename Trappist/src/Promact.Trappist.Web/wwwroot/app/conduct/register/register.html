@@ -1,8 +1,8 @@
-﻿<div class="test-conduct">
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
+  <div class="spinner"></div>
+</div>
+<div class="test-conduct" *ngIf="!loader">
     <test-conduct-header></test-conduct-header>
-    <div e2e="progress-loader" class="loader-container" *ngIf="loader">
-        <div class="spinner"></div>
-    </div>
     <div class="registration-block">
         <form #registrationForm="ngForm">
             <h2>Registration Form</h2>
