@@ -343,7 +343,6 @@ export class TestComponent implements OnInit {
                 }, 2000);
             });
 
-
             window.addEventListener('offline', () => {
                 screenfull.exit();
                 this.isTestReady = false;
@@ -869,7 +868,6 @@ export class TestComponent implements OnInit {
         if (this.clockIntervalListener) {
             this.clockIntervalListener.unsubscribe();
         }
-
 
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
             || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
