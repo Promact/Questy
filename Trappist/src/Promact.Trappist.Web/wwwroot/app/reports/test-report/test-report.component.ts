@@ -160,9 +160,12 @@ export class TestReportComponent implements OnInit {
             };
 
             let expectedEndDate = new Date(estimatedTime + 'Z'); //'Z' is for telling this method that the time is in UTC!!!
-            this.estimatedTime = expectedEndDate.toLocaleDateString('en', options) + ', ' + expectedEndDate.toLocaleTimeString('en-US');
-
             let currentDate = new Date();
+            let offset = new Date().getTimezoneOffset();
+            expectedEndDate.setMinutes(expectedEndDate.getMinutes() - offset);
+            
+            console.log(expectedEndDate.toDateString());
+            this.estimatedTime = (expectedEndDate.getDate() > currentDate.getDate() ? expectedEndDate.toDateString() + ', ' : '') + expectedEndDate.toLocaleTimeString('en-US');
 
             this.isTestCompleted = currentDate.getTime() > expectedEndDate.getTime();
         });
