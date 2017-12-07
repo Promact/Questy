@@ -504,8 +504,8 @@ export class TestReportComponent implements OnInit {
             { header: 'REPORT LINK', key: 'reportLink', width: 100 }
         ];
         workSheet2.columns = [
-            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 20 },
             { header: 'TOTAL NO OF QUESTIONS', key: 'totalQ', width: 25 },
+            { header: 'MAXIMUM SCORE', key: 'maxScore', width: 20 },
             { header: 'MAXIMUM DURATION', key: 'maxDuration', width: 25 },
             { header: 'AVERAGE SCORE', key: 'avgScore', width: 25 },
             { header: 'AVERAGE TIME TAKEN(MIN)', key: 'avgTotalTime', width: 25 },
@@ -515,11 +515,11 @@ export class TestReportComponent implements OnInit {
             { header: 'ROLL NO', key: 'rollNo', width: 15 },
             { header: 'NAME', key: 'name', width: 30 },
             { header: 'EMAIL ID', key: 'email', width: 30 },
-            { header: 'EASY QUESTION ATTEMPTED', key: 'easyQ', width: 27 },
-            { header: 'MEDIUM QUESTION ATTEMPTED', key: 'mediumQ', width: 30 },
-            { header: 'DIFFICULT QUESTION ATTEMPTED', key: 'difficultQ', width: 30 },
-            { header: 'TOTAL QUESTION ATTEMPTED', key: 'totalQ', width: 27 },
-            { header: 'NO OF CORRECT ATTEMPTED', key: 'coorectQ', width: 27 },
+            { header: 'EASY QUESTIONS ATTEMPTED', key: 'easyQ', width: 27 },
+            { header: 'MEDIUM QUESTIONS ATTEMPTED', key: 'mediumQ', width: 30 },
+            { header: 'DIFFICULT QUESTIONS ATTEMPTED', key: 'difficultQ', width: 30 },
+            { header: 'TOTAL QUESTIONS ATTEMPTED', key: 'totalQ', width: 27 },
+            { header: 'NO OF CORRECT ATTEMPTS', key: 'coorectQ', width: 27 },
             { header: 'TIME TAKEN', key: 'time', width: 20 },
             { header: 'OVERALL MARKS', key: 'totalScore', width: 20 },
             { header: 'PERCENTAGE', key: 'percentage', width: 20 },
