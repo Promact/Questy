@@ -864,13 +864,13 @@ export class TestComponent implements OnInit {
         this.dialog.closeAll();
 
         this.snackBar.dismiss();
+        debugger;
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
             this.focusLost = response;
         });
         if (this.clockIntervalListener) {
             this.clockIntervalListener.unsubscribe();
         }
-
         if (this.testQuestions[this.questionIndex].question.question.questionType !== QuestionType.codeSnippetQuestion
             || (this.testQuestions[this.questionIndex].question.question.questionType === QuestionType.codeSnippetQuestion && this.questionStatus !== QuestionStatus.answered)) {
             //Add answer and close window

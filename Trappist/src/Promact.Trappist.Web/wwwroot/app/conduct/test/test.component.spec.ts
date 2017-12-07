@@ -60,7 +60,7 @@ import {
     FakeTest, FakeAttendee, FakeTestQuestions,
     FakeTestLogs, FakeCodeResponse, FakeResumeData
 } from '../../Mock_Data/conduct_data.mock';
-import { ConnectionService } from "../../core/connection.service";
+import { ConnectionService } from '../../core/connection.service';
 
 class MockRouter {
     navigate() {
@@ -132,7 +132,7 @@ describe('Test Component', () => {
 
         spyOn(Window.prototype, 'addEventListener').and.callFake(() => { console.log('listener'); });
         spyOn(ConnectionService.prototype, 'sendReport').and.callFake(() => { });
-        spyOn(ConnectionService.prototype, 'registerAttndee').and.callFake(() => { });
+        spyOn(ConnectionService.prototype, 'registerAttendee').and.callFake(() => { });
         spyOn(ConnectionService.prototype, 'startConnection').and.callFake(() => { console.log('connection initiated'); });
         spyOn(ConductService.prototype, 'getElapsedTime').and.callFake(() => {
             return Observable.of(4.5);
@@ -430,19 +430,6 @@ describe('Test Component', () => {
         testComponent.testTypePreview = false;
         testComponent.getTestByLink('');
         expect(testComponent.test.link).toBe('hjxJ4cQ2fI');        
-    });
-
-    it('should get Test setting by Test link', () => {        
-        spyOn(ConductService.prototype, 'getTestByLink').and.callFake(() => {
-            return Observable.of(FakeTest);
-        });
-        spyOn(TestComponent.prototype, 'getTestAttendee').and.callFake(() => {
-            return;
-        });
-        
-        testComponent.testTypePreview = false;
-        testComponent.getTestByLink('something');
-        expect(testComponent.testLink).toBe('something');        
     });
 
     it('should count down', () => {
