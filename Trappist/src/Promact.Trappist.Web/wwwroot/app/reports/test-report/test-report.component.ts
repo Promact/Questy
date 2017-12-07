@@ -115,7 +115,7 @@ export class TestReportComponent implements OnInit {
 
     ngOnInit() {
         this.testId = this.route.snapshot.params['id'];
-        this.loader = true;        
+        this.loader = true;
         this.getTestName();
         this.domain = window.location.origin;
     }
@@ -126,11 +126,17 @@ export class TestReportComponent implements OnInit {
     getTestName() {
         this.reportService.getTestName(this.testId).subscribe((test) => {
             this.test = test;
-            //start socket connection and retrieve estimated end time
-            this.connectionService.startConnection(() => {
-                this.connectionService.joinAdminGroup();
+
+            //If the connection is already established update the expected end time
+            if (this.connectionService.isConnected) {
                 this.connectionService.updateExpectedEndTime(this.test.duration, this.testId);
-            });
+            } else {
+                //start socket connection and retrieve estimated end time
+                this.connectionService.startConnection(() => {
+                    this.connectionService.joinAdminGroup();
+                    this.connectionService.updateExpectedEndTime(this.test.duration, this.testId);
+                });
+            }
         });
 
         this.getAllTestCandidates();
@@ -163,7 +169,7 @@ export class TestReportComponent implements OnInit {
             let currentDate = new Date();
             let offset = new Date().getTimezoneOffset();
             expectedEndDate.setMinutes(expectedEndDate.getMinutes() - offset);
-            
+
             console.log(expectedEndDate.toDateString());
             this.estimatedTime = (expectedEndDate.getDate() > currentDate.getDate() ? expectedEndDate.toDateString() + ', ' : '') + expectedEndDate.toLocaleTimeString('en-US');
 
