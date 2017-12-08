@@ -202,7 +202,8 @@ export class TestComponent implements OnInit {
                 , 'using namespace std;'
                 , 'int main()'
                 , '{'
-                , '     cout << "Hello World!";'
+                , '    cout << "Hello World!";'
+                , '    return 0;'
                 , '}'
             ].join('\n');
         }
@@ -211,8 +212,8 @@ export class TestComponent implements OnInit {
                 ' #include <stdio.h>'
                 , 'int main()'
                 , '{'
-                , '     printf("Hello, World!");'
-                , '     return 0;'
+                , '    printf("Hello, World!");'
+                , '    return 0;'
                 , '}'
             ].join('\n');
             this.selectedMode = 'c_cpp';
@@ -860,6 +861,7 @@ export class TestComponent implements OnInit {
 
         this.istestEnd = true;
         this.isTestReady = false;
+        this.dialog.closeAll();
 
         this.snackBar.dismiss();
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
