@@ -33,6 +33,7 @@ declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
 import { ConnectionService } from '../../core/connection.service';
+import { TestBundleModel } from "../test_bundle_model";
 
 @Component({
     moduleId: module.id,
@@ -41,10 +42,11 @@ import { ConnectionService } from '../../core/connection.service';
 })
 export class TestComponent implements OnInit {
     @ViewChild('editor') editor: AceEditorComponent;
+    @Input() testLink: string;
     timeString: string;
     test: Test;
+    testBundle: TestBundleModel;
     testTypePreview: boolean;
-    @Input() testLink: string;
     selectLanguage: string;
     selectedMode: string;
     languageMode: string[];
@@ -119,6 +121,7 @@ export class TestComponent implements OnInit {
         this.selectedTheme = 'monokai';
         this.timeString = this.secToTimeString(this.seconds);
         this.test = new Test();
+        this.testBundle = new TestBundleModel();
         this.testTypePreview = false;
         this.testQuestions = new Array<TestQuestions>();
         this.options = new Array<SingleMultipleAnswerQuestionOption>();
@@ -144,10 +147,69 @@ export class TestComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getTestByLink(this.testLink);
+        this.getTestBundle(this.testLink);
         this.connectionService.startConnection();
     }
 
+    /**
+     * Request server for test bundle data which includes test, attendee and question details and initiate test
+     * @param link: Test magic link
+     */
+    getTestBundle(link: string) {
+        let url = window.location.pathname;
+        if (link === '' || link === undefined) {
+            this.testLink = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
+            history.pushState(null, null, null);
+            window.addEventListener('popstate', function (event) {
+                history.pushState(null, null, null);
+            });
+        }
+        else {
+            this.testLink = link;
+            this.testTypePreview = true;
+            this.isInitializing = false;
+        }
+        window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); });
+
+        this.conductService.getTestBundle(this.testLink, this.testTypePreview).subscribe(response => {
+            this.testBundle = response;
+            this.test = this.testBundle.test;
+            this.testQuestions = this.testBundle.testQuestions;
+            this.testAttendee = this.testBundle.testAttendee;
+
+            this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
+            this.seconds = this.test.duration * 60;
+            this.tolerance = this.test.browserTolerance;
+            this.WARNING_MSG = this.test.warningMessage;
+            this.WARNING_TIME = this.test.warningTime * 60;
+            this.resumable = this.test.allowTestResume; 
+
+            if (this.test.questionOrder === TestOrder.Random) {
+                this.shuffleQuestion();
+            }
+
+            if (this.test.optionOrder === TestOrder.Random) {
+                this.shuffleOption();
+            }
+
+            window.onbeforeunload = (ev) => {
+                this.isCloseWindow = true;
+                this.saveTestLogs();
+                let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
+                ev.returnValue = dialogText;
+                return dialogText;
+            };
+
+            this.isTestReady = true;
+            if (this.testTypePreview)
+                this.navigateToQuestionIndex(0);
+            else this.getTestStatus(this.testAttendee.id);
+
+            this.clockIntervalListener = this.getClockInterval();
+        }, err => {
+            window.location.href = window.location.origin + '/pageNotFound';
+        });
+    }
 
     /**
      * saves the TestLogs if server is gone off
@@ -219,6 +281,7 @@ export class TestComponent implements OnInit {
             this.selectedMode = 'c_cpp';
         }
     }
+
     /**
      * keep tracks of what user is writing in editor
      * @param code
@@ -228,99 +291,10 @@ export class TestComponent implements OnInit {
 
     }
 
-    /**
-     * Gets Test by Test Link
-     */
-    @Input() set getTestLink(link: string) {
-
-        this.getTestByLink(link);
-
-    } getTestByLink(link: string) {
-        let url = window.location.pathname;
-        if (link === '' || link === undefined) {
-            this.testLink = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
-            history.pushState(null, null, null);
-            window.addEventListener('popstate', function (event) {
-                history.pushState(null, null, null);
-            });
-        }
-        else {
-            this.testLink = link;
-            this.testTypePreview = true;
-            this.isInitializing = false;
-        }
-        window.addEventListener('popstate', () => { this.testService.isTestPreviewIsCalled.next(false); });
-        this.conductService.getTestByLink(this.testLink, this.testTypePreview).subscribe((response) => {
-            this.test = response;
-            this.seconds = this.test.duration * 60;
-            this.tolerance = this.test.browserTolerance;
-            this.WARNING_MSG = this.test.warningMessage;
-            this.WARNING_TIME = this.test.warningTime * 60;
-            this.resumable = this.test.allowTestResume;
-
-            window.onbeforeunload = (ev) => {
-                this.isCloseWindow = true;
-                this.saveTestLogs();
-                let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
-                ev.returnValue = dialogText;
-                return dialogText;
-            };
-
-            if (this.testTypePreview)
-                this.getTestQuestion(this.test.id);
-            else {
-                this.getTestAttendee(this.test.id, this.testTypePreview);
-            }
-        }, err => {
-            window.location.href = window.location.origin + '/pageNotFound';
-        });
-    }
-    
-    /**
-     * Gets Test Attendee
-     * @param testId: Id of Test
-     */
-    getTestAttendee(testId: number, testTypePreview: boolean) {
-        this.conductService.getTestAttendeeByTestId(testId, testTypePreview).subscribe((response) => {
-            this.testAttendee = response;
-           
-            this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
-            this.getTestQuestion(this.test.id);
-        }, err => {
-            this.router.navigate(['']);
-        });
-    }
-
-    /**
-     * Gets all the test testQuestions
-     */
-    @Input() set getQuestion(question: number) {
-        this.getTestQuestion(question);
-
-    } getTestQuestion(id: number) {
-        this.conductService.getQuestions(id).subscribe((response) => {
-
-            this.testQuestions = response;
-
-            if (this.test.questionOrder === TestOrder.Random) {
-                this.shuffleQuestion();
-            }
-
-            if (this.test.optionOrder === TestOrder.Random) {
-                this.shuffleOption();
-            }
-
-            this.isTestReady = true;
-            if (this.testTypePreview)
-                this.navigateToQuestionIndex(0);
-            else this.getTestStatus(this.testAttendee.id);
-
-            this.clockIntervalListener = this.getClockInterval();
-        });
-    }
     getClockInterval() {
         return Observable.interval(1000).subscribe(() => { this.countDown(); });
     }
+
     /**
      * Gets the TestStatus of Attendee
      * @param attendeeId: Id of Attendee
@@ -861,7 +835,11 @@ export class TestComponent implements OnInit {
 
         this.istestEnd = true;
         this.isTestReady = false;
+<<<<<<< HEAD
         this.dialog.closeAll();
+=======
+        window.onbeforeunload = null;
+>>>>>>> Optimized test conduct page load time
 
         this.snackBar.dismiss();
         debugger;

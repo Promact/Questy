@@ -30,6 +30,10 @@ export class ConductService {
         return this.httpService.get(this.testConductUrl + testLink + '/instructions');
     }
 
+    getTestBundle(link: string, testTypePreview: boolean) {
+        return this.httpService.get(this.testConductUrl + 'testbundle/' + link + '/' + testTypePreview)
+    }
+
     /**
      *Get list of Questions
      */

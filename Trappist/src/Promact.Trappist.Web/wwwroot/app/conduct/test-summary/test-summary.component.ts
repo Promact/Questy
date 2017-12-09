@@ -278,13 +278,13 @@ export class TestSummaryComponent implements OnInit {
             clearInterval(this.clockInterval);
 
         let timeElapsed = this.test.duration * 60 - this.timeLeft;
-        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(() => {
-            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-                this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
+        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+            this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
+            this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
                 this.router.navigate(['test-end'], { replaceUrl: true });
-                this.loader = false;
+                this.loader = false;                   
             });
-        });        
+        });
     }
     endYourTest() {
         this.loader = true;
