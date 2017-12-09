@@ -33,7 +33,7 @@ declare let alea: any;
 import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
 import { ConnectionService } from '../../core/connection.service';
-import { TestBundleModel } from "../test_bundle_model";
+import { TestBundleModel } from '../test_bundle_model';
 
 @Component({
     moduleId: module.id,
