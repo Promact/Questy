@@ -31,7 +31,7 @@ export class ConductService {
     }
 
     getTestBundle(link: string, testTypePreview: boolean) {
-        return this.httpService.get(this.testConductUrl + 'testbundle/' + link + '/' + testTypePreview)
+        return this.httpService.get(this.testConductUrl + 'testbundle/' + link + '/' + testTypePreview);
     }
 
     /**
