@@ -384,6 +384,48 @@ namespace Promact.Trappist.Core.Controllers
             return NotFound();
         }
 
+        [HttpGet("testbundle/{link}/{isPreview}")]
+        public async Task<IActionResult> GetTestBundle([FromRoute]string link, [FromRoute] bool isPreview)
+        {
+            var attendeeId = 0;
+            var testBundle = new TestBundleModelAC();
+            var testAttendee = new TestAttendees();
+            if (link == null)
+            {
+                return BadRequest();
+            }
+
+            if (!await _testConductRepository.IsTestInValidDateWindow(link, isPreview))
+            {
+                return NotFound();
+            }
+
+            if (isPreview == false)
+            {
+                attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
+                if (!await IsAttendeeValid(attendeeId))
+                {
+                    return NotFound();
+                }
+
+                testAttendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
+            }
+            var testDetails = await _testRepository.GetTestByLinkAsync(link);
+            if (isPreview == false)
+                await _testRepository.SetStartTestLogAsync(attendeeId);
+
+            var questions = await _testRepository.GetTestQuestionByTestIdAsync(testDetails.Id);
+
+            if (testAttendee.Report != null && (testAttendee.Report.TestStatus == TestStatus.BlockedTest || testAttendee.Report.TestStatus == TestStatus.ExpiredTest))
+                HttpContext.Session.SetString(_stringConstants.Path, "");
+
+            testBundle.Test = testDetails;
+            testBundle.TestQuestions = questions;
+            testBundle.TestAttendee = testAttendee;
+
+            return Ok(testBundle);
+        }
+
         #endregion
     }
 }
