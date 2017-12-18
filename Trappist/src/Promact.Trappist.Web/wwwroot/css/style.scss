@@ -2165,147 +2165,166 @@ footer {
 }
 
 .test {
-    .test-header {
-        position: fixed;
-        width: $full_size;
-        background-color: $color_white;
-        padding: 10px 0;
-        border-bottom: 1px solid $color_border;
-        z-index: 99;
+  .test-header {
+    position: fixed;
+    width: $full_size;
+    background-color: $color_white;
+    padding: 10px 0;
+    border-bottom: 1px solid $color_border;
+    z-index: 99;
 
-        .container-fluid {
-            .display-table-cell {
-                width: 33.33%;
-                vertical-align: middle;
-            }
-        }
-
-        .text-right {
-            h5,
-            h2 {
-                display: inline-block;
-                vertical-align: middle;
-            }
-        }
+    .container-fluid {
+      .display-table-cell {
+        width: 33.33%;
+        vertical-align: middle;
+      }
     }
 
-    .test-body {
-        padding: 68px 0 115px;
+    .text-right {
+      h5,
+      h2 {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
 
-        .container-fluid {
-            .display-table-cell {
-                width: $half_size;
-                vertical-align: top;
+  .test-body {
+    padding: 68px 0 115px;
 
-                &:not(.code-snippet) > * {
-                    width: 80%;
-                }
+    .container-fluid {
+      .display-table-cell {
+        width: $half_size;
+        vertical-align: top;
 
-                & + div {
-                    border-left: 1px solid $color_border;
-                }
-            }
+        &:not(.code-snippet) > * {
+          width: 80%;
         }
 
-        .test-body-title {
-            background-color: $color_bg_secondary;
+        & + div {
+          border-left: 1px solid $color_border;
         }
-
-        .test-body-content {
-            background-color: $color_white;
-
-            .qs-area {
-                height: calc(100vh - 223px);
-            }
-
-            .mat-radio-button .mat-radio-label,
-            .mat-checkbox .mat-checkbox-layout .mat-checkbox-label {
-                white-space: normal;
-                word-break: break-word;
-            }
-        }
+      }
     }
 
-    .test-footer {
-        position: fixed;
-        bottom: 0;
-        width: $full_size;
-        background-color: $color_bg_secondary;
-        z-index: 99;
-
-        .test-footer-top {
-            max-height: 80px;
-            overflow: auto;
-
-            span {
-                width: 28px;
-                height: 28px;
-                display: inline-block;
-                text-align: center;
-                padding: 4px 0;
-                margin: 3px 1px;
-                cursor: pointer;
-
-                &.answered,
-                &.review,
-                &.selected {
-                    color: $color_white;
-                }
-            }
-        }
-
-        .answered {
-            background-color: $color_theme;
-            border: 1px solid $color_theme_secondary;
-        }
-
-        .review {
-            background-color: $color_yellow;
-            border: 1px solid $color_yellow_border;
-        }
-
-        .selected {
-            background-color: $color_base;
-            border: 1px solid $color_border;
-        }
-
-        .unanswered {
-            background-color: $color_white;
-            border: 1px solid $color_border;
-        }
-
-        .test-footer-bottom {
-            border-top: 3px solid $color_white;
-
-            .trappist-logo {
-                p {
-                    font-size: 11px;
-                    color: $color_base_secondary;
-                    margin-bottom: 0;
-                }
-            }
-
-            .indicator {
-                font-size: 11px;
-                margin-right: 15px;
-
-                span {
-                    width: 18px;
-                    height: 18px;
-                    display: inline-block;
-                    vertical-align: top;
-                    margin-right: 3px;
-                }
-            }
-
-            .btn {
-                .material-icons {
-                    vertical-align: top;
-                    font-size: 20px;
-                }
-            }
-        }
+    .test-body-title {
+      background-color: $color_bg_secondary;
     }
+
+    .test-body-content {
+      background-color: $color_white;
+
+      .qs-area {
+        height: calc(100vh - 223px);
+      }
+
+      .mat-radio-button .mat-radio-label,
+      .mat-checkbox .mat-checkbox-layout .mat-checkbox-label {
+        white-space: normal;
+        word-break: break-word;
+      }
+    }
+
+    .custom-input {
+      margin-top: 15px;
+
+      .mat-checkbox {
+        display: inline-block;
+        width: inherit;
+
+        .mat-checkbox-layout {
+          margin-bottom: 0;
+        }
+      }
+
+      textarea {
+        display: block;
+        margin-top: 10px;
+        width: 300px;
+      }
+    }
+  }
+
+  .test-footer {
+    position: fixed;
+    bottom: 0;
+    width: $full_size;
+    background-color: $color_bg_secondary;
+    z-index: 99;
+
+    .test-footer-top {
+      max-height: 80px;
+      overflow: auto;
+
+      span {
+        width: 28px;
+        height: 28px;
+        display: inline-block;
+        text-align: center;
+        padding: 4px 0;
+        margin: 3px 1px;
+        cursor: pointer;
+
+        &.answered,
+        &.review,
+        &.selected {
+          color: $color_white;
+        }
+      }
+    }
+
+    .answered {
+      background-color: $color_theme;
+      border: 1px solid $color_theme_secondary;
+    }
+
+    .review {
+      background-color: $color_yellow;
+      border: 1px solid $color_yellow_border;
+    }
+
+    .selected {
+      background-color: $color_base;
+      border: 1px solid $color_border;
+    }
+
+    .unanswered {
+      background-color: $color_white;
+      border: 1px solid $color_border;
+    }
+
+    .test-footer-bottom {
+      border-top: 3px solid $color_white;
+
+      .trappist-logo {
+        p {
+          font-size: 11px;
+          color: $color_base_secondary;
+          margin-bottom: 0;
+        }
+      }
+
+      .indicator {
+        font-size: 11px;
+        margin-right: 15px;
+
+        span {
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          vertical-align: top;
+          margin-right: 3px;
+        }
+      }
+
+      .btn {
+        .material-icons {
+          vertical-align: top;
+          font-size: 20px;
+        }
+      }
+    }
+  }
 }
 
 /* Reports */
