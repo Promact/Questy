@@ -80,9 +80,9 @@
                         </ace-editor>
                         <button type="button" class="btn btn-default" value="submit" (click)="runCode(!showCustomInput)">Run</button>
                         <button type="button" class="btn btn-primary" value="run" (click)="showCustomInput = false; runCode(false);">Submit</button><br />
-                        <div class="display-table-cell ptb20">
-                          <md-checkbox class="only-checkbox mr10" [(ngModel)]="showCustomInput"> Run against custom input</md-checkbox><br />
-                          <textarea rows="4" *ngIf="showCustomInput" [(ngModel)]="customInput"></textarea><br/>
+                        <div class="custom-input">
+                          <md-checkbox [(ngModel)]="showCustomInput"> Run against custom input</md-checkbox>
+                          <textarea rows="4" *ngIf="showCustomInput" [(ngModel)]="customInput"></textarea>
                         </div>
                         <pre [ngClass]="getColorCode()" *ngIf="codeResponse.message && showResult">{{codeResponse.message}} <img *ngIf="isCodeProcessing" src="../images/dual-ring.gif" /></pre>
                         <pre [ngClass]="getColorCode()" *ngIf="codeResponse.output && showResult">{{codeResponse.output}}</pre>
