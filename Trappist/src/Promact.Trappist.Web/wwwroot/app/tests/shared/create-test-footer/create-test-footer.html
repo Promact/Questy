@@ -17,7 +17,7 @@
         </div>
         <div class="buttons-block pull-right" *ngIf="isTestSettings && loader">
             <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="updateTestSettings()">Save & Exit</button>
-            <button type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="launchTestDialogBox()">Save & Launch</button>
+            <button e2e="saveandlaunch-btn" type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="launchTestDialogBox()">Save & Launch</button>
             <button e2e="pause-test-btn" type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)" (click)="pausTest()">Pause</button>
             <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="resumTest()">Resume</button>
         </div>

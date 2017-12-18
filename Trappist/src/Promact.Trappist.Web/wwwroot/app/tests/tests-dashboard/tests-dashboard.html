@@ -1,4 +1,4 @@
-﻿<div class="loader-container" *ngIf="loader">
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
     <div class="spinner"></div>
 </div>
 <div class="container">
@@ -21,14 +21,14 @@
                 <div *ngFor="let test of tests | filter: searchTest let i=index">
                     <div class="col-md-5ths col-sm-4">
                         <div class="test-block">
-                            <div class="test-title clearfix">
+                            <div e2e="test-title" class="test-title clearfix">
                                 <h5 class="pull-left" title="{{test.testName}}"><a [routerLink]="[test.id,'view']">{{test.testName}}</a></h5>
-                                <em class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
+                                <em e2e="test-menu" class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
                                 <md-menu #testMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
-                                    <button md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
-                                    <button md-menu-item (click)="deleteTestDialog(test)">Delete</button>
-                                    <button md-menu-item (click)="duplicateTestDialog(test)">Duplicate</button>
-                                    <button md-menu-item [routerLink]="[test.id,'settings']">Settings</button>
+                                    <button e2e="edit-btn" md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
+                                    <button e2e="delete-btn" md-menu-item (click)="deleteTestDialog(test)">Delete</button>
+                                    <button e2e="duplicate-btn" md-menu-item (click)="duplicateTestDialog(test)">Duplicate</button>
+                                    <button e2e="settings-btn" md-menu-item [routerLink]="[test.id,'settings']">Settings</button>
                                 </md-menu>
                             </div>
                             <div class="test-details">
