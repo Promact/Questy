@@ -20,10 +20,10 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><em class="material-icons">help</em></li>
                     <li class="dropdown">
-                        <em class="material-icons" [mdMenuTriggerFor]="userMenu">account_circle</em>
+                        <em e2e="profile-icon" class="material-icons" [mdMenuTriggerFor]="userMenu">account_circle</em>
                         <md-menu #userMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
-                            <a md-menu-item [routerLink]="['profile']" role="button">Profile</a>
-                            <button md-menu-item (click)="logOff()">Logout</button>
+                            <a e2e="profile-btn" md-menu-item [routerLink]="['profile']" role="button">Profile</a>
+                            <button e2e="logout-btn" md-menu-item (click)="logOff()">Logout</button>
                         </md-menu>
                     </li>
                 </ul>

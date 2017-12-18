@@ -1,6 +1,6 @@
 ﻿<div class="test-create-steps test-sections">
     <create-test-header [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
-    <div class="loader-container" *ngIf="loader">
+    <div e2e="progress-loader" class="loader-container" *ngIf="loader">
         <div class="spinner"></div>
     </div>
     <div class="container" *ngIf="!loader">
