@@ -185,7 +185,7 @@ describe('Test Settings Component', () => {
         testSettings.testDetails.startDate = '2017-12-16T06:51:49.4283026Z';
         testSettings.testDetails.endDate = test.endDate;
         testSettings.isStartDateValid();
-        expect(testSettings.validStartDate).toBe(false);
+        expect(testSettings.validStartDate).toBe(true);
         expect(testSettings.validEndDate).toBe(true);
     });
 
