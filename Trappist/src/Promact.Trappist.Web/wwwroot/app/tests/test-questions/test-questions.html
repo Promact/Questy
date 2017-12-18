@@ -1,10 +1,10 @@
 ﻿<div class="test-create-steps test-questions">
-  <div class="loader-container" *ngIf="loader">
+  <div e2e="progress-loader" class="loader-container" *ngIf="loader">
     <div class="spinner"></div>
   </div>
   <create-test-header [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
   <div class="container" *ngIf="!loader">
-    <div class="loader-container" *ngIf="loader_question">
+    <div e2e="progress-loader" class="loader-container" *ngIf="loader_question">
       <div class="spinner"></div>
     </div>
     <h5 *ngIf="!isEditTestEnabled">Selected questions have been added in your test. You cannot edit an ongoing test.</h5>
@@ -25,11 +25,11 @@
           <div class="collapsible-body p0">
             <div class="select-all clearfix">
               <div class="pull-left mt6">
-                  <md-checkbox class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
+                  <md-checkbox e2e="selectall-cb" class="only-checkbox mr10" [(ngModel)]="category.selectAll" (change)="selectAll(category)" [disabled]="!isEditTestEnabled"></md-checkbox>
                   <h5>Select All</h5>
                   <span class="h7">(total {{category.questionCount}} questions)</span>
               </div>  
-              <button type="button" class="btn pull-right" (click)="GetShuffledQuestionArray(k);openDialog(category,k)" [disabled]="!isEditTestEnabled">Select Random Questions</button>
+              <button e2e="selectrandom-btn" type="button" class="btn pull-right" (click)="GetShuffledQuestionArray(k);openDialog(category,k)" [disabled]="!isEditTestEnabled">Select Random Questions</button>
             </div>
             <ng-container *ngFor="let question of category.questionList;let i=index">
               <div class="qs-container">
