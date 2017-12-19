@@ -117,7 +117,7 @@
                 </div>
                 <div class="form-group">
                   <label>Test Case Type</label>
-                  <select class="form-control width-percent-60" (change)="testCase.testCaseType = $event.target.value" [(ngModel)]="testCase.testCaseType" required name="type_{{testCase.id}}" #type="ngModel">
+                  <select class="form-control width-percent-60" (change)="validateTestCase(testCase, $event)" [(ngModel)]="testCase.testCaseType" required name="type_{{testCase.id}}" #type="ngModel">
                     <option value="0">Default</option>
                     <option value="1">Basic</option>
                     <option value="2">Necessary</option>
@@ -168,7 +168,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0" id="saveBtn">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0 || !this.isDefaultTestCaseAdded" id="saveBtn">Save</button>
       </div>
     </form>
   </div>
