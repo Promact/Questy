@@ -233,6 +233,7 @@ describe('Testing of question-dashboard component:-', () => {
 
     it('delete category', () => {
         spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(mockData[0].categoryAcList[0]));
+        spyOn(questionComponent, 'getAllQuestions').and.callFake(() => { return null; });
         questionComponent.categoryArray = mockData[0].categoryAcList;
         expect(questionComponent.categoryArray.length).toBe(2);
         questionComponent.deleteCategoryDialog(mockData[0].categoryAcList[1]);

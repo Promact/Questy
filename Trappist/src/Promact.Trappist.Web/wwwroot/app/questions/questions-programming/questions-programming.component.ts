@@ -277,8 +277,9 @@ export class QuestionsProgrammingComponent implements OnInit {
         }
     }
 
-    private isTestCaseValid() {
-        return this.testCases.some(testcase => +testcase.testCaseType === TestCaseType.Default);
+    private validateTestCase(testCase: CodeSnippetQuestionsTestCases, $event: any) {
+        testCase.testCaseType = $event.target.value;
+        this.isDefaultTestCaseAdded = this.testCases.some(testcase => +testcase.testCaseType === TestCaseType.Default);
     }
 
     /**
@@ -286,7 +287,6 @@ export class QuestionsProgrammingComponent implements OnInit {
      * @param isCodeSnippetFormValid : Validation status of code snippet form
      */
     addCodingQuestion(isCodeSnippetFormValid: boolean) {
-        this.isDefaultTestCaseAdded = this.isTestCaseValid();
 
         if (isCodeSnippetFormValid && !this.nolanguageSelected && this.isDefaultTestCaseAdded) {
             //Lock the form. Load spinner.
