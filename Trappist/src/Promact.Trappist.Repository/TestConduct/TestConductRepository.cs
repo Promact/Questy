@@ -296,11 +296,10 @@ namespace Promact.Trappist.Repository.TestConduct
                 code.Input = testCase.TestCaseInput;
                 var result = await ExecuteCodeAsync(code);
 
-                if (result.CompilerOutput != null)//EXITCODE if code run fails
+                if (result.CompilerOutput != "")
                 {
                     errorEncounter = true;
                     errorMessage = result.CompilerOutput;
-                    break;
                 }
 
                 //Trim newline character 
@@ -389,10 +388,10 @@ namespace Promact.Trappist.Repository.TestConduct
 
             var codeResponse = new CodeResponse()
             {
-                ErrorOccurred = result.CompilerOutput != null,
+                ErrorOccurred = result.CompilerOutput != "",
                 Error = result.CompilerOutput,
                 Message = null,
-                Output = result.CompilerOutput == null ? result.Output : result.CompilerOutput,
+                Output = result.CompilerOutput == "" ? result.Output : result.CompilerOutput,
                 TimeConsumed = result.RunTime,
                 MemoryConsumed = result.MemoryConsumed,
                 TotalTestCasePassed = 0,
