@@ -108,3 +108,9 @@ export const FakeResumeData = [{
     'questionStatus': 1,
     'isAnswered': true
 }];
+
+export const FakeBundleData = {
+	'test': FakeTest,
+	'testAttendee': FakeAttendee,
+	'testQuestions': FakeTestQuestions
+};

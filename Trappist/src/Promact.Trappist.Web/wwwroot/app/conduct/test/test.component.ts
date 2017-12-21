@@ -756,8 +756,6 @@ export class TestComponent implements OnInit {
         let message: string;
         let duration: number = 0;
 
-        console.log(this.focusLost + ' ' + this.test.browserTolerance);
-
         if (this.focusLost <= this.test.browserTolerance) {
             message = this.ALERT_BROWSER_FOCUS_LOST;
         }
@@ -835,14 +833,10 @@ export class TestComponent implements OnInit {
 
         this.istestEnd = true;
         this.isTestReady = false;
-<<<<<<< HEAD
         this.dialog.closeAll();
-=======
         window.onbeforeunload = null;
->>>>>>> Optimized test conduct page load time
 
         this.snackBar.dismiss();
-        debugger;
         this.conductService.setAttendeeBrowserToleranceValue(this.testAttendee.id, this.focusLost).subscribe((response) => {
             this.focusLost = response;
         });

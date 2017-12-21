@@ -58,7 +58,7 @@ import { Md2AccordionModule } from 'md2';
 import { ChartsModule } from 'ng2-charts';
 import {
     FakeTest, FakeAttendee, FakeTestQuestions,
-    FakeTestLogs, FakeCodeResponse, FakeResumeData
+    FakeTestLogs, FakeCodeResponse, FakeResumeData, FakeBundleData
 } from '../../Mock_Data/conduct_data.mock';
 import { ConnectionService } from '../../core/connection.service';
 
@@ -174,55 +174,18 @@ describe('Test Component', () => {
         testComponent.resumeTest();
         expect(testComponent.isInitializing).toBe(false);
     });
-    
-    it('should get Test Attendee by Id', () => {
-        spyOn(ConductService.prototype, 'getTestAttendeeByTestId').and.callFake(() => {
-            return Observable.of(FakeAttendee);
+	
+	it('should get Test bundle', () => {
+		spyOn(ConductService.prototype, 'getTestBundle').and.callFake(() => {
+            return Observable.of(FakeBundleData);
         });
-        spyOn(TestComponent.prototype, 'getTestQuestion').and.callFake(() => {
-            return;
-        });
-
-        testComponent.getTestAttendee(2002, false);
-        expect(testComponent.testAttendee.id).toBe(1);
-    });
-
-    it('should get Test Question', () => {
-        spyOn(ConductService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(FakeTestQuestions);
-        });
-        spyOn(ConductService.prototype, 'getTestByLink').and.callFake(() => {
-            return Observable.of(FakeTest);
-        });
-        spyOn(TestComponent.prototype, 'getClockInterval').and.callFake(() => {
-            return;
-        });
-
-        testComponent.test = JSON.parse(JSON.stringify(FakeTest));
-        testComponent.testAttendee = JSON.parse(JSON.stringify(FakeAttendee));
-        testComponent.getTestQuestion(2002);
-        expect(testComponent.testQuestions.length).toBe(2);
-    });
-
-    it('should get Test Question part 2', () => {
-        spyOn(ConductService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(FakeTestQuestions);
-        });
-        spyOn(ConductService.prototype, 'getTestByLink').and.callFake(() => {
-            return Observable.of(FakeTest);
-        });
-        spyOn(TestComponent.prototype, 'getClockInterval').and.callFake(() => {
-            return;
-        });
-
-        testComponent.test = JSON.parse(JSON.stringify(FakeTest));
-        testComponent.test.questionOrder = TestOrder.Fixed;
-        testComponent.test.optionOrder = TestOrder.Fixed;
-        testComponent.testAttendee = JSON.parse(JSON.stringify(FakeAttendee));
-        testComponent.getTestQuestion(2002);
-        expect(testComponent.testQuestions.length).toBe(2);
-    });
-
+		
+		testComponent.getTestBundle('');
+		expect(testComponent.testQuestions.length).toBe(2);
+		expect(testComponent.test.link).toBe('hjxJ4cQ2fI');
+		
+	});
+	
     it('should get Test status', () => {
         spyOn(ConductService.prototype, 'getTestStatus').and.callFake(() => {
             return Observable.of(0);
@@ -234,21 +197,6 @@ describe('Test Component', () => {
         testComponent.getTestStatus(1);
         expect(testComponent.resumeTest).toHaveBeenCalled();
     });
-
-    //it('should run code', () => {
-    //    spyOn(ConductService.prototype, 'execute').and.callFake(() => {
-    //        return Observable.of(FakeCodeResponse);
-    //    });
-    //    spyOn(TestComponent.prototype, 'openDialog').and.callFake(() => {
-    //        return Observable.of();
-    //    });
-
-    //    testComponent.questionIndex = 0;
-    //    testComponent.testTypePreview = false;
-    //    testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
-    //    testComponent.runCode(false);
-    //    expect(testComponent.codeResponse).toBeDefined();
-    //});
 
     it('should add answer', () => {
         spyOn(ConductService.prototype, 'addAnswer').and.callFake(() => {
@@ -389,47 +337,6 @@ describe('Test Component', () => {
 
         testComponent.onChange('abcd');
         expect(testComponent.codeAnswer).toBe('abcd');
-    });
-
-    it('should increment focus lost counter', () => {
-        spyOn(ConductService.prototype, 'setAttendeeBrowserToleranceValue').and.callFake(() => {
-            return Observable.of(1);
-        });
-        spyOn(TestComponent.prototype, 'addAnswer').and.callFake(() => {
-            return;
-        });
-        spyOn(ConductService.prototype, 'getTestAttendeeByTestId').and.callFake(() => {
-            return Observable.of(FakeAttendee);
-        });
-        spyOn(ConductService.prototype, 'addTestLogs').and.callFake(() => {
-            return Observable.of(FakeTestLogs);
-        });
-        spyOn(TestComponent.prototype, 'getTestQuestion').and.callFake(() => {
-            return;
-        });
-        testComponent.test = JSON.parse(JSON.stringify(FakeTest));
-        testComponent.questionIndex = 0;
-        testComponent.questionStatus = QuestionStatus.review;
-        testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
-
-        testComponent.getTestAttendee(2002, false);
-        
-        testComponent.windowFocusLost(null);
-        testComponent.windowFocusLost(null);
-        expect(testComponent.istestEnd).toBeTruthy();
-    });
-
-    it('should get Test setting by Test link', () => {        
-        spyOn(ConductService.prototype, 'getTestByLink').and.callFake(() => {
-            return Observable.of(FakeTest);
-        });
-        spyOn(TestComponent.prototype, 'getTestAttendee').and.callFake(() => {
-            return;
-        });
-        
-        testComponent.testTypePreview = false;
-        testComponent.getTestByLink('');
-        expect(testComponent.test.link).toBe('hjxJ4cQ2fI');        
     });
 
     it('should count down', () => {
