@@ -66,7 +66,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.selectedDifficulty = 'Easy';
         this.formControlModel = new FormControlModel();
         this.testCases = new Array<CodeSnippetQuestionsTestCases>();
-        this.isDefaultTestCaseAdded = true;
+        this.isDefaultTestCaseAdded = false;
         this.isQuestionEmpty = true;
         this.isCkeditorDirtly = false;
     }
