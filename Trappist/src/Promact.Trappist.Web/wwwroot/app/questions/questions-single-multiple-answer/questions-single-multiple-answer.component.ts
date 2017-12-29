@@ -146,7 +146,10 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
         if (this.noOfOptionShown === 2) {
             this.isClose = true;
         }
-        if (+this.indexOfOptionSelected === optionIndex) {
+
+        if (+this.indexOfOptionSelected > optionIndex) {
+            this.indexOfOptionSelected--;
+        }else if (+this.indexOfOptionSelected === optionIndex) {
             this.indexOfOptionSelected = null;
         }
         if (this.noOfOptionShown === 9) {
