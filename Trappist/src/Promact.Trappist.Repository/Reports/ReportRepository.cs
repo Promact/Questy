@@ -35,13 +35,14 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<TestAC> GetTestNameAsync(int id)
         {
             var result = await _dbContext.Test.AsNoTracking().Where(x => x.Id == id)
-                .Select(selectOnly => new { selectOnly.TestName, selectOnly.Link, selectOnly.CorrectMarks, selectOnly.Duration }).ToListAsync();
+                .Select(selectOnly => new { selectOnly.TestName, selectOnly.Link, selectOnly.CorrectMarks, selectOnly.Duration, selectOnly.EndDate }).ToListAsync();
             var testACObject = new TestAC()
             {
                 TestName = result.First().TestName,
                 Link = result.First().Link,
                 CorrectMarks = result.First().CorrectMarks,
-                Duration = result.First().Duration
+                Duration = result.First().Duration,
+                EndDate = result.First().EndDate                
             };
             return testACObject;
         }

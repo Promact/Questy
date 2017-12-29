@@ -77,6 +77,7 @@ export class TestReportComponent implements OnInit {
     testAttendeeSignalR: TestAttendee;
     estimatedTime: string;
     isTestCompleted: boolean;
+    hasTestEnded: boolean;
 
     constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
         this.testAttendeeArray = new Array<TestAttendee>();
@@ -111,6 +112,7 @@ export class TestReportComponent implements OnInit {
         this.testAttendeeSignalR = new TestAttendee();
         this.isTestCompleted = false;
         this.estimatedTime = 'Getting status...';
+        this.hasTestEnded = true;
     }
 
     ngOnInit() {
@@ -137,6 +139,19 @@ export class TestReportComponent implements OnInit {
                     this.connectionService.updateExpectedEndTime(this.test.duration, this.testId);
                 });
             }
+
+            let testEndListener = setInterval(() => {
+                let currentDate = new Date();
+                let offset = new Date().getTimezoneOffset();
+                let testEndDate = typeof this.test.endDate === "string" ? new Date(this.test.endDate as string) : this.test.endDate;
+                testEndDate.setMinutes(testEndDate.getMinutes() - offset);
+                this.hasTestEnded = (currentDate.getTime() > testEndDate.getTime()) && (this.getNumberOfActiveAttendee() === 0);
+
+                if (this.hasTestEnded)
+                    clearInterval(testEndListener);
+
+            }, 1000);
+
         });
 
         this.getAllTestCandidates();
@@ -169,10 +184,9 @@ export class TestReportComponent implements OnInit {
             let currentDate = new Date();
             let offset = new Date().getTimezoneOffset();
             expectedEndDate.setMinutes(expectedEndDate.getMinutes() - offset);
-
-            console.log(expectedEndDate.toDateString());
+            
             this.estimatedTime = (expectedEndDate.getDate() > currentDate.getDate() ? expectedEndDate.toDateString() + ', ' : '') + expectedEndDate.toLocaleTimeString('en-US');
-
+            
             this.isTestCompleted = currentDate.getTime() > expectedEndDate.getTime();
         });
     }
