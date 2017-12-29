@@ -143,7 +143,7 @@ export class TestReportComponent implements OnInit {
             let testEndListener = setInterval(() => {
                 let currentDate = new Date();
                 let offset = new Date().getTimezoneOffset();
-                let testEndDate = typeof this.test.endDate === "string" ? new Date(this.test.endDate as string) : this.test.endDate;
+                let testEndDate = typeof this.test.endDate === 'string' ? new Date(this.test.endDate as string) : this.test.endDate;
                 testEndDate.setMinutes(testEndDate.getMinutes() - offset);
                 this.hasTestEnded = (currentDate.getTime() > testEndDate.getTime()) && (this.getNumberOfActiveAttendee() === 0);
 
@@ -182,8 +182,6 @@ export class TestReportComponent implements OnInit {
 
             let expectedEndDate = new Date(estimatedTime + 'Z'); //'Z' is for telling this method that the time is in UTC!!!
             let currentDate = new Date();
-            let offset = new Date().getTimezoneOffset();
-            expectedEndDate.setMinutes(expectedEndDate.getMinutes() - offset);
             
             this.estimatedTime = (expectedEndDate.getDate() > currentDate.getDate() ? expectedEndDate.toDateString() + ', ' : '') + expectedEndDate.toLocaleTimeString('en-US');
             
