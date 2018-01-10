@@ -35,6 +35,13 @@ namespace Promact.Trappist.Repository.Categories
         Task<bool> IsCategoryExistAsync(string categoryName, int id);
 
         /// <summary>
+        /// Method to check category exists or not using category Id
+        /// </summary>
+        /// <param name="id">Id of the Category</param>
+        /// <returns>>True if exists else false</returns>
+        Task<bool> IsCategoryExistAsync(int id);
+
+        /// <summary>
         /// Method to get Category by id
         /// </summary>
         /// <param name="id">Id to get Category</param>

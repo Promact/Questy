@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
+using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
@@ -17,16 +18,18 @@ namespace Promact.Trappist.Core.Controllers
     {
         #region Private Member
         private readonly IQuestionRepository _questionsRepository;
+        private readonly ICategoryRepository _categoryRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IStringConstants _stringConstants;
         #endregion
 
         #region Constructor
-        public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager, IStringConstants stringConstants)
+        public QuestionController(IQuestionRepository questionsRepository, UserManager<ApplicationUser> userManager, IStringConstants stringConstants, ICategoryRepository categoryRepository)
         {
             _questionsRepository = questionsRepository;
             _userManager = userManager;
             _stringConstants = stringConstants;
+            _categoryRepository = categoryRepository;
         }
         #endregion
 
@@ -146,6 +149,25 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> GetAllQuestionsAsync([FromRoute] int id, [FromRoute] int categoryId, [FromRoute] string difficultyLevel, [FromRoute] string searchQuestion)
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
+
+            if(!await _categoryRepository.IsCategoryExistAsync(categoryId))
+            {
+                return NotFound();
+            }            
+
+            try
+            {
+                if (!difficultyLevel.Equals("All"))
+                {
+                    //Below line will throw an error if the difficulty level is not defined in DifficultyLevel enum
+                    var difficultyLevelCode = (DifficultyLevel)Enum.Parse(typeof(DifficultyLevel), difficultyLevel);
+                }
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
             return Ok(await _questionsRepository.GetAllQuestionsAsync(applicationUser.Id, id, categoryId, difficultyLevel, searchQuestion));
         }
 

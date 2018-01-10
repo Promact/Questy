@@ -112,7 +112,6 @@ export class QuestionsDashboardComponent implements OnInit {
     SelectCategoryDifficulty(difficulty: string, categoryName: string) {
         this.selectedDifficulty = DifficultyLevel[difficulty];
         this.selectedCategory.categoryName = categoryName;
-        this.difficultyLevel = difficulty;
         this.categoryArray.forEach(x => {
             if (x.categoryName === this.selectedCategoryName)
                 this.selectedCategoryId = x.id;
@@ -127,6 +126,12 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
+
+            if (this.selectedCategoryName !== undefined && !this.categoryArray.some(x => x.categoryName === this.selectedCategoryName)) {
+                this.router.navigate(['404']);
+                return;
+            }
+
             if ((this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined))
                 this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
             else if (this.selectedCategoryName !== undefined)
@@ -246,6 +251,11 @@ export class QuestionsDashboardComponent implements OnInit {
             else
                 this.router.navigate(['questions/dashboard', categoryName, difficultyLevel]);
             this.loader = false;
+        }, err => {
+            console.log(err);
+            //If error in loading question then redirect to '404 not found' page
+            if(err.status === 404)
+                this.router.navigate(['404']);
         });
     }
 
