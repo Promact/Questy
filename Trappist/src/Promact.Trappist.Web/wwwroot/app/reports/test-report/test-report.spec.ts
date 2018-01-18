@@ -39,6 +39,7 @@ describe('Testing of test-report component:-', () => {
     test.id = 1;
     test.testName = 'Report Testing';
     test.link = '1Pu48OQy6d';
+    test.endDate = '0001-01-01T00:00:01.000';
 
     let attendee1 = new TestAttendee();
     attendee1.id = 1;
