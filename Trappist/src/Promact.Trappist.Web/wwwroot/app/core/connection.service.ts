@@ -4,7 +4,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 //This service is used as a middleware of the communication between clinet ans server hub in real time 
 @Injectable()
 export class ConnectionService {
-    hubConnection: any;
+    hubConnection: HubConnection;
     isConnected: boolean;
 
     public recievedAttendee: EventEmitter<any>;
@@ -25,6 +25,7 @@ export class ConnectionService {
         this.hubConnection.on('getReport', (testAttendee) => { this._zone.run(() => this.recievedAttendee.emit(testAttendee));});
         this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id)); });
         this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedEstimatedEndTime.emit(remainingTime)); });
+        this.hubConnection.onclose(() => { this.isConnected = false; });
     }
     //starts the connection between hub and client
     startConnection(_callback?: any) {
