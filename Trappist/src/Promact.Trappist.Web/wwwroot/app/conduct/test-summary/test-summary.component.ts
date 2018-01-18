@@ -280,6 +280,7 @@ export class TestSummaryComponent implements OnInit {
         let timeElapsed = this.test.duration * 60 - this.timeLeft;
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
+            this.connectionService.sendReport(response);
             this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
                 this.router.navigate(['test-end'], { replaceUrl: true });
                 this.loader = false;                   
