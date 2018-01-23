@@ -8,6 +8,7 @@ import { IndividualReportComponent } from './individual-report/individual-report
 import { ReportService } from './report.service';
 import { ConductService } from '../conduct/conduct.service';
 import { ConnectionService } from '../core/connection.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { ConnectionService } from '../core/connection.service';
     providers: [
         ReportService,
         ConductService,
-        ConnectionService
+        ConnectionService,
+        DatePipe
     ]
 })
 export class ReportsModule { }

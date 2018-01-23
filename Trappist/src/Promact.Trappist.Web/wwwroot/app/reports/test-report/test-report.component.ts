@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ReportService } from '../report.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TestAttendee } from '../testAttendee';
@@ -14,7 +15,8 @@ import { MdSnackBar, MdSnackBarRef } from '@angular/material';
 import { Report } from '../report.model';
 import { ConnectionService } from '../../core/connection.service';
 
-import * as jsPDF from 'jspdf';
+//import * as jsPDF from 'jspdf';
+declare var jsPDF: any;
 import * as ExcelJS from 'exceljs/dist/exceljs.min';
 declare let saveAs: any;
 
@@ -79,7 +81,7 @@ export class TestReportComponent implements OnInit {
     isTestCompleted: boolean;
     hasTestEnded: boolean;
 
-    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
+    constructor(private reportService: ReportService, private route: ActivatedRoute, private conductService: ConductService, private router: Router, private snackbarRef: MdSnackBar, private connectionService: ConnectionService, private datePipe: DatePipe) {
         this.testAttendeeArray = new Array<TestAttendee>();
         this.attendeeArray = new Array<TestAttendee>();
         this.sortedAttendeeArray = new Array<TestAttendee>();
@@ -440,7 +442,8 @@ export class TestReportComponent implements OnInit {
         }
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
-                let testDate = document.getElementById('date').innerHTML;
+                //let testDate = document.getElementById('date').innerHTML;
+                let testDate = this.datePipe.transform(x.createdDateTime, 'fullDate');
                 let report = {
                     'name': x.firstName + space + x.lastName,
                     'email': x.email,
@@ -562,7 +565,7 @@ export class TestReportComponent implements OnInit {
         this.calculateAttendeeRank();
         this.testAttendeeArray.forEach(x => {
             if (x.checkedCandidate) {
-                let testDate = document.getElementById('date').innerHTML;
+                let testDate = this.datePipe.transform(x.createdDateTime, 'fullDate');
                 let datetime = new Date(x.createdDateTime);
                 this.calculateLocalTime(datetime);
                 let attendeeId = x.id;

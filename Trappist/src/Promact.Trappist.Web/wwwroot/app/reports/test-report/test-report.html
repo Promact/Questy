@@ -76,7 +76,7 @@
                         <td><em class="material-icons" [ngClass]="{starred : testAttendee.starredCandidate}" (click)="setStarredCandidate(testAttendee)">{{isStarredCandidate(testAttendee)}}</em></td>
                         <td><a class="theme-text font-semibold" [routerLink]="['individual-report/',testAttendee.id]" [class.stop-redirection]="testAttendee.reporNotFoundYet">{{testAttendee.firstName}} {{testAttendee.lastName}}</a></td>
                         <td>{{testAttendee.email}}</td>
-                        <td id="date">{{testAttendee.createdDateTime |date:'fullDate'}}</td>
+                        <td id="date">{{testAttendee.createdDateTime | date:'fullDate'}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress> {{testAttendee.report.totalMarksScored}}</td>
                         <td><progress *ngIf="testAttendee.generatingReport"></progress>{{testAttendee.report.percentage}}</td>
                         <td><a class="theme-text" *ngIf="testAttendee.report.isTestPausedUnWillingly" (click)="resumeTest(testAttendee)">Allow</a></td>

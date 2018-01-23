@@ -1,4 +1,5 @@
 ﻿import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { MdDialog } from '@angular/material';
 import { AddCategoryDialogComponent } from './add-category-dialog.component';
 import { DeleteCategoryDialogComponent } from './delete-category-dialog.component';
@@ -53,7 +54,7 @@ export class QuestionsDashboardComponent implements OnInit {
     isAllQuestionsSectionSelected: boolean;
     searchText: string;
 
-    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute) {
+    constructor(private questionsService: QuestionsService, public dialog: MdDialog, private categoryService: CategoryService, private router: Router, private route: ActivatedRoute, private location: Location) {
         this.category = new Category();
         this.selectedCategory = new Category();
         this.numberOfQuestions = new QuestionCount();
@@ -74,6 +75,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.isCategoryPresent;
         this.isSelected = false;
         this.isAllQuestionsSectionSelected = false;
+        this.showSearchInput = false;
     }
 
     ngOnInit() {
@@ -81,7 +83,7 @@ export class QuestionsDashboardComponent implements OnInit {
         this.selectedCategoryName = this.route.snapshot.params['categoryName'];
         this.SelectedDifficultyLevel = this.route.snapshot.params['difficultyLevelName'];
         this.searchText = this.route.snapshot.params['matchString'];
-        if (this.searchText !== undefined) {
+        if (this.searchText !== '' && this.searchText !== undefined) {
             this.showSearchInput = true;
             this.matchString = this.searchText;
         }
@@ -116,6 +118,12 @@ export class QuestionsDashboardComponent implements OnInit {
             if (x.categoryName === this.selectedCategoryName)
                 this.selectedCategoryId = x.id;
         });
+
+        if (categoryName !== undefined && categoryName !== 'AllCategory'  && !this.categoryArray.some(x => x.categoryName === categoryName)) {
+            this.router.navigate(['404']);
+            return;
+        }
+
         this.categoryWiseFilter(this.selectedCategoryId, this.selectedCategoryName, difficulty);
     }
 
@@ -126,11 +134,6 @@ export class QuestionsDashboardComponent implements OnInit {
         this.categoryService.getAllCategories().subscribe((CategoriesList) => {
             this.categoryArray = CategoriesList;
             this.isCategoryPresent = this.categoryArray.length === 0 ? false : true;
-
-            if (this.selectedCategoryName !== undefined && !this.categoryArray.some(x => x.categoryName === this.selectedCategoryName)) {
-                this.router.navigate(['404']);
-                return;
-            }
 
             if ((this.selectedCategoryName !== undefined && this.SelectedDifficultyLevel !== undefined))
                 this.SelectCategoryDifficulty(this.SelectedDifficultyLevel, this.selectedCategoryName);
@@ -221,7 +224,7 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     categoryWiseFilter(categoryId: number, categoryName: string, difficultyLevel: string) {
         this.loader = true;
-        this.searchText = this.route.snapshot.params['matchString'];
+        this.searchText = this.matchString;
         this.showName = categoryName;
         window.scrollTo(0, 0);
         this.difficultyLevel = difficultyLevel;
@@ -243,7 +246,7 @@ export class QuestionsDashboardComponent implements OnInit {
             this.selectedDifficulty = DifficultyLevel[this.difficultyLevel];
             this.selectedCategory.categoryName = categoryName;
             this.selectedCategory.id = categoryId;
-            if (this.searchText !== undefined) {
+            if (this.searchText !== undefined && this.searchText.length > 0) {
                 this.router.navigate(['questions/dashboard', categoryName, difficultyLevel, this.searchText]);
                 this.showSearchInput = true;
                 this.matchString = this.searchText;
@@ -300,16 +303,25 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     getQuestionsMatchingSearchCriteria(matchString: string) {
         this.matchString = matchString;
-        if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
-            this.router.navigate(['question/search', this.matchString]);
+
+        let url = '';
+
+        if ((this.matchString !== undefined || this.matchString !== '') && (this.selectedCategoryName === undefined || DifficultyLevel[this.selectedDifficulty] === undefined)) {
+            //this.router.navigate(['question/search', this.matchString]);
+            url = this.router.createUrlTree(['question/search', this.matchString]).toString();
             this.showSearchInput = true;
         }
         else {
             if (this.selectedCategory.categoryName === undefined)
-                this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
+                url = this.router.createUrlTree(['questions/dashboard', 'AllCategory', DifficultyLevel[this.selectedDifficulty], this.matchString]).toString();
+                //this.router.navigate(['questions/dashboard', 'AllCategory', DifficultyLevel[this.selectedDifficulty], this.matchString]);
             else
-                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
+                url = this.router.createUrlTree(['questions/dashboard', this.selectedCategory.categoryName, DifficultyLevel[this.selectedDifficulty], this.matchString]).toString();
+                //this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, DifficultyLevel[this.selectedDifficulty], this.matchString]);
         }
+
+        this.location.go(url);
+
         if (matchString.trim().length > 2) {
             this.id = 0;
             this.isAllQuestionsHaveCome = false;
@@ -339,7 +351,7 @@ export class QuestionsDashboardComponent implements OnInit {
      * To determine whether search field will be visible or hidden
      */
     showStatus() {
-        return this.showSearchInput = this.matchString.length > 0;
+        this.showSearchInput = this.matchString.length > 0;
     }
 
     /**
@@ -461,16 +473,16 @@ export class QuestionsDashboardComponent implements OnInit {
      */
     selectTextArea($event: any, search: any, matchString: string) {
         this.matchString = matchString;
-        if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
-            this.router.navigate(['question/search', this.matchString]);
-            this.showSearchInput = true;
-        }
-        else {
-            if (this.selectedCategory.categoryName === undefined)
-                this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
-            else
-                this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
-        }
+        //if ((this.matchString !== undefined || this.matchString !== ' ') && (this.selectedCategoryName === undefined || this.SelectedDifficultyLevel === undefined)) {
+        //    this.router.navigate(['question/search', this.matchString]);
+        //    this.showSearchInput = true;
+        //}
+        //else {
+        //    if (this.selectedCategory.categoryName === undefined)
+        //        this.router.navigate(['questions/dashboard', 'AllCategory', this.SelectedDifficultyLevel, this.matchString]);
+        //    else
+        //        this.router.navigate(['questions/dashboard', this.selectedCategory.categoryName, this.SelectedDifficultyLevel, this.matchString]);
+        //}
         this.showSearchInput = true;
         $event.stopPropagation();
         setTimeout(() => {
