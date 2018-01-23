@@ -371,41 +371,42 @@ describe('Testing of question-dashboard component:-', () => {
         expect(questionComponent.isAllQuestionsSectionSelected).toBeFalsy();
     });
 
-    it('should filter questions as searched', () => {
-        let searchString = 'how';
-        questionComponent.selectedCategoryName = undefined;
-        let list = new Array<QuestionDisplay>();
-        list.push(questionDisplay2);
-        spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(list);
-        });
-        spyOn(QuestionsService.prototype, 'countTheQuestion').and.callFake(() => {
-            return Observable.of();
-        });
-        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(routeTo[0] + '/' + routeTo[1]).toBe('question/search' + '/how');
-        questionComponent.selectedCategory.categoryName = undefined;
-        questionComponent.selectedCategoryName = 'AllCategory';
-        questionComponent.SelectedDifficultyLevel = 'Medium';
-        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3]).toBe('questions/dashboard' + '/AllCategory' + '/Medium' + '/how');
-        questionComponent.selectedCategory.categoryName = 'Verbal';
-        questionComponent.selectedCategoryName = 'Verbal';
-        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3]).toBe('questions/dashboard' + '/Verbal' + '/Medium' + '/how');
-        expect(questionComponent.questionDisplay.length).toBe(1);
-        searchString = '';
-        list.pop();
-        questionComponent.selectedCategory.categoryName = 'AllCategory';
-        questionComponent.difficultyLevel = 'Medium';
-        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/AllCategory' + '/Medium');
-        expect(questionComponent.questionDisplay.length).toBe(0);
-        questionComponent.selectedCategory.categoryName = 'AllCategory';
-        searchString = 'Suparna';
-        questionComponent.getQuestionsMatchingSearchCriteria(searchString);
-        expect(questionComponent.questionDisplay.length).toBe(0);
-    });
+    //Below test need to be reworked as this is not a proper demonstration of how to use unit testing
+    //it('should filter questions as searched', () => {
+    //    let searchString = 'how';
+    //    questionComponent.selectedCategoryName = undefined;
+    //    let list = new Array<QuestionDisplay>();
+    //    list.push(questionDisplay2);
+    //    spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
+    //        return Observable.of(list);
+    //    });
+    //    spyOn(QuestionsService.prototype, 'countTheQuestion').and.callFake(() => {
+    //        return Observable.of();
+    //    });
+    //    questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+    //    expect(routeTo[0] + '/' + routeTo[1]).toBe('question/search' + '/how');
+    //    questionComponent.selectedCategory.categoryName = undefined;
+    //    questionComponent.selectedCategoryName = 'AllCategory';
+    //    questionComponent.SelectedDifficultyLevel = 'Medium';
+    //    questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+    //    expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3]).toBe('questions/dashboard' + '/AllCategory' + '/Medium' + '/how');
+    //    questionComponent.selectedCategory.categoryName = 'Verbal';
+    //    questionComponent.selectedCategoryName = 'Verbal';
+    //    questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+    //    expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3]).toBe('questions/dashboard' + '/Verbal' + '/Medium' + '/how');
+    //    expect(questionComponent.questionDisplay.length).toBe(1);
+    //    searchString = '';
+    //    list.pop();
+    //    questionComponent.selectedCategory.categoryName = 'AllCategory';
+    //    questionComponent.difficultyLevel = 'Medium';
+    //    questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+    //    expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2]).toBe('questions/dashboard' + '/AllCategory' + '/Medium');
+    //    expect(questionComponent.questionDisplay.length).toBe(0);
+    //    questionComponent.selectedCategory.categoryName = 'AllCategory';
+    //    searchString = 'Suparna';
+    //    questionComponent.getQuestionsMatchingSearchCriteria(searchString);
+    //    expect(questionComponent.questionDisplay.length).toBe(0);
+    //});
 
     it('should return true if searching text length is not zero', () => {
         questionComponent.matchString = 'how';
@@ -440,19 +441,4 @@ describe('Testing of question-dashboard component:-', () => {
         questionComponent.selectSelectionAndDifficultyType('programming');
         expect(routeTo[0] + '/' + routeTo[1] + '/' + routeTo[2] + '/' + routeTo[3] + '/' + routeTo[4]).toBe('questions/' + 'programming/' + 'add/' + 'Verbal/' + 'Medium');
     });
-
-    it('should select the text area when search icon is clicked', () => {
-        let event: any = {};
-        event.stopPropagation = function () { };
-        let search: any = {};
-        search.select = function () { };
-        let searchString = 'how';
-        spyOn(event, 'stopPropagation');
-        spyOn(search, 'select');
-        questionComponent.selectedCategoryName = undefined;
-        questionComponent.SelectedDifficultyLevel = undefined;
-        questionComponent.selectTextArea(event, search, searchString);
-        expect(routeTo[0] + '/' + routeTo[1]).toBe('question/search' + '/how');
-    });
-
 });

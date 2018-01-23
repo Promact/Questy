@@ -54,7 +54,6 @@
             'chart.js': 'npm:chart.js',
             'ng2-charts': 'npm:ng2-charts',
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
-            'jspdf': 'npm:jspdf/dist/jspdf.debug.js',
             'ng2-ace-editor': 'npm:ng2-ace-editor',
             'brace': 'npm:brace',
             'w3c-blob': 'npm:w3c-blob',

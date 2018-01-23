@@ -18,6 +18,7 @@ import { Observable } from 'rxjs/Rx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { ConnectionService } from '../../core/connection.service';
+import { DatePipe } from '@angular/common';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; };
@@ -119,7 +120,8 @@ describe('Testing of test-report component:-', () => {
                 ConductService,
                 ConnectionService,
                 { provide: Router, useClass: RouterStub },
-                { provide: ActivatedRoute, useclass: ActivatedRoute }
+                { provide: ActivatedRoute, useclass: ActivatedRoute },
+                DatePipe
             ],
             imports: [BrowserModule, FormsModule, MaterialModule, RouterModule, CoreModule, Md2DataTableModule, BrowserAnimationsModule],
         }).compileComponents();
