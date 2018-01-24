@@ -276,8 +276,7 @@ export class TestSummaryComponent implements OnInit {
         //Unsubscribe the clock timer
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
-
-        let timeElapsed = this.test.duration * 60 - this.timeLeft;
+        
         this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
             this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
             this.connectionService.sendReport(response);
@@ -287,9 +286,12 @@ export class TestSummaryComponent implements OnInit {
             });
         });
     }
+
     endYourTest() {
         this.loader = true;
         this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
+            this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
+            this.connectionService.sendReport(response);
             this.router.navigate(['test-end'], { replaceUrl: true });
             this.loader = false;
         });
