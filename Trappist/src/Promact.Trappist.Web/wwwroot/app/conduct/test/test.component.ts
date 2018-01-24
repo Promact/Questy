@@ -205,6 +205,7 @@ export class TestComponent implements OnInit {
                 this.navigateToQuestionIndex(0);
             else this.getTestStatus(this.testAttendee.id);
 
+            this.connectionService.registerAttendee(this.testAttendee.id);
             this.clockIntervalListener = this.getClockInterval();
         }, err => {
             window.location.href = window.location.origin + '/pageNotFound';
@@ -410,7 +411,6 @@ export class TestComponent implements OnInit {
     navigateToQuestionIndex(index: number) {
         this.isTestReady = false;
         this.customInput = '';
-        this.connectionService.registerAttendee(this.testAttendee.id);
         if (index < 0 || index >= this.testQuestions.length || this.isCodeProcessing) {
             this.isTestReady = true;
             return;
@@ -802,21 +802,8 @@ export class TestComponent implements OnInit {
 
         if (this.seconds <= 0) {
             this.isTestReady = false;
-            let timeElapsed = this.test.duration * 60;
-            this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(res => {
-                this.endTest(TestStatus.expiredTest);
-            }, err => {
-                this.endTest(TestStatus.expiredTest);
-            });
+            this.endTest(TestStatus.expiredTest);
         }
-    }
-
-    /**
-     * Updates time on the server
-     */
-    private setElapsedTime() {
-        let timeElapsed = this.test.duration * 60 - this.seconds;
-        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
     }
 
     /**
@@ -848,7 +835,6 @@ export class TestComponent implements OnInit {
             //Add answer and close window
             this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
-                this.setElapsedTime();
                 this.isTestReady = false;
                 this.closeWindow(testStatus);
             });
