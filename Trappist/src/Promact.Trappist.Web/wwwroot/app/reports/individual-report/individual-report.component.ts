@@ -113,9 +113,9 @@ export class IndividualReportComponent implements OnInit {
             this.marks = this.testAttendee.report.totalMarksScored;
             this.percentage = this.testAttendee.report.percentage;
             this.timeTakenInHours = Math.floor(this.testAttendee.report.timeTakenByAttendee / 3600);
-            this.timeTakenInHoursVisible = this.timeTakenInHours > 1 ? true : false;
+            this.timeTakenInHoursVisible = this.timeTakenInHours > 0 ? true : false;
             this.timeTakenInMinutes = Math.floor(this.testAttendee.report.timeTakenByAttendee / 60);
-            this.timeTakenInMinutesVisible = this.timeTakenInMinutes > 1 ? true : false;
+            this.timeTakenInMinutesVisible = this.timeTakenInMinutes > 0 ? true : false;
             this.timeTakenInSeconds = this.testAttendee.report.timeTakenByAttendee % 60;
             this.timeTakenInSecondsVisible = this.timeTakenInSeconds > 0 ? true : false;
 

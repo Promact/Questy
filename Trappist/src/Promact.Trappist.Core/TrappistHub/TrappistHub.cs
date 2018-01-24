@@ -58,7 +58,6 @@ namespace Promact.Trappist.Core.TrappistHub
             {
                 attendee.ConnectionIds.Add(connectionId);
             }
-
         }
 
         /// <summary>
@@ -66,9 +65,13 @@ namespace Promact.Trappist.Core.TrappistHub
         /// </summary>
         /// <param name="testAttendee"></param>
         /// <returns>Sends the testAttendee object to getReport method in client side</returns>
-        public Task SendReport(TestAttendees testAttendee)
+        public async Task<Task> SendReportAsync(TestAttendees testAttendee)
         {
-            return Clients.All.InvokeAsync("getReport", testAttendee);
+            var currentDate = DateTime.Now;
+            Attendees.TryGetValue(Context.ConnectionId, out Attendee attendee);
+            var totalSeconds = (long)(currentDate - attendee.StartDate).TotalSeconds;
+            await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, totalSeconds, false);
+            return Clients.Group(ADMIN_GROUP).InvokeAsync("getReport", testAttendee);
         }
 
         /// <summary>
