@@ -704,12 +704,24 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             var testLogs = await _dbContext.TestLogs.AsNoTracking().FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-            DateTime date = testLogs.StartTest;
 
-            int StartTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute * 60 + date.Second;
+            DateTime date = testLogs.StartTest;
+            int startTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute * 60 + date.Second;
+
             DateTime elapsedTime = testLogs.FinishTest;
-            int FinishTestTimeInSeconds = (elapsedTime.Hour * 60 * 60) + elapsedTime.Minute * 60 + elapsedTime.Second;
-            report.TimeTakenByAttendee = FinishTestTimeInSeconds - StartTestTimeInSeconds;
+            int finishTestTimeInSeconds = (elapsedTime.Hour * 60 * 60) + elapsedTime.Minute * 60 + elapsedTime.Second;
+
+            if (!testLogs.ResumeTest.HasValue)
+            {
+                report.TimeTakenByAttendee = finishTestTimeInSeconds - startTestTimeInSeconds;
+            }
+            else
+            {
+                DateTime resumeTime = testLogs.ResumeTest.Value;
+                int resumeTestTimeInSeconds = (resumeTime.Hour * 60 * 60) + resumeTime.Minute * 60 + resumeTime.Second;
+
+                report.TimeTakenByAttendee = report.TimeTakenByAttendee + (finishTestTimeInSeconds - resumeTestTimeInSeconds);
+            }
 
             _dbContext.Report.Update(report);
             await _dbContext.SaveChangesAsync();
