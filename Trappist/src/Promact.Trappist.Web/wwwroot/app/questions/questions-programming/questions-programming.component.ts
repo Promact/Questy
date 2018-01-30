@@ -43,6 +43,7 @@ export class QuestionsProgrammingComponent implements OnInit {
     testCaseType: TestCaseType;
     questionId: number;
     loader: boolean;
+    categorySelect: any;
 
     private successMessage: string = 'Question saved successfully.';
     private failedMessage: string = 'Question failed to save.';
@@ -155,6 +156,7 @@ export class QuestionsProgrammingComponent implements OnInit {
         this.testCases.splice(testCaseIndex, 1);
         if (this.testCases.length === 0) {
             this.formControlModel.showTestCase = false;
+            this.isDefaultTestCaseAdded = false;
         }
     }
 
@@ -247,6 +249,13 @@ export class QuestionsProgrammingComponent implements OnInit {
      */
     selectCategory(category: string) {
         this.questionModel.question.categoryID = this.categoryList.find(x => x.categoryName === category).id;
+    }
+
+    /**
+     * Validates if the category is in the list
+     */
+    validateSelectedCategory() {
+        return this.categoryList.some(x => x.categoryName === this.selectedCategory);
     }
 
     /**
