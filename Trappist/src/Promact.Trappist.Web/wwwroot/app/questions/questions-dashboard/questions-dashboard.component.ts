@@ -384,6 +384,7 @@ export class QuestionsDashboardComponent implements OnInit {
                         x.category.categoryName = categoryToUpdate.categoryName;
                     }
                 });
+                this.categoryWiseFilter(categoryToUpdate.id, categoryToUpdate.categoryName, this.SelectedDifficultyLevel);
             }
         });
     }
