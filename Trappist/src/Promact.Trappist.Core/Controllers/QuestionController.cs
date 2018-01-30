@@ -8,6 +8,7 @@ using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Web.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -45,7 +46,7 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost]
         public async Task<IActionResult> AddQuestionAsync([FromBody]QuestionAC questionAC)
         {
-            if (questionAC == null || !ModelState.IsValid)
+            if (questionAC == null || !ModelState.IsValid || questionAC.Question.CategoryID == 0)
             {
                 return BadRequest();
             }
@@ -56,7 +57,11 @@ namespace Promact.Trappist.Core.Controllers
             {
                 if (questionAC.Question.QuestionType == QuestionType.Programming)
                 {
-                    await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
+                    //Check for default testcase before saving question 
+                    if (questionAC.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Any(x => x.TestCaseType == TestCaseType.Default))
+                        await _questionsRepository.AddCodeSnippetQuestionAsync(questionAC, applicationUser.Id);
+                    else
+                        return BadRequest();
                 }
                 else
                 {
