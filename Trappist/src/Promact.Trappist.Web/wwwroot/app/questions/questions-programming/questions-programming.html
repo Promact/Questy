@@ -10,20 +10,20 @@
     </div>
     <form #codeSnippetForm="ngForm" *ngIf="(isCategoryReady && isLanguageReady)" (ngSubmit)="addCodingQuestion(codeSnippetForm.valid)" onsubmit="saveBtn.disabled = true; return true;">
       <div class="form-fields">
-        <div class="form-group">
-          <label>Section</label><em class="danger-text h4">*</em>
-          <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" [(ngModel)]="selectedCategory" required name="categorySelect" #categorySelect="ngModel">
-            <option [disabled]="categorySelect.dirty || isQuestionEdited || isQuestionDuplicated || isCategorySelected" default value="AllCategory">Please select a Category</option>
-            <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
-          </select>
-          <div class="errors-container">
-            <div *ngIf="categorySelect.errors">
-              <div *ngIf="(categorySelect.dirty || categorySelect.touched)">
-                <span class="error-msg">Please select a category</span>
+          <div class="form-group">
+              <label>Section</label><em class="danger-text h4">*</em>
+              <select class="form-control width-percent-60" id="categorySelect" (change)="selectCategory($event.target.value)" [(ngModel)]="selectedCategory" required name="categorySelect" #categorySelect="ngModel">
+                  <option [disabled]="categorySelect.dirty || isQuestionEdited || isQuestionDuplicated || isCategorySelected" default value="AllCategory">Please select a Category</option>
+                  <option *ngFor="let category of categoryList">{{category.categoryName}}</option>
+              </select>
+              <div class="errors-container">
+                  <div *ngIf="categorySelect.errors">
+                      <div *ngIf="(categorySelect.dirty || categorySelect.touched)">
+                          <span class="error-msg">Please select a category</span>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
         <div class="form-group">
           <label>Difficulty Level</label>
           <select class="form-control small-width" name="difficulty" [(ngModel)]="selectedDifficulty" (change)="selectDifficulty($event.target.value)">
@@ -168,7 +168,7 @@
       </div>
       <div class="actions-area">
         <button type="button" class="btn" (click)="cancelButtonClicked()">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!codeSnippetForm.valid || nolanguageSelected > 0 || !this.isDefaultTestCaseAdded" id="saveBtn">Save</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!validateSelectedCategory() || !codeSnippetForm.valid || nolanguageSelected > 0 || !this.isDefaultTestCaseAdded" id="saveBtn">Save</button>
       </div>
     </form>
   </div>
