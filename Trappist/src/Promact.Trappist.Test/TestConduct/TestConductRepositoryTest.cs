@@ -441,6 +441,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testConductRepository.AddAnswerAsync(attendeeId, answer6, 0.0);
 
             //Setting Attendee TestStatus
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 60, false);
             await _testConductRepository.SetAttendeeTestStatusAsync(attendeeId, TestStatus.CompletedTest);
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
 
