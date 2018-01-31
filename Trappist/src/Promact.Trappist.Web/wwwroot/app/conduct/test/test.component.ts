@@ -807,6 +807,14 @@ export class TestComponent implements OnInit {
     }
 
     /**
+     * Updates time on the server
+     */
+    private setElapsedTime() {
+        let timeElapsed = this.test.duration * 60 - this.seconds;
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
+    }
+
+    /**
      * Ends test and route to test-end page
      * @param testStatus: TestStatus object
      */
@@ -836,6 +844,7 @@ export class TestComponent implements OnInit {
             this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
                 this.isTestReady = false;
+                this.setElapsedTime();
                 this.closeWindow(testStatus);
             });
         } else {

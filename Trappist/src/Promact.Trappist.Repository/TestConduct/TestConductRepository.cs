@@ -234,10 +234,12 @@ namespace Promact.Trappist.Repository.TestConduct
                 await TransformAttendeeAnswer(attendeeId);
                 await GetTotalMarks(attendeeId);
             }
+
             var testLogs = await _dbContext.TestLogs.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
             testLogs.FinishTest = DateTime.UtcNow;
             _dbContext.TestLogs.Update(testLogs);
             await _dbContext.SaveChangesAsync();
+
             await GetTimeTakenByAttendeeAsync(attendeeId);
             return testAttendee;
         }
@@ -701,29 +703,10 @@ namespace Promact.Trappist.Repository.TestConduct
         }
 
         private async Task GetTimeTakenByAttendeeAsync(int attendeeId)
-        {
-            var testLogs = await _dbContext.TestLogs.AsNoTracking().FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
+        {            
             var report = await _dbContext.Report.FirstOrDefaultAsync(x => x.TestAttendeeId == attendeeId);
-
-            DateTime date = testLogs.StartTest;
-            int startTestTimeInSeconds = (date.Hour * 60 * 60) + date.Minute * 60 + date.Second;
-
-            DateTime elapsedTime = testLogs.FinishTest;
-            int finishTestTimeInSeconds = (elapsedTime.Hour * 60 * 60) + elapsedTime.Minute * 60 + elapsedTime.Second;
-
-            if (!testLogs.ResumeTest.HasValue)
-            {
-                report.TimeTakenByAttendee = finishTestTimeInSeconds - startTestTimeInSeconds;
-            }
-            else
-            {
-                DateTime resumeTime = testLogs.ResumeTest.Value;
-                int resumeTestTimeInSeconds = (resumeTime.Hour * 60 * 60) + resumeTime.Minute * 60 + resumeTime.Second;
-
-                report.TimeTakenByAttendee = report.TimeTakenByAttendee + (finishTestTimeInSeconds - resumeTestTimeInSeconds);
-            }
-
-            _dbContext.Report.Update(report);
+            var elapsedTime = await GetElapsedTimeAsync(attendeeId);
+            report.TimeTakenByAttendee = (int)(elapsedTime * 60f);
             await _dbContext.SaveChangesAsync();
         }
         #endregion

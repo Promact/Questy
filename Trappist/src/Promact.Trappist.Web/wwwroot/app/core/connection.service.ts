@@ -45,7 +45,7 @@ export class ConnectionService {
 
     //This method sends the testAttendee object to the hub method SendReport
     sendReport(testAttendee) {
-        this.hubConnection.invoke('sendReportAsync', testAttendee);
+        this.hubConnection.invoke('sendReport', testAttendee);
     }
     //Sends the id of candidate to the hub method sendRequest
     sendCandidateIdWhoRequestedForResumeTest(attendeeId: number) {

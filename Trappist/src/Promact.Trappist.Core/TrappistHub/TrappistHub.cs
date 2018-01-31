@@ -32,7 +32,7 @@ namespace Promact.Trappist.Core.TrappistHub
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            var currentDate = DateTime.Now;
+            var currentDate = DateTime.UtcNow;
             Console.Write(currentDate);
             string connectionId = Context.ConnectionId;
             Attendee attendee;
@@ -45,7 +45,7 @@ namespace Promact.Trappist.Core.TrappistHub
 
         public void RegisterAttendee(int id)
         {
-            var startDate = DateTime.Now;
+            var startDate = DateTime.UtcNow;
             string connectionId = Context.ConnectionId;
             var attendee = new Attendee()
             {
@@ -65,12 +65,8 @@ namespace Promact.Trappist.Core.TrappistHub
         /// </summary>
         /// <param name="testAttendee"></param>
         /// <returns>Sends the testAttendee object to getReport method in client side</returns>
-        public async Task<Task> SendReportAsync(TestAttendees testAttendee)
+        public Task SendReport(TestAttendees testAttendee)
         {
-            var currentDate = DateTime.Now;
-            Attendees.TryGetValue(Context.ConnectionId, out Attendee attendee);
-            var totalSeconds = (long)(currentDate - attendee.StartDate).TotalSeconds;
-            await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, totalSeconds, false);
             return Clients.Group(ADMIN_GROUP).InvokeAsync("getReport", testAttendee);
         }
 
