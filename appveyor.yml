@@ -2,8 +2,10 @@ version: 1.0.{build}
 os: Visual Studio 2017
 skip_tags: true
 configuration: Debug
-build_script:
+before_build:
 - ps: dotnet restore ./Trappist/Trappist.sln
+build_script:
+- ps: dotnet build ./Trappist/Trappist.sln
 environment:
   COVERALLS_REPO_TOKEN:
     secure: Nxsv7Mz/uvEaPgY0LTV1Jdl5Ry+3Qkgcs04A3UA65Ufk/YC+jAqHmoO347s5tRSJ
@@ -12,9 +14,6 @@ branches:
     - development
     - staging
     - master
-build:
-  project: .\Trappist\Trappist.sln
-  verbosity: minimal
 test_script:
 - ps: >-
    cd .\Trappist\src\Promact.Trappist.Test; Start-FileDownload 'https://ci.appveyor.com/api/buildjobs/xj78v6dac42uob8q/artifacts/main%2Fbin%2Fzip%2Fopencover.4.6.589.zip'; 7z.exe x main%2Fbin%2Fzip%2Fopencover.4.6.589.zip
