@@ -64,6 +64,7 @@ describe('Testing of conduct-register component:-', () => {
             return Observable.of(testAttendee);
         });
         spyOn(ConnectionService.prototype, 'sendReport').and.callFake(() => { });
+        spyOn(ConnectionService.prototype, 'registerAttendee').and.callFake(() => { });
         spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
             urls = url;
             expect(urls[0]).toBe('/conduct/' + testLink + '/instructions');

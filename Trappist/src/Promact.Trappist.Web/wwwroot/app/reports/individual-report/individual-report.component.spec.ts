@@ -408,8 +408,8 @@ describe('Individual Report Component', () => {
         expect(individualReport.hideSign).toBe(false);
         expect(individualReport.marks).toBe(testAttendee.report.totalMarksScored);
         expect(individualReport.percentage).toBe(testAttendee.report.percentage);
-        expect(individualReport.timeTakenInHoursVisible).toBe(false);
-        expect(individualReport.timeTakenInMinutesVisible).toBe(true);
+        expect(individualReport.timeTakenInHoursVisible).toBe(true);
+        expect(individualReport.timeTakenInMinutesVisible).toBe(false);
         expect(individualReport.timeTakenInSecondsVisible).toBe(false);
         expect(individualReport.resumeTestLog).toBe(true);
     });
@@ -674,7 +674,7 @@ describe('Individual Report Component', () => {
         individualReport.getTestAttendeeDetails();
         expect(individualReport.hideSign).toBe(true);
         expect(individualReport.timeTakenInHoursVisible).toBe(true);
-        expect(individualReport.timeTakenInMinutesVisible).toBe(true);
+        expect(individualReport.timeTakenInMinutesVisible).toBe(false);
         expect(individualReport.timeTakenInSecondsVisible).toBe(false);
     });
 
@@ -709,8 +709,9 @@ describe('Individual Report Component', () => {
             return Observable.of(testCodeSolutionDetails);
         });
         individualReport.getTestAttendeeDetails();
+        debugger;
         expect(individualReport.timeTakenInHoursVisible).toBe(false);
-        expect(individualReport.timeTakenInMinutesVisible).toBe(false);
+        expect(individualReport.timeTakenInMinutesVisible).toBe(true);
         expect(individualReport.timeTakenInSecondsVisible).toBe(true);
     });
 
