@@ -6,6 +6,7 @@ import { HubConnection } from '@aspnet/signalr-client';
 export class ConnectionService {
     hubConnection: HubConnection;
     isConnected: boolean;
+    forceClose: boolean;
 
     public recievedAttendee: EventEmitter<any>;
     public recievedAttendeeId: EventEmitter<any>;
@@ -25,17 +26,31 @@ export class ConnectionService {
         this.hubConnection.on('getReport', (testAttendee) => { this._zone.run(() => this.recievedAttendee.emit(testAttendee));});
         this.hubConnection.on('getAttendeeIdWhoRequestedForResumeTest', (id) => { this._zone.run(() => this.recievedAttendeeId.emit(id)); });
         this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedEstimatedEndTime.emit(remainingTime)); });
-        this.hubConnection.onclose(() => { this.isConnected = false; });
+        this.hubConnection.onclose(() => { this.isConnected = false; if (!this.forceClose) this.startConnection(); });
     }
     //starts the connection between hub and client
     startConnection(_callback?: any) {
         if (!this.isConnected) {
+            //makes a connection with hub
+            this.hubConnection = new HubConnection('/TrappistHub');
+            this.registerProxy();
+
             this.hubConnection.start().then(() => {
                 if (_callback)
                     _callback();
 
                 this.isConnected = true;
             });
+        }
+    }
+
+    stopConnection(_callback?: any) {
+        if (this.isConnected) {
+            this.hubConnection.stop();
+            this.isConnected = false;
+            this.forceClose = true;
+            if (_callback) _callback();
+            console.log('Stopped');
         }
     }
 
