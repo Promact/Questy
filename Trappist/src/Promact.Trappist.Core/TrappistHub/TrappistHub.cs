@@ -14,6 +14,7 @@ namespace Promact.Trappist.Core.TrappistHub
         public int AttendeeId { get; set; }
         public DateTime StartDate { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
+        public bool IsAttendeeReset { get; set; }
     }
 
 
@@ -32,14 +33,17 @@ namespace Promact.Trappist.Core.TrappistHub
 
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            var currentDate = DateTime.UtcNow;
-            Console.Write(currentDate);
             string connectionId = Context.ConnectionId;
-            Attendee attendee;
-            Attendees.TryGetValue(connectionId, out attendee);
-            var totalSeconds = (currentDate - attendee.StartDate).TotalSeconds;
-            var sec = (long)totalSeconds;
-            await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, sec, true);
+            Attendees.TryGetValue(connectionId, out Attendee attendee);
+            if (attendee.IsAttendeeReset)
+            {
+                var currentDate = DateTime.UtcNow;
+                Console.Write(currentDate);                
+                var totalSeconds = (currentDate - attendee.StartDate).TotalSeconds;
+                var sec = (long)totalSeconds;
+                await _testConductRepository.SetElapsedTimeAsync(attendee.AttendeeId, sec, true);
+            }
+
             await base.OnDisconnectedAsync(exception);
         }
 
@@ -51,7 +55,8 @@ namespace Promact.Trappist.Core.TrappistHub
             {
                 AttendeeId = id,
                 StartDate = startDate,
-                ConnectionIds = new HashSet<string>()
+                ConnectionIds = new HashSet<string>(),
+                IsAttendeeReset = true
             };
             Attendees.AddOrUpdate(connectionId, attendee, (key, oldvalue) => attendee);
             lock (attendee.ConnectionIds)
@@ -67,7 +72,11 @@ namespace Promact.Trappist.Core.TrappistHub
         /// <returns>Sends the testAttendee object to getReport method in client side</returns>
         public Task SendReport(TestAttendees testAttendee)
         {
-            return Clients.Group(ADMIN_GROUP).InvokeAsync("getReport", testAttendee);
+            string connectionId = Context.ConnectionId;
+            Attendees.TryGetValue(connectionId, out Attendee attendee);
+            if(attendee != null) attendee.IsAttendeeReset = false;
+
+            return Clients.All.InvokeAsync("getReport", testAttendee);
         }
 
         /// <summary>

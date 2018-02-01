@@ -709,7 +709,6 @@ describe('Individual Report Component', () => {
             return Observable.of(testCodeSolutionDetails);
         });
         individualReport.getTestAttendeeDetails();
-        debugger;
         expect(individualReport.timeTakenInHoursVisible).toBe(false);
         expect(individualReport.timeTakenInMinutesVisible).toBe(true);
         expect(individualReport.timeTakenInSecondsVisible).toBe(true);
