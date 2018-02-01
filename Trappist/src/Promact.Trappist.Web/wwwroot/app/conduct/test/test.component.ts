@@ -195,6 +195,19 @@ export class TestComponent implements OnInit {
             window.onbeforeunload = (ev) => {
                 this.isCloseWindow = true;
                 this.saveTestLogs();
+                this.connectionService.stopConnection();
+
+                //Below code snippet will execute if the user cancels the dailog {ref: https://stackoverflow.com/a/4651049/9083810}
+                let self = this;
+                setTimeout(function () {
+                    setTimeout(function () {
+                        self.connectionService.startConnection(() => {
+                            self.connectionService.registerAttendee(self.testAttendee.id);
+                        });
+                    }, 100);
+                }, 1);
+                //End of code snippet
+
                 let dialogText = 'WARNING: Your report will not generate. Please use End Test button.';
                 ev.returnValue = dialogText;
                 return dialogText;
@@ -368,6 +381,7 @@ export class TestComponent implements OnInit {
     resumeTest() {
         this.isTestReady = false;
         this.conductService.getAnswer(this.testAttendee.id).subscribe((response) => {
+            debugger;
             this.testAnswers = response;
 
             this.testQuestions.forEach(x => {
