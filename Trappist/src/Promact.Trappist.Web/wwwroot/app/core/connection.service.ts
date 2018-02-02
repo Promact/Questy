@@ -28,6 +28,7 @@ export class ConnectionService {
         this.hubConnection.on('setEstimatedEndTime', (remainingTime) => { this._zone.run(() => this.recievedEstimatedEndTime.emit(remainingTime)); });
         this.hubConnection.onclose(() => { this.isConnected = false; if (!this.forceClose) this.startConnection(); });
     }
+
     //starts the connection between hub and client
     startConnection(_callback?: any) {
         if (!this.isConnected) {
