@@ -321,18 +321,6 @@ describe('Test Component', () => {
         testComponent.goOnline();
         expect(testComponent.getClockInterval).toHaveBeenCalled();
 
-        testComponent.openDialog('congratulation', '');
-        expect(testComponent.count).toBe(0);
-
-        testComponent.openDialog('some', '');
-        expect(testComponent.count).toBe(1);
-
-        testComponent.openDialog(null, 'Err');
-        testComponent.openDialog(null, 'Err');
-        testComponent.openDialog(null, 'Err');
-        testComponent.openDialog(null, 'Err');
-        expect(testComponent.count).toBe(0);
-
         testComponent.openProgramGuide();
 
         testComponent.onChange('abcd');

@@ -530,7 +530,6 @@ export class TestComponent implements OnInit {
                     this.testAnswers.splice(index, 1);
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
-                this.openDialog(codeResponse.message, codeResponse.error);
             }, err => {
                 this.codeResponse.message = 'Oops! Server error has occured.';
                 this.isCodeProcessing = false;
@@ -823,9 +822,9 @@ export class TestComponent implements OnInit {
     /**
      * Updates time on the server
      */
-    private setElapsedTime() {
+    private setElapsedTime(_callback?: any) {
         let timeElapsed = this.test.duration * 60 - this.seconds;
-        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe();
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(res => { if (_callback) _callback(); });
     }
 
     /**
@@ -858,11 +857,14 @@ export class TestComponent implements OnInit {
             this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
                 this.isTestReady = false;
-                this.setElapsedTime();
-                this.closeWindow(testStatus);
+                this.setElapsedTime(x => {
+                    this.closeWindow(testStatus);
+                });
             });
         } else {
-            this.closeWindow(testStatus);
+            this.setElapsedTime(x => {
+                this.closeWindow(testStatus);
+            });
         }
     }
 
@@ -903,27 +905,6 @@ export class TestComponent implements OnInit {
         });
         if (enableRouting) {
             this.router.navigate(routeTo);
-        }
-    }
-
-    /**
-     * Opens TestsProgrammingGuideDialogComponent automatically when an attendee fails to pass the test cases consecutively for a number of times
-     * @param message contains the information whether test cases have passed or failed
-     * @param errorMessage contains the informaion whether there is any syntax errors
-     */
-    openDialog(message: string, errorMessage: string) {
-        if (message !== null) {
-            if (message.toLowerCase().includes('congratulation'))
-                this.count = 0;
-            else if (message.toLowerCase().includes('some') || message.toLowerCase().includes('none')) {
-                this.count = this.count + 1;
-            }
-        }
-        else if (errorMessage !== null)
-            this.count = this.count + 1;
-        if (this.count === 5) {
-            this.dialog.open(TestsProgrammingGuideDialogComponent, { disableClose: true, hasBackdrop: true });
-            this.count = 0;
         }
     }
 }
