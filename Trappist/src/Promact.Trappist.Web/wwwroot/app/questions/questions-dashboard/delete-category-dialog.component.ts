@@ -17,7 +17,7 @@ export class DeleteCategoryDialogComponent {
     categoryArray: Category[] = new Array<Category>();
 
     constructor(private categoryService: CategoryService, private dialog: MdDialogRef<DeleteCategoryDialogComponent>, private snackBar: MdSnackBar) {
-        this.successMessage = 'Category deleted successfully.';
+        this.successMessage = 'Section Deleted Successfully';
         this.errorMessage = 'Something went wrong. Please try again later.';
     }
 

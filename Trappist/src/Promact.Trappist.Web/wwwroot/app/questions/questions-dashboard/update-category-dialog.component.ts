@@ -22,7 +22,7 @@ export class UpdateCategoryDialogComponent {
 
     constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<UpdateCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
-        this.successMessage = 'Category name updated successfully.';
+        this.successMessage = 'Section Name Updated Successfully';
         this.isButtonClicked = false;;
     }
 
