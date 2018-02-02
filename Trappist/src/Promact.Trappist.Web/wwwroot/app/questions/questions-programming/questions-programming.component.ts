@@ -117,6 +117,7 @@ export class QuestionsProgrammingComponent implements OnInit {
 
                 this.selectedDifficulty = DifficultyLevel[this.questionModel.question.difficultyLevel];
                 this.testCases = this.questionModel.codeSnippetQuestion.codeSnippetQuestionTestCases;
+                this.isDefaultTestCaseAdded = this.testCases.some(testcase => +testcase.testCaseType === TestCaseType.Default);
 
                 //If Question has no test case show the button to add new test case
                 if (this.testCases.length > 0)

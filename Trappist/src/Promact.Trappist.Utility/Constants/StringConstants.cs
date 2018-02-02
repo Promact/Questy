@@ -151,7 +151,7 @@
         {
             get
             {
-                return "This Category belongs to Questions. You can not delete this Category.";
+                return "Section contains questions. You can not delete this Section.";
             }
         }
 
