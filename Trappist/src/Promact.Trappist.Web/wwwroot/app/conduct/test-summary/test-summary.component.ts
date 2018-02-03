@@ -110,7 +110,7 @@ export class TestSummaryComponent implements OnInit {
             this.timeLeft = this.timeLeft < 0 ? 0 : Math.round(this.timeLeft);
             this.timeString = this.secToTimeString(this.timeLeft);
             if (!this.isTestClosedUnConditionally)//If test was unsupervised then tick the clock
-                this.clockInterval = setInterval(() => { this.countDown(); this.timeOut(); }, 1000);
+                this.clockInterval = setInterval(() => { this.countDown(); this.timeOut();}, 1000);
             this.loader = false;
         });
     }
@@ -256,7 +256,7 @@ export class TestSummaryComponent implements OnInit {
     }
 
     /**
-     * Updates time on the server
+     * Updates time on the server every 10 seconds. This means if the test is unsupervised the attendee may get a benifit of 10 sec on reload.
      */
     private timeOut() {
         this.timeOutCounter += 1;
@@ -276,13 +276,16 @@ export class TestSummaryComponent implements OnInit {
         //Unsubscribe the clock timer
         if (!this.isTestClosedUnConditionally)
             clearInterval(this.clockInterval);
-        
-        this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
-            this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
-            this.connectionService.sendReport(response);
-            this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
-                this.router.navigate(['test-end'], { replaceUrl: true });
-                this.loader = false;                   
+
+        let timeElapsed = this.test.duration * 60 - this.timeLeft;
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(x => {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+                this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
+                this.connectionService.sendReport(response);
+                this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
+                    this.router.navigate(['test-end'], { replaceUrl: true });
+                    this.loader = false;
+                });
             });
         });
     }
