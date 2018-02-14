@@ -155,10 +155,10 @@ namespace Promact.Trappist.Core.Controllers
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
 
-            if(!await _categoryRepository.IsCategoryExistAsync(categoryId))
+            if(categoryId != 0 && !await _categoryRepository.IsCategoryExistAsync(categoryId))
             {
                 return NotFound();
-            }            
+            }
 
             try
             {

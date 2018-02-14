@@ -54,7 +54,7 @@ namespace Promact.Trappist.Repository.Categories
 
         public async Task<bool> IsCategoryExistAsync(int id)
         {
-            return await _dbContext.Category.AnyAsync(x => x.Id != id);
+            return await _dbContext.Category.AnyAsync(x => x.Id == id);
         }
 
         public async Task DeleteCategoryAsync(Category category)
