@@ -2,6 +2,4 @@
 
 import { AppModule } from './app.module';
 
-import 'rxjs/Rx';
-
 platformBrowserDynamic().bootstrapModule(AppModule);

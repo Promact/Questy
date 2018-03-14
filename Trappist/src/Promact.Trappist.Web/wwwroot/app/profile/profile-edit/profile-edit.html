@@ -1,29 +1,45 @@
-﻿<div class="userprofile">
-    <div class="title-area">
-        <h1>Profile</h1>
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
+    <div class="spinner">
     </div>
-    <div class="fields-box">
-        <form>
-            <div class="form-group">
-                <label class="h4">Name</label>
-                <input type="text" class="form-control" value="John Doe" />
-            </div>
-            <div class="form-group">
-                <label class="h4">Email</label>
-                <input type="email" class="form-control" value="john.doe@gmail.com" disabled />
-            </div>
-            <div class="form-group">
-                <label class="h4">Contact Number</label>
-                <input type="text" class="form-control" value="9274826475" />
-            </div>
-            <div class="form-group">
-                <label class="h4">Organization</label>
-                <input type="text" class="form-control" value="Promact Infotech Pvt Ltd" />
-            </div>
-            <div class="actions-area">
-                <button type="button" class="btn">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-        </form>
+</div>
+<div class="container">
+    <div class="userprofile">
+        <div class="title-area mb20">
+            <h1>Profile</h1>
+        </div>
+        <div class="fields-box">
+            <form (ngSubmit)='updateUserDetails()' #profileForm='ngForm'>
+                <div class="form-group">
+                    <label>Name</label><em class="danger-text h4">*</em>
+                    <input type="text" class="form-control half-width" name="name" [(ngModel)]="editUser.name" #name="ngModel" required pattern="[A-Za-z\s]+$" maxlength="150" />
+                    <div class="errors-container">
+                        <span *ngIf='name.errors && (name.dirty || name.touched)' class='error-msg'>Name is required and it must contain only alphabets</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control half-width" name="email" [(ngModel)]="editUser.email" disabled />
+                    <div class="errors-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" class="form-control half-width" name="phonenumber" [(ngModel)]="editUser.phoneNumber" #phonenumber="ngModel" pattern="^[+]?([0-9]{10,20})$" maxlength="20" />
+                    <div class="errors-container">
+                        <span *ngIf='phonenumber.errors && (phonenumber.dirty || phonenumber.touched)' class='error-msg'>Phone Numnber must have atleast 10 digits with an optional country code</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Organization</label>
+                    <input type="text" class="form-control half-width" name="organizationname" [(ngModel)]="editUser.organizationName" #organizationname="ngModel" pattern="[A-Za-z\s]+$" maxlength="150" />
+                    <div class="errors-container">
+                        <span *ngIf='organizationname.errors && (organizationname.dirty || organizationname.touched)' class='error-msg'>Organization Name must contain only alphabets</span>
+                    </div>
+                </div>
+                <div class="actions-area">
+                    <button type="button" class="btn" [routerLink]="['/profile']">Cancel</button>
+                    <button type="submit" class="btn btn-primary" [disabled]='!profileForm.form.valid'>Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

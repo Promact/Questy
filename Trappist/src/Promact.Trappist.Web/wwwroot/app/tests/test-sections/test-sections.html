@@ -1,0 +1,24 @@
+﻿<div class="test-create-steps test-sections">
+    <create-test-header [disablePreview]="disablePreview" [testDetails]="testDetails" [testNameReference]="testNameReference"></create-test-header>
+    <div e2e="progress-loader" class="loader-container" *ngIf="loader">
+        <div class="spinner"></div>
+    </div>
+    <div class="container" *ngIf="!loader">
+        <h5 *ngIf="!isCategoryExist">No Sections have been created yet. To do so, please click <a class="theme-text" [routerLink]="['/questions']">here</a>.</h5>
+        <h5 *ngIf="isCategoryExist && isEditTestEnabled">Select sections to add in your test</h5>
+        <h5 *ngIf="!isEditTestEnabled">Selected sections have been added in your test. You cannot edit an ongoing test.</h5>
+        <ul e2e="select-section-list" class="sections-list">
+            <li *ngFor="let categories of testCategories"
+                (click)="onSelect(categories)">
+                <label for="{{categories.categoryName}}">
+                    <input type="checkbox" id="" [(ngModel)]="categories.isSelect" />
+                    <span class="section-box clearfix">
+                        <span class="h4 pull-left">{{categories.categoryName}}</span>
+                        <em class="material-icons pull-right">check</em>
+                    </span>
+                </label>
+            </li>
+        </ul>
+    </div>
+    <create-test-footer (SaveCategory)="saveCategoryToExitOrMoveNext($event)"></create-test-footer>
+</div>

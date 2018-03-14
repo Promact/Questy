@@ -1,128 +1,45 @@
-﻿<div class="tests-dashboard">
-    <div class="title-area clearfix">
-        <h1 class="pull-left">Tests</h1>
-        <div class="search-area pull-right">
-            <input type="text" [hidden]="!showSearchInput" />
-            <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
+    <div class="spinner"></div>
+</div>
+<div class="container">
+    <div class="tests-dashboard">
+        <div class="title-area mb20 clearfix">
+            <h1 class="pull-left">Tests</h1>
+            <div class="search-area pull-right">
+                <input type="text" placeholder="Search tests" [hidden]="!showSearchInput" [(ngModel)]="searchTest" (blur)="showSearchInput = false" name="search" id="search" #search/>
+                <button type="button" (click)="showSearchInput = true;selectTextArea($event,search)"><em class="material-icons">search</em></button>
+            </div>
         </div>
-    </div>
-    <div class="blocks-area">
-        <div class="row">
-            <div class="col-md-5ths col-sm-4">
-                <div class="create-test-block">
-                    <i class="material-icons">add</i>
-                    <h2>Create New Test</h2>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+        <div class="blocks-area">
+            <div class="row">
+                <div class="col-md-5ths col-sm-4">
+                    <div e2e="create-test-block" class="create-test-block" (click)="createTestDialog()">
+                        <em class="material-icons">add</em>
+                        <h5>Create New Test</h5>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5ths col-sm-4">
-                <div class="test-block">
-                    <div class="test-title clearfix">
-                        <h2 class="pull-left">BBIT 10-08-2017</h2>
-                        <a href="" class="pull-right"><i class="material-icons">more_vert</i></a>
-                    </div>
-                    <div class="test-details">
-                        <p class="light-text">150 Questions</p>
-                        <p class="light-text">3 Sections</p>
-                        <p class="light-text">123 Candidates</p>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-primary">View Report</button>
+                <div *ngFor="let test of tests | filter: searchTest let i=index">
+                    <div class="col-md-5ths col-sm-4">
+                        <div class="test-block">
+                            <div e2e="test-title" class="test-title clearfix">
+                                <h5 class="pull-left" title="{{test.testName}}"><a [routerLink]="[test.id,'view']">{{test.testName}}</a></h5>
+                                <em e2e="test-menu" class="material-icons pull-right" [mdMenuTriggerFor]="testMenu">more_vert</em>
+                                <md-menu #testMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
+                                    <button e2e="edit-btn" md-menu-item [disabled]="!test.isEditTestEnabled" (click)="editTest(test)">Edit</button>
+                                    <button e2e="delete-btn" md-menu-item (click)="deleteTestDialog(test)">Delete</button>
+                                    <button e2e="duplicate-btn" md-menu-item (click)="duplicateTestDialog(test)">Duplicate</button>
+                                    <button e2e="settings-btn" md-menu-item [routerLink]="[test.id,'settings']">Settings</button>
+                                </md-menu>
+                            </div>
+                            <div class="test-details">
+                                <p class="light-text">{{test.numberOfTestQuestions}} Questions</p>
+                                <p class="light-text">{{test.numberOfTestSections}} Sections</p>
+                                <p class="light-text">{{test.numberOfTestAttendees}} Candidates</p>
+                            </div>
+                            <div class="text-center">
+                               <a class="btn btn-primary" [routerLink]="['/reports/test/',test.id]" role="button">View Report</a> 
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}"
 EndProject
@@ -10,17 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Web", "src\Promact.Trappist.Web\Promact.Trappist.Web.xproj", "{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.Web", "src\Promact.Trappist.Web\Promact.Trappist.Web.csproj", "{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Core", "src\Promact.Trappist.Core\Promact.Trappist.Core.xproj", "{EFA370F7-640C-43DB-A3BD-2E061421551B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.Core", "src\Promact.Trappist.Core\Promact.Trappist.Core.csproj", "{EFA370F7-640C-43DB-A3BD-2E061421551B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Repository", "src\Promact.Trappist.Repository\Promact.Trappist.Repository.xproj", "{01D27A03-0611-46C9-91C8-F34A4B13338A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.Repository", "src\Promact.Trappist.Repository\Promact.Trappist.Repository.csproj", "{01D27A03-0611-46C9-91C8-F34A4B13338A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.DomainModel", "src\Promact.Trappist.DomainModel\Promact.Trappist.DomainModel.xproj", "{C1C06A3A-F5F6-44FA-9493-8591B2E97730}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.DomainModel", "src\Promact.Trappist.DomainModel\Promact.Trappist.DomainModel.csproj", "{C1C06A3A-F5F6-44FA-9493-8591B2E97730}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Utility", "src\Promact.Trappist.Utility\Promact.Trappist.Utility.xproj", "{3CE6EBF8-16C9-4144-9381-69D60C01859B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.Utility", "src\Promact.Trappist.Utility\Promact.Trappist.Utility.csproj", "{3CE6EBF8-16C9-4144-9381-69D60C01859B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Promact.Trappist.Test", "src\Promact.Trappist.Test\Promact.Trappist.Test.xproj", "{A6299789-A0DE-4F72-A48B-0B74F4F44EB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Promact.Trappist.Test", "src\Promact.Trappist.Test\Promact.Trappist.Test.csproj", "{A6299789-A0DE-4F72-A48B-0B74F4F44EB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

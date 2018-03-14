@@ -254,5 +254,26 @@ paket-files/
 _references.js
 **/wwwroot/app/**/*.js
 **/wwwroot/app/**/*.js.map
+**/wwwroot/polyfills.js
+**/wwwroot/polyfills.js.map
 
 **/wwwroot/css/*.css
+
+**/wwwroot/dist/
+**/wwwroot/dist_conduct/
+**/wwwroot/dist_setup/
+
+# published output
+**/published/
+
+# ignored setup file 
+**/setup.json
+
+**/aot/
+
+package-lock.json
+
+#ignore log files
+**/logs/
+
+**/coverage/

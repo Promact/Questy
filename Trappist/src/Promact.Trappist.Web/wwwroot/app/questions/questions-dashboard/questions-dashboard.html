@@ -1,41 +1,84 @@
-﻿<div class="questions-dashboard">
-    <div class="title-area clearfix">
-        <h1 class="pull-left">Questions</h1>
-        <div class="search-area pull-right">
-            <input type="text" [hidden]="!showSearchInput" />
-            <button type="button" (click)="showSearchInput = !showSearchInput"><i class="material-icons">search</i></button>
-        </div>
-    </div>
-    <div class="main-block clearfix">
-        <div class="col-md-3 col-sm-4 category-block">
-            <div class="block-title clearfix">
-                <h2 class="pull-left">Sections</h2>
-                <a href="" class="pull-right"><i class="material-icons">add</i></a>
+﻿<div e2e="progress-loader" class="loader-container" *ngIf="loader">
+    <div class="spinner"></div>
+</div>
+<div class="container">
+    <div class="questions-dashboard">
+        <div class="title-area mb20 clearfix">
+            <h1 class="pull-left">Questions</h1>
+            <div class="search-area pull-right">
+                <input type="text" placeholder="Search questions" [(ngModel)]="matchString" (keyup)="getQuestionsMatchingSearchCriteria(matchString)" [hidden]="!showSearchInput" (blur)="showStatus()" name="search" id="search" #search />
+                <button type="button" (click)="selectTextArea($event,search,matchString)"><em class="material-icons">search</em></button>
             </div>
-            <ul class="category-list">
-                <li class="active">
-                    <a href="" class="h5">All Questions</a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">Logical Reasoning <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">Quantitative Ability <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">Programming Challenge <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">Technical Aptitude <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-                <li>
-                    <a href="" class="clearfix h5">General Knowledge <i class="material-icons pull-right">more_vert</i></a>
-                </li>
-            </ul>
         </div>
-        <div class="col-md-9 col-sm-8 col-md-offset-3 col-sm-offset-4 questions-block">
-            <div class="block-title">
-                <h2>All Questions</h2>
+        <div class="main-block">
+            <div class="category-block">
+                <div class="block-title clearfix">
+                    <h2 class="pull-left">Sections</h2>
+                    <em class="material-icons pull-right" (click)="addCategoryDialog()">add</em>
+                </div>
+                <ul class="category-list">
+                    <li class="h5" (click)="getAllQuestions()" [ngClass]="{'active' : selectedCategory.categoryName === undefined ||isAllQuestionsSectionSelected}" *ngIf="isCategoryPresent">All Questions</li>
+                    <li *ngFor="let category of categoryArray" class="clearfix h5" [ngClass]="isCategorySelected(category)">
+                        <span title="{{category.categoryName}}" (click)="categoryWiseFilter(category.id,category.categoryName,difficultyLevel)">{{category.categoryName}}</span>
+                        <em class="material-icons pull-right" [mdMenuTriggerFor]="categoryMenu">more_vert</em>
+                        <md-menu #categoryMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
+                            <button md-menu-item (click)="updateCategoryDialog(category)">Update</button>
+                            <button md-menu-item (click)="deleteCategoryDialog(category)">Delete</button>
+                        </md-menu>
+                    </li>
+                </ul>
+            </div>
+            <div class="questions-block">
+                <h5 class="no-section-msg" *ngIf="!isCategoryPresent">Please create a section.</h5>
+                <div class="block-title" *ngIf="isCategoryPresent">
+                    <h2 >{{showName}}</h2>
+                </div>
+                <div class="block-subtitle clearfix" *ngIf="isCategoryPresent">
+                    <button type="button" class="btn-link h5 hidden-md hidden-lg" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
+                    <ul class="difficulty-levels pull-left">
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['All']}" (click)="difficultyWiseSearch('All')" class="h5">Total ({{easy+medium+hard}})</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Easy']}" (click)="difficultyWiseSearch('Easy')" class="h5">Easy ({{easy}})</li>
+                        <li [ngClass]="{active : selectedDifficulty === DifficultyLevel['Medium']}" (click)="difficultyWiseSearch('Medium')" class="h5">Medium ({{medium}})</li>
+                        <li [ngClass]="{active: selectedDifficulty === DifficultyLevel['Hard']}" (click)="difficultyWiseSearch('Hard')" class="h5">Hard ({{hard}})</li>
+                    </ul>
+                    <button type="button" class="btn-link h5 hidden-sm hidden-xs pull-right" [mdMenuTriggerFor]="questionMenu"><em class="material-icons">add</em> Add New Question</button>
+                    <md-menu #questionMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('single-answer')"><em class="material-icons">radio_button_checked</em> Single Answer</a>
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('multiple-answer')"><em class="material-icons">check_box</em> Multiple Answer</a>
+                        <a md-menu-item (click)="selectSelectionAndDifficultyType('programming')"><em class="material-icons">code</em> Programming</a>
+                    </md-menu>
+                </div>
+                <div class="questions-area" infinite-scroll
+                     [infiniteScrollDistance]="2"
+                     [infiniteScrollThrottle]="10"
+                     [infiniteScrollDisabled]="isAllQuestionsHaveCome"
+                     (scrolled)="getQuestionsOnScrolling()" *ngIf="isCategoryPresent">
+                    <ng-container>
+                        <div *ngFor="let question of questionDisplay;let i = index" class="qs-block clearfix">
+                            <div class="pull-left">
+                                <div class="qs-container">
+                                    <p class="qs-num">Q.{{i+1}}</p>
+                                    <div class="qs-text">
+                                        <p [innerHTML]="question.questionDetail" class="question"></p>
+                                        <div *ngFor="let option of question.singleMultipleAnswerQuestion?.singleMultipleAnswerQuestionOption; let j = index">
+                                            <p *ngIf="QuestionType[question.questionType] != QuestionType[2]" [ngClass]="isCorrectAnswer(option.isAnswer)" class="ans-option "><span>{{optionName[j]}}</span> <span>{{option.option}}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt10">
+                                    <p class="tags">{{question.category.categoryName}}</p>
+                                    <p class="tags">{{DifficultyLevel[question.difficultyLevel]}}</p>
+                                </div>
+                            </div>
+                            <em class="material-icons pull-right" [mdMenuTriggerFor]="quesMoreMenu">more_vert</em>
+                            <md-menu #quesMoreMenu="mdMenu" [overlapTrigger]="false" xPosition="before">
+                                <button md-menu-item (click)="editQuestion(question)">Edit</button>
+                                <button md-menu-item (click)="deleteQuestionDialog(question)">Delete</button>
+                                <button md-menu-item (click)="duplicateQuestion(question)">Duplicate</button>
+                            </md-menu>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>

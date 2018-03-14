@@ -1,0 +1,20 @@
+﻿<div class="dialog">
+    <div class="dialog-title clearfix">
+        <h1 class="pull-left" md-dialog-title>Create New Section</h1>
+        <button type="button" class="pull-right" md-dialog-close><i class="material-icons">close</i></button>
+    </div>
+    <md-dialog-content>
+        <div class="form-group">
+            <label>Section Name</label><em class="danger-text h4">*</em>
+            <input type="text" class="form-control" id="categoryName" (keyup.enter)="onEnter(category)" [(ngModel)]="category.categoryName" (keyup)="changeErrorMessage()" name="categoryName" #categoryName="ngModel" maxlength="150" placeholder="Ex. General Knowledge" required defaultSelect/>
+            <div class="errors-container">
+                <span *ngIf="isCategoryNameExist" class="error-msg">{{errorMessage}}</span>
+                <span *ngIf="categoryName.errors && categoryName.dirty" [hidden]="!categoryName.errors.required" class="error-msg">Required</span>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <button type="button" class="btn" md-dialog-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="categoryName.errors" (click)="addCategory(category)">Create</button>
+    </md-dialog-actions>
+</div>

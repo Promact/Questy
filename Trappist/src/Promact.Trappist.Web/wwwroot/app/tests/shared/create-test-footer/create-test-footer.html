@@ -1,0 +1,25 @@
+﻿<div class="test-create-footer clearfix">
+    <div class="container">
+        <ul class="steps pull-left">
+            <li class="h5" [class.active]="router.url==='/tests/'+ testId +'/sections'"><a [routerLink]="['/tests', testId,'sections']">Select Sections</a></li>
+            <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+            <li class="h5" [class.active]="router.url==='/tests/' + testId + '/questions'"><a [routerLink]="['/tests',testId,'questions']">Select Questions</a></li>
+            <li class="h5"><em class="material-icons">keyboard_arrow_right</em></li>
+            <li class="h5" [class.active]="router.url==='/tests/'+testId + '/settings'"><a [routerLink]="['/tests',testId,'settings']">Settings & Schedule</a></li>
+        </ul>
+        <div class="buttons-block pull-right" *ngIf="isTestSection">
+            <button type="button" class="btn" (click)="saveSelectedCategoryAndExit()">Save & Exit</button>
+            <button e2e="save-next-btn" type="button" class="btn btn-primary" (click)="saveSelectedCategoryAndMoveNext()">Save & Next</button>
+        </div>
+        <div class="buttons-block pull-right" *ngIf="isTestQuestion">
+            <button type="button" class="btn" (click)="saveAndExit()">Save & Exit</button>
+            <button e2e="save-next-btn" type="button" class="btn btn-primary" (click)="addTestQuestions()">Save & Next</button>
+        </div>
+        <div class="buttons-block pull-right" *ngIf="isTestSettings && loader">
+            <button type="button" class="btn" [disabled]="isValid||settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="updateTestSettings()">Save & Exit</button>
+            <button e2e="saveandlaunch-btn" type="button" class="btn btn-primary" *ngIf="!testDetails.isLaunched" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="launchTestDialogBox()">Save & Launch</button>
+            <button e2e="pause-test-btn" type="button" class="btn btn-primary" *ngIf="(testDetails.isLaunched && !testDetails.isPaused)" (click)="pausTest()">Pause</button>
+            <button type="button" class="btn btn-primary" *ngIf="(testDetails.isPaused && testDetails.isLaunched)" [disabled]="settingsForm.invalid || validStartDate || validEndDate || validTime || !isIpAddressAdded || isFocusLostNull" (click)="resumTest()">Resume</button>
+        </div>
+    </div>
+</div>

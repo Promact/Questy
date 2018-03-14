@@ -1,8 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-
-
+﻿@{
+    ViewBag.BaseHref = "/setup";
 }
-<h1>hello</h1>
+
+<setup>
+    <div e2e="progress-loader" class="loader-container main-loader">
+        <div class="loader-block">
+            <div class="spinner"></div>
+            <p class="font-semibold mt10">Loading...</p>
+        </div>
+    </div>
+</setup>
+
+<environment names="Development">
+    <!-- Polyfill(s) for older browsers -->
+    <script src="/node_modules/core-js/client/shim.min.js"></script>
+    <script src="/node_modules/zone.js/dist/zone.js"></script>
+
+    <script src="/node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="/systemjs.config.js"></script>
+    <script>
+        System.import('/app/main.setup.js').catch(function (err) { console.error(err); });
+    </script>
+</environment>
+
+<environment names="Staging,Production">
+  <script src="/dist_setup/inline.bundle.js"></script>
+  <script src="/dist_setup/polyfills.bundle.js"></script>
+  <script src="/dist_setup/main.bundle.js"></script>
+  <link href="/dist_setup/styles.bundle.css" rel="stylesheet" />
+</environment>
