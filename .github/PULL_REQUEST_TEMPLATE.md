@@ -16,3 +16,12 @@ File1.cs - Reason for change/add
 - [ ] Commit History is proper, no merge is done. 
 - [ ] Commit/pull request messages should be proper to justify your feature
 - [ ] All test cases are executed provided by tester.
+
+**Known Issues**
+
+- issue 1
+- issue 2
+
+**Comments**
+
+anything that you want to convey about this pull request
