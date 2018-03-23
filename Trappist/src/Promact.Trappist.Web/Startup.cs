@@ -41,11 +41,15 @@ using System;
 using System.IO;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.DataProtection;
-using Serilog.Sinks.Udp;
 using System.Net;
 using Serilog.Formatting.Json;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Session;
+using EFSecondLevelCache.Core;
+using CacheManager.Core;
+using System.Threading;
+using Newtonsoft.Json;
 
 namespace Promact.Trappist.Web
 {
@@ -53,7 +57,7 @@ namespace Promact.Trappist.Web
     {
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
+            var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
@@ -68,15 +72,11 @@ namespace Promact.Trappist.Web
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            var logger = new LoggerConfiguration();
-            logger.WriteTo.RollingFile("logs/log-{Date}.txt", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning);
+            var threadCountInString = Configuration.GetSection("ThreadCount").Value;
 
-            if (!env.IsDevelopment())
-            {
-                logger.WriteTo.Udp(IPAddress.Parse(Configuration.GetSection("LogstashIP").Value), 8081, new JsonFormatter(), restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning).Enrich.WithProperty("Application", "Trappist");
-            }
+            var threadCount = threadCountInString != null ? Convert.ToInt32(threadCountInString) : 200;
 
-            Log.Logger = logger.CreateLogger();
+            ThreadPool.SetMinThreads(threadCount, threadCount);
 
             Env = env;
         }
@@ -132,24 +132,46 @@ namespace Promact.Trappist.Web
 
             if (Env.IsDevelopment())
             {
-                //services.AddMiniProfiler().AddEntityFramework();
-
                 services.AddMemoryCache();
             }
-
+            
             if (!Env.IsDevelopment())
             {
 
-                var redis = ConnectionMultiplexer.Connect("127.0.0.1");
+                var redis = ConnectionMultiplexer.Connect(Configuration.GetSection("RedisUrl").Value);
 
                 services.AddDataProtection()
                     .PersistKeysToRedis(redis, "DataProtection-Keys");
 
                 services.AddDistributedRedisCache(options =>
                 {
-                    options.Configuration = "127.0.0.1,syncTimeout=10000";
+                    options.Configuration = Configuration.GetSection("RedisUrl").Value;
                 });
             }
+
+            services.AddMiniProfiler().AddEntityFramework();
+
+            services.AddEFSecondLevelCache();
+
+            // Add an in-memory cache service provider
+            services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
+            // Add Redis cache service provider
+            var jss = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            
+            services.AddSingleton(typeof(ICacheManagerConfiguration),
+                new CacheManager.Core.ConfigurationBuilder()
+                    .WithJsonSerializer(serializationSettings: jss, deserializationSettings: jss)
+                    .WithUpdateMode(CacheUpdateMode.Up)
+                    .WithRedisConfiguration("redis", Configuration.GetSection("RedisUrl").Value)
+                    .WithMaxRetries(100)
+                    .WithRetryTimeout(50)
+                    .WithRedisCacheHandle("redis")
+                    .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
+                    .Build());
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
@@ -158,7 +180,6 @@ namespace Promact.Trappist.Web
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddSerilog();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -188,16 +209,9 @@ namespace Promact.Trappist.Web
                 });
             }
 
-            if (env.IsDevelopment())
+            if (/*env.IsDevelopment()*/true)
             {
-                //app.UseMiniProfiler(x =>
-                //{
-                //    // Control which SQL formatter to use
-                //    x.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
-
-                //    // Control storage
-                //    x.Storage = new MemoryCacheStorage(cache, TimeSpan.FromMinutes(60));
-                //});
+                app.UseMiniProfiler();
             }
 
             app.UseAuthentication();
@@ -234,10 +248,7 @@ namespace Promact.Trappist.Web
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-
-            //Delete production db upon every deployment
-            //Temporary fix as we are not including migrations in scm
-            //Will remove after we include migrations in code base
+            
             if (!string.IsNullOrEmpty(connectionString.Value))
             {
                 context.Database.Migrate();
@@ -263,6 +274,8 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
             #endregion
+
+            app.UseEFSecondLevelCache();
         }
     }
 }

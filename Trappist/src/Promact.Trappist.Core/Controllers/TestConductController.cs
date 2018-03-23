@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers
@@ -18,15 +20,17 @@ namespace Promact.Trappist.Core.Controllers
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
         private readonly IStringConstants _stringConstants;
+        private readonly ILogger _logger;
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, IStringConstants stringConstants)
+        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, IStringConstants stringConstants, ILogger<TestConductController> logger)
         {
             _testConductRepository = testConductRepository;
             _testRepository = testRepository;
             _stringConstants = stringConstants;
+            _logger = logger;
         }
         #endregion
 
@@ -40,27 +44,48 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("{magicString}/register")]
         public async Task<IActionResult> RegisterTestAttendeesAsync([FromBody]TestAttendees testAttendee, [FromRoute]string magicString)
         {
-            if (ModelState.IsValid && !(await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString)))
+            if (!ModelState.IsValid)
             {
-                await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, magicString);
+                return BadRequest();
+            }
+
+            var test = await _testRepository.GetTestByLinkAsync(magicString);
+
+            //If test link is invalid
+            if (test == null)
+            {
+                return BadRequest();
+            }
+
+            testAttendee.TestId = test.Id;
+
+            var dbTestAttendee = await _testConductRepository.GetTestAttendeeByEmailIdAndRollNo(testAttendee.Email, testAttendee.RollNumber, testAttendee.TestId);
+
+            //If attendee doesnt exist add him
+            if (dbTestAttendee == null)
+            {
+                await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
                 HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
-                HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
                 return Ok(testAttendee);
             }
-            if (await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, magicString))
+
+            //If attendee exist
+            else
             {
-                var attendee = await _testConductRepository.GetTestAttendeeByEmailIdAndRollNo(testAttendee.Email, testAttendee.RollNumber, testAttendee.TestId);
-                var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendee.Id);
+                var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(dbTestAttendee.Id);
+
+                //Then check his status
                 if (testStatus != TestStatus.AllCandidates)
+                {
                     return NotFound();
+                }
+                //If status is first one then just set session and return him
                 else
                 {
-                    HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
-                    HttpContext.Session.SetString(_stringConstants.TestLinkSessionKey, magicString);
+                    HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, dbTestAttendee.Id);
                     return Ok(testAttendee);
                 }
             }
-            else return BadRequest();
         }
 
         /// <summary>
@@ -159,6 +184,9 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!await _testRepository.IsTestExists(testId))
                 return NotFound();
+
+            await HttpContext.Session.LoadAsync();
+
             if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null && !isPreview)
                 return NotFound();
             var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
@@ -207,6 +235,8 @@ namespace Promact.Trappist.Core.Controllers
 
             if (isPreview == false)
             {
+                await HttpContext.Session.LoadAsync();
+
                 attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
                 if (!await IsAttendeeValid(attendeeId))
                 {
@@ -255,6 +285,9 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
+
+            await HttpContext.Session.LoadAsync();
+
             if (testStatus != TestStatus.AllCandidates)
                 HttpContext.Session.SetString(_stringConstants.Path, "");
             else HttpContext.Session.SetString(_stringConstants.Path, "test");
@@ -302,6 +335,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{testLink}/instructions")]
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
         {
+            await HttpContext.Session.LoadAsync();
+
             HttpContext.Session.SetString(_stringConstants.Path, "instructions");
             var result = await _testConductRepository.GetTestInstructionsAsync(testLink);
             return result;
@@ -325,14 +360,17 @@ namespace Promact.Trappist.Core.Controllers
 
         #region Private Method
         private async Task<bool> IsAttendeeValid(int attendeeId)
-        {
-            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+        {   
+            await HttpContext.Session.LoadAsync();
+
+            var session = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+         
+            if (session == null)
             {
                 return false;
             }
 
-            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value == attendeeId
-                && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            else if (session.Value == attendeeId && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
             {
                 return true;
             }
@@ -367,14 +405,17 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("getTestSummary/{link}")]
         public async Task<IActionResult> GetSummary([FromRoute] string link)
         {
+            await HttpContext.Session.LoadAsync();
 
             HttpContext.Session.SetString(_stringConstants.Path, "test-summary");
             return Ok(await _testRepository.GetTestSummary(link));
         }
 
         [HttpGet("getSessionPath")]
-        public IActionResult GetSessionPath()
+        public async Task<IActionResult> GetSessionPath()
         {
+            await HttpContext.Session.LoadAsync();
+
             var attendee = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
             if (attendee != null)
             {
@@ -402,22 +443,43 @@ namespace Promact.Trappist.Core.Controllers
 
             if (isPreview == false)
             {
-                attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
-                if (!await IsAttendeeValid(attendeeId))
+                await HttpContext.Session.LoadAsync();
+
+                var attendeeSession = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+
+                if (attendeeSession == null)
                 {
                     return NotFound();
                 }
 
+                //TODO: optimization scope
+                if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeSession.Value))
+                {
+                    return NotFound();
+                }
+
+                attendeeId = attendeeSession.Value;
+
                 testAttendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
             }
             var testDetails = await _testRepository.GetTestByLinkAsync(link);
+
+            if (testDetails == null)
+            {
+                return NotFound();
+            }
+
             if (isPreview == false)
                 await _testRepository.SetStartTestLogAsync(attendeeId);
 
             var questions = await _testRepository.GetTestQuestionByTestIdAsync(testDetails.Id);
 
             if (testAttendee.Report != null && (testAttendee.Report.TestStatus == TestStatus.BlockedTest || testAttendee.Report.TestStatus == TestStatus.ExpiredTest))
+            {
+                await HttpContext.Session.LoadAsync();
+
                 HttpContext.Session.SetString(_stringConstants.Path, "");
+            }
 
             testBundle.Test = testDetails;
             testBundle.TestQuestions = questions;

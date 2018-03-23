@@ -141,6 +141,8 @@ namespace Promact.Trappist.Core.Controllers
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
         public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink, [FromRoute] bool isTestEnd)
         {
+            await HttpContext.Session.LoadAsync();
+
             if (isTestEnd)
             {
                 HttpContext.Session.SetString(_stringConstants.Path, "");

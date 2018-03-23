@@ -17,7 +17,7 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="testAttendee">This model object contain test attendee credential which are first name, last name, email, roll number, contact number</param>
         /// <param name="magicString">This parameter contain test link</param>
         /// <returns></returns>
-        Task RegisterTestAttendeesAsync(TestAttendees testAttendee, string magicString);
+        Task RegisterTestAttendeesAsync(TestAttendees testAttendee);
 
         /// <summary>
         /// This method used for check test attendee already exist for this test.
@@ -53,6 +53,13 @@ namespace Promact.Trappist.Repository.TestConduct
         /// <param name="attendeeId">Id of Test Attendee</param>
         /// <returns>Answers as a string type</returns>
         Task<ICollection<TestAnswerAC>> GetAnswerAsync(int attendeeId);
+
+        /// <summary>
+        /// Get test attendee without report (Other method is assuming that we need report everytime while getting attendee, so created this method to improve performance in test conduct part)
+        /// </summary>
+        /// <param name="attendeeId"></param>
+        /// <returns></returns>
+        Task<TestAttendees> GetTestAttendeeByIdWithoutReportAsync(int attendeeId);
 
         /// <summary>
         /// Gets Test Attendee information by Id

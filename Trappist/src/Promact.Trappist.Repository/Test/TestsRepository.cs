@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
@@ -26,12 +28,20 @@ namespace Promact.Trappist.Repository.Tests
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         private readonly IStringConstants _stringConstants;
+        private readonly IConfiguration _configuration;
+        private readonly bool _enableCache = false;
 
-        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants)
+        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _util = util;
             _stringConstants = stringConstants;
+            _configuration = configuration;
+
+            if (_configuration["EnableCache"] != null && Convert.ToBoolean(_configuration["EnableCache"]))
+            {
+                _enableCache = true;
+            }
         }
 
         #region Test 
@@ -250,7 +260,7 @@ namespace Promact.Trappist.Repository.Tests
                 return _stringConstants.SuccessfullySaved;
             }
         }
-
+        
         public async Task<TestAC> GetTestByIdAsync(int testId, string userId)
         {
             //Find the test by Id from Test Model
@@ -305,12 +315,44 @@ namespace Promact.Trappist.Repository.Tests
         public async Task<ICollection<TestConductAC>> GetTestQuestionByTestIdAsync(int testId)
         {
             var questionList = new List<TestConductAC>();
-            var singleMultipleQuestions = await _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
-            var codesnippetQuestions = await _dbContext.CodeSnippetQuestion.Include(x => x.QuestionLanguangeMapping).ToListAsync();
-            var languages = await _dbContext.CodingLanguage.AsNoTracking().ToListAsync();
-            var testQuestionList = await _dbContext.TestQuestion
+
+            IQueryable<SingleMultipleAnswerQuestion> singleMultipleQuestionsQuery = _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption);
+
+            if (_enableCache)
+            {
+                singleMultipleQuestionsQuery = singleMultipleQuestionsQuery.Cacheable();
+            }
+
+            var singleMultipleQuestions = await singleMultipleQuestionsQuery.ToListAsync();
+
+            IQueryable<CodeSnippetQuestion> codesnippetQuestionsQuery =_dbContext.CodeSnippetQuestion.Include(x => x.QuestionLanguangeMapping);
+
+            if (_enableCache)
+            {
+                codesnippetQuestionsQuery = codesnippetQuestionsQuery.Cacheable();
+            }
+
+            var codesnippetQuestions = await codesnippetQuestionsQuery.ToListAsync();
+
+            var languagesQuery = _dbContext.CodingLanguage.AsNoTracking();
+
+            if (_enableCache)
+            {
+                languagesQuery = languagesQuery.AsQueryable();
+            }
+
+            var languages = await languagesQuery.ToListAsync();
+
+            IQueryable<TestQuestion> testQuestionListQuery = _dbContext.TestQuestion
                  .AsNoTracking()
-                 .Where(x => x.TestId == testId).Include(x => x.Question).Include(x => x.Question).ToListAsync();
+                 .Where(x => x.TestId == testId).Include(x => x.Question);
+
+            if (_enableCache)
+            {
+                testQuestionListQuery = testQuestionListQuery.Cacheable();
+            }
+
+            var testQuestionList = await testQuestionListQuery.ToListAsync();
 
             foreach (var question in testQuestionList)
             {
@@ -340,8 +382,19 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
-            var test = await _dbContext.Test.AsNoTracking().SingleAsync(x => x.Link.Equals(link));
-            return await GetTestByIdAsync(test.Id, test.CreatedByUserId);
+            var testQuery = _dbContext.Test.AsNoTracking();
+
+            if (_enableCache)
+            {
+                testQuery = testQuery.Cacheable();
+            }
+
+            var test = await testQuery.FirstOrDefaultAsync(x => x.Link.Equals(link));
+
+            //Maps that test with TestAC
+            var testAcObject = Mapper.Map<Test, TestAC>(test);
+
+            return testAcObject;
         }
 
         public async Task<Test> GetTestSummary(string link)

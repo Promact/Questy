@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using EFSecondLevelCache.Core;
+using EFSecondLevelCache.Core.Contracts;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
@@ -76,8 +80,8 @@ namespace Promact.Trappist.DomainModel.DbContext
         public DbSet<TestAnswers> TestAnswers { get; set; }
         public DbSet<AttendeeAnswers> AttendeeAnswers { get; set; }
         public DbSet<Report> Report { get; set; }
-        public DbSet<TestLogs> TestLogs { get; set; }      
-        public DbSet<TestIpAddress> TestIpAddresses { get; set; } 
+        public DbSet<TestLogs> TestLogs { get; set; }
+        public DbSet<TestIpAddress> TestIpAddresses { get; set; }
         public DbSet<TestCodeSolution> TestCodeSolution { get; set; }
         public DbSet<TestCaseResult> TestCaseResult { get; set; }
         #region Overridden Methods  
@@ -91,7 +95,19 @@ namespace Promact.Trappist.DomainModel.DbContext
             {
                 ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
             });
-            return base.SaveChanges();
+
+            var result = base.SaveChanges();
+
+            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
+
+            if (enableCache != null && Convert.ToBoolean(enableCache))
+            {
+                var changedEntityNames = this.GetChangedEntityNames();
+
+                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
+            }
+
+            return result;
         }
         /// <summary>
         /// override savechangesasync method
@@ -108,8 +124,20 @@ namespace Promact.Trappist.DomainModel.DbContext
             {
                 ((BaseModel)x.Entity).UpdateDateTime = DateTime.UtcNow;
             });
-            return base.SaveChangesAsync(cancellationToken);
+
+            var result = base.SaveChangesAsync(cancellationToken);
+
+            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
+
+            if (enableCache != null && Convert.ToBoolean(enableCache))
+            {
+                var changedEntityNames = this.GetChangedEntityNames();
+
+                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
+            }
+
+            return result;
         }
-         #endregion
+        #endregion
     }
 }

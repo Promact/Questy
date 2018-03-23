@@ -71,7 +71,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             Assert.True(_trappistDbContext.TestAttendees.Count() == 1);
             Assert.True(testAttendee.TestLogs.VisitTestLink != default(DateTime));
             Assert.True(testAttendee.TestLogs.FillRegistrationForm != default(DateTime));
@@ -87,7 +87,7 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             var test = await CreateTestAsync();
             testAttendee.TestId = test.Id;
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
             Assert.True(testAttendee.TestLogs.VisitTestLink != default(DateTime));
@@ -104,7 +104,7 @@ namespace Promact.Trappist.Test.TestConduct
             var testAttendee = InitializeTestAttendeeParameters();
             var test = await CreateTestAsync();
             testAttendee.TestId = test.Id;
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var result = await _testConductRepository.IsTestAttendeeExistAsync(testAttendee, _stringConstants.MagicString);
             Assert.True(result);
         }
@@ -223,7 +223,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
@@ -246,7 +246,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC() { OptionChoice = new List<int>() { 1, 2, 3 } };
@@ -264,7 +264,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
             var attendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
             Assert.NotNull(attendee);
@@ -278,7 +278,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             Assert.True(await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId));
@@ -292,7 +292,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             //New entry to AttendeeAnswer table will be made since no answer is saved
@@ -312,7 +312,7 @@ namespace Promact.Trappist.Test.TestConduct
         {
             var testAttendee = InitializeTestAttendeeParameters();
             await CreateTestAsync();
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             //New entry to AttendeeAnswer table will be made since no answer is saved
@@ -381,7 +381,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
             testAttendee.Test = test;
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer1 = new TestAnswerAC()
@@ -495,7 +495,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
             testAttendee.Test = test;
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC()
@@ -561,7 +561,7 @@ namespace Promact.Trappist.Test.TestConduct
             await _testRepository.AddTestQuestionsAsync(questionList, test.Id);
 
             testAttendee.Test = test;
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, _stringConstants.MagicString);
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeId = await _trappistDbContext.TestAttendees.OrderBy(x => x.Email).Where(x => x.Email.Equals(testAttendee.Email)).Select(x => x.Id).FirstOrDefaultAsync();
 
             var answer = new TestAnswerAC()
@@ -610,7 +610,7 @@ namespace Promact.Trappist.Test.TestConduct
             var test = CreateTest("Mathematics");
             await _testRepository.CreateTestAsync(test, "5");
             var testAttendee = CreateTestAttendee(test.Id);
-            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee, "Added");
+            await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             testAttendee.AttendeeBrowserToleranceCount = 2;
             await _testConductRepository.SetAttendeeBrowserToleranceValueAsync(testAttendee.Id, testAttendee.AttendeeBrowserToleranceCount);
             Assert.True(testAttendee.AttendeeBrowserToleranceCount != 0);

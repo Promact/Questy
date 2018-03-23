@@ -1,4 +1,5 @@
 ﻿using CodeBaseSimulator.Models;
+using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -33,6 +34,7 @@ namespace Promact.Trappist.Repository.TestConduct
         private readonly IConfiguration _configuration;
         private readonly IStringConstants _stringConstants;
         private readonly IHttpService _httpService;
+        private readonly bool _enableCache = false;
         #endregion
         #endregion
 
@@ -50,12 +52,17 @@ namespace Promact.Trappist.Repository.TestConduct
             _configuration = configuration;
             _stringConstants = stringConstants;
             _httpService = httpService;
+
+            if (_configuration["EnableCache"] != null && Convert.ToBoolean(_configuration["EnableCache"]))
+            {
+                _enableCache = true;
+            }
         }
         #endregion
 
 
         #region Public Method
-        public async Task RegisterTestAttendeesAsync(TestAttendees testAttendee, string magicString)
+        public async Task RegisterTestAttendeesAsync(TestAttendees testAttendee)
         {
             await _dbContext.TestAttendees.AddAsync(testAttendee);
             await _dbContext.SaveChangesAsync();
@@ -126,9 +133,10 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer, double seconds)
         {
-            if (await _dbContext.AttendeeAnswers.AsNoTracking().AnyAsync(x => x.Id == attendeeId))
-            {
-                var attendeeAnswer = await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).SingleAsync();
+            var attendeeAnswer = await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).FirstOrDefaultAsync();
+
+            if (attendeeAnswer != null)
+            {   
                 var deserializedAnswer = new List<TestAnswerAC>();
 
                 if (attendeeAnswer.Answers != null)
@@ -152,18 +160,18 @@ namespace Promact.Trappist.Repository.TestConduct
             }
             else
             {
-                var attendeeAnswers = new AttendeeAnswers();
-                attendeeAnswers.Id = attendeeId;
+                attendeeAnswer = new AttendeeAnswers();
+                attendeeAnswer.Id = attendeeId;
                 if (seconds != 0.0)
-                    attendeeAnswers.TimeElapsed = (seconds / 60d);
+                    attendeeAnswer.TimeElapsed = (seconds / 60d);
 
                 if (answer != null)
                 {
                     var testAnswerArray = new List<TestAnswerAC>();
                     testAnswerArray.Add(answer);
-                    attendeeAnswers.Answers = JsonConvert.SerializeObject(testAnswerArray);
+                    attendeeAnswer.Answers = JsonConvert.SerializeObject(testAnswerArray);
                 }
-                await _dbContext.AddAsync(attendeeAnswers);
+                await _dbContext.AddAsync(attendeeAnswer);
             }
             await _dbContext.SaveChangesAsync();
         }
@@ -177,6 +185,12 @@ namespace Promact.Trappist.Repository.TestConduct
 
             var deserializedAttendeeAnswers = JsonConvert.DeserializeObject<ICollection<TestAnswerAC>>(attendee.Answers);
             return deserializedAttendeeAnswers;
+        }
+
+        public async Task<TestAttendees> GetTestAttendeeByIdWithoutReportAsync(int attendeeId)
+        {
+            var testAttendee = await _dbContext.TestAttendees.AsNoTracking().SingleAsync(x => x.Id == attendeeId);
+            return testAttendee;
         }
 
         public async Task<TestAttendees> GetTestAttendeeByIdAsync(int attendeeId)
@@ -260,9 +274,16 @@ namespace Promact.Trappist.Repository.TestConduct
             else
             {
                 var currentDate = DateTime.UtcNow;
-                var startTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.StartDate).SingleAsync();
-                var endTime = await _dbContext.Test.Where(x => x.Link == testLink).Select(x => x.EndDate).SingleAsync();
-                return currentDate.CompareTo(startTime) >= 0 && currentDate.CompareTo(endTime) <= 0;
+                var testQuery = _dbContext.Test.Where(x => x.Link == testLink).Select(x => new { x.StartDate, x.EndDate });
+
+                if (_enableCache)
+                {
+                    testQuery = testQuery.Cacheable();
+                }
+
+                var test = await testQuery.SingleAsync();
+
+                return currentDate.CompareTo(test.StartDate) >= 0 && currentDate.CompareTo(test.EndDate) <= 0;
             }
         }
 

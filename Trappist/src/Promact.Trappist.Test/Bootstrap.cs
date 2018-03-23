@@ -32,6 +32,8 @@ using Microsoft.Extensions.Configuration;
 using Promact.Trappist.Utility.HttpUtil;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using EFSecondLevelCache.Core;
+using CacheManager.Core;
 
 namespace Promact.Trappist.Test
 {
@@ -156,6 +158,17 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
             #endregion
+
+            services.AddEFSecondLevelCache();
+
+            // Add an in-memory cache service provider
+            services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
+            services.AddSingleton(typeof(ICacheManagerConfiguration),
+                new CacheManager.Core.ConfigurationBuilder()
+                        .WithJsonSerializer()
+                        .WithMicrosoftMemoryCacheHandle()
+                        .WithExpiration(ExpirationMode.Absolute, TimeSpan.FromMinutes(10))
+                        .Build());
 
             return services.BuildServiceProvider();
         }
