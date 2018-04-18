@@ -2,6 +2,8 @@
     ViewBag.BaseHref = "/setup";
 }
 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
 <setup>
     <div e2e="progress-loader" class="loader-container main-loader">
         <div class="loader-block">
@@ -25,8 +27,8 @@
 </environment>
 
 <environment names="Staging,Production">
-  <script src="/dist_setup/inline.bundle.js"></script>
-  <script src="/dist_setup/polyfills.bundle.js"></script>
-  <script src="/dist_setup/main.bundle.js"></script>
-  <link href="/dist_setup/styles.bundle.css" rel="stylesheet" />
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_setup/inline.bundle.js"></script>
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_setup/polyfills.bundle.js"></script>
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_setup/main.bundle.js"></script>
+    <link href="@Configuration.GetSection("CdnUrl").Value/dist_setup/styles.bundle.css" rel="stylesheet" />
 </environment>

@@ -1,7 +1,8 @@
 @{
-        ViewBag.BaseHref = "/conduct/" + ViewBag.Link;
-
+    ViewBag.BaseHref = "/conduct/" + ViewBag.Link;
 }
+
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
 <conduct>
 
@@ -21,15 +22,15 @@
     <script src="/node_modules/screenfull/dist/screenfull.js"></script>
     <script src="/node_modules/systemjs/dist/system.src.js"></script>
     <script src="/systemjs.config.js"></script>
-    
+
     <script>
         System.import('/app/main.conduct.js').catch(function (err) { console.error(err); });
     </script>
 </environment>
 
 <environment names="Staging,Production">
-  <script src="/dist_conduct/inline.bundle.js"></script>
-  <script src="/dist_conduct/polyfills.bundle.js"></script>
-  <script src="/dist_conduct/main.bundle.js"></script>
-  <link href="/dist_conduct/styles.bundle.css" rel="stylesheet" />
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_conduct/inline.bundle.js"></script>
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_conduct/polyfills.bundle.js"></script>
+    <script src="@Configuration.GetSection("CdnUrl").Value/dist_conduct/main.bundle.js"></script>
+    <link href="@Configuration.GetSection("CdnUrl").Value/dist_conduct/styles.bundle.css" rel="stylesheet" />
 </environment>
