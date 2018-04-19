@@ -10,8 +10,13 @@ az login --service-principal -u $AZURE_USER -p $AZURE_PASSWORD --tenant $AZURE_T
 az storage blob upload-batch --destination $AZURE_CONTAINER_NAME --source published/wwwroot
 
 #Deploy to Azure
+
+az webapp stop --name trappist-dev-win --resource-group trappist-dev-win
+
 npm install ftp-deploy
 node ftpDeploy.js
+
+az webapp start --name trappist-dev-win --resource-group trappist-dev-win
 
 #Deploy to Dockerhub
 #cd ../../../
