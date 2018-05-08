@@ -3,14 +3,10 @@
     public class Result
     {
         public string Output;
-
+        //In seconds
         public long RunTime;
 
-        public long CompilationTime;
-
         public int CyclicMetrics;
-
-        public string CompilerOutput;
 
         public int ExitCode;
 

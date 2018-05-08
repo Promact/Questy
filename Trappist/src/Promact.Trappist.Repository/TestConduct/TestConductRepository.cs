@@ -299,7 +299,6 @@ namespace Promact.Trappist.Repository.TestConduct
             var testCases = new List<CodeSnippetQuestionTestCases>();
             var results = new List<Result>();
             var testCaseResults = new List<TestCaseResult>();
-
             var testCaseChecks = await _dbContext.CodeSnippetQuestion.SingleOrDefaultAsync(x => x.Id == testAnswer.QuestionId);
 
             var completeTestCases = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == testAnswer.QuestionId).ToListAsync();
@@ -317,12 +316,13 @@ namespace Promact.Trappist.Repository.TestConduct
             foreach (var testCase in testCases)
             {
                 code.Input = testCase.TestCaseInput;
+
                 var result = await ExecuteCodeAsync(code);
 
-                if (result.CompilerOutput != "")
+                if (result.ExitCode != 0)
                 {
                     errorEncounter = true;
-                    errorMessage = result.CompilerOutput;
+                    errorMessage = result.Output;
                 }
 
                 //Trim newline character 
@@ -411,10 +411,10 @@ namespace Promact.Trappist.Repository.TestConduct
 
             var codeResponse = new CodeResponse()
             {
-                ErrorOccurred = result.CompilerOutput != "",
-                Error = result.CompilerOutput,
+                ErrorOccurred = result.ExitCode != 0,
+                Error = result.Output,
                 Message = null,
-                Output = result.CompilerOutput == "" ? result.Output : result.CompilerOutput,
+                Output = result.Output,
                 TimeConsumed = result.RunTime,
                 MemoryConsumed = result.MemoryConsumed,
                 TotalTestCasePassed = 0,
@@ -522,8 +522,8 @@ namespace Promact.Trappist.Repository.TestConduct
 
             var serializedCode = JsonConvert.SerializeObject(codeObject);
             var body = new StringContent(serializedCode, System.Text.Encoding.UTF8, "application/json");
-            var CodeBaseServer = _configuration["CodeBaseSimulatorServer"];
-            var response = await _httpService.PostAsync(CodeBaseServer, body);
+            var codeBaseServer = _configuration["CodeBaseSimulatorServer"];
+            var response = await _httpService.PostAsync(codeBaseServer, body);
             var content = response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Result>(content.Result);
 

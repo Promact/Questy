@@ -580,8 +580,6 @@ namespace Promact.Trappist.Test.TestConduct
             //Mocking HttpRequest
             var result = new Result()
             {
-                CompilationTime = 1,
-                CompilerOutput = null,
                 CyclicMetrics = 0,
                 ExitCode = 0,
                 MemoryConsumed = 1,
