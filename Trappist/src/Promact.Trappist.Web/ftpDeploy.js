@@ -2,9 +2,9 @@ var FtpDeploy = require('ftp-deploy');
 var ftpDeploy = new FtpDeploy();
 
 var config = {
-    username: process.env.FTP_USERNAME,
-    password: process.env.FTP_PASSWORD,
-    host: process.env.FTP_HOST,
+    username: process.env["FTP_USERNAME_" + process.env.CIRCLE_BRANCH_U],
+    password: process.env["FTP_PASSWORD_" + process.env.CIRCLE_BRANCH_U],
+    host: process.env["FTP_HOST_" + process.env.CIRCLE_BRANCH_U],
     port: 21,
     localRoot: __dirname + "/published",
     remoteRoot: "/site/wwwroot",
