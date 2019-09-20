@@ -45,10 +45,3 @@ jobs:
       - run:
           name: Validate AOT
           command: npm run ngc --prefix ./Trappist/src/Promact.Trappist.Web
-
-      - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "development" ]; then
-             chmod +x ./deploy.sh
-             bash deploy.sh
-            fi
