@@ -8,12 +8,12 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.Repository.Test;
 using Xunit;
 
 namespace Promact.Trappist.Test.Questions
@@ -60,13 +60,13 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
             string searchQuestion = null;
             var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "All", searchQuestion);
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
             var resultForCategory = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", searchQuestion);
-            Assert.Equal(1, resultForCategory.Count());
+            Assert.Single(resultForCategory);
             var resultWithDifficultyLevel = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "Easy", searchQuestion);
-            Assert.Equal(1, resultWithDifficultyLevel.Count());
+            Assert.Single(resultWithDifficultyLevel);
             var resultWithSearchInput = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", "Write");
-            Assert.Equal(1, resultWithSearchInput.Count());
+            Assert.Single(resultWithSearchInput);
         }
 
         /// <summary>

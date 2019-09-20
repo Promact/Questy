@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,41 +15,36 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Category;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Test;
-using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.ExtensionMethods;
 using Promact.Trappist.Utility.GlobalUtil;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Promact.Trappist.Repository.Tests
+namespace Promact.Trappist.Repository.Test
 {
     public class TestsRepository : ITestsRepository
     {
         private readonly TrappistDbContext _dbContext;
         private readonly IGlobalUtil _util;
         private readonly IStringConstants _stringConstants;
-        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
         private readonly bool _enableCache = false;
 
-        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants, IConfiguration configuration)
+        public TestsRepository(TrappistDbContext dbContext, IGlobalUtil util, IStringConstants stringConstants, IConfiguration configuration, IMapper mapper)
         {
             _dbContext = dbContext;
             _util = util;
             _stringConstants = stringConstants;
-            _configuration = configuration;
+            var configuration1 = configuration;
+            _mapper = mapper;
 
-            if (_configuration["EnableCache"] != null && Convert.ToBoolean(_configuration["EnableCache"]))
+            if (configuration1["EnableCache"] != null && Convert.ToBoolean(configuration1["EnableCache"]))
             {
                 _enableCache = true;
             }
         }
 
         #region Test 
-        public async Task CreateTestAsync(Test test, string userId)
+        public async Task CreateTestAsync(DomainModel.Models.Test.Test test, string userId)
         {
             test.TestName = test.TestName.AllTrim();
             test.Link = _util.GenerateRandomString(10);
@@ -79,7 +78,7 @@ namespace Promact.Trappist.Repository.Tests
             tests.ForEach(test =>
             {
                 testAcObject = new TestAC();
-                testAcObject = Mapper.Map<TestAC>(test);
+                testAcObject = _mapper.Map<TestAC>(test);
                 testAcObject.NumberOfTestAttendees = testAttendeeIds.Count(x => x == test.Id);
                 testAcObject.NumberOfTestSections = testCategoriesIds.Count(x => x == test.Id);
                 testAcObject.NumberOfTestQuestions = testQuestionsIds.Count(x => x == test.Id);
@@ -91,7 +90,7 @@ namespace Promact.Trappist.Repository.Tests
         #endregion
 
         #region Test Settings
-        public async Task UpdateTestNameAsync(int id, Test testObject)
+        public async Task UpdateTestNameAsync(int id, DomainModel.Models.Test.Test testObject)
         {
             var testSettingsToUpdate = _dbContext.Test.FirstOrDefault(x => x.Id == id);
             testObject.TestName = testObject.TestName.AllTrim();
@@ -100,7 +99,7 @@ namespace Promact.Trappist.Repository.Tests
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateTestByIdAsync(Test testObject)
+        public async Task UpdateTestByIdAsync(DomainModel.Models.Test.Test testObject)
         {
             testObject.TestName = testObject.TestName.AllTrim();
             _dbContext.Test.Update(testObject);
@@ -144,7 +143,7 @@ namespace Promact.Trappist.Repository.Tests
 
         public async Task DeleteTestAsync(int id)
         {
-            Test test = await _dbContext.Test.FindAsync(id);
+            DomainModel.Models.Test.Test test = await _dbContext.Test.FindAsync(id);
             _dbContext.Test.Remove(test);
             await _dbContext.SaveChangesAsync();
         }
@@ -211,8 +210,8 @@ namespace Promact.Trappist.Repository.Tests
             questionList.ForEach(question =>
             {
                 questionAc = new QuestionAC();
-                questionAc.Question = Mapper.Map<QuestionDetailAC>(question);
-                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(x => x.Id == question.Id));
+                questionAc.Question = _mapper.Map<QuestionDetailAC>(question);
+                questionAc.SingleMultipleAnswerQuestion = _mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(x => x.Id == question.Id));
                 //Checks if the question is already exists in TestQuestion Model,if exists,its IsSelect property made true
                 if (testQuestionList.Exists(x => x.QuestionId == questionAc.Question.Id && x.TestId == testId))
                     questionAc.Question.IsSelect = true;
@@ -267,10 +266,10 @@ namespace Promact.Trappist.Repository.Tests
             var test = await _dbContext.Test.AsNoTracking().Where(x => x.Id == testId).Include(x => x.TestAttendees).SingleOrDefaultAsync();
 
             var testIpAddress = await _dbContext.TestIpAddresses.AsNoTracking().Where(x => x.TestId == testId).ToListAsync();
-            var testIpAddressAc = Mapper.Map<List<TestIpAddress>, List<TestIpAddressAC>>(testIpAddress);
+            var testIpAddressAc = _mapper.Map<List<TestIpAddress>, List<TestIpAddressAC>>(testIpAddress);
 
             //Maps that test with TestAC
-            var testAcObject = Mapper.Map<Test, TestAC>(test);
+            var testAcObject = _mapper.Map<DomainModel.Models.Test.Test, TestAC>(test);
 
             DateTime currentDate = DateTime.UtcNow;
             string defaultMessage = _stringConstants.WarningMessage;
@@ -292,7 +291,7 @@ namespace Promact.Trappist.Repository.Tests
                 //Fetches the category list from Category Model
                 var categoryList = await _dbContext.Category.AsNoTracking().ToListAsync();
                 //Maps Category list to CategoryAC list
-                var categoryListAc = Mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
+                var categoryListAc = _mapper.Map<List<Category>, List<CategoryAC>>(categoryList);
                 //Fetches the list of Categories from TestCategory Model
                 var testCategoryList = await _dbContext.TestCategory.AsNoTracking().Where(x => x.TestId == testId).Include(x => x.Category).ToListAsync();
                 categoryListAc.ForEach(category =>
@@ -357,13 +356,13 @@ namespace Promact.Trappist.Repository.Tests
             foreach (var question in testQuestionList)
             {
                 var questionAc = new QuestionAC();
-                questionAc.Question = Mapper.Map<QuestionDetailAC>(question.Question);
-                questionAc.SingleMultipleAnswerQuestion = Mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(single => single.Id == question.QuestionId));
+                questionAc.Question = _mapper.Map<QuestionDetailAC>(question.Question);
+                questionAc.SingleMultipleAnswerQuestion = _mapper.Map<SingleMultipleAnswerQuestionAC>(singleMultipleQuestions.Find(single => single.Id == question.QuestionId));
 
                 if (question.Question.QuestionType == QuestionType.Programming)
                 {
                     var questionCodeSnippet = codesnippetQuestions.Find(z => z.Id == question.QuestionId);
-                    questionAc.CodeSnippetQuestion = Mapper.Map<CodeSnippetQuestionAC>(questionCodeSnippet);
+                    questionAc.CodeSnippetQuestion = _mapper.Map<CodeSnippetQuestionAC>(questionCodeSnippet);
 
                     var languageIds = questionCodeSnippet.QuestionLanguangeMapping.Select(map => map.LanguageId);
                     questionAc.CodeSnippetQuestion.LanguageList = new List<string>();
@@ -392,19 +391,19 @@ namespace Promact.Trappist.Repository.Tests
             var test = await testQuery.FirstOrDefaultAsync(x => x.Link.Equals(link));
 
             //Maps that test with TestAC
-            var testAcObject = Mapper.Map<Test, TestAC>(test);
+            var testAcObject = _mapper.Map<DomainModel.Models.Test.Test, TestAC>(test);
 
             return testAcObject;
         }
 
-        public async Task<Test> GetTestSummary(string link)
+        public async Task<DomainModel.Models.Test.Test> GetTestSummary(string link)
         {
             return await _dbContext.Test.FirstOrDefaultAsync(x => x.Link == link);
         }
         #endregion
 
         #region Duplicate Test
-        public async Task<Test> DuplicateTest(int testId, Test newTest)
+        public async Task<DomainModel.Models.Test.Test> DuplicateTest(int testId, DomainModel.Models.Test.Test newTest)
         {
             //Fetch categories present in that particular test and store them in a variable of type list
             var testCategoryList = _dbContext.TestCategory.Where(x => x.TestId == testId);

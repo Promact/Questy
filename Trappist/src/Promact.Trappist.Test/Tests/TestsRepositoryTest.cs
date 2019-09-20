@@ -1,6 +1,5 @@
 ﻿using Xunit;
 using Microsoft.Extensions.DependencyInjection;
-using Promact.Trappist.Repository.Tests;
 using System.Linq;
 using System.Threading.Tasks;
 using Promact.Trappist.Repository.Categories;
@@ -18,6 +17,7 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using System;
 using Promact.Trappist.DomainModel.Models.TestConduct;
+using Promact.Trappist.Repository.Test;
 using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Test.Tests
@@ -30,6 +30,8 @@ namespace Promact.Trappist.Test.Tests
         private readonly ICategoryRepository _categoryRepository;
         private readonly IQuestionRepository _questionRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private IMapper _mapper;
+
         #endregion
 
         public QuestionAC QuestionAc { get; private set; }
@@ -40,6 +42,7 @@ namespace Promact.Trappist.Test.Tests
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            _mapper = _scope.ServiceProvider.GetService<IMapper>();
         }
         #endregion
 
@@ -51,7 +54,7 @@ namespace Promact.Trappist.Test.Tests
         public async Task GetAllTestEmpty()
         {
             var list = await _testRepository.GetAllTestsAsync();
-            Assert.Equal(0, list.Count);
+            Assert.Single(list);
         }
         #endregion
 
@@ -128,28 +131,6 @@ namespace Promact.Trappist.Test.Tests
             var testName = test.TestName;
             Assert.True(_trappistDbContext.Test.Count(x => x.TestName.Equals(testName)) == 1);
             Assert.True(_trappistDbContext.Test.Count(x => (int)x.BrowserTolerance == value) == 1);
-        }
-
-        /// <summary>
-        /// unit test for addition and deletion ip addresses
-        /// </summary>
-        /// <returns></returns>
-        public async Task AddIpAddress()
-        {
-            var test = CreateTest("Test 1");
-            string userName = "asif@gmail.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
-            await _userManager.CreateAsync(user);
-            var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            await _testRepository.CreateTestAsync(test, applicationUser.Id);
-            var testIp = new TestIpAddress();
-            testIp.IpAddress = "127.0.0.1";
-            testIp.TestId = test.Id;
-            await _trappistDbContext.TestIpAddresses.AddAsync(testIp);
-            await _testRepository.UpdateTestByIdAsync(test);
-            Assert.Equal(1, test.TestIpAddress.Count);
-            await _testRepository.DeleteIpAddressAsync(testIp.Id);
-            Assert.Equal(0, test.TestIpAddress.Count);
         }
 
         /// <summary>
@@ -432,7 +413,7 @@ namespace Promact.Trappist.Test.Tests
             Assert.True(message == "No new questions selected..");
             questionListAc[0].IsSelect = false;
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
-            Assert.True(_trappistDbContext.TestQuestion.Count() == 0);
+            Assert.True(!_trappistDbContext.TestQuestion.Any());
         }
 
         /// <summary>
@@ -479,7 +460,7 @@ namespace Promact.Trappist.Test.Tests
             //Adding categories to test
             await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAC);
             var questionListAc = new List<TestQuestionAC>();
-            var questionDetailList = Mapper.Map<List<Question>, List<QuestionDetailAC>>(allQuestions.ToList());
+            var questionDetailList = _mapper.Map<List<Question>, List<QuestionDetailAC>>(allQuestions.ToList());
             foreach (var question in questionDetailList)
             {
                 var questionAc = new TestQuestionAC();
@@ -489,7 +470,7 @@ namespace Promact.Trappist.Test.Tests
             }
             await _testRepository.AddTestQuestionsAsync(questionListAc, test.Id);
             var questionAcList = await _testRepository.GetAllQuestionsByIdAsync(test.Id, category1.Id, applicationUser.Id);
-            Assert.Equal(1, questionAcList.Count);
+            Assert.Single(questionAcList);
             Assert.Equal(2, _trappistDbContext.TestQuestion.Count());
             Assert.True(questionAcList[0].Question.IsSelect);
         }

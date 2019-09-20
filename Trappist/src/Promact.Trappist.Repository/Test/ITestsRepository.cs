@@ -1,11 +1,11 @@
-﻿using Promact.Trappist.DomainModel.Models.Test;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
+using Promact.Trappist.DomainModel.Models.Test;
 
-namespace Promact.Trappist.Repository.Tests
+namespace Promact.Trappist.Repository.Test
 {
     public interface ITestsRepository
     {
@@ -16,7 +16,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="test">object of Test</param>
         /// <param name="userId">id of the user who created the test</param>
         /// <returns></returns>
-        Task CreateTestAsync(Test test, string userId);
+        Task CreateTestAsync(DomainModel.Models.Test.Test test, string userId);
 
         /// <summary>
         /// this method is used to verify Name of the test is unique or not
@@ -46,7 +46,7 @@ namespace Promact.Trappist.Repository.Tests
         /// </summary>
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Settings of that Test</returns>
-        Task UpdateTestByIdAsync(Test testObject);
+        Task UpdateTestByIdAsync(DomainModel.Models.Test.Test testObject);
 
         /// <summary>
         /// Checks if the Test Settings Exists or not
@@ -61,7 +61,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="id">The parameter "id" takes the value of the Id from the route</param>
         /// <param name="testObject">The parameter "testObject" is an object of Test</param>
         /// <returns>Updated Test Name</returns>
-        Task UpdateTestNameAsync(int id, Test testObject);
+        Task UpdateTestNameAsync(int id, DomainModel.Models.Test.Test testObject);
 
         #endregion
 
@@ -108,7 +108,7 @@ namespace Promact.Trappist.Repository.Tests
         Task<bool> IsTestAttendeeExistAsync(int id);
         #endregion
 
-        Task<Test> GetTestSummary(string link);
+        Task<DomainModel.Models.Test.Test> GetTestSummary(string link);
 
         #region Category Selection       
 
@@ -184,7 +184,7 @@ namespace Promact.Trappist.Repository.Tests
         /// <param name="testId">Id of the test that is to be duplicated</param>
         /// <param name="newtestId">Id of the duplicated Test</param>
         /// <returns>Test object for the duplicated test</returns>
-        Task<Test> DuplicateTest(int testId, Test test);
+        Task<DomainModel.Models.Test.Test> DuplicateTest(int testId, DomainModel.Models.Test.Test test);
 
         /// <summary>
         /// Sets the number of times the test has been duplicated
