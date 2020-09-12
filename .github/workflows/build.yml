@@ -38,12 +38,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Promact_Questy" `
+          cd .\Trappist
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"Promact_Questy" `
           /o:"promact-infotech" `
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
           /v:${{ github.run_number }} `
-          /d:sonar.sources="./Trappist/src/" `
-          /d:sonar.projectBaseDir="./Trappist"
-          dotnet build .\Trappist\Trappist.sln
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.sources="./src/"          
+          dotnet build
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
