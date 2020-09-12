@@ -42,7 +42,8 @@ jobs:
           /o:"promact-infotech" `
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
-          /d:sonar.projectVersion="${{ github.run_number }}" `
-          /d:sonar.sources="./Trappist/src/"
+          /v:${{ github.run_number }} `
+          /d:sonar.sources="./Trappist/src/" `
+          /d:sonar.projectBaseDir=".Trappist/src/"
           dotnet build .\Trappist\Trappist.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
