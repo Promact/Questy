@@ -1,5 +1,5 @@
 {
-  "name": "Trappist",
+  "name": "questy",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -40,14 +40,13 @@
     "screenfull": "^3.3.1",
     "systemjs": "0.19.40",
     "tinymce": "^4.6.4",
-    "typescript": "^2.4.2",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/compiler-cli": "5.0.0",
     "@angular/platform-server": "5.0.0",
-    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
+    "@aspnet/signalr": "1.1.4",
     "@types/jasmine": "^2.6.0",
     "@types/node": "^7.0.5",
     "angular2-tinymce": "^2.1.2",
