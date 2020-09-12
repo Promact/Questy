@@ -32,6 +32,19 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Set Default JDK 11
+        shell: powershell
+        run: |
+          $jdkPath = $env:JAVA_HOME_11_X64
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME]$jdkPath"
+      - name: Install Minicover
+        shell: powershell
+        run: dotnet tool install minicover          
+      - name: NPM restore
+        shell: powershell
+        run: |
+          cd .\Trappist\src\Promact.Trappist.Web
+          npm install
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -44,6 +57,13 @@ jobs:
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
           /v:${{ github.run_number }} `
+          /d:sonar.cs.opencover.reportsPaths=**/opencovercoverage.xml
           /d:sonar.sources="./src/"          
           dotnet build
+          dotnet minicover instrument --sources "./src/**/*.cs" `                    
+          --tests "./src/Promact.Trappist.Test/**/*.cs"
+          dotnet test --no-build
+          dotnet minicover uninstrument
+          dotnet minicover report --threshold 5
+          dotnet minicover opencoverreport
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
