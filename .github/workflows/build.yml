@@ -60,8 +60,7 @@ jobs:
           /d:sonar.cs.opencover.reportsPaths=**/opencovercoverage.xml
           /d:sonar.sources="./src/"          
           dotnet build
-          dotnet minicover instrument --sources "./src/**/*.cs" `                    
-          --tests "./src/Promact.Trappist.Test/**/*.cs"
+          dotnet minicover instrument --sources "./src/**/*.cs" --tests "./src/Promact.Trappist.Test/**/*.cs"          
           dotnet test --no-build
           dotnet minicover uninstrument
           dotnet minicover report --threshold 5
