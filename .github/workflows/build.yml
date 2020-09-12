@@ -44,6 +44,6 @@ jobs:
           /d:sonar.host.url="https://sonarcloud.io" `
           /v:${{ github.run_number }} `
           /d:sonar.sources="./Trappist/src/" `
-          /d:sonar.projectBaseDir=".Trappist/src/"
+          /d:sonar.projectBaseDir="./Trappist"
           dotnet build .\Trappist\Trappist.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
