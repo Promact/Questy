@@ -19,6 +19,8 @@
 
   <ItemGroup>
   
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+  
     <PackageReference Include="CacheManager.Core" Version="1.2.0" />
   
     <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="1.2.0" />

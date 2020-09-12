@@ -1,10 +1,10 @@
 ﻿import { Injectable, EventEmitter, NgZone } from '@angular/core';
 
-import { HubConnection } from '@aspnet/signalr-client';
+import * as signalR from '@aspnet/signalr';
 //This service is used as a middleware of the communication between clinet ans server hub in real time 
 @Injectable()
 export class ConnectionService {
-    hubConnection: HubConnection;
+    hubConnection: signalR.HubConnection;
     isConnected: boolean;
     forceClose: boolean;
 
@@ -17,7 +17,7 @@ export class ConnectionService {
         this.recievedAttendeeId = new EventEmitter<any>();
         this.recievedEstimatedEndTime = new EventEmitter<any>();
         //makes a connection with hub
-        this.hubConnection = new HubConnection('/TrappistHub');
+        this.hubConnection = new signalR.HubConnectionBuilder().withUrl('/TrappistHub').build();
         this.registerProxy();
         this.isConnected = false;
     }
@@ -33,7 +33,7 @@ export class ConnectionService {
     startConnection(_callback?: any) {
         if (!this.isConnected) {
             //makes a connection with hub
-            this.hubConnection = new HubConnection('/TrappistHub');
+            this.hubConnection = new signalR.HubConnectionBuilder().withUrl('/TrappistHub').build();
             this.registerProxy();
 
             this.hubConnection.start().then(() => {
