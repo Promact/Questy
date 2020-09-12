@@ -57,8 +57,8 @@ jobs:
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" `
           /d:sonar.host.url="https://sonarcloud.io" `
           /v:${{ github.run_number }} `
-          /d:sonar.cs.opencover.reportsPaths=**/opencovercoverage.xml
-          /d:sonar.sources="./src/"          
+          /d:sonar.cs.opencover.reportsPaths=**/opencovercoverage.xml `
+          /d:sonar.sources="./src/"
           dotnet build
           dotnet minicover instrument --sources "./src/**/*.cs" --tests "./src/Promact.Trappist.Test/**/*.cs"          
           dotnet test --no-build
