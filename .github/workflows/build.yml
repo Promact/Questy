@@ -45,6 +45,8 @@ jobs:
         run: |
           cd .\Trappist\src\Promact.Trappist.Web
           npm install
+          npm i typescript@3.7.5
+          npm i -g typescript@3.7.5
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
