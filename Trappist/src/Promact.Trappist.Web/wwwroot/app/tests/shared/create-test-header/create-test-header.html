@@ -27,7 +27,7 @@
             <popover-content #myPopover [closeOnClickOutside]="true">
                 <label>Test Link</label>
                 <div class="url-container">
-                    <input type="text" class="form-control" [(ngModel)]="testLink" name="link" id="link" #link />
+                    <input type="text" class="form-control" [(ngModel)]="testLink" name="link" id="link" #link readonly/>
                     <em e2e="copytoclipboard-btn" class="material-icons" ngxClipboard [cbContent]="testLink" (cbOnSuccess)="copiedContent = true" mdTooltip={{tooltipMessage}} (click)="showTooltipMessage($event,link)" (mouseenter)="changeTooltipMessage()">content_copy</em>
                 </div>
             </popover-content>
