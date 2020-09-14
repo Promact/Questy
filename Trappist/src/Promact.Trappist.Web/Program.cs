@@ -3,7 +3,6 @@ using Microsoft.AspNetCore;
 using Serilog;
 using System;
 using Serilog.Events;
-using System.Diagnostics;
 
 namespace Promact.Trappist.Web
 {

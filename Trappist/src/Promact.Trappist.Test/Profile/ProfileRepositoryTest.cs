@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Microsoft.AspNetCore.Identity;
-using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 using System.Linq;
 using Promact.Trappist.DomainModel.Models;

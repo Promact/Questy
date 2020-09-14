@@ -1,6 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
-using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;

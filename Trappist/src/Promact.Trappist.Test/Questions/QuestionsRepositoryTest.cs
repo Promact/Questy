@@ -8,11 +8,11 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 using Xunit;
 
@@ -366,7 +366,7 @@ namespace Promact.Trappist.Test.Questions
             questionId = (await _trappistDbContext.Question.SingleAsync(x => x.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail)).Id;
             await _questionRepository.DeleteQuestionAsync(questionId);
             //True single-multiple & code-snippet Questions are both deleted 
-            Assert.True(_trappistDbContext.Question.Count() == 0);
+            Assert.True(!_trappistDbContext.Question.Any());
         }
 
         /// <summary>

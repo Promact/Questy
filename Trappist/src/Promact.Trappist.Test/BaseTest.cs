@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.DbContext;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Promact.Trappist.Test
 {

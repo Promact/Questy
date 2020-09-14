@@ -1,6 +1,4 @@
-﻿
-using Promact.Trappist.Web.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using Promact.Trappist.Utility.EmailServices;
 using System.IO;
@@ -11,6 +9,7 @@ using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.FileUtil;
 using Microsoft.AspNetCore.Identity;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Repository.BasicSetup
 {

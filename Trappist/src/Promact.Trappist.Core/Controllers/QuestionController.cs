@@ -6,10 +6,10 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Core.Controllers
 {

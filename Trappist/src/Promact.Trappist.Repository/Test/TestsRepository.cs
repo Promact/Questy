@@ -51,7 +51,7 @@ namespace Promact.Trappist.Repository.Test
             test.StartDate = new DateTime();
             test.EndDate = new DateTime();
             test.CreatedByUserId = userId;
-            _dbContext.Test.Add(test);
+            await _dbContext.Test.AddAsync(test);
             await _dbContext.SaveChangesAsync();
         }
 

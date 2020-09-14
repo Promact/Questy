@@ -10,8 +10,8 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Utility.Constants;
 
 namespace Promact.Trappist.Test.Category
@@ -125,7 +125,7 @@ namespace Promact.Trappist.Test.Category
             Assert.NotNull(categoryToDelete);
 
             await _categoryRepository.DeleteCategoryAsync(categoryToDelete);
-            Assert.True(_trappistDbContext.Category.Count() == 0);
+            Assert.True(!_trappistDbContext.Category.Any());
         }
 
         /// <summary>

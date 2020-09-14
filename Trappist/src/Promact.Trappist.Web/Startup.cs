@@ -33,17 +33,14 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using System.IO;
-using StackExchange.Redis;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json.Serialization;
 using EFSecondLevelCache.Core;
 using CacheManager.Core;
 using System.Threading;
 using Newtonsoft.Json;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Web

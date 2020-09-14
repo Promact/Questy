@@ -51,8 +51,7 @@ describe('Add-Category-Dialog', () => {
     });
 
     it('addCategory', () => {
-        let category: any;
-        category = mockCategory;
+        const category: any = mockCategory;
         spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.of(mockCategory));
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
         addCategoryComponent.addCategory(category);
@@ -60,9 +59,8 @@ describe('Add-Category-Dialog', () => {
         expect(MdSnackBar.prototype.open).toHaveBeenCalled();
     });
 
-    it('addCategory Error Handling', () => { 
-        let category: any;
-        category = mockCategory;
+    it('addCategory Error Handling', () => {
+        const category: any = mockCategory;
         spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.throw(new MockResponse()));
         addCategoryComponent.addCategory(category);
         expect(addCategoryComponent.isCategoryNameExist).toBe(true);
