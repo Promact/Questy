@@ -7,6 +7,7 @@
     <UserSecretsId>aspnet-Promact.Trappist.Web-c7bf096e-d957-474a-b495-cb046109e062</UserSecretsId>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>    
+    <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
 
   <ItemGroup>

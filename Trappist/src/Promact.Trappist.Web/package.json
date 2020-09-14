@@ -82,7 +82,7 @@
     "rollup-stream": "^1.24.1",
     "run-sequence": "^1.2.2",
     "systemjs-builder": "^0.16.3",
-    "tslint": "^4.0.0",
+    "tslint": "6.1.3",
     "typescript": "3.7.5",
     "vinyl-source-stream": "^1.1.0"
   },
