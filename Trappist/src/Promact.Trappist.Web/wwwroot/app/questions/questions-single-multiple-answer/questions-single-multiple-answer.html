@@ -8,7 +8,7 @@
             <h5 *ngIf="isSingleAnswerQuestion">Single Answer Question</h5>
             <h5 *ngIf="!isSingleAnswerQuestion">Multiple Answer Question</h5>
         </div>
-        <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm" onsubmit="saveBtn.disabled = true; editBtn.disabled = true; return true;">
+        <form (ngSubmit)="saveSingleMultipleAnswerQuestion(singleMultipleAnswerQuestion)" #singleMultipleAnswerQuestionForm="ngForm">
             <div class="form-fields">
                 <div class="form-group">
                     <app-tinymce [(ngModel)]="singleMultipleAnswerQuestion.question.questionDetail" id="question" #question="ngModel" name="questionDetail" required></app-tinymce>
