@@ -370,7 +370,7 @@ export class TestComponent implements OnInit {
     }
 
     goOnline() {
-        document.documentElement.webkitRequestFullscreen();
+        document.documentElement.requestFullscreen();
         this.isConnectionRetrieved = false;
         this.clockIntervalListener = this.getClockInterval();
     }

@@ -27,7 +27,6 @@ using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Repository.TestConduct;
-using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.EmailServices;
@@ -35,21 +34,17 @@ using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
 using Promact.Trappist.Web.Models;
-using Serilog;
-using StackExchange.Profiling.Storage;
 using System;
 using System.IO;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.DataProtection;
-using System.Net;
-using Serilog.Formatting.Json;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Session;
 using EFSecondLevelCache.Core;
 using CacheManager.Core;
 using System.Threading;
 using Newtonsoft.Json;
+using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Web
 {
@@ -89,10 +84,7 @@ namespace Promact.Trappist.Web
         {
             // Add framework services.           
             services.AddDbContext<TrappistDbContext>();
-            services.AddSignalR(options =>
-            {
-                options.JsonSerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            services.AddSignalR();
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
@@ -120,6 +112,24 @@ namespace Promact.Trappist.Web
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IHttpService, HttpService>();
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton(new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>()
+                    .ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore())
+                    .ReverseMap();
+                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
+                cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
+                cfg.CreateMap<QuestionAC, Question>().ReverseMap();
+                cfg.CreateMap<Question, QuestionDetailAC>();
+                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
+                cfg.CreateMap<Category, CategoryAC>();
+                cfg.CreateMap<CategoryAC, Category>();
+                cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
+                cfg.CreateMap<Question, QuestionAC>();
+                cfg.CreateMap<Test, TestAC>();
+                cfg.CreateMap<TestAC, Test>();
+                cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
+            }));
            
             #endregion
 
@@ -135,19 +145,7 @@ namespace Promact.Trappist.Web
                 services.AddMemoryCache();
             }
             
-            if (!Env.IsDevelopment())
-            {
-
-                var redis = ConnectionMultiplexer.Connect(Configuration.GetSection("RedisUrl").Value);
-
-                services.AddDataProtection()
-                    .PersistKeysToRedis(redis, "DataProtection-Keys");
-
-                services.AddDistributedRedisCache(options =>
-                {
-                    options.Configuration = Configuration.GetSection("RedisUrl").Value;
-                });
-            }
+            
 
             services.AddMiniProfiler().AddEntityFramework();
 
@@ -174,12 +172,12 @@ namespace Promact.Trappist.Web
                     .Build());
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggingBuilder loggerBuilder, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
         {
             app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerBuilder.AddConsole();
+            loggerBuilder.AddDebug();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -255,27 +253,11 @@ namespace Promact.Trappist.Web
                 context.Seed();
             }
             #region Auto Mapper Configuration
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>()
-                .ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore())
-                .ReverseMap();
-                cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
-                cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
-                cfg.CreateMap<QuestionAC, Question>().ReverseMap();
-                cfg.CreateMap<Question, QuestionDetailAC>();
-                cfg.CreateMap<SingleMultipleAnswerQuestion, SingleMultipleAnswerQuestionAC>();
-                cfg.CreateMap<Category, CategoryAC>();
-                cfg.CreateMap<CategoryAC, Category>();
-                cfg.CreateMap<CodeSnippetQuestion, CodeSnippetQuestionAC>();
-                cfg.CreateMap<Question, QuestionAC>();
-                cfg.CreateMap<Test, TestAC>();
-                cfg.CreateMap<TestAC, Test>();
-                cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
-            });
+            
+            
             #endregion
 
-            app.UseEFSecondLevelCache();
+            //app.UseEFSecondLevelCache();
         }
     }
 }

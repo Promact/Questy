@@ -76,7 +76,7 @@ namespace Promact.Trappist.Core.TrappistHub
             Attendees.TryGetValue(connectionId, out Attendee attendee);
             if(attendee != null) attendee.IsAttendeeReset = false;
 
-            return Clients.All.InvokeAsync("getReport", testAttendee);
+            return Clients.All.SendAsync("getReport", testAttendee);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Promact.Trappist.Core.TrappistHub
         /// <returns>invokes the method getAttendeeIdWhoRequestedForResumeTest and pass the id in test report page</returns>
         public Task SendCandidateIdWhoRequestedForResumeTest(int attendeeId)
         {
-            return Clients.All.InvokeAsync("getAttendeeIdWhoRequestedForResumeTest", attendeeId);
+            return Clients.All.SendAsync("getAttendeeIdWhoRequestedForResumeTest", attendeeId);
         }
 
         /// <summary>
@@ -98,12 +98,12 @@ namespace Promact.Trappist.Core.TrappistHub
         public async Task<Task> GetExpectedEndTime(double duration, int testId)
         {
             var expectedTimeString = await _testConductRepository.GetExpectedTestEndTime(duration, testId);
-            return Clients.Group(ADMIN_GROUP).InvokeAsync("setEstimatedEndTime", expectedTimeString);
+            return Clients.Group(ADMIN_GROUP).SendAsync("setEstimatedEndTime", expectedTimeString);
         }
 
         public Task JoinAdminGroup()
         {
-            return Groups.AddAsync(Context.ConnectionId, ADMIN_GROUP);
+            return Groups.AddToGroupAsync(Context.ConnectionId, ADMIN_GROUP);
         }
     }
 

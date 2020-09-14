@@ -5,7 +5,6 @@ using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Repository.TestConduct;
-using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Web.Models;
@@ -26,6 +25,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using System;
 using CodeBaseSimulator.Models;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Test.Reports
 {
@@ -106,7 +106,7 @@ namespace Promact.Trappist.Test.Reports
         {
             var createTest = await CreateTestAsync();
             var testName = await _reportRepository.GetTestNameAsync(createTest.Id);
-            Assert.True(testName.TestName.Equals("GK"));
+            Assert.Equal("GK",testName.TestName);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.TestQuestion.AddRangeAsync(testQuestionList);
             await _trappistDbContext.SaveChangesAsync();
             var testQuestions = await _reportRepository.GetTestQuestions(test.Id);
-            Assert.Equal(1, testQuestions.Count());
+            Assert.Single(testQuestions);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Promact.Trappist.Test.Reports
             var testAttendee = CreateTestAttendee(test.Id);
             await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
             var attendeeIdList = await _reportRepository.GetAttendeeIdListAsync(test.Id);
-            Assert.Equal(1, attendeeIdList.Count());
+            Assert.Single(attendeeIdList);
         }
 
         /// <summary>
@@ -526,16 +526,13 @@ namespace Promact.Trappist.Test.Reports
             await _trappistDbContext.SaveChangesAsync();
             var codeSolutionObject = await _reportRepository.GetTestCodeSolutionDetailsAsync(testAttendee.Id, 3);
             var codeSolutionAcObject = await _reportRepository.GetTestCodeSolutionDetailsAsync(testAttendee.Id, questionId);
-            Assert.Equal(null, codeSolutionObject);
+            Assert.Null(codeSolutionObject);
             Assert.Equal(answer.Code.Language, codeSolutionAcObject.Language);
             Assert.Equal(answer.Code.Source, codeSolutionAcObject.CodeSolution);
             Assert.Equal(1, codeSolutionAcObject.NumberOfSuccessfulAttempts);
             Assert.Equal(2, codeSolutionAcObject.TotalNumberOfAttempts);
         }
 
-        /// <summary>
-        /// Test case for getting the details of code snippet question
-        /// </summary>
         //[Fact]
         //public async Task GetCodeSnippetDetailsAsync()
         //{

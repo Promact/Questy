@@ -15,7 +15,6 @@ using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
@@ -34,6 +33,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using EFSecondLevelCache.Core;
 using CacheManager.Core;
+using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Test
 {
@@ -54,7 +54,7 @@ namespace Promact.Trappist.Test
             services.AddEntityFrameworkInMemoryDatabase().
                 AddDbContext<TrappistDbContext>((serviceProvider, options) =>
                 {
-                    options.UseInMemoryDatabase()
+                    options.UseInMemoryDatabase("Questy")
                            .UseInternalServiceProvider(serviceProvider)
                            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                 });
@@ -136,8 +136,9 @@ namespace Promact.Trappist.Test
             #endregion
 
             #region Auto Mapper Configuration
-            Mapper.Initialize(cfg =>
-            {                           
+
+            var mapper = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Question, QuestionDetailAC>();
                 cfg.CreateMap<ICollection<Question>, ICollection<QuestionAC>>();
                 cfg.CreateMap<DomainModel.Models.Test.Test, TestAC>();
@@ -147,7 +148,7 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>().ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>().ForMember(x => x.SingleMultipleAnswerQuestionOption, opts => opts.Ignore()).ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>().ReverseMap();
-                cfg.CreateMap<QuestionAC, Question>().ReverseMap();  
+                cfg.CreateMap<QuestionAC, Question>().ReverseMap();
                 cfg.CreateMap<QuestionDetailAC, Question>();
                 cfg.CreateMap<Question, QuestionDetailAC>();
                 cfg.CreateMap<ICollection<Question>, ICollection<QuestionAC>>();
@@ -157,6 +158,9 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<CategoryAC, DomainModel.Models.Category.Category>();
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
+
+            services.AddSingleton(mapper.CreateMapper());
+            
             #endregion
 
             services.AddEFSecondLevelCache();

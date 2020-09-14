@@ -13,7 +13,6 @@ using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Questions;
-using Promact.Trappist.Repository.Tests;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.HttpUtil;
 using System;
@@ -21,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Repository.TestConduct
 {
@@ -123,7 +123,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
         public async Task<bool> IsTestLinkExistForTestConductionAsync(string magicString, string userIp)
         {
-            var testObject = await _dbContext.Test.Where(x => x.Link == magicString).Include(x => x.TestIpAddress).FirstOrDefaultAsync<Test>();
+            var testObject = await _dbContext.Test.Where(x => x.Link == magicString).Include(x => x.TestIpAddress).FirstOrDefaultAsync<DomainModel.Models.Test.Test>();
             var currentDate = DateTime.UtcNow;
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
             if (testObject != null && testObject.TestIpAddress.Count != 0)
