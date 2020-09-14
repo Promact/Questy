@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Profile;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.Controllers

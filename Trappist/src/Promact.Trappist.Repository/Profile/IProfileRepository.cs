@@ -1,5 +1,4 @@
 ﻿using Promact.Trappist.DomainModel.Models;
-using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Repository.Profile

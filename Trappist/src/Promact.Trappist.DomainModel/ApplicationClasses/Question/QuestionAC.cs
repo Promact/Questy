@@ -1,6 +1,4 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.Test;
-
-namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
+﻿namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class QuestionAC
     {

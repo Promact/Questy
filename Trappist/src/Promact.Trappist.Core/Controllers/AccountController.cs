@@ -6,9 +6,8 @@ using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.EmailServices;
-using Promact.Trappist.Web.Controllers;
-using Promact.Trappist.Web.Models;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Core.Controllers
 {

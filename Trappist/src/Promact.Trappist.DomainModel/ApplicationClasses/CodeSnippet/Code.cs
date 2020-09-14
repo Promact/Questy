@@ -1,7 +1,6 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
-using Promact.Trappist.DomainModel.Enum;
+﻿using Promact.Trappist.DomainModel.Enum;
 
-namespace CodeBaseSimulator.Models
+namespace Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet
 {
     public class Code
     {

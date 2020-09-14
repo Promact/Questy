@@ -1,11 +1,8 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Promact.Trappist.DomainModel.Models.Question;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace Promact.Trappist.Web.Models
+namespace Promact.Trappist.DomainModel.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser

@@ -7,7 +7,6 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using System.Collections.Generic;
 using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
-using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Promact.Trappist.Repository.Questions;
 using AutoMapper;
@@ -16,9 +15,9 @@ using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using System;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Test;
-using Promact.Trappist.Repository.TestConduct;
 
 namespace Promact.Trappist.Test.Tests
 {
@@ -30,14 +29,15 @@ namespace Promact.Trappist.Test.Tests
         private readonly ICategoryRepository _categoryRepository;
         private readonly IQuestionRepository _questionRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         #endregion
 
-        public QuestionAC QuestionAc { get; private set; }
+        public QuestionAC QuestionAc { get; }
         #region Constructor
-        public TestsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
+        public TestsRepositoryTest(Bootstrap bootstrap, QuestionAC questionAc) : base(bootstrap)
         {
+            QuestionAc = questionAc;
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
@@ -214,7 +214,7 @@ namespace Promact.Trappist.Test.Tests
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             testAttendee.Test = test;
             testAttendee.TestId = test.Id;
-            _trappistDbContext.TestAttendees.Add(testAttendee);
+            await _trappistDbContext.TestAttendees.AddAsync(testAttendee);
             var isExists = await _testRepository.IsTestAttendeeExistAsync(test.Id);
             Assert.True(isExists);
         }
@@ -292,7 +292,7 @@ namespace Promact.Trappist.Test.Tests
             Assert.True(_trappistDbContext.TestCategory.Count() == 1);
             testCategoryAC[0].IsSelect = false;
             await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAC);
-            Assert.True(_trappistDbContext.TestCategory.Count() == 0);
+            Assert.True(!_trappistDbContext.TestCategory.Any());
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace Promact.Trappist.Test.Tests
             await _categoryRepository.AddCategoryAsync(categoryObj);
             var categoryObject = CreateCategory("category2");
             await _categoryRepository.AddCategoryAsync(categoryObject);
-            var testCategoryAC = new List<TestCategoryAC>
+            var testCategoryAc = new List<TestCategoryAC>
             {
                 new TestCategoryAC()
                 {
@@ -333,7 +333,7 @@ namespace Promact.Trappist.Test.Tests
             testCategoryObj.TestId = test.Id;
             testCategoryObj.CategoryId = categoryObject.Id;
             testCategoryList.Add(testCategoryObj);
-            await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAC);
+            await _testRepository.AddTestCategoriesAsync(test.Id, testCategoryAc);
             //creating new question under categoryObj
             var questionAc = CreateQuestionAc(true, "Question in Category", categoryObj.Id, 1);
             var questionAcList = new List<TestQuestionAC>
@@ -640,7 +640,7 @@ namespace Promact.Trappist.Test.Tests
                 FillRegistrationForm = DateTime.UtcNow,
                 StartTest = default(DateTime)
             };
-            _trappistDbContext.TestLogs.Add(testLogs);
+            await _trappistDbContext.TestLogs.AddAsync(testLogs);
             await _trappistDbContext.SaveChangesAsync();
             await _testRepository.SetStartTestLogAsync(testAttendee.Id);
             var attendeeStartTestLog = _trappistDbContext.TestLogs.Where(x => x.TestAttendeeId == testAttendee.Id).Select(x => x.StartTest).FirstOrDefault();

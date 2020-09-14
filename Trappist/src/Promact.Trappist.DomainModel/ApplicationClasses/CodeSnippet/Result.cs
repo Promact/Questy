@@ -1,4 +1,4 @@
-﻿namespace CodeBaseSimulator.Models
+﻿namespace Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet
 {
     public class Result
     {

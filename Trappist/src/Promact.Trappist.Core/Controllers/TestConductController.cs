@@ -6,7 +6,6 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Promact.Trappist.Repository.Test;
 
@@ -288,9 +287,7 @@ namespace Promact.Trappist.Core.Controllers
 
             await HttpContext.Session.LoadAsync();
 
-            if (testStatus != TestStatus.AllCandidates)
-                HttpContext.Session.SetString(_stringConstants.Path, "");
-            else HttpContext.Session.SetString(_stringConstants.Path, "test");
+            HttpContext.Session.SetString(_stringConstants.Path, testStatus != TestStatus.AllCandidates ? "" : "test");
             return Ok(testStatus);
         }
 

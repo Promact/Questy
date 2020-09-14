@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Utility.Constants;

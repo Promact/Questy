@@ -1,5 +1,4 @@
-﻿using CodeBaseSimulator.Models;
-using EFSecondLevelCache.Core;
+﻿using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -9,7 +8,6 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
-using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Questions;
@@ -559,9 +557,8 @@ namespace Promact.Trappist.Repository.TestConduct
                     {
                         var testAnswers = new TestAnswers();
 
-                        var testConduct = new DomainModel.Models.TestConduct.TestConduct();
                         //Adding attempted Question to TestConduct table
-                        testConduct = new DomainModel.Models.TestConduct.TestConduct()
+                        var testConduct = new DomainModel.Models.TestConduct.TestConduct()
                         {
                             QuestionId = answer.QuestionId,
                             QuestionStatus = answer.QuestionStatus,
@@ -571,7 +568,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         testConductList.Add(testConduct);
 
                         //Adding answer to TestAnswer Table
-                        if (answer.OptionChoice.Count() > 0)
+                        if (answer.OptionChoice.Any())
                         {
                             //A question can have multiple answer
                             foreach (var option in answer.OptionChoice)
@@ -612,7 +609,6 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             var noOfCorrectAttempts = 0;
-            bool isAnsweredOptionNull = false;
 
             //Gets the list of questions attended by the test attendee and includes the test answers and question details corresponding to the test attendee
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
@@ -633,7 +629,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
-                isAnsweredOptionNull = false;
+                var isAnsweredOptionNull = false;
 
                 //Checks the status of the question attended by the test attendee and continues with the loop if the question status is either unanswered or selected
                 if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
@@ -647,7 +643,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     var isAnsweredOptionCorrect = true;
 
                     //Gets the single multiple question details along with the single multiple question options for a question attended by the test attendee when it is not a coding question 
-                    var testConductObject = testConductObjectList.Where(x => x.QuestionId == attendedQuestion.QuestionId).FirstOrDefault();
+                    var testConductObject = testConductObjectList.FirstOrDefault(x => x.QuestionId == attendedQuestion.QuestionId);
 
                     //Gets the options of the single and multiple-answer question attempted by the test attendee
                     var listOfOptions = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();

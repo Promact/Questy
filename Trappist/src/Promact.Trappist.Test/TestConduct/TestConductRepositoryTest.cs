@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CodeBaseSimulator.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,14 +16,14 @@ using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 using Xunit;
 

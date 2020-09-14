@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Promact.Trappist.DomainModel.ApplicationClasses;
@@ -20,7 +18,6 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.GlobalUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using System.Collections.Generic;
@@ -33,13 +30,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using EFSecondLevelCache.Core;
 using CacheManager.Core;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Test
 {
     public class Bootstrap
     {
-        public IServiceProvider ServiceProvider { get; private set; }
+        public IServiceProvider ServiceProvider { get; }
 
         public Bootstrap()
         {

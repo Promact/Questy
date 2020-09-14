@@ -12,7 +12,6 @@ using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Linq;
 using System.Threading;

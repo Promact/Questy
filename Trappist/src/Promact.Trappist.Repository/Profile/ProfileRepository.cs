@@ -1,9 +1,7 @@
 ﻿using Promact.Trappist.DomainModel.DbContext;
-using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Promact.Trappist.DomainModel.Models;
-using System;
 
 namespace Promact.Trappist.Repository.Profile
 {
@@ -44,7 +42,7 @@ namespace Promact.Trappist.Repository.Profile
                 var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                 if (result.Succeeded)
                 {
-                    _dbContext.SaveChanges();
+                    await _dbContext.SaveChangesAsync();
                     return true;
                 }
             }

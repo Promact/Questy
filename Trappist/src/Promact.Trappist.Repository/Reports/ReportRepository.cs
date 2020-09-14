@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.Reports;
-using Promact.Trappist.DomainModel.Models.Question;
 using System;
 using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.Repository.TestConduct;
@@ -63,10 +62,7 @@ namespace Promact.Trappist.Repository.Reports
         {
             List<TestAttendees> attendeeList;
 
-            if (searchString == null)
-                searchString = "";
-            else
-                searchString = searchString.ToLowerInvariant();
+            searchString = searchString == null ? "" : searchString.ToLowerInvariant();
 
             if ((TestStatus)selectedTestStatus == TestStatus.AllCandidates)
                 attendeeList = await _dbContext.TestAttendees.Where(x => x.FirstName.ToLower().Contains(searchString) || x.LastName.ToLower().Contains(searchString) || x.Email.Contains(searchString)).ToListAsync();
@@ -105,7 +101,7 @@ namespace Promact.Trappist.Repository.Reports
                     testQuestionList.Add(question);
                 else
                 {
-                    var questionObject = questionObjectList.Where(x => x.QuestionId == question.QuestionId).FirstOrDefault();
+                    var questionObject = questionObjectList.FirstOrDefault(x => x.QuestionId == question.QuestionId);
                     testQuestionList.Add(questionObject);
                 }
             }
@@ -123,7 +119,6 @@ namespace Promact.Trappist.Repository.Reports
         {
             int sameMarks = 0;
             int count = 0;
-            double studentPercentile;
 
             var attendee = await _dbContext.Report.Where(x => x.TestAttendeeId == testAttendeeId).FirstOrDefaultAsync();
             var marksList = await _dbContext.Report.Where(x => x.TestAttendee.TestId == testId).OrderBy(x => x.TotalMarksScored).ToListAsync();
@@ -131,7 +126,7 @@ namespace Promact.Trappist.Repository.Reports
 
             foreach (var marks in marksList)
             {
-                if (attendee.TotalMarksScored == marks.TotalMarksScored)
+                if (Math.Abs(attendee.TotalMarksScored - marks.TotalMarksScored) < float.MinValue)
                     sameMarks = sameMarks + 1;
                 else if (marks.TotalMarksScored < attendee.TotalMarksScored)
                     count = count + 1;
@@ -139,7 +134,7 @@ namespace Promact.Trappist.Repository.Reports
 
             var rank = count + (0.5 * sameMarks);
             double percentile = rank / noOfScores;
-            studentPercentile = percentile * 100;
+            var studentPercentile = percentile * 100;
             return studentPercentile;
         }
 
@@ -187,7 +182,7 @@ namespace Promact.Trappist.Repository.Reports
                     else
                     {
                         var givenSolutionByAttendee = testCodeSolutionsList.Where(y => y.QuestionId == x.QuestionId && y.TestAttendeeId == testAttendee).ToList();
-                        if (givenSolutionByAttendee.Count() > 0)
+                        if (givenSolutionByAttendee.Any())
                         {
                             totalQuestionAttempted += 1;
                             checkAttempts = 1;
@@ -231,7 +226,8 @@ namespace Promact.Trappist.Repository.Reports
 
                 easyQuestionAttempted = mediumQuestionAttempted = hardQuestionAttempted = countOptions = totalQuestionAttempted = 0;
                 studentPercentile = 0.0;
-            };
+            }
+
             return allAttendeeMarksDetailsList;
         }
 
@@ -243,14 +239,12 @@ namespace Promact.Trappist.Repository.Reports
             var codeSnippetTestCaseList = new List<CodeSnippetTestCasesCalculationAC>();
             var testCaseObjectList = testCodeSolutionObject.TestCaseResultCollection;
 
-            bool testCasePassed;
-
             var codeSnippetQuestionTestCasesList = await _dbContext.CodeSnippetQuestionTestCases.Where(x => x.CodeSnippetQuestionId == questionId).ToListAsync();
             var i = 0;
             foreach (var testCase in testCaseObjectList)
             {
-                var codeSnippetTestCase = codeSnippetQuestionTestCasesList.Where(x => x.Id == testCase.CodeSnippetQuestionTestCasesId).Single();
-                testCasePassed = testCase.Output == codeSnippetTestCase.TestCaseOutput;
+                var codeSnippetTestCase = codeSnippetQuestionTestCasesList.Single(x => x.Id == testCase.CodeSnippetQuestionTestCasesId);
+                var testCasePassed = testCase.Output == codeSnippetTestCase.TestCaseOutput;
                 var testCaseDetailsList = new CodeSnippetTestCasesCalculationAC()
                 {
                     TestCaseName = codeSnippetTestCase.TestCaseTitle,
@@ -349,13 +343,12 @@ namespace Promact.Trappist.Repository.Reports
         public async Task<int> GetAttemptedQuestionsByAttendeeAsync(int attendeeId)
         {
             var numberOfAnsweredButReviewedQuestions = 0;
-            var count = 0;
             var listOfQuestionsAttemptedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == attendeeId && x.QuestionStatus == QuestionStatus.answered).ToListAsync();
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.Include(x => x.TestAnswers).Where(x => x.TestAttendeeId == attendeeId && x.QuestionStatus == QuestionStatus.review).ToListAsync();
 
             foreach (var conduct in listOfQuestionsAttendedByTestAttendee)
             {
-                count = 0;
+                var count = 0;
                 if (conduct.QuestionStatus == QuestionStatus.unanswered || conduct.QuestionStatus == QuestionStatus.selected)
                 {
                     continue;

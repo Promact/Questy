@@ -1,6 +1,5 @@
 ﻿using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Promact.Trappist.DomainModel.Models.Report

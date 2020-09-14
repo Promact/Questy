@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
-using System.Threading.Tasks;
 
-namespace Promact.Trappist.Web.Controllers
+namespace Promact.Trappist.Core.Controllers
 {
     public class HomeController : Controller
     {

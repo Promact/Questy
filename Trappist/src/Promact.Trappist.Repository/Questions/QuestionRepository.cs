@@ -71,7 +71,7 @@ namespace Promact.Trappist.Repository.Questions
             var singleMultipleAnswerQuestion = _mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAc.SingleMultipleAnswerQuestion);
             question.CreatedByUserId = userId;
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 //Add common question details
                 await _dbContext.Question.AddAsync(question);
@@ -93,7 +93,7 @@ namespace Promact.Trappist.Repository.Questions
             var question = _mapper.Map<QuestionDetailAC, Question>(questionAc.Question);
             question.CreatedByUserId = userId;
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 //Add common question details
                 await _dbContext.Question.AddAsync(question);
@@ -156,7 +156,7 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             await _dbContext.SaveChangesAsync();
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 //Handling one to many relationship with TestCase
                 //Finding TestCase to be updated, deleted and added
@@ -263,7 +263,7 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             await _dbContext.SaveChangesAsync();
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 var optionToUpdate = updatedOption.Where(x => singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
                 var optionToDelete = singleMultipleQuestionAnswerOption.Where(x => updatedOption.All(y => y.Id != x.Id)).ToList();
