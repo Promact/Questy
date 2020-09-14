@@ -126,7 +126,7 @@ namespace Promact.Trappist.Repository.Reports
 
             foreach (var marks in marksList)
             {
-                if (Math.Abs(attendee.TotalMarksScored - marks.TotalMarksScored) < float.MinValue)
+                if (Math.Abs(attendee.TotalMarksScored - marks.TotalMarksScored) < 0.0001f)
                     sameMarks = sameMarks + 1;
                 else if (marks.TotalMarksScored < attendee.TotalMarksScored)
                     count = count + 1;

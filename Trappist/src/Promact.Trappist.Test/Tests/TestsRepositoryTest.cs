@@ -33,11 +33,11 @@ namespace Promact.Trappist.Test.Tests
 
         #endregion
 
-        public QuestionAC QuestionAc { get; }
+        //public QuestionAC QuestionAc { get; }
         #region Constructor
-        public TestsRepositoryTest(Bootstrap bootstrap, QuestionAC questionAc) : base(bootstrap)
+        public TestsRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
-            QuestionAc = questionAc;
+            //QuestionAc = questionAc;
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
