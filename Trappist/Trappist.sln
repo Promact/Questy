@@ -5,11 +5,6 @@ VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D78DD7B1-9DB2-4077-981D-C42D7B7AAE12}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EE395370-F5A9-4CB8-BDF6-E33D802A3151}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promact.Trappist.Web", "src\Promact.Trappist.Web\Promact.Trappist.Web.csproj", "{EDA2C532-CC81-462A-AD82-3DF93BDFF74F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promact.Trappist.Core", "src\Promact.Trappist.Core\Promact.Trappist.Core.csproj", "{EFA370F7-640C-43DB-A3BD-2E061421551B}"

@@ -36,18 +36,19 @@ using Promact.Trappist.Utility.HttpUtil;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
-using EFSecondLevelCache.Core;
 using CacheManager.Core;
 using System.Threading;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace Promact.Trappist.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -74,7 +75,7 @@ namespace Promact.Trappist.Web
         }
         public IConfigurationRoot Configuration { get; }
 
-        public IHostingEnvironment Env { get; set; }
+        public IHostEnvironment Env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -86,7 +87,7 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
             {
@@ -146,7 +147,7 @@ namespace Promact.Trappist.Web
 
             services.AddMiniProfiler().AddEntityFramework();
 
-            services.AddEFSecondLevelCache();
+           
 
             // Add an in-memory cache service provider
             services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
@@ -156,6 +157,7 @@ namespace Promact.Trappist.Web
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
+            services.AddSignalR();
             
             services.AddSingleton(typeof(ICacheManagerConfiguration),
                 new CacheManager.Core.ConfigurationBuilder()
@@ -169,7 +171,7 @@ namespace Promact.Trappist.Web
                     .Build());
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggingBuilder loggerBuilder, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggingBuilder loggerBuilder, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
         {
             app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
 
@@ -204,46 +206,41 @@ namespace Promact.Trappist.Web
                 });
             }
 
-            if (/*env.IsDevelopment()*/true)
+            if (env.IsDevelopment())
             {
                 app.UseMiniProfiler();
             }
 
             app.UseAuthentication();
-            app.UseSignalR(mapHub =>
+            app.UseEndpoints(endpoints =>
             {
-                 mapHub.MapHub<TrappistHub>("TrappistHub");
+                endpoints.MapHub<TrappistHub>("/TrappistHub");
+                endpoints.MapControllerRoute(
+                    name: "pagenotfound",
+                    pattern: "pagenotfound",
+                    defaults: new { controller = "Home", action = "PageNotFound" });
+                endpoints.MapControllerRoute(
+                    name: "conduct",
+                    pattern: "conduct/{link?}/{route?}",
+                    defaults: new { controller = "Home", action = "Conduct", route = "register" });
+                endpoints.MapControllerRoute(
+                    name: "setup",
+                    pattern: "setup",
+                    defaults: new { controller = "Home", action = "Setup" });
+                endpoints.MapControllerRoute(
+                    name: "login",
+                    pattern: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapFallbackToController("Index", "Home");
             });
+            
 
             app.UseSession();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "pagenotfound",
-                    template: "pagenotfound",
-                    defaults: new { controller = "Home", action = "PageNotFound" });
-                routes.MapRoute(
-                    name: "conduct",
-                    template: "conduct/{link?}/{route?}",
-                    defaults: new { controller = "Home", action = "Conduct", route = "register" });
-                routes.MapRoute(
-                    name: "setup",
-                    template: "setup",
-                    defaults: new { controller = "Home", action = "Setup" });
-                routes.MapRoute(
-                    name: "login",
-                    template: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
-            
+
             if (!string.IsNullOrEmpty(connectionString.Value))
             {
                 context.Database.Migrate();

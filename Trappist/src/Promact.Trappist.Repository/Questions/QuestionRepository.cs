@@ -71,7 +71,7 @@ namespace Promact.Trappist.Repository.Questions
             var singleMultipleAnswerQuestion = _mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAc.SingleMultipleAnswerQuestion);
             question.CreatedByUserId = userId;
 
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            await using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 //Add common question details
                 await _dbContext.Question.AddAsync(question);
@@ -82,7 +82,7 @@ namespace Promact.Trappist.Repository.Questions
                 singleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption = questionAc.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
                 await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleAnswerQuestion);
                 await _dbContext.SaveChangesAsync();
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             return (questionAc);
         }
@@ -263,33 +263,45 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             await _dbContext.SaveChangesAsync();
 
-            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+            await using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
                 var optionToUpdate = updatedOption.Where(x => singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
                 var optionToDelete = singleMultipleQuestionAnswerOption.Where(x => updatedOption.All(y => y.Id != x.Id)).ToList();
                 var optionToAdd = updatedOption.Where(x => singleMultipleQuestionAnswerOption.All(y => y.Id != x.Id)).ToList();
 
                 //Remove options from updated question
-                _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToDelete);
-                await _dbContext.SaveChangesAsync();
+                if (optionToDelete.Any())
+                {
+                    _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToDelete);
+                    await _dbContext.SaveChangesAsync();
+                }
 
                 //Add new options to updated question
-                optionToAdd.ForEach(x =>
+                if (optionToAdd.Any())
                 {
-                    x.SingleMultipleAnswerQuestionID = updatedQuestion.SingleMultipleAnswerQuestion.Id;
-                    x.Id = 0;
-                });
-                await _dbContext.SingleMultipleAnswerQuestionOption.AddRangeAsync(optionToAdd);
-                await _dbContext.SaveChangesAsync();
+                    optionToAdd.ForEach(x =>
+                    {
+                        x.SingleMultipleAnswerQuestionID = updatedQuestion.SingleMultipleAnswerQuestion.Id;
+                        x.Id = 0;
+                    });
+                    await _dbContext.SingleMultipleAnswerQuestionOption.AddRangeAsync(optionToAdd);
+                    await _dbContext.SaveChangesAsync();
+                }
 
                 //Update options details
-                optionToUpdate.ForEach(x =>
+                if (optionToUpdate.Any())
                 {
-                    var singleMultipleAnswerQuestionOptionEntry = _dbContext.Entry<SingleMultipleAnswerQuestionOption>(singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
-                    singleMultipleAnswerQuestionOptionEntry.CurrentValues.SetValues(x);
-                });
-                await _dbContext.SaveChangesAsync();
-                transaction.Commit();
+                    optionToUpdate.ForEach(x =>
+                    {
+                        var singleMultipleAnswerQuestionOptionEntry =
+                            _dbContext.Entry<SingleMultipleAnswerQuestionOption>(
+                                singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
+                        singleMultipleAnswerQuestionOptionEntry.CurrentValues.SetValues(x);
+                    });
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                await transaction.CommitAsync();
             }
         }
 

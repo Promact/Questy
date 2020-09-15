@@ -1,6 +1,4 @@
-﻿using EFSecondLevelCache.Core;
-using EFSecondLevelCache.Core.Contracts;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -97,15 +95,6 @@ namespace Promact.Trappist.DomainModel.DbContext
 
             var result = base.SaveChanges();
 
-            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
-
-            if (enableCache != null && Convert.ToBoolean(enableCache))
-            {
-                var changedEntityNames = this.GetChangedEntityNames();
-
-                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
-            }
-
             return result;
         }
         /// <summary>
@@ -125,15 +114,6 @@ namespace Promact.Trappist.DomainModel.DbContext
             });
 
             var result = base.SaveChangesAsync(cancellationToken);
-
-            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
-
-            if (enableCache != null && Convert.ToBoolean(enableCache))
-            {
-                var changedEntityNames = this.GetChangedEntityNames();
-
-                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
-            }
 
             return result;
         }

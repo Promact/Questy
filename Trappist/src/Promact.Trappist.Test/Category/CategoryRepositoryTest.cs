@@ -30,7 +30,7 @@ namespace Promact.Trappist.Test.Category
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
-            ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+            //ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
         /// <summary>

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using EFSecondLevelCache.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
@@ -92,10 +90,14 @@ namespace Promact.Trappist.Repository.Test
         #region Test Settings
         public async Task UpdateTestNameAsync(int id, DomainModel.Models.Test.Test testObject)
         {
-            var testSettingsToUpdate = _dbContext.Test.FirstOrDefault(x => x.Id == id);
+            var testSettingsToUpdate = await _dbContext.Test.FirstOrDefaultAsync(x => x.Id == id);
             testObject.TestName = testObject.TestName.AllTrim();
-            testSettingsToUpdate.TestName = testObject.TestName;
-            _dbContext.Test.Update(testSettingsToUpdate);
+            if (testSettingsToUpdate != null)
+            {
+                testSettingsToUpdate.TestName = testObject.TestName;
+                _dbContext.Test.Update(testSettingsToUpdate);
+            }
+
             await _dbContext.SaveChangesAsync();
         }
 
@@ -199,9 +201,8 @@ namespace Promact.Trappist.Repository.Test
         #region Test-Question-Selection
         public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId, string userId)
         {
-            var questionAc = new QuestionAC();
+            QuestionAC questionAc;
             var questionListAc = new List<QuestionAC>();
-            var testQuestions = new List<Question>();
             var testQuestionList = await _dbContext.TestQuestion.Where(x => x.TestId == testId).ToListAsync();
             var singleMultipleQuestions = await _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption).ToListAsync();
             //Fetches the list of questions from Question Model
@@ -284,9 +285,9 @@ namespace Promact.Trappist.Repository.Test
                 testAcObject.StartDate = testAcObject.StartDate == default(DateTime) ? currentDate : DateTime.SpecifyKind(testAcObject.StartDate, DateTimeKind.Utc); //If the StartDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.EndDate = testAcObject.EndDate == default(DateTime) ? defaultEndDate : DateTime.SpecifyKind(testAcObject.EndDate, DateTimeKind.Utc); //If the EndDate field in database contains default value on visiting the Test Settings page of a Test for the first time then that default value gets replaced by current DateTime
                 testAcObject.Duration = testAcObject.Duration == 0 ? defaultDuration : testAcObject.Duration;
-                testAcObject.WarningTime = testAcObject.WarningTime == null ? defaultTime : testAcObject.WarningTime;
+                testAcObject.WarningTime ??= defaultTime;
                 testAcObject.FocusLostTime = testAcObject.FocusLostTime == 0 ? defaultTime : testAcObject.FocusLostTime;
-                testAcObject.WarningMessage = testAcObject.WarningMessage == null ? defaultMessage : testAcObject.WarningMessage;
+                testAcObject.WarningMessage ??= defaultMessage;
                 testAcObject.CorrectMarks = testAcObject.CorrectMarks == 0 ? defaultCorrectMarks : testAcObject.CorrectMarks;
                 //Fetches the category list from Category Model
                 var categoryList = await _dbContext.Category.AsNoTracking().ToListAsync();
@@ -317,19 +318,13 @@ namespace Promact.Trappist.Repository.Test
 
             IQueryable<SingleMultipleAnswerQuestion> singleMultipleQuestionsQuery = _dbContext.SingleMultipleAnswerQuestion.Include(x => x.SingleMultipleAnswerQuestionOption);
 
-            if (_enableCache)
-            {
-                singleMultipleQuestionsQuery = singleMultipleQuestionsQuery.Cacheable();
-            }
+            
 
             var singleMultipleQuestions = await singleMultipleQuestionsQuery.ToListAsync();
 
             IQueryable<CodeSnippetQuestion> codesnippetQuestionsQuery =_dbContext.CodeSnippetQuestion.Include(x => x.QuestionLanguangeMapping);
 
-            if (_enableCache)
-            {
-                codesnippetQuestionsQuery = codesnippetQuestionsQuery.Cacheable();
-            }
+            
 
             var codesnippetQuestions = await codesnippetQuestionsQuery.ToListAsync();
 
@@ -346,10 +341,7 @@ namespace Promact.Trappist.Repository.Test
                  .AsNoTracking()
                  .Where(x => x.TestId == testId).Include(x => x.Question);
 
-            if (_enableCache)
-            {
-                testQuestionListQuery = testQuestionListQuery.Cacheable();
-            }
+            
 
             var testQuestionList = await testQuestionListQuery.ToListAsync();
 
@@ -371,8 +363,7 @@ namespace Promact.Trappist.Repository.Test
                 }
 
                 //Removing correct answer(s)
-                if (questionAc.SingleMultipleAnswerQuestion != null)
-                    questionAc.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
+                questionAc.SingleMultipleAnswerQuestion?.SingleMultipleAnswerQuestionOption.ForEach(y => y.IsAnswer = false);
                 questionList.Add(new TestConductAC() { Question = questionAc, QuestionStatus = QuestionStatus.unanswered });
             }
 
@@ -382,11 +373,6 @@ namespace Promact.Trappist.Repository.Test
         public async Task<TestAC> GetTestByLinkAsync(string link)
         {
             var testQuery = _dbContext.Test.AsNoTracking();
-
-            if (_enableCache)
-            {
-                testQuery = testQuery.Cacheable();
-            }
 
             var test = await testQuery.FirstOrDefaultAsync(x => x.Link.Equals(link));
 
