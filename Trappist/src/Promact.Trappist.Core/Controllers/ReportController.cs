@@ -14,13 +14,16 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Member
         private readonly IReportRepository _reportRepository;
         private readonly IStringConstants _stringConstants;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         #endregion
 
         #region Constructor
-        public ReportController(IReportRepository reportRepository, IStringConstants stringConstants)
+        public ReportController(IReportRepository reportRepository, IStringConstants stringConstants, IHttpContextAccessor httpContextAccessor)
         {
             _reportRepository = reportRepository;
             _stringConstants = stringConstants;
+            _httpContextAccessor = httpContextAccessor;
         }
         #endregion
 
@@ -39,7 +42,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Method to set a candidate as Starred candidate
         /// </summary>
-        /// <param name="id">Id of the candidate</param>
+        /// <param name="attendeeId">Id of the candidate</param>
         /// <returns>Attendee Id</returns>
         [HttpPost("star/{attendeeId}")]
         public async Task<IActionResult> SetStarredCandidateAsync([FromBody] int attendeeId)
@@ -131,29 +134,31 @@ namespace Promact.Trappist.Core.Controllers
         {
             return Ok(await _reportRepository.GetAllAttendeeMarksDetailsAsync(testId));
         }
+
         /// <summary>
         /// Creates session for the candidate to resume the test
         /// </summary>
         /// <param name="attendee"></param>
         /// <param name="testLink"></param>
+        /// <param name="isTestEnd"></param>
         /// <returns></returns>
         [HttpPost("createSession/{testLink}/{isTestEnd}")]
         public async Task<IActionResult> CreateSessionForAttendee([FromBody] TestAttendees attendee, [FromRoute] string testLink, [FromRoute] bool isTestEnd)
         {
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
             if (isTestEnd)
             {
-                HttpContext.Session.SetString(_stringConstants.Path, "");
-                var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, "");
+                var response = await _reportRepository.SetTestStatusAsync(attendee, true);
                 if (response == null)
                     return NotFound();
             }
             else
             {
-                if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
-                    HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
-                var response = await _reportRepository.SetTestStatusAsync(attendee, isTestEnd);
+                if (_httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null)
+                    _httpContextAccessor.HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, attendee.Id);
+                var response = await _reportRepository.SetTestStatusAsync(attendee, false);
                 if (response == null)
                     return NotFound();
             }

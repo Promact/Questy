@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.TestConduct;
@@ -19,17 +19,18 @@ namespace Promact.Trappist.Core.Controllers
         private readonly ITestConductRepository _testConductRepository;
         private readonly ITestsRepository _testRepository;
         private readonly IStringConstants _stringConstants;
-        private readonly ILogger _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         #endregion
         #endregion
 
         #region Constructor
-        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, IStringConstants stringConstants, ILogger<TestConductController> logger)
+        public TestConductController(ITestConductRepository testConductRepository, ITestsRepository testRepository, IStringConstants stringConstants, IHttpContextAccessor httpContextAccessor)
         {
             _testConductRepository = testConductRepository;
             _testRepository = testRepository;
             _stringConstants = stringConstants;
-            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
         #endregion
 
@@ -64,7 +65,7 @@ namespace Promact.Trappist.Core.Controllers
             if (dbTestAttendee == null)
             {
                 await _testConductRepository.RegisterTestAttendeesAsync(testAttendee);
-                HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
+                _httpContextAccessor.HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, testAttendee.Id);
                 return Ok(testAttendee);
             }
 
@@ -81,7 +82,7 @@ namespace Promact.Trappist.Core.Controllers
                 //If status is first one then just set session and return him
                 else
                 {
-                    HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, dbTestAttendee.Id);
+                    _httpContextAccessor.HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, dbTestAttendee.Id);
                     return Ok(testAttendee);
                 }
             }
@@ -121,6 +122,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Sets the elapsed time from the beginning of Test
         /// </summary>
         /// <param name="attendeeId">Id of Attendee</param>
+        /// <param name="seconds"></param>
         [HttpPut("elapsetime/{attendeeId}")]
         public async Task<IActionResult> SetElapsedTimeAsync([FromRoute]int attendeeId, [FromBody]long seconds)
         {
@@ -177,6 +179,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Gets Test Attendee by Id
         /// </summary>
         /// <param name="testId">Id of Test</param>
+        /// <param name="isPreview"></param>
         /// <returns>TestAttendee object</returns>
         [HttpGet("attendee/{testid}/{isPreview}")]
         public async Task<IActionResult> GetTestAttendeeByIdAsync([FromRoute] int testId, [FromRoute] bool isPreview)
@@ -184,16 +187,18 @@ namespace Promact.Trappist.Core.Controllers
             if (!await _testRepository.IsTestExists(testId))
                 return NotFound();
 
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-            if (HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) == null && !isPreview)
+            var nullableAttendeeId = _httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+            var attendeeId = nullableAttendeeId ?? Int32.MinValue;
+            if(attendeeId == Int32.MinValue && !isPreview)
                 return NotFound();
-            var attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
+            
             if (!await IsAttendeeValid(attendeeId))
                 return NotFound();
             var testAttendee = await _testConductRepository.GetTestAttendeeByIdAsync(attendeeId);
             if (testAttendee.Report != null && (testAttendee.Report.TestStatus == TestStatus.BlockedTest || testAttendee.Report.TestStatus == TestStatus.ExpiredTest))
-                HttpContext.Session.SetString(_stringConstants.Path, "");
+                _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, "");
             return Ok(testAttendee);
         }
 
@@ -217,6 +222,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns Test by Test Link
         /// </summary>
         /// <param name="link">Link of the Test</param>
+        /// <param name="isPreview"></param>
         /// <returns>TestAC object</returns>
         [HttpGet("testbylink/{link}/{isPreview}")]
         public async Task<IActionResult> GetTestByLinkAsync([FromRoute]string link, [FromRoute] bool isPreview)
@@ -234,9 +240,9 @@ namespace Promact.Trappist.Core.Controllers
 
             if (isPreview == false)
             {
-                await HttpContext.Session.LoadAsync();
+                await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-                attendeeId = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey).Value;
+                attendeeId = _httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey) ?? Int32.MinValue;
                 if (!await IsAttendeeValid(attendeeId))
                 {
                     return NotFound();
@@ -285,9 +291,9 @@ namespace Promact.Trappist.Core.Controllers
             }
             var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(attendeeId);
 
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-            HttpContext.Session.SetString(_stringConstants.Path, testStatus != TestStatus.AllCandidates ? "" : "test");
+            _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, testStatus != TestStatus.AllCandidates ? "" : "test");
             return Ok(testStatus);
         }
 
@@ -314,7 +320,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Sets the attendee browser tolerance count 
         /// </summary>
         /// <param name="attendeeId">Contains the attendee Id from the route</param>
-        /// <param name="attendeeBrowserToleranceCount">Contains the attendee browser tolerance count from the route</param>
+        /// <param name="focusLostCount"></param>
         /// <returns>The browser tolerance count left for an attendee</returns>
         [HttpGet("{attendeeId}/{focusLostCount}/setTolerance")]
         public async Task<IActionResult> SetAttendeeBrowserToleranceValueAsync([FromRoute]int attendeeId, [FromRoute]int focusLostCount)
@@ -332,9 +338,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("{testLink}/instructions")]
         public async Task<TestInstructionsAC> GetTestInstructionsAsync(string testLink)
         {
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-            HttpContext.Session.SetString(_stringConstants.Path, "instructions");
+            _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, "instructions");
             var result = await _testConductRepository.GetTestInstructionsAsync(testLink);
             return result;
         }
@@ -358,9 +364,9 @@ namespace Promact.Trappist.Core.Controllers
         #region Private Method
         private async Task<bool> IsAttendeeValid(int attendeeId)
         {   
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-            var session = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+            var session = _httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
          
             if (session == null)
             {
@@ -379,7 +385,8 @@ namespace Promact.Trappist.Core.Controllers
         /// Sets the values of certain fields of TestLogs Method
         /// </summary>
         /// <param name="attendeeId">Id of a particular Test Attendee obtained from route</param>
-        /// <param name="testLogs">It is an object of Test Logs type</param>
+        /// <param name="isCloseWindow"></param>
+        /// <param name="isTestResume"></param>
         /// <returns></returns>
         [HttpGet("testLogs/{attendeeId}/{isCloseWindow}/{isTestResume}")]
         public async Task<IActionResult> SetTestLogsAsync([FromRoute]int attendeeId, [FromRoute] bool isCloseWindow, [FromRoute] bool isTestResume)
@@ -388,7 +395,7 @@ namespace Promact.Trappist.Core.Controllers
             if (!response)
                 return NotFound();
             else
-                return Ok(response);
+                return Ok(true);
         }
 
         [HttpGet("testlogs")]
@@ -402,9 +409,9 @@ namespace Promact.Trappist.Core.Controllers
         [HttpGet("getTestSummary/{link}")]
         public async Task<IActionResult> GetSummary([FromRoute] string link)
         {
-            await HttpContext.Session.LoadAsync();
+            await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-            HttpContext.Session.SetString(_stringConstants.Path, "test-summary");
+            _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, "test-summary");
             return Ok(await _testRepository.GetTestSummary(link));
         }
 
@@ -413,11 +420,11 @@ namespace Promact.Trappist.Core.Controllers
         {
             await HttpContext.Session.LoadAsync();
 
-            var attendee = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+            var attendee = _httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
             if (attendee != null)
             {
-                var path = HttpContext.Session.GetString(_stringConstants.Path);
-                return Ok(new { path = path });
+                var path = _httpContextAccessor.HttpContext.Session.GetString(_stringConstants.Path);
+                return Ok(new { path });
             }
             return NotFound();
         }
@@ -440,16 +447,16 @@ namespace Promact.Trappist.Core.Controllers
 
             if (isPreview == false)
             {
-                await HttpContext.Session.LoadAsync();
+                await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-                var attendeeSession = HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
+                var attendeeSession = _httpContextAccessor.HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
 
                 if (attendeeSession == null)
                 {
                     return NotFound();
                 }
 
-                //TODO: optimization scope
+                // TODO: optimization scope
                 if (!await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeSession.Value))
                 {
                     return NotFound();
@@ -473,9 +480,9 @@ namespace Promact.Trappist.Core.Controllers
 
             if (testAttendee.Report != null && (testAttendee.Report.TestStatus == TestStatus.BlockedTest || testAttendee.Report.TestStatus == TestStatus.ExpiredTest))
             {
-                await HttpContext.Session.LoadAsync();
+                await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
-                HttpContext.Session.SetString(_stringConstants.Path, "");
+                _httpContextAccessor.HttpContext.Session.SetString(_stringConstants.Path, "");
             }
 
             testBundle.Test = testDetails;
