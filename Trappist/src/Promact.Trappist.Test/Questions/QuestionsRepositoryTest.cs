@@ -36,7 +36,7 @@ namespace Promact.Trappist.Test.Questions
             _categoryRepository = _scope.ServiceProvider.GetService<ICategoryRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             _testRepository = _scope.ServiceProvider.GetService<ITestsRepository>();
-            ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+            //ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
         #endregion
 
@@ -109,7 +109,7 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.UpdateSingleMultipleAnswerQuestionAsync(question.Id, singleAnswerQuestion, applicationUser.Id);
 
             var updatedSingleAnswerQuestion = await _trappistDbContext.Question.FindAsync(question.Id);
-            var updatedSingleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).ToListAsync();
+            var updatedSingleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).OrderBy(x=>x.Id).ToListAsync();
             Assert.True(singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Option == updatedSingleAnswerQuestionOption[0].Option);
             Assert.True(updatedSingleAnswerQuestion.DifficultyLevel == singleAnswerQuestion.Question.DifficultyLevel);
             Assert.True(updatedSingleAnswerQuestion.QuestionDetail == singleAnswerQuestion.Question.QuestionDetail);
@@ -165,7 +165,7 @@ namespace Promact.Trappist.Test.Questions
             await _questionRepository.UpdateSingleMultipleAnswerQuestionAsync(question.Id, multipleAnswerQuestion, applicationUser.Id);
 
             var updatedMultipleAnswerQuestion = await _trappistDbContext.Question.FindAsync(question.Id);
-            var updatedMultipleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).ToListAsync();
+            var updatedMultipleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).OrderBy(x=>x.Id).ToListAsync();
             Assert.True(multipleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[1].Option == updatedMultipleAnswerQuestionOption[1].Option);
             Assert.True(updatedMultipleAnswerQuestion.DifficultyLevel == multipleAnswerQuestion.Question.DifficultyLevel);
             Assert.True(updatedMultipleAnswerQuestion.QuestionDetail == multipleAnswerQuestion.Question.QuestionDetail);

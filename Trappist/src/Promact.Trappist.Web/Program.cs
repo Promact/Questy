@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore;
 using Serilog;
 using System;
+using Microsoft.Extensions.Hosting;
 using Serilog.Events;
 
 namespace Promact.Trappist.Web
@@ -50,13 +51,6 @@ namespace Promact.Trappist.Web
                             loggerConfiguration.MinimumLevel.Warning();
                         }
                     });
-
-            var appInsightsKey = Environment.GetEnvironmentVariable("ApplicationInsights__InstrumentationKey");
-
-            if (appInsightsKey != null)
-            {
-                webHostBuilder.UseApplicationInsights(appInsightsKey);
-            }
 
             return webHostBuilder.Build();
         }

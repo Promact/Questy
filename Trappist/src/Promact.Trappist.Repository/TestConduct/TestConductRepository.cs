@@ -1,5 +1,4 @@
-﻿using EFSecondLevelCache.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
@@ -273,12 +272,6 @@ namespace Promact.Trappist.Repository.TestConduct
             {
                 var currentDate = DateTime.UtcNow;
                 var testQuery = _dbContext.Test.Where(x => x.Link == testLink).Select(x => new { x.StartDate, x.EndDate });
-
-                if (_enableCache)
-                {
-                    testQuery = testQuery.Cacheable();
-                }
-
                 var test = await testQuery.SingleAsync();
 
                 return currentDate.CompareTo(test.StartDate) >= 0 && currentDate.CompareTo(test.EndDate) <= 0;
