@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 import { CategoryService } from '../categories.service';
 import { Category } from '../category.model';
@@ -149,7 +149,7 @@ export class SingleMultipleAnswerQuestionComponent implements OnInit {
 
         if (+this.indexOfOptionSelected > optionIndex) {
             this.indexOfOptionSelected--;
-        }else if (+this.indexOfOptionSelected === optionIndex) {
+        } else if (+this.indexOfOptionSelected === optionIndex) {
             this.indexOfOptionSelected = null;
         }
         if (this.noOfOptionShown === 9) {

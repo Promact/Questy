@@ -1,4 +1,4 @@
-﻿import { TestOrder } from './enum-testorder';
+import { TestOrder } from './enum-testorder';
 import { Category } from '../questions/category.model';
 import { BrowserTolerance } from './enum-browsertolerance';
 import { AllowTestResume } from './enum-allowtestresume';
@@ -8,7 +8,7 @@ import { TestIPAddress } from './test-IPAdddress';
 import { CodeSnippetTestCasesDetails } from '../reports/code-snippet-test-cases-details.model';
 import { TestCodeSolutionDetails } from '../reports/test-code-solution-details.model';
 import { ProgrammingLanguage } from '../reports/programminglanguage.enum';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Test {
