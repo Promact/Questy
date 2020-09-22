@@ -1,4 +1,6 @@
-﻿import { TestBed, async, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { TestBed, async, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import { TestConductHeaderComponent } from '../shared/test-conduct-header/test-conduct-header.component';
 import { TestConductFooterComponent } from '../shared/test-conduct-footer/test-conduct-footer.component';
@@ -9,7 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { MaterialModule } from '@angular/material';
 import { TestAttendees } from '../register/register.model';
-import { Observable } from 'rxjs/Rx';
 import { ResponseOptions } from '@angular/http';
 import { ConnectionService } from '../../core/connection.service';
 
@@ -61,7 +62,7 @@ describe('Testing of conduct-register component:-', () => {
 
     it('should register a testattendee for a test and navigate to instructions page', fakeAsync(() => {
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
-            return Observable.of(testAttendee);
+            return observableOf(testAttendee);
         });
         spyOn(ConnectionService.prototype, 'sendReport').and.callFake(() => { });
         spyOn(ConnectionService.prototype, 'registerAttendee').and.callFake(() => { });
@@ -75,7 +76,7 @@ describe('Testing of conduct-register component:-', () => {
 
     it('should throw error message if registration fails', () => {
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
-            return Observable.throw(new Error());
+            return observableThrowError(new Error());
         });
         registerComponent.registerTestAttendee();
         expect(registerComponent.isErrorMessage).toBeTruthy();
@@ -85,7 +86,7 @@ describe('Testing of conduct-register component:-', () => {
         let error = new Error();
         error.status = 500;
         spyOn(ConductService.prototype, 'registerTestAttendee').and.callFake(() => {
-            return Observable.throw(error);
+            return observableThrowError(error);
         });
         registerComponent.registerTestAttendee();
         expect(registerComponent.registerTestAttendee).toThrowError();

@@ -1,18 +1,16 @@
-﻿import { InstructionsComponent } from './instructions.component';
+
+import {of as observableOf,  BehaviorSubject ,  Observable } from 'rxjs';
+import { InstructionsComponent } from './instructions.component';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { TestBed, async, fakeAsync, ComponentFixture, tick } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { ConductService } from '../conduct.service';
 import { MaterialModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, By } from '@angular/platform-browser';
-import { HttpService } from '../../core/http.service';
 import { TestInstructions } from '../testInstructions.model';
 import { TestConductHeaderComponent } from '../shared/test-conduct-header/test-conduct-header.component';
 import { TestConductFooterComponent } from '../shared/test-conduct-footer/test-conduct-footer.component';
 import { CoreModule } from '../../core/core.module';
-import { DebugElement } from '@angular/core/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Rx';
 
 class RouterStub {
     navigateByUrl(url: string) { return url; }
@@ -56,7 +54,7 @@ describe('Testing of conduct-instruction component:-', () => {
 
     it('should return all instructions by test link', () => {
         spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
-            return Observable.of(testInstructions);
+            return observableOf(testInstructions);
         });
         componentInstruction.getTestInstructionsByLink(testLink);
         expect(componentInstruction.testInstructions.duration).toBe(5);
@@ -65,7 +63,7 @@ describe('Testing of conduct-instruction component:-', () => {
 
     it('should display negativeSign if incorrect marks is not zero', () => {
         spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
-            return Observable.of(testInstructions);
+            return observableOf(testInstructions);
         });
         componentInstruction.getTestInstructionsByLink(testLink);
         expect(componentInstruction.negativeSign).toBe('-');
@@ -74,7 +72,7 @@ describe('Testing of conduct-instruction component:-', () => {
     it('should not display negativeSign if incorrect marks is zero', () => {
         testInstructions.incorrectMarks = 0;
         spyOn(ConductService.prototype, 'getTestInstructionsByLink').and.callFake(() => {
-            return Observable.of(testInstructions);
+            return observableOf(testInstructions);
         });
         componentInstruction.getTestInstructionsByLink(testLink);
         expect(componentInstruction.negativeSign).toBe(undefined);

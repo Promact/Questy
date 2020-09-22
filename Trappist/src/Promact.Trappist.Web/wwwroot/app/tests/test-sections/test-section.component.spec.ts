@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { TestsDashboardComponent } from '../tests-dashboard/tests-dashboard.component';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
@@ -20,11 +22,9 @@ import { CreateTestHeaderComponent } from '../shared/create-test-header/create-t
 import { Md2AccordionModule } from 'md2';
 import { PopoverModule } from 'ngx-popover';
 import { ClipboardModule } from 'ngx-clipboard';
-import { Observable } from 'rxjs/Observable';
 import { APP_BASE_HREF } from '@angular/common';
 import { TestSectionsComponent } from './test-sections.component';
 import { DeselectCategoryComponent } from './deselect-category.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
 
 describe('Test Section', () => {
@@ -45,7 +45,7 @@ describe('Test Section', () => {
             declarations: [TestSectionsComponent, FilterPipe, CreateTestFooterComponent, CreateTestHeaderComponent, TestsDashboardComponent, DeselectCategoryComponent],
             providers: [
                 QuestionsService,
-                { provide: ActivatedRoute, useValue: { params: Observable.of({}) } },
+                { provide: ActivatedRoute, useValue: { params: observableOf({}) } },
                 TestService,
                 HttpService,
                 MdSnackBar,
@@ -64,8 +64,8 @@ describe('Test Section', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake((id: number) => {
             let test = mockData.find(x => x.id === id);
             if (test === undefined)
-                return Observable.throw('Not found');
-            return Observable.of(mockData.find(x => x.id === id));
+                return observableThrowError('Not found');
+            return observableOf(mockData.find(x => x.id === id));
         });
         
         spyOn(router, 'navigate').and.callFake((route: any[]) => {
@@ -91,10 +91,10 @@ describe('Test Section', () => {
         spyOn(TestService.prototype, 'deselectCategory').and.callFake(function (categoryId: number, testId: number) {
             let test = MockTestData.find(x => x.id === testId);
             let category = test.categoryAcList.find(x => x.id === categoryId);
-            return Observable.of(category.questionList !== null);
+            return observableOf(category.questionList !== null);
         });
         spyOn(testSection.dialog, 'open').and.callThrough();
-        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(true));
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(observableOf(true));
         testSection.isEditTestEnabled = true;
         testSection.getTestById(MockTestData[0].id);
         testSection.onSelect(MockTestData[0].categoryAcList[0]);
@@ -104,7 +104,7 @@ describe('Test Section', () => {
     });
 
     it('onSelect False condition', () => {
-        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(Observable.of(false));
+        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(observableOf(false));
         testSection.getTestById(MockTestData[0].id);
         testSection.isEditTestEnabled = true;
         MockTestData[0].categoryAcList[0].isSelect = true;
@@ -112,7 +112,7 @@ describe('Test Section', () => {
     });
 
     it('onSelect Error Handling', () => {
-        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(Observable.throw('Internal server Error'));
+        spyOn(TestService.prototype, 'deselectCategory').and.returnValue(observableThrowError('Internal server Error'));
         testSection.getTestById(MockTestData[0].id);
         testSection.isEditTestEnabled = true;
         MockTestData[0].categoryAcList[0].isSelect = true;
@@ -121,7 +121,7 @@ describe('Test Section', () => {
     });
 
     it('saveCategoryToExitOrMoveNext', () => {
-        spyOn(TestService.prototype, 'addTestCategories').and.returnValue(Observable.of(true));
+        spyOn(TestService.prototype, 'addTestCategories').and.returnValue(observableOf(true));
         testSection.getTestById(MockTestData[0].id);
         testSection.testId = MockTestData[0].id;
         testSection.isEditTestEnabled = true;
@@ -137,7 +137,7 @@ describe('Test Section', () => {
     });
 
     it('saveCategoryToExitOrMoveNext error handling', () => {
-        spyOn(TestService.prototype, 'addTestCategories').and.returnValue(Observable.throw('error'));
+        spyOn(TestService.prototype, 'addTestCategories').and.returnValue(observableThrowError('error'));
         testSection.getTestById(MockTestData[0].id);
         testSection.testId = MockTestData[0].id;
         testSection.isEditTestEnabled = true;
@@ -149,7 +149,7 @@ describe('Test Section', () => {
     it('isAttendeeExist ', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake((testId: number) => {
             let test = MockTestData.find(x => x.id === testId);
-            return Observable.of({ response: test.numberOfTestAttendees !== 0 });
+            return observableOf({ response: test.numberOfTestAttendees !== 0 });
         });
         testSection.testId = MockTestData[0].id;
         testSection.isTestAttendeeExist();

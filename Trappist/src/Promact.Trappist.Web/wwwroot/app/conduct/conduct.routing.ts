@@ -45,4 +45,4 @@ const conductRoutes: Routes = [
     }
 ];
 
-export const conductRouting: ModuleWithProviders = RouterModule.forRoot(conductRoutes);
+export const conductRouting: ModuleWithProviders<RouterModule> = RouterModule.forRoot(conductRoutes);

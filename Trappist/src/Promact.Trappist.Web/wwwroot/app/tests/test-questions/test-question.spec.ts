@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { TestsDashboardComponent } from '../tests-dashboard/tests-dashboard.component';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
@@ -21,7 +23,6 @@ import { CreateTestHeaderComponent } from '../shared/create-test-header/create-t
 import { Md2AccordionModule } from 'md2';
 import { PopoverModule } from 'ngx-popover';
 import { ClipboardModule } from 'ngx-clipboard';
-import { Observable } from 'rxjs/Observable';
 import { APP_BASE_HREF } from '@angular/common';
 import { Test } from '../tests.model';
 import { MockRouteService } from '../../questions/questions-single-multiple-answer/mock-route.service';
@@ -30,7 +31,7 @@ import { MockRouteService } from '../../questions/questions-single-multiple-answ
 
 class MockActivatedRoute {
    
-    params = Observable.of({ 'id': MockTestData[0].id });
+    params = observableOf({ 'id': MockTestData[0].id });
 }
 
 describe('Test question Component', () => {
@@ -64,10 +65,10 @@ describe('Test question Component', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake((id: number) => {
             let test = mockdata.find(x => x.id === id);
             if (test === undefined)
-                return Observable.throw('test not found');
-            else return Observable.of(test);
+                return observableThrowError('test not found');
+            else return observableOf(test);
         });
-        spyOn(TestService.prototype, 'getQuestions').and.returnValue(Observable.of(MockTestData[0].categoryAcList[0].questionList));
+        spyOn(TestService.prototype, 'getQuestions').and.returnValue(observableOf(MockTestData[0].categoryAcList[0].questionList));
         spyOn(router, 'navigate').and.callFake(function (route: any[]) {
             routeTo = route;
         });
@@ -111,7 +112,7 @@ describe('Test question Component', () => {
         expect(testQuestion.testDetails.categoryAcList[0].selectAll).toBe(false);
     });
     it('save next ', () => {
-        spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(Observable.of({ message: 'question Added' }));
+        spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(observableOf({ message: 'question Added' }));
         testQuestion.getTestDetails();
         testQuestion.isEditTestEnabled = true;
         testQuestion.testId = MockTestData[0].id;
@@ -134,7 +135,7 @@ describe('Test question Component', () => {
 
     it('save next error handeling', () => {
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
-        spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(Observable.throw({ message: 'question Added' }));
+        spyOn(TestService.prototype, 'addTestQuestions').and.returnValue(observableThrowError({ message: 'question Added' }));
         testQuestion.isEditTestEnabled = true;
         testQuestion.saveNext();
         expect(MdSnackBar.prototype.open).toHaveBeenCalled();
@@ -148,7 +149,7 @@ describe('Test question Component', () => {
     });
 
     it('isTestAttendeeExist', () => {
-        spyOn(TestService.prototype, 'isTestAttendeeExist').and.returnValue(Observable.of({ response: true }));
+        spyOn(TestService.prototype, 'isTestAttendeeExist').and.returnValue(observableOf({ response: true }));
         testQuestion.isTestAttendeeExist();
         expect(testQuestion.isEditTestEnabled).toBe(false);
     });

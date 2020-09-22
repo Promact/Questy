@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestStatus } from '../teststatus.enum';
@@ -9,7 +9,7 @@ import { QuestionStatus } from '../question_status.enum';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { ReportService } from '../../reports/report.service';
 import { MdSnackBar, MdSnackBarRef } from '@angular/material';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs';
 import { TestLogs } from '../../reports/testlogs.model';
 import { ConnectionService } from '../../core/connection.service';
 import * as screenfull from 'screenfull';

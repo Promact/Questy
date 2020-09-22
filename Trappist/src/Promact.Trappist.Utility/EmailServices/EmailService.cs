@@ -28,30 +28,28 @@ namespace Promact.Trappist.Utility.EmailServices
         {
 
             MimeMessage emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(from));
-            emailMessage.To.Add(new MailboxAddress(to));
+            emailMessage.From.Add(MailboxAddress.Parse(from));
+            emailMessage.To.Add(MailboxAddress.Parse(to));
             emailMessage.Body = new TextPart(TextFormat.Html)
             {
                 Text = body
             };
             emailMessage.Subject = subject;
-            using (var client = new SmtpClient())
+            using var client = new SmtpClient();
+            var canParse = Enum.TryParse(_emailSettings.ConnectionSecurityOption, out SecureSocketOptions securityType);
+            if (canParse)
             {
-                var canParse = Enum.TryParse(_emailSettings.ConnectionSecurityOption, out SecureSocketOptions securityType);
-                if (canParse)
+                if (securityType == SecureSocketOptions.None)
                 {
-                    if (securityType == SecureSocketOptions.None)
-                    {
-                        await client.ConnectAsync(_emailSettings.Server, _emailSettings.Port, false); //ssl false
-                    }
-                    else
-                        await client.ConnectAsync(_emailSettings.Server, _emailSettings.Port, securityType);
+                    await client.ConnectAsync(_emailSettings.Server, _emailSettings.Port, false); //ssl false
                 }
-                client.AuthenticationMechanisms.Remove("PLAIN");
-                await client.AuthenticateAsync(_emailSettings.UserName, _emailSettings.Password);
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
+                else
+                    await client.ConnectAsync(_emailSettings.Server, _emailSettings.Port, securityType);
             }
+            client.AuthenticationMechanisms.Remove("PLAIN");
+            await client.AuthenticateAsync(_emailSettings.UserName, _emailSettings.Password);
+            await client.SendAsync(emailMessage);
+            await client.DisconnectAsync(true);
             return true;
         }
         #endregion

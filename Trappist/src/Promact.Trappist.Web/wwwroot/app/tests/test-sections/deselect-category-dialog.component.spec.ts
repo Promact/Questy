@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
 import { HttpService } from '../../core/http.service';
@@ -11,7 +13,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule, MdDialogModule, MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA, OverlayRef } from '@angular/material';
 import { DeselectCategoryComponent } from './deselect-category.component';
-import { Observable } from 'rxjs/Observable';
 import { APP_BASE_HREF } from '@angular/common';
 
 
@@ -49,14 +50,14 @@ describe('Deselect category', () => {
     });
 
     it('yesDeselectCategory', () => {
-        spyOn(TestService.prototype, 'removeDeselectedCategory').and.returnValue(Observable.of(true));
+        spyOn(TestService.prototype, 'removeDeselectedCategory').and.returnValue(observableOf(true));
         spyOn(deslectComponent.dialogRef, 'close').and.callThrough();
         deslectComponent.yesDeselectCategory();
         expect(deslectComponent.dialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('yesDeselectCategory error check', () => {
-        spyOn(TestService.prototype, 'removeDeselectedCategory').and.returnValue(Observable.throw('error'));
+        spyOn(TestService.prototype, 'removeDeselectedCategory').and.returnValue(observableThrowError('error'));
         spyOn(deslectComponent.snackbarRef, 'open').and.callThrough();
         deslectComponent.yesDeselectCategory();
         expect(deslectComponent.snackbarRef.open).toHaveBeenCalledTimes(1);

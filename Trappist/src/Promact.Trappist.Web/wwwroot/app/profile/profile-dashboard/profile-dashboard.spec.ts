@@ -1,4 +1,6 @@
-﻿import { TestBed, async, ComponentFixture, inject } from '@angular/core/testing';
+
+import {of as observableOf,  Observable } from 'rxjs';
+import { TestBed, async, ComponentFixture, inject } from '@angular/core/testing';
 import { ProfileService } from '../profile.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +9,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { CoreModule } from '../../core/core.module';
 import { ProfileDashboardComponent } from './profile-dashboard.component';
-import { Observable } from 'rxjs/Rx';
 import { ProfileComponent } from '../profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
@@ -70,7 +71,7 @@ describe('Testing of profile-dashboard component:-', () => {
 
     it('should return the details of the application user', () => {
         spyOn(ProfileService.prototype, 'getUserDetails').and.callFake(() => {
-            return Observable.of(applicationUserDetails);
+            return observableOf(applicationUserDetails);
         });
         profileDashboardComponent.getUserDetails();
         expect(profileDashboardComponent.user.name).toBe('Suparna');

@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Test } from '../../tests/tests.model';
 import { ConductService } from '../conduct.service';
 import { ActivatedRoute } from '@angular/router';
 import { TestInstructions } from '../testInstructions.model';
@@ -20,7 +19,7 @@ export class InstructionsComponent implements OnInit {
     negativeSign: string;
     magicString: string;
     loader: boolean;
-    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router) {
+    constructor(private readonly conductService: ConductService, private readonly router: Router) {
         this.testInstructions = new TestInstructions();
     }
 
@@ -29,13 +28,13 @@ export class InstructionsComponent implements OnInit {
      */
     ngOnInit() {
         this.loader = true;
-        let url = window.location.pathname;
+        const url = window.location.pathname;
         this.magicString = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/instructions'));   
         this.getTestInstructionsByLink(this.magicString);
         history.pushState(null, null, null);
         window.addEventListener('popstate', function (event) {
             history.pushState(null, null, null);
-        });;
+        });
     }
 
     /**

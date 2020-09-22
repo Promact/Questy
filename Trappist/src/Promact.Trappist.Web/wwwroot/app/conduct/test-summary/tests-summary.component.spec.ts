@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { TestSummaryComponent } from './test-summary.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ConductService } from '../conduct.service';
 import { APP_BASE_HREF } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
 import { ReportService } from '../../reports/report.service';
 import { TestConductFooterComponent } from '../shared/test-conduct-footer/test-conduct-footer.component';
 import { TestConductHeaderComponent } from '../shared/test-conduct-header/test-conduct-header.component';
@@ -20,7 +21,7 @@ import { ConnectionService } from '../../core/connection.service';
 
 
 class MockActivatedRoute {
-    params = Observable.of({});
+    params = observableOf({});
 }
 
 describe('Test Summary', () => {
@@ -50,12 +51,12 @@ describe('Test Summary', () => {
         fixture = TestBed.createComponent(TestSummaryComponent);
         testSummary = fixture.componentInstance;
         //spyOn(ConductService.prototype, 'getTestSummary').and.returnValue(Observable.of());
-        spyOn(ConductService.prototype, 'getTestAttendeeByTestId').and.returnValue(Observable.of(MockTestAttendee));
+        spyOn(ConductService.prototype, 'getTestAttendeeByTestId').and.returnValue(observableOf(MockTestAttendee));
 
     });
 
     it('sendRequestForResume', () => {
-        spyOn(ReportService.prototype, 'updateCandidateInfo').and.returnValue(Observable.of(true));
+        spyOn(ReportService.prototype, 'updateCandidateInfo').and.returnValue(observableOf(true));
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
         testSummary.testAttendee = mockTestAttendee;
         testSummary.sendRequestForResume();
@@ -65,13 +66,13 @@ describe('Test Summary', () => {
 
     it('getCandidateInfoToResumeTest', () => {
         mockTestAttendee.report.isAllowResume = true;
-        spyOn(ReportService.prototype, 'getInfoResumeTest').and.returnValue(Observable.of(mockTestAttendee.report));
+        spyOn(ReportService.prototype, 'getInfoResumeTest').and.returnValue(observableOf(mockTestAttendee.report));
         testSummary.getCandidateInfoToResumeTest();
         expect(testSummary.isAllowed).toBe(true);
     });
 
     it('endYourTest', () => {
-        spyOn(ReportService.prototype, 'createSessionForAttendee').and.returnValue(Observable.of(true));
+        spyOn(ReportService.prototype, 'createSessionForAttendee').and.returnValue(observableOf(true));
         testSummary.endYourTest();
         expect(routTo[0]).toBe('test-end');
     });

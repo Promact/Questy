@@ -8,7 +8,9 @@ import { TestIPAddress } from './test-IPAdddress';
 import { CodeSnippetTestCasesDetails } from '../reports/code-snippet-test-cases-details.model';
 import { TestCodeSolutionDetails } from '../reports/test-code-solution-details.model';
 import { ProgrammingLanguage } from '../reports/programminglanguage.enum';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class Test {
     id: number;
     testName: string;

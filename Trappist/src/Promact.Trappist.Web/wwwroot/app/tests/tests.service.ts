@@ -1,9 +1,8 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { Test, TestQuestionAC } from './tests.model';
 import { QuestionBase } from '../questions/question';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject ,  Subject } from 'rxjs';
 
 @Injectable()
 

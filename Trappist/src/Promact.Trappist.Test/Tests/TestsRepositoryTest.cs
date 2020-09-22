@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using System.Collections.Generic;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using Microsoft.AspNetCore.Identity;
 using Promact.Trappist.Repository.Questions;

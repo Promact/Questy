@@ -1,6 +1,7 @@
-﻿import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit, Input } from '@angular/core';
+
+import {interval as observableInterval,  Observable ,  Subscription } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 import { MdDialog, MdDialogRef } from '@angular/material';
@@ -30,7 +31,6 @@ import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
 import * as screenfull from 'screenfull';
 declare let alea: any;
-import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
 import { ConnectionService } from '../../core/connection.service';
 import { TestBundleModel } from '../test_bundle_model';
@@ -306,7 +306,7 @@ export class TestComponent implements OnInit {
     }
 
     getClockInterval() {
-        return Observable.interval(1000).subscribe(() => { this.countDown(); });
+        return observableInterval(1000).subscribe(() => { this.countDown(); });
     }
 
     /**

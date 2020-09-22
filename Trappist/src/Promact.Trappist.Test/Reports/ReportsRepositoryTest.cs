@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Test;

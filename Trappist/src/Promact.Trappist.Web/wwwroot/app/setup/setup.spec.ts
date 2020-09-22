@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed, async, inject } from '@angular/core/testing';
 import { SetupComponent } from './setup.component';
 import { SetupService } from './setup.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -7,7 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { CoreModule } from '../core/core.module';
 import { FormWizardModule, WizardComponent, WizardStepComponent } from 'angular2-wizard-fix';
-import { Observable } from 'rxjs/Rx';
 import { ConnectionString, ServiceResponse } from './setup.model';
 
 class RouterStub {
@@ -50,7 +51,7 @@ describe('Testing of setup component:-', () => {
 
     it('should return true if connection string is valid', () => {
         spyOn(SetupService.prototype, 'validateConnectionString').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(setup, 'next');
         setupComponent.validateConnectionString(setup);
@@ -59,7 +60,7 @@ describe('Testing of setup component:-', () => {
 
     it('should show error messsage if connection string is invalid', () => {
         spyOn(SetupService.prototype, 'validateConnectionString').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         setupComponent.validateConnectionString(setup);
         expect(setupComponent.stepOneErrorMessage).toBeTruthy();
@@ -67,7 +68,7 @@ describe('Testing of setup component:-', () => {
 
     it('should show error message if internal server error is thrown', () => {
         spyOn(SetupService.prototype, 'validateConnectionString').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         setupComponent.validateConnectionString(setup);
         expect(setupComponent.stepOneErrorMessage).toBeTruthy();
@@ -75,7 +76,7 @@ describe('Testing of setup component:-', () => {
 
     it('should return true if email setting is valid', () => {
         spyOn(SetupService.prototype, 'validateEmailSettings').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(setup, 'next');
         setupComponent.validateEmailSettings(setup);
@@ -84,7 +85,7 @@ describe('Testing of setup component:-', () => {
 
     it('should show error message if email setting is invalid', () => {
         spyOn(SetupService.prototype, 'validateEmailSettings').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         setupComponent.validateEmailSettings(setup);
         expect(setupComponent.stepTwoErrorMessage).toBeTruthy();
@@ -92,7 +93,7 @@ describe('Testing of setup component:-', () => {
 
     it('should show error message if internal server error is thrown', () => {
         spyOn(SetupService.prototype, 'validateEmailSettings').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         setupComponent.validateEmailSettings(setup);
         expect(setupComponent.stepTwoErrorMessage).toBeTruthy();
@@ -100,7 +101,7 @@ describe('Testing of setup component:-', () => {
 
     it('should create user succesfully and navigate to login', () => {
         spyOn(SetupService.prototype, 'createUser').and.callFake(() => {
-            return Observable.of(response);
+            return observableOf(response);
         });
         spyOn(setup, 'complete');
         spyOn(setupComponent, 'navigateToLogin');
@@ -111,7 +112,7 @@ describe('Testing of setup component:-', () => {
     it('should show error message if user creation fails', () => {
         response.isSuccess = false;
         spyOn(SetupService.prototype, 'createUser').and.callFake(() => {
-            return Observable.of(response);
+            return observableOf(response);
         });
         setupComponent.createUser(setup);
         expect(setupComponent.stepThreeErrorMessage).toBeTruthy();
@@ -119,7 +120,7 @@ describe('Testing of setup component:-', () => {
 
     it('should show error message if internal server error is thrown ', () => {
         spyOn(SetupService.prototype, 'createUser').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         setupComponent.createUser(setup);
         expect(setupComponent.stepThreeErrorMessage).toBeTruthy();

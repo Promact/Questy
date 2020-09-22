@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  BehaviorSubject ,  Observable ,  Subscription } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
@@ -15,12 +17,8 @@ import { testsRouting } from '../../tests/tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit, Input, DebugElement } from '@angular/core';
 import { Location, APP_BASE_HREF } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
 import { Test } from '../../tests/tests.model';
 import { TestPreviewComponent } from '../../tests/test-preview/test-preview.compponent';
 import { TestQuestions } from '../test_conduct.model';
@@ -47,7 +45,6 @@ import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { CodeResponse } from '../code.response.model';
 declare let screenfull: any;
 declare let alea: any;
-import { Subscription } from 'rxjs/Subscription';
 import { TestService } from '../../tests/tests.service';
 import { PageNotFoundComponent } from '../../page-not-found/page-not-found.component';
 import { TestComponent } from './test.component';
@@ -135,7 +132,7 @@ describe('Test Component', () => {
         spyOn(ConnectionService.prototype, 'registerAttendee').and.callFake(() => { });
         spyOn(ConnectionService.prototype, 'startConnection').and.callFake(() => { console.log('connection initiated'); });
         spyOn(ConductService.prototype, 'getElapsedTime').and.callFake(() => {
-            return Observable.of(4.5);
+            return observableOf(4.5);
         });
     });
 
@@ -150,7 +147,7 @@ describe('Test Component', () => {
 
     it('should resume test', () => {
         spyOn(ConductService.prototype, 'getAnswer').and.callFake(() => {
-            return Observable.of(FakeResumeData);
+            return observableOf(FakeResumeData);
         });
         spyOn(TestComponent.prototype, 'navigateToQuestionIndex').and.callFake(() => {
             return;
@@ -162,13 +159,13 @@ describe('Test Component', () => {
 
     it('should NOT resume test', () => {
         spyOn(ConductService.prototype, 'getAnswer').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(TestComponent.prototype, 'navigateToQuestionIndex').and.callFake(() => {
             return;
         });
         spyOn(ConductService.prototype, 'setElapsedTime').and.callFake(() => {
-            return Observable.of('OK');
+            return observableOf('OK');
         });
 
         testComponent.resumeTest();
@@ -177,7 +174,7 @@ describe('Test Component', () => {
 	
 	it('should get Test bundle', () => {
 		spyOn(ConductService.prototype, 'getTestBundle').and.callFake(() => {
-            return Observable.of(FakeBundleData);
+            return observableOf(FakeBundleData);
         });
 		
 		testComponent.getTestBundle('');
@@ -188,10 +185,10 @@ describe('Test Component', () => {
 	
     it('should get Test status', () => {
         spyOn(ConductService.prototype, 'getTestStatus').and.callFake(() => {
-            return Observable.of(0);
+            return observableOf(0);
         });
         spyOn(TestComponent.prototype, 'resumeTest').and.callFake(() => {
-            return Observable.of();
+            return observableOf();
         });
 
         testComponent.getTestStatus(1);
@@ -200,7 +197,7 @@ describe('Test Component', () => {
 
     it('should add answer', () => {
         spyOn(ConductService.prototype, 'addAnswer').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
         spyOn(TestComponent.prototype, 'markAsAnswered').and.callFake(() => {
             return;
@@ -235,7 +232,7 @@ describe('Test Component', () => {
 
     it('should mark question for review part 3', () => {
         spyOn(ConductService.prototype, 'addAnswer').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
 
         testComponent.testQuestions = JSON.parse(JSON.stringify(FakeTestQuestions));
@@ -329,19 +326,19 @@ describe('Test Component', () => {
 
     it('should count down', () => {
         spyOn(ConductService.prototype, 'setElapsedTime').and.callFake(() => {
-            return Observable.of('OK');
+            return observableOf('OK');
         });
         spyOn(ConductService.prototype, 'setAttendeeBrowserToleranceValue').and.callFake(() => {
-            return Observable.of(1);
+            return observableOf(1);
         });
         spyOn(TestComponent.prototype, 'addAnswer').and.callFake(() => {
             return;
         });
         spyOn(ConductService.prototype, 'addTestLogs').and.callFake(() => {
-            return Observable.of(FakeTestLogs);
+            return observableOf(FakeTestLogs);
         }); 
         spyOn(ConductService.prototype, 'setTestStatus').and.callFake(() => {
-            return Observable.of(1);
+            return observableOf(1);
         });
 
         testComponent.test = JSON.parse(JSON.stringify(FakeTest));
@@ -356,7 +353,7 @@ describe('Test Component', () => {
 
     it('should change editor language', () => {
         spyOn(ConductService.prototype, 'addAnswer').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
 
         fixture.whenStable().then(() => {            
@@ -386,7 +383,7 @@ describe('Test Component', () => {
 
     it('should save test logs', () => {
         spyOn(ConductService.prototype, 'addTestLogs').and.callFake(() => {
-            return Observable.of(FakeTestLogs);
+            return observableOf(FakeTestLogs);
         });
 
         testComponent.saveTestLogs();

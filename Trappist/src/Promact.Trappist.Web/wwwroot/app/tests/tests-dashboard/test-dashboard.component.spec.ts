@@ -1,4 +1,6 @@
-﻿import { TestsDashboardComponent } from './tests-dashboard.component';
+
+import {of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { TestsDashboardComponent } from './tests-dashboard.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,8 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
 import { HttpService } from '../../core/http.service';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { fakeAsync } from '@angular/core/testing';
 import { DeleteTestDialogComponent } from './delete-test-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';
@@ -103,7 +103,7 @@ describe('Test Dashboard Component', () => {
 
     it('createTestDialog ', () => {
         spyOn(testDashboard.dialog, 'open').and.callThrough();
-        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(mockData[0]));
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(observableOf(mockData[0]));
         testDashboard.createTestDialog();
         expect(testDashboard.dialog.open).toHaveBeenCalled();
         expect(testDashboard.tests.length).toBe(1);
@@ -111,7 +111,7 @@ describe('Test Dashboard Component', () => {
 
     it('should edit test on number of attendees for a particular test is 0', fakeAsync(() => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         router = TestBed.get(Router);
         spyOn(router, 'navigate').and.callFake(function (url: any[]) {
@@ -123,7 +123,7 @@ describe('Test Dashboard Component', () => {
 
     it('should not edit the test when attendees exist for a particular test', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(testDashboard, 'editTest').and.callThrough();
         testDashboard.editTest(test);
@@ -192,7 +192,7 @@ describe('Test Dashboard Component', () => {
 
     it('should call ngOnInit()', () => {
         spyOn(TestService.prototype, 'getTests').and.callFake(() => {
-            return Observable.of(MockTestData);
+            return observableOf(MockTestData);
         });
         spyOn(testDashboard, 'getAllTests').and.callThrough();
         testDashboard.ngOnInit();

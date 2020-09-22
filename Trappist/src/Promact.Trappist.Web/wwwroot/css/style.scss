@@ -2023,20 +2023,20 @@ footer {
                     }
                 }
 
-                .mat-input-container {
+                .mat-form-field {
                     font-family: $font_open_sans;
 
-                    .mat-input-wrapper {
+                    .mat-form-field-wrapper {
                         margin: 6px 0;
                         padding: 0;
 
-                        .mat-input-infix {
+                        .mat-form-field-infix {
                             top: 1px;
                             padding: 0;
                             border: 0;
                         }
 
-                        .mat-input-underline, .mat-input-placeholder-wrapper, .mat-input-subscript-wrapper {
+                        .mat-form-field-underline, .mat-form-field-labelwrapper, .mat-form-field-subscript-wrapper {
                             display: none;
                         }
                     }

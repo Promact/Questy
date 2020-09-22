@@ -1,4 +1,6 @@
-﻿import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TestBed, async, fakeAsync, ComponentFixture, tick } from '@angular/core/testing';
 
 import { MaterialModule, MdDialogModule, MdDialogRef } from '@angular/material';
@@ -10,7 +12,6 @@ import { DebugElement } from '@angular/core/core';
 import { ChangePasswordDialogComponent } from './change-password-dialog.component';
 import { ProfileService } from '../profile.service';
 import { ChangePasswordModel } from '../password.model';
-import { Observable } from 'rxjs/Rx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 
@@ -30,7 +31,7 @@ class MockDialog {
 
 class MockError {
     json(): Observable<any> {
-        return Observable.of({ 'error': ['old password is wrong'] });
+        return observableOf({ 'error': ['old password is wrong'] });
     }
 }
 
@@ -66,7 +67,7 @@ describe('Testing of change-password component:-', () => {
 
     it('should check whether new and confirm pasword same or not and update it', () => {
         spyOn(ProfileService.prototype, 'updateUserPassword').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(changePasswordComponent.snackBar, 'open').and.callThrough();
         spyOn(changePasswordComponent.dialog, 'close').and.callThrough();
@@ -79,7 +80,7 @@ describe('Testing of change-password component:-', () => {
 
     it('should throw error message if password update fails', () => {
         spyOn(ProfileService.prototype, 'updateUserPassword').and.callFake(() => {
-            return Observable.throw(new MockError());
+            return observableThrowError(new MockError());
         });
         changePasswordComponent.changePassword(changedPassword);
         expect(changePasswordComponent.errorCorrection).toBeTruthy();
@@ -87,7 +88,7 @@ describe('Testing of change-password component:-', () => {
 
     it('should show error message if new and confirm pasword are not same', () => {
         spyOn(ProfileService.prototype, 'updateUserPassword').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         changedPassword.confirmPassword = 'Abv@123456';
         changePasswordComponent.changePassword(changedPassword);

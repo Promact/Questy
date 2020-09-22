@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
@@ -13,10 +15,6 @@ import { inject } from '@angular/core/testing';
 import { Test } from '../../tests.model';
 import { testsRouting } from '../../tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { NgModule, Input, Output, EventEmitter } from '@angular/core';
@@ -169,10 +167,10 @@ describe('Create Test Header Component', () => {
         test.testName = 'English';
         createTestHeaderComponent.testDetails = test;
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.updateTestName(test.id, test);
         createTestHeaderComponent.showEditButton(test.testName);
@@ -182,10 +180,10 @@ describe('Create Test Header Component', () => {
 
     it('should update test name on pressing enter button if test name is valid', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.testId = test.id;
         createTestHeaderComponent.testDetails = test;
@@ -196,10 +194,10 @@ describe('Create Test Header Component', () => {
 
     it('should not update test name on pressing enter button if test name is invalid', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.testId = test.id;
         createTestHeaderComponent.testDetails = test;
@@ -210,10 +208,10 @@ describe('Create Test Header Component', () => {
 
     it('should update the test name', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         test.testName = 'G.K';
         createTestHeaderComponent.testId = test.id;
@@ -227,10 +225,10 @@ describe('Create Test Header Component', () => {
 
     it('should not update the test name when test name is not unique', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.testId = test.id;
         createTestHeaderComponent.testDetails = test;
@@ -246,10 +244,10 @@ describe('Create Test Header Component', () => {
         test.testName = 'English';
         createTestHeaderComponent.testDetails = test;
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.updateTestName(test.id, test);
         createTestHeaderComponent.hideEditButton();
@@ -262,10 +260,10 @@ describe('Create Test Header Component', () => {
         test.testName = 'English';
         createTestHeaderComponent.testDetails = test;
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(createTestHeaderComponent, 'openSnackBar').and.callThrough();
         createTestHeaderComponent.updateTestName(test.id, test);
@@ -278,10 +276,10 @@ describe('Create Test Header Component', () => {
         test.testName = 'English';
         createTestHeaderComponent.testDetails = test;
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'updateTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         createTestHeaderComponent.updateTestName(test.id, test);
         createTestHeaderComponent.showEditButton(test.testName);
