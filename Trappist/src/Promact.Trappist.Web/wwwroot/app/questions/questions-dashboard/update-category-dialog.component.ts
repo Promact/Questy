@@ -1,4 +1,4 @@
-﻿import { Component, Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CategoryService } from '../categories.service';
 import { MdDialogRef, MdSnackBar } from '@angular/material';
 import { Category } from '../category.model';
@@ -23,7 +23,7 @@ export class UpdateCategoryDialogComponent {
     constructor(private categoryService: CategoryService, private dialogRef: MdDialogRef<UpdateCategoryDialogComponent>, public snackBar: MdSnackBar) {
         this.isCategoryNameExist = false;
         this.successMessage = 'Section Name Updated Successfully';
-        this.isButtonClicked = false;;
+        this.isButtonClicked = false;
     }
 
     /**

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReportService } from '../report.service';
 import { TestAttendee } from '../testattendee.model';
@@ -338,7 +338,7 @@ export class IndividualReportComponent implements OnInit {
                     }
                 }
             }
-        };
+        }
         return this.noOfAnswersCorrect;
     }
 
@@ -358,7 +358,7 @@ export class IndividualReportComponent implements OnInit {
                     isTestAttendeeAnswerCorrect = false;
                 }
             }
-        };
+        }
         return isTestAttendeeAnswerCorrect;
     }
 

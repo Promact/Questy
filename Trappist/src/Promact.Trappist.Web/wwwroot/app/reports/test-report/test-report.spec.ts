@@ -23,9 +23,9 @@ import { ConnectionService } from '../../core/connection.service';
 import { DatePipe } from '@angular/common';
 
 class RouterStub {
-    navigateByUrl(url: string) { return url; };
-    navigate() { return true; };
-    isActive() { return true; };
+    navigateByUrl(url: string) { return url; }
+    navigate() { return true; }
+    isActive() { return true; }
 }
 
 class ElementRef {
@@ -78,7 +78,7 @@ describe('Testing of test-report component:-', () => {
     let attendee4 = new TestAttendee();
     attendee4.id = 4;
     attendee4.firstName = 'megha';
-    attendee4.lastName = 'shah';;
+    attendee4.lastName = 'shah';
     attendee4.email = 'meghu@promactinfo.com';
     attendee4.starredCandidate = false;
     attendee4.report.totalMarksScored = 25;
@@ -90,7 +90,7 @@ describe('Testing of test-report component:-', () => {
     let attendee5 = new TestAttendee();
     attendee5.id = 5;
     attendee5.firstName = 'ritu';
-    attendee5.lastName = 'shah';;
+    attendee5.lastName = 'shah';
     attendee5.email = 'ritu@promactinfo.com';
     attendee5.report.totalMarksScored = null;
     attendee5.reporNotFoundYet = true;
@@ -156,7 +156,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should return all the attendees of a test', () => {
         spyOn(ReportService.prototype, 'getAllTestAttendees').and.callFake(() => {
-            return observableOf(attendees);;
+            return observableOf(attendees);
         });
         testReportComponent.getAllTestCandidates();
         expect(testReportComponent.isAnyCandidateExist).toBeTruthy();
