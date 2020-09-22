@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +13,6 @@ import { AddCategoryDialogComponent } from './add-category-dialog.component';
 import { MaterialModule, MdDialogModule, MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA, OverlayRef } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { APP_BASE_HREF } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
 import { HttpService } from '../../core/http.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +26,6 @@ import { SingleMultipleAnswerQuestionOption } from '../single-multiple-answer-qu
 import { SingleMultipleAnswerQuestion } from '../single-multiple-question';
 import { QuestionBase } from '../question';
 import { Question } from '../question.model';
-import { BehaviorSubject } from 'rxjs/Rx';
 import { QuestionType } from '../enum-questiontype';
 import { DifficultyLevel } from '../enum-difficultylevel';
 import { Category } from '../category.model';
@@ -211,7 +211,7 @@ describe('Testing of question-dashboard component:-', () => {
     });
 
     it('Add CategoryDialog', () => {
-        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(mockData[0].categoryAcList[0]));
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(observableOf(mockData[0].categoryAcList[0]));
         spyOn(questionComponent.dialog, 'open').and.callThrough();
         questionComponent.addCategoryDialog();
         expect(questionComponent.dialog.open).toHaveBeenCalled();
@@ -232,7 +232,7 @@ describe('Testing of question-dashboard component:-', () => {
     });
 
     it('delete category', () => {
-        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(mockData[0].categoryAcList[0]));
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(observableOf(mockData[0].categoryAcList[0]));
         spyOn(questionComponent, 'getAllQuestions').and.callFake(() => { return null; });
         questionComponent.categoryArray = mockData[0].categoryAcList;
         expect(questionComponent.categoryArray.length).toBe(2);
@@ -248,8 +248,8 @@ describe('Testing of question-dashboard component:-', () => {
         questionComponent.question.push(question);
         expect(questionComponent.question.length).toBe(1);
         let questionCount = new QuestionCount();
-        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(Observable.of(mockData[0].categoryAcList[0].questionList[0]));
-        spyOn(QuestionsService.prototype, 'countTheQuestion').and.returnValue(Observable.of(questionCount));
+        spyOn(MdDialogRef.prototype, 'afterClosed').and.returnValue(observableOf(mockData[0].categoryAcList[0].questionList[0]));
+        spyOn(QuestionsService.prototype, 'countTheQuestion').and.returnValue(observableOf(questionCount));
         questionComponent.deleteQuestionDialog(mockData[0].categoryAcList[0].questionList[0]);
         expect(questionComponent.question.length).toBe(0);
     });
@@ -292,7 +292,7 @@ describe('Testing of question-dashboard component:-', () => {
 
     it('should return all the categories', () => {
         spyOn(CategoryService.prototype, 'getAllCategories').and.callFake(() => {
-            return Observable.of(categoryList);
+            return observableOf(categoryList);
         });
         spyOn(questionComponent, 'SelectCategoryDifficulty');
         questionComponent.selectedCategoryName = 'Verbal';
@@ -312,10 +312,10 @@ describe('Testing of question-dashboard component:-', () => {
 
     it('should return all the questions', () => {
         spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(questionDisplayList);
+            return observableOf(questionDisplayList);
         });
         spyOn(QuestionsService.prototype, 'countTheQuestion').and.callFake(() => {
-            return Observable.of();
+            return observableOf();
         });
         questionComponent.getAllQuestions();
         expect(questionComponent.questionDisplay.length).toBe(2);
@@ -338,10 +338,10 @@ describe('Testing of question-dashboard component:-', () => {
         categoryName = 'AllCategory';
         difficulty = 'All';
         spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(questionDisplayList);
+            return observableOf(questionDisplayList);
         });
         spyOn(QuestionsService.prototype, 'countTheQuestion').and.callFake(() => {
-            return Observable.of();
+            return observableOf();
         });
         questionComponent.categoryWiseFilter(categoryId, categoryName, difficulty);
         expect(questionComponent.showName).toBe('All Questions');
@@ -358,7 +358,7 @@ describe('Testing of question-dashboard component:-', () => {
         let list = new Array<QuestionDisplay>();
         questionComponent.selectedCategory.categoryName = undefined;
         spyOn(QuestionsService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(list);
+            return observableOf(list);
         });
         spyOn(QuestionsService.prototype, 'countTheQuestion').and.callThrough();
         questionComponent.difficultyWiseSearch(difficulty);
@@ -416,7 +416,7 @@ describe('Testing of question-dashboard component:-', () => {
 
     it('should return difficultywise total number of questions in a category', () => {
         spyOn(QuestionsService.prototype, 'countTheQuestion').and.callFake(() => {
-            return Observable.of(questionCount);
+            return observableOf(questionCount);
         });
         questionComponent.categroyId = 2;
         questionComponent.matchString = '';

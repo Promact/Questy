@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -16,10 +18,6 @@ import { testsRouting } from '../tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
 import { NgModule, Input, EventEmitter, Output } from '@angular/core';
@@ -115,7 +113,7 @@ describe('Test View Component', () => {
                 HttpService, MdDialogModule, MdSnackBar,
                 { provide: Router, useClass: MockRouter },
                 { provide: MdDialogRef, useClass: MockDialog },
-                { provide: ActivatedRoute, useValue: { params: Observable.of({ id: 123 }) } },
+                { provide: ActivatedRoute, useValue: { params: observableOf({ id: 123 }) } },
                 MockRouteService
             ],
 
@@ -131,7 +129,7 @@ describe('Test View Component', () => {
 
     it('should not edit test when attendees exists for a particular test', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(testView, 'editTest').and.callThrough();
         testView.editTest(test);
@@ -195,7 +193,7 @@ describe('Test View Component', () => {
 
     it('should check that editing of test is enabled when number of attendees is 0', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         testView.isTestAttendeeExist();
         expect(testView.isEditTestEnabled).toBe(true);
@@ -203,7 +201,7 @@ describe('Test View Component', () => {
 
     it('should check that editing of test is disabled when number of attendees exist for the test', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         testView.isTestAttendeeExist();
         expect(testView.isEditTestEnabled).toBe(false);
@@ -211,10 +209,10 @@ describe('Test View Component', () => {
 
     it('should get all tests', () => {
         spyOn(TestService.prototype, 'getTests').and.callFake(() => {
-            return Observable.of(MockTestData);
+            return observableOf(MockTestData);
         });
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         testView.getAllTests();
         expect(testView.tests.length).toBe(2);
@@ -223,7 +221,7 @@ describe('Test View Component', () => {
 
     it('should get the details of the test with category selected and number of questions selected 0', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         testView.getTestDetails(test.id);
         expect(testView.isCategorySelected).toBe(true);
@@ -232,7 +230,7 @@ describe('Test View Component', () => {
 
     it('should get the details of the test with no category selected', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         category.isSelect = false;
         testView.getTestDetails(test.id);
@@ -241,7 +239,7 @@ describe('Test View Component', () => {
 
     it('should get the details of the test with no questions selected of a particular category', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         category.numberOfSelectedQuestion = 2;
         testView.getTestDetails(test.id);
@@ -250,7 +248,7 @@ describe('Test View Component', () => {
 
     it('should check that preview of test is disabled', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         testView.getTestDetails(test.id);
         expect(testView.disablePreview).toBe(true);
@@ -258,10 +256,10 @@ describe('Test View Component', () => {
 
     it('should get all the questions of the selected category', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(category.questionList);
+            return observableOf(category.questionList);
         });
         testView.getTestDetails(test.id);
         testView.getAllquestions(category, 0);
@@ -274,10 +272,10 @@ describe('Test View Component', () => {
 
     it('should not get all the questions of the selected category when category is already clicked', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(category.questionList);
+            return observableOf(category.questionList);
         });
         category.isAccordionOpen = false;
         category.isAlreadyClicked = true;
@@ -287,10 +285,10 @@ describe('Test View Component', () => {
 
     it('should not get all questions when accodion is already open', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'getQuestions').and.callFake(() => {
-            return Observable.of(category.questionList);
+            return observableOf(category.questionList);
         });
         category.isAccordionOpen = true;
         testView.getAllquestions(category, 0);
@@ -309,7 +307,7 @@ describe('Test View Component', () => {
 
     it('should not get the details of the test on getting error', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(testView.snackBar, 'open').and.callThrough();
         spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {
@@ -344,7 +342,7 @@ describe('Test View Component', () => {
 
     it('should edit test on number of attendees for a particular test is 0', () => {
         spyOn(TestService.prototype, 'isTestAttendeeExist').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         testView.editTest(test);
         spyOn(Router.prototype, 'navigate').and.callFake(function (url: any[]) {

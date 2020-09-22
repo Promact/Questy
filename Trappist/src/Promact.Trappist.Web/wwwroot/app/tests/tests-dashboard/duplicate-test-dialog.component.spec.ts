@@ -1,4 +1,6 @@
-﻿import { TestsDashboardComponent } from './tests-dashboard.component';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { TestsDashboardComponent } from './tests-dashboard.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
@@ -19,9 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -96,10 +95,10 @@ describe('Duplicate Test Dialog Component', () => {
 
     it('should duplicate the test', fakeAsync((() => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'duplicateTest').and.callFake(() => {
-            return Observable.of(MockTestData[0]);
+            return observableOf(MockTestData[0]);
         });
         router = TestBed.get(Router);
         spyOn(router, 'navigate').and.callFake(function (url: any) {
@@ -119,7 +118,7 @@ describe('Duplicate Test Dialog Component', () => {
 
     it('should not make the error value true by not duplicating the test', fakeAsync((() => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         duplicateTestDialogComponent.testToDuplicate = test;
         duplicateTestDialogComponent.duplicateTest();
@@ -134,10 +133,10 @@ describe('Duplicate Test Dialog Component', () => {
 
     it('should not duplicate the test on getting error', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(TestService.prototype, 'duplicateTest').and.callFake(() => {
-            return Observable.of(MockTestData[0]);
+            return observableOf(MockTestData[0]);
         });
         duplicateTestDialogComponent.testArray[0] = test;
         duplicateTestDialogComponent.testToDuplicate = test;
@@ -149,10 +148,10 @@ describe('Duplicate Test Dialog Component', () => {
 
     it('should not duplicate the test on getting error from duplicate test service', () => {
         spyOn(TestService.prototype, 'IsTestNameUnique').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(TestService.prototype, 'duplicateTest').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(duplicateTestDialogComponent.snackBar, 'open').and.callThrough();
         spyOn(duplicateTestDialogComponent.dialog, 'close').and.callThrough();

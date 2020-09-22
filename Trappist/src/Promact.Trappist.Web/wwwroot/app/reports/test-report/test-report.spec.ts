@@ -1,4 +1,8 @@
-﻿import { ComponentFixture } from '@angular/core/testing';
+
+import {of as observableOf,  BehaviorSubject ,  Observable } from 'rxjs';
+
+import {merge} from 'rxjs/operators';
+import { ComponentFixture } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { TestBed, async, fakeAsync } from '@angular/core/testing';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
@@ -8,13 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { TestReportComponent } from './test-report.component';
 import { ReportService } from '../report.service';
 import { Test } from '../../tests/tests.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TestAttendee } from '../testAttendee';
 import { Report } from '../report';
 import { NgModule, DebugElement } from '@angular/core';
 import { Md2DataTableModule } from 'md2';
 import { ConductService } from '../../conduct/conduct.service';
-import { Observable } from 'rxjs/Rx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReportQuestionsCount } from './reportquestionscount';
 import { ConnectionService } from '../../core/connection.service';
@@ -143,10 +145,10 @@ describe('Testing of test-report component:-', () => {
 
     it('should return the test name', () => {
         spyOn(ReportService.prototype, 'getTestName').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(ReportService.prototype, 'getAllTestAttendees').and.callFake(() => {
-            return Observable.of(attendees);
+            return observableOf(attendees);
         });
         testReportComponent.getTestName();
         expect(testReportComponent.test.testName).toBe('Report Testing');
@@ -154,7 +156,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should return all the attendees of a test', () => {
         spyOn(ReportService.prototype, 'getAllTestAttendees').and.callFake(() => {
-            return Observable.of(attendees);;
+            return observableOf(attendees);;
         });
         testReportComponent.getAllTestCandidates();
         expect(testReportComponent.isAnyCandidateExist).toBeTruthy();
@@ -162,7 +164,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should return true if report of any candidate is not found', () => {
         spyOn(ReportService.prototype, 'getAllTestAttendees').and.callFake(() => {
-            return Observable.of(attendees);
+            return observableOf(attendees);
         });
         testReportComponent.getAllTestCandidates();
         expect(testReportComponent.attendeeArray.some(x => x.reporNotFoundYet)).toBeTruthy();
@@ -170,7 +172,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should set all candidate as starred candidates', () => {
         spyOn(ReportService.prototype, 'setAllCandidatesStarred').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         testReportComponent.setAllCandidatesStarred();
         expect(testReportComponent.isAllCandidateStarred).toBeTruthy();
@@ -181,7 +183,7 @@ describe('Testing of test-report component:-', () => {
     it('should set all candidate as unstarred candidates', () => {
         testReportComponent.headerStarStatus = 'star';
         spyOn(ReportService.prototype, 'setAllCandidatesStarred').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         testReportComponent.setAllCandidatesStarred();
         expect(testReportComponent.headerStarStatus).toBe('star_border');
@@ -190,7 +192,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should set some candidates as starred candidates', () => {
         spyOn(ReportService.prototype, 'setStarredCandidate').and.callFake(() => {
-            return Observable.of(attendee1.id).merge(attendee4.id);
+            return observableOf(attendee1.id).pipe(merge(attendee4.id));
         });
         testReportComponent.starredCandidateCount = 0;
         testReportComponent.testAttendeeArray.forEach(x => x.starredCandidate = false);
@@ -204,7 +206,7 @@ describe('Testing of test-report component:-', () => {
         attendee1.starredCandidate = false;
         testReportComponent.testAttendeeArray.find(x => x.id === attendee1.id).starredCandidate = false;
         spyOn(ReportService.prototype, 'setStarredCandidate').and.callFake(() => {
-            return Observable.of(attendee1);
+            return observableOf(attendee1);
         });
         testReportComponent.setStarredCandidate(attendee1);
         expect(testReportComponent.isAllCandidateStarred).toBeFalsy();
@@ -214,7 +216,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should send a request to resume the test', () => {
         spyOn(ReportService.prototype, 'createSessionForAttendee').and.callFake(() => {
-            return Observable.of(attendee2);
+            return observableOf(attendee2);
         });
         testReportComponent.resumeTest(attendee2);
         expect(testReportComponent.isAnyTestResume).toBeFalsy();
@@ -254,7 +256,7 @@ describe('Testing of test-report component:-', () => {
 
     it('should return the filtered list of candidates if filter criteria is showStarCandidate', () => {
         spyOn(ReportService.prototype, 'setAllCandidatesStarred').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         testReportComponent.setAllCandidatesStarred();
         testReportComponent.filter(0, '', true);
@@ -280,7 +282,7 @@ describe('Testing of test-report component:-', () => {
     it('should return all excel deatils and call the download excel function', () => {
         spyOn(testReportComponent, 'downloadTestReportExcel');
         spyOn(ReportService.prototype, 'getAllAttendeeMarksDetails').and.callFake(() => {
-            return Observable.of(excelDetailsList);
+            return observableOf(excelDetailsList);
         });
         testReportComponent.getExcelDetails();
         expect(testReportComponent.reportQuestionDetails.length).toBe(1);

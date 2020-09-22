@@ -48,4 +48,4 @@ const questionsRoutes: Routes = [
     }
 ];
 
-export const questionsRouting: ModuleWithProviders = RouterModule.forChild(questionsRoutes);
+export const questionsRouting: ModuleWithProviders<RouterModule> = RouterModule.forChild(questionsRoutes);

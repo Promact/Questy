@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
@@ -54,9 +52,9 @@ namespace Promact.Trappist.DomainModel.DbContext
             */
             var fakeConnectionStringToAddMigrations = "fakeConnectionString";
             if (!string.IsNullOrEmpty(_connectionString.Value))
-                optionBuilder.UseSqlServer(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionBuilder.UseNpgsql(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             else
-                optionBuilder.UseSqlServer(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionBuilder.UseNpgsql(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             base.OnConfiguring(optionBuilder);
         }
         #endregion

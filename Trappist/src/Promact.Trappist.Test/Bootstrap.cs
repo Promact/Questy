@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Moq;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
@@ -25,7 +24,6 @@ using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.DomainModel.Models.Test;
 using Microsoft.Extensions.Configuration;
 using Promact.Trappist.Utility.HttpUtil;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using CacheManager.Core;
 using Microsoft.Extensions.Hosting;

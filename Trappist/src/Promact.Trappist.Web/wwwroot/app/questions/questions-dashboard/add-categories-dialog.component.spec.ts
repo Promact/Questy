@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +12,6 @@ import { HttpService } from '../../core/http.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddCategoryDialogComponent } from './add-category-dialog.component';
 import { CategoryService } from '../categories.service';
-import { Observable } from 'rxjs/Observable';
 import { mockCategory } from '../../Mock_Data/test_data.mock';
 import { Category } from '../category.model';
 
@@ -19,7 +20,7 @@ class MockMdDialogRef {
 }
 class MockResponse {
     json(): Observable<any> {
-        return Observable.of({'error':['Internal server error']});
+        return observableOf({'error':['Internal server error']});
     }
 }
 
@@ -52,7 +53,7 @@ describe('Add-Category-Dialog', () => {
 
     it('addCategory', () => {
         const category: any = mockCategory;
-        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.of(mockCategory));
+        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(observableOf(mockCategory));
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
         addCategoryComponent.addCategory(category);
         expect(addCategoryComponent.responseObject).toBe(category);
@@ -61,7 +62,7 @@ describe('Add-Category-Dialog', () => {
 
     it('addCategory Error Handling', () => {
         const category: any = mockCategory;
-        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(Observable.throw(new MockResponse()));
+        spyOn(CategoryService.prototype, 'addCategory').and.returnValue(observableThrowError(new MockResponse()));
         addCategoryComponent.addCategory(category);
         expect(addCategoryComponent.isCategoryNameExist).toBe(true);
         expect(addCategoryComponent.isButtonClicked).toBe(false);

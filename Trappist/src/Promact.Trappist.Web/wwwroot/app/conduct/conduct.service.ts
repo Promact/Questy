@@ -2,15 +2,15 @@
 import { HttpService } from '../core/http.service';
 import { TestAnswer } from './test_answer.model';
 import { TestStatus } from './teststatus.enum';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TestInstructions } from './testInstructions.model';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ConductService {
-    private testConductUrl: string = '/api/conduct/';
-    private testApiUrl = '/api/tests';
+    private testConductUrl: string = '/api/conduct/';    
 
 
-    constructor(private httpService: HttpService) {
+    constructor(private readonly httpService: HttpService) {
     }
 
     /**
@@ -26,8 +26,8 @@ export class ConductService {
      * Gets all the instruction details before starting of a particular test
      * @param testLink is used to fetch all instructions related to a particular test
      */
-    getTestInstructionsByLink(testLink: string) {
-        return this.httpService.get(this.testConductUrl + testLink + '/instructions');
+    getTestInstructionsByLink(testLink: string): Observable<TestInstructions> {
+        return this.httpService.get<TestInstructions>(this.testConductUrl + testLink + '/instructions');
     }
 
     getTestBundle(link: string, testTypePreview: boolean) {

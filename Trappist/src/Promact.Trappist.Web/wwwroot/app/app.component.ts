@@ -1,5 +1,4 @@
-﻿import { Component, Input, Output } from '@angular/core';
-import { Http } from '@angular/http';
+﻿import { Component } from '@angular/core';
 import { TestService } from './tests/tests.service';
 
 
@@ -17,7 +16,7 @@ export class AppComponent {
     isPageTestPreview: boolean;
     disableHeader: boolean;
 
-    constructor(private http: Http, private testService:TestService) {
+    constructor(private testService: TestService) {
         this.testService.isTestPreviewIsCalled.subscribe(value => {
             this.isPageTestPreview = value;
         });
@@ -27,7 +26,7 @@ export class AppComponent {
      * user is logged out and redirected to login page
      */
     logOff() {
-        let logoutForm = <HTMLFormElement>document.getElementById('logoutForm');
+        const logoutForm = <HTMLFormElement>document.getElementById('logoutForm');
         logoutForm.submit();
     }
 }

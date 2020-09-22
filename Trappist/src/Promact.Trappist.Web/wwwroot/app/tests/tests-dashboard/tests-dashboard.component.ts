@@ -5,7 +5,6 @@ import { DeleteTestDialogComponent } from './delete-test-dialog.component';
 import { TestService } from '../tests.service';
 import { Test } from '../tests.model';
 import { ActivatedRoute, Router, provideRoutes } from '@angular/router';
-import { Http } from '@angular/http';
 import { TestSettingsComponent } from '../../tests/test-settings/test-settings.component';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { DuplicateTestDialogComponent } from './duplicate-test-dialog.component';

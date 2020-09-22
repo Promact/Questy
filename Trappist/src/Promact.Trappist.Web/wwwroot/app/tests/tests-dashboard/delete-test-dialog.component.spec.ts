@@ -1,4 +1,6 @@
-﻿import { TestsDashboardComponent } from './tests-dashboard.component';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { TestsDashboardComponent } from './tests-dashboard.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
@@ -19,9 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TestCreateDialogComponent } from './test-create-dialog.component';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -103,7 +102,7 @@ describe('Delete Test Dialog Component', () => {
         let url = '/tests/1/view';
         spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
         spyOn(deleteTestDialogComponent.snackBar, 'open').and.callThrough();
         spyOn(deleteTestDialogComponent.dialog, 'close').and.callThrough();
@@ -121,7 +120,7 @@ describe('Delete Test Dialog Component', () => {
 
     it('should not delete the test on getting error', () => {
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(deleteTestDialogComponent.snackBar, 'open').and.callThrough();
         spyOn(deleteTestDialogComponent.dialog, 'close').and.callThrough();
@@ -137,7 +136,7 @@ describe('Delete Test Dialog Component', () => {
         let url = '/';
         spyOn(MockRouteService.prototype, 'getCurrentUrl').and.returnValue(url);
         spyOn(TestService.prototype, 'deleteTest').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
         spyOn(Router.prototype, 'navigate').and.callFake(() => { });
         deleteTestDialogComponent.testToDelete = test;

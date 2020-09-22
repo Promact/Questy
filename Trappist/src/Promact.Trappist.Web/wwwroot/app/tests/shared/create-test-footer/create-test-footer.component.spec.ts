@@ -1,4 +1,4 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
@@ -13,10 +13,7 @@ import { inject } from '@angular/core/testing';
 import { Test } from '../../tests.model';
 import { testsRouting } from '../../tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { NgModule, Input, Output, EventEmitter } from '@angular/core';

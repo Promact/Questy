@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
@@ -16,10 +18,6 @@ import { testsRouting } from '../tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { NgModule, Input, Output, EventEmitter } from '@angular/core';
@@ -53,7 +51,7 @@ class MockRouter {
 
 class MockError {
     json(): Observable<any> {
-        return Observable.of({ 'error': ['Settings cannot be updated'] });
+        return observableOf({ 'error': ['Settings cannot be updated'] });
     }
 }
 
@@ -145,7 +143,7 @@ describe('Test Settings Component', () => {
 
     it('should get test details by id', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         testSettings.getTestById(test.id);
         expect(testSettings.testNameReference).toBe(test.testName);
@@ -154,7 +152,7 @@ describe('Test Settings Component', () => {
 
     it('should check whether the warning time is valid', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         testSettings.isWarningTimeValid();
         expect(testSettings.validTime).toBe(false);
@@ -211,7 +209,7 @@ describe('Test Settings Component', () => {
 
     it('should update the test settings', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.saveTestSettings(test.id, test);
@@ -225,7 +223,7 @@ describe('Test Settings Component', () => {
 
     it('should open the incomplete test creation dialog box asking the user to select sections for the test', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.dialog, 'open').and.callThrough();
         testSettings.testDetails = test;
@@ -236,7 +234,7 @@ describe('Test Settings Component', () => {
 
     it('should open the incomplete test creation dialog box asking the user to select questions for the test', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.dialog, 'open').and.callThrough();
         test.categoryAcList[0] = category;
@@ -248,10 +246,10 @@ describe('Test Settings Component', () => {
 
     it('should launch the test', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         category.numberOfSelectedQuestion = 1;
@@ -266,7 +264,7 @@ describe('Test Settings Component', () => {
 
     it('should not get test details by id', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         router = TestBed.get(Router);
         spyOn(router, 'navigate').and.callFake(function (url: any) {
@@ -281,7 +279,7 @@ describe('Test Settings Component', () => {
 
     it('should not update the changes made in the settings of a test', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.throw(new MockError());
+            return observableThrowError(new MockError());
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.saveTestSettings(test.id, test);
@@ -305,10 +303,10 @@ describe('Test Settings Component', () => {
 
     it('should not launch the test', () => {
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.throw(new MockError());
+            return observableThrowError(new MockError());
         });
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         category.numberOfSelectedQuestion = 1;
@@ -322,7 +320,7 @@ describe('Test Settings Component', () => {
 
     it('should pause the test', () => {
         spyOn(TestService.prototype, 'updateTestPauseResume').and.callFake(() => {
-            return Observable.of(true);
+            return observableOf(true);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.pauseTest();
@@ -332,7 +330,7 @@ describe('Test Settings Component', () => {
 
     it('should not pause the test', () => {
         spyOn(TestService.prototype, 'updateTestPauseResume').and.callFake(() => {
-            return Observable.of(false);
+            return observableOf(false);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.pauseTest();
@@ -357,10 +355,10 @@ describe('Test Settings Component', () => {
 
     it('should resume the test', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.testDetails = test;
@@ -371,10 +369,10 @@ describe('Test Settings Component', () => {
 
     it('should not resume the test', () => {
         spyOn(TestService.prototype, 'getTestById').and.callFake(() => {
-            return Observable.of(test);
+            return observableOf(test);
         });
         spyOn(TestService.prototype, 'updateTestById').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
         spyOn(testSettings.snackbarRef, 'open').and.callThrough();
         testSettings.testDetails = test;
@@ -390,7 +388,7 @@ describe('Test Settings Component', () => {
 
     it('should remove ip address fields', () => {
         spyOn(TestService.prototype, 'deleteTestipAddress').and.callFake(() => {
-            return Observable.of('');
+            return observableOf('');
         });
         testSettings.removeIpAddress(0, testIpAddress.id, testIpAddress.ipAddress);
         expect(TestService.prototype.deleteTestipAddress).toHaveBeenCalled();

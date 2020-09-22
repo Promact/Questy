@@ -1,4 +1,6 @@
-﻿import { CategoryService } from '../categories.service';
+
+import {throwError as observableThrowError, of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { CategoryService } from '../categories.service';
 import { QuestionsService } from '../questions.service';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { async, fakeAsync, inject } from '@angular/core/testing';
@@ -13,15 +15,13 @@ import { HttpService } from '../../core/http.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { SingleMultipleAnswerQuestionComponent } from './questions-single-multiple-answer.component';
-import { Observable } from 'rxjs/Observable';
 import { TinymceModule } from 'angular2-tinymce';
 import { QuestionBase } from '../question';
 import { Category } from '../category.model';
-import { BehaviorSubject } from 'rxjs/Rx';
 import { MockRouteService } from './mock-route.service';
 
 class MockActivatedRoute {
-    params = Observable.of({ 'id': MockTestData[0].id });
+    params = observableOf({ 'id': MockTestData[0].id });
 }
 
 describe('Testing of single-multiple-answer component:-', () => {
@@ -76,7 +76,7 @@ describe('Testing of single-multiple-answer component:-', () => {
     it('getQuestionById', () => {
         singleMultipleComponent.categoryArray = mockData[0].categoryAcList;
         let question = mockData[0].categoryAcList[0].questionList[0];
-        spyOn(QuestionsService.prototype, 'getQuestionById').and.returnValue(Observable.of(question));
+        spyOn(QuestionsService.prototype, 'getQuestionById').and.returnValue(observableOf(question));
         singleMultipleComponent.getQuestionById(question.id);
         expect(singleMultipleComponent.categoryName).toBe(mockData[0].categoryAcList[0].categoryName);
         expect(singleMultipleComponent.noOfOptionShown).toBe(2);
@@ -89,7 +89,7 @@ describe('Testing of single-multiple-answer component:-', () => {
     it('isTwoOptinsSame', () => {
         singleMultipleComponent.categoryArray = mockData[0].categoryAcList;
         let question = mockData[0].categoryAcList[0].questionList[0];
-        spyOn(QuestionsService.prototype, 'getQuestionById').and.returnValue(Observable.of(question));
+        spyOn(QuestionsService.prototype, 'getQuestionById').and.returnValue(observableOf(question));
         singleMultipleComponent.getQuestionById(question.id);
 
         let optionName = mockData[0].categoryAcList[0].questionList[0].singleMultipleAnswerQuestion.singleMultipleAnswerQuestionOption[0].option;
@@ -98,8 +98,8 @@ describe('Testing of single-multiple-answer component:-', () => {
     });
 
     it('save question', () => {
-        spyOn(QuestionsService.prototype, 'addSingleMultipleAnswerQuestion').and.returnValue(Observable.of(true));
-        spyOn(QuestionsService.prototype, 'updateSingleMultipleAnswerQuestion').and.returnValue(Observable.of(true));
+        spyOn(QuestionsService.prototype, 'addSingleMultipleAnswerQuestion').and.returnValue(observableOf(true));
+        spyOn(QuestionsService.prototype, 'updateSingleMultipleAnswerQuestion').and.returnValue(observableOf(true));
         let question: QuestionBase;
         question = new QuestionBase();
         question.question = mockData[0].categoryAcList[0].questionList[0].question;
@@ -116,7 +116,7 @@ describe('Testing of single-multiple-answer component:-', () => {
     });
     it('save question Error handling', () => {
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
-        spyOn(QuestionsService.prototype, 'addSingleMultipleAnswerQuestion').and.returnValue(Observable.throw('Internal server error'));
+        spyOn(QuestionsService.prototype, 'addSingleMultipleAnswerQuestion').and.returnValue(observableThrowError('Internal server error'));
         let question: QuestionBase;
         question = new QuestionBase();
         question.question = mockData[0].categoryAcList[0].questionList[0].question;
@@ -128,7 +128,7 @@ describe('Testing of single-multiple-answer component:-', () => {
 
     it('should return all the categories ', () => {
         spyOn(CategoryService.prototype, 'getAllCategories').and.callFake(() => {
-            return Observable.of(categoryList);
+            return observableOf(categoryList);
         });
         spyOn(singleMultipleComponent, 'showPreSelectedCategoryAndDifficultyLevel');
         singleMultipleComponent.getAllCategories();
@@ -142,7 +142,7 @@ describe('Testing of single-multiple-answer component:-', () => {
 
     it('should throw error if any server error occured while getting all categories', () => {
         spyOn(CategoryService.prototype, 'getAllCategories').and.callFake(() => {
-            return Observable.throw(Error);
+            return observableThrowError(Error);
         });
         spyOn(MdSnackBar.prototype, 'open').and.callThrough();
         singleMultipleComponent.getAllCategories();

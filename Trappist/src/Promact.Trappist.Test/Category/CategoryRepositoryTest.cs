@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;

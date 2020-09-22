@@ -1,4 +1,6 @@
-﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {of as observableOf,  Observable ,  BehaviorSubject } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
@@ -15,10 +17,6 @@ import { testsRouting } from '../../tests/tests.routing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpService } from '../../core/http.service';
 import { MockTestData } from '../../Mock_Data/test_data.mock';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { tick } from '@angular/core/testing';
 import { Location, LocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { NgModule, Input, Output, EventEmitter } from '@angular/core';
@@ -373,32 +371,32 @@ describe('Individual Report Component', () => {
 
     it('should get all the details of the test attendee that are to be displayed in the report', () => {
         spyOn(ReportService.prototype, 'getTestAttendeeById').and.callFake(() => {
-            return Observable.of(testAttendee);
+            return observableOf(testAttendee);
         });
         spyOn(ReportService.prototype, 'getTotalNumberOfAttemptedQuestions').and.callFake(() => {
-            return Observable.of(3);
+            return observableOf(3);
         });
         spyOn(ReportService.prototype, 'getStudentPercentile').and.callFake(() => {
-            return Observable.of(75.5);
+            return observableOf(75.5);
         });
         spyOn(ReportService.prototype, 'getTestAttendeeAnswers').and.callFake(() => {
-            return Observable.of(testAnswersList);
+            return observableOf(testAnswersList);
         });
         spyOn(ReportService.prototype, 'getTestQuestions').and.callFake(() => {
-            return Observable.of(testQuestionsList);
+            return observableOf(testQuestionsList);
         });
         individualReport.testQuestions = testQuestionsList;
         individualReport.testAttendee = testAttendee;
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of('3');
+            return observableOf('3');
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.getTestAttendeeDetails();
         expect(individualReport.testName).toBe(testAttendee.test.testName);
@@ -500,13 +498,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of('3');
+            return observableOf('3');
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.attendeeAnswers();
         expect(individualReport.correctAnswers).toBe(3);
@@ -528,13 +526,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(null);
+            return observableOf(null);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of('-1');
+            return observableOf('-1');
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(null);
+            return observableOf(null);
         });
         individualReport.attendeeAnswers();
         expect(individualReport.correctAnswers).toBe(2);
@@ -554,13 +552,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of(0);
+            return observableOf(0);
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.attendeeAnswers();
         expect(individualReport.correctAnswers).toBe(2);
@@ -583,13 +581,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of(1.5);
+            return observableOf(1.5);
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.attendeeAnswers();
         expect(individualReport.correctAnswers).toBe(2);
@@ -613,13 +611,13 @@ describe('Individual Report Component', () => {
         testAnswers2.answeredOption = 1;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of(1.5);
+            return observableOf(1.5);
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.attendeeAnswers();
         expect(individualReport.correctAnswers).toBe(1);
@@ -638,19 +636,19 @@ describe('Individual Report Component', () => {
 
     it('should get details of the test attendee that are to be displayed in the report', () => {
         spyOn(ReportService.prototype, 'getTestAttendeeById').and.callFake(() => {
-            return Observable.of(testAttendee);
+            return observableOf(testAttendee);
         });
         spyOn(ReportService.prototype, 'getTotalNumberOfAttemptedQuestions').and.callFake(() => {
-            return Observable.of(3);
+            return observableOf(3);
         });
         spyOn(ReportService.prototype, 'getStudentPercentile').and.callFake(() => {
-            return Observable.of(75.5);
+            return observableOf(75.5);
         });
         spyOn(ReportService.prototype, 'getTestAttendeeAnswers').and.callFake(() => {
-            return Observable.of(testAnswersList);
+            return observableOf(testAnswersList);
         });
         spyOn(ReportService.prototype, 'getTestQuestions').and.callFake(() => {
-            return Observable.of(testQuestionsList);
+            return observableOf(testQuestionsList);
         });
         individualReport.testQuestions = testQuestionsList;
         testAttendee.test.incorrectMarks = '0';
@@ -663,13 +661,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of('3');
+            return observableOf('3');
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.getTestAttendeeDetails();
         expect(individualReport.hideSign).toBe(true);
@@ -680,19 +678,19 @@ describe('Individual Report Component', () => {
 
     it('should display time taken in seconds label only', () => {
         spyOn(ReportService.prototype, 'getTestAttendeeById').and.callFake(() => {
-            return Observable.of(testAttendee);
+            return observableOf(testAttendee);
         });
         spyOn(ReportService.prototype, 'getTotalNumberOfAttemptedQuestions').and.callFake(() => {
-            return Observable.of(3);
+            return observableOf(3);
         });
         spyOn(ReportService.prototype, 'getStudentPercentile').and.callFake(() => {
-            return Observable.of(75.5);
+            return observableOf(75.5);
         });
         spyOn(ReportService.prototype, 'getTestAttendeeAnswers').and.callFake(() => {
-            return Observable.of(testAnswersList);
+            return observableOf(testAnswersList);
         });
         spyOn(ReportService.prototype, 'getTestQuestions').and.callFake(() => {
-            return Observable.of(testQuestionsList);
+            return observableOf(testQuestionsList);
         });
         testAttendee.report.timeTakenByAttendee = 61;
         individualReport.testQuestions = testQuestionsList;
@@ -700,13 +698,13 @@ describe('Individual Report Component', () => {
         individualReport.testAttendeeId = testAttendee.id;
         individualReport.testAnswers = testAnswersList;
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionTestCasesDetails').and.callFake(() => {
-            return Observable.of(codeSnippetDetailsArray);
+            return observableOf(codeSnippetDetailsArray);
         });
         spyOn(ReportService.prototype, 'getCodeSnippetQuestionMarks').and.callFake(() => {
-            return Observable.of('3');
+            return observableOf('3');
         });
         spyOn(ReportService.prototype, 'getTestCodeSolutionDetails').and.callFake(() => {
-            return Observable.of(testCodeSolutionDetails);
+            return observableOf(testCodeSolutionDetails);
         });
         individualReport.getTestAttendeeDetails();
         expect(individualReport.timeTakenInHoursVisible).toBe(false);
@@ -716,7 +714,7 @@ describe('Individual Report Component', () => {
 
     it('should navigate the user to the previous individual report', () => {
         spyOn(ReportService.prototype, 'getAttendeeIdList').and.callFake(() => {
-            return Observable.of(testAttendeeIdArray);
+            return observableOf(testAttendeeIdArray);
         });
         individualReport.testAttendeeId = 5;
         individualReport.moveToPreviousIndividualReport();
@@ -730,7 +728,7 @@ describe('Individual Report Component', () => {
 
     it('should not navigate the user to the previous individual report when wrong attendee id given', () => {
         spyOn(ReportService.prototype, 'getAttendeeIdList').and.callFake(() => {
-            return Observable.of(testAttendeeIdArray);
+            return observableOf(testAttendeeIdArray);
         });
         individualReport.testAttendeeId = 7;
         individualReport.moveToPreviousIndividualReport();
@@ -740,7 +738,7 @@ describe('Individual Report Component', () => {
 
     it('should navigate the user to the next individual report', () => {
         spyOn(ReportService.prototype, 'getAttendeeIdList').and.callFake(() => {
-            return Observable.of(testAttendeeIdArray);
+            return observableOf(testAttendeeIdArray);
         });
         individualReport.testAttendeeId = testAttendee1.id;
         individualReport.moveToNextIndividualReport();
@@ -765,7 +763,7 @@ describe('Individual Report Component', () => {
 
     it('should not get valid test attendee id to navigate to next individual report', () => {
         spyOn(ReportService.prototype, 'getAttendeeIdList').and.callFake(() => {
-            return Observable.of(testAttendeeIdArray);
+            return observableOf(testAttendeeIdArray);
         });
         individualReport.testAttendeeId = 7;
         individualReport.moveToPreviousIndividualReport();
