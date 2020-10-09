@@ -1,7 +1,6 @@
 ﻿import { Component } from '@angular/core';
 
-@Component({
-    moduleId: module.id,
+@Component({    
     selector: 'test-conduct-header',
     templateUrl: 'test-conduct-header.html',
 })

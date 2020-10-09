@@ -18,7 +18,7 @@ export class HttpService {
         return this.http.get<T>(url,{headers:this.headers});
     }
 
-    post<T>(url: string, body: T): Observable<T> {               
+    post<T>(url: string, body: any): Observable<T> {               
         return this.http.post<T>(url, body ,{headers:this.headers});
     }
 
