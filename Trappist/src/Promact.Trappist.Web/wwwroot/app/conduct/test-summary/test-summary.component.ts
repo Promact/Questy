@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConductService } from '../conduct.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TestStatus } from '../teststatus.enum';
 import { TestAttendee } from '../../reports/testattendee.model';
 import { Test } from '../../tests/tests.model';
@@ -8,14 +8,12 @@ import { TestAnswer } from '../test_answer.model';
 import { QuestionStatus } from '../question_status.enum';
 import { AllowTestResume } from '../../tests/enum-allowtestresume';
 import { ReportService } from '../../reports/report.service';
-import { MdSnackBar, MdSnackBarRef } from '@angular/material';
-import { Observable, Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TestLogs } from '../../reports/testlogs.model';
 import { ConnectionService } from '../../core/connection.service';
-import * as screenfull from 'screenfull';
+import { Report } from 'app/reports/report.model';
 
-@Component({
-    moduleId: module.id,
+@Component({    
     selector: 'test-summary',
     templateUrl: 'test-summary.html',
 })
@@ -56,8 +54,12 @@ export class TestSummaryComponent implements OnInit {
     isTestBlocked: boolean;
     isTestExpired: boolean;
 
-    constructor(private conductService: ConductService, private route: ActivatedRoute, private router: Router, private reportService: ReportService, private snackbarRef: MdSnackBar, private connectionService: ConnectionService) {
-        this.testAttendee = new TestAttendee();
+    constructor(private readonly  conductService: ConductService, 
+        private readonly  router: Router, 
+        private readonly  reportService: ReportService, 
+        private readonly  snackbarRef: MatSnackBar, 
+        private readonly  connectionService: ConnectionService) {
+        
         this.test = new Test();
         this.testAnswers = new Array<TestAnswer>();
         this.isTimeLeftZero = false;
@@ -77,11 +79,11 @@ export class TestSummaryComponent implements OnInit {
         this.getTotalQuestions();
         this.getTestDetails(this.magicString);
         history.pushState(null, null, null);
-        window.addEventListener('popstate', function (event) {
-            history.pushState(null, null, null);
-        });
+        window.addEventListener('popstate', () => {
+                history.pushState(null, null, null);
+            });
 
-        this.connectionService.recievedAttendee.subscribe(attendee => {
+        this.connectionService.recievedAttendee.subscribe((attendee: { report: Report; }) => {
             this.testAttendee.report = attendee.report;
             this.isAllowed = this.testAttendee.report.isAllowResume;
         });
@@ -101,7 +103,7 @@ export class TestSummaryComponent implements OnInit {
      * Gets the elapsed time of test to calculate the time left of the test
      * @param attendeeId is the Id of the attendee giving the selected test
      */
-    timeLeftOfTest(attendeeId: number) {
+    timeLeftOfTest() {
         this.loader = true;
         this.conductService.getElapsedTime(this.testAttendee.id).subscribe(value => {
             let spanTimeInSeconds = value * 60;
@@ -146,7 +148,7 @@ export class TestSummaryComponent implements OnInit {
             this.numberOfReviewedQuestions = reviewedQuestions.length;
             this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest - this.numberOfAttemptedQuestions - this.numberOfReviewedQuestions;
 
-        }, err => {
+        }, () => {
             this.numberOfUnAttemptedQuestions = this.totalQuestionsInTest;
         });
     }
@@ -191,9 +193,9 @@ export class TestSummaryComponent implements OnInit {
                 this.isTestBlocked = this.testAttendee.report.testStatus === TestStatus.blockedTest;
                 this.isTestExpired = this.testAttendee.report.testStatus === TestStatus.expiredTest;
             }
-            this.timeLeftOfTest(this.testAttendee.id);
+            this.timeLeftOfTest();
             this.isButtonVisible = this.test.allowTestResume === 0 ? false : true;
-        }, err => {
+        }, () => {
             this.router.navigate(['']);
         });
     }
@@ -278,11 +280,11 @@ export class TestSummaryComponent implements OnInit {
             clearInterval(this.clockInterval);
 
         let timeElapsed = this.test.duration * 60 - this.timeLeft;
-        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(x => {
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(() => {
             this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
                 this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
                 this.connectionService.sendReport(response);
-                this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
+                this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(() => {
                     this.router.navigate(['test-end'], { replaceUrl: true });
                     this.loader = false;
                 });
@@ -292,7 +294,7 @@ export class TestSummaryComponent implements OnInit {
 
     endYourTest() {
         this.loader = true;
-        this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(response => {
+        this.reportService.createSessionForAttendee(this.testAttendee, this.test.link, true).subscribe(() => {
             this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
             this.router.navigate(['test-end'], { replaceUrl: true });
             this.loader = false;

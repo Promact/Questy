@@ -1,10 +1,10 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { MdDialogRef, MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { Router } from '@angular/router';
 
 
-@Component({
-    moduleId: module.id,
+@Component({    
     selector: 'tests-programming-guide-dialog',
     templateUrl: 'tests.programming-guide.html'
 })
@@ -15,6 +15,6 @@ export class TestsProgrammingGuideDialogComponent {
     errorMessage: string;
     successMessage: string;
 
-    constructor(public dialog: MdDialogRef<any>, public snackBar: MdSnackBar, private router: Router) {
+    constructor(public dialog: MatDialogRef<any>, public snackBar: MatSnackBar, private router: Router) {
     }
 }

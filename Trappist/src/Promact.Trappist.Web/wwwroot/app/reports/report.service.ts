@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpService } from '../core/http.service';
 import { TestReportComponent } from '../reports/test-report/test-report.component';
+import { Report } from './report.model';
 import { TestAttendee } from './testAttendee';
 
 @Injectable()
@@ -120,7 +121,7 @@ export class ReportService {
         return this.httpService.get(this.reportsApiUrl + '/' + attendeeId + '/' + isTestResume + '/sendRequest');
     }
     getInfoResumeTest(attendeeId: number) {
-        return this.httpService.get(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
+        return this.httpService.get<Report>(this.reportsApiUrl + '/getWindowClose/' + attendeeId);
     }
 
     /**

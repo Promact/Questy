@@ -1,16 +1,14 @@
 
 import {throwError as observableThrowError, of as observableOf,  BehaviorSubject ,  Observable ,  Subscription } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, FormGroup } from '@angular/forms';
-import { MaterialModule, MdDialogRef, OverlayRef, MdDialogModule, MdDialog, MdSnackBar, MdSnackBarRef } from '@angular/material';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import {
     BrowserDynamicTestingModule, platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { QuestionsService } from '../../questions/questions.service';
-import { Http, HttpModule, ResponseOptions, ResponseType } from '@angular/http';
 import { inject } from '@angular/core/testing';
 import { TestQuestion } from '../../tests/tests.model';
 import { testsRouting } from '../../tests/tests.routing';
@@ -49,15 +47,19 @@ import { TestService } from '../../tests/tests.service';
 import { PageNotFoundComponent } from '../../page-not-found/page-not-found.component';
 import { TestComponent } from './test.component';
 import { DifficultyLevel } from '../../questions/enum-difficultylevel';
-import { PopoverModule } from 'ngx-popover';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ClipboardModule } from 'ngx-clipboard';
-import { Md2AccordionModule } from 'md2';
 import { ChartsModule } from 'ng2-charts';
 import {
     FakeTest, FakeAttendee, FakeTestQuestions,
     FakeTestLogs, FakeCodeResponse, FakeResumeData, FakeBundleData
 } from '../../Mock_Data/conduct_data.mock';
 import { ConnectionService } from '../../core/connection.service';
+import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { HttpClientModule } from '@angular/common/http';
 
 class MockRouter {
     navigate() {
@@ -96,7 +98,7 @@ describe('Test Component', () => {
         }
     }
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
 
         TestBed.overrideModule(BrowserDynamicTestingModule, {
             set: {
@@ -114,12 +116,12 @@ describe('Test Component', () => {
                 TestService,
                 HttpService,
                 ConductService,
-                { provide: MdDialogRef, useClass: MockDialog },
+                { provide: MatDialogRef, useClass: MockDialog },
                 { provide: APP_BASE_HREF, useValue: '/' },
                 { provide: window, useClass: MockWindow }
             ],
 
-            imports: [BrowserModule, FormsModule, MaterialModule, RouterModule.forRoot([]), HttpModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, Md2AccordionModule, MdDialogModule, ChartsModule]
+            imports: [BrowserModule, FormsModule, RouterModule.forRoot([]), HttpClientModule, BrowserAnimationsModule, PopoverModule, ClipboardModule, MatExpansionModule, MatDialogModule, ChartsModule]
         }).compileComponents();        
     }));
 

@@ -4,6 +4,12 @@ import { TestAnswer } from './test_answer.model';
 import { TestStatus } from './teststatus.enum';
 import { TestInstructions } from './testInstructions.model';
 import { Observable } from 'rxjs';
+import { TestBundleModel } from './test_bundle_model';
+import { CodeResponse } from './code.response.model';
+import { TestLogs } from 'app/reports/testlogs.model';
+import { SessionData } from './session.model';
+import { TestAttendee } from '../reports/testattendee.model';
+import { Test } from 'app/tests/tests.model';
 
 @Injectable()
 export class ConductService {
@@ -19,7 +25,7 @@ export class ConductService {
      * @param testAttendee-This model object contain test attendee credential which are first name, last name, email, roll number, contact number.
      */
     registerTestAttendee(magicString: any, testAttendee: any) {
-        return this.httpService.post(this.testConductUrl + magicString + '/register', testAttendee);
+        return this.httpService.post<TestAttendee>(this.testConductUrl + magicString + '/register', testAttendee);
     }
 
     /**
@@ -31,7 +37,7 @@ export class ConductService {
     }
 
     getTestBundle(link: string, testTypePreview: boolean) {
-        return this.httpService.get(this.testConductUrl + 'testbundle/' + link + '/' + testTypePreview);
+        return this.httpService.get<TestBundleModel>(this.testConductUrl + 'testbundle/' + link + '/' + testTypePreview);
     }
 
     /**
@@ -54,7 +60,7 @@ export class ConductService {
      * @param testId: Id of Test
      */
     getTestAttendeeByTestId(testId: number, isTestTypePreview: boolean) {
-        return this.httpService.get(this.testConductUrl + 'attendee/' + testId + '/' + isTestTypePreview);
+        return this.httpService.get<TestAttendee>(this.testConductUrl + 'attendee/' + testId + '/' + isTestTypePreview);
     }
 
     /**
@@ -70,7 +76,7 @@ export class ConductService {
      * @param attendeeId : Id of Attendee
      */
     getAnswer(attendeeId: number) {
-        return this.httpService.get(this.testConductUrl + 'answer/' + attendeeId);
+        return this.httpService.get<TestAnswer[]>(this.testConductUrl + 'answer/' + attendeeId);
     }
 
     /**
@@ -86,7 +92,7 @@ export class ConductService {
      * @param attendeeId : Id of Attendee
      */
     getElapsedTime(attendeeId: number) {
-        return this.httpService.get(this.testConductUrl + 'elapsetime/' + attendeeId);
+        return this.httpService.get<number>(this.testConductUrl + 'elapsetime/' + attendeeId);
     }
 
     /**
@@ -113,7 +119,7 @@ export class ConductService {
      * @param body is the object of test logs model
      */
     addTestLogs(attendeeId: number, isCloseWindow: boolean, isTestResume: boolean) {
-        return this.httpService.get(this.testConductUrl + 'testlogs/' + attendeeId + '/' + isCloseWindow + '/' + isTestResume);
+        return this.httpService.get<TestLogs>(this.testConductUrl + 'testlogs/' + attendeeId + '/' + isCloseWindow + '/' + isTestResume);
     }
 
     /**
@@ -121,11 +127,11 @@ export class ConductService {
      * @param testLink is obtained from the route
      */
     getTestSummary(testLink: string) {
-        return this.httpService.get(this.testConductUrl + testLink + '/test-summary');
+        return this.httpService.get<number>(this.testConductUrl + testLink + '/test-summary');
     }
 
     execute(attendeeId: number, runOnlyDefault: boolean, testAnswer: TestAnswer) {
-        return this.httpService.post(this.testConductUrl + 'code/' + runOnlyDefault + '/' + attendeeId, testAnswer);
+        return this.httpService.post<CodeResponse>(this.testConductUrl + 'code/' + runOnlyDefault + '/' + attendeeId, testAnswer);
     }
 
     getTestLogs() {
@@ -133,7 +139,7 @@ export class ConductService {
     }
 
     getTestForSummary(link: string) {
-        return this.httpService.get(this.testConductUrl + 'getTestSummary/' + link);
+        return this.httpService.get<Test>(this.testConductUrl + 'getTestSummary/' + link);
     }
 
     /**
@@ -142,11 +148,11 @@ export class ConductService {
      * @param focusLostCount : number of browser tolerance still left for that particular attendee
      */
     setAttendeeBrowserToleranceValue(attendeeId: number, focusLostCount: number) {
-        return this.httpService.get(this.testConductUrl + attendeeId + '/' + focusLostCount + '/setTolerance');
+        return this.httpService.get<number>(this.testConductUrl + attendeeId + '/' + focusLostCount + '/setTolerance');
     }
 
 
     getSessionPath() {
-        return this.httpService.get(this.testConductUrl + 'getSessionPath');
+        return this.httpService.get<SessionData>(this.testConductUrl + 'getSessionPath');
     }
 }

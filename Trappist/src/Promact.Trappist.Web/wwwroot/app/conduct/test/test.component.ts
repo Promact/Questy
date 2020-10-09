@@ -1,19 +1,17 @@
 
-import {interval as observableInterval,  Observable ,  Subscription } from 'rxjs';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, AfterViewInit, Input } from '@angular/core';
+import {interval as observableInterval,  Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { Test } from '../../tests/tests.model';
-import { TestPreviewComponent } from '../../tests/test-preview/test-preview.compponent';
 import { TestQuestions } from '../test_conduct.model';
 import { TestOrder } from '../../tests/enum-testorder';
 import { SingleMultipleAnswerQuestionOption } from '../../questions/single-multiple-answer-question-option.model';
 import { ConductService } from '../conduct.service';
 import { QuestionStatus } from '../question_status.enum';
 import { QuestionType } from '../../questions/enum-questiontype';
-import { QuestionBase } from '../../questions/question';
 import { TestAttendee } from '../test_attendee.model';
 import { TestAnswer } from '../test_answer.model';
 import { TestStatus } from '../teststatus.enum';
@@ -35,8 +33,7 @@ import { TestService } from '../../tests/tests.service';
 import { ConnectionService } from '../../core/connection.service';
 import { TestBundleModel } from '../test_bundle_model';
 
-@Component({
-    moduleId: module.id,
+@Component({    
     selector: 'test',
     templateUrl: 'test.html',
 })
@@ -84,16 +81,11 @@ export class TestComponent implements OnInit {
 
     private seconds: number;
     private focusLost: number;
-    private tolerance: number;
-    private timeOutCounter: number;
     private resumable: AllowTestResume;
 
     private WARNING_TIME: number = 300;
     private WARNING_MSG: string = 'Hurry up!';
     private TIMEOUT_TIME: number = 10;
-    private ALERT_MARK: string = 'You can\'t mark already answered question.';
-    private ALERT_CLEAR: string = 'You can\'t clear already answered question.';
-    private ALERT_DISQUALIFICATION: string = 'You are disqualified for multiple attempts to loose browser focus.';
     private ALERT_BROWSER_FOCUS_LOST: string = 'Warning: Browser focus was lost.';
     private JAVA_CODE: string = 'import java.io.*;\nimport java.util.*;\nclass Program {//Do not change class name\n' +
     '   public static void main(String[] args) {\n' +
@@ -106,17 +98,16 @@ export class TestComponent implements OnInit {
     private clockIntervalListener: Subscription;
 
     constructor(private router: Router,
-        public dialog: MdDialog,
-        private snackBar: MdSnackBar,
-        private conductService: ConductService,
-        private route: ActivatedRoute,
-        private location: Location,
-        private testService: TestService, private connectionService: ConnectionService) {
+        public readonly dialog: MatDialog,
+        private readonly snackBar: MatSnackBar,
+        private readonly conductService: ConductService,
+        private readonly location: Location,
+        private readonly testService: TestService, 
+        private readonly connectionService: ConnectionService) {
 
         this.languageMode = ['Java', 'Cpp', 'C'];
         this.seconds = 0;
         this.secToTimeString(this.seconds);
-        this.tolerance = 2;
         this.isTestReady = false;
         this.selectedTheme = 'monokai';
         this.timeString = this.secToTimeString(this.seconds);
@@ -160,7 +151,7 @@ export class TestComponent implements OnInit {
         if (link === '' || link === undefined) {
             this.testLink = url.substring(url.indexOf('/conduct/') + 9, url.indexOf('/test'));
             history.pushState(null, null, null);
-            window.addEventListener('popstate', function (event) {
+            window.addEventListener('popstate', function () {
                 history.pushState(null, null, null);
             });
         }
@@ -179,7 +170,6 @@ export class TestComponent implements OnInit {
 
             this.focusLost = this.testAttendee.attendeeBrowserToleranceCount;
             this.seconds = this.test.duration * 60;
-            this.tolerance = this.test.browserTolerance;
             this.WARNING_MSG = this.test.warningMessage;
             this.WARNING_TIME = this.test.warningTime * 60;
             this.resumable = this.test.allowTestResume; 
@@ -216,11 +206,11 @@ export class TestComponent implements OnInit {
             this.isTestReady = true;
             if (this.testTypePreview)
                 this.navigateToQuestionIndex(0);
-            else this.getTestStatus(this.testAttendee.id);
+            else this.getTestStatus();
 
             this.connectionService.registerAttendee(this.testAttendee.id);
             this.clockIntervalListener = this.getClockInterval();
-        }, err => {
+        }, () => {
             window.location.href = window.location.origin + '/pageNotFound';
         });
     }
@@ -313,7 +303,7 @@ export class TestComponent implements OnInit {
      * Gets the TestStatus of Attendee
      * @param attendeeId: Id of Attendee
      */
-    getTestStatus(attendeeId: number) {
+    getTestStatus() {
         this.conductService.getTestStatus(this.testAttendee.id).subscribe((response) => {
             let testStatus = response;
             if (testStatus !== TestStatus.allCandidates) {
@@ -321,7 +311,7 @@ export class TestComponent implements OnInit {
                 this.routeForTestEnd = 'conduct/' + this.testLink;
                 this.router.navigate(['/test-end'], { relativeTo: this.routeForTestEnd, replaceUrl: true });
             }
-            window.addEventListener('online', (event) => {
+            window.addEventListener('online', () => {
                 this.isConnectionLoss = false;
                 this.isTestReady = false;
                 setTimeout(() => {
@@ -343,7 +333,7 @@ export class TestComponent implements OnInit {
                 if (this.clockIntervalListener)
                     this.clockIntervalListener.unsubscribe();
             });
-            window.addEventListener('blur', (event) => { this.clearTime = setTimeout(() => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(event); }, this.test.focusLostTime * 1000); });
+            window.addEventListener('blur', (event) => { this.clearTime = setTimeout(() => { if (this.test.browserTolerance !== 0 && !this.istestEnd) this.windowFocusLost(); }, this.test.focusLostTime * 1000); });
             window.addEventListener('focus', () => { clearTimeout(this.clearTime); });
             window.addEventListener('keydown', (event) => {
                 if (event.ctrlKey) {
@@ -352,9 +342,8 @@ export class TestComponent implements OnInit {
                 }
             });
             this.resumeTest();
-        }, err => {
+        }, () => {
             this.navigateToQuestionIndex(0);
-            this.timeOutCounter = this.TIMEOUT_TIME;
 
         });
     }
@@ -394,13 +383,11 @@ export class TestComponent implements OnInit {
 
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
-            this.timeOutCounter = this.TIMEOUT_TIME;
             this.isInitializing = false;
-        }, err => {
+        }, () => {
             this.connectionService.updateExpectedEndTime(this.test.duration, this.test.id);
             this.getElapsedTime();
             this.navigateToQuestionIndex(0);
-            this.timeOutCounter = this.TIMEOUT_TIME;
             this.isTestReady = true;
             this.isInitializing = false;
         });
@@ -411,7 +398,7 @@ export class TestComponent implements OnInit {
      */
     getElapsedTime() {
         this.conductService.getElapsedTime(this.testAttendee.id).subscribe((response) => {
-            let spanTime = response;
+            const spanTime = response;
             let spanTimeInSeconds = Math.round(spanTime * 60);
             this.seconds -= spanTimeInSeconds;
             this.isTestReady = true;
@@ -491,8 +478,6 @@ export class TestComponent implements OnInit {
         this.markAsSelected(index);
         //Update question index
         this.questionIndex = index;
-        //Reset time counter for question
-        this.timeOutCounter = 0;
     }
 
     runCode(runOnlyDefault: boolean) {
@@ -516,7 +501,6 @@ export class TestComponent implements OnInit {
             solution.questionStatus = QuestionStatus.answered;
             
             this.conductService.execute(this.testAttendee.id, runOnlyDefault, solution).subscribe(res => {
-                let codeResponse = new CodeResponse();
                 this.codeResponse = res;
 
                 if (this.questionStatus !== QuestionStatus.review && !runOnlyDefault && !this.showCustomInput)
@@ -530,7 +514,7 @@ export class TestComponent implements OnInit {
                     this.testAnswers.splice(index, 1);
                 this.testAnswers.push(solution);
                 this.isCodeProcessing = false;
-            }, err => {
+            }, () => {
                 this.codeResponse.message = 'Oops! Server error has occured.';
                 this.isCodeProcessing = false;
             });
@@ -587,7 +571,7 @@ export class TestComponent implements OnInit {
             this.markAsAnswered(questionIndex);
         }
         else {
-            this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe((response) => {
+            this.conductService.addAnswer(this.testAttendee.id, testAnswer).subscribe(() => {
                 this.isTestReady = true;
                 let questionIndex = this.testQuestions.findIndex(x => x.question.question.id === testAnswer.questionId);
                 if (testAnswer.questionStatus === QuestionStatus.answered) {
@@ -596,7 +580,7 @@ export class TestComponent implements OnInit {
                 //call callback method if provided
                 if (_callback)
                     _callback();
-            }, err => {
+            }, () => {
                 this.isTestReady = true;
             });
         }
@@ -764,7 +748,7 @@ export class TestComponent implements OnInit {
      * Increments focus lost counter and shows warning message
      * @param event: Focus event 
      */
-    public windowFocusLost(event: FocusEvent) {
+    public windowFocusLost() {
         this.focusLost += 1;
         let message: string;
         let duration: number = 0;
@@ -824,7 +808,7 @@ export class TestComponent implements OnInit {
      */
     private setElapsedTime(_callback?: any) {
         let timeElapsed = this.test.duration * 60 - this.seconds;
-        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(res => { if (_callback) _callback(); });
+        this.conductService.setElapsedTime(this.testAttendee.id, timeElapsed).subscribe(() => { if (_callback) _callback(); });
     }
 
     /**
@@ -857,12 +841,12 @@ export class TestComponent implements OnInit {
             this.testQuestions[this.questionIndex].questionStatus = this.questionStatus;
             this.addAnswer(this.testQuestions[this.questionIndex], () => {
                 this.isTestReady = false;
-                this.setElapsedTime(x => {
+                this.setElapsedTime(() => {
                     this.closeWindow(testStatus);
                 });
             });
         } else {
-            this.setElapsedTime(x => {
+            this.setElapsedTime(() => {
                 this.closeWindow(testStatus);
             });
         }
@@ -885,7 +869,7 @@ export class TestComponent implements OnInit {
         else if (this.resumable === AllowTestResume.Unsupervised && testStatus !== TestStatus.blockedTest && testStatus !== TestStatus.expiredTest)
             this.router.navigate(['test-summary'], { replaceUrl: true });
         else if (this.resumable === AllowTestResume.Unsupervised && testStatus === TestStatus.blockedTest || testStatus === TestStatus.expiredTest) {
-            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(response => {
+            this.conductService.setTestStatus(this.testAttendee.id, testStatus).subscribe(() => {
                 this.testEnded = true;
                 this.router.navigate(['test-summary'], { replaceUrl: true });
             });
@@ -900,7 +884,7 @@ export class TestComponent implements OnInit {
     * @param routeTo: routing path 
     */
     private openSnackBar(message: string, duration: number = this.defaultSnackBarDuration, enableRouting: boolean = false, routeTo: (string | number)[] = ['']) {
-        let snackBarAction = this.snackBar.open(message, 'Dismiss', {
+        this.snackBar.open(message, 'Dismiss', {
             duration: duration
         });
         if (enableRouting) {

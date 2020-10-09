@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { BrowserTolerance } from '../../tests/enum-browsertolerance';
 import * as screenfull from 'screenfull';
 
-@Component({
-    moduleId: module.id,
+@Component({    
     selector: 'instructions',
     templateUrl: 'instructions.html',
 })

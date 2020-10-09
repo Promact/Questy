@@ -1,4 +1,4 @@
-﻿export class TestAttendee {
+﻿export interface TestAttendee {
     id: number;
     email: string;
     firstName: string;

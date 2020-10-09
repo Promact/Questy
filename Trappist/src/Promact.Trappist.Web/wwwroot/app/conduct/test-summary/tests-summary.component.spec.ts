@@ -5,7 +5,7 @@ import { async, fakeAsync } from '@angular/core/testing';
 import { TestSummaryComponent } from './test-summary.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { Http, HttpModule, XHRBackend } from '@angular/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterModule, Router, ActivatedRoute, Params } from '@angular/router';
 import { MaterialModule, MdDialogModule, MdDialog, MdDialogRef, MdSnackBar, MD_DIALOG_DATA, OverlayRef } from '@angular/material';
 import { MockTestData, MockTestAttendee } from '../../Mock_Data/test_data.mock';
@@ -34,7 +34,7 @@ describe('Test Summary', () => {
 
         TestBed.configureTestingModule({
             declarations: [TestSummaryComponent, TestConductFooterComponent, TestConductHeaderComponent],
-            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpModule, BrowserAnimationsModule, MdDialogModule],
+            imports: [BrowserModule, RouterModule.forRoot([]), FormsModule, MaterialModule, HttpClientModule, BrowserAnimationsModule, MdDialogModule],
             providers: [ConnectionService , ConductService, HttpService, ReportService, ConductService,
                 { provide: APP_BASE_HREF, useValue: '/' },
                 { provide: ActivatedRoute, useClass: MockActivatedRoute },
