@@ -51,7 +51,7 @@ namespace Promact.Trappist.Test.Questions
             string userName = "sandipan@promactinfo.com";
 
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -76,7 +76,7 @@ namespace Promact.Trappist.Test.Questions
         {
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
@@ -94,7 +94,7 @@ namespace Promact.Trappist.Test.Questions
             //Add single answer question
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
@@ -132,7 +132,7 @@ namespace Promact.Trappist.Test.Questions
         {
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
@@ -150,7 +150,7 @@ namespace Promact.Trappist.Test.Questions
             //Add multiple answer question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
@@ -177,8 +177,9 @@ namespace Promact.Trappist.Test.Questions
         public async Task AddCodeSnippetQuestionAsyncTest()
         {
             string userName = "deepankar@promactinfo.com";
+            string name = "Questy Test User";
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = name};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -198,7 +199,7 @@ namespace Promact.Trappist.Test.Questions
             string userName = "deepankar@promactinfo.com";
 
             //Adding Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -259,7 +260,7 @@ namespace Promact.Trappist.Test.Questions
         {
             string userName = "deepankar@promactinfo.com";
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -292,7 +293,8 @@ namespace Promact.Trappist.Test.Questions
             ApplicationUser user = new ApplicationUser()
             {
                 Email = userName,
-                UserName = userName
+                UserName = userName,
+                Name = userName
             };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
@@ -330,7 +332,8 @@ namespace Promact.Trappist.Test.Questions
             ApplicationUser user = new ApplicationUser()
             {
                 Email = userName,
-                UserName = userName
+                UserName = userName,
+                Name = userName
             };
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
@@ -349,7 +352,7 @@ namespace Promact.Trappist.Test.Questions
         public async Task DeleteQuestionTest()
         {
             string userName = "user@domain.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             //Create code-snippet Question
@@ -376,7 +379,7 @@ namespace Promact.Trappist.Test.Questions
         public async Task GetNumberOfQuestionTest()
         {
             string userName = "asif@gmail.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             var codinQuestion = await CreateCodingQuestion();

@@ -103,7 +103,7 @@ namespace Promact.Trappist.Test.Category
         [Fact]
         public async Task IsCategoryExistInQuestionTest()
         {
-            var applicationUser = await CreateUserAsync(_stringConstants.UserName);
+            var applicationUser = await CreateUserAsync(_stringConstants.UserName,_stringConstants.Name);
             var category = CreateCategory();
 
             await CreateSingleAnswerQuestionAsync(category.Id, applicationUser.Id);
@@ -187,10 +187,11 @@ namespace Promact.Trappist.Test.Category
         /// Method to create new user
         /// </summary>
         /// <param name="userName">User name</param>
+        /// <param name="name">Name of the user</param>
         /// <returns>User object</returns>
-        public async Task<ApplicationUser> CreateUserAsync(string userName)
+        public async Task<ApplicationUser> CreateUserAsync(string userName, string name = null)
         {
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = name};
             await _userManager.CreateAsync(user);
             return await _userManager.FindByEmailAsync(user.Email);
         }
