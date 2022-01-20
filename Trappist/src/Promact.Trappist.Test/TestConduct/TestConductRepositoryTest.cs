@@ -685,7 +685,7 @@ namespace Promact.Trappist.Test.TestConduct
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);

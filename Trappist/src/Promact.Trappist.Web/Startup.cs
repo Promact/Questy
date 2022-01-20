@@ -57,7 +57,7 @@ namespace Promact.Trappist.Web
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
+                //builder.AddUserSecrets<Startup>();
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -107,7 +107,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IHttpService, HttpService>();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton(new MapperConfiguration(cfg =>
+            services.AddAutoMapper(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>()
                     .ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore())
@@ -124,25 +124,26 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<Test, TestAC>();
                 cfg.CreateMap<TestAC, Test>();
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
-            }));
-           
+            });
+
             #endregion
 
             #region Options configuration
             services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>()?.Value);
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>()?.Value);
             #endregion
 
             if (Env.IsDevelopment())
             {
                 services.AddMemoryCache();
+                services.AddMiniProfiler().AddEntityFramework();
             }
-            
-            
 
-            services.AddMiniProfiler().AddEntityFramework();
+            services.AddLogging();
+
+            
 
            
 
@@ -155,6 +156,7 @@ namespace Promact.Trappist.Web
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             services.AddSignalR();
+            services.AddDatabaseDeveloperPageExceptionFilter();
             
             services.AddSingleton(typeof(ICacheManagerConfiguration),
                 new CacheManager.Core.ConfigurationBuilder()
@@ -168,12 +170,15 @@ namespace Promact.Trappist.Web
                     .Build());
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostEnvironment env, ILoggingBuilder loggerBuilder, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
         {
-            app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
-
-            loggerBuilder.AddConsole();
-            loggerBuilder.AddDebug();
+            //app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
+            //using (var loggerBuilder = LoggerFactory.Create(builder=> builder.AddConsole().AddDebug()))
+            //{
+                
+            //}
+            //loggerBuilder.AddConsole();
+            //loggerBuilder.AddDebug();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -183,7 +188,7 @@ namespace Promact.Trappist.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                
             }
             else
             {
@@ -208,7 +213,10 @@ namespace Promact.Trappist.Web
                 app.UseMiniProfiler();
             }
 
+            
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<TrappistHub>("/TrappistHub");
@@ -219,7 +227,7 @@ namespace Promact.Trappist.Web
                 endpoints.MapControllerRoute(
                     name: "conduct",
                     pattern: "conduct/{link?}/{route?}",
-                    defaults: new { controller = "Home", action = "Conduct", route = "register" });
+                    defaults: new { controller = "Home", action = "Conduct" });
                 endpoints.MapControllerRoute(
                     name: "setup",
                     pattern: "setup",

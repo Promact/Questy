@@ -66,7 +66,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("testname");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -81,7 +81,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("testname");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -99,7 +99,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("test name");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -119,7 +119,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("AOT 669");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -140,7 +140,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("Computer");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -155,7 +155,7 @@ namespace Promact.Trappist.Test.Tests
         {
             string userName = "dasmadhurima48@gmail.com";
             //Configuring Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -186,12 +186,12 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("Test 1");
             string userName = "asif@gmail.com";
             //Configuring Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
             await _testRepository.PauseResumeTestAsync(test.Id, true);
-            var testObject = _trappistDbContext.Test.FirstOrDefault(x => x.Id == test.Id);
+            var testObject = _trappistDbContext.Test.First(x => x.Id == test.Id);
             Assert.True(testObject.IsPaused);
         }
 
@@ -207,7 +207,7 @@ namespace Promact.Trappist.Test.Tests
             var test = CreateTest("Aptitude");
             var testAttendee = TestAttendee();
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -226,7 +226,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("Aptitude");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -242,7 +242,7 @@ namespace Promact.Trappist.Test.Tests
         {
             var test = CreateTest("Logical");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -278,7 +278,7 @@ namespace Promact.Trappist.Test.Tests
 
             var test = CreateTest("Final");
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -301,7 +301,7 @@ namespace Promact.Trappist.Test.Tests
         public async Task DeselectCategory()
         {    //Created application user    
             string userName = "niharika@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var categoryObj = CreateCategory("category1");
             await _categoryRepository.AddCategoryAsync(categoryObj);
@@ -385,7 +385,7 @@ namespace Promact.Trappist.Test.Tests
 
             var test = CreateTest("Maths");
             string userName = "asif@gmail.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -443,7 +443,7 @@ namespace Promact.Trappist.Test.Tests
             };
             string userName = "asif@gmail.com";
             //Configuring Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -479,7 +479,7 @@ namespace Promact.Trappist.Test.Tests
         public async Task GetTestQuestionByTestIdAsyncTest()
         {
             string userName = "deepankar@promactinfo.com";
-            var user = new ApplicationUser() { Email = userName, UserName = userName };
+            var user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -519,7 +519,7 @@ namespace Promact.Trappist.Test.Tests
         {
             string userName = "asif@gmail.com";
             //Configuring Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -565,7 +565,7 @@ namespace Promact.Trappist.Test.Tests
             testIp.IpAddress = "127.0.0.1";
             testIp.TestId = oldTest.Id;
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(oldTest, applicationUser.Id);

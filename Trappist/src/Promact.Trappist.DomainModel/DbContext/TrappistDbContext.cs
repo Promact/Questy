@@ -31,11 +31,7 @@ namespace Promact.Trappist.DomainModel.DbContext
         }
         #endregion
 
-        #region Protected Methods
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        
 
         /// <summary>
         /// This method used for providing dynamic connection string from user at runtime
@@ -54,10 +50,11 @@ namespace Promact.Trappist.DomainModel.DbContext
             if (!string.IsNullOrEmpty(_connectionString.Value))
                 optionBuilder.UseNpgsql(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             else
-                optionBuilder.UseNpgsql(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionBuilder.UseInMemoryDatabase("questy-app");
+               // optionBuilder.UseNpgsql(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             base.OnConfiguring(optionBuilder);
         }
-        #endregion
+        
 
         public DbSet<Test> Test { get; set; }
         public DbSet<Category> Category { get; set; }
