@@ -5,7 +5,7 @@
         /// property InvalidTestName is called when an invalid test name is entered at the time of test creation      
         string InvalidTestName { get; }
 
-        /// property Success is called when test creation is successfuly done
+        /// property Success is called when test creation is successfully done
         string Success { get; }
 
         #region BasicSetup Constants  
@@ -67,6 +67,11 @@
         /// Property UserName to return "Trappist123@gmail.com" string
         /// </summary>
         string UserName { get; }
+
+        /// <summary>
+        /// Property Name to return "Questy Test User" string
+        /// </summary>
+        string Name { get; }
 
         /// <summary>
         /// Property FailedTosendEmailError is used when mail cannot be send due to server connection problem 

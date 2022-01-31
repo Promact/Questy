@@ -7,24 +7,22 @@ using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.GlobalUtil;
-using Promact.Trappist.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Repository.Questions;
-using AutoMapper;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
 using System;
-using CodeBaseSimulator.Models;
 using Microsoft.EntityFrameworkCore;
+using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Test.Reports
@@ -131,7 +129,7 @@ namespace Promact.Trappist.Test.Reports
         {
             string userName = "asif@gmail.com";
             //Configuring Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -149,7 +147,7 @@ namespace Promact.Trappist.Test.Reports
                 TestId = test.Id,
                 Category = category
             };
-            _trappistDbContext.TestCategory.Add(testCategoryObject);
+            await _trappistDbContext.TestCategory.AddAsync(testCategoryObject);
             await _trappistDbContext.SaveChangesAsync();
             var testQuestionObject1 = new TestQuestion()
             {
@@ -186,8 +184,8 @@ namespace Promact.Trappist.Test.Reports
                 TestAttendeeId = testAttendee.Id,
                 QuestionId = 1
             };
-            _trappistDbContext.TestConduct.Add(testConduct1);
-            _trappistDbContext.TestConduct.Add(testConduct2);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct1);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct2);
             await _trappistDbContext.SaveChangesAsync();
             var testAnswer1 = new TestAnswers()
             {
@@ -199,8 +197,8 @@ namespace Promact.Trappist.Test.Reports
                 AnsweredOption = 4,
                 TestConductId = testConduct2.Id
             };
-            _trappistDbContext.TestAnswers.Add(testAnswer1);
-            _trappistDbContext.TestAnswers.Add(testAnswer2);
+            await _trappistDbContext.TestAnswers.AddAsync(testAnswer1);
+            await _trappistDbContext.TestAnswers.AddAsync(testAnswer2);
             await _trappistDbContext.SaveChangesAsync();
             var testAnswersList = await _reportRepository.GetTestAttendeeAnswers(testAttendee.Id);
             Assert.Equal(2, testAnswersList.Count());
@@ -382,9 +380,9 @@ namespace Promact.Trappist.Test.Reports
                 QuestionId = 1,
                 QuestionStatus = QuestionStatus.review
             };
-            _trappistDbContext.TestConduct.Add(testConduct1);
-            _trappistDbContext.TestConduct.Add(testConduct2);
-            _trappistDbContext.TestConduct.Add(testConduct3);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct1);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct2);
+            await _trappistDbContext.TestConduct.AddAsync(testConduct3);
             await _trappistDbContext.SaveChangesAsync();
             var testAnswer1 = new TestAnswers()
             {
@@ -401,9 +399,9 @@ namespace Promact.Trappist.Test.Reports
                 AnsweredOption = null,
                 TestConductId = testConduct3.Id
             };
-            _trappistDbContext.TestAnswers.Add(testAnswer1);
-            _trappistDbContext.TestAnswers.Add(testAnswer2);
-            _trappistDbContext.TestAnswers.Add(testAnswer3);
+            await _trappistDbContext.TestAnswers.AddAsync(testAnswer1);
+            await _trappistDbContext.TestAnswers.AddAsync(testAnswer2);
+            await _trappistDbContext.TestAnswers.AddAsync(testAnswer3);
             await _trappistDbContext.SaveChangesAsync();
             var numberOfQuestionsAttemptedByAttendee = await _reportRepository.GetAttemptedQuestionsByAttendeeAsync(testAttendee.Id);
             Assert.Equal(2, numberOfQuestionsAttemptedByAttendee);
@@ -649,7 +647,7 @@ namespace Promact.Trappist.Test.Reports
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
@@ -733,7 +731,7 @@ namespace Promact.Trappist.Test.Reports
         /// <param name="testConductId">Test conduct id</param>
         private void AddTestAnswer(TestAnswerAC answer, int testConductId)
         {
-            if (answer.OptionChoice.Count() > 0)
+            if (answer.OptionChoice.Any())
             {
                 foreach (var option in answer.OptionChoice)
                 {

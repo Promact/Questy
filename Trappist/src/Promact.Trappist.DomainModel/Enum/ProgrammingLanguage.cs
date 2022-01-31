@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Promact.Trappist.DomainModel.Enum
+﻿namespace Promact.Trappist.DomainModel.Enum
 {
     public enum ProgrammingLanguage
     {

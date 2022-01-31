@@ -1,7 +1,7 @@
-﻿using CodeBaseSimulator.Models;
-using Promact.Trappist.DomainModel.Enum;
+﻿using Promact.Trappist.DomainModel.Enum;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
 
 namespace Promact.Trappist.DomainModel.ApplicationClasses.TestConduct
 {

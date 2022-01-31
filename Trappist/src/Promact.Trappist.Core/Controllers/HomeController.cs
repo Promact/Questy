@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Promact.Trappist.Repository.BasicSetup;
 using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
-using System.Threading.Tasks;
 
-namespace Promact.Trappist.Web.Controllers
+namespace Promact.Trappist.Core.Controllers
 {
     public class HomeController : Controller
     {
@@ -14,7 +13,7 @@ namespace Promact.Trappist.Web.Controllers
         #region Dependencies
         private readonly IBasicSetupRepository _basicSetup;
         private readonly ITestConductRepository _testConduct;
-        private readonly IStringConstants _stringConstants;
+
         #endregion
         #endregion
 
@@ -23,7 +22,6 @@ namespace Promact.Trappist.Web.Controllers
         {
             _basicSetup = basicSetup;
             _testConduct = testConduct;
-            _stringConstants = stringConstants;
         }
         #endregion
 
@@ -33,8 +31,7 @@ namespace Promact.Trappist.Web.Controllers
         {
             if (_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Setup), "Home");
-            else
-                return View();
+            return View();
         }
 
         public IActionResult Error()
@@ -47,8 +44,7 @@ namespace Promact.Trappist.Web.Controllers
         {
             if (!_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Index), "Home");
-            else
-                return View();
+            return View();
         }
 
         /// <summary>

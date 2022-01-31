@@ -1,9 +1,5 @@
-﻿using EFSecondLevelCache.Core;
-using EFSecondLevelCache.Core.Contracts;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.DomainModel.Models.Category;
@@ -12,7 +8,6 @@ using Promact.Trappist.DomainModel.Models.Report;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Linq;
 using System.Threading;
@@ -36,17 +31,13 @@ namespace Promact.Trappist.DomainModel.DbContext
         }
         #endregion
 
-        #region Protected Methods
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        
 
         /// <summary>
         /// This method used for providing dynamic connection string from user at runtime
         /// </summary>
-        /// <param name="optionBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        /// <param name="optionsBuilder"></param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             /*
             While adding migrations, it checks for configured database, but
@@ -55,14 +46,13 @@ namespace Promact.Trappist.DomainModel.DbContext
             but non empty string. So for that purpose, we are adding fake string. Once db is setup
             it will take connectionstring provided by user
             */
-            var fakeConnectionStringToAddMigrations = "fakeConnectionString";
             if (!string.IsNullOrEmpty(_connectionString.Value))
-                optionBuilder.UseSqlServer(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionsBuilder.UseNpgsql(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             else
-                optionBuilder.UseSqlServer(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
-            base.OnConfiguring(optionBuilder);
+                optionsBuilder.UseInMemoryDatabase("questy-app");
+            base.OnConfiguring(optionsBuilder);
         }
-        #endregion
+        
 
         public DbSet<Test> Test { get; set; }
         public DbSet<Category> Category { get; set; }
@@ -98,15 +88,6 @@ namespace Promact.Trappist.DomainModel.DbContext
 
             var result = base.SaveChanges();
 
-            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
-
-            if (enableCache != null && Convert.ToBoolean(enableCache))
-            {
-                var changedEntityNames = this.GetChangedEntityNames();
-
-                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
-            }
-
             return result;
         }
         /// <summary>
@@ -126,15 +107,6 @@ namespace Promact.Trappist.DomainModel.DbContext
             });
 
             var result = base.SaveChangesAsync(cancellationToken);
-
-            var enableCache = this.GetService<IConfiguration>()["EnableCache"];
-
-            if (enableCache != null && Convert.ToBoolean(enableCache))
-            {
-                var changedEntityNames = this.GetChangedEntityNames();
-
-                this.GetService<IEFCacheServiceProvider>().InvalidateCacheDependencies(changedEntityNames);
-            }
 
             return result;
         }

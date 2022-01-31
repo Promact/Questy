@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using CodeBaseSimulator.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.ApplicationClasses.TestConduct;
@@ -17,14 +15,14 @@ using Promact.Trappist.Repository.TestConduct;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 using Xunit;
 
@@ -687,7 +685,7 @@ namespace Promact.Trappist.Test.TestConduct
             };
             _globalUtil.Setup(x => x.GenerateRandomString(10)).Returns(_stringConstants.MagicString);
             string userName = "suparna@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _testRepository.CreateTestAsync(test, applicationUser.Id);

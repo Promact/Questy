@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
@@ -56,13 +55,11 @@ namespace Promact.Trappist.Repository.Questions
                         question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
                 return await questionList.Include(x => x.Category).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
             }
-            else
-            {
-                foreach (var question in questionList)
-                    if (question.QuestionType != QuestionType.Programming)
-                        question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
-                return await questionList.Include(x => x.Category).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
-            }
+
+            foreach (var question in questionList)
+                if (question.QuestionType != QuestionType.Programming)
+                    question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
+            return await questionList.Include(x => x.Category).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
         }
 
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAc, string userId)
@@ -71,19 +68,17 @@ namespace Promact.Trappist.Repository.Questions
             var singleMultipleAnswerQuestion = _mapper.Map<SingleMultipleAnswerQuestionAC, SingleMultipleAnswerQuestion>(questionAc.SingleMultipleAnswerQuestion);
             question.CreatedByUserId = userId;
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
-            {
-                //Add common question details
-                await _dbContext.Question.AddAsync(question);
-                await _dbContext.SaveChangesAsync();
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            //Add common question details
+            await _dbContext.Question.AddAsync(question);
+            await _dbContext.SaveChangesAsync();
 
-                //Add single/multiple question and option
-                singleMultipleAnswerQuestion.Question = question;
-                singleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption = questionAc.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
-                await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleAnswerQuestion);
-                await _dbContext.SaveChangesAsync();
-                transaction.Commit();
-            }
+            //Add single/multiple question and option
+            singleMultipleAnswerQuestion.Question = question;
+            singleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption = questionAc.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption;
+            await _dbContext.SingleMultipleAnswerQuestion.AddAsync(singleMultipleAnswerQuestion);
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
             return (questionAc);
         }
 
@@ -93,38 +88,36 @@ namespace Promact.Trappist.Repository.Questions
             var question = _mapper.Map<QuestionDetailAC, Question>(questionAc.Question);
             question.CreatedByUserId = userId;
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            //Add common question details
+            await _dbContext.Question.AddAsync(question);
+            await _dbContext.SaveChangesAsync();
+
+            //Add codeSnippet part of question
+            codeSnippetQuestion.Question = question;
+            codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAc.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
+
+            codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x =>
             {
-                //Add common question details
-                await _dbContext.Question.AddAsync(question);
-                await _dbContext.SaveChangesAsync();
+                x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2);
+                x.CreatedDateTime = DateTime.UtcNow;
+            });
 
-                //Add codeSnippet part of question
-                codeSnippetQuestion.Question = question;
-                codeSnippetQuestion.CodeSnippetQuestionTestCases = questionAc.CodeSnippetQuestion.CodeSnippetQuestionTestCases;
+            await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
+            await _dbContext.SaveChangesAsync();
+            var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
 
-                codeSnippetQuestion.CodeSnippetQuestionTestCases.ToList().ForEach(x =>
+            //Map language to codeSnippetQuestion
+            foreach (var language in questionAc.CodeSnippetQuestion.LanguageList)
+            {
+                await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
                 {
-                    x.TestCaseMarks = Math.Round(x.TestCaseMarks, 2);
-                    x.CreatedDateTime = DateTime.UtcNow;
+                    QuestionId = codeSnippetQuestion.Id,
+                    LanguageId = codingLanguages.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                 });
-
-                await _dbContext.CodeSnippetQuestion.AddAsync(codeSnippetQuestion);
-                await _dbContext.SaveChangesAsync();
-                var codingLanguages = await _dbContext.CodingLanguage.ToListAsync();
-
-                //Map language to codeSnippetQuestion
-                foreach (var language in questionAc.CodeSnippetQuestion.LanguageList)
-                {
-                    await _dbContext.QuestionLanguageMapping.AddAsync(new QuestionLanguageMapping
-                    {
-                        QuestionId = codeSnippetQuestion.Id,
-                        LanguageId = codingLanguages.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
-                    });
-                }
-                await _dbContext.SaveChangesAsync();
-                transaction.Commit();
             }
+            await _dbContext.SaveChangesAsync();
+            transaction.Commit();
         }
 
         public async Task<ICollection<string>> GetAllCodingLanguagesAsync()
@@ -156,57 +149,55 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             await _dbContext.SaveChangesAsync();
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            //Handling one to many relationship with TestCase
+            //Finding TestCase to be updated, deleted and added
+            var testCaseToUpdate = updatedTestCase.Where(x => testCases.Any(y => y.Id == x.Id)).ToList();
+            var testCaseToDelete = testCases.Where(x => updatedTestCase.All(y => y.Id != x.Id)).ToList();
+            var testCaseToAdd = updatedTestCase.Where(x => testCases.All(y => y.Id != x.Id)).ToList();
+
+            //Deleting TestCases
+            _dbContext.CodeSnippetQuestionTestCases.RemoveRange(testCaseToDelete);
+            await _dbContext.SaveChangesAsync();
+
+            //Adding TestCases
+            testCaseToAdd.ForEach(x =>
             {
-                //Handling one to many relationship with TestCase
-                //Finding TestCase to be updated, deleted and added
-                var testCaseToUpdate = updatedTestCase.Where(x => testCases.Any(y => y.Id == x.Id)).ToList();
-                var testCaseToDelete = testCases.Where(x => updatedTestCase.All(y => y.Id != x.Id)).ToList();
-                var testCaseToAdd = updatedTestCase.Where(x => testCases.All(y => y.Id != x.Id)).ToList();
+                x.CodeSnippetQuestionId = updatedQuestion.CodeSnippetQuestion.Id;
+                x.Id = 0;
+            });
+            await _dbContext.CodeSnippetQuestionTestCases.AddRangeAsync(testCaseToAdd);
+            await _dbContext.SaveChangesAsync();
 
-                //Deleting TestCases
-                _dbContext.CodeSnippetQuestionTestCases.RemoveRange(testCaseToDelete);
-                await _dbContext.SaveChangesAsync();
+            //Updating TestCases
+            testCaseToUpdate.ForEach(x =>
+            {
+                var testCase = testCases.Single(test => test.Id == x.Id);
+                var testCaseEntry = _dbContext.Entry(testCase);
+                testCaseEntry.CurrentValues.SetValues(x);
+            });
+            await _dbContext.SaveChangesAsync();
 
-                //Adding TestCases
-                testCaseToAdd.ForEach(x =>
+            //Handling many to many relationship entity
+            //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
+            var codingLanguageToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
+            _dbContext.QuestionLanguageMapping.RemoveRange(codingLanguageToRemove);
+
+            var questionLanguageMapping = new List<QuestionLanguageMapping>();
+            var languageList = await _dbContext.CodingLanguage.ToListAsync();
+
+            //Map language to codeSnippetQuestion
+            foreach (var language in questionAc.CodeSnippetQuestion.LanguageList)
+            {
+                questionLanguageMapping.Add(new QuestionLanguageMapping
                 {
-                    x.CodeSnippetQuestionId = updatedQuestion.CodeSnippetQuestion.Id;
-                    x.Id = 0;
+                    QuestionId = updatedQuestion.CodeSnippetQuestion.Id,
+                    LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
                 });
-                await _dbContext.CodeSnippetQuestionTestCases.AddRangeAsync(testCaseToAdd);
-                await _dbContext.SaveChangesAsync();
-
-                //Updating TestCases
-                testCaseToUpdate.ForEach(x =>
-                {
-                    var testCase = testCases.Single(test => test.Id == x.Id);
-                    var testCaseEntry = _dbContext.Entry(testCase);
-                    testCaseEntry.CurrentValues.SetValues(x);
-                });
-                await _dbContext.SaveChangesAsync();
-
-                //Handling many to many relationship entity
-                //Remove all the mapping between CodeSnippetQuestion and CodingLanguage
-                var codingLanguageToRemove = await _dbContext.QuestionLanguageMapping.Where(x => x.QuestionId == updatedQuestion.CodeSnippetQuestion.Id).ToListAsync();
-                _dbContext.QuestionLanguageMapping.RemoveRange(codingLanguageToRemove);
-
-                var questionLanguageMapping = new List<QuestionLanguageMapping>();
-                var languageList = await _dbContext.CodingLanguage.ToListAsync();
-
-                //Map language to codeSnippetQuestion
-                foreach (var language in questionAc.CodeSnippetQuestion.LanguageList)
-                {
-                    questionLanguageMapping.Add(new QuestionLanguageMapping
-                    {
-                        QuestionId = updatedQuestion.CodeSnippetQuestion.Id,
-                        LanguageId = languageList.First(x => x.Language.ToLower().Equals(language.ToLower())).Id
-                    });
-                }
-                updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
-                await _dbContext.SaveChangesAsync();
-                transaction.Commit();
             }
+            updatedQuestion.CodeSnippetQuestion.QuestionLanguangeMapping = questionLanguageMapping;
+            await _dbContext.SaveChangesAsync();
+            transaction.Commit();
         }
 
         public async Task<QuestionAC> GetQuestionByIdAsync(int id)
@@ -263,17 +254,21 @@ namespace Promact.Trappist.Repository.Questions
             updatedQuestion.UpdatedByUserId = userId;
             await _dbContext.SaveChangesAsync();
 
-            using (var transaction = _dbContext.Database.BeginTransaction())
-            {
-                var optionToUpdate = updatedOption.Where(x => singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
-                var optionToDelete = singleMultipleQuestionAnswerOption.Where(x => updatedOption.All(y => y.Id != x.Id)).ToList();
-                var optionToAdd = updatedOption.Where(x => singleMultipleQuestionAnswerOption.All(y => y.Id != x.Id)).ToList();
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            var optionToUpdate = updatedOption.Where(x => singleMultipleQuestionAnswerOption.Any(y => y.Id == x.Id)).ToList();
+            var optionToDelete = singleMultipleQuestionAnswerOption.Where(x => updatedOption.All(y => y.Id != x.Id)).ToList();
+            var optionToAdd = updatedOption.Where(x => singleMultipleQuestionAnswerOption.All(y => y.Id != x.Id)).ToList();
 
-                //Remove options from updated question
+            //Remove options from updated question
+            if (optionToDelete.Any())
+            {
                 _dbContext.SingleMultipleAnswerQuestionOption.RemoveRange(optionToDelete);
                 await _dbContext.SaveChangesAsync();
+            }
 
-                //Add new options to updated question
+            //Add new options to updated question
+            if (optionToAdd.Any())
+            {
                 optionToAdd.ForEach(x =>
                 {
                     x.SingleMultipleAnswerQuestionID = updatedQuestion.SingleMultipleAnswerQuestion.Id;
@@ -281,16 +276,22 @@ namespace Promact.Trappist.Repository.Questions
                 });
                 await _dbContext.SingleMultipleAnswerQuestionOption.AddRangeAsync(optionToAdd);
                 await _dbContext.SaveChangesAsync();
+            }
 
-                //Update options details
+            //Update options details
+            if (optionToUpdate.Any())
+            {
                 optionToUpdate.ForEach(x =>
                 {
-                    var singleMultipleAnswerQuestionOptionEntry = _dbContext.Entry<SingleMultipleAnswerQuestionOption>(singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
+                    var singleMultipleAnswerQuestionOptionEntry =
+                        _dbContext.Entry<SingleMultipleAnswerQuestionOption>(
+                            singleMultipleQuestionAnswerOption.Single(test => test.Id == x.Id));
                     singleMultipleAnswerQuestionOptionEntry.CurrentValues.SetValues(x);
                 });
                 await _dbContext.SaveChangesAsync();
-                transaction.Commit();
             }
+
+            await transaction.CommitAsync();
         }
 
         public async Task<bool> IsQuestionExistInTestAsync(int id)

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Web.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Core.Controllers
@@ -59,8 +58,8 @@ namespace Promact.Trappist.Core.Controllers
                 await _testRepository.CreateTestAsync(test, applicationUser.Id);
                 return Ok(test);
             }
-            else
-                return BadRequest();
+
+            return BadRequest();
         }
 
         /// <summary>
@@ -230,7 +229,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Adds the selected question to TestQuestion Model
         /// </summary>
-        /// <param name="questionToAddTest">List of questions to be added to test</param>
+        /// <param name="questionToAdd"></param>
         /// <param name="testId">id of test in which questions will be added</param>
         /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
@@ -238,11 +237,8 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!ModelState.IsValid && await _testRepository.IsTestAttendeeExistAsync(testId))
                 return BadRequest(ModelState);
-            else
-            {
-                var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
-                return Ok(new { message = message });
-            }
+            var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
+            return Ok(new { message = message });
         }
 
         /// <summary>
@@ -262,11 +258,10 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Duplicate Test
+
         /// <summary>
         /// Duplicates questions,categories and Ip addresses present in the test to be duplicated
         /// </summary>
-        /// <param name="testId">Id of the test that is to be duplicated</param>
-        /// <param name="newtestId">Id of the duplicated Test</param>
         /// <returns>Test object for the duplicated test</returns>
         [HttpPost("{id}/duplicateTest")]
         public async Task<IActionResult> DuplicateTest([FromRoute]int id, [FromBody]Test test)

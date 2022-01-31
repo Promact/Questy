@@ -1,6 +1,4 @@
-﻿using CodeBaseSimulator.Models;
-using EFSecondLevelCache.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
@@ -9,7 +7,6 @@ using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using Promact.Trappist.DomainModel.Models.Report;
-using Promact.Trappist.DomainModel.Models.Test;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.DomainModel.Models.TestLogs;
 using Promact.Trappist.Repository.Questions;
@@ -34,7 +31,6 @@ namespace Promact.Trappist.Repository.TestConduct
         private readonly IConfiguration _configuration;
         private readonly IStringConstants _stringConstants;
         private readonly IHttpService _httpService;
-        private readonly bool _enableCache = false;
         #endregion
         #endregion
 
@@ -52,11 +48,6 @@ namespace Promact.Trappist.Repository.TestConduct
             _configuration = configuration;
             _stringConstants = stringConstants;
             _httpService = httpService;
-
-            if (_configuration["EnableCache"] != null && Convert.ToBoolean(_configuration["EnableCache"]))
-            {
-                _enableCache = true;
-            }
         }
         #endregion
 
@@ -67,14 +58,11 @@ namespace Promact.Trappist.Repository.TestConduct
             await _dbContext.TestAttendees.AddAsync(testAttendee);
             await _dbContext.SaveChangesAsync();
             var testLogsObject = new TestLogs();
-            if (testLogsObject != null)
-            {
-                testLogsObject.TestAttendeeId = testAttendee.Id;
-                testLogsObject.VisitTestLink = DateTime.UtcNow;
-                testLogsObject.FillRegistrationForm = DateTime.UtcNow;
-                await _dbContext.TestLogs.AddAsync(testLogsObject);
-                await _dbContext.SaveChangesAsync();
-            }
+            testLogsObject.TestAttendeeId = testAttendee.Id;
+            testLogsObject.VisitTestLink = DateTime.UtcNow;
+            testLogsObject.FillRegistrationForm = DateTime.UtcNow;
+            await _dbContext.TestLogs.AddAsync(testLogsObject);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> IsTestAttendeeExistAsync(TestAttendees testAttendee, string magicString)
@@ -127,8 +115,8 @@ namespace Promact.Trappist.Repository.TestConduct
             var currentDate = DateTime.UtcNow;
             // if Test is not paused and current date is not greater than EndDate and machine IP address is in the list of test ip addresses of  then it returns true and test link exist otherwise link does not exist
             if (testObject != null && testObject.TestIpAddress.Count != 0)
-                return testObject != null && DateTime.Compare(currentDate, testObject.StartDate) >= 0 && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress.Equals(userIp)) && testObject.IsLaunched;
-            else return testObject != null && DateTime.Compare(currentDate, testObject.StartDate) >= 0 && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.IsLaunched;
+                return DateTime.Compare(currentDate, testObject.StartDate) >= 0 && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.TestIpAddress.Any(x => x.IpAddress.Equals(userIp)) && testObject.IsLaunched;
+            return testObject != null && DateTime.Compare(currentDate, testObject.StartDate) >= 0 && DateTime.Compare(currentDate, testObject.EndDate) < 0 && !testObject.IsPaused && testObject.IsLaunched;
         }
 
         public async Task AddAnswerAsync(int attendeeId, TestAnswerAC answer, double seconds)
@@ -136,25 +124,32 @@ namespace Promact.Trappist.Repository.TestConduct
             var attendeeAnswer = await _dbContext.AttendeeAnswers.Where(x => x.Id == attendeeId).FirstOrDefaultAsync();
 
             if (attendeeAnswer != null)
-            {   
-                var deserializedAnswer = new List<TestAnswerAC>();
+            {
+                List<TestAnswerAC> deserializedAnswer = null;
 
                 if (attendeeAnswer.Answers != null)
                 {
-                    deserializedAnswer = JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers).ToList();
+                    deserializedAnswer = (JsonConvert.DeserializeObject<TestAnswerAC[]>(attendeeAnswer.Answers) ?? Array.Empty<TestAnswerAC>()).ToList();
                 }
 
                 //Remove answer if already exist
-                var answerToUpdate = deserializedAnswer.SingleOrDefault(x => x.QuestionId == answer.QuestionId);
-                if (answerToUpdate != null)
+                if (deserializedAnswer != null)
                 {
-                    deserializedAnswer.Remove(answerToUpdate);
+                    var answerToUpdate = deserializedAnswer.SingleOrDefault(x => x.QuestionId == answer.QuestionId);
+                    if (answerToUpdate != null)
+                    {
+                        deserializedAnswer.Remove(answerToUpdate);
+                    }
                 }
 
                 //Add answer
-                deserializedAnswer.Add(answer);
-                var serializedAnswer = JsonConvert.SerializeObject(deserializedAnswer);
-                attendeeAnswer.Answers = serializedAnswer;
+                if (deserializedAnswer != null)
+                {
+                    deserializedAnswer.Add(answer);
+                    var serializedAnswer = JsonConvert.SerializeObject(deserializedAnswer);
+                    attendeeAnswer.Answers = serializedAnswer;
+                }
+
                 _dbContext.AttendeeAnswers.Update(attendeeAnswer);
 
             }
@@ -227,8 +222,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             if (attendeeAnswer != null)
                 return attendeeAnswer.TimeElapsed;
-            else
-                return 0.0;
+            return 0.0;
         }
 
         public async Task<TestAttendees> SetAttendeeTestStatusAsync(int attendeeId, TestStatus testStatus)
@@ -271,20 +265,11 @@ namespace Promact.Trappist.Repository.TestConduct
         {
             if (isPreview)
                 return true;
-            else
-            {
-                var currentDate = DateTime.UtcNow;
-                var testQuery = _dbContext.Test.Where(x => x.Link == testLink).Select(x => new { x.StartDate, x.EndDate });
+            var currentDate = DateTime.UtcNow;
+            var testQuery = _dbContext.Test.Where(x => x.Link == testLink).Select(x => new { x.StartDate, x.EndDate });
+            var test = await testQuery.SingleAsync();
 
-                if (_enableCache)
-                {
-                    testQuery = testQuery.Cacheable();
-                }
-
-                var test = await testQuery.SingleAsync();
-
-                return currentDate.CompareTo(test.StartDate) >= 0 && currentDate.CompareTo(test.EndDate) <= 0;
-            }
+            return currentDate.CompareTo(test.StartDate) >= 0 && currentDate.CompareTo(test.EndDate) <= 0;
         }
 
         public async Task<CodeResponse> ExecuteCodeSnippetAsync(int attendeeId, bool runOnlyDefault, TestAnswerAC testAnswer)
@@ -442,8 +427,8 @@ namespace Promact.Trappist.Repository.TestConduct
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
-            else
-                return false;
+
+            return false;
         }
 
         public async Task<int> GetTestSummaryDetailsAsync(string testLink)
@@ -559,9 +544,8 @@ namespace Promact.Trappist.Repository.TestConduct
                     {
                         var testAnswers = new TestAnswers();
 
-                        var testConduct = new DomainModel.Models.TestConduct.TestConduct();
                         //Adding attempted Question to TestConduct table
-                        testConduct = new DomainModel.Models.TestConduct.TestConduct()
+                        var testConduct = new DomainModel.Models.TestConduct.TestConduct()
                         {
                             QuestionId = answer.QuestionId,
                             QuestionStatus = answer.QuestionStatus,
@@ -571,7 +555,7 @@ namespace Promact.Trappist.Repository.TestConduct
                         testConductList.Add(testConduct);
 
                         //Adding answer to TestAnswer Table
-                        if (answer.OptionChoice.Count() > 0)
+                        if (answer.OptionChoice.Any())
                         {
                             //A question can have multiple answer
                             foreach (var option in answer.OptionChoice)
@@ -612,7 +596,6 @@ namespace Promact.Trappist.Repository.TestConduct
             decimal fullMarks = 0;
             decimal totalMarks = 0;
             var noOfCorrectAttempts = 0;
-            bool isAnsweredOptionNull = false;
 
             //Gets the list of questions attended by the test attendee and includes the test answers and question details corresponding to the test attendee
             var listOfQuestionsAttendedByTestAttendee = await _dbContext.TestConduct.AsNoTracking().Include(x => x.TestAnswers).Include(x => x.Question).Where(x => x.TestAttendeeId == testAttendeeId).ToListAsync();
@@ -633,7 +616,7 @@ namespace Promact.Trappist.Repository.TestConduct
 
             foreach (var attendedQuestion in listOfQuestionsAttendedByTestAttendee)
             {
-                isAnsweredOptionNull = false;
+                var isAnsweredOptionNull = false;
 
                 //Checks the status of the question attended by the test attendee and continues with the loop if the question status is either unanswered or selected
                 if (attendedQuestion.QuestionStatus == QuestionStatus.unanswered || attendedQuestion.QuestionStatus == QuestionStatus.selected)
@@ -647,7 +630,7 @@ namespace Promact.Trappist.Repository.TestConduct
                     var isAnsweredOptionCorrect = true;
 
                     //Gets the single multiple question details along with the single multiple question options for a question attended by the test attendee when it is not a coding question 
-                    var testConductObject = testConductObjectList.Where(x => x.QuestionId == attendedQuestion.QuestionId).FirstOrDefault();
+                    var testConductObject = testConductObjectList.FirstOrDefault(x => x.QuestionId == attendedQuestion.QuestionId);
 
                     //Gets the options of the single and multiple-answer question attempted by the test attendee
                     var listOfOptions = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList();
@@ -677,7 +660,7 @@ namespace Promact.Trappist.Repository.TestConduct
                             break;
                         }
 
-                        else if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
+                        if (attendedQuestion.Question.QuestionType == QuestionType.Multiple)
                         {
                             //Calculates the number of answers given correctly for multiple-answer question by the test attendee
                             numberOfcorrectOptionsAnsweredByTestAttendee = testConductObject.Question.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.ToList().Find(x => x.Id == answeredOption).IsAnswer ? numberOfcorrectOptionsAnsweredByTestAttendee = numberOfcorrectOptionsAnsweredByTestAttendee + 1 : numberOfcorrectOptionsAnsweredByTestAttendee - 1;

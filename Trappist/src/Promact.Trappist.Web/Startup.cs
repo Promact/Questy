@@ -2,7 +2,6 @@
 using Exceptionless;
 using Promact.Trappist.Core.TrappistHub;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
@@ -33,24 +31,21 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using System.IO;
-using StackExchange.Redis;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json.Serialization;
-using EFSecondLevelCache.Core;
 using CacheManager.Core;
 using System.Threading;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             var builder = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -62,7 +57,7 @@ namespace Promact.Trappist.Web
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
+                //builder.AddUserSecrets<Startup>();
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -77,7 +72,7 @@ namespace Promact.Trappist.Web
         }
         public IConfigurationRoot Configuration { get; }
 
-        public IHostingEnvironment Env { get; set; }
+        public IHostEnvironment Env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -89,7 +84,7 @@ namespace Promact.Trappist.Web
                 .AddEntityFrameworkStores<TrappistDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
             {
@@ -112,7 +107,7 @@ namespace Promact.Trappist.Web
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IHttpService, HttpService>();
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton(new MapperConfiguration(cfg =>
+            services.AddAutoMapper(cfg =>
             {
                 cfg.CreateMap<CodeSnippetQuestionAC, CodeSnippetQuestion>()
                     .ForMember(x => x.CodeSnippetQuestionTestCases, opts => opts.Ignore())
@@ -129,27 +124,28 @@ namespace Promact.Trappist.Web
                 cfg.CreateMap<Test, TestAC>();
                 cfg.CreateMap<TestAC, Test>();
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
-            }));
-           
+            });
+
             #endregion
 
             #region Options configuration
             services.Configure<ConnectionString>(Configuration.GetSection("ConnectionString"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>().Value);
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<ConnectionString>>()?.Value);
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>().Value);
+            services.AddScoped(config => config.GetService<IOptionsSnapshot<EmailSettings>>()?.Value);
             #endregion
 
             if (Env.IsDevelopment())
             {
                 services.AddMemoryCache();
+                services.AddMiniProfiler().AddEntityFramework();
             }
-            
+
+            services.AddLogging();
+
             
 
-            services.AddMiniProfiler().AddEntityFramework();
-
-            services.AddEFSecondLevelCache();
+           
 
             // Add an in-memory cache service provider
             services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));
@@ -159,6 +155,8 @@ namespace Promact.Trappist.Web
                 NullValueHandling = NullValueHandling.Ignore,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
+            services.AddSignalR();
+            services.AddDatabaseDeveloperPageExceptionFilter();
             
             services.AddSingleton(typeof(ICacheManagerConfiguration),
                 new CacheManager.Core.ConfigurationBuilder()
@@ -172,12 +170,15 @@ namespace Promact.Trappist.Web
                     .Build());
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggingBuilder loggerBuilder, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, TrappistDbContext context, ConnectionString connectionString, IMemoryCache cache)
         {
-            app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
-
-            loggerBuilder.AddConsole();
-            loggerBuilder.AddDebug();
+            //app.UseExceptionless(Configuration.GetSection("ExceptionlessKey").Value);
+            //using (var loggerBuilder = LoggerFactory.Create(builder=> builder.AddConsole().AddDebug()))
+            //{
+                
+            //}
+            //loggerBuilder.AddConsole();
+            //loggerBuilder.AddDebug();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -187,7 +188,7 @@ namespace Promact.Trappist.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                
             }
             else
             {
@@ -207,46 +208,44 @@ namespace Promact.Trappist.Web
                 });
             }
 
-            if (/*env.IsDevelopment()*/true)
+            if (env.IsDevelopment())
             {
                 app.UseMiniProfiler();
             }
 
+            
+            app.UseRouting();
             app.UseAuthentication();
-            app.UseSignalR(mapHub =>
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
             {
-                 mapHub.MapHub<TrappistHub>("TrappistHub");
+                endpoints.MapHub<TrappistHub>("/TrappistHub");
+                endpoints.MapControllerRoute(
+                    name: "pagenotfound",
+                    pattern: "pagenotfound",
+                    defaults: new { controller = "Home", action = "PageNotFound" });
+                endpoints.MapControllerRoute(
+                    name: "conduct",
+                    pattern: "conduct/{link?}/{route?}",
+                    defaults: new { controller = "Home", action = "Conduct" });
+                endpoints.MapControllerRoute(
+                    name: "setup",
+                    pattern: "setup",
+                    defaults: new { controller = "Home", action = "Setup" });
+                endpoints.MapControllerRoute(
+                    name: "login",
+                    pattern: "login",
+                    defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapFallbackToController("Index", "Home");
             });
+            
 
             app.UseSession();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "pagenotfound",
-                    template: "pagenotfound",
-                    defaults: new { controller = "Home", action = "PageNotFound" });
-                routes.MapRoute(
-                    name: "conduct",
-                    template: "conduct/{link?}/{route?}",
-                    defaults: new { controller = "Home", action = "Conduct", route = "register" });
-                routes.MapRoute(
-                    name: "setup",
-                    template: "setup",
-                    defaults: new { controller = "Home", action = "Setup" });
-                routes.MapRoute(
-                    name: "login",
-                    template: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
-            
+
             if (!string.IsNullOrEmpty(connectionString.Value))
             {
                 context.Database.Migrate();

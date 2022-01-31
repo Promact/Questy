@@ -6,10 +6,10 @@ using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.Repository.Categories;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.Utility.Constants;
-using Promact.Trappist.Web.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Core.Controllers
 {
@@ -44,7 +44,7 @@ namespace Promact.Trappist.Core.Controllers
         /// Returns added Question
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> AddQuestionAsync([FromBody]QuestionAC questionAC)
+        public async Task<IActionResult> AddQuestionAsync([FromBody] QuestionAC questionAC)
         {
             if (questionAC == null || !ModelState.IsValid || questionAC.Question.CategoryID == 0)
             {
@@ -122,7 +122,7 @@ namespace Promact.Trappist.Core.Controllers
         /// </summary>
         /// <param name="id">Id to delete Question</param>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQuestionAsync([FromRoute]int id)
+        public async Task<IActionResult> DeleteQuestionAsync([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -155,20 +155,13 @@ namespace Promact.Trappist.Core.Controllers
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
 
-            if(categoryId != 0 && !await _categoryRepository.IsCategoryExistAsync(categoryId))
+            if (categoryId != 0 && !await _categoryRepository.IsCategoryExistAsync(categoryId))
             {
                 return NotFound();
             }
 
-            try
-            {
-                if (!difficultyLevel.Equals("All"))
-                {
-                    //Below line will throw an error if the difficulty level is not defined in DifficultyLevel enum
-                    var difficultyLevelCode = (DifficultyLevel)Enum.Parse(typeof(DifficultyLevel), difficultyLevel);
-                }
-            }
-            catch (Exception)
+
+            if (!difficultyLevel.Equals("All") && !Enum.TryParse(difficultyLevel, true, out DifficultyLevel _))
             {
                 return NotFound();
             }
@@ -197,7 +190,7 @@ namespace Promact.Trappist.Core.Controllers
         /// QuestionAC class object
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetQuestionByIdAsync([FromRoute]int id)
+        public async Task<IActionResult> GetQuestionByIdAsync([FromRoute] int id)
         {
             var questionAC = await _questionsRepository.GetQuestionByIdAsync(id);
             if (questionAC == null)

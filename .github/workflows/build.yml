@@ -3,16 +3,27 @@ on:
   push:
     branches:
       - master
+      - development
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
   build:
     name: Build
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            6.0.x
+            5.0.x
+          include-prerelease: true
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -31,12 +42,7 @@ jobs:
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Set Default JDK 11
-        shell: powershell
-        run: |
-          $jdkPath = $env:JAVA_HOME_11_X64
-          Write-Host "##vso[task.setvariable variable=JAVA_HOME]$jdkPath"
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner      
       - name: Install Minicover
         shell: powershell
         run: dotnet tool install minicover      

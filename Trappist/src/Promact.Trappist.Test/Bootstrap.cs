@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Moq;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
@@ -20,7 +16,6 @@ using Promact.Trappist.Utility.EmailServices;
 using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.GlobalUtil;
-using Promact.Trappist.Web.Models;
 using System;
 using Promact.Trappist.DomainModel.ApplicationClasses.Test;
 using System.Collections.Generic;
@@ -29,17 +24,17 @@ using Promact.Trappist.Repository.Reports;
 using Promact.Trappist.DomainModel.Models.Test;
 using Microsoft.Extensions.Configuration;
 using Promact.Trappist.Utility.HttpUtil;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using EFSecondLevelCache.Core;
 using CacheManager.Core;
+using Microsoft.Extensions.Hosting;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Test
 {
     public class Bootstrap
     {
-        public IServiceProvider ServiceProvider { get; private set; }
+        public IServiceProvider ServiceProvider { get; }
 
         public Bootstrap()
         {
@@ -58,9 +53,12 @@ namespace Promact.Trappist.Test
                            .UseInternalServiceProvider(serviceProvider)
                            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                 });
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-               .AddEntityFrameworkStores<TrappistDbContext>()
-               .AddDefaultTokenProviders();
+            
+            
+            
+            
+            services.AddIdentityCore<ApplicationUser>(options => { })
+                .AddEntityFrameworkStores<TrappistDbContext>();
             #endregion
 
             #region Setup parameters
@@ -93,7 +91,7 @@ namespace Promact.Trappist.Test
 
             #region Mocking
             //Mock IHostingEnvironment
-            var hostingEnvironmentMock = new Mock<IHostingEnvironment>();
+            var hostingEnvironmentMock = new Mock<IHostEnvironment>();
             var environmentMockObject = hostingEnvironmentMock.Object;
             services.AddScoped(x => hostingEnvironmentMock);
             services.AddScoped(x => environmentMockObject);
@@ -160,10 +158,9 @@ namespace Promact.Trappist.Test
             });
 
             services.AddSingleton(mapper.CreateMapper());
-            
+
             #endregion
 
-            services.AddEFSecondLevelCache();
 
             // Add an in-memory cache service provider
             services.AddSingleton(typeof(ICacheManager<>), typeof(BaseCacheManager<>));

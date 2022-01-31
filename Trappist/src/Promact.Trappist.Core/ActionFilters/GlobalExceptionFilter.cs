@@ -18,7 +18,8 @@ namespace Promact.Trappist.Core.ActionFilters
         /// <param name="context">context object</param>
         public void OnException(ExceptionContext context)
         {
-            _logger.LogError(context.Exception.ToString());
+            if (_logger.IsEnabled(LogLevel.Error))
+                _logger.LogError(exception: context.Exception, message: context.ExceptionDispatchInfo.ToString());
         }
     }
 }

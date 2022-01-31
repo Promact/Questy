@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using System;
@@ -20,18 +19,15 @@ namespace Promact.Trappist.Core.TrappistHub
 
     public class TrappistHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, Attendee> Attendees
-       = new ConcurrentDictionary<string, Attendee>();
+        private static readonly ConcurrentDictionary<string, Attendee> Attendees = new();
         private readonly ITestConductRepository _testConductRepository;
-        private readonly TrappistDbContext _dbContext;
         private const string ADMIN_GROUP = "__admin";
-        public TrappistHub(ITestConductRepository testConductRepository, TrappistDbContext dbContext)
+        public TrappistHub(ITestConductRepository testConductRepository)
         {
-            _dbContext = dbContext;
             _testConductRepository = testConductRepository;
         }
 
-        public async override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
             string connectionId = Context.ConnectionId;
             Attendees.TryGetValue(connectionId, out Attendee attendee);
@@ -106,23 +102,4 @@ namespace Promact.Trappist.Core.TrappistHub
             return Groups.AddToGroupAsync(Context.ConnectionId, ADMIN_GROUP);
         }
     }
-
-    //public class HubController : Controller
-    //{
-    //    private readonly IStringConstants _stringConstants;
-    //    private readonly TrappistDbContext _dbContext;
-
-    //    public HubController(IStringConstants stringConstants,TrappistDbContext dbContext)
-    //    {
-    //        _stringConstants = stringConstants;
-    //        _dbContext = dbContext;
-    //    }
-
-    //    public void SaveData()
-    //    {
-    //        HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
-    //        _dbContext.TestLogs.
-    //    }
-
-    //}
 }

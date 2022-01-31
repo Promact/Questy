@@ -1,16 +1,15 @@
-﻿
-using Promact.Trappist.Web.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using Promact.Trappist.Utility.EmailServices;
 using System.IO;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using Promact.Trappist.Utility.Constants;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.FileUtil;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
+using Promact.Trappist.DomainModel.Models;
 
 namespace Promact.Trappist.Repository.BasicSetup
 {
@@ -20,7 +19,7 @@ namespace Promact.Trappist.Repository.BasicSetup
         #region Dependencies
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
-        private readonly IHostingEnvironment _environment;
+        private readonly IHostEnvironment _environment;
         private readonly IStringConstants _stringConstants;
         private readonly ConnectionString _connectionString;
         private readonly EmailSettings _emailSettings;
@@ -31,7 +30,7 @@ namespace Promact.Trappist.Repository.BasicSetup
 
         #region Constructor
         public BasicSetupRepository(UserManager<ApplicationUser> userManager, IEmailService emailService,
-            IHostingEnvironment environment, IStringConstants stringConstants,
+            IHostEnvironment environment, IStringConstants stringConstants,
             ConnectionString connectionString, EmailSettings emailSettings, IDbUtility dbUtility, IFileUtility fileUtility)
         {
             _userManager = userManager;
@@ -63,11 +62,9 @@ namespace Promact.Trappist.Repository.BasicSetup
                 response.IsSuccess = SaveSetupParameter(model);
                 return response;
             }
-            else
-            {
-                response.IsSuccess = false;
-                return response;
-            }
+
+            response.IsSuccess = false;
+            return response;
         }
 
         public async Task<bool> ValidateConnectionString(ConnectionString model)

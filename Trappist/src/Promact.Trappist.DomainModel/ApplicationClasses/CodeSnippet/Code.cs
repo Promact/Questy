@@ -1,18 +1,17 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet;
-using Promact.Trappist.DomainModel.Enum;
+﻿using Promact.Trappist.DomainModel.Enum;
 
-namespace CodeBaseSimulator.Models
+namespace Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet
 {
     public class Code
     {
-        public string Key;
+        public string Key { get; set; }
 
-        public string Source;
+        public string Source { get; set; }
 
-        public string Input;
+        public string Input { get; set; }
 
-        public ProgrammingLanguage Language;
+        public ProgrammingLanguage Language { get; set; }
 
-        public CodeResponse CodeResponse;
+        public CodeResponse CodeResponse { get; set; }
     }
 }

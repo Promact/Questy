@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using Promact.Trappist.Repository.Questions;
 using Promact.Trappist.DomainModel.ApplicationClasses.Question;
 using Promact.Trappist.DomainModel.Enum;
-using Promact.Trappist.DomainModel.ApplicationClasses;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Collections.Generic;
-using Promact.Trappist.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Promact.Trappist.DomainModel.Models;
 using Promact.Trappist.Utility.Constants;
 
 namespace Promact.Trappist.Test.Category
@@ -30,7 +29,7 @@ namespace Promact.Trappist.Test.Category
             _questionRepository = _scope.ServiceProvider.GetService<IQuestionRepository>();
             _userManager = _scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
             _stringConstants = _scope.ServiceProvider.GetService<IStringConstants>();
-            ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
+            //ClearDatabase.ClearDatabaseAndSeed(_trappistDbContext);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Promact.Trappist.Test.Category
         [Fact]
         public async Task IsCategoryExistInQuestionTest()
         {
-            var applicationUser = await CreateUserAsync(_stringConstants.UserName);
+            var applicationUser = await CreateUserAsync(_stringConstants.UserName,_stringConstants.Name);
             var category = CreateCategory();
 
             await CreateSingleAnswerQuestionAsync(category.Id, applicationUser.Id);
@@ -125,7 +124,7 @@ namespace Promact.Trappist.Test.Category
             Assert.NotNull(categoryToDelete);
 
             await _categoryRepository.DeleteCategoryAsync(categoryToDelete);
-            Assert.True(_trappistDbContext.Category.Count() == 0);
+            Assert.True(!_trappistDbContext.Category.Any());
         }
 
         /// <summary>
@@ -188,10 +187,11 @@ namespace Promact.Trappist.Test.Category
         /// Method to create new user
         /// </summary>
         /// <param name="userName">User name</param>
+        /// <param name="name">Name of the user</param>
         /// <returns>User object</returns>
-        public async Task<ApplicationUser> CreateUserAsync(string userName)
+        public async Task<ApplicationUser> CreateUserAsync(string userName, string name = null)
         {
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName };
+            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = name};
             await _userManager.CreateAsync(user);
             return await _userManager.FindByEmailAsync(user.Email);
         }

@@ -2,8 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Promact.Trappist.Repository.BasicSetup;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
-using Microsoft.AspNetCore.Hosting;
+
 using Moq;
 using Promact.Trappist.Utility.DbUtil;
 using Promact.Trappist.Utility.FileUtil;
@@ -17,7 +18,7 @@ namespace Promact.Trappist.Test.BasicSetup
         #region Private Variables
         #region Dependencies
         private readonly IBasicSetupRepository _basicSetupRepository;
-        private readonly Mock<IHostingEnvironment> _hostingEnvironmentMock;
+        private readonly Mock<IHostEnvironment> _hostingEnvironmentMock;
         private readonly Mock<IDbUtility> _sqlConnectionMock;
         private readonly Mock<IFileUtility> _fileUtility;
         private readonly Mock<IEmailService> _emailService;
@@ -29,7 +30,7 @@ namespace Promact.Trappist.Test.BasicSetup
         public BasicSetupRepositoryTest(Bootstrap bootstrap) : base(bootstrap)
         {
             _basicSetupRepository = _scope.ServiceProvider.GetService<IBasicSetupRepository>();
-            _hostingEnvironmentMock = _scope.ServiceProvider.GetService<Mock<IHostingEnvironment>>();
+            _hostingEnvironmentMock = _scope.ServiceProvider.GetService<Mock<IHostEnvironment>>();
             _sqlConnectionMock = _scope.ServiceProvider.GetService<Mock<IDbUtility>>();
             _fileUtility = _scope.ServiceProvider.GetService<Mock<IFileUtility>>();
             _emailService = _scope.ServiceProvider.GetService<Mock<IEmailService>>();

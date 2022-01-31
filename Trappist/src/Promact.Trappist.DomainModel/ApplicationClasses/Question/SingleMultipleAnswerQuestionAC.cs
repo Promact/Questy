@@ -1,8 +1,7 @@
-﻿using Promact.Trappist.DomainModel.ApplicationClasses.Question;
+﻿using System.Collections.Generic;
 using Promact.Trappist.DomainModel.Models.Question;
-using System.Collections.Generic;
 
-namespace Promact.Trappist.DomainModel.ApplicationClasses
+namespace Promact.Trappist.DomainModel.ApplicationClasses.Question
 {
     public class SingleMultipleAnswerQuestionAC
     {

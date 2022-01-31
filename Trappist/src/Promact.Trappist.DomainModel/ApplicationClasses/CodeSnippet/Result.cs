@@ -1,15 +1,15 @@
-﻿namespace CodeBaseSimulator.Models
+﻿namespace Promact.Trappist.DomainModel.ApplicationClasses.CodeSnippet
 {
     public class Result
     {
-        public string Output;
+        public string Output { get; set; }
         //In seconds
-        public long RunTime;
+        public long RunTime { get; set; }
 
-        public int CyclicMetrics;
+        public int CyclicMetrics { get; set; }
 
-        public int ExitCode;
+        public int ExitCode { get; set; }
 
-        public long MemoryConsumed;
+        public long MemoryConsumed { get; set; }
     }
 }
