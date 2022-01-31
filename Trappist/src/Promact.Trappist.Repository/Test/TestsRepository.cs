@@ -251,14 +251,11 @@ namespace Promact.Trappist.Repository.Test
             //Returns message that user has not selected any new question 
             if (!testQuestionList.Any() && !isDeleted)
                 return _stringConstants.NoNewChanges;
-            else
-            {
-                _dbContext.TestQuestion.RemoveRange(questionsToBeRemoved);
-                await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
-                await _dbContext.SaveChangesAsync();
-                //Returns success message 
-                return _stringConstants.SuccessfullySaved;
-            }
+            _dbContext.TestQuestion.RemoveRange(questionsToBeRemoved);
+            await _dbContext.TestQuestion.AddRangeAsync(testQuestionList);
+            await _dbContext.SaveChangesAsync();
+            //Returns success message 
+            return _stringConstants.SuccessfullySaved;
         }
         
         public async Task<TestAC> GetTestByIdAsync(int testId, string userId)
@@ -308,8 +305,8 @@ namespace Promact.Trappist.Repository.Test
                 testAcObject.CategoryAcList = categoryListAc;
                 return testAcObject;
             }
-            else
-                return null;
+
+            return null;
         }
 
         public async Task<ICollection<TestConductAC>> GetTestQuestionByTestIdAsync(int testId)

@@ -31,8 +31,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Setup), "Home");
-            else
-                return View();
+            return View();
         }
 
         public IActionResult Error()
@@ -45,8 +44,7 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!_basicSetup.IsFirstTimeUser())
                 return RedirectToAction(nameof(HomeController.Index), "Home");
-            else
-                return View();
+            return View();
         }
 
         /// <summary>

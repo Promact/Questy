@@ -55,13 +55,11 @@ namespace Promact.Trappist.Repository.Questions
                         question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
                 return await questionList.Include(x => x.Category).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
             }
-            else
-            {
-                foreach (var question in questionList)
-                    if (question.QuestionType != QuestionType.Programming)
-                        question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
-                return await questionList.Include(x => x.Category).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
-            }
+
+            foreach (var question in questionList)
+                if (question.QuestionType != QuestionType.Programming)
+                    question.SingleMultipleAnswerQuestion = singleMultipleQuestion.Find(x => x.Id == question.Id);
+            return await questionList.Include(x => x.Category).Where(x => x.Id < id).OrderByDescending(x => x.CreatedDateTime).Take(10).ToListAsync();
         }
 
         public async Task<QuestionAC> AddSingleMultipleAnswerQuestionAsync(QuestionAC questionAc, string userId)

@@ -36,8 +36,8 @@ namespace Promact.Trappist.DomainModel.DbContext
         /// <summary>
         /// This method used for providing dynamic connection string from user at runtime
         /// </summary>
-        /// <param name="optionBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        /// <param name="optionsBuilder"></param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             /*
             While adding migrations, it checks for configured database, but
@@ -46,13 +46,11 @@ namespace Promact.Trappist.DomainModel.DbContext
             but non empty string. So for that purpose, we are adding fake string. Once db is setup
             it will take connectionstring provided by user
             */
-            var fakeConnectionStringToAddMigrations = "fakeConnectionString";
             if (!string.IsNullOrEmpty(_connectionString.Value))
-                optionBuilder.UseNpgsql(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
+                optionsBuilder.UseNpgsql(_connectionString.Value, x => x.MigrationsAssembly("Promact.Trappist.Web"));
             else
-                optionBuilder.UseInMemoryDatabase("questy-app");
-               // optionBuilder.UseNpgsql(fakeConnectionStringToAddMigrations, x => x.MigrationsAssembly("Promact.Trappist.Web"));
-            base.OnConfiguring(optionBuilder);
+                optionsBuilder.UseInMemoryDatabase("questy-app");
+            base.OnConfiguring(optionsBuilder);
         }
         
 
