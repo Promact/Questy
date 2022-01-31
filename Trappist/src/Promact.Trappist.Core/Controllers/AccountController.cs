@@ -191,17 +191,13 @@ namespace Promact.Trappist.Core.Controllers
                 {
                     return RedirectToAction(nameof(ResetPasswordConfirmation), "Account");
                 }
-                else
-                {
-                    ViewBag.LinkError = _stringConstant.InvalidTokenError;
-                    return View(resetPasswordModel);
-                }
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
+
+                ViewBag.LinkError = _stringConstant.InvalidTokenError;
                 return View(resetPasswordModel);
             }
+
+            ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
+            return View(resetPasswordModel);
         }
 
         /// <summary>

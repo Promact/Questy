@@ -70,22 +70,18 @@ namespace Promact.Trappist.Core.Controllers
             }
 
             //If attendee exist
-            else
-            {
-                var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(dbTestAttendee.Id);
 
-                //Then check his status
-                if (testStatus != TestStatus.AllCandidates)
-                {
-                    return NotFound();
-                }
-                //If status is first one then just set session and return him
-                else
-                {
-                    _httpContextAccessor.HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, dbTestAttendee.Id);
-                    return Ok(testAttendee);
-                }
+            var testStatus = await _testConductRepository.GetAttendeeTestStatusAsync(dbTestAttendee.Id);
+
+            //Then check his status
+            if (testStatus != TestStatus.AllCandidates)
+            {
+                return NotFound();
             }
+            //If status is first one then just set session and return him
+
+            _httpContextAccessor.HttpContext.Session.SetInt32(_stringConstants.AttendeeIdSessionKey, dbTestAttendee.Id);
+            return Ok(testAttendee);
         }
 
         /// <summary>
@@ -238,7 +234,7 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            if (isPreview == false)
+            if (!isPreview)
             {
                 await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
@@ -249,7 +245,7 @@ namespace Promact.Trappist.Core.Controllers
                 }
             }
             var testDetails = await _testRepository.GetTestByLinkAsync(link);
-            if (isPreview == false)
+            if (!isPreview)
                 await _testRepository.SetStartTestLogAsync(attendeeId);
             return Ok(testDetails);
         }
@@ -373,7 +369,7 @@ namespace Promact.Trappist.Core.Controllers
                 return false;
             }
 
-            else if (session.Value == attendeeId && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
+            if (session.Value == attendeeId && await _testConductRepository.IsTestAttendeeExistByIdAsync(attendeeId))
             {
                 return true;
             }
@@ -394,8 +390,7 @@ namespace Promact.Trappist.Core.Controllers
             var response = await _testConductRepository.AddTestLogsAsync(attendeeId, isCloseWindow, isTestResume);
             if (!response)
                 return NotFound();
-            else
-                return Ok(true);
+            return Ok(true);
         }
 
         [HttpGet("testlogs")]
@@ -445,7 +440,7 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            if (isPreview == false)
+            if (!isPreview)
             {
                 await _httpContextAccessor.HttpContext.Session.LoadAsync();
 
@@ -473,7 +468,7 @@ namespace Promact.Trappist.Core.Controllers
                 return NotFound();
             }
 
-            if (isPreview == false)
+            if (!isPreview)
                 await _testRepository.SetStartTestLogAsync(attendeeId);
 
             var questions = await _testRepository.GetTestQuestionByTestIdAsync(testDetails.Id);

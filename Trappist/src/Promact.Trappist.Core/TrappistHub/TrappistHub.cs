@@ -19,8 +19,7 @@ namespace Promact.Trappist.Core.TrappistHub
 
     public class TrappistHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, Attendee> Attendees
-       = new ConcurrentDictionary<string, Attendee>();
+        private static readonly ConcurrentDictionary<string, Attendee> Attendees = new();
         private readonly ITestConductRepository _testConductRepository;
         private const string ADMIN_GROUP = "__admin";
         public TrappistHub(ITestConductRepository testConductRepository)
@@ -103,23 +102,4 @@ namespace Promact.Trappist.Core.TrappistHub
             return Groups.AddToGroupAsync(Context.ConnectionId, ADMIN_GROUP);
         }
     }
-
-    //public class HubController : Controller
-    //{
-    //    private readonly IStringConstants _stringConstants;
-    //    private readonly TrappistDbContext _dbContext;
-
-    //    public HubController(IStringConstants stringConstants,TrappistDbContext dbContext)
-    //    {
-    //        _stringConstants = stringConstants;
-    //        _dbContext = dbContext;
-    //    }
-
-    //    public void SaveData()
-    //    {
-    //        HttpContext.Session.GetInt32(_stringConstants.AttendeeIdSessionKey);
-    //        _dbContext.TestLogs.
-    //    }
-
-    //}
 }

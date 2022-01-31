@@ -316,8 +316,8 @@ namespace Promact.Trappist.Repository.Reports
                 await _dbContext.SaveChangesAsync();
                 return attendee;
             }
-            else
-                return null;
+
+            return null;
         }
 
         public async Task SetWindowCloseAsync(int attendeeId, bool isTestResume)

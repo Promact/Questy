@@ -58,8 +58,8 @@ namespace Promact.Trappist.Core.Controllers
                 await _testRepository.CreateTestAsync(test, applicationUser.Id);
                 return Ok(test);
             }
-            else
-                return BadRequest();
+
+            return BadRequest();
         }
 
         /// <summary>
@@ -237,11 +237,8 @@ namespace Promact.Trappist.Core.Controllers
         {
             if (!ModelState.IsValid && await _testRepository.IsTestAttendeeExistAsync(testId))
                 return BadRequest(ModelState);
-            else
-            {
-                var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
-                return Ok(new { message = message });
-            }
+            var message = await _testRepository.AddTestQuestionsAsync(questionToAdd, testId);
+            return Ok(new { message = message });
         }
 
         /// <summary>
