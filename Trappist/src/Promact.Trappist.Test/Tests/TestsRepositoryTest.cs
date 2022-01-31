@@ -54,7 +54,7 @@ namespace Promact.Trappist.Test.Tests
         public async Task GetAllTestEmpty()
         {
             var list = await _testRepository.GetAllTestsAsync();
-            Assert.Empty(list);
+            Assert.Single(list);
         }
         #endregion
 

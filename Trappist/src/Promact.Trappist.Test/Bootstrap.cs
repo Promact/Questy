@@ -137,7 +137,7 @@ namespace Promact.Trappist.Test
 
             #region Auto Mapper Configuration
 
-            var mapper = new MapperConfiguration(cfg =>
+            new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Question, QuestionDetailAC>();
                 cfg.CreateMap<ICollection<Question>, ICollection<QuestionAC>>();
@@ -158,8 +158,6 @@ namespace Promact.Trappist.Test
                 cfg.CreateMap<CategoryAC, DomainModel.Models.Category.Category>();
                 cfg.CreateMap<TestIpAddress, TestIpAddressAC>();
             });
-
-            services.AddSingleton(mapper.CreateMapper());
             
             #endregion
 
