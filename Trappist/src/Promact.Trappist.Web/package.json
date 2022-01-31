@@ -41,7 +41,7 @@
     "systemjs": "0.19.40",
     "tinymce": "^4.6.4",
     "web-animations-js": "^2.3.1",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular/compiler-cli": "5.2.11",
