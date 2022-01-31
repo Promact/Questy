@@ -92,8 +92,7 @@ namespace Promact.Trappist.Web
             {
                 options.ListenAnyIP(5001, (cfg) =>
                 {
-                    cfg.Protocols = HttpProtocols.Http3;
-                    cfg.UseHttps();
+                    cfg.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
                 });
             });
 

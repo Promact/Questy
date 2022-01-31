@@ -3,8 +3,9 @@ using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
 using System;
-using System.Data.SqlClient;
+
 using System.Threading.Tasks;
+using Npgsql;
 
 namespace Promact.Trappist.Utility.DbUtil
 {
@@ -29,18 +30,16 @@ namespace Promact.Trappist.Utility.DbUtil
             try
             {
                 //For building a connection string
-                var builder = new SqlConnectionStringBuilder(model.Value);
-                using (var conn = new SqlConnection(GetConnectionString(builder)))
+                var builder = new NpgsqlConnectionStringBuilder(model.Value);
+                await using var conn = new NpgsqlConnection(GetConnectionString(builder));
+                try
                 {
-                    try
-                    {
-                        await conn.OpenAsync();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
+                    await conn.OpenAsync();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
             catch (Exception)
@@ -60,12 +59,11 @@ namespace Promact.Trappist.Utility.DbUtil
         /// </summary>
         /// <param name="connectionString"></param>
         /// <returns>It returns the connection string without database </returns>
-        private string GetConnectionString(SqlConnectionStringBuilder connectionString)
+        private string GetConnectionString(NpgsqlConnectionStringBuilder connectionString)
         {
-            if (connectionString.IntegratedSecurity)
-                return string.Format("Data Source={0};Trusted_Connection={1}", connectionString.DataSource, connectionString.IntegratedSecurity);
-            else
-                return string.Format("Data Source={0};User Id={1};Password={2}", connectionString.DataSource, connectionString.UserID, connectionString.Password);
+            //Server=localhost;Port=5432;Database=questy-prod;User Id=postgres;Password=1b0d3bbf22eb4bf7be446ef03ebc0ad1;
+            return
+                    $"User Id={connectionString.Username};Password={connectionString.Password};Server={connectionString.Host}";
         }
         #endregion
     }
