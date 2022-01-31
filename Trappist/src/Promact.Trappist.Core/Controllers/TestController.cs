@@ -229,7 +229,7 @@ namespace Promact.Trappist.Core.Controllers
         /// <summary>
         /// Adds the selected question to TestQuestion Model
         /// </summary>
-        /// <param name="questionToAddTest">List of questions to be added to test</param>
+        /// <param name="questionToAdd"></param>
         /// <param name="testId">id of test in which questions will be added</param>
         /// <returns>String message if successfull</returns>
         [HttpPost("questions/{testId}")]
@@ -261,11 +261,10 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Duplicate Test
+
         /// <summary>
         /// Duplicates questions,categories and Ip addresses present in the test to be duplicated
         /// </summary>
-        /// <param name="testId">Id of the test that is to be duplicated</param>
-        /// <param name="newtestId">Id of the duplicated Test</param>
         /// <returns>Test object for the duplicated test</returns>
         [HttpPost("{id}/duplicateTest")]
         public async Task<IActionResult> DuplicateTest([FromRoute]int id, [FromBody]Test test)

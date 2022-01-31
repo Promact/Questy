@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Models.TestConduct;
 using Promact.Trappist.Repository.TestConduct;
 using System;
@@ -23,15 +22,13 @@ namespace Promact.Trappist.Core.TrappistHub
         private static readonly ConcurrentDictionary<string, Attendee> Attendees
        = new ConcurrentDictionary<string, Attendee>();
         private readonly ITestConductRepository _testConductRepository;
-        private readonly TrappistDbContext _dbContext;
         private const string ADMIN_GROUP = "__admin";
-        public TrappistHub(ITestConductRepository testConductRepository, TrappistDbContext dbContext)
+        public TrappistHub(ITestConductRepository testConductRepository)
         {
-            _dbContext = dbContext;
             _testConductRepository = testConductRepository;
         }
 
-        public async override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
             string connectionId = Context.ConnectionId;
             Attendees.TryGetValue(connectionId, out Attendee attendee);

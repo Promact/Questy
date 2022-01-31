@@ -23,7 +23,12 @@ namespace Promact.Trappist.Core.Controllers
         #endregion
 
         #region Constructor
-        public AccountController(IStringConstants stringConstant, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEmailService emailService, EmailSettings emailSettings, IBasicSetupRepository basicSetupRepository)
+        public AccountController(IStringConstants stringConstant, 
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, 
+            IEmailService emailService, 
+            EmailSettings emailSettings, 
+            IBasicSetupRepository basicSetupRepository)
         {
             _stringConstant = stringConstant;
             _userManager = userManager;
@@ -64,22 +69,18 @@ namespace Promact.Trappist.Core.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, isPersistent: false, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, false, true);
                 if (result.Succeeded)
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                else
-                {
-                    ViewBag.Error = _stringConstant.InvalidLoginError;
-                    return View(loginModel);
-                }
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
+
+                ViewBag.Error = _stringConstant.InvalidLoginError;
                 return View(loginModel);
             }
+
+            ModelState.AddModelError(string.Empty, _stringConstant.InvalidModelError);
+            return View(loginModel);
         }
 
         /// <summary>
@@ -93,10 +94,8 @@ namespace Promact.Trappist.Core.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
         #endregion
 
@@ -130,7 +129,7 @@ namespace Promact.Trappist.Core.Controllers
                     return View("ForgotPassword");
                 }
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, HttpContext.Request.Scheme);
                 var result = await _emailService.SendMailAsync(to: user.Email, from: _emailSettings.UserName,
                      body: $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>",
                     subject: "Reset Password");
@@ -190,7 +189,7 @@ namespace Promact.Trappist.Core.Controllers
                 var result = await _userManager.ResetPasswordAsync(currentUser, resetPasswordModel.Code, resetPasswordModel.ConfirmPassword);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                    return RedirectToAction(nameof(ResetPasswordConfirmation), "Account");
                 }
                 else
                 {

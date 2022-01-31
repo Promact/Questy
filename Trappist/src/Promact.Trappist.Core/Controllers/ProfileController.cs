@@ -75,7 +75,7 @@ namespace Promact.Trappist.Core.Controllers
                 ModelState.AddModelError("error", _stringConstant.InvalidOldPasswordError);
                 return BadRequest(ModelState);
             }
-            return Ok(result);
+            return Ok(true);
         }
 
         /// <summary>
