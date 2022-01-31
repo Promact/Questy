@@ -161,14 +161,6 @@ namespace Promact.Trappist.Test.Tests
 
             var category = CreateCategory("category Name");
             await _categoryRepository.AddCategoryAsync(category);
-            var testCategoryAC = new List<TestCategoryAC>
-            {
-                new TestCategoryAC()
-                {
-                    CategoryId=category.Id,
-                    IsSelect=true,
-                }
-            };
             //Creating Test
             var test = CreateTest("English");
             await _testRepository.CreateTestAsync(test, applicationUser.Id);
