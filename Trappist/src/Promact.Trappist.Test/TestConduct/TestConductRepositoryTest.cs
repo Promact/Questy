@@ -300,8 +300,10 @@ namespace Promact.Trappist.Test.TestConduct
             //AttendeeAnswer entry will be updated with elapsed time
             await _testConductRepository.SetElapsedTimeAsync(attendeeId, 12, false);
 
+            await _testConductRepository.SetElapsedTimeAsync(attendeeId, 20, true);
+
             var attendeeAnswer = await _trappistDbContext.AttendeeAnswers.FindAsync(attendeeId);
-            //Assert.NotNull(attendeeAnswer.TimeElapsed);
+            Assert.NotNull(attendeeAnswer);
         }
 
         /// <summary>

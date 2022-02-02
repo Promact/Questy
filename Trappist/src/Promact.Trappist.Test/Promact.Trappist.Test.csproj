@@ -19,6 +19,8 @@
 
   <ItemGroup>
   
+    <PackageReference Include="altcover" Version="8.2.835" />
+  
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   
     <PackageReference Include="CacheManager.Core" Version="1.2.0" />

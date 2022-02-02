@@ -277,3 +277,4 @@ package-lock.json
 **/logs/
 
 **/coverage/
+Trappist/src/Promact.Trappist.Test/coverage.xml

@@ -1,4 +1,5 @@
-﻿using Promact.Trappist.DomainModel.DbContext;
+﻿using System.Diagnostics.CodeAnalysis;
+using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Enum;
 using Promact.Trappist.DomainModel.Models.Question;
 using System.Linq;
@@ -6,8 +7,9 @@ using System.Linq;
 namespace Promact.Trappist.DomainModel.Seed
 { 
     /// <summary>
-    /// Polpulates pre-required table
+    /// Populates pre-required table
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class SeedDatabaseExtensions
     {
         /// <summary>
@@ -21,14 +23,14 @@ namespace Promact.Trappist.DomainModel.Seed
                 return;
             }
 
-            var Languages = new CodingLanguage[]
+            var languages = new CodingLanguage[]
             {
-                new CodingLanguage {Language = ProgrammingLanguage.Java.ToString()},
-                new CodingLanguage {Language = ProgrammingLanguage.Cpp.ToString()},
-                new CodingLanguage {Language = ProgrammingLanguage.C.ToString()}
+                new() {Language = ProgrammingLanguage.Java.ToString()},
+                new() {Language = ProgrammingLanguage.Cpp.ToString()},
+                new() {Language = ProgrammingLanguage.C.ToString()}
             };
 
-            foreach(CodingLanguage language in Languages)
+            foreach(CodingLanguage language in languages)
             {
                 context.CodingLanguage.Add(language);
             }
