@@ -47,6 +47,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
+          mkdir coverage
           cd .\Trappist
           ..\.sonar\scanner\dotnet-sonarscanner begin /k:"Promact_Questy" `
           /o:"promact-infotech" `
@@ -56,5 +57,9 @@ jobs:
           /d:sonar.cs.opencover.reportsPaths=**/coverage.xml `
           /d:sonar.sources="./src/"
           dotnet build                
-          dotnet test --no-build /p:AltCover=True          
+          dotnet test --no-build /p:AltCover=True /p:AltCoverLcovReport=../coverage/lcov.info          
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

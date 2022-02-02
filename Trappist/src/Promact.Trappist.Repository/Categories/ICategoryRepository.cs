@@ -15,9 +15,9 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to add Category
         /// </summary>
-        /// <param name="catagory">Category object</param>
+        /// <param name="category">Category object</param>
         /// <returns>Category object</returns>
-        Task AddCategoryAsync(Category catagory);
+        Task AddCategoryAsync(Category category);
 
         /// <summary>
         /// Method to update Category
@@ -51,7 +51,7 @@ namespace Promact.Trappist.Repository.Categories
         /// <summary>
         /// Method to delete Category
         /// </summary>
-        /// <param name="catagory">Category object</param>
+        /// <param name="category"></param>
         Task DeleteCategoryAsync(Category category);
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Promact.Trappist.Repository.Categories
         /// </summary>
         /// <param name="categoryId">Id to check Category</param>
         /// <returns>True if exist else false</returns>
-        Task<bool> IsCategoryExistInQuestionAsync(int id);
+        Task<bool> IsCategoryExistInQuestionAsync(int categoryId);
 
         /// <summary>
         /// Method to check Category exist in Test or not

@@ -52,9 +52,9 @@ namespace Promact.Trappist.Repository.Categories
             return await _dbContext.Category.AnyAsync(x => x.CategoryName.ToLowerInvariant().Equals(categoryName.ToLowerInvariant()) && x.Id != id);
         }
 
-        public async Task<bool> IsCategoryExistAsync(int id)
+        public async Task<bool> IsCategoryExistAsync(int categoryId)
         {
-            return await _dbContext.Category.AnyAsync(x => x.Id == id);
+            return await _dbContext.Category.AnyAsync(x => x.Id == categoryId);
         }
 
         public async Task DeleteCategoryAsync(Category category)
@@ -63,9 +63,9 @@ namespace Promact.Trappist.Repository.Categories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> IsCategoryExistInQuestionAsync(int id)
+        public async Task<bool> IsCategoryExistInQuestionAsync(int categoryId)
         {
-            return await _dbContext.Question.AnyAsync(x => x.CategoryID == id);
+            return await _dbContext.Question.AnyAsync(x => x.CategoryID == categoryId);
         }
 
         public async Task<bool> IsCategoryExistInTestAsync(int categoryId)
