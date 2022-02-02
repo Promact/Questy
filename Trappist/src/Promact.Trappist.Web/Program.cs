@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore;
 using Serilog;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Serilog.Events;
@@ -10,6 +11,7 @@ namespace Promact.Trappist.Web
 {
     public class Program
     {
+        [ExcludeFromCodeCoverage]
         public static int Main(string[] args)
         {
             try
@@ -31,33 +33,7 @@ namespace Promact.Trappist.Web
             }
         }
 
-        //public static IWebHost BuildWebHost(string[] args)
-        //{
-        //    var webHostBuilder = WebHost.CreateDefaultBuilder(args)
-        //            .UseStartup<Startup>()
-        //            .UseSerilog((hostingContext, loggerConfiguration) =>
-        //            {
-        //                loggerConfiguration.Enrich.FromLogContext();
-        //                loggerConfiguration.WriteTo.Console();
-
-        //                //Just console logs (min level: debug) for development environment
-        //                if (hostingContext.HostingEnvironment.IsDevelopment())
-        //                {
-        //                    loggerConfiguration.MinimumLevel.Debug()
-        //                .MinimumLevel.Override("Microsoft", LogEventLevel.Information);
-        //                }
-
-        //                //(min level: warning) for production environment
-        //                else
-        //                {
-        //                    loggerConfiguration.MinimumLevel.Warning();
-        //                }
-        //            });
-
-        //    return webHostBuilder.Build();
-        //}
-
-
+        [ExcludeFromCodeCoverage]
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             var webHostBuilder = WebHost.CreateDefaultBuilder(args)

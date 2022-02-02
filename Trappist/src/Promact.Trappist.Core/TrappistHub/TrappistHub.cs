@@ -4,24 +4,17 @@ using Promact.Trappist.Repository.TestConduct;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Promact.Trappist.Core.TrappistHub
 {
-    public class Attendee
-    {
-        public int AttendeeId { get; set; }
-        public DateTime StartDate { get; set; }
-        public HashSet<string> ConnectionIds { get; set; }
-        public bool IsAttendeeReset { get; set; }
-    }
-
-
+    [ExcludeFromCodeCoverage]
     public class TrappistHub : Hub
     {
         private static readonly ConcurrentDictionary<string, Attendee> Attendees = new();
         private readonly ITestConductRepository _testConductRepository;
-        private const string ADMIN_GROUP = "__admin";
+        private const string AdminGroup = "__admin";
         public TrappistHub(ITestConductRepository testConductRepository)
         {
             _testConductRepository = testConductRepository;
@@ -94,12 +87,12 @@ namespace Promact.Trappist.Core.TrappistHub
         public async Task<Task> GetExpectedEndTime(double duration, int testId)
         {
             var expectedTimeString = await _testConductRepository.GetExpectedTestEndTime(duration, testId);
-            return Clients.Group(ADMIN_GROUP).SendAsync("setEstimatedEndTime", expectedTimeString);
+            return Clients.Group(AdminGroup).SendAsync("setEstimatedEndTime", expectedTimeString);
         }
 
         public Task JoinAdminGroup()
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, ADMIN_GROUP);
+            return Groups.AddToGroupAsync(Context.ConnectionId, AdminGroup);
         }
     }
 }

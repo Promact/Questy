@@ -1,9 +1,11 @@
 ﻿using Promact.Trappist.Utility.Constants;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Promact.Trappist.Utility.GlobalUtil
 {
+    [ExcludeFromCodeCoverage]
     public class GlobalUtil : IGlobalUtil
     {
         private readonly IStringConstants _stringConstants;

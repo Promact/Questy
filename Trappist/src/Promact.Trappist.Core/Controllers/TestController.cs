@@ -223,7 +223,7 @@ namespace Promact.Trappist.Core.Controllers
         public async Task<IActionResult> GetTestCategoryQuestionsByIdAsync([FromRoute] int testId, [FromRoute] int categoryId)
         {
             var applicationUser = await _userManager.FindByEmailAsync(User.Identity.Name);
-            return Ok(await _testRepository.GetAllQuestionsByIdAsync(testId, categoryId, applicationUser.Id));
+            return Ok(await _testRepository.GetAllQuestionsByTestIdAsync(testId, categoryId, applicationUser.Id));
         }
 
         /// <summary>

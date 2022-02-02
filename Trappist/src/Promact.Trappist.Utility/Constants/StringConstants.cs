@@ -1,5 +1,8 @@
-﻿namespace Promact.Trappist.Utility.Constants
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Promact.Trappist.Utility.Constants
 {
+    [ExcludeFromCodeCoverage]
     public class StringConstants : IStringConstants
     {
         public string InvalidTestName => "Invalid Test Name ";

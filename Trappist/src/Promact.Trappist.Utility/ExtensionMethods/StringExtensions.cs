@@ -1,7 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Promact.Trappist.Utility.ExtensionMethods
 {
+    [ExcludeFromCodeCoverage]
     public static class StringExtensions
     {
         /// <summary>

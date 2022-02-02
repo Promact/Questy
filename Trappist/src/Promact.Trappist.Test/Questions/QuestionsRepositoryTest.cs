@@ -51,21 +51,34 @@ namespace Promact.Trappist.Test.Questions
             string userName = "sandipan@promactinfo.com";
 
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
+            var categoryIdArray = new List<int>();
+            var arrayOfDifficulty = new[] { 0, 0, 1, 1, 2, 2, 2 };
+            foreach (int i in arrayOfDifficulty)
+            {
+                var codingQuestion = await CreateCodingQuestion((DifficultyLevel)i);
+                await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+                categoryIdArray.Add(codingQuestion.Question.CategoryID);
+            }
 
-            var codingQuestion = await CreateCodingQuestion();
-            await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
-            string searchQuestion = null;
-            var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "All", searchQuestion);
-            Assert.Single(result);
-            var resultForCategory = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", searchQuestion);
+            var multipleChoiceQuestion = await CreateMultipleAnswerQuestion();
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleChoiceQuestion, user.Id);
+
+            var singleChoiceQuestion = await CreateSingleAnswerQuestion();
+            await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleChoiceQuestion, user.Id);
+            var result = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "All", null);
+            Assert.Equal(9,result.Count());
+            var resultForCategory = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 7, "All", null);
             Assert.Single(resultForCategory);
-            var resultWithDifficultyLevel = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "Easy", searchQuestion);
-            Assert.Single(resultWithDifficultyLevel);
-            var resultWithSearchInput = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, codingQuestion.Question.CategoryID, "All", "Write");
+            var resultWithDifficultyLevel = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 0, "Easy", null);
+            Assert.Equal(2, resultWithDifficultyLevel.Count());
+            var resultWithSearchInput = await _questionRepository.GetAllQuestionsAsync(applicationUser.Id, 0, 6, "All", "Write");
             Assert.Single(resultWithSearchInput);
+            var singleMultipleChoiceQuestions =
+                await _questionRepository.GetAllQuestionsAsync(user.Id, multipleChoiceQuestion.Question.Id, 0, "All", null);
+            Assert.Equal(7,singleMultipleChoiceQuestions.Count());
         }
 
         /// <summary>
@@ -76,7 +89,7 @@ namespace Promact.Trappist.Test.Questions
         {
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
@@ -94,23 +107,28 @@ namespace Promact.Trappist.Test.Questions
             //Add single answer question
             var singleAnswerQuestion = await CreateSingleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(singleAnswerQuestion, applicationUser.Id);
             var question = await _trappistDbContext.Question.FirstOrDefaultAsync(x => x.QuestionDetail == singleAnswerQuestion.Question.QuestionDetail);
 
             //Update single answer question
-            singleAnswerQuestion.Question.Id = question.Id;
+            singleAnswerQuestion.Question.Id = question!.Id;
             singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Option = "Updated Option";
             singleAnswerQuestion.Question.QuestionDetail = "Updated Single Answer Question";
             singleAnswerQuestion.Question.DifficultyLevel = DifficultyLevel.Medium;
+            singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.RemoveAt(1);
+            singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption.Add(new SingleMultipleAnswerQuestionOption()
+            {
+                CreatedDateTime = DateTime.Now,IsAnswer = false, Option = "Something"
+            });
             await _questionRepository.UpdateSingleMultipleAnswerQuestionAsync(question.Id, singleAnswerQuestion, applicationUser.Id);
 
             var updatedSingleAnswerQuestion = await _trappistDbContext.Question.FindAsync(question.Id);
             var updatedSingleAnswerQuestionOption = await _trappistDbContext.SingleMultipleAnswerQuestionOption.Where(x => x.SingleMultipleAnswerQuestionID == question.Id).OrderBy(x=>x.Id).ToListAsync();
             Assert.True(singleAnswerQuestion.SingleMultipleAnswerQuestion.SingleMultipleAnswerQuestionOption[0].Option == updatedSingleAnswerQuestionOption[0].Option);
-            Assert.True(updatedSingleAnswerQuestion.DifficultyLevel == singleAnswerQuestion.Question.DifficultyLevel);
+            Assert.True(updatedSingleAnswerQuestion!.DifficultyLevel == singleAnswerQuestion.Question.DifficultyLevel);
             Assert.True(updatedSingleAnswerQuestion.QuestionDetail == singleAnswerQuestion.Question.QuestionDetail);
         }
 
@@ -132,7 +150,7 @@ namespace Promact.Trappist.Test.Questions
         {
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
@@ -150,7 +168,7 @@ namespace Promact.Trappist.Test.Questions
             //Add multiple answer question
             var multipleAnswerQuestion = await CreateMultipleAnswerQuestion();
             string userName = "vihar@promactinfo.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             await _questionRepository.AddSingleMultipleAnswerQuestionAsync(multipleAnswerQuestion, applicationUser.Id);
@@ -179,7 +197,7 @@ namespace Promact.Trappist.Test.Questions
             string userName = "deepankar@promactinfo.com";
             string name = "Questy Test User";
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = name};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = name};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -199,13 +217,13 @@ namespace Promact.Trappist.Test.Questions
             string userName = "deepankar@promactinfo.com";
 
             //Adding Application User
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
             //Adding code snippet question
             var codingQuestion = await CreateCodingQuestion();
-            codingQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Add(new CodeSnippetQuestionTestCases()
+            codingQuestion.CodeSnippetQuestion.CodeSnippetQuestionTestCases.Add(new CodeSnippetQuestionTestCases
             {
                 TestCaseTitle = "Default Check",
                 TestCaseDescription = "This case is default case",
@@ -260,7 +278,7 @@ namespace Promact.Trappist.Test.Questions
         {
             string userName = "deepankar@promactinfo.com";
 
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
 
@@ -290,7 +308,7 @@ namespace Promact.Trappist.Test.Questions
         {
             var questionList = new List<TestQuestionAC>();
             string userName = "partha@promactinfo.com";
-            ApplicationUser user = new ApplicationUser()
+            ApplicationUser user = new ApplicationUser
             {
                 Email = userName,
                 UserName = userName,
@@ -329,7 +347,7 @@ namespace Promact.Trappist.Test.Questions
         public async Task IsQuestionExistTest()
         {
             string userName = "partha@promactinfo.com";
-            ApplicationUser user = new ApplicationUser()
+            ApplicationUser user = new ApplicationUser
             {
                 Email = userName,
                 UserName = userName,
@@ -352,7 +370,7 @@ namespace Promact.Trappist.Test.Questions
         public async Task DeleteQuestionTest()
         {
             string userName = "user@domain.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
             //Create code-snippet Question
@@ -379,20 +397,28 @@ namespace Promact.Trappist.Test.Questions
         public async Task GetNumberOfQuestionTest()
         {
             string userName = "asif@gmail.com";
-            ApplicationUser user = new ApplicationUser() { Email = userName, UserName = userName, Name = userName};
+            ApplicationUser user = new ApplicationUser { Email = userName, UserName = userName, Name = userName};
             await _userManager.CreateAsync(user);
             var applicationUser = await _userManager.FindByEmailAsync(user.Email);
-            var codinQuestion = await CreateCodingQuestion();
-            await _questionRepository.AddCodeSnippetQuestionAsync(codinQuestion, applicationUser.Id);
+            int categoryId = 0;
+            var arrayOfDifficulty = new[] {0, 0, 1, 1, 2, 2, 2 };
+            foreach (int i in arrayOfDifficulty)
+            {
+                var codingQuestion = await CreateCodingQuestion((DifficultyLevel)i);
+                await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
+                categoryId = codingQuestion.Question.CategoryID;
+            }
+            //var codingQuestion = await CreateCodingQuestion(DifficultyLevel.Easy);
+            //await _questionRepository.AddCodeSnippetQuestionAsync(codingQuestion, applicationUser.Id);
 
             var numberOfQuestions = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, 0, null);
-            Assert.Equal(1, numberOfQuestions.EasyCount);
-            Assert.Equal(0, numberOfQuestions.MediumCount);
-            Assert.Equal(0, numberOfQuestions.HardCount);
-            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, codinQuestion.Question.CategoryID, "Write");
-            Assert.Equal(1, numberOfQuestionsWithCategory.EasyCount);
+            Assert.Equal(2, numberOfQuestions.EasyCount);
+            Assert.Equal(2, numberOfQuestions.MediumCount);
+            Assert.Equal(3, numberOfQuestions.HardCount);
+            var numberOfQuestionsWithCategory = await _questionRepository.GetNumberOfQuestionsAsync(applicationUser.Id, categoryId, "Write");
+            Assert.Equal(0, numberOfQuestionsWithCategory.EasyCount);
             Assert.Equal(0, numberOfQuestionsWithCategory.MediumCount);
-            Assert.Equal(0, numberOfQuestionsWithCategory.HardCount);
+            Assert.Equal(1, numberOfQuestionsWithCategory.HardCount);
 
         }
         #endregion
@@ -402,7 +428,7 @@ namespace Promact.Trappist.Test.Questions
         /// Creates Coding Question
         /// </summary>
         /// <returns>Created CodingQuestion object</returns>
-        private async Task<QuestionAC> CreateCodingQuestion()
+        private async Task<QuestionAC> CreateCodingQuestion(DifficultyLevel difficultyLevel = DifficultyLevel.Easy)
         {
             var categoryToCreate = CreateCategory();
             await _categoryRepository.AddCategoryAsync(categoryToCreate);
@@ -413,7 +439,7 @@ namespace Promact.Trappist.Test.Questions
                 {
                     QuestionDetail = "<h1>Write a program to add two number</h1>",
                     CategoryID = categoryToCreate.Id,
-                    DifficultyLevel = DifficultyLevel.Easy,
+                    DifficultyLevel = difficultyLevel,
                     QuestionType = QuestionType.Programming
                 },
                 CodeSnippetQuestion = new CodeSnippetQuestionAC
@@ -424,9 +450,9 @@ namespace Promact.Trappist.Test.Questions
                     RunCornerTestCase = false,
                     RunNecessaryTestCase = false,
                     LanguageList = new String[] { "Java", "C" },
-                    CodeSnippetQuestionTestCases = new List<CodeSnippetQuestionTestCases>()
+                    CodeSnippetQuestionTestCases = new List<CodeSnippetQuestionTestCases>
                     {
-                        new CodeSnippetQuestionTestCases()
+                        new()
                         {
                             TestCaseTitle = "Necessary check",
                             TestCaseDescription = "This case must be successfuly passed",
@@ -472,36 +498,37 @@ namespace Promact.Trappist.Test.Questions
         private async Task<QuestionAC> CreateMultipleAnswerQuestion()
         {
             var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
-            var multipleAnswerQuestion = new QuestionAC()
+            var multipleAnswerQuestion = new QuestionAC
             {
-                Question = new QuestionDetailAC()
+                Question = new QuestionDetailAC
                 {
                     QuestionDetail = "Question 1",
                     CategoryID = category.Entity.Id,
                     DifficultyLevel = DifficultyLevel.Hard,
-                    QuestionType = QuestionType.Multiple
+                    QuestionType = QuestionType.Multiple,
+                    Id = Random.Shared.Next(0, 100)
                 },
-                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC
                 {
                     SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>
                     {
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = true,
                             Option = "A",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = true,
                             Option = "B",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = false,
                             Option = "C",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = false,
                             Option = "D",
@@ -519,36 +546,36 @@ namespace Promact.Trappist.Test.Questions
         private async Task<QuestionAC> CreateSingleAnswerQuestion()
         {
             var category = await _trappistDbContext.Category.AddAsync(CreateCategory());
-            var singleAnswerQuestion = new QuestionAC()
+            var singleAnswerQuestion = new QuestionAC
             {
-                Question = new QuestionDetailAC()
+                Question = new QuestionDetailAC
                 {
                     QuestionDetail = "Question 1",
                     CategoryID = category.Entity.Id,
                     DifficultyLevel = DifficultyLevel.Hard,
                     QuestionType = QuestionType.Single
                 },
-                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC()
+                SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestionAC
                 {
                     SingleMultipleAnswerQuestion = new SingleMultipleAnswerQuestion(),
-                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>()
+                    SingleMultipleAnswerQuestionOption = new List<SingleMultipleAnswerQuestionOption>
                     {
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = true,
                             Option = "A",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = false,
                             Option = "B",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = false,
                             Option = "C",
                         },
-                        new SingleMultipleAnswerQuestionOption()
+                        new()
                         {
                             IsAnswer = false,
                             Option = "D",

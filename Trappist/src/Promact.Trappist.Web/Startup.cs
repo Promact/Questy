@@ -32,6 +32,7 @@ using Promact.Trappist.Utility.FileUtil;
 using Promact.Trappist.Utility.GlobalUtil;
 using Promact.Trappist.Utility.HttpUtil;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.AspNetCore.Identity;
 using CacheManager.Core;
@@ -43,6 +44,7 @@ using Promact.Trappist.Repository.Test;
 
 namespace Promact.Trappist.Web
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IHostEnvironment env)

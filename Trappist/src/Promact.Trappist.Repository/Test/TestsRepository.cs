@@ -199,7 +199,7 @@ namespace Promact.Trappist.Repository.Test
         #endregion
 
         #region Test-Question-Selection
-        public async Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId, string userId)
+        public async Task<List<QuestionAC>> GetAllQuestionsByTestIdAsync(int testId, int categoryId, string userId)
         {
             QuestionAC questionAc;
             var questionListAc = new List<QuestionAC>();

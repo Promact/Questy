@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace Promact.Trappist.Utility.FileUtil
 {
+    [ExcludeFromCodeCoverage]
     public class FileUtility : IFileUtility
     {
         #region IFileUtility method

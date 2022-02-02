@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -8,6 +9,7 @@ using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 
 namespace Promact.Trappist.Utility.EmailServices
 {
+    [ExcludeFromCodeCoverage]
     public class EmailService : IEmailService
     {
         #region Private Variables

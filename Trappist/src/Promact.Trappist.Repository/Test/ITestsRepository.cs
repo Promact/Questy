@@ -144,7 +144,7 @@ namespace Promact.Trappist.Repository.Test
         /// <param name="CategoryId">Parameter "CategoryId" takes value of a Category's Id from route</param>
         /// <param name="userId">User's Id with which user has logged in</param>
         /// <returns>List of QuestionAC objects of particular category</returns>      
-        Task<List<QuestionAC>> GetAllQuestionsByIdAsync(int testId, int categoryId, string userId);
+        Task<List<QuestionAC>> GetAllQuestionsByTestIdAsync(int testId, int categoryId, string userId);
 
         /// <summary>
         /// Adds selected question(s) to the particular "Test" 

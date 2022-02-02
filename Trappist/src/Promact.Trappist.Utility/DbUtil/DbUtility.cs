@@ -3,12 +3,13 @@ using Promact.Trappist.DomainModel.ApplicationClasses.BasicSetup;
 using Promact.Trappist.DomainModel.DbContext;
 using Promact.Trappist.DomainModel.Seed;
 using System;
-
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Npgsql;
 
 namespace Promact.Trappist.Utility.DbUtil
 {
+    [ExcludeFromCodeCoverage]
     public class DbUtility : IDbUtility
     {
         #region Private Variables
