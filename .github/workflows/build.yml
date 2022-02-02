@@ -57,9 +57,10 @@ jobs:
           /d:sonar.cs.opencover.reportsPaths=**/coverage.xml `
           /d:sonar.sources="./src/"
           dotnet build                
-          dotnet test --no-build /p:AltCover=True /p:AltCoverLcovReport=../coverage/lcov.info          
+          dotnet test --no-build /p:AltCover=True /p:AltCoverLcovReport=lcov.info          
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: D:\a\Questy\Questy\Trappist\src\Promact.Trappist.Test\lcov.info
